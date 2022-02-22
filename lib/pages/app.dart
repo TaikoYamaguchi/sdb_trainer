@@ -3,14 +3,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'statics.dart';
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+class App extends StatefulWidget {
+  const App({Key? key}) : super(key: key);
 
   @override
-  _HomeState createState() => _HomeState();
+  _AppState createState() => _AppState();
 }
 
-class _HomeState extends State<Home> {
+class _AppState extends State<App> {
   int _currentPageIndex=0;
 
   @override
