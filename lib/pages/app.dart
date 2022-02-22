@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'statics.dart';
+
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -44,18 +46,36 @@ class _HomeState extends State<Home> {
     );
   }
 
+  Widget _bodyWidget() {
+    switch (_currentPageIndex) {
+      case 0:
+        return Container();
+        break;
+      case 1:
+        return Container();
+        break;
+      case 2:
+        return Calendar();
+        break;
+      case 3:
+        return Container();
+        break;
+    }
+    return Container();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "아라동",
+          "기록",
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.black,
         actions: [],
       ),
+      body: _bodyWidget(),
       bottomNavigationBar: _bottomNavigationBarwidget(),
     );
   }
