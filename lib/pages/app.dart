@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sdb_trainer/pages/exercise.dart';
+import 'package:sdb_trainer/pages/home.dart';
 
 import 'statics.dart';
 
@@ -49,10 +51,10 @@ class _AppState extends State<App> {
   Widget _bodyWidget() {
     switch (_currentPageIndex) {
       case 0:
-        return Container();
+        return Home();
         break;
       case 1:
-        return Container();
+        return Exercise();
         break;
       case 2:
         return Calendar();
@@ -67,14 +69,6 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "기록",
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.black,
-        actions: [],
-      ),
       body: _bodyWidget(),
       bottomNavigationBar: _bottomNavigationBarwidget(),
     );
