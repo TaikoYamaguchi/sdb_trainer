@@ -25,13 +25,21 @@ class _AppState extends State<App> {
       String iconName, String label){
     return BottomNavigationBarItem(
       icon: SvgPicture.asset("assets/svg/${iconName}_off.svg"),
+      activeIcon: SvgPicture.asset("assets/svg/${iconName}_on.svg"),
       label: label,
-      backgroundColor: Colors.black
+
     );
   }
   
   Widget _bottomNavigationBarwidget(){
     return BottomNavigationBar(
+      backgroundColor: Color(0xFF212121),
+
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: Colors.white,
+      selectedFontSize: 20,
+      unselectedItemColor: Color(0xFF717171),
+      unselectedFontSize: 20,
       onTap: (int index) {
         print(index);
         setState(() {
