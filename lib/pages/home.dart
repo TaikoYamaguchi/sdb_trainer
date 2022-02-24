@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:syncfusion_flutter_charts/sparkcharts.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -8,41 +11,31 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
+class SDBdata {
+  SDBdata(this.workout, this.exercise, this.goal, this.stat, this.number);
+  final String workout;
+  final String exercise;
+  final double goal;
+  final double stat;
+  final int number;
+}
+
 class _HomeState extends State<Home> {
-  List<Map<String, dynamic>> datas = [];
+  late List<SDBdata> _sdbData;
   @override
   void initState() {
     super.initState();
-    datas = [
-      {
-        "workout": "가슴삼두",
-        "exercise": "벤치프레스",
-        "goal": 130,
-        "stat": 105,
-        "number": "1"
-      },
-      {
-        "workout": "어깨",
-        "exercise": "밀리터리 프레스",
-        "goal": 100,
-        "stat": 60,
-        "number": "2"
-      },
-      {
-        "workout": "하체",
-        "exercise": "스쿼트",
-        "goal": 160,
-        "stat": 140,
-        "number": "3"
-      },
-      {
-        "workout": "등",
-        "exercise": "데드리프트",
-        "goal": 180,
-        "stat": 155,
-        "number": "4"
-      },
+    _sdbData = getSDBdata();
+  }
+
+  List<SDBdata> getSDBdata() {
+    final List<SDBdata> sdbData = [
+      SDBdata("가슴삼두", "벤치", 130, 105, 1),
+      SDBdata("어깨", "밀리터리", 100, 60, 2),
+      SDBdata("하체", "스쿼트", 160, 140, 3),
+      SDBdata("등", "데드", 180, 155, 4),
     ];
+    return sdbData;
   }
 
   PreferredSizeWidget _appbarWidget() {
@@ -80,10 +73,10 @@ class _HomeState extends State<Home> {
                 textBaseline: TextBaseline.alphabetic,
                 children: <Widget>[
                   Text(
-                      (datas[0]["stat"] +
-                              datas[1]["stat"] +
-                              datas[2]["stat"] +
-                              datas[3]["stat"])
+                      (_sdbData[0].stat +
+                              _sdbData[1].stat +
+                              _sdbData[2].stat +
+                              _sdbData[3].stat)
                           .toString(),
                       style: TextStyle(
                           color: Colors.white,
@@ -91,10 +84,10 @@ class _HomeState extends State<Home> {
                           fontWeight: FontWeight.w800)),
                   Text(
                       "/" +
-                          (datas[0]["goal"] +
-                                  datas[1]["goal"] +
-                                  datas[2]["goal"] +
-                                  datas[3]["goal"])
+                          (_sdbData[0].goal +
+                                  _sdbData[1].goal +
+                                  _sdbData[2].goal +
+                                  _sdbData[3].goal)
                               .toString() +
                           "kg",
                       style: TextStyle(
@@ -103,7 +96,7 @@ class _HomeState extends State<Home> {
                           fontWeight: FontWeight.w600)),
                 ]),
             Padding(
-              padding: const EdgeInsets.all(41.0),
+              padding: const EdgeInsets.all(20),
               child: Text('''"Shut up & Squat!"''',
                   style: TextStyle(color: Colors.white, fontSize: 24)),
             ),
@@ -112,6 +105,170 @@ class _HomeState extends State<Home> {
                     color: Colors.white,
                     fontSize: 24,
                     fontWeight: FontWeight.w800)),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                child: SizedBox(
+                  width: 150,
+                  height: 150,
+                  child: SfRadialGauge(axes: <RadialAxis>[
+                    RadialAxis(
+                      minimum: 0,
+                      maximum: _sdbData[0].goal,
+                      ranges: <GaugeRange>[
+                        GaugeRange(
+                            startValue: 0,
+                            endValue: _sdbData[0].stat,
+                            color: Color.fromRGBO(66, 0, 255, 100)),
+                      ],
+                      annotations: <GaugeAnnotation>[
+                        GaugeAnnotation(
+                            widget: Container(
+                                child: Column(children: <Widget>[
+                              Text(_sdbData[0].exercise,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                              Text(
+                                  _sdbData[0].stat.toString() +
+                                      "/" +
+                                      _sdbData[0].goal.toString(),
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold))
+                            ])),
+                            angle: 90,
+                            positionFactor: 0.5)
+                      ],
+                    )
+                  ]),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                child: SizedBox(
+                  width: 150,
+                  height: 150,
+                  child: SfRadialGauge(axes: <RadialAxis>[
+                    RadialAxis(
+                      minimum: 0,
+                      maximum: _sdbData[1].goal,
+                      ranges: <GaugeRange>[
+                        GaugeRange(
+                            startValue: 0,
+                            endValue: _sdbData[1].stat,
+                            color: Color.fromRGBO(0, 255, 25, 100)),
+                      ],
+                      annotations: <GaugeAnnotation>[
+                        GaugeAnnotation(
+                            widget: Container(
+                                child: Column(children: <Widget>[
+                              Text(_sdbData[1].exercise,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                              Text(
+                                  _sdbData[1].stat.toString() +
+                                      "/" +
+                                      _sdbData[1].goal.toString(),
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold))
+                            ])),
+                            angle: 90,
+                            positionFactor: 0.5)
+                      ],
+                    )
+                  ]),
+                ),
+              )
+            ]),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 5, 16, 0),
+                child: SizedBox(
+                  width: 150,
+                  height: 150,
+                  child: SfRadialGauge(axes: <RadialAxis>[
+                    RadialAxis(
+                      minimum: 0,
+                      maximum: _sdbData[2].goal,
+                      ranges: <GaugeRange>[
+                        GaugeRange(
+                            startValue: 0,
+                            endValue: _sdbData[2].stat,
+                            color: Color.fromRGBO(235, 0, 255, 100)),
+                      ],
+                      annotations: <GaugeAnnotation>[
+                        GaugeAnnotation(
+                            widget: Container(
+                                child: Column(children: <Widget>[
+                              Text(_sdbData[2].exercise,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                              Text(
+                                  _sdbData[2].stat.toString() +
+                                      "/" +
+                                      _sdbData[2].goal.toString(),
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold))
+                            ])),
+                            angle: 90,
+                            positionFactor: 0.5)
+                      ],
+                    )
+                  ]),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 5, 16, 0),
+                child: SizedBox(
+                  width: 150,
+                  height: 150,
+                  child: SfRadialGauge(axes: <RadialAxis>[
+                    RadialAxis(
+                      minimum: 0,
+                      maximum: _sdbData[3].goal,
+                      ranges: <GaugeRange>[
+                        GaugeRange(
+                            startValue: 0,
+                            endValue: _sdbData[3].stat,
+                            color: Color.fromRGBO(0, 255, 240, 100)),
+                      ],
+                      annotations: <GaugeAnnotation>[
+                        GaugeAnnotation(
+                            widget: Container(
+                                child: Column(children: <Widget>[
+                              Text(_sdbData[3].exercise,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                              Text(
+                                  _sdbData[3].stat.toString() +
+                                      "/" +
+                                      _sdbData[3].goal.toString(),
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold))
+                            ])),
+                            angle: 90,
+                            positionFactor: 0.5)
+                      ],
+                    )
+                  ]),
+                ),
+              )
+            ])
           ],
         ),
       ),
