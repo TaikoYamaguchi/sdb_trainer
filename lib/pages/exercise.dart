@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -258,10 +257,10 @@ class _ExerciseState extends State<Exercise> {
     switch (_currentPageIndex) {
       case 0:
         return _workoutWidget();
-        break;
+
       case 1:
         return _exercisesWidget();
-        break;
+
     }
     return Container();
   }
