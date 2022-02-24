@@ -60,16 +60,16 @@ class _AppState extends State<App> {
     switch (_currentPageIndex) {
       case 0:
         return Home();
-        break;
+
       case 1:
         return Exercise();
-        break;
+
       case 2:
         return Calendar();
-        break;
+
       case 3:
         return Container();
-        break;
+
     }
     return Container();
   }

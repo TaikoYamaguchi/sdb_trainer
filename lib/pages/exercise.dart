@@ -14,6 +14,8 @@ class _ExerciseState extends State<Exercise> {
   Map<String, dynamic> datas2 = {};
   double top = 0;
   double bottom = 0;
+  int swap = 1;
+  String _title = "Workout List";
 
   @override
   void initState() {
@@ -111,10 +113,24 @@ class _ExerciseState extends State<Exercise> {
   }
 
   PreferredSizeWidget _appbarWidget(){
+    if ( swap ==1) { _title = "Workout List";} else{_title = "Exercise List";};
     return AppBar(
-      title: Text(
-          "Workout List",
-          style:TextStyle(color: Colors.white, fontSize: 30),
+      title: Row(
+        children: [
+          Text(
+              _title,
+              style:TextStyle(color: Colors.white, fontSize: 30),
+          ),
+          IconButton(
+            iconSize: 30,
+            onPressed: () {
+              setState(() {
+                swap= swap*-1;
+              });
+            },
+            icon: Icon(Icons.swap_horiz_outlined)
+          )
+        ],
       ),
       actions: [
         IconButton(
@@ -254,11 +270,11 @@ class _ExerciseState extends State<Exercise> {
   }
 
   Widget _bodyWidget() {
-    switch (_currentPageIndex) {
-      case 0:
+    switch (swap) {
+      case 1:
         return _workoutWidget();
 
-      case 1:
+      case -1:
         return _exercisesWidget();
 
     }
