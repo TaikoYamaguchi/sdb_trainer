@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sdb_trainer/repository/contents_repository.dart';
+
 
 class Exercise extends StatefulWidget {
   const Exercise({Key? key}) : super(key: key);
@@ -9,6 +11,7 @@ class Exercise extends StatefulWidget {
 }
 
 class _ExerciseState extends State<Exercise> {
+  final ContentsRepository contentsRepository = ContentsRepository();
   int _currentPageIndex = 0;
   List<Map<String, dynamic>> datas = [];
   Map<String, dynamic> datas2 = {};
@@ -35,81 +38,7 @@ class _ExerciseState extends State<Exercise> {
         "exercise": ["스쿼트","파워레그프레스","레그익스텐션"],
       },
     ];
-    datas2 = {
-      "벤치프레스":[
-        {
-          "1rm": "120",
-          "unit": "kg",
-          "goal": "130",
-          "rest": "1min"
-        },
-        {
-          "weight": "90",
-          "reps": "10",
-        },
-        {
-          "weight": "90",
-          "reps": "10",
-        },
-        {
-          "weight": "90",
-          "reps": "10",
-        },
-      ],
-      "스쿼트":[
-        {
-        "1rm": "120",
-        "unit": "kg",
-        "goal": "130",
-        "rest": "30sec"
-        },
-        {
-          "weight": "80",
-          "reps": "10",
-        },
-        {
-          "weight": "90",
-          "reps": "10",
-        },
-        {
-          "weight": "90",
-          "reps": "10",
-        },
-      ],
-      "숄더프레스":[
-        {
-        "1rm": "120",
-        "unit": "kg",
-        "goal": "130",
-        "rest": "1min 30sec"
-        },
-        {
-          "weight": "80",
-          "reps": "10",
-        }
-      ],
-      "밀리터리 프레스":[
-        {
-        "1rm": "no data",
-        "unit": "kg",
-        "goal": "0",
-        },
-      ],
-      "파워레그프레스":[
-        {
-        "1rm": "no data",
-        "unit": "kg",
-        "goal": "0",
-        },
-    ],
-      "레그익스텐션":[
-        {
-        "1rm": "no data",
-        "unit": "kg",
-        "goal": "0",
-        },
-    ],
-    };
+
   }
 
   PreferredSizeWidget _appbarWidget(){
@@ -200,7 +129,15 @@ class _ExerciseState extends State<Exercise> {
     );
   }
 
-  Widget _exercisesWidget() {
+
+  Future<Map<String, dynamic>> _loadContents() async {
+    Map<String, dynamic> responseData =
+      await contentsRepository.loadContentsFromLocation();
+    return responseData;
+  }
+
+
+  Widget _exercisesWidget(Map<String, dynamic>datas2) {
     return Container(
       color: Colors.black,
       child: ListView.separated(
@@ -270,15 +207,19 @@ class _ExerciseState extends State<Exercise> {
   }
 
   Widget _bodyWidget() {
-    switch (swap) {
-      case 1:
-        return _workoutWidget();
+    return FutureBuilder<Map<String, dynamic>>(
+      future: _loadContents(),
+      builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+        switch (swap) {
+          case 1:
+            return _workoutWidget();
 
-      case -1:
-        return _exercisesWidget();
-
-    }
-    return Container();
+          case -1:
+            return _exercisesWidget(snapshot.data ?? {});
+        }
+        return Container();
+      }
+    );
   }
 
   @override
