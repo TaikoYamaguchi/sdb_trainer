@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../src/blocs/statics_event.dart';
 
@@ -16,12 +17,15 @@ class _CalendarState extends State<Calendar> {
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
 
+  bool _isChartWidget = false;
+
   TextEditingController _eventController = TextEditingController();
 
   @override
   void initState() {
     // TODO: implement initState
     selectedEvents = {};
+    _isChartWidget = false;
     super.initState();
   }
 
@@ -35,10 +39,57 @@ class _CalendarState extends State<Calendar> {
     super.dispose();
   }
 
+  PreferredSizeWidget _appbarWidget() {
+    return AppBar(
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: _isChartWidget
+            ? (<Widget>[
+                IconButton(
+                  icon: SvgPicture.asset("assets/svg/chart_statics_on.svg"),
+                  onPressed: () {
+                    print("chart");
+                  },
+                ),
+                SizedBox(width: 150),
+                IconButton(
+                  icon: SvgPicture.asset("assets/svg/calendar_statics_off.svg"),
+                  onPressed: () {
+                    setState(() {
+                      _isChartWidget = false;
+                    });
+                    print("calendar");
+                  },
+                ),
+              ])
+            : (<Widget>[
+                IconButton(
+                  icon: SvgPicture.asset("assets/svg/chart_statics_off.svg"),
+                  onPressed: () {
+                    setState(() {
+                      _isChartWidget = true;
+                    });
+                    print("chart");
+                  },
+                ),
+                SizedBox(width: 150),
+                IconButton(
+                  icon: SvgPicture.asset("assets/svg/calendar_statics_on.svg"),
+                  onPressed: () {
+                    print("calendar");
+                  },
+                ),
+              ]),
+      ),
+      backgroundColor: Color(0xFF212121),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting('pt_BR', null);
     return Scaffold(
+      appBar: _appbarWidget(),
       backgroundColor: Colors.black,
       body: Column(
         children: [
