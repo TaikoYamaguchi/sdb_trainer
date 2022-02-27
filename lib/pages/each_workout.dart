@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sdb_trainer/pages/each_exercise.dart';
 import 'package:sdb_trainer/repository/contents_repository.dart';
+import 'package:transition/transition.dart';
 
 
 class EachWorkoutDetails extends StatefulWidget {
@@ -79,46 +81,54 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
           padding: EdgeInsets.symmetric(horizontal: 5),
           itemBuilder: (BuildContext _context, int index){
             if(index==0){top = 20; bottom = 0;} else if (index==widget.exerciselist.length-1){top = 0;bottom = 20;} else {top = 0;bottom = 0;};
-            return Container(
-              child: Expanded(
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                      color: Color(0xFF212121),
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(top),
-                          bottomRight: Radius.circular(bottom),
-                          topLeft: Radius.circular(top),
-                          bottomLeft: Radius.circular(bottom)
-                      )
-                  ),
-                  height: 52,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.exerciselist[index],
-                        style: TextStyle(fontSize: 21, color: Colors.white),
-                      ),
-
-                      Container(
-                        child: Row(
-                          //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                                "Rest: ${datas2[widget.exerciselist[index]][0]["rest"]}",
-                                style: TextStyle(fontSize: 13, color: Color(0xFF717171))
-                            ),
-                            Expanded(child: SizedBox()),
-                            Text(
-                                "1RM: ${datas2[widget.exerciselist[index]][0]["1rm"]}/${datas2[widget.exerciselist[index]][0]["goal"]}${datas2[widget.exerciselist[index]][0]["unit"]}",
-                                style: TextStyle(fontSize: 13, color: Color(0xFF717171))
-                            ),
-                          ],
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(context,Transition(
+                    child: EachExerciseDetails(exercisetitle: widget.exerciselist[index]),
+                    transitionEffect: TransitionEffect.RIGHT_TO_LEFT
+                ));
+              },
+              child: Container(
+                child: Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                        color: Color(0xFF212121),
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(top),
+                            bottomRight: Radius.circular(bottom),
+                            topLeft: Radius.circular(top),
+                            bottomLeft: Radius.circular(bottom)
+                        )
+                    ),
+                    height: 52,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.exerciselist[index],
+                          style: TextStyle(fontSize: 21, color: Colors.white),
                         ),
-                      )
-                    ],
+
+                        Container(
+                          child: Row(
+                            //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                  "Rest: ${datas2[widget.exerciselist[index]][0]["rest"]}",
+                                  style: TextStyle(fontSize: 13, color: Color(0xFF717171))
+                              ),
+                              Expanded(child: SizedBox()),
+                              Text(
+                                  "1RM: ${datas2[widget.exerciselist[index]][0]["1rm"]}/${datas2[widget.exerciselist[index]][0]["goal"]}${datas2[widget.exerciselist[index]][0]["unit"]}",
+                                  style: TextStyle(fontSize: 13, color: Color(0xFF717171))
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
