@@ -76,7 +76,7 @@ class ContentsRepository {
   };
   Future<Map<String, dynamic >> loadContentsFromLocation() async {
     //API통신
-    await Future.delayed(Duration(milliseconds: 1000));
+    //await Future.delayed(Duration(milliseconds: 1000));
     return datas2;
   }
 }

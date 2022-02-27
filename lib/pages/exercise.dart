@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sdb_trainer/pages/each_workout.dart';
 import 'package:sdb_trainer/repository/contents_repository.dart';
+import 'package:transition/transition.dart';
 
 
 class Exercise extends StatefulWidget {
@@ -14,7 +16,6 @@ class _ExerciseState extends State<Exercise> {
   final ContentsRepository contentsRepository = ContentsRepository();
   int _currentPageIndex = 0;
   List<Map<String, dynamic>> datas = [];
-  Map<String, dynamic> datas2 = {};
   double top = 0;
   double bottom = 0;
   int swap = 1;
@@ -80,37 +81,47 @@ class _ExerciseState extends State<Exercise> {
         padding: EdgeInsets.symmetric(horizontal: 5),
         itemBuilder: (BuildContext _context, int index){
           if(index==0){top = 20; bottom = 0;} else if (index==datas.length-1){top = 0;bottom = 20;} else {top = 0;bottom = 0;};
-          return Container(
-            child: Expanded(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                decoration: BoxDecoration(
-                  color: Color(0xFF212121),
-                  borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(top),
-                  bottomRight: Radius.circular(bottom),
-                  topLeft: Radius.circular(top),
-                  bottomLeft: Radius.circular(bottom)
-                  )
-                ),
-                height: 52,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      datas[index]["workout"].toString(),
-                      style: TextStyle(fontSize: 21, color: Colors.white),
-                    ),
-                    Text(
-                      "${datas[index]["exercise"].length} Exercises",
-                      style: TextStyle(fontSize: 13, color: Color(0xFF717171))
-                    )
-                  ],
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(context,Transition(
+                child: EachWorkoutDetails(workouttitle: datas[index]["workout"].toString(), exerciselist: datas[index]["exercise"]),
+                transitionEffect: TransitionEffect.RIGHT_TO_LEFT
+              ));
+            },
+            child: Container(
+              child: Expanded(
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                      color: Color(0xFF212121),
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(top),
+                          bottomRight: Radius.circular(bottom),
+                          topLeft: Radius.circular(top),
+                          bottomLeft: Radius.circular(bottom)
+                      )
+                  ),
+                  height: 52,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        datas[index]["workout"].toString(),
+                        style: TextStyle(fontSize: 21, color: Colors.white),
+                      ),
+                      Text(
+                          "${datas[index]["exercise"].length} Exercises",
+                          style: TextStyle(fontSize: 13, color: Color(0xFF717171))
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
           );
+
+
         },
         separatorBuilder: (BuildContext _context, int index){
           return Container(

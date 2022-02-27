@@ -39,6 +39,7 @@ dependencies:
   intl: ^0.17.0
   syncfusion_flutter_charts: ^19.4.53
   syncfusion_flutter_gauges: ^19.4.53
+  transition : ^2.0.2
 
 dev_dependencies:
   flutter_test:
