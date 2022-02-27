@@ -75,6 +75,7 @@ class _HomeState extends State<Home> {
                               _sdbData[1].stat +
                               _sdbData[2].stat +
                               _sdbData[3].stat)
+                          .floor()
                           .toString(),
                       style: TextStyle(
                           color: Colors.white,
@@ -86,6 +87,7 @@ class _HomeState extends State<Home> {
                                   _sdbData[1].goal +
                                   _sdbData[2].goal +
                                   _sdbData[3].goal)
+                              .floor()
                               .toString() +
                           "kg",
                       style: TextStyle(
@@ -105,7 +107,7 @@ class _HomeState extends State<Home> {
                     fontWeight: FontWeight.w800)),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
                 child: SizedBox(
                   width: 150,
                   height: 150,
@@ -129,9 +131,9 @@ class _HomeState extends State<Home> {
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold)),
                               Text(
-                                  _sdbData[0].stat.toString() +
+                                  _sdbData[0].stat.floor().toString() +
                                       "/" +
-                                      _sdbData[0].goal.toString(),
+                                      _sdbData[0].goal.floor().toString(),
                                   style: TextStyle(
                                       fontSize: 16,
                                       color: Colors.white,
@@ -145,7 +147,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
                 child: SizedBox(
                   width: 150,
                   height: 150,
@@ -169,9 +171,9 @@ class _HomeState extends State<Home> {
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold)),
                               Text(
-                                  _sdbData[1].stat.toString() +
+                                  _sdbData[1].stat.floor().toString() +
                                       "/" +
-                                      _sdbData[1].goal.toString(),
+                                      _sdbData[1].goal.floor().toString(),
                                   style: TextStyle(
                                       fontSize: 16,
                                       color: Colors.white,
@@ -187,7 +189,7 @@ class _HomeState extends State<Home> {
             ]),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 5, 16, 0),
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                 child: SizedBox(
                   width: 150,
                   height: 150,
@@ -211,9 +213,9 @@ class _HomeState extends State<Home> {
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold)),
                               Text(
-                                  _sdbData[2].stat.toString() +
+                                  _sdbData[2].stat.floor().toString() +
                                       "/" +
-                                      _sdbData[2].goal.toString(),
+                                      _sdbData[2].goal.floor().toString(),
                                   style: TextStyle(
                                       fontSize: 16,
                                       color: Colors.white,
@@ -227,7 +229,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 5, 16, 0),
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                 child: SizedBox(
                   width: 150,
                   height: 150,
@@ -251,9 +253,9 @@ class _HomeState extends State<Home> {
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold)),
                               Text(
-                                  _sdbData[3].stat.toString() +
+                                  _sdbData[3].stat.floor().toString() +
                                       "/" +
-                                      _sdbData[3].goal.toString(),
+                                      _sdbData[3].goal.floor().toString(),
                                   style: TextStyle(
                                       fontSize: 16,
                                       color: Colors.white,
