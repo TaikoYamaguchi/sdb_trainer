@@ -4,26 +4,17 @@ import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../src/blocs/statics_event.dart';
+import '../repository/exercises_repository.dart';
+import '../src/model/sdbdata.dart';
 
 class Calendar extends StatefulWidget {
   @override
   _CalendarState createState() => _CalendarState();
 }
 
-class SDBdata {
-  SDBdata(this.workout, this.exercise, this.goal, this.stat, this.number,
-      this.dateAt);
-  final String workout;
-  final String exercise;
-  final double? goal;
-  final double? stat;
-  final int? number;
-  final String? dateAt;
-}
-
 class _CalendarState extends State<Calendar> {
   late Map<DateTime, List<SDBdata>> selectedEvents;
-  late List<SDBdata> _sdbData;
+  SDBdataList? _sdbData;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
@@ -33,43 +24,31 @@ class _CalendarState extends State<Calendar> {
 
   TextEditingController _eventController = TextEditingController();
 
-  List<SDBdata> getSDBdata() {
-    final List<SDBdata> sdbData = [
-      SDBdata("가슴삼두", "벤치", 130, 105, 1, '2022-02-22'),
-      SDBdata("어깨", "밀리터리", 100, 60, 2, "2022-02-23"),
-      SDBdata("하체", "스쿼트", 160, 140, 3, "2022-02-22"),
-      SDBdata("등", "데드", 180, 155, 4, "2022-02-22"),
-      SDBdata("가슴삼두", "벤치", 130, 110, 1, "2022-02-23"),
-      SDBdata("어깨", "밀리터리", 100, 65, 2, "2022-02-25"),
-      SDBdata("하체", "스쿼트", 160, 150, 3, "2022-02-26"),
-      SDBdata("등", "데드", 180, 170, 4, "2022-02-26"),
-    ];
-    return sdbData;
-  }
-
   @override
   void initState() {
     // TODO: implement initState
     selectedEvents = {};
-    _sdbData = getSDBdata();
+    ExerciseService.loadSDBdata().then((sdbdatas) {
+      _sdbData = sdbdatas;
+      print(_sdbData);
+    });
     _isChartWidget = false;
-    _getEventsfromDay(dateFormat.parse("2022-02-25"));
     super.initState();
   }
 
   List<SDBdata> _getEventsfromDay(DateTime date) {
     String date_calendar = DateFormat('yyyy-MM-dd').format(date);
     selectedEvents = {};
-
-    for (int i = 0; i < _sdbData.length; i++) {
-      if (_sdbData[i].dateAt!.substring(0, 10) == date_calendar) {
+    for (int i = 0; i < _sdbData!.sdbdatas.length; i++) {
+      if (_sdbData!.sdbdatas[i].date!.substring(0, 10) == date_calendar) {
         if (selectedEvents[date] != null) {
-          selectedEvents[date]!.add(_sdbData[i]);
+          selectedEvents[date]!.add(_sdbData!.sdbdatas[i]);
         } else {
-          selectedEvents[date] = [_sdbData[i]];
+          selectedEvents[date] = [_sdbData!.sdbdatas[i]];
         }
       }
     }
+
     return selectedEvents[date] ?? [];
   }
 
@@ -199,7 +178,7 @@ class _CalendarState extends State<Calendar> {
         ),
         ..._getEventsfromDay(_selectedDay).map((SDBdata row) => ListTile(
                 title: Text(
-              row.exercise,
+              row.user_email,
               style: TextStyle(color: Colors.white),
             )))
       ],
@@ -236,14 +215,6 @@ class _CalendarState extends State<Calendar> {
                           onPressed: () {
                             if (_eventController.text.isEmpty) {
                             } else {
-                              _sdbData.add(SDBdata(
-                                  "가슴삼두",
-                                  _eventController.text,
-                                  120,
-                                  100,
-                                  1,
-                                  DateFormat('yyyy-MM-dd')
-                                      .format(_selectedDay)));
                               print(_selectedDay);
                               print(_eventController);
                             }

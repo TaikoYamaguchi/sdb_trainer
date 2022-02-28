@@ -11,7 +11,7 @@ class RoutineRepository {
           {"index": 2, "weight": 110, "reps": 1},
           {"index": 3, "weight": 85, "reps": 10}
         ],
-        "1rm": 115,
+        "onerm": 115,
         "rest": 180
       },
       {
@@ -22,7 +22,7 @@ class RoutineRepository {
           {"index": 3, "weight": 100, "reps": 6},
           {"index": 4, "weight": 80, "reps": 10},
         ],
-        "1rm": 140,
+        "onerm": 140,
         "rest": 240
       },
       {
@@ -35,7 +35,7 @@ class RoutineRepository {
           {"index": 5, "weight": 160, "reps": 1},
           {"index": 6, "weight": 130, "reps": 10},
         ],
-        "1rm": 180,
+        "onerm": 180,
         "rest": 240
       },
     ],
