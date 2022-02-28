@@ -9,7 +9,8 @@ class ExercisesRepository {
           {"index": 1, "weight": 105, "reps": 1},
           {"index": 2, "weight": 110, "reps": 1},
           {"index": 3, "weight": 85, "reps": 10}
-        ]
+        ],
+        "1rm": 115,
       },
       {
         "name": "스쿼트",
@@ -18,7 +19,8 @@ class ExercisesRepository {
           {"index": 2, "weight": 130, "reps": 1},
           {"index": 3, "weight": 100, "reps": 6},
           {"index": 4, "weight": 80, "reps": 10},
-        ]
+        ],
+        "1rm": 140,
       },
       {
         "name": "데드리프트",
@@ -29,7 +31,8 @@ class ExercisesRepository {
           {"index": 4, "weight": 140, "reps": 1},
           {"index": 5, "weight": 160, "reps": 1},
           {"index": 6, "weight": 130, "reps": 10},
-        ]
+        ],
+        "1rm": 180,
       },
     ],
     "date": "2022-02-27",
