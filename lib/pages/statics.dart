@@ -21,6 +21,7 @@ class _CalendarState extends State<Calendar> {
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
 
   bool _isChartWidget = false;
+  bool _isLoading = true;
 
   TextEditingController _eventController = TextEditingController();
 
@@ -31,8 +32,10 @@ class _CalendarState extends State<Calendar> {
     ExerciseService.loadSDBdata().then((sdbdatas) {
       _sdbData = sdbdatas;
       print(_sdbData);
+      setState(() {
+        _isLoading = false;
+      });
     });
-    _isChartWidget = false;
     super.initState();
   }
 
@@ -176,11 +179,13 @@ class _CalendarState extends State<Calendar> {
               headerPadding:
                   EdgeInsets.symmetric(horizontal: 5.0, vertical: 3.0)),
         ),
-        ..._getEventsfromDay(_selectedDay).map((SDBdata row) => ListTile(
-                title: Text(
-              row.user_email,
-              style: TextStyle(color: Colors.white),
-            )))
+        ..._getEventsfromDay(_selectedDay).map((SDBdata row) => Column(
+              children: row.exercises
+                  .map((e) => ListTile(
+                      title:
+                          Text(e.name, style: TextStyle(color: Colors.white))))
+                  .toList(),
+            ))
       ],
     );
   }
@@ -198,7 +203,9 @@ class _CalendarState extends State<Calendar> {
     return Scaffold(
       appBar: _appbarWidget(),
       backgroundColor: Colors.black,
-      body: _isChartWidget ? _chartWidget() : _staticsWidget(),
+      body: _isChartWidget
+          ? _chartWidget()
+          : (_isLoading ? null : _staticsWidget()),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () => showDialog(
               context: context,
