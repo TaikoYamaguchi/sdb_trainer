@@ -27,6 +27,10 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   void initState() {
     super.initState();
     _currentPageIndex = 1;
+
+
+
+
     datas = [
       {
         "workout": "가슴삼두",
@@ -74,7 +78,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   }
 
 
-  Widget _exercisesWidget(Map<String, dynamic>datas2) {
+  Widget _exercisesWidget() {
     return Container(
       color: Colors.black,
       child: ListView.separated(
@@ -84,7 +88,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             return GestureDetector(
               onTap: () {
                 Navigator.push(context,Transition(
-                    child: EachExerciseDetails(exercisetitle: widget.exerciselist[index]),
+                    child: EachExerciseDetails(exercisedetail: widget.exerciselist[index]),
                     transitionEffect: TransitionEffect.RIGHT_TO_LEFT
                 ));
               },
@@ -107,7 +111,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.exerciselist[index],
+                          widget.exerciselist[index].name,
                           style: TextStyle(fontSize: 21, color: Colors.white),
                         ),
 
@@ -116,12 +120,12 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                             //mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Text(
-                                  "Rest: ${datas2[widget.exerciselist[index]][0]["rest"]}",
+                                  "Rest: ${widget.exerciselist[index].rest}",
                                   style: TextStyle(fontSize: 13, color: Color(0xFF717171))
                               ),
                               Expanded(child: SizedBox()),
                               Text(
-                                  "1RM: ${datas2[widget.exerciselist[index]][0]["1rm"]}/${datas2[widget.exerciselist[index]][0]["goal"]}${datas2[widget.exerciselist[index]][0]["unit"]}",
+                                  "1RM: ${widget.exerciselist[index].onerm}",
                                   style: TextStyle(fontSize: 13, color: Color(0xFF717171))
                               ),
                             ],
@@ -151,20 +155,20 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
     );
   }
 
-  Widget _bodyWidget() {
-    return FutureBuilder<Map<String, dynamic>>(
-        future: _loadContents(),
-        builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
-          return _exercisesWidget(snapshot.data ?? {});
-        }
-    );
-  }
+  //Widget _bodyWidget() {
+  //  return FutureBuilder<Map<String, dynamic>>(
+  //      future: _loadContents(),
+  //      builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+  //        return _exercisesWidget(snapshot.data ?? {});
+  //      }
+  //  );
+  //}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appbarWidget(),
-      body: _bodyWidget(),
+      body: _exercisesWidget(),
     );
   }
 }

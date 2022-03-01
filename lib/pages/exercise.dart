@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sdb_trainer/pages/each_workout.dart';
 import 'package:sdb_trainer/repository/contents_repository.dart';
+import 'package:sdb_trainer/repository/routine_repository.dart';
+import 'package:sdb_trainer/src/model/routinedata.dart';
 import 'package:transition/transition.dart';
 
 
@@ -20,11 +22,20 @@ class _ExerciseState extends State<Exercise> {
   double bottom = 0;
   int swap = 1;
   String _title = "Workout List";
+  RoutinedataList? _routinedata;
+
 
   @override
   void initState() {
     super.initState();
     _currentPageIndex = 1;
+
+    //RoutineRepository.loadRoutinedata().then((value){
+    //  _routinedata = value;
+    //  //print(_routinedata!.routinedatas[0].date);
+    //});
+
+
     datas = [
       {
         "workout": "가슴삼두",
@@ -74,17 +85,17 @@ class _ExerciseState extends State<Exercise> {
     );
   }
 
-  Widget _workoutWidget() {
+  Widget _workoutWidget(routinedata) {
     return Container(
       color: Colors.black,
       child: ListView.separated(
         padding: EdgeInsets.symmetric(horizontal: 5),
         itemBuilder: (BuildContext _context, int index){
-          if(index==0){top = 20; bottom = 0;} else if (index==datas.length-1){top = 0;bottom = 20;} else {top = 0;bottom = 0;};
+          if(index==0){top = 20; bottom = 0;} else if (index==routinedata.routinedatas.length-1){top = 0;bottom = 20;} else {top = 0;bottom = 0;};
           return GestureDetector(
             onTap: () {
               Navigator.push(context,Transition(
-                child: EachWorkoutDetails(workouttitle: datas[index]["workout"].toString(), exerciselist: datas[index]["exercise"]),
+                child: EachWorkoutDetails(workouttitle: routinedata.routinedatas[index].name, exerciselist: routinedata.routinedatas[index].exercises),
                 transitionEffect: TransitionEffect.RIGHT_TO_LEFT
               ));
             },
@@ -107,11 +118,11 @@ class _ExerciseState extends State<Exercise> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        datas[index]["workout"].toString(),
+                        routinedata.routinedatas[index].name,
                         style: TextStyle(fontSize: 21, color: Colors.white),
                       ),
                       Text(
-                          "${datas[index]["exercise"].length} Exercises",
+                          "${routinedata.routinedatas[index].exercises.length} Exercises",
                           style: TextStyle(fontSize: 13, color: Color(0xFF717171))
                       )
                     ],
@@ -135,7 +146,7 @@ class _ExerciseState extends State<Exercise> {
           );
 
         },
-        itemCount: datas.length
+        itemCount: routinedata!.routinedatas.length
       ),
     );
   }
@@ -148,7 +159,7 @@ class _ExerciseState extends State<Exercise> {
   }
 
 
-  Widget _exercisesWidget(Map<String, dynamic>datas2) {
+  Widget _exercisesWidget(datas2) {
     return Container(
       color: Colors.black,
       child: ListView.separated(
@@ -218,16 +229,19 @@ class _ExerciseState extends State<Exercise> {
   }
 
   Widget _bodyWidget() {
-    return FutureBuilder<Map<String, dynamic>>(
-      future: _loadContents(),
-      builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
-        switch (swap) {
-          case 1:
-            return _workoutWidget();
-
-          case -1:
-            return _exercisesWidget(snapshot.data ?? {});
+    return FutureBuilder<RoutinedataList>(
+      future: RoutineRepository.loadRoutinedata(),
+      builder: (BuildContext context, AsyncSnapshot<RoutinedataList> snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return Container(color: Colors.black,child: Center(child: CircularProgressIndicator()));
         }
+        if (snapshot.hasError) {
+          return Container(color: Colors.black,child: Center(child: Text("데이터 오류")));
+        }
+        if (snapshot.hasData) {
+          return _workoutWidget(snapshot.data!);;
+        }
+
         return Container();
       }
     );
