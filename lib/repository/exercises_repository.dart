@@ -1,4 +1,5 @@
 import 'dart:async' show Future;
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 import '../src/model/sdbdata.dart';
@@ -14,7 +15,15 @@ class ExerciseService {
     String jsonString = await _loadSDBdataFromLocation();
     final jsonResponse = json.decode(jsonString);
     SDBdataList sdbdata = SDBdataList.fromJson(jsonResponse);
-    print(sdbdata);
+    print(sdbdata.sdbdatas);
     return (sdbdata);
   }
+}
+
+main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  ExerciseService.loadSDBdata();
+
+
 }
