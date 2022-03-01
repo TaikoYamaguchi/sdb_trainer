@@ -15,8 +15,6 @@ class EachWorkoutDetails extends StatefulWidget {
 }
 
 class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
-  final ContentsRepository contentsRepository = ContentsRepository();
-  int _currentPageIndex = 0;
   List<Map<String, dynamic>> datas = [];
   double top = 0;
   double bottom = 0;
@@ -26,26 +24,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   @override
   void initState() {
     super.initState();
-    _currentPageIndex = 1;
-
-
-
-
-    datas = [
-      {
-        "workout": "가슴삼두",
-        "exercise": ["벤치프레스"],
-      },
-      {
-        "workout": "어깨",
-        "exercise": ["숄더프레스","밀리터리 프레스"],
-      },
-      {
-        "workout": "하체",
-        "exercise": ["스쿼트","파워레그프레스","레그익스텐션"],
-      },
-    ];
-
   }
 
   PreferredSizeWidget _appbarWidget(){
@@ -71,12 +49,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   }
 
 
-  Future<Map<String, dynamic>> _loadContents() async {
-    Map<String, dynamic> responseData =
-    await contentsRepository.loadContentsFromLocation();
-    return responseData;
-  }
-
 
   Widget _exercisesWidget() {
     return Container(
@@ -93,46 +65,44 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 ));
               },
               child: Container(
-                child: Expanded(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    decoration: BoxDecoration(
-                        color: Color(0xFF212121),
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(top),
-                            bottomRight: Radius.circular(bottom),
-                            topLeft: Radius.circular(top),
-                            bottomLeft: Radius.circular(bottom)
-                        )
-                    ),
-                    height: 52,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.exerciselist[index].name,
-                          style: TextStyle(fontSize: 21, color: Colors.white),
-                        ),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                      color: Color(0xFF212121),
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(top),
+                          bottomRight: Radius.circular(bottom),
+                          topLeft: Radius.circular(top),
+                          bottomLeft: Radius.circular(bottom)
+                      )
+                  ),
+                  height: 52,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.exerciselist[index].name,
+                        style: TextStyle(fontSize: 21, color: Colors.white),
+                      ),
 
-                        Container(
-                          child: Row(
-                            //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text(
-                                  "Rest: ${widget.exerciselist[index].rest}",
-                                  style: TextStyle(fontSize: 13, color: Color(0xFF717171))
-                              ),
-                              Expanded(child: SizedBox()),
-                              Text(
-                                  "1RM: ${widget.exerciselist[index].onerm}",
-                                  style: TextStyle(fontSize: 13, color: Color(0xFF717171))
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                      Container(
+                        child: Row(
+                          //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                                "Rest: ${widget.exerciselist[index].rest}",
+                                style: TextStyle(fontSize: 13, color: Color(0xFF717171))
+                            ),
+                            Expanded(child: SizedBox()),
+                            Text(
+                                "1RM: ${widget.exerciselist[index].onerm}",
+                                style: TextStyle(fontSize: 13, color: Color(0xFF717171))
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),

@@ -16,7 +16,7 @@ class Exercise extends StatefulWidget {
 
 class _ExerciseState extends State<Exercise> {
   final ContentsRepository contentsRepository = ContentsRepository();
-  int _currentPageIndex = 0;
+
   List<Map<String, dynamic>> datas = [];
   double top = 0;
   double bottom = 0;
@@ -28,29 +28,6 @@ class _ExerciseState extends State<Exercise> {
   @override
   void initState() {
     super.initState();
-    _currentPageIndex = 1;
-
-    //RoutineRepository.loadRoutinedata().then((value){
-    //  _routinedata = value;
-    //  //print(_routinedata!.routinedatas[0].date);
-    //});
-
-
-    datas = [
-      {
-        "workout": "가슴삼두",
-        "exercise": ["벤치프레스"],
-      },
-      {
-        "workout": "어깨",
-        "exercise": ["숄더프레스","밀리터리 프레스"],
-      },
-      {
-        "workout": "하체",
-        "exercise": ["스쿼트","파워레그프레스","레그익스텐션"],
-      },
-    ];
-
   }
 
   PreferredSizeWidget _appbarWidget(){
@@ -100,33 +77,31 @@ class _ExerciseState extends State<Exercise> {
               ));
             },
             child: Container(
-              child: Expanded(
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                      color: Color(0xFF212121),
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(top),
-                          bottomRight: Radius.circular(bottom),
-                          topLeft: Radius.circular(top),
-                          bottomLeft: Radius.circular(bottom)
-                      )
-                  ),
-                  height: 52,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        routinedata.routinedatas[index].name,
-                        style: TextStyle(fontSize: 21, color: Colors.white),
-                      ),
-                      Text(
-                          "${routinedata.routinedatas[index].exercises.length} Exercises",
-                          style: TextStyle(fontSize: 13, color: Color(0xFF717171))
-                      )
-                    ],
-                  ),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                    color: Color(0xFF212121),
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(top),
+                        bottomRight: Radius.circular(bottom),
+                        topLeft: Radius.circular(top),
+                        bottomLeft: Radius.circular(bottom)
+                    )
+                ),
+                height: 52,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      routinedata.routinedatas[index].name,
+                      style: TextStyle(fontSize: 21, color: Colors.white),
+                    ),
+                    Text(
+                        "${routinedata.routinedatas[index].exercises.length} Exercises",
+                        style: TextStyle(fontSize: 13, color: Color(0xFF717171))
+                    )
+                  ],
                 ),
               ),
             ),
@@ -149,13 +124,6 @@ class _ExerciseState extends State<Exercise> {
         itemCount: routinedata!.routinedatas.length
       ),
     );
-  }
-
-
-  Future<Map<String, dynamic>> _loadContents() async {
-    Map<String, dynamic> responseData =
-      await contentsRepository.loadContentsFromLocation();
-    return responseData;
   }
 
 

@@ -16,8 +16,6 @@ class EachExerciseDetails extends StatefulWidget {
 
 class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   bool _isChecked = false;
-  final ContentsRepository contentsRepository = ContentsRepository();
-  RoutinedataList? _routinedata;
   double top = 0;
   double bottom = 0;
 
@@ -39,15 +37,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     );
   }
 
-
-
-
-
-  Future<Map<String, dynamic>> _loadContents() async {
-    Map<String, dynamic> responseData =
-    await contentsRepository.loadContentsFromLocation();
-    return responseData;
-  }
 
 
   Widget _exercisedetailWidget() {
@@ -219,14 +208,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     );
   }
 
-  //Widget _bodyWidget() {
-  //  return FutureBuilder<Map<String, dynamic>>(
-  //      future: _loadContents(),
-  //      builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
-  //        return _exercisedetailWidget(snapshot.data ?? {});
-  //      }
-  //  );
-  //}
 
   @override
   Widget build(BuildContext context) {

@@ -19,15 +19,3 @@ class RoutineRepository {
     return (routinedata);
   }
 }
-
-
-main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  RoutinedataList? _routinedata;
-  RoutineRepository.loadRoutinedata().then((value){
-    _routinedata = value;
-    print(_routinedata!.routinedatas[0].date);
-  });
-
-
-}
