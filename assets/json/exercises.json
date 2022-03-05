@@ -1,0 +1,25 @@
+[
+  {
+    "id": 1,
+    "user_email": "cksdnr1@gmail.com",
+    "exercises": [
+      {
+        "name": "벤치프레스",
+        "onerm": 115.0,
+        "goal": 130.0
+      },
+      {
+        "name": "스쿼트",
+        "onerm": 140.0,
+        "goal": 150.0
+      },
+      {
+        "name": "데드리프트",
+        "onerm": 180.0,
+        "goal": 190.0
+      }
+    ],
+    "date": "2022-02-27",
+    "modified_number": 1
+  }
+]

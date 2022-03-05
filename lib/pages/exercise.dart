@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sdb_trainer/pages/each_workout.dart';
 
 import 'package:sdb_trainer/repository/routine_repository.dart';
-import 'package:sdb_trainer/src/model/routinedata.dart';
+import 'package:sdb_trainer/src/model/workoutdata.dart';
 import 'package:transition/transition.dart';
 
 

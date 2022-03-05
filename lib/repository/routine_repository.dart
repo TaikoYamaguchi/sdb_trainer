@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sdb_trainer/src/model/routinedata.dart';
+import 'package:sdb_trainer/src/model/workoutdata.dart';
 
 class RoutineRepository {
 
