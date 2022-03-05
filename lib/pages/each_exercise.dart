@@ -1,9 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sdb_trainer/repository/contents_repository.dart';
-import 'package:sdb_trainer/repository/routine_repository.dart';
-import 'package:sdb_trainer/src/model/routinedata.dart';
+
 
 
 class EachExerciseDetails extends StatefulWidget {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sdb_trainer/pages/each_exercise.dart';
-import 'package:sdb_trainer/repository/contents_repository.dart';
 import 'package:transition/transition.dart';
 
 
@@ -47,7 +46,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
       backgroundColor: Colors.black,
     );
   }
-
 
 
   Widget _exercisesWidget() {
@@ -124,15 +122,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
       ),
     );
   }
-
-  //Widget _bodyWidget() {
-  //  return FutureBuilder<Map<String, dynamic>>(
-  //      future: _loadContents(),
-  //      builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
-  //        return _exercisesWidget(snapshot.data ?? {});
-  //      }
-  //  );
-  //}
 
   @override
   Widget build(BuildContext context) {

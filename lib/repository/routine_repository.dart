@@ -8,7 +8,7 @@ class RoutineRepository {
 
 
   static Future<String> _loadRoutinedataFromLocation() async {
-    return await rootBundle.loadString('assets/json/routine.json');
+    return await rootBundle.loadString('assets/json/workout.json');
   }
 
   static Future<RoutinedataList> loadRoutinedata() async {

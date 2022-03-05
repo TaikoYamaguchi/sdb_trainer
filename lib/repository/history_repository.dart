@@ -6,7 +6,7 @@ import '../src/model/sdbdata.dart';
 
 class ExerciseService {
   static Future<String> _loadSDBdataFromLocation() async {
-    return await rootBundle.loadString("assets/json/exercises.json");
+    return await rootBundle.loadString("assets/json/history.json");
     //API통신
     //await Future.delayed(Duration(milliseconds: 1000));
   }
@@ -18,12 +18,4 @@ class ExerciseService {
     print(sdbdata.sdbdatas);
     return (sdbdata);
   }
-}
-
-main() {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  ExerciseService.loadSDBdata();
-
-
 }

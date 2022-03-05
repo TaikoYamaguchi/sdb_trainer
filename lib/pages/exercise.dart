@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sdb_trainer/pages/each_workout.dart';
-import 'package:sdb_trainer/repository/contents_repository.dart';
+
 import 'package:sdb_trainer/repository/routine_repository.dart';
 import 'package:sdb_trainer/src/model/routinedata.dart';
 import 'package:transition/transition.dart';
@@ -15,15 +15,12 @@ class Exercise extends StatefulWidget {
 }
 
 class _ExerciseState extends State<Exercise> {
-  final ContentsRepository contentsRepository = ContentsRepository();
 
   List<Map<String, dynamic>> datas = [];
   double top = 0;
   double bottom = 0;
   int swap = 1;
   String _title = "Workout List";
-  RoutinedataList? _routinedata;
-
 
   @override
   void initState() {
