@@ -16,13 +16,15 @@ class Exercisesdata {
     var list = parsedJson['exercises'] as List;
     List<Exercises> exerciseList =
     list.map((i) => Exercises.fromJson(i)).toList();
-    return Exercisesdata(
+    return new Exercisesdata(
         id: parsedJson['id'],
         user_email: parsedJson['user_email'],
         exercises: exerciseList,
         date: parsedJson["date"],
-        modified_number: parsedJson["new_record"],);
+        modified_number: parsedJson["modified_number"],);
   }
+
+
 }
 
 class Exercises {

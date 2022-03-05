@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sdb_trainer/pages/each_workout.dart';
-
+import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
 import 'package:transition/transition.dart';
@@ -59,17 +59,21 @@ class _ExerciseState extends State<Exercise> {
     );
   }
 
-  Widget _workoutWidget(routinedata) {
+  Widget _workoutWidget(routinedata,exunique) {
     return Container(
       color: Colors.black,
       child: ListView.separated(
         padding: EdgeInsets.symmetric(horizontal: 5),
         itemBuilder: (BuildContext _context, int index){
-          if(index==0){top = 20; bottom = 0;} else if (index==routinedata.routinedatas.length-1){top = 0;bottom = 20;} else {top = 0;bottom = 0;};
+          if(index==0){top = 20; bottom = 0;} else if (index==routinedata!.routinedatas.length-1){top = 0;bottom = 20;} else {top = 0;bottom = 0;};
           return GestureDetector(
             onTap: () {
               Navigator.push(context,Transition(
-                child: EachWorkoutDetails(workouttitle: routinedata.routinedatas[index].name, exerciselist: routinedata.routinedatas[index].exercises),
+                child: EachWorkoutDetails(
+                    workouttitle: routinedata.routinedatas[index].name,
+                    exerciselist: routinedata.routinedatas[index].exercises,
+                    uniqueinfo: exunique.exercises
+                ),
                 transitionEffect: TransitionEffect.RIGHT_TO_LEFT
               ));
             },
@@ -124,13 +128,13 @@ class _ExerciseState extends State<Exercise> {
   }
 
 
-  Widget _exercisesWidget(datas2) {
+  Widget _exercisesWidget(exunique) {
     return Container(
       color: Colors.black,
       child: ListView.separated(
           padding: EdgeInsets.symmetric(horizontal: 5),
           itemBuilder: (BuildContext _context, int index){
-            if(index==0){top = 20; bottom = 0;} else if (index==datas2.keys.toList().length-1){top = 0;bottom = 20;} else {top = 0;bottom = 0;};
+            if(index==0){top = 20; bottom = 0;} else if (index==exunique.exercises.length-1){top = 0;bottom = 20;} else {top = 0;bottom = 0;};
             return Container(
               child: Expanded(
                 child: Container(
@@ -150,7 +154,7 @@ class _ExerciseState extends State<Exercise> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        datas2.keys.toList()[index],
+                        exunique.exercises[index].name,
                         style: TextStyle(fontSize: 21, color: Colors.white),
                       ),
 
@@ -159,12 +163,12 @@ class _ExerciseState extends State<Exercise> {
                           //mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Text(
-                                "Rest: ${datas2[datas2.keys.toList()[index]][0]["rest"]}",
+                                "Rest: need to set",
                                 style: TextStyle(fontSize: 13, color: Color(0xFF717171))
                             ),
                             Expanded(child: SizedBox()),
                             Text(
-                                "1RM: ${datas2[datas2.keys.toList()[index]][0]["1rm"]}/${datas2[datas2.keys.toList()[index]][0]["goal"]}${datas2[datas2.keys.toList()[index]][0]["unit"]}",
+                                "1RM: ${exunique.exercises[index].onerm}/${exunique.exercises[index].goal} unit",
                                 style: TextStyle(fontSize: 13, color: Color(0xFF717171))
                             ),
                           ],
@@ -188,23 +192,29 @@ class _ExerciseState extends State<Exercise> {
             );
 
           },
-          itemCount: datas2.keys.toList().length
+          itemCount: exunique.exercises.length
       ),
     );
   }
 
   Widget _bodyWidget() {
-    return FutureBuilder<RoutinedataList>(
-      future: RoutineRepository.loadRoutinedata(),
-      builder: (BuildContext context, AsyncSnapshot<RoutinedataList> snapshot) {
+    return FutureBuilder (
+      future: Future.wait([RoutineRepository.loadRoutinedata(),ExercisesRepository.loadExercisesdata()]),
+      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Container(color: Colors.black,child: Center(child: CircularProgressIndicator()));
         }
         if (snapshot.hasError) {
-          return Container(color: Colors.black,child: Center(child: Text("데이터 오류")));
+          return Container(color: Colors.black,child: Center(child: Text("데이터 오류",style: TextStyle(color: Colors.white))));
         }
         if (snapshot.hasData) {
-          return _workoutWidget(snapshot.data!);;
+          if (swap==1){
+            return _workoutWidget(snapshot.data![0],snapshot.data![1]);
+          }
+          else {
+            return _exercisesWidget(snapshot.data![1]);
+          }
+
         }
 
         return Container();

@@ -7,9 +7,9 @@
       {
         "name": "벤치프레스",
         "sets": [
-          {"index": 1, "weight": 105.0, "reps": 1},
-          {"index": 2, "weight": 110.0, "reps": 1},
-          {"index": 3, "weight": 85.0, "reps": 10}
+          {"index": 1, "weight": 105.0, "reps": 1, "ischecked": false},
+          {"index": 2, "weight": 110.0, "reps": 1, "ischecked": false},
+          {"index": 3, "weight": 85.0, "reps": 10, "ischecked": false}
         ],
         "onerm": 115.0,
         "rest": 180
@@ -17,10 +17,10 @@
       {
         "name": "스쿼트",
         "sets": [
-          {"index": 1, "weight": 120.0, "reps": 1},
-          {"index": 2, "weight": 130.0, "reps": 1},
-          {"index": 3, "weight": 100.0, "reps": 6},
-          {"index": 4, "weight": 80.0, "reps": 10}
+          {"index": 1, "weight": 120.0, "reps": 1, "ischecked": false},
+          {"index": 2, "weight": 130.0, "reps": 1, "ischecked": false},
+          {"index": 3, "weight": 100.0, "reps": 6, "ischecked": false},
+          {"index": 4, "weight": 80.0, "reps": 10, "ischecked": false}
         ],
         "onerm": 140.0,
         "rest": 240
@@ -28,12 +28,12 @@
       {
         "name": "데드리프트",
         "sets": [
-          {"index": 1, "weight": 80.0, "reps": 1},
-          {"index": 2, "weight": 100.0, "reps": 1},
-          {"index": 3, "weight": 120.0, "reps": 1},
-          {"index": 4, "weight": 140.0, "reps": 1},
-          {"index": 5, "weight": 160.0, "reps": 1},
-          {"index": 6, "weight": 130.0, "reps": 10}
+          {"index": 1, "weight": 80.0, "reps": 1, "ischecked": false},
+          {"index": 2, "weight": 100.0, "reps": 1, "ischecked": false},
+          {"index": 3, "weight": 120.0, "reps": 1, "ischecked": false},
+          {"index": 4, "weight": 140.0, "reps": 1, "ischecked": false},
+          {"index": 5, "weight": 160.0, "reps": 1, "ischecked": false},
+          {"index": 6, "weight": 130.0, "reps": 10, "ischecked": false}
         ],
         "onerm": 180.0,
         "rest": 240
@@ -48,35 +48,35 @@
     "name": "근비대운동",
     "exercises": [
       {
-        "name": "벤치프레스2",
+        "name": "벤치프레스",
         "sets": [
-          {"index": 1, "weight": 105.0, "reps": 1},
-          {"index": 2, "weight": 110.0, "reps": 1},
-          {"index": 3, "weight": 85.0, "reps": 10}
+          {"index": 1, "weight": 105.0, "reps": 20, "ischecked": false},
+          {"index": 2, "weight": 110.0, "reps": 20, "ischecked": false},
+          {"index": 3, "weight": 85.0, "reps": 30, "ischecked": false}
         ],
         "onerm": 115.0,
         "rest": 180
       },
       {
-        "name": "스쿼트2",
+        "name": "스쿼트",
         "sets": [
-          {"index": 1, "weight": 120.0, "reps": 1},
-          {"index": 2, "weight": 130.0, "reps": 1},
-          {"index": 3, "weight": 100.0, "reps": 6},
-          {"index": 4, "weight": 80.0, "reps": 10}
+          {"index": 1, "weight": 120.0, "reps": 1, "ischecked": false},
+          {"index": 2, "weight": 130.0, "reps": 1, "ischecked": false},
+          {"index": 3, "weight": 100.0, "reps": 6, "ischecked": false},
+          {"index": 4, "weight": 80.0, "reps": 10, "ischecked": false}
         ],
         "onerm": 140.0,
         "rest": 240
       },
       {
-        "name": "데드리프트2",
+        "name": "데드리프트",
         "sets": [
-          {"index": 1, "weight": 80.0, "reps": 1},
-          {"index": 2, "weight": 100.0, "reps": 1},
-          {"index": 3, "weight": 120.0, "reps": 1},
-          {"index": 4, "weight": 140.0, "reps": 1},
-          {"index": 5, "weight": 160.0, "reps": 1},
-          {"index": 6, "weight": 130.0, "reps": 10}
+          {"index": 1, "weight": 80.0, "reps": 1, "ischecked": false},
+          {"index": 2, "weight": 100.0, "reps": 1, "ischecked": false},
+          {"index": 3, "weight": 120.0, "reps": 1, "ischecked": false},
+          {"index": 4, "weight": 140.0, "reps": 1, "ischecked": false},
+          {"index": 5, "weight": 160.0, "reps": 1, "ischecked": false},
+          {"index": 6, "weight": 130.0, "reps": 10, "ischecked": false}
         ],
         "onerm": 180.0,
         "rest": 240

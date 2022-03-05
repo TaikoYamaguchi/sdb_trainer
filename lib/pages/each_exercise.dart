@@ -6,7 +6,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class EachExerciseDetails extends StatefulWidget {
   dynamic exercisedetail;
-  EachExerciseDetails({Key? key, required this.exercisedetail}) : super(key: key);
+  List eachuniqueinfo;
+  EachExerciseDetails({Key? key, required this.exercisedetail, required this.eachuniqueinfo}) : super(key: key);
 
   @override
   _EachExerciseDetailsState createState() => _EachExerciseDetailsState();
@@ -69,7 +70,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(widget.exercisedetail.name, style: TextStyle(color: Colors.white, fontSize: 48),),
-                Text("Best 1RM: ${widget.exercisedetail.onerm}", style: TextStyle(color: Color(0xFF717171), fontSize: 21),),
+                Text("Best 1RM: ${widget.eachuniqueinfo[0].onerm}/${widget.eachuniqueinfo[0].goal}unit", style: TextStyle(color: Color(0xFF717171), fontSize: 21),),
               ],
             )
           ),
@@ -133,12 +134,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 child: Checkbox(
                                   checkColor: Colors.black,
                                   fillColor: MaterialStateProperty.resolveWith(getColor),
-                                  value: _isChecked,
-                                  onChanged: (value){
+                                  value: widget.exercisedetail!.sets[index].ischecked,
+                                  onChanged: (newvalue){
                                     setState(() {
-                                      _isChecked = value!;
+                                      widget.exercisedetail.sets[index].ischecked = newvalue!;
                                     });
-                                    print(_isChecked);
+                                    print(widget.exercisedetail!.sets[index].ischecked!);
                                   }
                                 ),
                               ),
@@ -175,8 +176,14 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
 
                         Container(
                           width: 70,
-                          child: Text(
-                            "${widget.exercisedetail.sets[index].weight * widget.exercisedetail.sets[index].reps}",
+                          child:  (widget.exercisedetail.sets[index].reps != 1)
+                          ?Text(
+                            "${(widget.exercisedetail.sets[index].weight * (1 + widget.exercisedetail.sets[index].reps/30)).toStringAsFixed(1)}",
+                            style: TextStyle(fontSize: 21,color: Colors.white),
+                            textAlign: TextAlign.center,
+                          )
+                          :Text(
+                            "${widget.exercisedetail.sets[index].weight}",
                             style: TextStyle(fontSize: 21,color: Colors.white),
                             textAlign: TextAlign.center,
                           ),

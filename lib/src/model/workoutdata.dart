@@ -61,11 +61,14 @@ class Sets {
   final int index;
   final double weight;
   final int reps;
-  Sets({required this.index, required this.weight, required this.reps});
+  bool? ischecked;
+  Sets({required this.index, required this.weight, required this.reps, required this.ischecked});
   factory Sets.fromJson(Map<String, dynamic> parsedJson) {
     return Sets(
         index: parsedJson["index"],
         weight: parsedJson["weight"],
-        reps: parsedJson["reps"]);
+        reps: parsedJson["reps"],
+        ischecked: parsedJson["ischecked"],
+        );
   }
 }

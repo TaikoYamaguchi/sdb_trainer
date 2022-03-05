@@ -7,7 +7,8 @@ import 'package:transition/transition.dart';
 class EachWorkoutDetails extends StatefulWidget {
   String workouttitle;
   List exerciselist;
-  EachWorkoutDetails({Key? key, required this.workouttitle, required this.exerciselist}) : super(key: key);
+  List uniqueinfo;
+  EachWorkoutDetails({Key? key, required this.workouttitle, required this.exerciselist, required this.uniqueinfo}) : super(key: key);
 
   @override
   _EachWorkoutDetailsState createState() => _EachWorkoutDetailsState();
@@ -54,11 +55,18 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
       child: ListView.separated(
           padding: EdgeInsets.symmetric(horizontal: 5),
           itemBuilder: (BuildContext _context, int index){
+            final exinfo = widget.uniqueinfo.where((unique){
+              final info = unique.name;
+              return info.contains(widget.exerciselist[index].name);
+            }).toList();
             if(index==0){top = 20; bottom = 0;} else if (index==widget.exerciselist.length-1){top = 0;bottom = 20;} else {top = 0;bottom = 0;};
             return GestureDetector(
               onTap: () {
                 Navigator.push(context,Transition(
-                    child: EachExerciseDetails(exercisedetail: widget.exerciselist[index]),
+                    child: EachExerciseDetails(
+                      exercisedetail: widget.exerciselist[index],
+                      eachuniqueinfo: exinfo,
+                    ),
                     transitionEffect: TransitionEffect.RIGHT_TO_LEFT
                 ));
               },
@@ -94,7 +102,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                             ),
                             Expanded(child: SizedBox()),
                             Text(
-                                "1RM: ${widget.exerciselist[index].onerm}",
+                                "1RM: ${exinfo[0].onerm}/${exinfo[0].goal}unit",
                                 style: TextStyle(fontSize: 13, color: Color(0xFF717171))
                             ),
                           ],

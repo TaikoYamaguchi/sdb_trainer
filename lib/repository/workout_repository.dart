@@ -19,3 +19,17 @@ class RoutineRepository {
     return (routinedata);
   }
 }
+
+
+main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  RoutinedataList _routinedata;
+  RoutineRepository.loadRoutinedata().then((value) {
+    _routinedata = value;
+    print(_routinedata.routinedatas[0].exercises[0].sets[0].ischecked);
+    _routinedata.routinedatas[0].exercises[0].sets[0].ischecked=true;
+
+
+    print(_routinedata.routinedatas[0].exercises[0].sets[0].ischecked);
+  });
+}
