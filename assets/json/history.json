@@ -9,7 +9,8 @@
             {"index": 2, "weight": 110.0, "reps": 1},
             {"index": 3, "weight": 85.0, "reps": 10}
           ],
-          "onerm": 115.0
+          "onerm": 110.0,
+          "goal":120.0
         },
         {
           "name": "스쿼트",
@@ -19,7 +20,8 @@
             {"index": 3, "weight": 100.0, "reps": 6},
             {"index": 4, "weight": 80.0, "reps": 10}
           ],
-          "onerm": 140.0
+          "onerm": 140.0,
+          "goal":150.0
         },
         {
           "name": "데드리프트",
@@ -31,10 +33,11 @@
             {"index": 5, "weight": 160.0, "reps": 1},
             {"index": 6, "weight": 130.0, "reps": 10}
           ],
-          "onerm": 180.0
+          "onerm": 180.0,
+          "goal":200.0
         }
       ],
-      "date": "2022-02-27",
+      "date": "2022-03-06",
       "new_record": 1,
       "workout_time": 60
     },
@@ -49,7 +52,8 @@
             {"index": 2, "weight": 110.0, "reps": 1},
             {"index": 3, "weight": 85.0, "reps": 10}
           ],
-          "onerm": 115.0
+          "onerm": 115.0,
+          "goal":120.0
         },
         {
           "name": "스쿼트",
@@ -59,7 +63,8 @@
             {"index": 3, "weight": 100.0, "reps": 6},
             {"index": 4, "weight": 80.0, "reps": 10}
           ],
-          "onerm": 140.0
+          "onerm": 150.0,
+          "goal":160.0
         }
       ],
       "date": "2022-02-25",

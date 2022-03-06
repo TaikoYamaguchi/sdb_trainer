@@ -31,13 +31,21 @@ class Exercises {
   final String name;
   final List<Sets> sets;
   final double onerm;
-  Exercises({required this.name, required this.sets, required this.onerm});
+  final double goal;
+  Exercises(
+      {required this.name,
+      required this.sets,
+      required this.onerm,
+      required this.goal});
 
   factory Exercises.fromJson(Map<String, dynamic> parsedJson) {
     var list = parsedJson["sets"] as List;
     List<Sets> setList = list.map((i) => Sets.fromJson(i)).toList();
     return Exercises(
-        name: parsedJson["name"], sets: setList, onerm: parsedJson["onerm"]);
+        name: parsedJson["name"],
+        sets: setList,
+        onerm: parsedJson["onerm"],
+        goal: parsedJson["goal"]);
   }
 }
 

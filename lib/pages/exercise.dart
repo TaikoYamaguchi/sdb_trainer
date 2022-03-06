@@ -6,16 +6,14 @@ import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
 import 'package:transition/transition.dart';
 
-
 class Exercise extends StatefulWidget {
   const Exercise({Key? key}) : super(key: key);
 
   @override
-  _ExerciseState createState() => _ExerciseState();
+  ExerciseState createState() => ExerciseState();
 }
 
-class _ExerciseState extends State<Exercise> {
-
+class ExerciseState extends State<Exercise> {
   List<Map<String, dynamic>> datas = [];
   double top = 0;
   double bottom = 0;
@@ -27,24 +25,28 @@ class _ExerciseState extends State<Exercise> {
     super.initState();
   }
 
-  PreferredSizeWidget _appbarWidget(){
-    if ( swap ==1) { _title = "Workout List";} else{_title = "Exercise List";};
+  PreferredSizeWidget _appbarWidget() {
+    if (swap == 1) {
+      _title = "Workout List";
+    } else {
+      _title = "Exercise List";
+    }
+    ;
     return AppBar(
       title: Row(
         children: [
           Text(
-              _title,
-              style:TextStyle(color: Colors.white, fontSize: 30),
+            _title,
+            style: TextStyle(color: Colors.white, fontSize: 30),
           ),
           IconButton(
-            iconSize: 30,
-            onPressed: () {
-              setState(() {
-                swap= swap*-1;
-              });
-            },
-            icon: Icon(Icons.swap_horiz_outlined)
-          )
+              iconSize: 30,
+              onPressed: () {
+                setState(() {
+                  swap = swap * -1;
+                });
+              },
+              icon: Icon(Icons.swap_horiz_outlined))
         ],
       ),
       actions: [
@@ -52,89 +54,108 @@ class _ExerciseState extends State<Exercise> {
           icon: SvgPicture.asset("assets/svg/add.svg"),
           onPressed: () {
             print("press!");
-            },
+          },
         )
       ],
       backgroundColor: Colors.black,
     );
   }
 
-  Widget _workoutWidget(routinedata,exunique) {
-    return Container(
-      color: Colors.black,
-      child: ListView.separated(
-        padding: EdgeInsets.symmetric(horizontal: 5),
-        itemBuilder: (BuildContext _context, int index){
-          if(index==0){top = 20; bottom = 0;} else if (index==routinedata!.routinedatas.length-1){top = 0;bottom = 20;} else {top = 0;bottom = 0;};
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(context,Transition(
-                child: EachWorkoutDetails(
-                    workouttitle: routinedata.routinedatas[index].name,
-                    exerciselist: routinedata.routinedatas[index].exercises,
-                    uniqueinfo: exunique.exercises
-                ),
-                transitionEffect: TransitionEffect.RIGHT_TO_LEFT
-              ));
-            },
-            child: Container(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                decoration: BoxDecoration(
-                    color: Color(0xFF212121),
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(top),
-                        bottomRight: Radius.circular(bottom),
-                        topLeft: Radius.circular(top),
-                        bottomLeft: Radius.circular(bottom)
-                    )
-                ),
-                height: 52,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      routinedata.routinedatas[index].name,
-                      style: TextStyle(fontSize: 21, color: Colors.white),
-                    ),
-                    Text(
-                        "${routinedata.routinedatas[index].exercises.length} Exercises",
-                        style: TextStyle(fontSize: 13, color: Color(0xFF717171))
-                    )
-                  ],
-                ),
-              ),
-            ),
-          );
-
-
-        },
-        separatorBuilder: (BuildContext _context, int index){
-          return Container(
-            alignment: Alignment.center,
-            height:1, color: Color(0xFF212121),
-            child: Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.symmetric(horizontal: 10),
-              height:1, color: Color(0xFF717171),
-            ),
-          );
-
-        },
-        itemCount: routinedata!.routinedatas.length
-      ),
-    );
-  }
-
-
-  Widget _exercisesWidget(exunique) {
+  Widget _workoutWidget(routinedata, exunique) {
     return Container(
       color: Colors.black,
       child: ListView.separated(
           padding: EdgeInsets.symmetric(horizontal: 5),
-          itemBuilder: (BuildContext _context, int index){
-            if(index==0){top = 20; bottom = 0;} else if (index==exunique.exercises.length-1){top = 0;bottom = 20;} else {top = 0;bottom = 0;};
+          itemBuilder: (BuildContext _context, int index) {
+            if (index == 0) {
+              top = 20;
+              bottom = 0;
+            } else if (index == routinedata!.routinedatas.length - 1) {
+              top = 0;
+              bottom = 20;
+            } else {
+              top = 0;
+              bottom = 0;
+            }
+            ;
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    Transition(
+                        child: EachWorkoutDetails(
+                            workouttitle: routinedata.routinedatas[index].name,
+                            exerciselist:
+                                routinedata.routinedatas[index].exercises,
+                            uniqueinfo: exunique.exercises),
+                        transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+              },
+              child: Container(
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                      color: Color(0xFF212121),
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(top),
+                          bottomRight: Radius.circular(bottom),
+                          topLeft: Radius.circular(top),
+                          bottomLeft: Radius.circular(bottom))),
+                  height: 52,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        routinedata.routinedatas[index].name,
+                        style: TextStyle(fontSize: 21, color: Colors.white),
+                      ),
+                      Text(
+                          "${routinedata.routinedatas[index].exercises.length} Exercises",
+                          style:
+                              TextStyle(fontSize: 13, color: Color(0xFF717171)))
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+          separatorBuilder: (BuildContext _context, int index) {
+            return Container(
+              alignment: Alignment.center,
+              height: 1,
+              color: Color(0xFF212121),
+              child: Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                height: 1,
+                color: Color(0xFF717171),
+              ),
+            );
+          },
+          itemCount: routinedata!.routinedatas.length),
+    );
+  }
+
+  static Widget exercisesWidget(exunique) {
+    double top = 0;
+    double bottom = 0;
+    print("exercisessssssssssssssss");
+    return Container(
+      color: Colors.black,
+      child: ListView.separated(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          itemBuilder: (BuildContext _context, int index) {
+            if (index == 0) {
+              top = 20;
+              bottom = 0;
+            } else if (index == exunique.exercises.length - 1) {
+              top = 0;
+              bottom = 20;
+            } else {
+              top = 0;
+              bottom = 0;
+            }
+            ;
             return Container(
               child: Expanded(
                 child: Container(
@@ -145,9 +166,7 @@ class _ExerciseState extends State<Exercise> {
                           topRight: Radius.circular(top),
                           bottomRight: Radius.circular(bottom),
                           topLeft: Radius.circular(top),
-                          bottomLeft: Radius.circular(bottom)
-                      )
-                  ),
+                          bottomLeft: Radius.circular(bottom))),
                   height: 52,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -157,20 +176,18 @@ class _ExerciseState extends State<Exercise> {
                         exunique.exercises[index].name,
                         style: TextStyle(fontSize: 21, color: Colors.white),
                       ),
-
                       Container(
                         child: Row(
                           //mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text(
-                                "Rest: need to set",
-                                style: TextStyle(fontSize: 13, color: Color(0xFF717171))
-                            ),
+                            Text("Rest: need to set",
+                                style: TextStyle(
+                                    fontSize: 13, color: Color(0xFF717171))),
                             Expanded(child: SizedBox()),
                             Text(
                                 "1RM: ${exunique.exercises[index].onerm}/${exunique.exercises[index].goal} unit",
-                                style: TextStyle(fontSize: 13, color: Color(0xFF717171))
-                            ),
+                                style: TextStyle(
+                                    fontSize: 13, color: Color(0xFF717171))),
                           ],
                         ),
                       )
@@ -180,46 +197,54 @@ class _ExerciseState extends State<Exercise> {
               ),
             );
           },
-          separatorBuilder: (BuildContext _context, int index){
+          separatorBuilder: (BuildContext _context, int index) {
             return Container(
               alignment: Alignment.center,
-              height:1, color: Color(0xFF212121),
+              height: 1,
+              color: Color(0xFF212121),
               child: Container(
                 alignment: Alignment.center,
                 margin: EdgeInsets.symmetric(horizontal: 10),
-                height:1, color: Color(0xFF717171),
+                height: 1,
+                color: Color(0xFF717171),
               ),
             );
-
           },
-          itemCount: exunique.exercises.length
-      ),
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: exunique.exercises.length),
     );
   }
 
   Widget _bodyWidget() {
-    return FutureBuilder (
-      future: Future.wait([RoutineRepository.loadRoutinedata(),ExercisesRepository.loadExercisesdata()]),
-      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return Container(color: Colors.black,child: Center(child: CircularProgressIndicator()));
-        }
-        if (snapshot.hasError) {
-          return Container(color: Colors.black,child: Center(child: Text("데이터 오류",style: TextStyle(color: Colors.white))));
-        }
-        if (snapshot.hasData) {
-          if (swap==1){
-            return _workoutWidget(snapshot.data![0],snapshot.data![1]);
+    return FutureBuilder(
+        future: Future.wait([
+          RoutineRepository.loadRoutinedata(),
+          ExercisesRepository.loadExercisesdata()
+        ]),
+        builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return Container(
+                color: Colors.black,
+                child: Center(child: CircularProgressIndicator()));
           }
-          else {
-            return _exercisesWidget(snapshot.data![1]);
+          if (snapshot.hasError) {
+            return Container(
+                color: Colors.black,
+                child: Center(
+                    child:
+                        Text("데이터 오류", style: TextStyle(color: Colors.white))));
+          }
+          if (snapshot.hasData) {
+            if (swap == 1) {
+              return _workoutWidget(snapshot.data![0], snapshot.data![1]);
+            } else {
+              return exercisesWidget(snapshot.data![1]);
+            }
           }
 
-        }
-
-        return Container();
-      }
-    );
+          return Container();
+        });
   }
 
   @override

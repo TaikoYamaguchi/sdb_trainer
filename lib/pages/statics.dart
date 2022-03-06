@@ -5,7 +5,9 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../src/blocs/statics_event.dart';
 import '../repository/history_repository.dart';
+import 'package:sdb_trainer/repository/history_repository.dart';
 import '../src/model/historydata.dart';
+import 'package:sdb_trainer/pages/exercise.dart';
 
 class Calendar extends StatefulWidget {
   @override
@@ -179,13 +181,10 @@ class _CalendarState extends State<Calendar> {
               headerPadding:
                   EdgeInsets.symmetric(horizontal: 5.0, vertical: 3.0)),
         ),
-        ..._getEventsfromDay(_selectedDay).map((SDBdata row) => Column(
-              children: row.exercises
-                  .map((e) => ListTile(
-                      title:
-                          Text(e.name, style: TextStyle(color: Colors.white))))
-                  .toList(),
-            ))
+        _getEventsfromDay(_selectedDay).isEmpty != true
+            ? ExerciseState.exercisesWidget(
+                _getEventsfromDay(_selectedDay).first)
+            : Container()
       ],
     );
   }
