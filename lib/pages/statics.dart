@@ -3,11 +3,11 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../src/blocs/statics_event.dart';
 import '../repository/history_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import '../src/model/historydata.dart';
 import 'package:sdb_trainer/pages/exercise.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class Calendar extends StatefulWidget {
   @override
@@ -190,10 +190,21 @@ class _CalendarState extends State<Calendar> {
   }
 
   Widget _chartWidget() {
-    return Text(
-      "this is chart",
-      style: TextStyle(color: Colors.white),
-    );
+    return (Center(
+        child: Container(
+            child: SfCartesianChart(
+                primaryXAxis: DateTimeAxis(),
+                series: <ChartSeries>[
+          // Renders line chart
+          LineSeries<SDBdata, DateTime>(
+              dataSource: _sdbData!.sdbdatas,
+              xValueMapper: (SDBdata sales, _) => DateTime.parse(sales.date!),
+              yValueMapper: (SDBdata sales, _) => sales.exercises[0].onerm),
+          LineSeries<SDBdata, DateTime>(
+              dataSource: _sdbData!.sdbdatas,
+              xValueMapper: (SDBdata sales, _) => DateTime.parse(sales.date!),
+              yValueMapper: (SDBdata sales, _) => sales.exercises[0].goal),
+        ]))));
   }
 
   @override

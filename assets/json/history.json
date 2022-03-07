@@ -37,12 +37,12 @@
           "goal":200.0
         }
       ],
-      "date": "2022-03-06",
+      "date": "2022-02-10",
       "new_record": 1,
       "workout_time": 60
     },
     {
-      "id": 1,
+      "id": 2,
       "user_email": "cksdnr1@gmail.com",
       "exercises": [
         {
@@ -70,4 +70,35 @@
       "date": "2022-02-25",
       "new_record": 1,
       "workout_time": 60
-    }]
+    },{
+      "id": 3,
+      "user_email": "cksdnr1@gmail.com",
+      "exercises": [
+        {
+          "name": "벤치프레스",
+          "sets": [
+            {"index": 1, "weight": 120.0, "reps": 1},
+            {"index": 2, "weight": 130.0, "reps": 1},
+            {"index": 3, "weight": 110.0, "reps": 10}
+          ],
+          "onerm": 130.0,
+          "goal":140.0
+        },
+        {
+          "name": "스쿼트",
+          "sets": [
+            {"index": 1, "weight": 120.0, "reps": 1},
+            {"index": 2, "weight": 130.0, "reps": 1},
+            {"index": 3, "weight": 100.0, "reps": 6},
+            {"index": 4, "weight": 80.0, "reps": 10}
+          ],
+          "onerm": 150.0,
+          "goal":160.0
+        }
+      ],
+      "date": "2022-03-06",
+      "new_record": 1,
+      "workout_time": 60
+    }
+
+]
