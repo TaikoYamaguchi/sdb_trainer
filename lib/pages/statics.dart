@@ -37,6 +37,7 @@ class _CalendarState extends State<Calendar> {
       setState(() {
         _isLoading = false;
       });
+      _getChartSourcefromDay();
     });
     super.initState();
   }
@@ -53,8 +54,18 @@ class _CalendarState extends State<Calendar> {
         }
       }
     }
-
     return selectedEvents[date] ?? [];
+  }
+
+  void _getChartSourcefromDay() {
+    print("yesss");
+    print(_sdbData!.sdbdatas
+        .map((name) =>
+            name.exercises.where((name) => name.name.contains("벤치프레스")))
+        .toList()[2]
+        .toList()[0]
+        .onerm);
+    print("yesss");
   }
 
   @override
@@ -193,14 +204,24 @@ class _CalendarState extends State<Calendar> {
     return (Center(
         child: Container(
             child: SfCartesianChart(
+                title: ChartTitle(
+                    text: "SBD Chart",
+                    textStyle: TextStyle(color: Colors.white)),
                 primaryXAxis: DateTimeAxis(),
+                legend: Legend(
+                  isVisible: true,
+                ),
                 series: <ChartSeries>[
           // Renders line chart
           LineSeries<SDBdata, DateTime>(
+              isVisibleInLegend: true,
+              name: "1rm",
               dataSource: _sdbData!.sdbdatas,
               xValueMapper: (SDBdata sales, _) => DateTime.parse(sales.date!),
               yValueMapper: (SDBdata sales, _) => sales.exercises[0].onerm),
           LineSeries<SDBdata, DateTime>(
+              isVisibleInLegend: true,
+              name: "goal",
               dataSource: _sdbData!.sdbdatas,
               xValueMapper: (SDBdata sales, _) => DateTime.parse(sales.date!),
               yValueMapper: (SDBdata sales, _) => sales.exercises[0].goal),
