@@ -5,7 +5,9 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../repository/history_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
+import 'package:sdb_trainer/repository/exercises_repository.dart';
 import '../src/model/historydata.dart';
+import '../src/model/exercisesdata.dart' as ExercisesData;
 import 'package:sdb_trainer/pages/exercise.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -17,6 +19,8 @@ class Calendar extends StatefulWidget {
 class _CalendarState extends State<Calendar> {
   late Map<DateTime, List<SDBdata>> selectedEvents;
   SDBdataList? _sdbData;
+  List<Exercises>? _sdbChartData;
+  ExercisesData.Exercisesdata? _exercisesData;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
@@ -24,6 +28,7 @@ class _CalendarState extends State<Calendar> {
 
   bool _isChartWidget = false;
   bool _isLoading = true;
+  int _selectedIndex = 0;
 
   TextEditingController _eventController = TextEditingController();
 
@@ -33,12 +38,15 @@ class _CalendarState extends State<Calendar> {
     selectedEvents = {};
     ExerciseService.loadSDBdata().then((sdbdatas) {
       _sdbData = sdbdatas;
-      print(_sdbData);
-      setState(() {
-        _isLoading = false;
+      ExercisesRepository.loadExercisesdata().then((exercisesData) {
+        _exercisesData = exercisesData;
+        _getChartSourcefromDay();
+        setState(() {
+          _isLoading = false;
+        });
       });
-      _getChartSourcefromDay();
     });
+
     super.initState();
   }
 
@@ -58,14 +66,21 @@ class _CalendarState extends State<Calendar> {
   }
 
   void _getChartSourcefromDay() {
-    print("yesss");
-    print(_sdbData!.sdbdatas
-        .map((name) =>
-            name.exercises.where((name) => name.name.contains("벤치프레스")))
-        .toList()[2]
-        .toList()[0]
-        .onerm);
-    print("yesss");
+    print("draw");
+    print(_exercisesData!.exercises[_selectedIndex].name);
+    print(_sdbChartData = _sdbData!.sdbdatas
+        .map((name) => name.exercises
+            .where((name) => name.name
+                .contains(_exercisesData!.exercises[_selectedIndex].name))
+            .toList()[0])
+        .toList());
+    _sdbChartData = _sdbData!.sdbdatas
+        .map((name) => name.exercises
+            .where((name) => name.name
+                .contains(_exercisesData!.exercises[_selectedIndex].name))
+            .toList()[0])
+        .toList();
+    print("yessss");
   }
 
   @override
@@ -202,7 +217,10 @@ class _CalendarState extends State<Calendar> {
 
   Widget _chartWidget() {
     return (Center(
-        child: Container(
+        child: Column(
+      children: [
+        Container(child: Row(children: techChips())),
+        Container(
             child: SfCartesianChart(
                 title: ChartTitle(
                     text: "SBD Chart",
@@ -212,20 +230,47 @@ class _CalendarState extends State<Calendar> {
                   isVisible: true,
                 ),
                 series: <ChartSeries>[
-          // Renders line chart
-          LineSeries<SDBdata, DateTime>(
-              isVisibleInLegend: true,
-              name: "1rm",
-              dataSource: _sdbData!.sdbdatas,
-              xValueMapper: (SDBdata sales, _) => DateTime.parse(sales.date!),
-              yValueMapper: (SDBdata sales, _) => sales.exercises[0].onerm),
-          LineSeries<SDBdata, DateTime>(
-              isVisibleInLegend: true,
-              name: "goal",
-              dataSource: _sdbData!.sdbdatas,
-              xValueMapper: (SDBdata sales, _) => DateTime.parse(sales.date!),
-              yValueMapper: (SDBdata sales, _) => sales.exercises[0].goal),
-        ]))));
+              // Renders line chart
+              LineSeries<Exercises, DateTime>(
+                  isVisibleInLegend: true,
+                  name: "1rm",
+                  dataSource: _sdbChartData!,
+                  xValueMapper: (Exercises sales, _) =>
+                      DateTime.parse(sales.date!),
+                  yValueMapper: (Exercises sales, _) => sales.onerm),
+              LineSeries<Exercises, DateTime>(
+                  isVisibleInLegend: true,
+                  name: "goal",
+                  dataSource: _sdbChartData!,
+                  xValueMapper: (Exercises sales, _) =>
+                      DateTime.parse(sales.date!),
+                  yValueMapper: (Exercises sales, _) => sales.goal),
+            ])),
+      ],
+    )));
+  }
+
+  List<Widget> techChips() {
+    List<Widget> chips = [];
+    for (int i = 0; i < _exercisesData!.exercises.length; i++) {
+      Widget item = Padding(
+        padding: const EdgeInsets.only(left: 10, right: 5),
+        child: ChoiceChip(
+          label: Text(_exercisesData!.exercises[i].name),
+          labelStyle: TextStyle(color: Colors.black),
+          selected: _selectedIndex == i,
+          selectedColor: Colors.deepOrange,
+          onSelected: (bool value) {
+            setState(() {
+              _selectedIndex = i;
+              _getChartSourcefromDay();
+            });
+          },
+        ),
+      );
+      chips.add(item);
+    }
+    return chips;
   }
 
   @override
