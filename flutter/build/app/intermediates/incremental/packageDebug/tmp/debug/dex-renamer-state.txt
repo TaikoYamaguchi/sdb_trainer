@@ -1,0 +1,9 @@
+<<<<<<< HEAD
+#Sun Mar 13 19:32:24 KST 2022
+base.0=C\:\\Users\\USER\\Dev_WorkSpace\\1_App_Develop\\sdb_trainer\\flutter\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+=======
+#Sun Mar 13 20:46:11 KST 2022
+base.0=/home/leechanwook/PJ/sdb_trainer/flutter/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+>>>>>>> efd1dc6dc39aaeae179cfba9cfa169a8efd0b0f1
+renamed.0=classes.dex
+path.0=classes.dex

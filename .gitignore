@@ -30,6 +30,7 @@
 .pub-cache/
 .pub/
 /build/
+./flutter/build/
 ./flutter/lib/localhost.dart
 
 # Web related
