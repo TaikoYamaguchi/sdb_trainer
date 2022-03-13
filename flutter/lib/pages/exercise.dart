@@ -135,10 +135,10 @@ class ExerciseState extends State<Exercise> {
     );
   }
 
-  static Widget exercisesWidget(exunique) {
+  static Widget exercisesWidget(exunique,bool shirink) {
     double top = 0;
     double bottom = 0;
-    print("exercisessssssssssssssss");
+    print("exercises");
     return Container(
       color: Colors.black,
       child: ListView.separated(
@@ -210,8 +210,9 @@ class ExerciseState extends State<Exercise> {
             );
           },
           scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: exunique.exercises.length),
+          shrinkWrap: shirink,
+          itemCount: exunique.exercises.length
+      ),
     );
   }
 
@@ -238,7 +239,7 @@ class ExerciseState extends State<Exercise> {
             if (swap == 1) {
               return _workoutWidget(snapshot.data![0], snapshot.data![1]);
             } else {
-              return exercisesWidget(snapshot.data![1]);
+              return exercisesWidget(snapshot.data![1],false);
             }
           }
 

@@ -209,7 +209,7 @@ class _CalendarState extends State<Calendar> {
         ),
         _getEventsfromDay(_selectedDay).isEmpty != true
             ? ExerciseState.exercisesWidget(
-                _getEventsfromDay(_selectedDay).first)
+                _getEventsfromDay(_selectedDay).first,true)
             : Container()
       ],
     );
