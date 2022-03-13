@@ -41,6 +41,7 @@ dependencies:
   syncfusion_flutter_gauges: ^19.4.53
   transition : ^2.0.2
   http: ^0.13.4
+  provider: ^6.0.2
 
 dev_dependencies:
   flutter_test:

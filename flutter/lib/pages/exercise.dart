@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sdb_trainer/pages/each_workout.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
-import 'package:sdb_trainer/src/model/workoutdata.dart';
 import 'package:transition/transition.dart';
 
 class Exercise extends StatefulWidget {

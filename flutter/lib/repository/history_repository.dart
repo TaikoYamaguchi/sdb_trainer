@@ -1,8 +1,9 @@
 import 'dart:async' show Future;
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
-import '../src/model/historydata.dart';
+
+import 'package:sdb_trainer/src/model/historydata.dart';
+
 
 class ExerciseService {
   static Future<String> _loadSDBdataFromLocation() async {

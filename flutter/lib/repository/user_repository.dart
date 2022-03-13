@@ -1,6 +1,4 @@
 import 'dart:async' show Future;
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 import '../src/model/userdata.dart';
 import 'package:http/http.dart' as http;

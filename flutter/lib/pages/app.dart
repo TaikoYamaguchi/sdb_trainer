@@ -1,25 +1,18 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/exercise.dart';
 import 'package:sdb_trainer/pages/home.dart';
+import 'package:sdb_trainer/providers/bodystate.dart';
 
 import 'statics.dart';
 
-class App extends StatefulWidget {
-  const App({Key? key}) : super(key: key);
 
-  @override
-  _AppState createState() => _AppState();
-}
 
-class _AppState extends State<App> {
+class App extends StatelessWidget {
   int _currentPageIndex = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    _currentPageIndex = 0;
-  }
 
   BottomNavigationBarItem _bottomNavigationBarItem(
       String iconName, String label) {
@@ -30,7 +23,7 @@ class _AppState extends State<App> {
     );
   }
 
-  Widget _bottomNavigationBarwidget() {
+  Widget _bottomNavigationBarwidget(bodystater) {
     return BottomNavigationBar(
       backgroundColor: Color(0xFF212121),
       type: BottomNavigationBarType.fixed,
@@ -40,9 +33,8 @@ class _AppState extends State<App> {
       unselectedFontSize: 20,
       onTap: (int index) {
         print(index);
-        setState(() {
-          _currentPageIndex = index;
-        });
+        bodystater.change(index);
+        _currentPageIndex = index;
       },
       currentIndex: _currentPageIndex,
       items: [
@@ -54,8 +46,8 @@ class _AppState extends State<App> {
     );
   }
 
-  Widget _bodyWidget() {
-    switch (_currentPageIndex) {
+  Widget _bodyWidget(bodystate) {
+    switch (bodystate) {
       case 0:
         return Home();
 
@@ -73,9 +65,20 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _bodyWidget(),
-      bottomNavigationBar: _bottomNavigationBarwidget(),
+    return ChangeNotifierProvider<BodyStater>(
+      create: (_) => BodyStater(),
+      child: Scaffold(
+        body: Consumer<BodyStater>(
+          builder: (_, bodystater, __) {
+            return _bodyWidget(bodystater.bodystate);
+          }
+        ),
+        bottomNavigationBar: Consumer<BodyStater>(
+            builder: (_, bodystater, __) {
+            return _bottomNavigationBarwidget(bodystater);
+          }
+        ),
+      ),
     );
   }
 }
