@@ -1,0 +1,4 @@
+io/flutter/plugins/GeneratedPluginRegistrant.java
+ io.flutter.plugins.GeneratedPluginRegistrant
+com/tk_lck/sdb_trainer/BuildConfig.java
+ com.tk_lck.sdb_trainer.BuildConfig
