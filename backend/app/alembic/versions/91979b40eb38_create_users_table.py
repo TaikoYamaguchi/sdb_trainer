@@ -21,72 +21,60 @@ def upgrade():
     inspector = Inspector.from_engine(conn)
     tables = inspector.get_table_names()
 
-
-    if "reply" not in tables:
-        op.create_table(
-            "reply",
-            sa.Column("id", sa.Integer, primary_key=True),
-            sa.Column("post_id", sa.Integer, nullable=False),
-            sa.Column("writer_email", sa.String(50), nullable=False),
-            sa.Column("writer_nickname", sa.String(50), nullable=False),
-            sa.Column("content", sa.Text, nullable=False),
-            sa.Column("likes", sa.ARRAY(sa.String)),
-            sa.Column("dislikes", sa.ARRAY(sa.String)),
-            sa.Column("post_created_at", sa.DateTime, nullable=False),
-            sa.Column("post_modified_at", sa.DateTime, nullable=False)
-        )
-    if "comment" not in tables:
-        op.create_table(
-            "comment",
-            sa.Column("id", sa.Integer, primary_key=True),
-            sa.Column("post_id", sa.Integer, nullable=False),
-            sa.Column("reply_id", sa.Integer, nullable=False),
-            sa.Column("writer_email", sa.String(50), nullable=False),
-            sa.Column("writer_nickname", sa.String(50), nullable=False),
-            sa.Column("content", sa.Text, nullable=False),
-            sa.Column("likes", sa.ARRAY(sa.String)),
-            sa.Column("dislikes", sa.ARRAY(sa.String)),
-            sa.Column("password", sa.String, nullable=True),
-            sa.Column("isAnonymous", sa.Boolean, nullable=False),
-            sa.Column("post_created_at", sa.DateTime, nullable=False),
-            sa.Column("post_modified_at", sa.DateTime, nullable=False)
-        )
     if "user" not in tables:
         op.create_table(
             "user",
             sa.Column("id", sa.Integer, primary_key=True),
             sa.Column("email", sa.String(50), nullable=False),
             sa.Column("hashed_password", sa.String(100), nullable=False),
+            sa.Column("username", sa.String(50), nullable=False),
             sa.Column("nickname", sa.String(50), nullable=False),
             sa.Column("phone_number", sa.String(20), nullable=False),
-            sa.Column("image", sa.String, nullable=True),
-            sa.Column("selfIntroduce", sa.String, nullable=True),
+            sa.Column("height", sa.Float, nullable=False),
+            sa.Column("weight", sa.Float, nullable=False),
+            sa.Column("height_unit", sa.String, nullable=False),
+            sa.Column("weight_unit", sa.String, nullable=False),
             sa.Column("created_at", sa.DateTime, nullable=True),
+            sa.Column("image", sa.String, nullable=True),
             sa.Column("level", sa.Integer, nullable=False),
             sa.Column("point", sa.Integer, nullable=False),
             sa.Column("is_active", sa.Boolean, default=True),
             sa.Column("is_superuser", sa.Boolean, default=False)
         )
-    if "post" not in tables:
+    if "workout" not in tables:
         op.create_table(
-            "post",
+            "workout",
             sa.Column("id", sa.Integer, primary_key=True),
-            sa.Column("writer_email", sa.String(50), nullable=False),
-            sa.Column("writer_nickname", sa.String(50), nullable=False),
-            sa.Column("title", sa.Text, nullable=False),
-            sa.Column("content", sa.Text, nullable=False),
-            sa.Column("category", sa.String(30), nullable=False),
-            sa.Column("views", sa.Integer, nullable=False),
-            sa.Column("likes", sa.ARRAY(sa.String)),
-            sa.Column("dislikes", sa.ARRAY(sa.String)),
-            sa.Column("tags", sa.ARRAY(sa.String)),
-            sa.Column("password", sa.String, nullable=True),
-            sa.Column("isAnonymous", sa.Boolean, nullable=False),
-            sa.Column("post_created_at", sa.DateTime, nullable=False),
-            sa.Column("post_modified_at", sa.DateTime, nullable=False)
+            sa.Column("user_email", sa.String(50), nullable=False),
+            sa.Column("name", sa.String(50), nullable=False),
+            sa.Column("exercises", sa.ARRAY(sa.String)),
+            sa.Column("date", sa.DateTime, nullable=False),
+            sa.Column("routine_time", sa.Float, nullable=False)
+        )
+
+    if "history" not in tables:
+        op.create_table(
+            "history",
+            sa.Column("id", sa.Integer, primary_key=True),
+            sa.Column("user_email", sa.String(50), nullable=False),
+            sa.Column("exercises", sa.ARRAY(sa.String)),
+            sa.Column("date", sa.DateTime, nullable=False),
+            sa.Column("new_record", sa.Integer, nullable=False),
+            sa.Column("workout_time", sa.Float, nullable=False)
+        )
+    if "exercises" not in tables:
+        op.create_table(
+            "exercises",
+            sa.Column("id", sa.Integer, primary_key=True),
+            sa.Column("user_email", sa.String(50), nullable=False),
+            sa.Column("exercises", sa.ARRAY(sa.String)),
+            sa.Column("date", sa.DateTime, nullable=False),
+            sa.Column("modified_number", sa.Float, nullable=False)
         )
 
 
 def downgrade():
     op.drop_table("user")
-    op.drop_table("post")
+    op.drop_table("workout")
+    op.drop_table("history")
+    op.drop_table("exercises")

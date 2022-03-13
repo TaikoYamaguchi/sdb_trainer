@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sdb_trainer/src/model/userdata.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
+import 'package:sdb_trainer/repository/user_repository.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -10,25 +12,18 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class SDBdata {
-  SDBdata(this.workout, this.exercise, this.goal, this.stat, this.number);
-  final String workout;
-  final String exercise;
-  final double goal;
-  final double stat;
-  final int number;
-}
-
 class _HomeState extends State<Home> {
+  User? _user;
+
   @override
   void initState() {
     super.initState();
   }
 
-  PreferredSizeWidget _appbarWidget() {
+  PreferredSizeWidget _appbarWidget(_user) {
     return AppBar(
       title: Text(
-        "",
+        _user!.nickname,
         style: TextStyle(color: Colors.white),
       ),
       actions: [
@@ -173,8 +168,35 @@ class _HomeState extends State<Home> {
         });
   }
 
+  PreferredSizeWidget _appbarFutureWidget() {
+    return PreferredSize(
+        child: FutureBuilder(
+            future: Future.wait([UserService.loadUserdata()]),
+            builder:
+                (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return Container(
+                    color: Colors.black,
+                    child: Center(child: CircularProgressIndicator()));
+              }
+              if (snapshot.hasError) {
+                return Container(
+                    color: Colors.black,
+                    child: Center(
+                        child: Text("데이터 오류",
+                            style: TextStyle(color: Colors.white))));
+              }
+              if (snapshot.hasData) {
+                return _appbarWidget(snapshot.data![0]);
+              }
+
+              return Container();
+            }),
+        preferredSize: Size.fromHeight(50.0));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: _appbarWidget(), body: _bodyWidget());
+    return Scaffold(appBar: _appbarFutureWidget(), body: _bodyWidget());
   }
 }

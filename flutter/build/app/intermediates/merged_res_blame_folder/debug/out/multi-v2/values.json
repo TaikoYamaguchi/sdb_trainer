@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/leechanwook/PJ/sdb_trainer/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values/values.xml",
+            "outputFile": "/home/leechanwook/PJ/sdb_trainer/flutter/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values/values.xml",
             "map": [
                 {
-                    "source": "/home/leechanwook/PJ/sdb_trainer/android/app/src/main/res/values/styles.xml",
+                    "source": "/home/leechanwook/PJ/sdb_trainer/flutter/android/app/src/main/res/values/styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

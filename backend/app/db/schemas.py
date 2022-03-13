@@ -4,9 +4,13 @@ import typing as t
 
 
 class UserBase(BaseModel):
+    username:str
     nickname : str
     image: str = ""
-    selfIntroduce: str = ""
+    height:float
+    weight:float
+    height_unit:str
+    weight_unit:str
 
 
 class UserOut(UserBase):
@@ -21,4 +25,14 @@ class UserCreate(UserBase):
     class Config:
         orm_mode = True
 
-
+class User(UserBase):
+    id: int
+    email: str
+    is_active: bool = True
+    is_superuser: bool = False
+    level: int = 1
+    point: int = 0
+    created_at: datetime
+  
+    class Config:
+        orm_mode = True

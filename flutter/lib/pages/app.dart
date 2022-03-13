@@ -13,7 +13,7 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  int _currentPageIndex=0;
+  int _currentPageIndex = 0;
 
   @override
   void initState() {
@@ -22,19 +22,17 @@ class _AppState extends State<App> {
   }
 
   BottomNavigationBarItem _bottomNavigationBarItem(
-      String iconName, String label){
+      String iconName, String label) {
     return BottomNavigationBarItem(
       icon: SvgPicture.asset("assets/svg/${iconName}_off.svg"),
       activeIcon: SvgPicture.asset("assets/svg/${iconName}_on.svg"),
       label: label,
-
     );
   }
-  
-  Widget _bottomNavigationBarwidget(){
+
+  Widget _bottomNavigationBarwidget() {
     return BottomNavigationBar(
       backgroundColor: Color(0xFF212121),
-
       type: BottomNavigationBarType.fixed,
       selectedItemColor: Colors.white,
       selectedFontSize: 20,
@@ -69,7 +67,6 @@ class _AppState extends State<App> {
 
       case 3:
         return Container();
-
     }
     return Container();
   }
@@ -82,4 +79,3 @@ class _AppState extends State<App> {
     );
   }
 }
-

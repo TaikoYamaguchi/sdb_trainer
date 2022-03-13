@@ -1,0 +1,15 @@
+{
+    "id": 1,
+    "email": "cksdnr1@gmail.com",
+    "username": "찬욱",
+    "nickname": "3대500",
+    "height": 183.0,
+    "weight": 87.3,
+    "height_unit": "cm",
+    "weight_unit": "kg",
+    "is_active": true,
+    "is_superuser": false,
+    "level": 1,
+    "point": 0,
+    "created_at": "2022-03-13"
+}

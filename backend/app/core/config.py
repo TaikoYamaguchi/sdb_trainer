@@ -1,6 +1,6 @@
 import os
 
-PROJECT_NAME = "proscore"
+PROJECT_NAME = "sdb_trainer"
 
 SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
 
