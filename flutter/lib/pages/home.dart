@@ -13,8 +13,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  User? _user;
-
   @override
   void initState() {
     super.initState();
@@ -23,7 +21,7 @@ class _HomeState extends State<Home> {
   PreferredSizeWidget _appbarWidget(_user) {
     return AppBar(
       title: Text(
-        _user!.nickname,
+        _user!.nickname + "님",
         style: TextStyle(color: Colors.white),
       ),
       actions: [

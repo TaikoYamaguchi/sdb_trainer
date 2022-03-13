@@ -7,6 +7,7 @@ Create Date: 2020-03-23 14:53:53.101322
 """
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.engine.reflection import Inspector
 
 # revision identifiers, used by Alembic.
@@ -47,7 +48,7 @@ def upgrade():
             sa.Column("id", sa.Integer, primary_key=True),
             sa.Column("user_email", sa.String(50), nullable=False),
             sa.Column("name", sa.String(50), nullable=False),
-            sa.Column("exercises", sa.ARRAY(sa.String)),
+            sa.Column("exercises", JSONB),
             sa.Column("date", sa.DateTime, nullable=False),
             sa.Column("routine_time", sa.Float, nullable=False)
         )
@@ -57,7 +58,7 @@ def upgrade():
             "history",
             sa.Column("id", sa.Integer, primary_key=True),
             sa.Column("user_email", sa.String(50), nullable=False),
-            sa.Column("exercises", sa.ARRAY(sa.String)),
+            sa.Column("exercises", JSONB),
             sa.Column("date", sa.DateTime, nullable=False),
             sa.Column("new_record", sa.Integer, nullable=False),
             sa.Column("workout_time", sa.Float, nullable=False)
@@ -67,7 +68,7 @@ def upgrade():
             "exercises",
             sa.Column("id", sa.Integer, primary_key=True),
             sa.Column("user_email", sa.String(50), nullable=False),
-            sa.Column("exercises", sa.ARRAY(sa.String)),
+            sa.Column("exercises", JSONB),
             sa.Column("date", sa.DateTime, nullable=False),
             sa.Column("modified_number", sa.Float, nullable=False)
         )

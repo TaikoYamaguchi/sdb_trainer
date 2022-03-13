@@ -30,8 +30,8 @@ class SDBdata {
 class Exercises {
   final String name;
   final List<Sets> sets;
-  final double onerm;
-  final double goal;
+  final double? onerm;
+  final double? goal;
   final String? date;
   Exercises(
       {required this.name,
@@ -69,7 +69,7 @@ class SDBdataList {
 
 class Sets {
   final int index;
-  final double weight;
+  final double? weight;
   final int reps;
   Sets({required this.index, required this.weight, required this.reps});
   factory Sets.fromJson(Map<String, dynamic> parsedJson) {
