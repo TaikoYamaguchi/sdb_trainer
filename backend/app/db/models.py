@@ -1,5 +1,7 @@
+from sqlalchemy.dialects.postgresql.json import JSON
 from app.db.sqlal_mutable_array import MutableList
 from sqlalchemy import Boolean, Column, Integer, String, Text, DateTime, ARRAY, Float
+from sqlalchemy.dialects.postgresql import JSONB
 
 from .session import Base
 
@@ -28,7 +30,7 @@ class Workout(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_email = Column(String, unique=True, index=True, nullable=False)
     name = Column(String, unique=True, index=True, nullable=False)
-    exercises = Column(ARRAY(String), index=True, nullable=False)
+    exercises = Column(JSON, index=True, nullable=False)
     date = Column(DateTime, nullable=False)
     routine_time = Column(Float, nullable=False)
 
@@ -36,7 +38,7 @@ class History(Base):
     __tablename__ = "history"
     id = Column(Integer, primary_key=True, index=True)
     user_email = Column(String, unique=True, index=True, nullable=False)
-    exercises = Column(ARRAY(String), index=True, nullable=False)
+    exercises = Column(JSON, index=True, nullable=False)
     date = Column(DateTime, nullable=False)
     new_record = Column(Integer, nullable=False)
     workout_time = Column(Float, nullable=False)
@@ -45,6 +47,6 @@ class Exercises(Base):
     __tablename__ = "exercises"
     id = Column(Integer, primary_key=True, index=True)
     user_email = Column(String, unique=True, index=True, nullable=False)
-    exercises = Column(ARRAY(String), index=True, nullable=False)
+    exercises = Column(JSON, index=True, nullable=False)
     date = Column(DateTime, nullable=False)
     modified_number = Column(Integer, nullable=False)

@@ -40,7 +40,7 @@
       }
     ],
     "date": "2022-02-27",
-    "routine_time": 60
+    "routine_time": 60.0
   },
   {
     "id": 1,
@@ -83,6 +83,6 @@
       }
     ],
     "date": "2022-02-27",
-    "routine_time": 60
+    "routine_time": 60.0
   }
 ]

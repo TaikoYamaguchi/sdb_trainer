@@ -2,6 +2,8 @@ from datetime import datetime
 from pydantic import BaseModel
 import typing as t
 
+from pydantic.types import Json
+
 
 class UserBase(BaseModel):
     username:str
@@ -36,3 +38,77 @@ class User(UserBase):
   
     class Config:
         orm_mode = True
+
+
+class HistoryBase(BaseModel):
+    user_email : str
+    exercises : list
+    new_record: int
+    workout_time:float
+    class Config:
+        orm_mode = True
+
+class ExercisesBase(BaseModel):
+    user_email : str
+    exercises : list
+    modified_number: int
+    class Config:
+        orm_mode = True
+
+class Set(BaseModel):
+    index: int
+    weight: float
+    reps: int
+    ischecked: bool
+    class config:
+        orm_mode = True
+
+
+class Exercise(BaseModel):
+    name: str
+    sets: t.List[Set]
+    onerm: float
+    rest: int
+    class config:
+        orm_mode = True
+
+
+class WorkoutBase(BaseModel):
+    user_email: str
+    name: str
+    exercises: t.Any
+    routine_time: float
+    class Config:
+        orm_mode = True
+
+
+class WorkoutCreate(WorkoutBase):
+    class config:
+        orm_mode = True
+
+class HistoryCreate(HistoryBase):
+    class config:
+        orm_mode = True
+
+class ExercisesCreate(ExercisesBase):
+    class config:
+        orm_mode = True
+
+class WorkoutOut(WorkoutBase):
+    id: int
+    date: datetime
+    class config:
+        orm_mode = True
+
+class HistoryOut(HistoryBase):
+    id: int
+    date: datetime
+    class config:
+        orm_mode = True
+
+class ExercisesOut(ExercisesBase):
+    id: int
+    date: datetime
+    class config:
+        orm_mode = True
+
