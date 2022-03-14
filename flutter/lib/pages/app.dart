@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -8,11 +7,8 @@ import 'package:sdb_trainer/providers/bodystate.dart';
 
 import 'statics.dart';
 
-
-
 class App extends StatelessWidget {
   int _currentPageIndex = 0;
-
 
   BottomNavigationBarItem _bottomNavigationBarItem(
       String iconName, String label) {
@@ -68,16 +64,12 @@ class App extends StatelessWidget {
     return ChangeNotifierProvider<BodyStater>(
       create: (_) => BodyStater(),
       child: Scaffold(
-        body: Consumer<BodyStater>(
-          builder: (_, bodystater, __) {
-            return _bodyWidget(bodystater.bodystate);
-          }
-        ),
-        bottomNavigationBar: Consumer<BodyStater>(
-            builder: (_, bodystater, __) {
-            return _bottomNavigationBarwidget(bodystater);
-          }
-        ),
+        body: Consumer<BodyStater>(builder: (_, bodystater, __) {
+          return _bodyWidget(bodystater.bodystate);
+        }),
+        bottomNavigationBar: Consumer<BodyStater>(builder: (_, bodystater, __) {
+          return _bottomNavigationBarwidget(bodystater);
+        }),
       ),
     );
   }
