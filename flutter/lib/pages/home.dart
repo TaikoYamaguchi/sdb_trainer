@@ -12,21 +12,31 @@ class Home extends StatelessWidget {
   var _userdataProvider;
 
   PreferredSizeWidget _appbarWidget() {
-    return AppBar(
-      title: Text(
-        _userdataProvider.userdata.nickname + "님",
-        style: TextStyle(color: Colors.white),
-      ),
-      actions: [
-        IconButton(
-          icon: SvgPicture.asset("assets/svg/chart.svg"),
-          onPressed: () {
-            print("press!");
-          },
-        )
-      ],
-      backgroundColor: Colors.black,
+    if(_userdataProvider.userdata!=null){
+      return AppBar(
+        title: Text(
+          _userdataProvider.userdata.nickname + "님",
+          style: TextStyle(color: Colors.white),
+        ),
+        actions: [
+          IconButton(
+            icon: SvgPicture.asset("assets/svg/chart.svg"),
+            onPressed: () {
+              print("press!");
+            },
+          )
+        ],
+        backgroundColor: Colors.black,
+      );
+    }
+    return PreferredSize(
+        preferredSize: Size.fromHeight(56.0),
+        child: Container(
+          color: Colors.black,
+            child: Center(
+                child: CircularProgressIndicator()))
     );
+
   }
 
   Widget _homeWidget(_exunique) {
