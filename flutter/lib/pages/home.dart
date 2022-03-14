@@ -1,27 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sdb_trainer/src/model/userdata.dart';
+import 'package:provider/provider.dart';
+import 'package:sdb_trainer/providers/exercisesdata.dart';
+import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
-import 'package:sdb_trainer/repository/exercises_repository.dart';
-import 'package:sdb_trainer/repository/user_repository.dart';
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
 
-  @override
-  _HomeState createState() => _HomeState();
-}
+class Home extends StatelessWidget {
+  Home({Key? key}) : super(key: key);
+  var _exercisesdataProvider;
+  var _userdataProvider;
 
-class _HomeState extends State<Home> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  PreferredSizeWidget _appbarWidget(_user) {
+  PreferredSizeWidget _appbarWidget() {
     return AppBar(
       title: Text(
-        _user!.nickname + "님",
+        _userdataProvider.userdata.nickname + "님",
         style: TextStyle(color: Colors.white),
       ),
       actions: [
@@ -37,6 +30,7 @@ class _HomeState extends State<Home> {
   }
 
   Widget _homeWidget(_exunique) {
+
     return Container(
       color: Colors.black,
       child: Center(
@@ -142,59 +136,25 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _bodyWidget() {
-    return FutureBuilder(
-        future: Future.wait([ExercisesRepository.loadExercisesdata()]),
-        builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return Container(
-                color: Colors.black,
-                child: Center(child: CircularProgressIndicator()));
-          }
-          if (snapshot.hasError) {
-            return Container(
-                color: Colors.black,
-                child: Center(
-                    child:
-                        Text("데이터 오류", style: TextStyle(color: Colors.white))));
-          }
-          if (snapshot.hasData) {
-            return _homeWidget(snapshot.data![0]);
-          }
-
-          return Container();
-        });
-  }
-
-  PreferredSizeWidget _appbarFutureWidget() {
-    return PreferredSize(
-        child: FutureBuilder(
-            future: Future.wait([UserService.loadUserdata()]),
-            builder:
-                (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-              if (snapshot.connectionState != ConnectionState.done) {
-                return Container(
-                    color: Colors.black,
-                    child: Center(child: CircularProgressIndicator()));
-              }
-              if (snapshot.hasError) {
-                return Container(
-                    color: Colors.black,
-                    child: Center(
-                        child: Text("데이터 오류",
-                            style: TextStyle(color: Colors.white))));
-              }
-              if (snapshot.hasData) {
-                return _appbarWidget(snapshot.data![0]);
-              }
-
-              return Container();
-            }),
-        preferredSize: Size.fromHeight(50.0));
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: _appbarFutureWidget(), body: _bodyWidget());
+    _exercisesdataProvider=Provider.of<ExercisesdataProvider>(context, listen: false);
+    _exercisesdataProvider.getdata();
+    _userdataProvider=Provider.of<UserdataProvider>(context, listen: false);
+    _userdataProvider.getdata();
+    return Scaffold(
+      appBar: _appbarWidget(),
+      body: Consumer<ExercisesdataProvider>(
+        builder: (context, provider, widget)  {
+          if(provider.exercisesdata!=null){
+            return _homeWidget(provider.exercisesdata);
+          }
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      )
+    );
   }
 }

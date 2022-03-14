@@ -26,7 +26,9 @@ class UserService {
     String jsonString = await _loadUserdataFromServer();
     final jsonResponse = json.decode(jsonString);
     User user = User.fromJson(jsonResponse);
+    print("apfhd");
     print(user);
+    print("apfhd");
     return (user);
   }
 }

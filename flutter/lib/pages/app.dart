@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -11,8 +10,8 @@ import 'statics.dart';
 
 
 class App extends StatelessWidget {
-  int _currentPageIndex = 0;
-
+  App({Key? key}) : super(key: key);
+  var _bodyStater;
 
   BottomNavigationBarItem _bottomNavigationBarItem(
       String iconName, String label) {
@@ -23,7 +22,7 @@ class App extends StatelessWidget {
     );
   }
 
-  Widget _bottomNavigationBarwidget(bodystater) {
+  Widget _bottomNavigationBarwidget() {
     return BottomNavigationBar(
       backgroundColor: Color(0xFF212121),
       type: BottomNavigationBarType.fixed,
@@ -33,10 +32,9 @@ class App extends StatelessWidget {
       unselectedFontSize: 20,
       onTap: (int index) {
         print(index);
-        bodystater.change(index);
-        _currentPageIndex = index;
+        _bodyStater.change(index);
       },
-      currentIndex: _currentPageIndex,
+      currentIndex: _bodyStater.bodystate,
       items: [
         _bottomNavigationBarItem("home", "홈"),
         _bottomNavigationBarItem("dumbel", "운동"),
@@ -46,8 +44,8 @@ class App extends StatelessWidget {
     );
   }
 
-  Widget _bodyWidget(bodystate) {
-    switch (bodystate) {
+  Widget _bodyWidget() {
+    switch (_bodyStater.bodystate) {
       case 0:
         return Home();
 
@@ -65,20 +63,10 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<BodyStater>(
-      create: (_) => BodyStater(),
-      child: Scaffold(
-        body: Consumer<BodyStater>(
-          builder: (_, bodystater, __) {
-            return _bodyWidget(bodystater.bodystate);
-          }
-        ),
-        bottomNavigationBar: Consumer<BodyStater>(
-            builder: (_, bodystater, __) {
-            return _bottomNavigationBarwidget(bodystater);
-          }
-        ),
-      ),
+    _bodyStater = Provider.of<BodyStater>(context);
+    return Scaffold(
+      body: _bodyWidget(),
+      bottomNavigationBar: _bottomNavigationBarwidget(),
     );
   }
 }
