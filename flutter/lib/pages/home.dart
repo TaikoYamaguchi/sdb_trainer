@@ -4,15 +4,20 @@ import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
-
+import 'package:sdb_trainer/providers/bodystate.dart';
+import 'package:sdb_trainer/providers/staticPageState.dart';
+import 'package:sdb_trainer/providers/chartIndexState.dart';
 
 class Home extends StatelessWidget {
   Home({Key? key}) : super(key: key);
   var _exercisesdataProvider;
   var _userdataProvider;
+  var _bodyStater;
+  var _staticPageState;
+  var _chartIndex;
 
   PreferredSizeWidget _appbarWidget() {
-    if(_userdataProvider.userdata!=null){
+    if (_userdataProvider.userdata != null) {
       return AppBar(
         title: Text(
           _userdataProvider.userdata.nickname + "님",
@@ -32,15 +37,11 @@ class Home extends StatelessWidget {
     return PreferredSize(
         preferredSize: Size.fromHeight(56.0),
         child: Container(
-          color: Colors.black,
-            child: Center(
-                child: CircularProgressIndicator()))
-    );
-
+            color: Colors.black,
+            child: Center(child: CircularProgressIndicator())));
   }
 
   Widget _homeWidget(_exunique) {
-
     return Container(
       color: Colors.black,
       child: Center(
@@ -104,67 +105,78 @@ class Home extends StatelessWidget {
   }
 
   Widget _homeGaugeChart(_exunique, index, color) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-      child: SizedBox(
-        width: 150,
-        height: 150,
-        child: SfRadialGauge(axes: <RadialAxis>[
-          RadialAxis(
-            minimum: 0,
-            maximum: _exunique.exercises[index].goal,
-            ranges: <GaugeRange>[
-              GaugeRange(
-                  startValue: 0,
-                  endValue: _exunique.exercises[index].onerm,
-                  color: color)
-            ],
-            annotations: <GaugeAnnotation>[
-              GaugeAnnotation(
-                  widget: Container(
-                      child: Column(children: <Widget>[
-                    Text(_exunique.exercises[index].name,
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold)),
-                    Text(
-                        _exunique.exercises[index].onerm.floor().toString() +
-                            "/" +
-                            _exunique.exercises[index].goal.floor().toString(),
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold))
-                  ])),
-                  angle: 90,
-                  positionFactor: 0.5)
-            ],
-          )
-        ]),
+    return GestureDetector(
+      onTap: () => {
+        _bodyStater.change(2),
+        _chartIndex.change(index),
+        _staticPageState.change(true)
+      },
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+        child: SizedBox(
+          width: 150,
+          height: 150,
+          child: SfRadialGauge(axes: <RadialAxis>[
+            RadialAxis(
+              minimum: 0,
+              maximum: _exunique.exercises[index].goal,
+              ranges: <GaugeRange>[
+                GaugeRange(
+                    startValue: 0,
+                    endValue: _exunique.exercises[index].onerm,
+                    color: color)
+              ],
+              annotations: <GaugeAnnotation>[
+                GaugeAnnotation(
+                    widget: Container(
+                        child: Column(children: <Widget>[
+                      Text(_exunique.exercises[index].name,
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold)),
+                      Text(
+                          _exunique.exercises[index].onerm.floor().toString() +
+                              "/" +
+                              _exunique.exercises[index].goal
+                                  .floor()
+                                  .toString(),
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold))
+                    ])),
+                    angle: 90,
+                    positionFactor: 0.5)
+              ],
+            )
+          ]),
+        ),
       ),
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
-    _exercisesdataProvider=Provider.of<ExercisesdataProvider>(context, listen: false);
+    _exercisesdataProvider =
+        Provider.of<ExercisesdataProvider>(context, listen: false);
     _exercisesdataProvider.getdata();
-    _userdataProvider=Provider.of<UserdataProvider>(context, listen: false);
+    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _userdataProvider.getdata();
+    _bodyStater = Provider.of<BodyStater>(context, listen: false);
+    _staticPageState = Provider.of<StaticPageProvider>(context, listen: false);
+    _chartIndex = Provider.of<ChartIndexProvider>(context, listen: false);
+
     return Scaffold(
-      appBar: _appbarWidget(),
-      body: Consumer<ExercisesdataProvider>(
-        builder: (context, provider, widget)  {
-          if(provider.exercisesdata!=null){
+        appBar: _appbarWidget(),
+        body: Consumer<ExercisesdataProvider>(
+            builder: (context, provider, widget) {
+          if (provider.exercisesdata != null) {
             return _homeWidget(provider.exercisesdata);
           }
           return Center(
             child: CircularProgressIndicator(),
           );
-        }
-      )
-    );
+        }));
   }
 }

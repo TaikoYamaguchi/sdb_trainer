@@ -25,10 +25,8 @@ class ExercisesRepository {
 
   static Future<Exercisesdata> loadExercisesdata() async {
     String jsonString = await _loadExercisesdataFromServer();
-    print(jsonString);
     final jsonResponse = json.decode(jsonString);
     Exercisesdata exercisesdata = Exercisesdata.fromJson(jsonResponse);
-    print(exercisesdata);
     return (exercisesdata);
   }
 

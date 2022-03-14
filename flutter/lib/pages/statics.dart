@@ -10,6 +10,9 @@ import '../src/model/historydata.dart';
 import '../src/model/exercisesdata.dart' as ExercisesData;
 import 'package:sdb_trainer/pages/exercise.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:sdb_trainer/providers/chartIndexState.dart';
+import 'package:sdb_trainer/providers/staticPageState.dart';
+import 'package:provider/provider.dart';
 
 class Calendar extends StatefulWidget {
   @override
@@ -26,9 +29,9 @@ class _CalendarState extends State<Calendar> {
   DateTime _selectedDay = DateTime.now();
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
 
-  bool _isChartWidget = false;
+  var _isChartWidget;
+  var _chartIndex;
   bool _isLoading = true;
-  int _selectedIndex = 0;
 
   TextEditingController _eventController = TextEditingController();
 
@@ -66,21 +69,12 @@ class _CalendarState extends State<Calendar> {
   }
 
   void _getChartSourcefromDay() {
-    print("draw");
-    print(_exercisesData!.exercises[_selectedIndex].name);
-    print(_sdbChartData = _sdbData!.sdbdatas
-        .map((name) => name.exercises
-            .where((name) => name.name
-                .contains(_exercisesData!.exercises[_selectedIndex].name))
-            .toList()[0])
-        .toList());
     _sdbChartData = _sdbData!.sdbdatas
         .map((name) => name.exercises
-            .where((name) => name.name
-                .contains(_exercisesData!.exercises[_selectedIndex].name))
+            .where((name) => name.name.contains(
+                _exercisesData!.exercises[_chartIndex.chartIndex].name))
             .toList()[0])
         .toList();
-    print("yessss");
   }
 
   @override
@@ -93,22 +87,20 @@ class _CalendarState extends State<Calendar> {
     return AppBar(
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: _isChartWidget
+        children: _isChartWidget.isChartWidget
             ? (<Widget>[
                 IconButton(
                   icon: SvgPicture.asset("assets/svg/chart_statics_on.svg"),
                   onPressed: () {
-                    print("chart");
+                    _isChartWidget.change(true);
                   },
                 ),
                 SizedBox(width: 150),
                 IconButton(
                   icon: SvgPicture.asset("assets/svg/calendar_statics_off.svg"),
                   onPressed: () {
-                    setState(() {
-                      _isChartWidget = false;
-                    });
-                    print("calendar");
+                    _isChartWidget.change(false);
+                    print(_isChartWidget.isChartWidget);
                   },
                 ),
               ])
@@ -116,9 +108,8 @@ class _CalendarState extends State<Calendar> {
                 IconButton(
                   icon: SvgPicture.asset("assets/svg/chart_statics_off.svg"),
                   onPressed: () {
-                    setState(() {
-                      _isChartWidget = true;
-                    });
+                    _isChartWidget.change(true);
+                    print(_isChartWidget.isChartWidget);
                     print("chart");
                   },
                 ),
@@ -126,6 +117,7 @@ class _CalendarState extends State<Calendar> {
                 IconButton(
                   icon: SvgPicture.asset("assets/svg/calendar_statics_on.svg"),
                   onPressed: () {
+                    _isChartWidget.change(false);
                     print("calendar");
                   },
                 ),
@@ -209,7 +201,7 @@ class _CalendarState extends State<Calendar> {
         ),
         _getEventsfromDay(_selectedDay).isEmpty != true
             ? ExerciseState.exercisesWidget(
-                _getEventsfromDay(_selectedDay).first,true)
+                _getEventsfromDay(_selectedDay).first, true)
             : Container()
       ],
     );
@@ -257,13 +249,11 @@ class _CalendarState extends State<Calendar> {
         child: ChoiceChip(
           label: Text(_exercisesData!.exercises[i].name),
           labelStyle: TextStyle(color: Colors.black),
-          selected: _selectedIndex == i,
+          selected: _chartIndex.chartIndex == i,
           selectedColor: Colors.deepOrange,
           onSelected: (bool value) {
-            setState(() {
-              _selectedIndex = i;
-              _getChartSourcefromDay();
-            });
+            _chartIndex.change(i);
+            _getChartSourcefromDay();
           },
         ),
       );
@@ -275,11 +265,13 @@ class _CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting('pt_BR', null);
+    _chartIndex = Provider.of<ChartIndexProvider>(context);
+    _isChartWidget = Provider.of<StaticPageProvider>(context);
     return Scaffold(
       appBar: _appbarWidget(),
       backgroundColor: Colors.black,
-      body: _isChartWidget
-          ? _chartWidget()
+      body: _isChartWidget.isChartWidget
+          ? (_isLoading ? null : _chartWidget())
           : (_isLoading ? null : _staticsWidget()),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () => showDialog(
@@ -296,10 +288,7 @@ class _CalendarState extends State<Calendar> {
                           child: const Text("Ok"),
                           onPressed: () {
                             if (_eventController.text.isEmpty) {
-                            } else {
-                              print(_selectedDay);
-                              print(_eventController);
-                            }
+                            } else {}
                             Navigator.pop(context);
                             _eventController.clear();
                             setState(() {});
