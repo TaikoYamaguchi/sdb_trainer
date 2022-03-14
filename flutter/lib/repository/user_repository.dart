@@ -11,8 +11,6 @@ class UserService {
     var response = await http.get(url);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      print(response.body);
-      print(utf8.decode(response.bodyBytes));
       return utf8.decode(response.bodyBytes);
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
@@ -26,9 +24,6 @@ class UserService {
     String jsonString = await _loadUserdataFromServer();
     final jsonResponse = json.decode(jsonString);
     User user = User.fromJson(jsonResponse);
-    print("apfhd");
-    print(user);
-    print("apfhd");
     return (user);
   }
 }

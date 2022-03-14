@@ -27,12 +27,7 @@ class RoutineRepository {
   static Future<RoutinedataList> loadRoutinedata() async {
     String jsonString = await _loadRoutinedataFromServer();
     final jsonResponse = json.decode(jsonString);
-    print(jsonResponse);
     RoutinedataList routinedata = RoutinedataList.fromJson(jsonResponse);
-    print("111");
-
-    print(routinedata.routinedatas[0].exercises);
-    print("222");
     return (routinedata);
   }
 }

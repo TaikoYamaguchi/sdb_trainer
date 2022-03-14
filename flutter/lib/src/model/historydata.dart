@@ -4,7 +4,7 @@ class SDBdata {
   final List<Exercises> exercises;
   final String? date;
   final int new_record;
-  final int workout_time;
+  final double? workout_time;
   SDBdata(
       {required this.id,
       required this.user_email,

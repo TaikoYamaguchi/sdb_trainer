@@ -39,10 +39,9 @@ class User(UserBase):
     class Config:
         orm_mode = True
 
-
 class HistoryBase(BaseModel):
     user_email : str
-    exercises : list
+    exercises : t.Any
     new_record: int
     workout_time:float
     class Config:
@@ -50,28 +49,10 @@ class HistoryBase(BaseModel):
 
 class ExercisesBase(BaseModel):
     user_email : str
-    exercises : list
+    exercises : t.Any
     modified_number: int
     class Config:
         orm_mode = True
-
-class Set(BaseModel):
-    index: int
-    weight: float
-    reps: int
-    ischecked: bool
-    class config:
-        orm_mode = True
-
-
-class Exercise(BaseModel):
-    name: str
-    sets: t.List[Set]
-    onerm: float
-    rest: int
-    class config:
-        orm_mode = True
-
 
 class WorkoutBase(BaseModel):
     user_email: str
@@ -80,7 +61,6 @@ class WorkoutBase(BaseModel):
     routine_time: float
     class Config:
         orm_mode = True
-
 
 class WorkoutCreate(WorkoutBase):
     class config:
