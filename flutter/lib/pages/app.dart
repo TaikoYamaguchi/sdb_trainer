@@ -7,11 +7,12 @@ import 'package:sdb_trainer/providers/bodystate.dart';
 
 import 'statics.dart';
 
-
-
 class App extends StatelessWidget {
+<<<<<<< HEAD
   App({Key? key}) : super(key: key);
   var _bodyStater;
+=======
+>>>>>>> lcw
 
   BottomNavigationBarItem _bottomNavigationBarItem(
       String iconName, String label) {
@@ -63,10 +64,23 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     _bodyStater = Provider.of<BodyStater>(context);
     return Scaffold(
       body: _bodyWidget(),
       bottomNavigationBar: _bottomNavigationBarwidget(),
+=======
+    return ChangeNotifierProvider<BodyStater>(
+      create: (_) => BodyStater(),
+      child: Scaffold(
+        body: Consumer<BodyStater>(builder: (_, bodystater, __) {
+          return _bodyWidget(bodystater.bodystate);
+        }),
+        bottomNavigationBar: Consumer<BodyStater>(builder: (_, bodystater, __) {
+          return _bottomNavigationBarwidget(bodystater);
+        }),
+      ),
+>>>>>>> lcw
     );
   }
 }
