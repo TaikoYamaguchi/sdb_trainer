@@ -1,7 +1,8 @@
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/exercise.dart';
-import 'package:sdb_trainer/pages/home.dart';
+import 'package:sdb_trainer/providers/exercisesdata.dart';
+import 'package:sdb_trainer/providers/workoutdata.dart';
 
 class TabNavigatorRoutes {
   static const String root = '/';
@@ -9,7 +10,7 @@ class TabNavigatorRoutes {
 }
 
 class TabNavigator extends StatelessWidget {
-  const TabNavigator({Key? key}) : super(key: key);
+  TabNavigator({Key? key}) : super(key: key);
 
   void _push(BuildContext context) {
     var routeBuilders = _routeBuilders(context);
@@ -29,13 +30,15 @@ class TabNavigator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     var routeBuilders = _routeBuilders(context);
 
     return Navigator(
       initialRoute: TabNavigatorRoutes.root,
       onGenerateRoute: (routeSettings) {
-        return MaterialPageRoute(
-            builder: (context) => routeBuilders[routeSettings.name]!(context));
-      });
+          return MaterialPageRoute(
+              builder: (context) => routeBuilders[routeSettings.name]!(context));
+      }
+    );
   }
 }
