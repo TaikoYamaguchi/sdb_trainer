@@ -24,7 +24,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       home: MultiProvider(providers: [
-        ChangeNotifierProvider(create: (BuildContext context) => BodyStater()),
+        ChangeNotifierProvider(
+            create: (BuildContext context) => BodyStater()),
         ChangeNotifierProvider(
             create: (BuildContext context) => ChartIndexProvider()),
         ChangeNotifierProvider(

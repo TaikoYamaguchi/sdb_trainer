@@ -6,7 +6,7 @@ import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:transition/transition.dart';
 
 class Exercise extends StatefulWidget {
-  const Exercise({Key? key}) : super(key: key);
+  const Exercise({Key? key,}) : super(key: key);
 
   @override
   ExerciseState createState() => ExerciseState();
@@ -249,6 +249,7 @@ class ExerciseState extends State<Exercise> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: _appbarWidget(),
       body: _bodyWidget(),
