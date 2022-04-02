@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/app.dart';
+import 'package:sdb_trainer/pages/login.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/staticPageState.dart';
 import 'package:sdb_trainer/providers/chartIndexState.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
+import 'package:sdb_trainer/providers/loginState.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,6 +29,8 @@ class MyApp extends StatelessWidget {
             create: (BuildContext context) => ChartIndexProvider()),
         ChangeNotifierProvider(
             create: (BuildContext context) => StaticPageProvider()),
+        ChangeNotifierProvider(
+            create: (BuildContext context) => LoginPageProvider()),
         ChangeNotifierProvider(
             create: (BuildContext context) => ExercisesdataProvider()),
         ChangeNotifierProvider(

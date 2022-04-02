@@ -3,13 +3,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/exercise.dart';
 import 'package:sdb_trainer/pages/home.dart';
+import 'package:sdb_trainer/pages/login.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
+import 'package:sdb_trainer/providers/loginState.dart';
 
 import 'statics.dart';
 
 class App extends StatelessWidget {
   App({Key? key}) : super(key: key);
   var _bodyStater;
+  var _loginState;
 
   BottomNavigationBarItem _bottomNavigationBarItem(
       String iconName, String label) {
@@ -62,9 +65,11 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _bodyStater = Provider.of<BodyStater>(context);
+    _loginState = Provider.of<LoginPageProvider>(context);
     return Scaffold(
-      body: _bodyWidget(),
-      bottomNavigationBar: _bottomNavigationBarwidget(),
+      body: _loginState.isLogin ? _bodyWidget() : LoginPage(),
+      bottomNavigationBar:
+          _loginState.isLogin ? _bottomNavigationBarwidget() : null,
     );
   }
 }
