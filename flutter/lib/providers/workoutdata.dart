@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 
 class WorkoutdataProvider extends ChangeNotifier {

@@ -8,6 +8,7 @@ import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/staticPageState.dart';
 import 'package:sdb_trainer/providers/chartIndexState.dart';
+import 'package:sdb_trainer/providers/workoutdata.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,7 +30,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
             create: (BuildContext context) => ExercisesdataProvider()),
         ChangeNotifierProvider(
-            create: (BuildContext context) => UserdataProvider())
+            create: (BuildContext context) => UserdataProvider()),
+        ChangeNotifierProvider(
+            create: (BuildContext context) => WorkoutdataProvider())
       ], child: App()),
     );
   }
