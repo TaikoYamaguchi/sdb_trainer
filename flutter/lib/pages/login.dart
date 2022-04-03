@@ -3,6 +3,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:sdb_trainer/pages/home.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
+import 'package:sdb_trainer/repository/user_repository.dart';
+import 'package:sdb_trainer/providers/bodystate.dart';
+import 'package:sdb_trainer/providers/loginState.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -10,6 +14,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  var _bodyStater;
+  var _loginState;
   bool isLoading = false;
   TextEditingController _userEmailCtrl = TextEditingController(text: "");
   TextEditingController _userPasswordCtrl = TextEditingController(text: "");
@@ -23,6 +29,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    _bodyStater = Provider.of<BodyStater>(context);
+    _loginState = Provider.of<LoginPageProvider>(context);
+
     return Scaffold(
         body: Center(
             child: Padding(
@@ -86,17 +95,20 @@ class _LoginPageState extends State<LoginPage> {
 
   void _loginCheck() async {
     final storage = FlutterSecureStorage();
-    String? storagePass = await storage.read(key: _userEmailCtrl.text);
-    if (storagePass != null &&
-        storagePass != "" &&
-        storagePass == _userPasswordCtrl.text) {
-      String? userNickName =
-          await storage.read(key: '${_userEmailCtrl.text}_$storagePass');
-      storage.write(key: userNickName!, value: STATUS_LOGIN);
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (BuildContext context) => Home()));
+    String? storageEmail = await storage.read(key: "sdb_email");
+    print(storageEmail);
+    if (storageEmail != null &&
+        storageEmail != "" &&
+        storageEmail == _userEmailCtrl.text) {
+      _bodyStater.change(0);
+      _loginState.change(true);
     } else {
-      showToast('아이디 혹 비밀번호를 확인 바랍니다');
+      UserLogin(
+              userEmail: _userEmailCtrl.text, password: _userPasswordCtrl.text)
+          .loginUser()
+          .then((token) => token["access_token"] != null
+              ? {_bodyStater.change(0), _loginState.change(true)}
+              : showToast("아이디와 비밀번호를 확인해주세요"));
     }
   }
 }
