@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/navigators/exercise_navi.dart';
 import 'package:sdb_trainer/pages/exercise.dart';
 import 'package:sdb_trainer/pages/home.dart';
 import 'package:sdb_trainer/pages/login.dart';
@@ -51,7 +52,7 @@ class App extends StatelessWidget {
         return Home();
 
       case 1:
-        return Exercise();
+        return TabNavigator();
 
       case 2:
         return Calendar();
