@@ -25,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     _userEmailCtrl = TextEditingController(text: "");
     _userPasswordCtrl = TextEditingController(text: "");
+    _storageLoginCheck();
   }
 
   @override
@@ -96,7 +97,6 @@ class _LoginPageState extends State<LoginPage> {
   void _loginCheck() async {
     final storage = FlutterSecureStorage();
     String? storageEmail = await storage.read(key: "sdb_email");
-    print(storageEmail);
     if (storageEmail != null &&
         storageEmail != "" &&
         storageEmail == _userEmailCtrl.text) {
@@ -109,6 +109,16 @@ class _LoginPageState extends State<LoginPage> {
           .then((token) => token["access_token"] != null
               ? {_bodyStater.change(0), _loginState.change(true)}
               : showToast("아이디와 비밀번호를 확인해주세요"));
+    }
+  }
+
+  void _storageLoginCheck() async {
+    final storage = FlutterSecureStorage();
+    String? storageEmail = await storage.read(key: "sdb_email");
+    print(storageEmail);
+    if (storageEmail != null && storageEmail != "") {
+      _bodyStater.change(0);
+      _loginState.change(true);
     }
   }
 }
