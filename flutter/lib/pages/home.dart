@@ -12,15 +12,16 @@ class Home extends StatelessWidget {
   Home({Key? key}) : super(key: key);
   var _exercisesdataProvider;
   var _userdataProvider;
+  var _userdataProvider2;
   var _bodyStater;
   var _staticPageState;
   var _chartIndex;
 
   PreferredSizeWidget _appbarWidget() {
-    if (_userdataProvider.userdata != null) {
+    if (_userdataProvider2.userdata != null) {
       return AppBar(
         title: Text(
-          _userdataProvider.userdata.nickname + "님",
+          _userdataProvider2.userdata.nickname + "님",
           style: TextStyle(color: Colors.white),
         ),
         actions: [
@@ -160,6 +161,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _userdataProvider.getdata();
+    _userdataProvider2=Provider.of<UserdataProvider>(context, listen: false);
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _exercisesdataProvider.getdata();
