@@ -66,8 +66,8 @@ class RoutinedataList {
 
 class Sets {
   final int index;
-  final double? weight;
-  final int reps;
+  double? weight;
+  int reps;
   bool? ischecked;
   Sets(
       {required this.index,

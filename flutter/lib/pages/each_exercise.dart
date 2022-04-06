@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sdb_trainer/src/model/workoutdata.dart';
 
 
 
@@ -40,27 +41,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     );
   }
 
-  /*
-  void onerm_cal(){
-    double? new_weight;
-    int? new_reps;
-    if (weightController.text != "") {
-      new_weight = double.parse(weightController.text);
-    }
-    else {
-      new_weight = widget.exercisedetail.sets[index].weight
-    }
-    if (repsController.text != "") {
-      new_reps = int.parse(repsController.text);
-    }
-    else {
-      new_weight = widget.exercisedetail.sets[index].reps
-    }
-    setState(() {
-      weight= new_weight;
-    });
-  }
-  */
 
   Widget _exercisedetailWidget() {
     Color getColor(Set<MaterialState> states) {
@@ -191,7 +171,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               style: TextStyle(fontSize: 21, color: Colors.white,),
                               textAlign: TextAlign.center,
                               decoration: InputDecoration(
-                                hintText: "${weightfor1rm[index]}",
+                                hintText: "${widget.exercisedetail.sets[index].weight}",
                                 hintStyle: TextStyle(fontSize: 21, color: Colors.white,),
                               ),
                               onChanged: (text){
@@ -203,10 +183,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                   changeweight = double.parse(text);
                                 }
                                 setState(() {
-                                  weightfor1rm[index] = changeweight;
+                                  widget.exercisedetail.sets[index].weight = changeweight;
                                 });
                                 print(text);
-                                print(weightfor1rm[index]);
+                                print(widget.exercisedetail.sets[index].weight);
                               },
                             ),
                           ),
@@ -224,7 +204,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               style: TextStyle(fontSize: 21, color: Colors.white,),
                               textAlign: TextAlign.center,
                               decoration: InputDecoration(
-                                hintText: "${repsfor1rm[index]}",
+                                hintText: "${widget.exercisedetail.sets[index].reps}",
                                 hintStyle: TextStyle(fontSize: 21, color: Colors.white,),
                               ),
                               onChanged: (text){
@@ -236,7 +216,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                   changereps = int.parse(text);
                                 }
                                 setState(() {
-                                  repsfor1rm[index] = changereps;
+                                  widget.exercisedetail.sets[index].reps = changereps;
                                 });
                               },
                             ),
@@ -246,12 +226,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             width: 70,
                             child:  (widget.exercisedetail.sets[index].reps != 1)
                             ?Text(
-                              "${(weightfor1rm[index] * (1 + repsfor1rm[index]/30)).toStringAsFixed(1)}",
+                              "${(widget.exercisedetail.sets[index].weight * (1 + widget.exercisedetail.sets[index].reps/30)).toStringAsFixed(1)}",
                               style: TextStyle(fontSize: 21,color: Colors.white),
                               textAlign: TextAlign.center,
                             )
                             :Text(
-                              "${weightfor1rm[index]}",
+                              "${widget.exercisedetail.sets[index].weight}",
                               style: TextStyle(fontSize: 21,color: Colors.white),
                               textAlign: TextAlign.center,
                             ),
@@ -275,7 +255,33 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   itemCount: widget.exercisedetail.sets.length
               ),
             ),
+            Container(
+              padding: EdgeInsets.only(bottom:10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    child: IconButton(
+                        onPressed: (){
+                          setState(() {
+                            widget.exercisedetail.sets.removeLast();
+                          });
 
+                        },
+                        icon: Icon(Icons.remove,color: Colors.white,size: 40,)),
+                  ),
+                  Container(
+                    child: IconButton(
+                        onPressed: (){
+                          setState(() {
+                            widget.exercisedetail.sets.add(new Sets(index: widget.exercisedetail.sets.length + 1, weight: 0.0, reps: 1, ischecked: false));
+                          });
+                        },
+                        icon: Icon(Icons.add,color: Colors.white,size: 40,)),
+                  )
+                ],
+              )
+            ),
           ],
         ),
       ),
