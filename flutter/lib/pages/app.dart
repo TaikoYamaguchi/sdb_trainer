@@ -5,8 +5,10 @@ import 'package:sdb_trainer/navigators/exercise_navi.dart';
 import 'package:sdb_trainer/pages/exercise.dart';
 import 'package:sdb_trainer/pages/home.dart';
 import 'package:sdb_trainer/pages/login.dart';
+import 'package:sdb_trainer/pages/signup.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
+import 'package:sdb_trainer/repository/user_repository.dart';
 
 import 'statics.dart';
 
@@ -58,9 +60,18 @@ class App extends StatelessWidget {
         return Calendar();
 
       case 3:
-        return Container();
+        return Container(
+            child: Center(
+                child: FlatButton(
+                    onPressed: () => _userLogOut(), child: Text("로그아웃"))));
     }
     return Container();
+  }
+
+  void _userLogOut() {
+    UserLogOut.logOut();
+    _loginState.change(false);
+    _loginState.changeSignup(false);
   }
 
   @override
@@ -68,7 +79,11 @@ class App extends StatelessWidget {
     _bodyStater = Provider.of<BodyStater>(context);
     _loginState = Provider.of<LoginPageProvider>(context);
     return Scaffold(
-      body: _loginState.isLogin ? _bodyWidget() : LoginPage(),
+      body: _loginState.isLogin
+          ? _bodyWidget()
+          : _loginState.isSignUp
+              ? SignUpPage()
+              : LoginPage(),
       bottomNavigationBar:
           _loginState.isLogin ? _bottomNavigationBarwidget() : null,
     );

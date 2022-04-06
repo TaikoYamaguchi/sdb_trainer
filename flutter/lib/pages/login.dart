@@ -16,6 +16,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   var _bodyStater;
   var _loginState;
+  var _signUpState;
   bool isLoading = false;
   TextEditingController _userEmailCtrl = TextEditingController(text: "");
   TextEditingController _userPasswordCtrl = TextEditingController(text: "");
@@ -50,6 +51,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       _passwordWidget(),
                       _loginButton(context),
+                      _signUpButton(context),
                       Expanded(
                         flex: 3,
                         child: SizedBox(),
@@ -91,6 +93,21 @@ class _LoginPageState extends State<LoginPage> {
             splashColor: Colors.blueAccent,
             onPressed: () => isLoading ? null : _loginCheck(),
             child: Text(isLoading ? 'loggin in.....' : "login",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+  }
+
+  Widget _signUpButton(context) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+            color: Colors.blueAccent,
+            textColor: Colors.white,
+            disabledColor: Colors.blueAccent,
+            disabledTextColor: Colors.black,
+            padding: EdgeInsets.all(8.0),
+            splashColor: Colors.blueAccent,
+            onPressed: () => isLoading ? null : _loginState.changeSignup(true),
+            child: Text(isLoading ? 'loggin in.....' : "회원가입 하기",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
