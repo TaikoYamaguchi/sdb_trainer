@@ -16,14 +16,17 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   bool _isChecked = false;
   double top = 0;
   double bottom = 0;
-  TextEditingController weightController = TextEditingController();
+  double? weight;
+  int? reps;
+  List<TextEditingController> weightController = [];
+  List<TextEditingController> repsController = [];
+  List<double> weightfor1rm = [];
+  List<int> repsfor1rm = [];
 
 
   @override
   void initState() {
     super.initState();
-    weightController = TextEditingController();
-
 
   }
 
@@ -37,7 +40,27 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     );
   }
 
-
+  /*
+  void onerm_cal(){
+    double? new_weight;
+    int? new_reps;
+    if (weightController.text != "") {
+      new_weight = double.parse(weightController.text);
+    }
+    else {
+      new_weight = widget.exercisedetail.sets[index].weight
+    }
+    if (repsController.text != "") {
+      new_reps = int.parse(repsController.text);
+    }
+    else {
+      new_weight = widget.exercisedetail.sets[index].reps
+    }
+    setState(() {
+      weight= new_weight;
+    });
+  }
+  */
 
   Widget _exercisedetailWidget() {
     Color getColor(Set<MaterialState> states) {
@@ -124,6 +147,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             Expanded(
               child: ListView.separated(
                   itemBuilder: (BuildContext _context, int index){
+                    weightController.add(new TextEditingController());
+                    repsController.add(new TextEditingController());
+                    weightfor1rm.add(widget.exercisedetail.sets[index].weight);
+                    repsfor1rm.add(widget.exercisedetail.sets[index].reps);
                     return Container(
                       padding: EdgeInsets.only(right: 10),
                       child: Row(
@@ -159,14 +186,28 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           Container(
                             width: 70,
                             child: TextField(
-                              controller: weightController,
+                              controller: weightController[index],
                               keyboardType: TextInputType.number,
                               style: TextStyle(fontSize: 21, color: Colors.white,),
                               textAlign: TextAlign.center,
                               decoration: InputDecoration(
-                                hintText: "${widget.exercisedetail.sets[index].weight}",
+                                hintText: "${weightfor1rm[index]}",
                                 hintStyle: TextStyle(fontSize: 21, color: Colors.white,),
                               ),
+                              onChanged: (text){
+                                double changeweight;
+                                if(text==""){
+                                  changeweight = 0.0;
+                                }
+                                else {
+                                  changeweight = double.parse(text);
+                                }
+                                setState(() {
+                                  weightfor1rm[index] = changeweight;
+                                });
+                                print(text);
+                                print(weightfor1rm[index]);
+                              },
                             ),
                           ),
 
@@ -178,13 +219,26 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           Container(
                             width:40,
                             child: TextField(
+                              controller: repsController[index],
                               keyboardType: TextInputType.number,
                               style: TextStyle(fontSize: 21, color: Colors.white,),
                               textAlign: TextAlign.center,
                               decoration: InputDecoration(
-                                hintText: "${widget.exercisedetail.sets[index].reps}",
+                                hintText: "${repsfor1rm[index]}",
                                 hintStyle: TextStyle(fontSize: 21, color: Colors.white,),
                               ),
+                              onChanged: (text){
+                                int changereps;
+                                if(text==""){
+                                  changereps = 1;
+                                }
+                                else {
+                                  changereps = int.parse(text);
+                                }
+                                setState(() {
+                                  repsfor1rm[index] = changereps;
+                                });
+                              },
                             ),
                           ),
 
@@ -192,12 +246,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             width: 70,
                             child:  (widget.exercisedetail.sets[index].reps != 1)
                             ?Text(
-                              "${(widget.exercisedetail.sets[index].weight * (1 + widget.exercisedetail.sets[index].reps/30)).toStringAsFixed(1)}",
+                              "${(weightfor1rm[index] * (1 + repsfor1rm[index]/30)).toStringAsFixed(1)}",
                               style: TextStyle(fontSize: 21,color: Colors.white),
                               textAlign: TextAlign.center,
                             )
                             :Text(
-                              "${widget.exercisedetail.sets[index].weight}",
+                              "${weightfor1rm[index]}",
                               style: TextStyle(fontSize: 21,color: Colors.white),
                               textAlign: TextAlign.center,
                             ),
