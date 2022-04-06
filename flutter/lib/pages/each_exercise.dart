@@ -21,8 +21,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   int? reps;
   List<TextEditingController> weightController = [];
   List<TextEditingController> repsController = [];
-  List<double> weightfor1rm = [];
-  List<int> repsfor1rm = [];
 
 
   @override
@@ -90,7 +88,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                      width: 70,
+                      width: 80,
+                      padding: EdgeInsets.only(right:4),
                       child: Text("Set",
                         style: TextStyle(color: Colors.white, fontSize: 14,fontWeight: FontWeight.bold,),
                         textAlign: TextAlign.right,)
@@ -129,15 +128,13 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   itemBuilder: (BuildContext _context, int index){
                     weightController.add(new TextEditingController());
                     repsController.add(new TextEditingController());
-                    weightfor1rm.add(widget.exercisedetail.sets[index].weight);
-                    repsfor1rm.add(widget.exercisedetail.sets[index].reps);
                     return Container(
                       padding: EdgeInsets.only(right: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            width: 70,
+                            width: 80,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -155,9 +152,13 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                     }
                                   ),
                                 ),
-                                Text(
+                                Container(
+                                  width: 25,
+                                  child: Text(
                                     "${index+1}",
-                                    style: TextStyle(fontSize: 21,color: Colors.white)
+                                    style: TextStyle(fontSize: 21,color: Colors.white,),
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
                               ],
                             ),
