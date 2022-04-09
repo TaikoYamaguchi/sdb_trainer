@@ -35,64 +35,94 @@ class _LoginPageState extends State<LoginPage> {
     _loginState = Provider.of<LoginPageProvider>(context);
 
     return Scaffold(
-        body: Center(
-            child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 3,
-                        child: SizedBox(),
-                      ),
-                      _emailWidget(),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      _passwordWidget(),
-                      _loginButton(context),
-                      _signUpButton(context),
-                      Expanded(
-                        flex: 3,
-                        child: SizedBox(),
-                      ),
-                    ]))));
+        body: Container(
+      color: Colors.black,
+      child: Center(
+          child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 3,
+                      child: SizedBox(),
+                    ),
+                    Text("SDB 훈련소",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 54,
+                            fontWeight: FontWeight.w800)),
+                    _emailWidget(),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    _passwordWidget(),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    _loginButton(context),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    _signUpButton(context),
+                    Expanded(
+                      flex: 3,
+                      child: SizedBox(),
+                    ),
+                  ]))),
+    ));
   }
 
   Widget _emailWidget() {
     return TextFormField(
-      controller: _userEmailCtrl,
-      decoration: InputDecoration(
-        prefixIcon: Icon(Icons.email),
-        labelText: "Email",
-        border: OutlineInputBorder(),
-      ),
-    );
+        controller: _userEmailCtrl,
+        decoration: InputDecoration(
+            prefixIcon: Icon(Icons.email, color: Colors.white),
+            labelText: "이메일",
+            labelStyle: TextStyle(color: Colors.white),
+            border: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.white, width: 2.0),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.white, width: 2.0),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            fillColor: Colors.white),
+        style: TextStyle(color: Colors.white));
   }
 
   Widget _passwordWidget() {
     return TextFormField(
-      controller: _userPasswordCtrl,
-      decoration: InputDecoration(
-        prefixIcon: Icon(Icons.vpn_key_rounded),
-        labelText: "Password",
-        border: OutlineInputBorder(),
-      ),
-    );
+        controller: _userPasswordCtrl,
+        decoration: InputDecoration(
+            prefixIcon: Icon(Icons.vpn_key_rounded, color: Colors.white),
+            labelText: "비밀번호",
+            labelStyle: TextStyle(color: Colors.white),
+            border: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.white, width: 2.0),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.white, width: 2.0),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            fillColor: Colors.white),
+        style: TextStyle(color: Colors.white));
   }
 
   Widget _loginButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
-            color: Colors.purple,
+            color: Color.fromRGBO(25, 106, 223, 20),
             textColor: Colors.white,
-            disabledColor: Colors.purple,
+            disabledColor: Color.fromRGBO(25, 106, 223, 20),
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
             splashColor: Colors.blueAccent,
             onPressed: () => isLoading ? null : _loginCheck(),
-            child: Text(isLoading ? 'loggin in.....' : "login",
+            child: Text(isLoading ? 'loggin in.....' : "로그인",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
@@ -100,14 +130,14 @@ class _LoginPageState extends State<LoginPage> {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
-            color: Colors.blueAccent,
+            color: Color.fromRGBO(246, 58, 64, 20),
             textColor: Colors.white,
-            disabledColor: Colors.blueAccent,
+            disabledColor: Color.fromRGBO(246, 58, 64, 20),
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
             splashColor: Colors.blueAccent,
             onPressed: () => isLoading ? null : _loginState.changeSignup(true),
-            child: Text(isLoading ? 'loggin in.....' : "회원가입 하기",
+            child: Text(isLoading ? 'loggin in.....' : "회원가입",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:sdb_trainer/pages/home.dart';
@@ -7,6 +8,7 @@ import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/cupertino.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -16,7 +18,18 @@ class SignUpPage extends StatefulWidget {
 class _LoginPageState extends State<SignUpPage> {
   var _bodyStater;
   var _loginState;
+  var _isSignupIndex = 0;
   bool isLoading = false;
+
+  final Map<String, Widget> _heightUnitList = const <String, Widget>{
+    "cm": Text("cm"),
+    "inch": Text("inch")
+  };
+  final Map<String, Widget> _weightUnitList = const <String, Widget>{
+    "kg": Text("kg"),
+    "lb": Text("lb")
+  };
+
   TextEditingController _userEmailCtrl = TextEditingController(text: "");
   TextEditingController _userPasswordCtrl = TextEditingController(text: "");
   TextEditingController _userNameCtrl = TextEditingController(text: "unknown");
@@ -24,8 +37,8 @@ class _LoginPageState extends State<SignUpPage> {
   TextEditingController _userImageCtrl = TextEditingController(text: "");
   TextEditingController _userHeightCtrl = TextEditingController(text: "");
   TextEditingController _userWeightCtrl = TextEditingController(text: "");
-  TextEditingController _userHeightUnitCtrl = TextEditingController(text: "cm");
-  TextEditingController _userWeightUnitCtrl = TextEditingController(text: "kg");
+  var _userWeightUnitCtrl = "kg";
+  var _userHeightUnitCtrl = "cm";
   TextEditingController _userPhoneNumberCtrl = TextEditingController(text: "");
 
   @override
@@ -40,72 +53,132 @@ class _LoginPageState extends State<SignUpPage> {
     _bodyStater = Provider.of<BodyStater>(context);
     _loginState = Provider.of<LoginPageProvider>(context);
 
-    return Scaffold(
-        body: Center(
-            child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 3,
-                        child: SizedBox(),
-                      ),
-                      _emailWidget(),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      _nicknameWidget(),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      _passwordWidget(),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      _phoneNumberWidget(),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Expanded(child: _heightWidget()),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Expanded(child: _heightUnitWidget())
-                        ],
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Expanded(child: _weightWidget()),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Expanded(child: _weightUnitWidget())
-                        ],
-                      ),
-                      _signUpButton(context),
-                      _loginButton(context),
-                      Expanded(
-                        flex: 3,
-                        child: SizedBox(),
-                      ),
-                    ]))));
+    return Scaffold(body: _signupWidget());
+  }
+
+  Widget _signupWidget() {
+    switch (_isSignupIndex) {
+      case 0:
+        return _signupProfileWidget();
+      case 1:
+        return _signupSettingWidget();
+    }
+    return Container();
+  }
+
+  Widget _signupProfileWidget() {
+    return Container(
+      color: Colors.black,
+      child: Center(
+          child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 3,
+                      child: SizedBox(),
+                    ),
+                    Text("회원가입",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 32,
+                            fontWeight: FontWeight.w800)),
+                    _emailWidget(),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    _nicknameWidget(),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    _passwordWidget(),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    _phoneNumberWidget(),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    _signUpButton(context),
+                    _loginButton(context),
+                    Expanded(
+                      flex: 3,
+                      child: SizedBox(),
+                    ),
+                  ]))),
+    );
+  }
+
+  Widget _signupSettingWidget() {
+    return Container(
+      color: Colors.black,
+      child: Center(
+          child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 3,
+                      child: SizedBox(),
+                    ),
+                    Text("키와 몸무게 입력",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 32,
+                            fontWeight: FontWeight.w800)),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(child: _heightWidget()),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Expanded(child: _heightUnitWidget())
+                      ],
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(child: _weightWidget()),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Expanded(child: _weightUnitWidget())
+                      ],
+                    ),
+                    _signUpButton(context),
+                    _loginButton(context),
+                    Expanded(
+                      flex: 3,
+                      child: SizedBox(),
+                    ),
+                  ]))),
+    );
   }
 
   Widget _emailWidget() {
     return TextFormField(
       controller: _userEmailCtrl,
+      style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.email),
-        labelText: "Email",
-        border: OutlineInputBorder(),
+        labelText: "이메일",
+        labelStyle: TextStyle(color: Colors.white),
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.white, width: 2.0),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white, width: 2.0),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
       ),
     );
   }
@@ -124,10 +197,18 @@ class _LoginPageState extends State<SignUpPage> {
   Widget _nicknameWidget() {
     return TextFormField(
       controller: _userNicknameCtrl,
+      style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.email),
         labelText: "닉네임",
-        border: OutlineInputBorder(),
+        labelStyle: TextStyle(color: Colors.white),
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.white, width: 2.0),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white, width: 2.0),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
       ),
     );
   }
@@ -135,10 +216,20 @@ class _LoginPageState extends State<SignUpPage> {
   Widget _heightWidget() {
     return TextFormField(
       controller: _userHeightCtrl,
+      keyboardType:
+          TextInputType.numberWithOptions(signed: true, decimal: true),
+      style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.email),
         labelText: "키",
-        border: OutlineInputBorder(),
+        labelStyle: TextStyle(color: Colors.white),
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.white, width: 2.0),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white, width: 2.0),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
       ),
     );
   }
@@ -146,43 +237,65 @@ class _LoginPageState extends State<SignUpPage> {
   Widget _weightWidget() {
     return TextFormField(
       controller: _userWeightCtrl,
+      keyboardType: TextInputType.number,
+      style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.email),
         labelText: "몸무게",
-        border: OutlineInputBorder(),
+        labelStyle: TextStyle(color: Colors.white),
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.white, width: 2.0),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white, width: 2.0),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
       ),
     );
   }
 
   Widget _weightUnitWidget() {
-    return TextFormField(
-      controller: _userWeightUnitCtrl,
-      decoration: InputDecoration(
-        prefixIcon: Icon(Icons.email),
-        labelText: "kg",
-        border: OutlineInputBorder(),
-      ),
-    );
+    return CupertinoSlidingSegmentedControl(
+        groupValue: _userWeightUnitCtrl,
+        children: _weightUnitList,
+        backgroundColor: Color.fromRGBO(25, 106, 223, 20),
+        onValueChanged: (i) {
+          setState(() {
+            _userWeightUnitCtrl = i as String;
+            print(_userWeightUnitCtrl);
+          });
+        });
   }
 
   Widget _heightUnitWidget() {
-    return TextFormField(
-      controller: _userHeightUnitCtrl,
-      decoration: InputDecoration(
-        prefixIcon: Icon(Icons.email),
-        labelText: "cm",
-        border: OutlineInputBorder(),
-      ),
-    );
+    return CupertinoSlidingSegmentedControl(
+        groupValue: _userHeightUnitCtrl,
+        children: _heightUnitList,
+        backgroundColor: Color.fromRGBO(25, 106, 223, 20),
+        onValueChanged: (i) {
+          setState(() {
+            _userHeightUnitCtrl = i as String;
+            print(_userHeightUnitCtrl);
+          });
+        });
   }
 
   Widget _phoneNumberWidget() {
     return TextFormField(
       controller: _userPhoneNumberCtrl,
+      keyboardType: TextInputType.number,
+      style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.email),
-        labelText: "전화번호",
-        border: OutlineInputBorder(),
+        labelText: "휴대폰(-없이)",
+        labelStyle: TextStyle(color: Colors.white),
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.white, width: 2.0),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white, width: 2.0),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
       ),
     );
   }
@@ -201,10 +314,18 @@ class _LoginPageState extends State<SignUpPage> {
   Widget _passwordWidget() {
     return TextFormField(
       controller: _userPasswordCtrl,
+      style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.vpn_key_rounded),
-        labelText: "Password",
-        border: OutlineInputBorder(),
+        labelText: "비밀번호",
+        labelStyle: TextStyle(color: Colors.white),
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.white, width: 2.0),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white, width: 2.0),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
       ),
     );
   }
@@ -213,13 +334,17 @@ class _LoginPageState extends State<SignUpPage> {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
-            color: Colors.purple,
+            color: Color.fromRGBO(246, 58, 64, 20),
             textColor: Colors.white,
-            disabledColor: Colors.purple,
+            disabledColor: Color.fromRGBO(246, 58, 64, 20),
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
             splashColor: Colors.blueAccent,
-            onPressed: () => _signUpCheck(),
+            onPressed: () => _isSignupIndex == 0
+                ? setState(() {
+                    _signUpProfileCheck() ? _isSignupIndex = 1 : null;
+                  })
+                : _signUpCheck(),
             child: Text(isLoading ? 'loggin in.....' : "회원가입",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
@@ -231,8 +356,8 @@ class _LoginPageState extends State<SignUpPage> {
             userNickname: _userNicknameCtrl.text,
             userHeight: _userHeightCtrl.text,
             userWeight: _userWeightCtrl.text,
-            userHeightUnit: _userHeightUnitCtrl.text,
-            userWeightUnit: _userWeightUnitCtrl.text,
+            userHeightUnit: _userHeightUnitCtrl,
+            userWeightUnit: _userWeightUnitCtrl,
             userPhonenumber: _userPhoneNumberCtrl.text,
             userImage: _userImageCtrl.text,
             password: _userPasswordCtrl.text)
@@ -248,18 +373,30 @@ class _LoginPageState extends State<SignUpPage> {
             : showToast("회원가입을 할 수 없습니다"));
   }
 
+  bool _signUpProfileCheck() {
+    if (_userEmailCtrl.text != "" &&
+        _userNicknameCtrl.text != "" &&
+        _userPasswordCtrl.text != "" &&
+        _userPhoneNumberCtrl.text != "") {
+      return true;
+    } else {
+      showToast("빈칸을 채워주세요");
+      return false;
+    }
+  }
+
   Widget _loginButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
-            color: Colors.blueAccent,
+            color: Color(0xFF717171),
             textColor: Colors.white,
-            disabledColor: Colors.blueAccent,
+            disabledColor: Color(0xFF717171),
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
             splashColor: Colors.blueAccent,
             onPressed: () => isLoading ? null : _loginState.changeSignup(false),
-            child: Text(isLoading ? 'loggin in.....' : "로그인하기",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+            child: Text(isLoading ? 'loggin in.....' : "이미 계정이 있으신가요?",
+                style: TextStyle(fontSize: 15.0, color: Colors.white))));
   }
 }
