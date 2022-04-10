@@ -22,12 +22,32 @@ class _LoginPageState extends State<SignUpPage> {
   bool isLoading = false;
 
   final Map<String, Widget> _heightUnitList = const <String, Widget>{
-    "cm": Text("cm"),
-    "inch": Text("inch")
+    "cm": Padding(
+      child: Text("cm", style: TextStyle(color: Colors.white, fontSize: 24)),
+      padding: const EdgeInsets.all(14.0),
+    ),
+    "inch": Padding(
+      child: Text("inch", style: TextStyle(color: Colors.white, fontSize: 24)),
+      padding: const EdgeInsets.all(14.0),
+    )
   };
   final Map<String, Widget> _weightUnitList = const <String, Widget>{
-    "kg": Text("kg"),
-    "lb": Text("lb")
+    "kg": Padding(
+        child: Text("kg", style: TextStyle(color: Colors.white, fontSize: 24)),
+        padding: const EdgeInsets.all(14.0)),
+    "lb": Padding(
+        child: Text("lb", style: TextStyle(color: Colors.white, fontSize: 24)),
+        padding: const EdgeInsets.all(14.0))
+  };
+
+  final Map<bool, Widget> _genderList = const <bool, Widget>{
+    true: Padding(
+      child: Text("남성", style: TextStyle(color: Colors.white, fontSize: 32)),
+      padding: const EdgeInsets.all(20.0),
+    ),
+    false: Padding(
+        child: Text("여성", style: TextStyle(color: Colors.white, fontSize: 32)),
+        padding: const EdgeInsets.all(20.0))
   };
 
   TextEditingController _userEmailCtrl = TextEditingController(text: "");
@@ -39,6 +59,7 @@ class _LoginPageState extends State<SignUpPage> {
   TextEditingController _userWeightCtrl = TextEditingController(text: "");
   var _userWeightUnitCtrl = "kg";
   var _userHeightUnitCtrl = "cm";
+  var _userGenderCtrl = true;
   TextEditingController _userPhoneNumberCtrl = TextEditingController(text: "");
 
   @override
@@ -61,6 +82,8 @@ class _LoginPageState extends State<SignUpPage> {
       case 0:
         return _signupProfileWidget();
       case 1:
+        return _signupGenderWidget();
+      case 2:
         return _signupSettingWidget();
     }
     return Container();
@@ -84,6 +107,9 @@ class _LoginPageState extends State<SignUpPage> {
                             color: Colors.white,
                             fontSize: 32,
                             fontWeight: FontWeight.w800)),
+                    SizedBox(
+                      height: 8,
+                    ),
                     _emailWidget(),
                     SizedBox(
                       height: 8,
@@ -100,12 +126,47 @@ class _LoginPageState extends State<SignUpPage> {
                     SizedBox(
                       height: 8,
                     ),
-                    _signUpButton(context),
-                    _loginButton(context),
                     Expanded(
                       flex: 3,
                       child: SizedBox(),
                     ),
+                    _signUpButton(context),
+                    _loginButton(context),
+                  ]))),
+    );
+  }
+
+  Widget _signupGenderWidget() {
+    return Container(
+      color: Colors.black,
+      child: Center(
+          child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 3,
+                      child: SizedBox(),
+                    ),
+                    Text("성별 입력",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 32,
+                            fontWeight: FontWeight.w800)),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    _genderWidget(),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: SizedBox(),
+                    ),
+                    _signUpGenderButton(context),
+                    _loginButton(context),
                   ]))),
     );
   }
@@ -123,13 +184,13 @@ class _LoginPageState extends State<SignUpPage> {
                       flex: 3,
                       child: SizedBox(),
                     ),
-                    Text("키와 몸무게 입력",
+                    Text("키, 몸무게 입력",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 32,
                             fontWeight: FontWeight.w800)),
                     SizedBox(
-                      height: 8,
+                      height: 12,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -154,12 +215,66 @@ class _LoginPageState extends State<SignUpPage> {
                         Expanded(child: _weightUnitWidget())
                       ],
                     ),
-                    _signUpButton(context),
-                    _loginButton(context),
                     Expanded(
                       flex: 3,
                       child: SizedBox(),
                     ),
+                    _signUpButton(context),
+                    _loginButton(context),
+                  ]))),
+    );
+  }
+
+  Widget _signupExerciseWidget() {
+    return Container(
+      color: Colors.black,
+      child: Center(
+          child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 3,
+                      child: SizedBox(),
+                    ),
+                    Text("키, 몸무게 입력",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 32,
+                            fontWeight: FontWeight.w800)),
+                    SizedBox(
+                      height: 12,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(child: _heightWidget()),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Expanded(child: _heightUnitWidget())
+                      ],
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(child: _weightWidget()),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Expanded(child: _weightUnitWidget())
+                      ],
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: SizedBox(),
+                    ),
+                    _signUpButton(context),
+                    _loginButton(context),
                   ]))),
     );
   }
@@ -258,7 +373,8 @@ class _LoginPageState extends State<SignUpPage> {
     return CupertinoSlidingSegmentedControl(
         groupValue: _userWeightUnitCtrl,
         children: _weightUnitList,
-        backgroundColor: Color.fromRGBO(25, 106, 223, 20),
+        backgroundColor: Colors.black,
+        thumbColor: Color.fromRGBO(25, 106, 223, 20),
         onValueChanged: (i) {
           setState(() {
             _userWeightUnitCtrl = i as String;
@@ -271,11 +387,27 @@ class _LoginPageState extends State<SignUpPage> {
     return CupertinoSlidingSegmentedControl(
         groupValue: _userHeightUnitCtrl,
         children: _heightUnitList,
-        backgroundColor: Color.fromRGBO(25, 106, 223, 20),
+        backgroundColor: Colors.black,
+        thumbColor: Color.fromRGBO(25, 106, 223, 20),
         onValueChanged: (i) {
           setState(() {
             _userHeightUnitCtrl = i as String;
             print(_userHeightUnitCtrl);
+          });
+        });
+  }
+
+  Widget _genderWidget() {
+    return CupertinoSlidingSegmentedControl(
+        groupValue: _userGenderCtrl,
+        children: _genderList,
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        backgroundColor: Colors.black,
+        thumbColor: Color.fromRGBO(25, 106, 223, 20),
+        onValueChanged: (i) {
+          setState(() {
+            _userGenderCtrl = i as bool;
+            print(_userGenderCtrl);
           });
         });
   }
@@ -344,8 +476,27 @@ class _LoginPageState extends State<SignUpPage> {
                 ? setState(() {
                     _signUpProfileCheck() ? _isSignupIndex = 1 : null;
                   })
-                : _signUpCheck(),
+                : _signUpProfileCheck()
+                    ? _signUpCheck()
+                    : null,
             child: Text(isLoading ? 'loggin in.....' : "회원가입",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+  }
+
+  Widget _signUpGenderButton(context) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+            color: Color.fromRGBO(246, 58, 64, 20),
+            textColor: Colors.white,
+            disabledColor: Color.fromRGBO(246, 58, 64, 20),
+            disabledTextColor: Colors.black,
+            padding: EdgeInsets.all(8.0),
+            splashColor: Colors.blueAccent,
+            onPressed: () => setState(() {
+                  _signUpGenderCheck() ? _isSignupIndex = 2 : null;
+                }),
+            child: Text(isLoading ? 'loggin in.....' : "다음",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
@@ -374,13 +525,40 @@ class _LoginPageState extends State<SignUpPage> {
   }
 
   bool _signUpProfileCheck() {
-    if (_userEmailCtrl.text != "" &&
-        _userNicknameCtrl.text != "" &&
-        _userPasswordCtrl.text != "" &&
-        _userPhoneNumberCtrl.text != "") {
+    if (_isSignupIndex == 0) {
+      if (_userEmailCtrl.text != "" &&
+          _userNicknameCtrl.text != "" &&
+          _userPasswordCtrl.text != "" &&
+          _userPhoneNumberCtrl.text != "") {
+        return true;
+      } else {
+        showToast("빈칸을 채워주세요");
+        return false;
+      }
+    } else if (_isSignupIndex == 1) {
+      if (_userGenderCtrl != "") {
+        return true;
+      } else {
+        showToast("성별을 확인해주세요");
+        return false;
+      }
+    } else if (_isSignupIndex == 2) {
+      if (_userHeightCtrl.text != "" && _userWeightCtrl.text != "") {
+        return true;
+      } else {
+        showToast("키와 몸무게를 확인해주세요");
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  bool _signUpGenderCheck() {
+    if (_userGenderCtrl != "") {
       return true;
     } else {
-      showToast("빈칸을 채워주세요");
+      showToast("성별을 확인해주세요");
       return false;
     }
   }
@@ -389,14 +567,14 @@ class _LoginPageState extends State<SignUpPage> {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
-            color: Color(0xFF717171),
+            color: Colors.black,
             textColor: Colors.white,
-            disabledColor: Color(0xFF717171),
+            disabledColor: Colors.black,
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
             splashColor: Colors.blueAccent,
             onPressed: () => isLoading ? null : _loginState.changeSignup(false),
             child: Text(isLoading ? 'loggin in.....' : "이미 계정이 있으신가요?",
-                style: TextStyle(fontSize: 15.0, color: Colors.white))));
+                style: TextStyle(fontSize: 14.0, color: Colors.white))));
   }
 }

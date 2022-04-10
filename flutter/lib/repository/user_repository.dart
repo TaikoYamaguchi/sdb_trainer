@@ -7,8 +7,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class UserService {
   static Future<String> _loadUserdataFromServer() async {
+    final storage = new FlutterSecureStorage();
+    String? user_email = await storage.read(key: "sdb_email");
     var url =
-        Uri.parse(LocalHost.getLocalHost() + "/api/getuser/cksdnr1@gmail.com");
+        Uri.parse(LocalHost.getLocalHost() + "/api/getuser/" + user_email!);
     var response = await http.get(url);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.

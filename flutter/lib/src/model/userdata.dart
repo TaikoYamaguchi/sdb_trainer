@@ -8,6 +8,7 @@ class User {
   final String height_unit;
   final String weight_unit;
   final bool is_active;
+  final bool isMan;
   final bool is_superuser;
   final int level;
   final int point;
@@ -24,6 +25,7 @@ class User {
       required this.weight_unit,
       required this.is_active,
       required this.is_superuser,
+      required this.isMan,
       required this.level,
       required this.point,
       required this.created_at});
@@ -40,6 +42,7 @@ class User {
         weight_unit: parsedJson['weight_unit'],
         is_active: parsedJson['is_active'],
         is_superuser: parsedJson['is_superuser'],
+        isMan: parsedJson['isMan'],
         level: parsedJson['level'],
         point: parsedJson['point'],
         created_at: parsedJson["created_at"]);

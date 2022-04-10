@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
 import 'package:http/http.dart' as http;
 import 'package:sdb_trainer/localhost.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ExercisesRepository {
   static Future<String> _loadExercisesdataFromLocation() async {
@@ -11,8 +12,10 @@ class ExercisesRepository {
   }
 
   static Future<String> _loadExercisesdataFromServer() async {
+    final storage = new FlutterSecureStorage();
+    String? user_email = await storage.read(key: "sdb_email");
     var url =
-        Uri.parse(LocalHost.getLocalHost() + "/api/exercise/cksdnr1@gmail.com");
+        Uri.parse(LocalHost.getLocalHost() + "/api/exercise/" + user_email!);
     var response = await http.get(url);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.

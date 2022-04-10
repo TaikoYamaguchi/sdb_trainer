@@ -36,6 +36,7 @@ def create_user(db: Session, user: schemas.UserCreate):
         height_unit=user.height_unit,
         weight_unit=user.weight_unit,
         image=user.image,
+        isMan=user.isMan,
         is_active=True,
         is_superuser=False,
         hashed_password=hashed_password,

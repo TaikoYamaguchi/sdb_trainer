@@ -21,6 +21,7 @@ class User(Base):
     image= Column(String, nullable=True)
     level = Column(Integer, nullable=False)
     point = Column(Integer, nullable=False)
+    isMan = Column(Boolean, nullable=False, default=True)
     is_active = Column(Boolean, default=True)
     is_superuser = Column(Boolean, default=False)
     
