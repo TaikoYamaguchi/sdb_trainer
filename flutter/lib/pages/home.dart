@@ -106,62 +106,66 @@ class Home extends StatelessWidget {
   }
 
   Widget _homeGaugeChart(_exunique, index, color) {
-    return GestureDetector(
-      onTap: () => {
-        _bodyStater.change(2),
-        _chartIndex.change(index),
-        _staticPageState.change(true)
-      },
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-        child: SizedBox(
-          width: 150,
-          height: 150,
-          child: SfRadialGauge(axes: <RadialAxis>[
-            RadialAxis(
-              minimum: 0,
-              maximum: _exunique.exercises[index].goal,
-              ranges: <GaugeRange>[
-                GaugeRange(
-                    startValue: 0,
-                    endValue: _exunique.exercises[index].onerm,
-                    color: color)
-              ],
-              annotations: <GaugeAnnotation>[
-                GaugeAnnotation(
-                    widget: Container(
-                        child: Column(children: <Widget>[
-                      Text(_exunique.exercises[index].name,
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold)),
-                      Text(
-                          _exunique.exercises[index].onerm.floor().toString() +
-                              "/" +
-                              _exunique.exercises[index].goal
-                                  .floor()
-                                  .toString(),
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold))
-                    ])),
-                    angle: 90,
-                    positionFactor: 0.5)
-              ],
-            )
-          ]),
-        ),
-      ),
-    );
+    return _exunique.exercises.length > index
+        ? GestureDetector(
+            onTap: () => {
+              _bodyStater.change(2),
+              _chartIndex.change(index),
+              _staticPageState.change(true)
+            },
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+              child: SizedBox(
+                width: 150,
+                height: 150,
+                child: SfRadialGauge(axes: <RadialAxis>[
+                  RadialAxis(
+                    minimum: 0,
+                    maximum: _exunique.exercises[index].goal,
+                    ranges: <GaugeRange>[
+                      GaugeRange(
+                          startValue: 0,
+                          endValue: _exunique.exercises[index].onerm,
+                          color: color)
+                    ],
+                    annotations: <GaugeAnnotation>[
+                      GaugeAnnotation(
+                          widget: Container(
+                              child: Column(children: <Widget>[
+                            Text(_exunique.exercises[index].name,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold)),
+                            Text(
+                                _exunique.exercises[index].onerm
+                                        .floor()
+                                        .toString() +
+                                    "/" +
+                                    _exunique.exercises[index].goal
+                                        .floor()
+                                        .toString(),
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold))
+                          ])),
+                          angle: 90,
+                          positionFactor: 0.5)
+                    ],
+                  )
+                ]),
+              ),
+            ),
+          )
+        : Container();
   }
 
   @override
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _userdataProvider.getdata();
-    _userdataProvider2=Provider.of<UserdataProvider>(context, listen: false);
+    _userdataProvider2 = Provider.of<UserdataProvider>(context, listen: false);
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _exercisesdataProvider.getdata();

@@ -5,10 +5,12 @@ import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:sdb_trainer/pages/home.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
+import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:sdb_trainer/src/model/exercisesdata.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -60,6 +62,15 @@ class _LoginPageState extends State<SignUpPage> {
   var _userWeightUnitCtrl = "kg";
   var _userHeightUnitCtrl = "cm";
   var _userGenderCtrl = true;
+  List<Exercises> exerciseList = [
+    Exercises(name: "스쿼트", onerm: 0.0, goal: 0.0),
+    Exercises(name: "데드리프트", onerm: 0.0, goal: 0.0),
+    Exercises(name: "벤치프레스", onerm: 0.0, goal: 0.0)
+  ];
+
+  List<TextEditingController> _onermController = [];
+  List<TextEditingController> _goalController = [];
+
   TextEditingController _userPhoneNumberCtrl = TextEditingController(text: "");
 
   @override
@@ -85,6 +96,8 @@ class _LoginPageState extends State<SignUpPage> {
         return _signupGenderWidget();
       case 2:
         return _signupSettingWidget();
+      case 3:
+        return _signupExerciseWidget();
     }
     return Container();
   }
@@ -238,7 +251,7 @@ class _LoginPageState extends State<SignUpPage> {
                       flex: 3,
                       child: SizedBox(),
                     ),
-                    Text("키, 몸무게 입력",
+                    Text("회원가입 완료!",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 32,
@@ -246,34 +259,34 @@ class _LoginPageState extends State<SignUpPage> {
                     SizedBox(
                       height: 12,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(child: _heightWidget()),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Expanded(child: _heightUnitWidget())
-                      ],
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(child: _weightWidget()),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Expanded(child: _weightUnitWidget())
-                      ],
+                    Expanded(
+                      flex: 10,
+                      child: ListView.separated(
+                          itemBuilder: (BuildContext _context, int index) {
+                            return Center(
+                                child: _exerciseWidget(
+                                    exerciseList[index], index));
+                          },
+                          separatorBuilder: (BuildContext _context, int index) {
+                            return Container(
+                              alignment: Alignment.center,
+                              height: 1,
+                              color: Colors.black,
+                              child: Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                height: 1,
+                                color: Color(0xFF717171),
+                              ),
+                            );
+                          },
+                          itemCount: exerciseList.length),
                     ),
                     Expanded(
-                      flex: 3,
+                      flex: 2,
                       child: SizedBox(),
                     ),
-                    _signUpButton(context),
+                    _weightSubmitButton(context),
                     _loginButton(context),
                   ]))),
     );
@@ -305,6 +318,74 @@ class _LoginPageState extends State<SignUpPage> {
         prefixIcon: Icon(Icons.email),
         labelText: "이름",
         border: OutlineInputBorder(),
+      ),
+    );
+  }
+
+  Widget _exerciseWidget(Exercises, index) {
+    _onermController.add(
+        new TextEditingController(text: Exercises.onerm.toStringAsFixed(1)));
+    _goalController.add(
+        new TextEditingController(text: Exercises.goal.toStringAsFixed(1)));
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              width: 120,
+              child: Text(
+                Exercises.name,
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+            ),
+            Container(
+              width: 70,
+              child: TextFormField(
+                  controller: _onermController[index],
+                  keyboardType: TextInputType.number,
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                      hintText: Exercises.onerm.toStringAsFixed(1),
+                      hintStyle: TextStyle(fontSize: 18, color: Colors.white)),
+                  onChanged: (text) {
+                    double changeweight;
+                    if (text == "") {
+                      changeweight = 0.0;
+                    } else {
+                      changeweight = double.parse(text);
+                    }
+                    setState(() {
+                      exerciseList[index].onerm = changeweight;
+                    });
+                  }),
+            ),
+            Container(
+              width: 80,
+              child: TextFormField(
+                  controller: _goalController[index],
+                  keyboardType: TextInputType.number,
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                      hintText: Exercises.goal.toStringAsFixed(1),
+                      hintStyle: TextStyle(fontSize: 18, color: Colors.white)),
+                  onChanged: (text) {
+                    double changeweight;
+                    if (text == "") {
+                      changeweight = 0.0;
+                    } else {
+                      changeweight = double.parse(text);
+                    }
+                    setState(() {
+                      exerciseList[index].goal = changeweight;
+                    });
+                  }),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -483,6 +564,21 @@ class _LoginPageState extends State<SignUpPage> {
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
+  Widget _weightSubmitButton(context) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+            color: Color.fromRGBO(246, 58, 64, 20),
+            textColor: Colors.white,
+            disabledColor: Color.fromRGBO(246, 58, 64, 20),
+            disabledTextColor: Colors.black,
+            padding: EdgeInsets.all(8.0),
+            splashColor: Colors.blueAccent,
+            onPressed: () => _postExerciseCheck(),
+            child: Text(isLoading ? 'loggin in.....' : "운동 정보 제출",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+  }
+
   Widget _signUpGenderButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -519,9 +615,28 @@ class _LoginPageState extends State<SignUpPage> {
                     password: _userPasswordCtrl.text)
                 .loginUser()
                 .then((token) => token["access_token"] != null
-                    ? {_bodyStater.change(0), _loginState.change(true)}
+                    ? {
+                        setState(() {
+                          _isSignupIndex = 3;
+                        }),
+                        _initialGoalCheck(),
+                        print(exerciseList[0]),
+                        print(exerciseList[0].goal),
+                        print(exerciseList[1].goal),
+                        print(exerciseList[2].goal),
+                        print(exerciseList.length)
+                      }
                     : showToast("아이디와 비밀번호를 확인해주세요"))
             : showToast("회원가입을 할 수 없습니다"));
+  }
+
+  void _postExerciseCheck() async {
+    print(exerciseList);
+    ExercisePost(user_email: _userEmailCtrl.text, exercises: exerciseList)
+        .postExercise()
+        .then((data) => data["user_email"] != null
+            ? {_bodyStater.change(0), _loginState.change(true)}
+            : showToast("입력을 확인해주세요"));
   }
 
   bool _signUpProfileCheck() {
@@ -560,6 +675,18 @@ class _LoginPageState extends State<SignUpPage> {
     } else {
       showToast("성별을 확인해주세요");
       return false;
+    }
+  }
+
+  void _initialGoalCheck() {
+    if (_userGenderCtrl) {
+      exerciseList[0].goal = double.parse(_userWeightCtrl.text) * 1.4;
+      exerciseList[1].goal = double.parse(_userWeightCtrl.text) * 1.7;
+      exerciseList[2].goal = double.parse(_userWeightCtrl.text) * 1.1;
+    } else {
+      exerciseList[0].goal = double.parse(_userWeightCtrl.text) * 0.9;
+      exerciseList[1].goal = double.parse(_userWeightCtrl.text) * 1.2;
+      exerciseList[2].goal = double.parse(_userWeightCtrl.text) * 0.7;
     }
   }
 

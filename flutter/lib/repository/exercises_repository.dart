@@ -59,3 +59,40 @@ main() {
     //print(_routinedata2!["asd"]);
   });
 }
+
+class ExercisePost {
+  final String user_email;
+  final List<Exercises> exercises;
+  ExercisePost({
+    required this.user_email,
+    required this.exercises,
+  });
+  Future<String> _exercisePostFromServer() async {
+    var formData = new Map<String, dynamic>();
+    print(user_email);
+    print(json.encode(exercises));
+    formData["user_email"] = user_email;
+    formData["exercises"] = jsonEncode(exercises);
+    formData["modified_number"] = 0;
+    print(formData);
+
+    var url = Uri.parse(LocalHost.getLocalHost() + "/api/exercisecreate");
+    var response = await http.post(url, body: json.encode(formData));
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      String jsonString = utf8.decode(response.bodyBytes);
+      final jsonResponse = json.decode(jsonString);
+
+      return utf8.decode(response.bodyBytes);
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<Map<String, dynamic>> postExercise() async {
+    String jsonString = await _exercisePostFromServer();
+    final jsonResponse = json.decode(jsonString);
+    return (jsonResponse);
+  }
+}

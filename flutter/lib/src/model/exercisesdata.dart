@@ -1,19 +1,26 @@
+import 'dart:convert';
+
 class Exercisesdata {
-  final int id;
-  final String user_email;
-  final List<Exercises> exercises;
-  final String? date;
-  final int? modified_number;
+  late int? id;
+  late String user_email;
+  late List<Exercises> exercises;
+  late String? date;
+  late int? modified_number;
   Exercisesdata({
-    required this.id,
+    this.id,
     required this.user_email,
     required this.exercises,
-    required this.date,
-    required this.modified_number,
+    this.date,
+    this.modified_number,
   });
 
   factory Exercisesdata.fromJson(Map<String, dynamic> parsedJson) {
-    var list = parsedJson['exercises'] as List;
+    print(parsedJson);
+    print(parsedJson['exercises']);
+    var list = parsedJson['exercises'].runtimeType == String
+        ? json.decode(parsedJson['exercises']) as List
+        : parsedJson['exercises'] as List;
+    print(list);
     List<Exercises> exerciseList =
         list.map((i) => Exercises.fromJson(i)).toList();
     return new Exercisesdata(
@@ -27,10 +34,11 @@ class Exercisesdata {
 }
 
 class Exercises {
-  final String name;
-  final double onerm;
-  final double goal;
+  late String name;
+  late double onerm;
+  late double goal;
   Exercises({required this.name, required this.onerm, required this.goal});
+  Map toJson() => {"goal": goal, "name": name, "onerm": onerm};
 
   factory Exercises.fromJson(Map<String, dynamic> parsedJson) {
     return Exercises(
