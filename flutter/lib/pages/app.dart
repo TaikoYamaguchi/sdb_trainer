@@ -6,6 +6,7 @@ import 'package:sdb_trainer/pages/exercise.dart';
 import 'package:sdb_trainer/pages/home.dart';
 import 'package:sdb_trainer/pages/login.dart';
 import 'package:sdb_trainer/pages/signup.dart';
+import 'package:sdb_trainer/pages/profile.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
@@ -60,18 +61,9 @@ class App extends StatelessWidget {
         return Calendar();
 
       case 3:
-        return Container(
-            child: Center(
-                child: FlatButton(
-                    onPressed: () => _userLogOut(), child: Text("로그아웃"))));
+        return Profile();
     }
     return Container();
-  }
-
-  void _userLogOut() {
-    UserLogOut.logOut();
-    _loginState.change(false);
-    _loginState.changeSignup(false);
   }
 
   @override
