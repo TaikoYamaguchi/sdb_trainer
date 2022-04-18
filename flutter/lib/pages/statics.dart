@@ -85,44 +85,26 @@ class _CalendarState extends State<Calendar> {
 
   PreferredSizeWidget _appbarWidget() {
     return AppBar(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: _isChartWidget.isChartWidget
-            ? (<Widget>[
-                IconButton(
-                  icon: SvgPicture.asset("assets/svg/chart_statics_on.svg"),
-                  onPressed: () {
-                    _isChartWidget.change(true);
-                  },
-                ),
-                SizedBox(width: 150),
-                IconButton(
-                  icon: SvgPicture.asset("assets/svg/calendar_statics_off.svg"),
-                  onPressed: () {
-                    _isChartWidget.change(false);
-                    print(_isChartWidget.isChartWidget);
-                  },
-                ),
-              ])
-            : (<Widget>[
-                IconButton(
-                  icon: SvgPicture.asset("assets/svg/chart_statics_off.svg"),
-                  onPressed: () {
-                    _isChartWidget.change(true);
-                    print(_isChartWidget.isChartWidget);
-                    print("chart");
-                  },
-                ),
-                SizedBox(width: 150),
-                IconButton(
-                  icon: SvgPicture.asset("assets/svg/calendar_statics_on.svg"),
-                  onPressed: () {
-                    _isChartWidget.change(false);
-                    print("calendar");
-                  },
-                ),
-              ]),
-      ),
+      title:
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+        IconButton(
+          icon: _isChartWidget.isChartWidget
+              ? SvgPicture.asset("assets/svg/chart_statics_on.svg")
+              : SvgPicture.asset("assets/svg/chart_statics_off.svg"),
+          onPressed: () {
+            _isChartWidget.change(true);
+          },
+        ),
+        SizedBox(width: 150),
+        IconButton(
+          icon: _isChartWidget.isChartWidget
+              ? SvgPicture.asset("assets/svg/calendar_statics_off.svg")
+              : SvgPicture.asset("assets/svg/calendar_statics_on.svg"),
+          onPressed: () {
+            _isChartWidget.change(false);
+          },
+        ),
+      ]),
       backgroundColor: Color(0xFF212121),
     );
   }
