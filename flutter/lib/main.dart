@@ -13,7 +13,21 @@ import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (BuildContext context) => BodyStater()),
+    ChangeNotifierProvider(
+        create: (BuildContext context) => ChartIndexProvider()),
+    ChangeNotifierProvider(
+        create: (BuildContext context) => StaticPageProvider()),
+    ChangeNotifierProvider(
+        create: (BuildContext context) => LoginPageProvider()),
+    ChangeNotifierProvider(
+        create: (BuildContext context) => ExercisesdataProvider()),
+    ChangeNotifierProvider(
+        create: (BuildContext context) => UserdataProvider()),
+    ChangeNotifierProvider(
+        create: (BuildContext context) => WorkoutdataProvider())
+  ], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -23,22 +37,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: MultiProvider(providers: [
-        ChangeNotifierProvider(
-            create: (BuildContext context) => BodyStater()),
-        ChangeNotifierProvider(
-            create: (BuildContext context) => ChartIndexProvider()),
-        ChangeNotifierProvider(
-            create: (BuildContext context) => StaticPageProvider()),
-        ChangeNotifierProvider(
-            create: (BuildContext context) => LoginPageProvider()),
-        ChangeNotifierProvider(
-            create: (BuildContext context) => ExercisesdataProvider()),
-        ChangeNotifierProvider(
-            create: (BuildContext context) => UserdataProvider()),
-        ChangeNotifierProvider(
-            create: (BuildContext context) => WorkoutdataProvider())
-      ], child: App()),
+      home: App(),
     );
   }
 }

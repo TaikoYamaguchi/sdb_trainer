@@ -3,7 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 
+import 'package:sdb_trainer/pages/userProfile.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
+
+import 'package:transition/transition.dart';
 
 class Profile extends StatelessWidget {
   Profile({Key? key}) : super(key: key);
@@ -21,7 +24,13 @@ class Profile extends StatelessWidget {
           backgroundColor: Colors.black),
       body: Column(children: [
         ElevatedButton(
-            onPressed: () => null,
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  Transition(
+                      child: UserProfile(),
+                      transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+            },
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
             child: SizedBox(
