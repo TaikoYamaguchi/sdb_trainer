@@ -53,4 +53,24 @@ def get_user_by_email(db: Session, email: str) -> schemas.UserBase:
 def get_user_by_phone_number(db: Session, phone_number: str) -> schemas.UserBase:
     return db.query(models.User).filter(models.User.phone_number == phone_number).first()
 
+def edit_user(
+    db: Session, email: str, user: schemas.UserEdit
+) -> schemas.UserBase:
+    db_user = get_user_by_email(db, email)
+    if not db_user:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User not found")
+    update_data = user.dict(exclude_unset=True)
+
+    if user.password != "":
+        update_data["hashed_password"] = get_password_hash(user.password)
+        del update_data["password"]
+
+    for key, value in update_data.items():
+        setattr(db_user, key, value)
+
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
 

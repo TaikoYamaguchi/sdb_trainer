@@ -28,6 +28,12 @@ class UserCreate(UserBase):
     class Config:
         orm_mode = True
 
+class UserEdit(UserBase):
+    password: t.Optional[str] = None
+
+    class Config:
+        orm_mode = True
+
 class User(UserBase):
     id: int
     email: str

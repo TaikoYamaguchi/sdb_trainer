@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:provider/provider.dart';
+import 'package:transition/transition.dart';
+import 'package:sdb_trainer/pages/userProfileNickname.dart';
 
 class UserProfile extends StatefulWidget {
   UserProfile({Key? key}) : super(key: key);
@@ -30,7 +32,13 @@ class _UserProfileState extends State<UserProfile> {
   Widget _userProfileWidget() {
     return Column(children: [
       ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context,
+              Transition(
+                  child: ProfileNickname(),
+                  transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+        },
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
         child: SizedBox(
