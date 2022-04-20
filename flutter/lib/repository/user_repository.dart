@@ -143,3 +143,52 @@ class UserLogOut {
     await storage.delete(key: "sdb_token");
   }
 }
+
+class UserEdit {
+  final String userEmail;
+  final String userName;
+  final String userNickname;
+  final String userHeight;
+  final String userWeight;
+  final String userHeightUnit;
+  final String userWeightUnit;
+  final String userImage;
+  final String password;
+  UserEdit(
+      {required this.userEmail,
+      required this.userName,
+      required this.userNickname,
+      required this.userHeight,
+      required this.userWeight,
+      required this.userHeightUnit,
+      required this.userWeightUnit,
+      required this.userImage,
+      required this.password});
+  Future<String> _userEditFromServer() async {
+    var formData = new Map<String, dynamic>();
+    formData["username"] = userName;
+    formData["nickname"] = userNickname;
+    formData["image"] = userImage;
+    formData["height"] = userHeight;
+    formData["weight"] = userWeight;
+    formData["height_unit"] = userHeightUnit;
+    formData["weight_unit"] = userWeightUnit;
+    formData["password"] = password;
+    print(json.encode(formData));
+    var url = Uri.parse(LocalHost.getLocalHost() + "/api/users/" + userEmail);
+    var response = await http.put(url, body: json.encode(formData));
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      return utf8.decode(response.bodyBytes);
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<Map<String, dynamic>> editUser() async {
+    String jsonString = await _userEditFromServer();
+    final jsonResponse = json.decode(jsonString);
+    return (jsonResponse);
+  }
+}

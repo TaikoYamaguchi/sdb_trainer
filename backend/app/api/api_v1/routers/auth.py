@@ -1,5 +1,5 @@
-from app.db.crud import create_user, get_user_by_email, get_user_by_phone_number
-from app.db.schemas import User, UserCreate
+from app.db.crud import create_user, get_user_by_email, get_user_by_phone_number, edit_user
+from app.db.schemas import User, UserCreate, UserEdit
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import APIRouter, Depends, Request, HTTPException, status
 from datetime import timedelta
@@ -105,3 +105,18 @@ async def user_email(
 ):
     user = get_user_by_email(db, email)
     return user
+
+
+@r.put(
+    "/users/{email}", response_model=User, response_model_exclude_none=True
+)
+async def user_edit(
+    request: Request,
+    email: str,
+    user: UserEdit,
+    db=Depends(get_db),
+):
+    """
+    Update existing user
+    """
+    return edit_user(db, email, user)
