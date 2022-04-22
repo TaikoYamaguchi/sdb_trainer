@@ -57,7 +57,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   }
 
 
-  Widget _exercisesWidget() {
+  Widget _exercisesWidget(bool shirink) {
     return Container(
       color: Colors.black,
       child: ListView.separated(
@@ -134,6 +134,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             );
 
           },
+          shrinkWrap: shirink,
           itemCount: widget.exerciselist.length
       ),
     );
@@ -159,6 +160,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               ),
             ),
           ),
+          _exercisesWidget(true),
           ExerciseState.exercisesWidget(
               _exercisesdataProvider.exercisesdata, true)
         ],
@@ -174,7 +176,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
       appBar: _appbarWidget(),
       body: _isexsearch
       ? _exercises_searchWidget()
-      : _exercisesWidget()
+      : _exercisesWidget(false)
     );
   }
 }
