@@ -161,6 +161,18 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             ),
           ),
           _exercisesWidget(true),
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5),
+            color: Color(0xFF212121),
+            height: 20,
+            child: Row(
+              children: [
+                Text(
+                  "Not in List"
+                ),
+              ],
+            ),
+          ),
           ExerciseState.exercisesWidget(
               _exercisesdataProvider.exercisesdata, true)
         ],
