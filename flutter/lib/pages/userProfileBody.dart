@@ -14,7 +14,7 @@ class ProfileBody extends StatefulWidget {
 class _ProfileBodyState extends State<ProfileBody> {
   bool isLoading = false;
   var _userdataProvider;
-  var _userWeightUnitCtrl = "kg";
+  var _userWeightUnitCtrl = "lb";
   var _userHeightUnitCtrl = "cm";
   var _userHeightCtrl;
   var _userWeightCtrl;
@@ -53,6 +53,12 @@ class _ProfileBodyState extends State<ProfileBody> {
         text: _userdataProvider.userdata.height.toString());
     _userWeightCtrl = TextEditingController(
         text: _userdataProvider.userdata.weight.toString());
+
+    _userHeightCtrl.selection = TextSelection.fromPosition(
+        TextPosition(offset: _userHeightCtrl.text.length));
+
+    _userWeightCtrl.selection = TextSelection.fromPosition(
+        TextPosition(offset: _userWeightCtrl.text.length));
 
     return Scaffold(appBar: _appbarWidget(), body: _signupSettingWidget());
   }
@@ -168,10 +174,7 @@ class _ProfileBodyState extends State<ProfileBody> {
         backgroundColor: Colors.black,
         thumbColor: Color.fromRGBO(25, 106, 223, 20),
         onValueChanged: (i) {
-          setState(() {
-            _userWeightUnitCtrl = i as String;
-            print(_userWeightUnitCtrl);
-          });
+          _userWeightUnitCtrl = i as String;
         });
   }
 
@@ -182,10 +185,7 @@ class _ProfileBodyState extends State<ProfileBody> {
         backgroundColor: Colors.black,
         thumbColor: Color.fromRGBO(25, 106, 223, 20),
         onValueChanged: (i) {
-          setState(() {
-            _userHeightUnitCtrl = i as String;
-            print(_userHeightUnitCtrl);
-          });
+          _userHeightUnitCtrl = i as String;
         });
   }
 
@@ -200,7 +200,7 @@ class _ProfileBodyState extends State<ProfileBody> {
             padding: EdgeInsets.all(8.0),
             splashColor: Colors.blueAccent,
             onPressed: () => _editCheck(),
-            child: Text(isLoading ? 'loggin in.....' : "닉네임 수정",
+            child: Text(isLoading ? 'loggin in.....' : "프로필 수정",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
@@ -209,7 +209,7 @@ class _ProfileBodyState extends State<ProfileBody> {
       UserEdit(
               userEmail: _userdataProvider.userdata.email,
               userName: _userdataProvider.userdata.username,
-              userNickname: _userdataProvider.userdata.userNickname,
+              userNickname: _userdataProvider.userdata.nickname,
               userHeight: _userHeightCtrl.text.toString(),
               userWeight: _userWeightCtrl.text.toString(),
               userHeightUnit: _userHeightUnitCtrl,
@@ -218,7 +218,11 @@ class _ProfileBodyState extends State<ProfileBody> {
               password: "")
           .editUser()
           .then((data) => data["username"] != null
-              ? {showToast("수정 완료"), _userdataProvider.getdata()}
+              ? {
+                  showToast("수정 완료"),
+                  _userdataProvider.getdata(),
+                  Navigator.pop(context)
+                }
               : showToast("수정할 수 없습니다"));
     } else {
       showToast("키와 몸무게를 입력해주세요");

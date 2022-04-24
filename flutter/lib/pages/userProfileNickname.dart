@@ -25,6 +25,8 @@ class _ProfileNicknameState extends State<ProfileNickname> {
     _userdataProvider = Provider.of<UserdataProvider>(context);
     _userNicknameCtrl =
         TextEditingController(text: _userdataProvider.userdata.nickname);
+    _userNicknameCtrl.selection = TextSelection.fromPosition(
+        TextPosition(offset: _userNicknameCtrl.text.length));
     return Scaffold(appBar: _appbarWidget(), body: _signupProfileWidget());
   }
 
@@ -121,7 +123,11 @@ class _ProfileNicknameState extends State<ProfileNickname> {
               password: "")
           .editUser()
           .then((data) => data["username"] != null
-              ? {showToast("수정 완료"), _userdataProvider.getdata()}
+              ? {
+                  showToast("수정 완료"),
+                  _userdataProvider.getdata(),
+                  Navigator.pop(context)
+                }
               : showToast("수정할 수 없습니다"));
     } else {
       showToast("닉네임을 입력해주세요");
