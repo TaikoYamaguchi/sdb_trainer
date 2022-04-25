@@ -44,6 +44,19 @@ class Profile extends StatelessWidget {
                       Icon(Icons.chevron_right, color: Colors.white),
                     ]))),
         ElevatedButton(
+            onPressed: () => null,
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
+            child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 50,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("목표설정", style: TextStyle(color: Colors.white)),
+                      Icon(Icons.chevron_right, color: Colors.white),
+                    ]))),
+        ElevatedButton(
             onPressed: () => _userLogOut(),
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),

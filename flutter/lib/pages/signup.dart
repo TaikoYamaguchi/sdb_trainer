@@ -528,6 +528,10 @@ class _LoginPageState extends State<SignUpPage> {
     return TextFormField(
       controller: _userPasswordCtrl,
       style: TextStyle(color: Colors.white),
+      obscureText: true,
+      enableSuggestions: false,
+      autocorrect: false,
+      obscuringCharacter: "*",
       decoration: InputDecoration(
         labelText: "비밀번호",
         labelStyle: TextStyle(color: Colors.white),

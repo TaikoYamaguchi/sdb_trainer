@@ -95,6 +95,10 @@ class _LoginPageState extends State<LoginPage> {
   Widget _passwordWidget() {
     return TextFormField(
         controller: _userPasswordCtrl,
+        obscureText: true,
+        enableSuggestions: false,
+        autocorrect: false,
+        obscuringCharacter: "*",
         decoration: InputDecoration(
             prefixIcon: Icon(Icons.vpn_key_rounded, color: Colors.white),
             labelText: "비밀번호",
