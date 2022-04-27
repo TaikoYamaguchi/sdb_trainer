@@ -7,6 +7,7 @@ import 'package:sdb_trainer/pages/userProfile.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 
 import 'package:transition/transition.dart';
+import 'package:sdb_trainer/pages/userProfileGoal.dart';
 
 class Profile extends StatelessWidget {
   Profile({Key? key}) : super(key: key);
@@ -44,7 +45,13 @@ class Profile extends StatelessWidget {
                       Icon(Icons.chevron_right, color: Colors.white),
                     ]))),
         ElevatedButton(
-            onPressed: () => null,
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  Transition(
+                      child: ProfileGoal(),
+                      transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+            },
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
             child: SizedBox(

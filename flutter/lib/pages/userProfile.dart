@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/userProfileNickname.dart';
 import 'package:sdb_trainer/pages/userProfileBody.dart';
+import 'package:sdb_trainer/pages/userProfileGoal.dart';
 
 class UserProfile extends StatefulWidget {
   UserProfile({Key? key}) : super(key: key);

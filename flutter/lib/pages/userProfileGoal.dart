@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
+import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
+import 'package:sdb_trainer/src/model/exercisesdata.dart';
 
-class ProfileNickname extends StatefulWidget {
+class ProfileGoal extends StatefulWidget {
   @override
-  _ProfileNicknameState createState() => _ProfileNicknameState();
+  _ProfileGoalState createState() => _ProfileGoalState();
 }
 
-class _ProfileNicknameState extends State<ProfileNickname> {
+class _ProfileGoalState extends State<ProfileGoal> {
   bool isLoading = false;
   var _userdataProvider;
+  var _exercisesdataProvider;
   var _userNicknameCtrl;
+  var _exerciseList;
+
+  List<TextEditingController> _onermController = [];
+  List<TextEditingController> _goalController = [];
 
   @override
   void initState() {
@@ -23,11 +31,11 @@ class _ProfileNicknameState extends State<ProfileNickname> {
   @override
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context);
-    _userNicknameCtrl =
-        TextEditingController(text: _userdataProvider.userdata.nickname);
-    _userNicknameCtrl.selection = TextSelection.fromPosition(
-        TextPosition(offset: _userNicknameCtrl.text.length));
-    return Scaffold(appBar: _appbarWidget(), body: _signupProfileWidget());
+    _exercisesdataProvider = Provider.of<ExercisesdataProvider>(context);
+    print(_exercisesdataProvider.exercisesdata.exercises);
+    _exerciseList = _exercisesdataProvider.exercisesdata.exercises;
+
+    return Scaffold(appBar: _appbarWidget(), body: _signupExerciseWidget());
   }
 
   PreferredSizeWidget _appbarWidget() {
@@ -40,7 +48,7 @@ class _ProfileNicknameState extends State<ProfileNickname> {
     );
   }
 
-  Widget _signupProfileWidget() {
+  Widget _signupExerciseWidget() {
     return Container(
       color: Colors.black,
       child: Center(
@@ -50,50 +58,155 @@ class _ProfileNicknameState extends State<ProfileNickname> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Expanded(
-                      flex: 2,
+                      flex: 1,
                       child: SizedBox(),
                     ),
-                    Text("닉네임 변경",
+                    Text("운동 정보 수정",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 32,
                             fontWeight: FontWeight.w800)),
+                    Text("목표치와 1rm을 설정해보세요",
+                        style: TextStyle(color: Colors.white, fontSize: 13)),
                     SizedBox(
-                      height: 8,
+                      height: 40,
                     ),
-                    _nicknameWidget(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                              width: 120,
+                              child: Text(
+                                "운동",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                              )),
+                          Container(
+                              width: 70,
+                              child: Text("1rm",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ),
+                                  textAlign: TextAlign.center)),
+                          Container(
+                              width: 80,
+                              child: Text("목표",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ),
+                                  textAlign: TextAlign.center))
+                        ],
+                      ),
+                    ),
                     Expanded(
-                      flex: 3,
+                      flex: 10,
+                      child: ListView.separated(
+                          itemBuilder: (BuildContext _context, int index) {
+                            return Center(
+                                child: _exerciseWidget(
+                                    _exerciseList[index], index));
+                          },
+                          separatorBuilder: (BuildContext _context, int index) {
+                            return Container(
+                              alignment: Alignment.center,
+                              height: 1,
+                              color: Colors.black,
+                              child: Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                height: 1,
+                                color: Color(0xFF717171),
+                              ),
+                            );
+                          },
+                          itemCount: _exerciseList.length),
+                    ),
+                    Expanded(
+                      flex: 2,
                       child: SizedBox(),
                     ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    _editButton(context),
+                    _weightSubmitButton(context),
                   ]))),
     );
   }
 
-  Widget _nicknameWidget() {
-    return TextFormField(
-      controller: _userNicknameCtrl,
-      style: TextStyle(color: Colors.white),
-      decoration: InputDecoration(
-        labelText: "닉네임",
-        labelStyle: TextStyle(color: Colors.white),
-        border: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.white, width: 2.0),
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2.0),
-          borderRadius: BorderRadius.circular(5.0),
+  Widget _exerciseWidget(Exercises, index) {
+    _onermController.add(
+        new TextEditingController(text: Exercises.onerm.toStringAsFixed(1)));
+    _goalController.add(
+        new TextEditingController(text: Exercises.goal.toStringAsFixed(1)));
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              width: 120,
+              child: Text(
+                Exercises.name,
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+            ),
+            Container(
+              width: 70,
+              child: TextFormField(
+                  controller: _onermController[index],
+                  keyboardType: TextInputType.number,
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                      hintText: Exercises.onerm.toStringAsFixed(1),
+                      hintStyle: TextStyle(fontSize: 18, color: Colors.white)),
+                  onChanged: (text) {
+                    double changeweight;
+                    if (text == "") {
+                      changeweight = 0.0;
+                    } else {
+                      changeweight = double.parse(text);
+                    }
+                    setState(() {
+                      _exerciseList[index].onerm = changeweight;
+                    });
+                  }),
+            ),
+            Container(
+              width: 80,
+              child: TextFormField(
+                  controller: _goalController[index],
+                  keyboardType: TextInputType.number,
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                      hintText: Exercises.goal.toStringAsFixed(1),
+                      hintStyle: TextStyle(fontSize: 18, color: Colors.white)),
+                  onChanged: (text) {
+                    double changeweight;
+                    if (text == "") {
+                      changeweight = 0.0;
+                    } else {
+                      changeweight = double.parse(text);
+                    }
+                    setState(() {
+                      _exerciseList[index].goal = changeweight;
+                    });
+                  }),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _editButton(context) {
+  Widget _weightSubmitButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
@@ -103,34 +216,22 @@ class _ProfileNicknameState extends State<ProfileNickname> {
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
             splashColor: Colors.blueAccent,
-            onPressed: () => _editCheck(),
-            child: Text(isLoading ? 'loggin in.....' : "닉네임 수정",
+            onPressed: () => _postExerciseCheck(),
+            child: Text(isLoading ? 'loggin in.....' : "운동 정보 수정",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
-  void _editCheck() async {
-    print(_userNicknameCtrl.text);
-    if (_userNicknameCtrl.text != "") {
-      UserEdit(
-              userEmail: _userdataProvider.userdata.email,
-              userName: _userdataProvider.userdata.username,
-              userNickname: _userNicknameCtrl.text,
-              userHeight: _userdataProvider.userdata.height.toString(),
-              userWeight: _userdataProvider.userdata.weight.toString(),
-              userHeightUnit: _userdataProvider.userdata.height_unit,
-              userWeightUnit: _userdataProvider.userdata.weight_unit,
-              userImage: "",
-              password: "")
-          .editUser()
-          .then((data) => data["username"] != null
-              ? {
-                  showToast("수정 완료"),
-                  _userdataProvider.getdata(),
-                  Navigator.pop(context)
-                }
-              : showToast("수정할 수 없습니다"));
-    } else {
-      showToast("닉네임을 입력해주세요");
-    }
+  void _postExerciseCheck() async {
+    ExercisePost(
+            user_email: _userdataProvider.userdata.email,
+            exercises: _exerciseList)
+        .postExercise()
+        .then((data) => data["user_email"] != null
+            ? {
+                showToast("수정 완료"),
+                _exercisesdataProvider.getdata(),
+                Navigator.pop(context)
+              }
+            : showToast("입력을 확인해주세요"));
   }
 }

@@ -256,8 +256,45 @@ class _LoginPageState extends State<SignUpPage> {
                             color: Colors.white,
                             fontSize: 32,
                             fontWeight: FontWeight.w800)),
+                    Text("목표치와 1rm을 설정해보세요",
+                        style: TextStyle(color: Colors.white, fontSize: 13)),
                     SizedBox(
-                      height: 12,
+                      height: 40,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                              width: 120,
+                              child: Text(
+                                "운동",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                              )),
+                          Container(
+                              width: 70,
+                              child: Text("1rm",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ),
+                                  textAlign: TextAlign.center)),
+                          Container(
+                              width: 80,
+                              child: Text("목표",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ),
+                                  textAlign: TextAlign.center))
+                        ],
+                      ),
                     ),
                     Expanded(
                       flex: 10,
