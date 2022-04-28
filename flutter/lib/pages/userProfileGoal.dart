@@ -222,10 +222,10 @@ class _ProfileGoalState extends State<ProfileGoal> {
   }
 
   void _postExerciseCheck() async {
-    ExercisePost(
+    ExerciseEdit(
             user_email: _userdataProvider.userdata.email,
             exercises: _exerciseList)
-        .postExercise()
+        .editExercise()
         .then((data) => data["user_email"] != null
             ? {
                 showToast("수정 완료"),

@@ -1,4 +1,4 @@
-from app.db.crud_exercise import create_exercise, get_exercise_by_email
+from app.db.crud_exercise import create_exercise, get_exercise_by_email, edit_exercise
 from fastapi import APIRouter, Request, Depends, Response, encoders
 import typing as t
 
@@ -30,5 +30,14 @@ async def exercises_list(
     exercise = get_exercise_by_email(db, email)
     # This is necessary for react-admin to work
     return exercise
+
+@r.put("/exercise", response_model=ExercisesCreate, response_model_exclude_none=True)
+async def exercise_edit(
+    request: Request,
+    exercise: ExercisesCreate,
+    db=Depends(get_db),
+):
+    return edit_exercise(db, exercise)
+
 
 
