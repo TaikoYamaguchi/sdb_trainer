@@ -3,7 +3,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/each_workout.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
+import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
+import 'package:sdb_trainer/repository/workout_repository.dart';
+import 'package:sdb_trainer/src/model/workoutdata.dart';
+import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:transition/transition.dart';
 
 class Exercise extends StatefulWidget {
@@ -15,6 +19,8 @@ class Exercise extends StatefulWidget {
 }
 
 class ExerciseState extends State<Exercise> {
+  TextEditingController _workoutNameCtrl = TextEditingController(text: "");
+  var _userdataProvider;
   var _exercisesdataProvider;
   var _workoutdataProvider;
   List<Map<String, dynamic>> datas = [];
@@ -23,9 +29,20 @@ class ExerciseState extends State<Exercise> {
   int swap = 1;
   String _title = "Workout List";
 
+  List<Sets> setslist = [
+    Sets(index:0, weight: 100.0, reps: 1 , ischecked: false)
+  ];
+
+  late List<Exercises> exerciseList = [
+    Exercises(name: "스쿼트", sets: setslist , onerm: 0.0, rest: 1),
+  ];
+
+
+
   @override
   void initState() {
     super.initState();
+
   }
 
   PreferredSizeWidget _appbarWidget() {
@@ -56,7 +73,7 @@ class ExerciseState extends State<Exercise> {
         IconButton(
           icon: SvgPicture.asset("assets/svg/add.svg"),
           onPressed: () {
-            print("press!");
+            _displayTextInputDialog(context);
           },
         )
       ],
@@ -229,9 +246,53 @@ class ExerciseState extends State<Exercise> {
     return Container();
   }
 
+  Future<void> _displayTextInputDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('TextField in Dialog'),
+            content: TextField(
+              onChanged: (value) {
+                setState(() {
+                   print(value);
+                });
+              },
+              controller: _workoutNameCtrl,
+              decoration: InputDecoration(hintText: "Text Field in Dialog"),
+            ),
+            actions: <Widget>[_workoutSubmitButton(context),],
+          );
+        });
+  }
+
+  Widget _workoutSubmitButton(context) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+            color: Color.fromRGBO(246, 58, 64, 20),
+            textColor: Colors.white,
+            disabledColor: Color.fromRGBO(246, 58, 64, 20),
+            disabledTextColor: Colors.black,
+            padding: EdgeInsets.all(8.0),
+            splashColor: Colors.blueAccent,
+            onPressed: () => _postWorkoutCheck(),
+            child: Text("workout 이름 제출",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+  }
+
+  void _postWorkoutCheck() async {
+
+    WorkoutPost(user_email: _userdataProvider.userdata.email, name: _workoutNameCtrl.text,  exercises: exerciseList)
+        .postWorkout()
+        .then((data) => data["user_email"] != null
+        ? Navigator.pop(context)
+        : showToast("입력을 확인해주세요"));
+  }
 
   @override
   Widget build(BuildContext context) {
+    _userdataProvider = Provider.of<UserdataProvider>(context);
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _exercisesdataProvider.getdata();

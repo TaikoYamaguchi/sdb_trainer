@@ -35,14 +35,42 @@ class RoutineRepository {
   }
 }
 
-main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  RoutinedataList _routinedata;
-  RoutineRepository.loadRoutinedata().then((value) {
-    _routinedata = value;
-    print(_routinedata.routinedatas[0].exercises[0].sets[0].ischecked);
-    _routinedata.routinedatas[0].exercises[0].sets[0].ischecked = true;
-
-    print(_routinedata.routinedatas[0].exercises[0].sets[0].ischecked);
+class WorkoutPost {
+  final String user_email;
+  final String name;
+  final List<Exercises> exercises;
+  WorkoutPost({
+    required this.user_email,
+    required this.name,
+    required this.exercises,
   });
+  Future<String> _workoutPostFromServer() async {
+    var formData = new Map<String, dynamic>();
+    print(user_email);
+    print(json.encode(exercises));
+    formData["user_email"] = user_email;
+    formData["name"] = name;
+    formData["exercises"] = jsonEncode(exercises);
+    formData["modified_number"] = 0;
+    print(formData);
+
+    var url = Uri.parse(LocalHost.getLocalHost() + "/api/workoutcreate");
+    var response = await http.post(url, body: json.encode(formData));
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      String jsonString = utf8.decode(response.bodyBytes);
+      final jsonResponse = json.decode(jsonString);
+
+      return utf8.decode(response.bodyBytes);
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<Map<String, dynamic>> postWorkout() async {
+    String jsonString = await _workoutPostFromServer();
+    final jsonResponse = json.decode(jsonString);
+    return (jsonResponse);
+  }
 }
