@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Routinedata {
   final int id;
   final String user_email;
@@ -14,7 +16,11 @@ class Routinedata {
       required this.routine_time});
 
   factory Routinedata.fromJson(Map<String, dynamic> parsedJson) {
-    var list = parsedJson['exercises'] as List;
+
+    var list = parsedJson['exercises'].runtimeType == String
+        ? json.decode(parsedJson['exercises']) as List
+        : parsedJson['exercises'] as List;
+
     List<Exercises> exerciseList =
         list.map((i) => Exercises.fromJson(i)).toList();
     return Routinedata(
@@ -38,6 +44,7 @@ class Exercises {
       required this.onerm,
       required this.rest});
 
+  Map toJson() => {"name": name, "sets": sets, "onerm": onerm, "rest": rest};
   factory Exercises.fromJson(Map<String, dynamic> parsedJson) {
     var list = parsedJson["sets"] as List;
     List<Sets> setList = list.map((i) => Sets.fromJson(i)).toList();
@@ -74,6 +81,7 @@ class Sets {
       required this.weight,
       required this.reps,
       required this.ischecked});
+  Map toJson() => {"index": index, "weight": weight, "reps": reps, "ischecked": ischecked};
   factory Sets.fromJson(Map<String, dynamic> parsedJson) {
     return Sets(
       index: parsedJson["index"],
@@ -83,3 +91,4 @@ class Sets {
     );
   }
 }
+

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +34,8 @@ class ExerciseState extends State<Exercise> {
   List<Sets> setslist = [
     Sets(index:0, weight: 100.0, reps: 1 , ischecked: false)
   ];
+
+  
 
   late List<Exercises> exerciseList = [
     Exercises(name: "스쿼트", sets: setslist , onerm: 0.0, rest: 1),

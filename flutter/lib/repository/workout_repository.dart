@@ -35,6 +35,27 @@ class RoutineRepository {
   }
 }
 
+class Exercises_to_Encode {
+  final String name;
+  final String sets;
+  final double? onerm;
+  final int rest;
+  Exercises_to_Encode(
+      {required this.name,
+        required this.sets,
+        required this.onerm,
+        required this.rest});
+
+  factory Exercises_to_Encode.fromparsed(Exercises gotoJson) {
+    return Exercises_to_Encode(
+        name: gotoJson.name,
+        rest: gotoJson.rest,
+        sets: jsonEncode(gotoJson.sets).toString(),
+        onerm: gotoJson.onerm);
+  }
+}
+
+
 class WorkoutPost {
   final String user_email;
   final String name;
@@ -45,13 +66,17 @@ class WorkoutPost {
     required this.exercises,
   });
   Future<String> _workoutPostFromServer() async {
+
+    var list = exercises;
+    List<Exercises_to_Encode> Encoded_sets = list.map((i) => Exercises_to_Encode.fromparsed(i)).toList();
+
     var formData = new Map<String, dynamic>();
     print(user_email);
-    print(json.encode(exercises));
+    //print(json.encode(Encoded_sets));
     formData["user_email"] = user_email;
     formData["name"] = name;
     formData["exercises"] = jsonEncode(exercises);
-    formData["modified_number"] = 0;
+    formData["routine_time"] = 0;
     print(formData);
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/workoutcreate");
