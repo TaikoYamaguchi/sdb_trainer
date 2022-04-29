@@ -58,17 +58,18 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     _passwordWidget(),
                     SizedBox(
-                      height: 4,
+                      height: 10,
                     ),
                     _loginButton(context),
                     SizedBox(
                       height: 4,
                     ),
-                    _signUpButton(context),
+                    _loginWithKakao(context),
                     Expanded(
                       flex: 3,
                       child: SizedBox(),
                     ),
+                    _signUpButton(context),
                   ]))),
     ));
   }
@@ -90,6 +91,19 @@ class _LoginPageState extends State<LoginPage> {
             ),
             fillColor: Colors.white),
         style: TextStyle(color: Colors.white));
+  }
+
+  Widget _loginWithKakao(context) {
+    return InkWell(
+      child: IconButton(
+        icon: Image.asset(
+          'assets/svg/kakao_login_large_wide.png',
+        ),
+        constraints: BoxConstraints(
+            minWidth: MediaQuery.of(context).size.width, minHeight: 70),
+        onPressed: () {},
+      ),
+    );
   }
 
   Widget _passwordWidget() {
@@ -118,31 +132,50 @@ class _LoginPageState extends State<LoginPage> {
   Widget _loginButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            color: Color.fromRGBO(25, 106, 223, 20),
-            textColor: Colors.white,
-            disabledColor: Color.fromRGBO(25, 106, 223, 20),
-            disabledTextColor: Colors.black,
-            padding: EdgeInsets.all(8.0),
-            splashColor: Colors.blueAccent,
-            onPressed: () => isLoading ? null : _loginCheck(),
-            child: Text(isLoading ? 'loggin in.....' : "로그인",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+        height: 53,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
+          child: FlatButton(
+              color: Color.fromRGBO(25, 106, 223, 20),
+              textColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)),
+              disabledColor: Color.fromRGBO(25, 106, 223, 20),
+              disabledTextColor: Colors.black,
+              padding: EdgeInsets.all(8.0),
+              splashColor: Colors.blueAccent,
+              onPressed: () => isLoading ? null : _loginCheck(),
+              child: Text(isLoading ? 'loggin in.....' : "로그인",
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400))),
+        ));
   }
 
   Widget _signUpButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            color: Color.fromRGBO(246, 58, 64, 20),
-            textColor: Colors.white,
-            disabledColor: Color.fromRGBO(246, 58, 64, 20),
-            disabledTextColor: Colors.black,
-            padding: EdgeInsets.all(8.0),
-            splashColor: Colors.blueAccent,
-            onPressed: () => isLoading ? null : _loginState.changeSignup(true),
-            child: Text(isLoading ? 'loggin in.....' : "회원가입",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+        height: 53,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
+          child: FlatButton(
+              color: Color.fromRGBO(246, 58, 64, 20),
+              textColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)),
+              disabledColor: Color.fromRGBO(246, 58, 64, 20),
+              disabledTextColor: Colors.black,
+              padding: EdgeInsets.all(8.0),
+              splashColor: Colors.blueAccent,
+              onPressed: () =>
+                  isLoading ? null : _loginState.changeSignup(true),
+              child: Text(isLoading ? 'loggin in.....' : "회원가입",
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400))),
+        ));
   }
 
   void _loginCheck() async {
