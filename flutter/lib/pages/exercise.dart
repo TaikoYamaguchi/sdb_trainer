@@ -163,7 +163,7 @@ class ExerciseState extends State<Exercise> {
   static Widget exercisesWidget(exuniq, bool shirink) {
     double top = 0;
     double bottom = 0;
-    print("exercises");
+    print(exuniq[0].name);
     return Container(
       color: Colors.black,
       child: ListView.separated(
@@ -172,7 +172,7 @@ class ExerciseState extends State<Exercise> {
             if (index == 0) {
               top = 20;
               bottom = 0;
-            } else if (index == exuniq.exercises.length - 1) {
+            } else if (index == exuniq.length - 1) {
               top = 0;
               bottom = 20;
             } else {
@@ -196,7 +196,7 @@ class ExerciseState extends State<Exercise> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      exuniq.exercises[index].name,
+                      exuniq[index].name,
                       style: TextStyle(fontSize: 21, color: Colors.white),
                     ),
                     Container(
@@ -208,7 +208,7 @@ class ExerciseState extends State<Exercise> {
                                   fontSize: 13, color: Color(0xFF717171))),
                           Expanded(child: SizedBox()),
                           Text(
-                              "1RM: ${exuniq.exercises[index].onerm}/${exuniq.exercises[index].goal} unit",
+                              "1RM: ${exuniq[index].onerm}/${exuniq[index].goal} unit",
                               style: TextStyle(
                                   fontSize: 13, color: Color(0xFF717171))),
                         ],
@@ -234,7 +234,7 @@ class ExerciseState extends State<Exercise> {
           },
           scrollDirection: Axis.vertical,
           shrinkWrap: shirink,
-          itemCount: exuniq.exercises.length
+          itemCount: exuniq.length
       ),
     );
   }
@@ -309,7 +309,7 @@ class ExerciseState extends State<Exercise> {
       body: Consumer2<ExercisesdataProvider,WorkoutdataProvider>(
           builder: (context, provider1, provider2, widget) {
             if (provider2.workoutdata != null) {
-              return _bodyWidget(provider1.exercisesdata);
+              return _bodyWidget(provider1.exercisesdata.exercises);
             }
             return Container(
               color: Colors.black,

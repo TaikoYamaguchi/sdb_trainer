@@ -21,6 +21,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   final controller = TextEditingController();
   var _exercisesdataProvider;
   var _testdata;
+
   List<Map<String, dynamic>> datas = [];
   double top = 0;
   double bottom = 0;
@@ -31,9 +32,11 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   @override
   void initState() {
     super.initState();
+
   }
 
   PreferredSizeWidget _appbarWidget(){
+
     return AppBar(
       title: Row(
         children: [
@@ -143,6 +146,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   }
 
   Widget _exercises_searchWidget() {
+    _testdata = _exercisesdataProvider.exercisesdata.exercises;
     return Container(
       color: Colors.black,
       child: Column(
@@ -150,6 +154,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
           Container(
             margin: const EdgeInsets.fromLTRB(10, 16, 10, 16),
             child: TextField(
+
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search, color: Color(0xFF717171),),
@@ -160,7 +165,13 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                   borderRadius: BorderRadius.circular(15),
                 ),
               ),
-              onChanged: searchExercise,
+              onChanged: (text) {
+                print(text);
+
+                searchExercise(text.toString());
+
+                print(_testdata[1].name);
+              }
             ),
           ),
           _exercisesWidget(true),
@@ -176,33 +187,36 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               ],
             ),
           ),
-          ExerciseState.exercisesWidget(
-              _testdata, true)
+          ExerciseState.exercisesWidget(_testdata, true)
+
         ],
       ),
     );
   }
 
+
   void searchExercise(String query){
-    final suggestions = _exercisesdataProvider.exercisesdata.where((exercises){
-      final exTitle = exercises.name;
-      final input = query;
-      return exTitle.contains(input);
+    final suggestions = _testdata.where((exercise){
+      final exTitle = exercise.name;
+      return (exTitle.contains(query)) as bool;
     }).toList();
+    print(suggestions[0].name);
 
     setState(() => _testdata = suggestions);
+    print(_testdata[0].name);
   }
 
   @override
   Widget build(BuildContext context) {
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
-    _testdata = _exercisesdataProvider.exercisesdata;
+
     return Scaffold(
       appBar: _appbarWidget(),
       body: _isexsearch
       ? _exercises_searchWidget()
       : _exercisesWidget(false)
     );
+
   }
 }
