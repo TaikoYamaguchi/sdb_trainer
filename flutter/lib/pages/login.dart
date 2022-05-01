@@ -7,6 +7,7 @@ import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:provider/provider.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -93,6 +94,16 @@ class _LoginPageState extends State<LoginPage> {
         style: TextStyle(color: Colors.white));
   }
 
+  Future<void> _loginButtonPressed() async {
+    var keyHash = Utility.getKeyHash(this);
+    try {
+      OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
+      print('카카오계정으로 로그인 성공 ${token.accessToken}');
+    } catch (error) {
+      print('카카오계정으로 로그인 실패 $error');
+    }
+  }
+
   Widget _loginWithKakao(context) {
     return InkWell(
       child: IconButton(
@@ -101,7 +112,9 @@ class _LoginPageState extends State<LoginPage> {
         ),
         constraints: BoxConstraints(
             minWidth: MediaQuery.of(context).size.width, minHeight: 70),
-        onPressed: () {},
+        onPressed: () {
+          _loginButtonPressed();
+        },
       ),
     );
   }
