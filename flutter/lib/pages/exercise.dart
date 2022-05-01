@@ -163,7 +163,6 @@ class ExerciseState extends State<Exercise> {
   static Widget exercisesWidget(exuniq, bool shirink) {
     double top = 0;
     double bottom = 0;
-    print(exuniq[0].name);
     return Container(
       color: Colors.black,
       child: ListView.separated(

@@ -20,7 +20,8 @@ class EachWorkoutDetails extends StatefulWidget {
 class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   final controller = TextEditingController();
   var _exercisesdataProvider;
-  var _testdata;
+  var _testdata0;
+  late var _testdata = _testdata0;
 
   List<Map<String, dynamic>> datas = [];
   double top = 0;
@@ -146,7 +147,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   }
 
   Widget _exercises_searchWidget() {
-    _testdata = _exercisesdataProvider.exercisesdata.exercises;
+
     return Container(
       color: Colors.black,
       child: Column(
@@ -166,11 +167,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 ),
               ),
               onChanged: (text) {
-                print(text);
-
                 searchExercise(text.toString());
 
-                print(_testdata[1].name);
               }
             ),
           ),
@@ -196,21 +194,19 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
 
 
   void searchExercise(String query){
-    final suggestions = _testdata.where((exercise){
+    final suggestions = _testdata0.where((exercise){
       final exTitle = exercise.name;
       return (exTitle.contains(query)) as bool;
     }).toList();
-    print(suggestions[0].name);
 
     setState(() => _testdata = suggestions);
-    print(_testdata[0].name);
   }
 
   @override
   Widget build(BuildContext context) {
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
-
+    _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
     return Scaffold(
       appBar: _appbarWidget(),
       body: _isexsearch
