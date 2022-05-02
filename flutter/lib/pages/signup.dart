@@ -121,23 +121,23 @@ class _LoginPageState extends State<SignUpPage> {
                             fontSize: 32,
                             fontWeight: FontWeight.w800)),
                     SizedBox(
-                      height: 8,
+                      height: 16,
                     ),
                     _emailWidget(),
                     SizedBox(
-                      height: 8,
+                      height: 12,
                     ),
                     _nicknameWidget(),
                     SizedBox(
-                      height: 8,
+                      height: 12,
                     ),
                     _passwordWidget(),
                     SizedBox(
-                      height: 8,
+                      height: 12,
                     ),
                     _phoneNumberWidget(),
                     SizedBox(
-                      height: 8,
+                      height: 12,
                     ),
                     Expanded(
                       flex: 3,

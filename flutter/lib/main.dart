@@ -14,9 +14,7 @@ import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
 void main() {
-  KakaoSdk.init(
-      nativeAppKey: "54b807de5757a704a372c2d0539a67da",
-      javaScriptAppKey: "6cdb151de56c5328fc9a3d0fa55d1de8");
+  KakaoSdk.init(nativeAppKey: "54b807de5757a704a372c2d0539a67da");
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (BuildContext context) => BodyStater()),

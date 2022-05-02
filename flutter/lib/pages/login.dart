@@ -65,12 +65,12 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       height: 4,
                     ),
-                    _loginWithKakao(context),
+                    _signUpButton(context),
                     Expanded(
                       flex: 3,
                       child: SizedBox(),
                     ),
-                    _signUpButton(context),
+                    _loginWithKakao(context),
                   ]))),
     ));
   }
@@ -95,13 +95,14 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _loginButtonPressed() async {
-    var keyHash = Utility.getKeyHash(this);
     try {
-      OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
-      print('카카오계정으로 로그인 성공 ${token.accessToken}');
+      String token = await AuthCodeClient.instance.request();
+      print(token);
+      print('카카오계정으로 로그인 성공');
     } catch (error) {
       print('카카오계정으로 로그인 실패 $error');
     }
+    print("yesss");
   }
 
   Widget _loginWithKakao(context) {
