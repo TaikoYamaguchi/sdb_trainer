@@ -35,26 +35,6 @@ class RoutineRepository {
   }
 }
 
-class Exercises_to_Encode {
-  final String name;
-  final String sets;
-  final double? onerm;
-  final int rest;
-  Exercises_to_Encode(
-      {required this.name,
-        required this.sets,
-        required this.onerm,
-        required this.rest});
-
-  factory Exercises_to_Encode.fromparsed(Exercises gotoJson) {
-    return Exercises_to_Encode(
-        name: gotoJson.name,
-        rest: gotoJson.rest,
-        sets: jsonEncode(gotoJson.sets).toString(),
-        onerm: gotoJson.onerm);
-  }
-}
-
 
 class WorkoutPost {
   final String user_email;
@@ -67,8 +47,6 @@ class WorkoutPost {
   });
   Future<String> _workoutPostFromServer() async {
 
-    var list = exercises;
-    List<Exercises_to_Encode> Encoded_sets = list.map((i) => Exercises_to_Encode.fromparsed(i)).toList();
 
     var formData = new Map<String, dynamic>();
     print(user_email);
@@ -95,6 +73,48 @@ class WorkoutPost {
 
   Future<Map<String, dynamic>> postWorkout() async {
     String jsonString = await _workoutPostFromServer();
+    final jsonResponse = json.decode(jsonString);
+    return (jsonResponse);
+  }
+}
+
+class WorkoutEdit {
+  final String user_email;
+  final String name;
+  final List<Exercises> exercises;
+  WorkoutEdit({
+    required this.user_email,
+    required this.name,
+    required this.exercises,
+  });
+  Future<String> _workoutEditFromServer() async {
+
+
+    var formData = new Map<String, dynamic>();
+    print(user_email);
+    //print(json.encode(Encoded_sets));
+    formData["user_email"] = user_email;
+    formData["name"] = name;
+    formData["exercises"] = jsonEncode(exercises);
+    formData["routine_time"] = 0;
+    print(formData);
+
+    var url = Uri.parse(LocalHost.getLocalHost() + "/api/workout");
+    var response = await http.put(url, body: json.encode(formData));
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      String jsonString = utf8.decode(response.bodyBytes);
+      final jsonResponse = json.decode(jsonString);
+
+      return utf8.decode(response.bodyBytes);
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<Map<String, dynamic>> editWorkout() async {
+    String jsonString = await _workoutEditFromServer();
     final jsonResponse = json.decode(jsonString);
     return (jsonResponse);
   }

@@ -92,3 +92,8 @@ class Sets {
   }
 }
 
+List<Sets> setslist = [
+  Sets(index:0, weight: 0.0, reps: 1 , ischecked: false),
+  Sets(index:1, weight: 0.0, reps: 1 , ischecked: false),
+  Sets(index:2, weight: 0.0, reps: 1 , ischecked: false)
+];

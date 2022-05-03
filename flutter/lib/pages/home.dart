@@ -163,7 +163,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _userdataProvider = Provider.of<UserdataProvider>(context, listen: true);
     _userdataProvider.getdata();
     _userdataProvider2 = Provider.of<UserdataProvider>(context, listen: false);
     _exercisesdataProvider =

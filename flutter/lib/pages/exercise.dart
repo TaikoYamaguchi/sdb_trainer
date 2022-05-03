@@ -31,14 +31,11 @@ class ExerciseState extends State<Exercise> {
   int swap = 1;
   String _title = "Workout List";
 
-  List<Sets> setslist = [
-    Sets(index:0, weight: 100.0, reps: 1 , ischecked: false)
-  ];
 
   
 
   late List<Exercises> exerciseList = [
-    Exercises(name: "스쿼트", sets: setslist , onerm: 0.0, rest: 1),
+    Exercises(name: "squat", sets: setslist , onerm: 0.0, rest: 1),
   ];
 
 
@@ -279,7 +276,11 @@ class ExerciseState extends State<Exercise> {
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
             splashColor: Colors.blueAccent,
-            onPressed: () => _postWorkoutCheck(),
+            onPressed: ()  {
+              _postWorkoutCheck();
+              _workoutNameCtrl.clear();
+              Navigator.of(context, rootNavigator: true).pop();
+            },
             child: Text("workout 이름 제출",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
@@ -289,7 +290,7 @@ class ExerciseState extends State<Exercise> {
     WorkoutPost(user_email: _userdataProvider.userdata.email, name: _workoutNameCtrl.text,  exercises: exerciseList)
         .postWorkout()
         .then((data) => data["user_email"] != null
-        ? Navigator.pop(context)
+        ? _workoutdataProvider.getdata()
         : showToast("입력을 확인해주세요"));
   }
 

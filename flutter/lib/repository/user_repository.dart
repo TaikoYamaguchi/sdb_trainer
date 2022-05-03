@@ -105,7 +105,7 @@ class UserSignUp {
     formData["password"] = password;
     formData["phone_number"] = userPhonenumber;
     formData["email"] = userEmail;
-    print(json.encode(formData));
+
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/usercreate");
     var response = await http.post(url, body: json.encode(formData));
     if (response.statusCode == 200) {
@@ -174,7 +174,7 @@ class UserEdit {
     formData["height_unit"] = userHeightUnit;
     formData["weight_unit"] = userWeightUnit;
     formData["password"] = password;
-    print(json.encode(formData));
+
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/users/" + userEmail);
     var response = await http.put(url, body: json.encode(formData));
     if (response.statusCode == 200) {
