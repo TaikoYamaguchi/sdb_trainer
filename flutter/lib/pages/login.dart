@@ -96,6 +96,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _loginButtonPressed() async {
     try {
+      print('카카오계정으로 로그인 시도');
       String token = await AuthCodeClient.instance.request();
       print(token);
       print('카카오계정으로 로그인 성공');
