@@ -31,6 +31,7 @@ class RoutineRepository {
     String jsonString = await _loadRoutinedataFromServer();
     final jsonResponse = json.decode(jsonString);
     RoutinedataList routinedata = RoutinedataList.fromJson(jsonResponse);
+    routinedata.routinedatas.sort((a, b) => a.id.compareTo(b.id));
     return (routinedata);
   }
 }

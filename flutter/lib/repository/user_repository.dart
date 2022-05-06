@@ -182,7 +182,7 @@ class UserEdit {
       return utf8.decode(response.bodyBytes);
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
-      throw Error('Failed to load post');
+      throw Error();
     }
   }
 

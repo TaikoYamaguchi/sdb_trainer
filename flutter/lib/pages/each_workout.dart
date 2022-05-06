@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/each_exercise.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
+import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart' as wod;
 import 'package:sdb_trainer/src/utils/util.dart';
@@ -58,8 +59,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
           icon: Icon(Icons.check_rounded),
           onPressed: () {
             _editWorkoutCheck();
+            Provider.of<WorkoutdataProvider>(context, listen: false).getdata();
             setState(() {
-
               _isexsearch= !_isexsearch ;
             });
           },
