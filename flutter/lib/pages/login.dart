@@ -95,13 +95,49 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _loginButtonPressed() async {
-    try {
-      print('카카오계정으로 로그인 시도');
-      String token = await AuthCodeClient.instance.request();
-      print(token);
-      print('카카오계정으로 로그인 성공');
-    } catch (error) {
-      print('카카오계정으로 로그인 실패 $error');
+    if (await AuthApi.instance.hasToken()) {
+      try {
+        AccessTokenInfo tokenInfo = await UserApi.instance.accessTokenInfo();
+        print('토큰 유효성 체크 성공 ${tokenInfo.id} ${tokenInfo.expiresIn}');
+        try {
+          User user = await UserApi.instance.me();
+          print('사용자 정보 요청 성공'
+              '\n회원번호: ${user.id}'
+              '\n닉네임: ${user.kakaoAccount?.profile?.nickname}'
+              '\n성별: ${user.kakaoAccount?.gender}'
+              '\n성별: ${user.kakaoAccount?.name}'
+              '\n이메일: ${user.kakaoAccount?.email}');
+          _userEmailCtrl.text = user.kakaoAccount!.email!;
+          _userPasswordCtrl.text = user.kakaoAccount!.email!;
+          _loginkakaoCheck();
+        } catch (error) {
+          print('사용자 정보 요청 실패 $error');
+        }
+      } catch (error) {
+        if (error is KakaoException && error.isInvalidTokenError()) {
+          print('토큰 만료 $error');
+        } else {
+          print('토큰 정보 조회 실패 $error');
+        }
+
+        try {
+          // 카카오 계정으로 로그인
+          OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
+          print('로그인 성공 ${token.accessToken}');
+          _loginkakaoCheck();
+        } catch (error) {
+          print('로그인 실패 $error');
+        }
+      }
+    } else {
+      print('발급된 토큰 없음');
+      try {
+        OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
+        print('로그인 성공 ${token.accessToken}');
+        _loginkakaoCheck();
+      } catch (error) {
+        print('로그인 실패 $error');
+      }
     }
     print("yesss");
   }
@@ -208,6 +244,32 @@ class _LoginPageState extends State<LoginPage> {
           .then((token) => token["access_token"] != null
               ? {_bodyStater.change(0), _loginState.change(true)}
               : showToast("아이디와 비밀번호를 확인해주세요"));
+    }
+  }
+
+  void _loginkakaoCheck() async {
+    final storage = FlutterSecureStorage();
+    String? storageEmail = await storage.read(key: "sdb_email");
+    if (storageEmail != null &&
+        storageEmail != "" &&
+        storageEmail == _userEmailCtrl.text) {
+      _bodyStater.change(0);
+      _loginState.change(true);
+    } else {
+      try {
+        print(_userEmailCtrl.text);
+        print(_userPasswordCtrl.text);
+        UserLogin(
+                userEmail: _userEmailCtrl.text,
+                password: _userPasswordCtrl.text)
+            .loginUser()
+            .then((token) => token["access_token"] != null
+                ? {_bodyStater.change(0), _loginState.change(true)}
+                : _loginState.changeSignup(true));
+      } catch (error) {
+        print(error);
+        _loginState.changeSignup(true);
+      }
     }
   }
 
