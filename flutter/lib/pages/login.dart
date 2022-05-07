@@ -5,6 +5,7 @@ import 'package:sdb_trainer/pages/home.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
+import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:provider/provider.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
@@ -18,6 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   var _bodyStater;
   var _loginState;
   var _signUpState;
+  var _userProvider;
   bool isLoading = false;
   TextEditingController _userEmailCtrl = TextEditingController(text: "");
   TextEditingController _userPasswordCtrl = TextEditingController(text: "");
@@ -34,6 +36,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     _bodyStater = Provider.of<BodyStater>(context);
     _loginState = Provider.of<LoginPageProvider>(context);
+    _userProvider = Provider.of<UserdataProvider>(context);
 
     return Scaffold(
         body: Container(
@@ -108,6 +111,7 @@ class _LoginPageState extends State<LoginPage> {
               '\n성별: ${user.kakaoAccount?.name}'
               '\n이메일: ${user.kakaoAccount?.email}');
           _userEmailCtrl.text = user.kakaoAccount!.email!;
+          _userProvider.setUserKakaoEmail(user.kakaoAccount!.email!);
           _userPasswordCtrl.text = user.kakaoAccount!.email!;
           _loginkakaoCheck();
         } catch (error) {
@@ -259,7 +263,7 @@ class _LoginPageState extends State<LoginPage> {
       try {
         print(_userEmailCtrl.text);
         print(_userPasswordCtrl.text);
-        UserLogin(
+        var order = await UserLogin(
                 userEmail: _userEmailCtrl.text,
                 password: _userPasswordCtrl.text)
             .loginUser()

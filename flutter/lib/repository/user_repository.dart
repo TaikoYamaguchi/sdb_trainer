@@ -56,6 +56,7 @@ class UserLogin {
 
       return utf8.decode(response.bodyBytes);
     } else {
+      print(1);
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
       throw Exception('Failed to load post');
     }
@@ -65,6 +66,8 @@ class UserLogin {
 
   Future<Map<String, dynamic>> loginUser() async {
     String jsonString = await _userLoginFromServer();
+    print(3);
+    print(jsonString);
     final jsonResponse = json.decode(jsonString);
     return (jsonResponse);
   }

@@ -11,6 +11,7 @@ import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
+import 'package:sdb_trainer/providers/userdata.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -20,6 +21,7 @@ class SignUpPage extends StatefulWidget {
 class _LoginPageState extends State<SignUpPage> {
   var _bodyStater;
   var _loginState;
+  var _userProvider;
   var _isSignupIndex = 0;
   bool isLoading = false;
 
@@ -84,6 +86,10 @@ class _LoginPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     _bodyStater = Provider.of<BodyStater>(context);
     _loginState = Provider.of<LoginPageProvider>(context);
+    _userProvider = Provider.of<UserdataProvider>(context);
+    if (_userProvider.userKakaoEmail != null) {
+      _userEmailCtrl.text = _userProvider.userKakaoEmail;
+    }
 
     return Scaffold(body: _signupWidget());
   }
