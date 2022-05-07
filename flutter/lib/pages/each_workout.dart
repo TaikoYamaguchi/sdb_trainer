@@ -198,7 +198,10 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               }
             ),
           ),
-          _exercisesWidget(true),
+          AspectRatio(
+            aspectRatio: 1.3,
+              child: _exercisesWidget(true)
+          ),
           Container(
             margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5),
             color: Color(0xFF212121),
@@ -222,8 +225,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   Widget exercisesWidget(exuniq, bool shirink) {
     double top = 0;
     double bottom = 0;
-    return Container(
-      color: Colors.black,
+    return Expanded(
+      //color: Colors.black,
       child: ListView.separated(
           padding: EdgeInsets.symmetric(horizontal: 5),
           itemBuilder: (BuildContext _context, int index) {
@@ -243,7 +246,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 setState(() {
                   widget.exerciselist.add(new wod.Exercises(name: exuniq[index].name, sets: wod.setslist, onerm: exuniq[index].onerm, rest: 0));
                 });
-
 
               },
               child: Container(
@@ -318,6 +320,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   @override
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context);
+    Provider.of<WorkoutdataProvider>(context).getdata();
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
