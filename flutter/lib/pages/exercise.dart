@@ -36,7 +36,7 @@ class ExerciseState extends State<Exercise> {
   
 
   late List<Exercises> exerciseList = [
-    Exercises(name: "squat", sets: setslist , onerm: 0.0, rest: 1),
+    Exercises(name: "스쿼트", sets: setslist , onerm: 0.0, rest: 1),
   ];
 
 

@@ -319,8 +319,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
 
   @override
   Widget build(BuildContext context) {
-    _userdataProvider = Provider.of<UserdataProvider>(context);
-    Provider.of<WorkoutdataProvider>(context).getdata();
+    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    //Provider.of<WorkoutdataProvider>(context,listen: false).getdata();
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
