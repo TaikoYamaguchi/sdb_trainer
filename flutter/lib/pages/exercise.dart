@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -122,18 +123,36 @@ class ExerciseState extends State<Exercise> {
                           topLeft: Radius.circular(top),
                           bottomLeft: Radius.circular(bottom))),
                   height: 52,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        _workoutdataProvider.workoutdata.routinedatas[index].name,
-                        style: TextStyle(fontSize: 21, color: Colors.white),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            _workoutdataProvider.workoutdata.routinedatas[index].name,
+                            style: TextStyle(fontSize: 21, color: Colors.white),
+                          ),
+                          Text(
+                              "${_workoutdataProvider.workoutdata.routinedatas[index].exercises.length} Exercises",
+                              style:
+                                  TextStyle(fontSize: 13, color: Color(0xFF717171)))
+                        ],
                       ),
-                      Text(
-                          "${_workoutdataProvider.workoutdata.routinedatas[index].exercises.length} Exercises",
-                          style:
-                              TextStyle(fontSize: 13, color: Color(0xFF717171)))
+                      IconButton(
+                        onPressed: (){
+                          _deleteWorkoutCheck(_workoutdataProvider.workoutdata.routinedatas[index].id);
+                          setState(() {
+                            //_workoutdataProvider.workoutdata.routinedatas.removeAt(index);
+                          });
+                          print(_workoutdataProvider.workoutdata.routinedatas.length);
+                          print(_workoutdataProvider.workoutdata.routinedatas.length);
+
+                        },
+                        icon: Icon(Icons.delete),
+                        color: Colors.white,
+                      )
                     ],
                   ),
                 ),
@@ -155,6 +174,15 @@ class ExerciseState extends State<Exercise> {
           },
           itemCount: _workoutdataProvider.workoutdata.routinedatas.length),
     );
+  }
+
+  void _deleteWorkoutCheck(int id) async {
+
+    WorkoutDelete(id: id)
+        .deleteWorkout()
+        .then((data) => data["user_email"] != null
+        ? _workoutdataProvider.getdata()
+        : showToast("입력을 확인해주세요"));
   }
 
   static Widget exercisesWidget(exuniq, bool shirink) {

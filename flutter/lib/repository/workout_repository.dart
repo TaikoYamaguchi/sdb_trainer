@@ -120,3 +120,30 @@ class WorkoutEdit {
     return (jsonResponse);
   }
 }
+
+class WorkoutDelete {
+  final int id;
+  WorkoutDelete({
+    required this.id,
+  });
+  Future<String> _workoutDeleteFromServer() async {
+    var url = Uri.parse(LocalHost.getLocalHost() + "/api/workout/" + id.toString());
+    var response = await http.delete(url);
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      String jsonString = utf8.decode(response.bodyBytes);
+      final jsonResponse = json.decode(jsonString);
+
+      return utf8.decode(response.bodyBytes);
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to delete');
+    }
+  }
+
+  Future deleteWorkout() async {
+    String jsonString = await _workoutDeleteFromServer();
+    final jsonResponse = json.decode(jsonString);
+    return (jsonResponse);
+  }
+}

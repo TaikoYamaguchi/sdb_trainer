@@ -1,4 +1,4 @@
-from app.db.crud_workout import create_workout, get_workouts_by_email, edit_workout
+from app.db.crud_workout import create_workout, get_workouts_by_email, edit_workout, delete_workout
 from fastapi import APIRouter, Request, Depends, Response, encoders
 import typing as t
 
@@ -40,5 +40,12 @@ async def workout_edit(
 ):
     return edit_workout(db, workout)
 
+@r.delete("/workout/{id}", response_model=WorkoutCreate, response_model_exclude_none=True)
+async def workout_delete(
+    request: Request,
+    id: int,
+    db=Depends(get_db),
+):
+    return delete_workout(db, id)
 
 

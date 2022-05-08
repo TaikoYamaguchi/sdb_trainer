@@ -31,6 +31,11 @@ def get_workouts_by_email_name(db: Session, email: str, input_name: str) -> t.Li
     print(workouts_email_name)
     return workouts_email_name
 
+def get_workouts_by_id(db: Session, input_id: int) -> t.List[schemas.WorkoutOut]:
+    workouts_id = db.query(models.Workout).get(input_id)
+    print(workouts_id)
+    return workouts_id
+
 def edit_workout(db: Session, workout: schemas.WorkoutCreate):
 
     db_workout = get_workouts_by_email_name(db, workout.user_email, workout.name)
@@ -45,3 +50,14 @@ def edit_workout(db: Session, workout: schemas.WorkoutCreate):
     db.commit()
     db.refresh(db_workout)
     return db_workout
+
+def delete_workout(db: Session, id: int):
+
+    db_workout = get_workouts_by_id(db, id)
+    if not db_workout:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    db.delete(db_workout)
+    db.commit()
+    return db_workout
+
