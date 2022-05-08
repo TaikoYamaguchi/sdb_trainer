@@ -106,12 +106,17 @@ class _LoginPageState extends State<LoginPage> {
           User user = await UserApi.instance.me();
           print('사용자 정보 요청 성공'
               '\n회원번호: ${user.id}'
-              '\n닉네임: ${user.kakaoAccount?.profile?.nickname}'
+              '\n이름: ${user.kakaoAccount?.name}'
+              '\n닉네임: ${user.kakaoAccount?.name}'
+              '\n이미지: ${user.properties?["profile_image"]}'
+              '\n프로필: ${user.kakaoAccount?.profile}'
               '\n성별: ${user.kakaoAccount?.gender}'
-              '\n성별: ${user.kakaoAccount?.name}'
               '\n이메일: ${user.kakaoAccount?.email}');
           _userEmailCtrl.text = user.kakaoAccount!.email!;
           _userProvider.setUserKakaoEmail(user.kakaoAccount!.email!);
+          _userProvider.setUserKakaoImageUrl(user.properties?["profile_image"]);
+          _userProvider.setUserKakaoName(user.kakaoAccount?.name);
+          _userProvider.setUserKakaoGender(user.kakaoAccount?.gender);
           _userPasswordCtrl.text = user.kakaoAccount!.email!;
           _loginkakaoCheck();
         } catch (error) {
@@ -137,6 +142,15 @@ class _LoginPageState extends State<LoginPage> {
       print('발급된 토큰 없음');
       try {
         OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
+
+        User user = await UserApi.instance.me();
+
+        _userEmailCtrl.text = user.kakaoAccount!.email!;
+        _userProvider.setUserKakaoEmail(user.kakaoAccount!.email!);
+        _userProvider.setUserKakaoImageUrl(user.properties?["profile_image"]);
+        _userProvider.setUserKakaoName(user.kakaoAccount?.name);
+        _userProvider.setUserKakaoGender(user.kakaoAccount?.gender);
+        _userPasswordCtrl.text = user.kakaoAccount!.email!;
         print('로그인 성공 ${token.accessToken}');
         _loginkakaoCheck();
       } catch (error) {
@@ -273,6 +287,7 @@ class _LoginPageState extends State<LoginPage> {
       } catch (error) {
         print(error);
         _loginState.changeSignup(true);
+        showToast("회원가입 페이지로 이동할게요");
       }
     }
   }

@@ -63,7 +63,7 @@ class _LoginPageState extends State<SignUpPage> {
   TextEditingController _userWeightCtrl = TextEditingController(text: "");
   var _userWeightUnitCtrl = "kg";
   var _userHeightUnitCtrl = "cm";
-  var _userGenderCtrl = true;
+  var _userGenderCtrl = false;
   List<Exercises> exerciseList = [
     Exercises(name: "스쿼트", onerm: 0.0, goal: 0.0),
     Exercises(name: "데드리프트", onerm: 0.0, goal: 0.0),
@@ -89,6 +89,18 @@ class _LoginPageState extends State<SignUpPage> {
     _userProvider = Provider.of<UserdataProvider>(context);
     if (_userProvider.userKakaoEmail != null) {
       _userEmailCtrl.text = _userProvider.userKakaoEmail;
+    }
+
+    if (_userProvider.userKakaoName != null) {
+      _userNameCtrl.text = _userProvider.userKakaoName;
+    }
+
+    if (_userProvider.userKakaoImage != null) {
+      _userImageCtrl.text = _userProvider.userKakaoImage;
+    }
+
+    if (_userProvider.userKakaoGender != null) {
+      _userGenderCtrl = _userProvider.userKakaoGender;
     }
 
     return Scaffold(body: _signupWidget());
