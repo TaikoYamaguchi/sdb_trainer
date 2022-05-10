@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
 
 class EachExerciseDetails extends StatefulWidget {
@@ -14,6 +15,7 @@ class EachExerciseDetails extends StatefulWidget {
 }
 
 class _EachExerciseDetailsState extends State<EachExerciseDetails> {
+  bool _isstarted = false;
   bool _isChecked = false;
   double top = 0;
   double bottom = 0;
@@ -21,6 +23,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   int? reps;
   List<TextEditingController> weightController = [];
   List<TextEditingController> repsController = [];
+  var _start_date ;
+  var _finish_date ;
 
   @override
   void initState() {
@@ -320,6 +324,34 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             color: Colors.white,
                             size: 40,
                           )),
+                    ),
+                    Container(
+                      child:  _isstarted == false
+                          ? ElevatedButton(
+                              style: ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
+                              onPressed: (){
+                                setState(() {
+                                  _isstarted = !_isstarted;
+                                });
+                                _start_date = DateTime.now();
+                                print(_start_date);
+                              },
+                              child: const Text('Start Workout'),
+                          )
+                          : ElevatedButton(
+                              style: ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
+                              onPressed: (){
+                                setState(() {
+                                  _isstarted = !_isstarted;
+                                });
+                                _finish_date = DateTime.now();
+                                print(_start_date);
+                                print(_finish_date);
+                                print("runtime: ${_finish_date.difference(_start_date)}");
+                              },
+                              child: const Text('Finish Workout'),
+                          )
+
                     ),
                     Container(
                       child: IconButton(

@@ -39,7 +39,7 @@ class Exercises {
       required this.onerm,
       required this.goal,
       required this.date});
-
+  Map toJson() => {"name": name, "sets": sets, "onerm": onerm, "goal": goal, "date": date};
   factory Exercises.fromJson(Map<String, dynamic> parsedJson) {
     var list = parsedJson["sets"] as List;
     List<Sets> setList = list.map((i) => Sets.fromJson(i)).toList();
@@ -72,6 +72,7 @@ class Sets {
   final double? weight;
   final int reps;
   Sets({required this.index, required this.weight, required this.reps});
+  Map toJson() => {"index": index, "weight": weight, "reps": reps};
   factory Sets.fromJson(Map<String, dynamic> parsedJson) {
     return Sets(
         index: parsedJson["index"],
