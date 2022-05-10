@@ -73,6 +73,42 @@ class UserLogin {
   }
 }
 
+class UserLoginKakao {
+  final String userEmail;
+  UserLoginKakao({required this.userEmail});
+  Future<String> _userLoginFromServer() async {
+    var url =
+        Uri.parse(LocalHost.getLocalHost() + "/api/tokenkakao/" + userEmail);
+    var response = await http.post(url);
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      String jsonString = utf8.decode(response.bodyBytes);
+      final jsonResponse = json.decode(jsonString);
+
+      final storage = new FlutterSecureStorage();
+      await storage.write(key: "sdb_email", value: userEmail);
+      await storage.write(
+          key: "sdb_token", value: jsonResponse["access_token"]);
+      String? user_email = await storage.read(key: "sdb_email");
+      String? user_token = await storage.read(key: "sdb_token");
+
+      return utf8.decode(response.bodyBytes);
+    } else {
+      print(1);
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to load post');
+    }
+    //API통신
+    //await Future.delayed(Duration(milliseconds: 1000));
+  }
+
+  Future<Map<String, dynamic>> loginKakaoUser() async {
+    String jsonString = await _userLoginFromServer();
+    final jsonResponse = json.decode(jsonString);
+    return (jsonResponse);
+  }
+}
+
 class UserSignUp {
   final String userEmail;
   final String userName;

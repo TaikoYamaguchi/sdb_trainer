@@ -117,7 +117,6 @@ class _LoginPageState extends State<LoginPage> {
           _userProvider.setUserKakaoImageUrl(user.properties?["profile_image"]);
           _userProvider.setUserKakaoName(user.kakaoAccount?.name);
           _userProvider.setUserKakaoGender(user.kakaoAccount?.gender);
-          _userPasswordCtrl.text = user.kakaoAccount!.email!;
           _loginkakaoCheck();
         } catch (error) {
           print('사용자 정보 요청 실패 $error');
@@ -277,13 +276,11 @@ class _LoginPageState extends State<LoginPage> {
       try {
         print(_userEmailCtrl.text);
         print(_userPasswordCtrl.text);
-        var order = await UserLogin(
-                userEmail: _userEmailCtrl.text,
-                password: _userPasswordCtrl.text)
-            .loginUser()
-            .then((token) => token["access_token"] != null
-                ? {_bodyStater.change(0), _loginState.change(true)}
-                : _loginState.changeSignup(true));
+        var order = await UserLoginKakao(
+          userEmail: _userEmailCtrl.text,
+        ).loginKakaoUser().then((token) => token["access_token"] != null
+            ? {_bodyStater.change(0), _loginState.change(true)}
+            : _loginState.changeSignup(true));
       } catch (error) {
         print(error);
         _loginState.changeSignup(true);
