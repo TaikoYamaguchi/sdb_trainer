@@ -12,23 +12,23 @@ class Home extends StatelessWidget {
   Home({Key? key}) : super(key: key);
   var _exercisesdataProvider;
   var _userdataProvider;
-  var _userdataProvider2;
   var _bodyStater;
   var _staticPageState;
   var _chartIndex;
 
   PreferredSizeWidget _appbarWidget() {
-    if (_userdataProvider2.userdata != null) {
+    if (_userdataProvider.userdata != null) {
       return AppBar(
         title: Text(
-          _userdataProvider2.userdata.nickname + "님",
+          _userdataProvider.userdata.nickname + "님",
           style: TextStyle(color: Colors.white),
         ),
         actions: [
           IconButton(
             icon: SvgPicture.asset("assets/svg/chart.svg"),
             onPressed: () {
-              print("press!");
+              _bodyStater.change(2);
+              _staticPageState.change(false);
             },
           )
         ],
@@ -163,9 +163,8 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: true);
+    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _userdataProvider.getdata();
-    _userdataProvider2 = Provider.of<UserdataProvider>(context, listen: false);
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _exercisesdataProvider.getdata();
