@@ -25,6 +25,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   List<TextEditingController> repsController = [];
   var _start_date ;
   var _finish_date ;
+  var _runtime;
 
   @override
   void initState() {
@@ -309,67 +310,73 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             ),
             Container(
                 padding: EdgeInsets.only(bottom: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child:  Column(
                   children: [
-                    Container(
-                      child: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              widget.exercisedetail.sets.removeLast();
-                            });
-                          },
-                          icon: Icon(
-                            Icons.remove,
-                            color: Colors.white,
-                            size: 40,
-                          )),
-                    ),
-                    Container(
-                      child:  _isstarted == false
-                          ? ElevatedButton(
-                              style: ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
-                              onPressed: (){
-                                setState(() {
-                                  _isstarted = !_isstarted;
-                                });
-                                _start_date = DateTime.now();
-                                print(_start_date);
-                              },
-                              child: const Text('Start Workout'),
-                          )
-                          : ElevatedButton(
-                              style: ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
-                              onPressed: (){
-                                setState(() {
-                                  _isstarted = !_isstarted;
-                                });
-                                _finish_date = DateTime.now();
-                                print(_start_date);
-                                print(_finish_date);
-                                print("runtime: ${_finish_date.difference(_start_date)}");
-                              },
-                              child: const Text('Finish Workout'),
-                          )
 
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          child: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  widget.exercisedetail.sets.removeLast();
+                                });
+                              },
+                              icon: Icon(
+                                Icons.remove,
+                                color: Colors.white,
+                                size: 40,
+                              )),
+                        ),
+                        Container(
+                          child:  _isstarted == false
+                              ? ElevatedButton(
+                                  style: ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
+                                  onPressed: (){
+                                    setState(() {
+                                      _isstarted = !_isstarted;
+                                    });
+                                    _start_date = DateTime.now();
+                                    print(_start_date);
+                                  },
+                                  child: const Text('Start Workout'),
+                              )
+                              : ElevatedButton(
+                                  style: ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
+                                  onPressed: (){
+                                    setState(() {
+                                      _isstarted = !_isstarted;
+
+                                    });
+                                    print(_start_date);
+                                    print(_finish_date);
+                                    widget.exercisedetail.sets[1].remove('reps');
+                                    print(widget.exercisedetail.sets[1].reps);
+                                  },
+                                  child: const Text('Finish Workout'),
+                              )
+
+                        ),
+                        Container(
+                          child: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  widget.exercisedetail.sets.add(new Sets(
+                                      index: widget.exercisedetail.sets.length + 1,
+                                      weight: 0.0,
+                                      reps: 1,
+                                      ischecked: false));
+                                });
+                              },
+                              icon: Icon(
+                                Icons.add,
+                                color: Colors.white,
+                                size: 40,
+                              )),
+                        )
+                      ],
                     ),
-                    Container(
-                      child: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              widget.exercisedetail.sets.add(new Sets(
-                                  index: widget.exercisedetail.sets.length + 1,
-                                  weight: 0.0,
-                                  reps: 1,
-                                  ischecked: false));
-                            });
-                          },
-                          icon: Icon(
-                            Icons.add,
-                            color: Colors.white,
-                            size: 40,
-                          )),
-                    )
                   ],
                 )),
           ],
