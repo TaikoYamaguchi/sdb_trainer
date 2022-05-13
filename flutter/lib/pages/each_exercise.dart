@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -25,7 +27,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   List<TextEditingController> repsController = [];
   var _start_date ;
   var _finish_date ;
-  var _runtime;
+  var _runtime = 0;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -312,7 +315,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                 padding: EdgeInsets.only(bottom: 10),
                 child:  Column(
                   children: [
-
+                    Container(
+                      child: Text('$_runtime', style: TextStyle(fontSize: 25, color: Colors.white))
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -339,6 +344,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                     });
                                     _start_date = DateTime.now();
                                     print(_start_date);
+                                    _start_timer();
                                   },
                                   child: const Text('Start Workout'),
                               )
@@ -351,8 +357,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                     });
                                     print(_start_date);
                                     print(_finish_date);
-                                    widget.exercisedetail.sets[1].remove('reps');
                                     print(widget.exercisedetail.sets[1].reps);
+                                    _stop_timer();
                                   },
                                   child: const Text('Finish Workout'),
                               )
@@ -383,6 +389,23 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         ),
       ),
     );
+  }
+
+  void _start_timer(){
+    var counter = 10001;
+    _timer  = Timer.periodic(Duration(seconds: 1), (timer){
+      setState(() {
+        _runtime++;
+        print(_runtime);
+      });
+      if (counter == 0) {
+        print('cancel timer');
+        timer.cancel();
+      }
+    });
+  }
+  void _stop_timer(){
+    _timer!.cancel();
   }
 
   @override
