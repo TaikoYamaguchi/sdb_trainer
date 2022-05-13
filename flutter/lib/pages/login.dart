@@ -9,6 +9,7 @@ import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:provider/provider.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -74,6 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: SizedBox(),
                     ),
                     _loginWithKakao(context),
+                    _loginWithGoogle(context),
                   ]))),
     ));
   }
@@ -172,6 +174,36 @@ class _LoginPageState extends State<LoginPage> {
         },
       ),
     );
+  }
+
+  Widget _loginWithGoogle(context) {
+    return InkWell(
+      child: IconButton(
+        icon: Image.asset(
+          'assets/svg/google_login_large_wide.png',
+        ),
+        constraints: BoxConstraints(
+            minWidth: MediaQuery.of(context).size.width, minHeight: 70),
+        onPressed: () {
+          _loginGooglePressed();
+        },
+      ),
+    );
+  }
+
+  GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+      'https://www.googleapis.com/auth/contacts.readonly',
+    ],
+  );
+
+  Future<void> _loginGooglePressed() async {
+    try {
+      await _googleSignIn.signIn();
+    } catch (error) {
+      print(error);
+    }
   }
 
   Widget _passwordWidget() {
