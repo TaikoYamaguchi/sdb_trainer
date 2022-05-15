@@ -37,15 +37,15 @@ dependencies:
   flutter_svg: ^1.0.3
   table_calendar: ^3.0.4
   intl: ^0.17.0
-  syncfusion_flutter_charts: ^19.4.53
-  syncfusion_flutter_gauges: ^19.4.53
+  syncfusion_flutter_charts: ^20.1.55
+  syncfusion_flutter_gauges: ^20.1.55
   transition : ^2.0.2
   http: ^0.13.4
   provider: ^6.0.2
   flutter_secure_storage: ^5.0.2
   fluttertoast: ^8.0.9
   dio: ^4.0.6
-  kakao_flutter_sdk: ^1.1.0
+  kakao_flutter_sdk: ^1.1.1
   json_annotation: ^4.5.0
   package_info: ^2.0.2
   platform: ^3.1.0
