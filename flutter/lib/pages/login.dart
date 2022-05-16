@@ -201,6 +201,21 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _loginGooglePressed() async {
     try {
       await _googleSignIn.signIn();
+      GoogleSignInAccount? user = _googleSignIn.currentUser;
+      if (user != null) {
+        try {
+          _userEmailCtrl.text = user.email;
+          _userProvider.setUserKakaoEmail(user.email);
+          _userProvider.setUserKakaoImageUrl(user.photoUrl);
+          _userProvider.setUserKakaoName(user.displayName);
+
+          _loginkakaoCheck();
+        } catch (error) {
+          print('사용자 정보 요청 실패 $error');
+        }
+      } else {
+        _loginkakaoCheck();
+      }
     } catch (error) {
       print(error);
     }
