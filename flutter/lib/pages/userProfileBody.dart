@@ -129,6 +129,7 @@ class _ProfileBodyState extends State<ProfileBody> {
   Widget _heightWidget() {
     return TextFormField(
       controller: _userHeightCtrl,
+      autofocus: true,
       keyboardType:
           TextInputType.numberWithOptions(signed: true, decimal: true),
       style: TextStyle(color: Colors.white),

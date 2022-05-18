@@ -78,6 +78,7 @@ class _ProfileNicknameState extends State<ProfileNickname> {
     return TextFormField(
       controller: _userNicknameCtrl,
       style: TextStyle(color: Colors.white),
+      autofocus: true,
       decoration: InputDecoration(
         labelText: "닉네임",
         labelStyle: TextStyle(color: Colors.white),

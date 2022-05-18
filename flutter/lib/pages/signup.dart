@@ -63,11 +63,11 @@ class _LoginPageState extends State<SignUpPage> {
   TextEditingController _userWeightCtrl = TextEditingController(text: "");
   var _userWeightUnitCtrl = "kg";
   var _userHeightUnitCtrl = "cm";
-  var _userGenderCtrl = false;
+  var _userGenderCtrl = true;
   List<Exercises> exerciseList = [
-    Exercises(name: "스쿼트", onerm: 0.0, goal: 0.0),
-    Exercises(name: "데드리프트", onerm: 0.0, goal: 0.0),
-    Exercises(name: "벤치프레스", onerm: 0.0, goal: 0.0)
+    Exercises(name: "스쿼트", onerm: 0, goal: 0.0),
+    Exercises(name: "데드리프트", onerm: 0, goal: 0.0),
+    Exercises(name: "벤치프레스", onerm: 0, goal: 0.0)
   ];
 
   List<TextEditingController> _onermController = [];
@@ -349,6 +349,7 @@ class _LoginPageState extends State<SignUpPage> {
 
   Widget _emailWidget() {
     return TextFormField(
+      autofocus: true,
       controller: _userEmailCtrl,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
@@ -378,8 +379,7 @@ class _LoginPageState extends State<SignUpPage> {
   }
 
   Widget _exerciseWidget(Exercises, index) {
-    _onermController.add(
-        new TextEditingController(text: Exercises.onerm.toStringAsFixed(1)));
+    _onermController.add(new TextEditingController(text: ""));
     _goalController.add(
         new TextEditingController(text: Exercises.goal.toStringAsFixed(1)));
     return Center(
@@ -466,6 +466,7 @@ class _LoginPageState extends State<SignUpPage> {
 
   Widget _heightWidget() {
     return TextFormField(
+      autofocus: true,
       controller: _userHeightCtrl,
       keyboardType:
           TextInputType.numberWithOptions(signed: true, decimal: true),
