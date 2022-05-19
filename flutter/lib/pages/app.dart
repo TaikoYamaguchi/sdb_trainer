@@ -7,6 +7,7 @@ import 'package:sdb_trainer/pages/home.dart';
 import 'package:sdb_trainer/pages/login.dart';
 import 'package:sdb_trainer/pages/signup.dart';
 import 'package:sdb_trainer/pages/profile.dart';
+import 'package:sdb_trainer/pages/feed.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
@@ -43,6 +44,7 @@ class App extends StatelessWidget {
       items: [
         _bottomNavigationBarItem("home", "홈"),
         _bottomNavigationBarItem("dumbel", "운동"),
+        _bottomNavigationBarItem("feed", "피드"),
         _bottomNavigationBarItem("calendar", "기록"),
         _bottomNavigationBarItem("profile", "프로필"),
       ],
@@ -58,9 +60,12 @@ class App extends StatelessWidget {
         return TabNavigator();
 
       case 2:
-        return Calendar();
+        return Feed();
 
       case 3:
+        return Calendar();
+
+      case 4:
         return Profile();
     }
     return Container();

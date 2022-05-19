@@ -10,6 +10,7 @@ import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/staticPageState.dart';
 import 'package:sdb_trainer/providers/chartIndexState.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
+import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
@@ -29,7 +30,9 @@ void main() {
     ChangeNotifierProvider(
         create: (BuildContext context) => UserdataProvider()),
     ChangeNotifierProvider(
-        create: (BuildContext context) => WorkoutdataProvider())
+        create: (BuildContext context) => WorkoutdataProvider()),
+    ChangeNotifierProvider(
+        create: (BuildContext context) => HistorydataProvider())
   ], child: MyApp()));
 }
 
