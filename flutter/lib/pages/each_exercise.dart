@@ -406,6 +406,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   }
   void _stop_timer(){
     _timer!.cancel();
+    print('fucking restore done');
   }
 
   @override
