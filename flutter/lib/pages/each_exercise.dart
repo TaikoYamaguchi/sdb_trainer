@@ -2,7 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
+import 'package:sdb_trainer/src/utils/util.dart';
+import 'package:provider/provider.dart';
+import 'package:sdb_trainer/providers/historydata.dart';
+import 'package:sdb_trainer/providers/userdata.dart';
+import 'package:sdb_trainer/repository/history_repository.dart';
+import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'package:sdb_trainer/src/model/workoutdata.dart';
 
 class EachExerciseDetails extends StatefulWidget {
@@ -17,6 +22,8 @@ class EachExerciseDetails extends StatefulWidget {
 }
 
 class _EachExerciseDetailsState extends State<EachExerciseDetails> {
+  var _userdataProvider;
+  var _historydataProvider;
   bool _isstarted = false;
   bool _isChecked = false;
   double top = 0;
@@ -29,6 +36,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   var _finish_date ;
   var _runtime = 0;
   Timer? _timer;
+
+  late List<hisdata.Exercises> exerciseList = [
+    hisdata.Exercises(name: widget.exercisedetail.name, sets: hisdata.setslist_his , onerm: 120, goal: widget.eachuniqueinfo[0].goal, date: '2022-05-21'),
+  ];
 
   @override
   void initState() {
@@ -359,6 +370,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                     print(_finish_date);
                                     print(widget.exercisedetail.sets[1].reps);
                                     _stop_timer();
+                                    _editHistoryCheck();
                                   },
                                   child: const Text('Finish Workout'),
                               )
@@ -409,8 +421,19 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     print('fucking restore done');
   }
 
+  void _editHistoryCheck() async {
+    print(_userdataProvider.userdata.email);
+    HistoryPost(user_email: _userdataProvider.userdata.email, exercises: exerciseList, new_record: 120, workout_time:100)
+        .postHistory()
+        .then((data) => data["user_email"] != null
+        ? _historydataProvider.getdata()
+        : showToast("입력을 확인해주세요"));
+  }
+
   @override
   Widget build(BuildContext context) {
+    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _historydataProvider = Provider.of<HistorydataProvider>(context, listen: false);
     return Scaffold(
       appBar: _appbarWidget(),
       body: _exercisedetailWidget(),

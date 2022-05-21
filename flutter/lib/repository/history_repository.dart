@@ -31,7 +31,6 @@ class ExerciseService {
 
   static Future<SDBdataList> loadSDBdata() async {
     String jsonString = await _loadSDBdataFromServer();
-    print(jsonString);
     final jsonResponse = json.decode(jsonString);
     SDBdataList sdbdata = SDBdataList.fromJson(jsonResponse);
     print(sdbdata);
@@ -42,13 +41,11 @@ class ExerciseService {
 class HistoryPost {
   final String user_email;
   final List<Exercises> exercises;
-  final String date;
   final int new_record;
   final double? workout_time;
   HistoryPost({
     required this.user_email,
     required this.exercises,
-    required this.date,
     required this.new_record,
     required this.workout_time,
   });
@@ -57,12 +54,10 @@ class HistoryPost {
 
     var formData = new Map<String, dynamic>();
     print(user_email);
-    //print(json.encode(Encoded_sets));
     formData["user_email"] = user_email;
     formData["exercises"] = jsonEncode(exercises);
-    formData["name"] = date;
-    formData["name"] = new_record;
-    formData["routine_time"] = workout_time;
+    formData["new_record"] = new_record;
+    formData["workout_time"] = workout_time;
     print(formData);
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/historycreate");

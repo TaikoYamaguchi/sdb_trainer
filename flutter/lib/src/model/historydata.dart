@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class SDBdata {
   final int id;
   final String user_email;
@@ -14,7 +16,11 @@ class SDBdata {
       required this.workout_time});
 
   factory SDBdata.fromJson(Map<String, dynamic> parsedJson) {
-    var list = parsedJson['exercises'] as List;
+
+    var list = parsedJson['exercises'].runtimeType == String
+        ? json.decode(parsedJson['exercises']) as List
+        : parsedJson['exercises'] as List;
+
     List<Exercises> exerciseList =
         list.map((i) => Exercises.fromJson(i)).toList();
     return SDBdata(
@@ -80,3 +86,9 @@ class Sets {
         reps: parsedJson["reps"]);
   }
 }
+
+List<Sets> setslist_his = [
+  Sets(index:0, weight: 0.0, reps: 1),
+  Sets(index:1, weight: 0.0, reps: 1),
+  Sets(index:2, weight: 0.0, reps: 1)
+];

@@ -40,11 +40,9 @@ class ExerciseState extends State<Exercise> {
   ];
 
 
-
   @override
   void initState() {
     super.initState();
-
   }
 
   PreferredSizeWidget _appbarWidget() {
