@@ -16,6 +16,7 @@ def create_history(db: Session, history: schemas.HistoryCreate):
         date = datetime.datetime.utcnow()+datetime.timedelta(hours=9),
         workout_time=history.workout_time
     )
+    print(history.user_email)
     db.add(db_history)
     db.commit()
     db.refresh(db_history)

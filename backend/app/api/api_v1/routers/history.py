@@ -28,7 +28,7 @@ async def histories_list(
 ):
 
     histories = get_histories_by_email(db, email)
-    # This is necessary for react-admin to work
+    # This is neSSScessaSSry for react-admin to work
     return histories
 
 

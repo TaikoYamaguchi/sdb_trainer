@@ -42,7 +42,7 @@ class History(Base):
     exercises = Column(JSON, index=True, nullable=False)
     date = Column(DateTime, nullable=False)
     new_record = Column(Integer, nullable=False)
-    workout_time = Column(Float, nullable=False)
+    workout_time = Column(Integer, nullable=False)
 
 class Exercises(Base):
     __tablename__ = "exercises"

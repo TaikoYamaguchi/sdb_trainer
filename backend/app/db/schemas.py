@@ -50,7 +50,7 @@ class HistoryBase(BaseModel):
     user_email : str
     exercises : t.Any
     new_record: int
-    workout_time:float
+    workout_time: int
     class Config:
         orm_mode = True
 

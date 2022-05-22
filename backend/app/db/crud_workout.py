@@ -17,6 +17,7 @@ def create_workout(db: Session, workout: schemas.WorkoutCreate):
         date = datetime.datetime.utcnow()+datetime.timedelta(hours=9),
         routine_time=workout.routine_time
     )
+    print(workout.user_email)
     db.add(db_workout)
     db.commit()
     db.refresh(db_workout)
