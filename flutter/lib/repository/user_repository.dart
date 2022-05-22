@@ -231,3 +231,32 @@ class UserEdit {
     return (jsonResponse);
   }
 }
+
+class UserInfo {
+  final String userEmail;
+  UserInfo({required this.userEmail});
+  Future<String> _userByEmailFromServer() async {
+    var url = Uri.parse(LocalHost.getLocalHost() + "/api/users/" + userEmail);
+    print("useremail");
+    print(userEmail);
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      String jsonString = utf8.decode(response.bodyBytes);
+      final jsonResponse = json.decode(jsonString);
+      return utf8.decode(response.bodyBytes);
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to load post');
+    }
+    //API통신
+    //await Future.delayed(Duration(milliseconds: 1000));
+  }
+
+  Future<User> getUserByEmail() async {
+    String jsonString = await _userByEmailFromServer();
+    final jsonResponse = json.decode(jsonString);
+    User user = User.fromJson(jsonResponse);
+    return (user);
+  }
+}
