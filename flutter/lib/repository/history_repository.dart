@@ -38,6 +38,27 @@ class ExerciseService {
   }
 }
 
+class HistorydataAll {
+  static Future<String> _loadSDBdataFromServer() async {
+    var url = Uri.parse(LocalHost.getLocalHost() + "/api/history");
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      return utf8.decode(response.bodyBytes);
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to load post');
+    }
+  }
+
+  static Future<SDBdataList> loadSDBdataAll() async {
+    String jsonString = await _loadSDBdataFromServer();
+    final jsonResponse = json.decode(jsonString);
+    SDBdataList sdbdata = SDBdataList.fromJson(jsonResponse);
+    return (sdbdata);
+  }
+}
+
 class HistoryPost {
   final String user_email;
   final List<Exercises> exercises;
@@ -50,8 +71,6 @@ class HistoryPost {
     required this.workout_time,
   });
   Future<String> _historyPostFromServer() async {
-
-
     var formData = new Map<String, dynamic>();
     print(user_email);
     formData["user_email"] = user_email;

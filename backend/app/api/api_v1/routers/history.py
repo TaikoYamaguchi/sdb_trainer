@@ -1,4 +1,4 @@
-from app.db.crud_history import create_history, get_histories_by_email
+from app.db.crud_history import create_history, get_histories_by_email, get_histories
 from fastapi import APIRouter, Request, Depends, Response, encoders
 import typing as t
 
@@ -28,6 +28,22 @@ async def histories_list(
 ):
 
     histories = get_histories_by_email(db, email)
+    # This is necessary for react-admin to work
+    return histories
+
+
+
+@r.get(
+    "/history",
+    response_model=t.List[HistoryOut],
+    response_model_exclude_none=True,
+)
+async def histories_list(
+    response: Response,
+    db=Depends(get_db),
+):
+
+    histories = get_histories(db)
     # This is necessary for react-admin to work
     return histories
 

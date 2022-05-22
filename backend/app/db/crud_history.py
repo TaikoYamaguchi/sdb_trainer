@@ -25,4 +25,8 @@ def get_histories_by_email(db: Session, email: str) -> t.List[schemas.HistoryOut
     histories = db.query(models.History).filter(models.History.user_email == email).all()
     return histories
 
+def get_histories(db: Session) -> t.List[schemas.HistoryOut]:
+    histories = db.query(models.History).order_by(models.History.id.desc()).all()
+    return histories
+
 

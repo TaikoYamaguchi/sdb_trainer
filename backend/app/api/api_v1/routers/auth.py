@@ -122,7 +122,7 @@ async def user_phone_number(
 
 
 @r.get(
-    "/getuser/{email}",
+    "/users/{email}",
     response_model=User,
     response_model_exclude_none=True,
 )

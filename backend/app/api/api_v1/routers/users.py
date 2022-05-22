@@ -31,4 +31,3 @@ async def users_list(
     response.headers["Content-Range"] = f"0-9/{len(users)}"
     return users
 
-
