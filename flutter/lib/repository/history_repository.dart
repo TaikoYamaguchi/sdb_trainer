@@ -42,7 +42,7 @@ class HistoryPost {
   final String user_email;
   final List<Exercises> exercises;
   final int new_record;
-  final double? workout_time;
+  final int workout_time;
   HistoryPost({
     required this.user_email,
     required this.exercises,

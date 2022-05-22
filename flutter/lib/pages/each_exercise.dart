@@ -369,8 +369,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                     print(_start_date);
                                     print(_finish_date);
                                     print(widget.exercisedetail.sets[1].reps);
-                                    _stop_timer();
+                                    recordExercise();
                                     _editHistoryCheck();
+                                    _stop_timer();
+
                                   },
                                   child: const Text('Finish Workout'),
                               )
@@ -418,12 +420,25 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   }
   void _stop_timer(){
     _timer!.cancel();
+    setState(() {
+      _runtime = 0;
+    });
+
+  }
+
+  void recordExercise(){
+    final suggestions = widget.exercisedetail.sets.where((sets){
+      return sets.ischecked as bool;
+    }).toList();
     print('fucking restore done');
+    print(suggestions.length);
+    print('fucking restore done');
+
   }
 
   void _editHistoryCheck() async {
     print(_userdataProvider.userdata.email);
-    HistoryPost(user_email: _userdataProvider.userdata.email, exercises: exerciseList, new_record: 120, workout_time:100)
+    HistoryPost(user_email: _userdataProvider.userdata.email, exercises: exerciseList, new_record: 120, workout_time: _runtime)
         .postHistory()
         .then((data) => data["user_email"] != null
         ? _historydataProvider.getdata()
