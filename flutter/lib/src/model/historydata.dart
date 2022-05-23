@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:sdb_trainer/src/model/workoutdata.dart';
+
 class SDBdata {
   final int id;
   final String user_email;
@@ -73,22 +75,9 @@ class SDBdataList {
   }
 }
 
-class Sets {
-  final int index;
-  final double? weight;
-  final int reps;
-  Sets({required this.index, required this.weight, required this.reps});
-  Map toJson() => {"index": index, "weight": weight, "reps": reps};
-  factory Sets.fromJson(Map<String, dynamic> parsedJson) {
-    return Sets(
-        index: parsedJson["index"],
-        weight: parsedJson["weight"],
-        reps: parsedJson["reps"]);
-  }
-}
 
 List<Sets> setslist_his = [
-  Sets(index:0, weight: 0.0, reps: 1),
-  Sets(index:1, weight: 0.0, reps: 1),
-  Sets(index:2, weight: 0.0, reps: 1)
+  Sets(index:0, weight: 0.0, reps: 1, ischecked: true),
+  Sets(index:1, weight: 0.0, reps: 1, ischecked: true),
+  Sets(index:2, weight: 0.0, reps: 1, ischecked: true)
 ];

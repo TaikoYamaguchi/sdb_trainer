@@ -37,9 +37,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   var _runtime = 0;
   Timer? _timer;
 
-  late List<hisdata.Exercises> exerciseList = [
-    hisdata.Exercises(name: widget.exercisedetail.name, sets: hisdata.setslist_his , onerm: 120, goal: widget.eachuniqueinfo[0].goal, date: '2022-05-21'),
-  ];
+  late List<hisdata.Exercises> exerciseList = [];
 
   @override
   void initState() {
@@ -354,7 +352,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                       _isstarted = !_isstarted;
                                     });
                                     _start_date = DateTime.now();
-                                    print(_start_date);
+                                    print(_start_date.toString().substring(0,10));
                                     _start_timer();
                                   },
                                   child: const Text('Start Workout'),
@@ -430,9 +428,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     final suggestions = widget.exercisedetail.sets.where((sets){
       return sets.ischecked as bool;
     }).toList();
-    print('fucking restore done');
-    print(suggestions.length);
-    print('fucking restore done');
+    exerciseList.add(hisdata.Exercises(name: widget.exercisedetail.name, sets: suggestions , onerm: 120, goal: widget.eachuniqueinfo[0].goal, date: DateTime.now().toString().substring(0,10)));
+
 
   }
 
