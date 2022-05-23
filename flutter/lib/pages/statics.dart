@@ -44,6 +44,7 @@ class _CalendarState extends State<Calendar> {
       ExercisesRepository.loadExercisesdata().then((exercisesData) {
         _exercisesData = exercisesData;
         _getChartSourcefromDay();
+        print("111??");
         setState(() {
           _isLoading = false;
         });
@@ -55,6 +56,7 @@ class _CalendarState extends State<Calendar> {
 
   List<SDBdata> _getEventsfromDay(DateTime date) {
     String date_calendar = DateFormat('yyyy-MM-dd').format(date);
+    print("111??");
     selectedEvents = {};
     for (int i = 0; i < _sdbData!.sdbdatas.length; i++) {
       if (_sdbData!.sdbdatas[i].date!.substring(0, 10) == date_calendar) {
@@ -65,16 +67,28 @@ class _CalendarState extends State<Calendar> {
         }
       }
     }
+    print("111??");
+    print(selectedEvents[date]);
+    if (selectedEvents[date] != null) {
+      print(selectedEvents[date]!.first.exercises);
+    }
+    print("111??");
+    print(selectedEvents[date] ?? []);
     return selectedEvents[date] ?? [];
   }
 
   void _getChartSourcefromDay() {
+    print("333?");
+    print(_sdbData!.sdbdatas[0].exercises[0].name);
+    print(_chartIndex.chartIndex);
+    print("333?");
     _sdbChartData = _sdbData!.sdbdatas
         .map((name) => name.exercises
             .where((name) => name.name.contains(
                 _exercisesData!.exercises[_chartIndex.chartIndex].name))
             .toList()[0])
         .toList();
+    print(_sdbChartData);
   }
 
   @override
@@ -183,7 +197,7 @@ class _CalendarState extends State<Calendar> {
         ),
         _getEventsfromDay(_selectedDay).isEmpty != true
             ? ExerciseState.exercisesWidget(
-                _getEventsfromDay(_selectedDay).first, true)
+                _getEventsfromDay(_selectedDay).first.exercises, true)
             : Container()
       ],
     );
@@ -225,6 +239,10 @@ class _CalendarState extends State<Calendar> {
 
   List<Widget> techChips() {
     List<Widget> chips = [];
+
+    print("1111");
+    print(_exercisesData);
+    print("1111");
     for (int i = 0; i < _exercisesData!.exercises.length; i++) {
       Widget item = Padding(
         padding: const EdgeInsets.only(left: 10, right: 5),

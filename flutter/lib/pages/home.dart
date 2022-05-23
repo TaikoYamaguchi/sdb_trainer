@@ -7,6 +7,7 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/staticPageState.dart';
 import 'package:sdb_trainer/providers/chartIndexState.dart';
+import 'package:sdb_trainer/providers/historydata.dart';
 
 class Home extends StatelessWidget {
   Home({Key? key}) : super(key: key);
@@ -15,6 +16,7 @@ class Home extends StatelessWidget {
   var _bodyStater;
   var _staticPageState;
   var _chartIndex;
+  var _historydataAll;
 
   PreferredSizeWidget _appbarWidget() {
     if (_userdataProvider.userdata != null) {
@@ -163,6 +165,8 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _historydataAll = Provider.of<HistorydataProvider>(context, listen: false);
+    _historydataAll.getHistorydataAll();
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: true);
     _userdataProvider.getdata();
     _exercisesdataProvider =

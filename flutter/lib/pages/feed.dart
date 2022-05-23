@@ -53,7 +53,6 @@ class Feed extends StatelessWidget {
 
   Widget _feedCard(SDBdata) {
     var user;
-    ;
     return Container(
       height: 200,
       color: Colors.black,
@@ -74,7 +73,7 @@ class Feed extends StatelessWidget {
                       } else if (snapshot.hasError) {
                         return Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 0),
+                                horizontal: 20, vertical: 5),
                             child: Row(
                               children: [
                                 Text(
@@ -87,7 +86,7 @@ class Feed extends StatelessWidget {
                       } else {
                         return Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 0),
+                                horizontal: 20, vertical: 5),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [

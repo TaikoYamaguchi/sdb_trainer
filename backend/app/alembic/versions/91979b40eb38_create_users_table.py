@@ -61,7 +61,7 @@ def upgrade():
             sa.Column("exercises", JSONB),
             sa.Column("date", sa.DateTime, nullable=False),
             sa.Column("new_record", sa.Integer, nullable=False),
-            sa.Column("workout_time", sa.Float, nullable=False)
+            sa.Column("workout_time", sa.Integer, nullable=False)
         )
     if "exercises" not in tables:
         op.create_table(
