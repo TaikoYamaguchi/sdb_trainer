@@ -56,6 +56,7 @@ class _CalendarState extends State<Calendar> {
 
   List<SDBdata> _getEventsfromDay(DateTime date) {
     String date_calendar = DateFormat('yyyy-MM-dd').format(date);
+    print("111??");
     selectedEvents = {};
     for (int i = 0; i < _sdbData!.sdbdatas.length; i++) {
       if (_sdbData!.sdbdatas[i].date!.substring(0, 10) == date_calendar) {
@@ -66,28 +67,29 @@ class _CalendarState extends State<Calendar> {
         }
       }
     }
-
+    print("111??");
+    print(selectedEvents[date]);
+    if (selectedEvents[date] != null) {
+      print(selectedEvents[date]!.first.exercises);
+    }
+    print("111??");
+    print(selectedEvents[date] ?? []);
     return selectedEvents[date] ?? [];
   }
 
-  void _getChartSourcefromDay() async {
-    print("yesss");
-    var _sdbChartDataExample = _sdbData!.sdbdatas
+  void _getChartSourcefromDay() {
+    print("333?");
+    print(_sdbData!.sdbdatas.map((name) => name.exercises
+        .where((name) => name.name
+            .contains(_exercisesData!.exercises[_chartIndex.chartIndex].name))
+        .toList()));
+    print("333?");
+    _sdbChartData = _sdbData!.sdbdatas
         .map((name) => name.exercises
             .where((name) => name.name.contains(
                 _exercisesData!.exercises[_chartIndex.chartIndex].name))
             .toList()[0])
         .toList();
-    print("333?");
-    print(_sdbChartDataExample);
-    print("333?");
-    for (int i = 0; i < _sdbChartDataExample.length; i++) {
-      if (_sdbChartDataExample[i] == []) {
-        null;
-      } else {
-        _sdbChartData!.add(_sdbChartDataExample[i]);
-      }
-    }
     print(_sdbChartData);
   }
 

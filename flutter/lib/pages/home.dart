@@ -29,7 +29,7 @@ class Home extends StatelessWidget {
           IconButton(
             icon: SvgPicture.asset("assets/svg/chart.svg"),
             onPressed: () {
-              _bodyStater.change(2);
+              _bodyStater.change(3);
               _staticPageState.change(false);
             },
           )
@@ -111,7 +111,7 @@ class Home extends StatelessWidget {
     return _exunique.exercises.length > index
         ? GestureDetector(
             onTap: () => {
-              _bodyStater.change(2),
+              _bodyStater.change(3),
               _chartIndex.change(index),
               _staticPageState.change(true)
             },
