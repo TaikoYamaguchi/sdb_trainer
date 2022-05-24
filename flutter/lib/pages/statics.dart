@@ -22,7 +22,7 @@ class Calendar extends StatefulWidget {
 class _CalendarState extends State<Calendar> {
   late Map<DateTime, List<SDBdata>> selectedEvents;
   SDBdataList? _sdbData;
-  List<Exercises>? _sdbChartData;
+  List<Exercises>? _sdbChartData = [];
   ExercisesData.Exercisesdata? _exercisesData;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
@@ -39,6 +39,7 @@ class _CalendarState extends State<Calendar> {
   void initState() {
     // TODO: implement initState
     selectedEvents = {};
+
     ExerciseService.loadSDBdata().then((sdbdatas) {
       _sdbData = sdbdatas;
       ExercisesRepository.loadExercisesdata().then((exercisesData) {
@@ -71,24 +72,25 @@ class _CalendarState extends State<Calendar> {
   }
 
   void _getChartSourcefromDay() async {
-    print("yesss");
+    _sdbChartData = [];
     var _sdbChartDataExample = _sdbData!.sdbdatas
         .map((name) => name.exercises
             .where((name) => name.name.contains(
                 _exercisesData!.exercises[_chartIndex.chartIndex].name))
-            .toList()[0])
+            .toList())
         .toList();
-    print("333?");
     print(_sdbChartDataExample);
-    print("333?");
     for (int i = 0; i < _sdbChartDataExample.length; i++) {
-      if (_sdbChartDataExample[i] == []) {
+      print(_sdbChartDataExample.length);
+      print(_sdbChartDataExample[i]);
+      if (_sdbChartDataExample[i].isEmpty) {
+        print(null);
         null;
       } else {
-        _sdbChartData!.add(_sdbChartDataExample[i]);
+        print("not null");
+        _sdbChartData!.add(_sdbChartDataExample[i][0]);
       }
     }
-    print(_sdbChartData);
   }
 
   @override

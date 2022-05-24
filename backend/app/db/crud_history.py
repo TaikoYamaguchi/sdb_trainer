@@ -23,7 +23,7 @@ def create_history(db: Session, history: schemas.HistoryCreate):
     return db_history
 
 def get_histories_by_email(db: Session, email: str) -> t.List[schemas.HistoryOut]:
-    histories = db.query(models.History).filter(models.History.user_email == email).all()
+    histories = db.query(models.History).filter(models.History.user_email == email).order_by(models.History.id.desc()).all()
     return histories
 
 def get_histories(db: Session) -> t.List[schemas.HistoryOut]:
