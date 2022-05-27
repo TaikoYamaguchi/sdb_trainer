@@ -428,8 +428,21 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     final suggestions = widget.exercisedetail.sets.where((sets){
       return sets.ischecked as bool;
     }).toList();
-    exerciseList.add(hisdata.Exercises(name: widget.exercisedetail.name, sets: suggestions , onerm: 120, goal: widget.eachuniqueinfo[0].goal, date: DateTime.now().toString().substring(0,10)));
+    double monerm=0;
+    for (int i = 0; i< suggestions.length; i++){
+      if(suggestions[i].reps != 1){
+        if(monerm < suggestions[i].weight * (1 + suggestions[i].reps / 30)){
+          monerm = suggestions[i].weight * (1 + suggestions[i].reps / 30);
+          print(monerm);
+        }
 
+      }else if(monerm < suggestions[i].weight){
+        monerm = suggestions[i].weight;
+      }
+
+    }
+
+    exerciseList.add(hisdata.Exercises(name: widget.exercisedetail.name, sets: suggestions , onerm: monerm, goal: widget.eachuniqueinfo[0].goal, date: DateTime.now().toString().substring(0,10)));
 
   }
 
