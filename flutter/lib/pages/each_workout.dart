@@ -44,6 +44,14 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   PreferredSizeWidget _appbarWidget(){
 
     return AppBar(
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios_outlined),
+        onPressed: (){
+          _editWorkoutCheck();
+          Navigator.of(context).pop();
+          Provider.of<WorkoutdataProvider>(context, listen: false).getdata();
+        },
+      ),
       title: Row(
         children: [
           Text(

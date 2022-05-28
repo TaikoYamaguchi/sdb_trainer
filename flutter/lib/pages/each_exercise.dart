@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sdb_trainer/providers/workoutdata.dart';
+import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
@@ -24,6 +26,7 @@ class EachExerciseDetails extends StatefulWidget {
 class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   var _userdataProvider;
   var _historydataProvider;
+  var _workoutdataProvider;
   bool _isstarted = false;
   bool _isChecked = false;
   double top = 0;
@@ -46,12 +49,28 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
 
   PreferredSizeWidget _appbarWidget() {
     return AppBar(
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios_outlined),
+        onPressed: (){
+          //_editWorkoutCheck();
+          Navigator.of(context).pop();
+        },
+      ),
       title: Text(
         "",
         style: TextStyle(color: Colors.white, fontSize: 30),
       ),
       backgroundColor: Colors.black,
     );
+  }
+
+  void _editWorkoutCheck() async {
+    print(_workoutdataProvider.name);
+    WorkoutEdit(user_email: _userdataProvider.userdata.email, name: _workoutdataProvider.name,  exercises: _workoutdataProvider.exercises)
+        .editWorkout()
+        .then((data) => data["user_email"] != null
+        ? showToast("done!")
+        : showToast("입력을 확인해주세요"));
   }
 
   Widget _exercisedetailWidget() {
@@ -433,7 +452,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
       if(suggestions[i].reps != 1){
         if(monerm < suggestions[i].weight * (1 + suggestions[i].reps / 30)){
           monerm = suggestions[i].weight * (1 + suggestions[i].reps / 30);
-          print(monerm);
         }
 
       }else if(monerm < suggestions[i].weight){
@@ -459,6 +477,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _historydataProvider = Provider.of<HistorydataProvider>(context, listen: false);
+    _workoutdataProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
     return Scaffold(
       appBar: _appbarWidget(),
       body: _exercisedetailWidget(),
