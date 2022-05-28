@@ -158,6 +158,13 @@ class Feed extends StatelessWidget {
                         );
                       },
                       itemCount: SDBdata.exercises.length),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IconButton(onPressed: null, icon: Icon(Icons.thumb_up)),
+                    IconButton(onPressed: null, icon: Icon(Icons.thumb_down))
+                  ],
                 )
               ],
             ),

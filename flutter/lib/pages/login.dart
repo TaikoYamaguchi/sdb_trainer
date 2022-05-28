@@ -57,46 +57,55 @@ class _LoginPageState extends State<LoginPage> {
                             color: Colors.white,
                             fontSize: 54,
                             fontWeight: FontWeight.w800)),
+                    SizedBox(
+                      height: 8,
+                    ),
                     _emailWidget(),
                     SizedBox(
                       height: 8,
                     ),
                     _passwordWidget(),
                     SizedBox(
-                      height: 10,
+                      height: 14,
                     ),
                     _loginButton(context),
                     SizedBox(
-                      height: 4,
+                      height: 14,
                     ),
                     _signUpButton(context),
-                    Expanded(
-                      flex: 3,
-                      child: SizedBox(),
+                    SizedBox(
+                      height: 6,
                     ),
                     _loginWithKakao(context),
                     _loginWithGoogle(context),
+                    Expanded(
+                      flex: 1,
+                      child: SizedBox(),
+                    ),
                   ]))),
     ));
   }
 
   Widget _emailWidget() {
-    return TextFormField(
-        controller: _userEmailCtrl,
-        decoration: InputDecoration(
-            prefixIcon: Icon(Icons.email, color: Colors.white),
-            labelText: "이메일",
-            labelStyle: TextStyle(color: Colors.white),
-            border: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.white, width: 2.0),
-              borderRadius: BorderRadius.circular(5.0),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.white, width: 2.0),
-              borderRadius: BorderRadius.circular(5.0),
-            ),
-            fillColor: Colors.white),
-        style: TextStyle(color: Colors.white));
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: TextFormField(
+          controller: _userEmailCtrl,
+          decoration: InputDecoration(
+              prefixIcon: Icon(Icons.email, color: Colors.white),
+              labelText: "이메일",
+              labelStyle: TextStyle(color: Colors.white),
+              border: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.white, width: 2.0),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white, width: 2.0),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              fillColor: Colors.white),
+          style: TextStyle(color: Colors.white)),
+    );
   }
 
   Future<void> _loginButtonPressed() async {
@@ -222,26 +231,29 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _passwordWidget() {
-    return TextFormField(
-        controller: _userPasswordCtrl,
-        obscureText: true,
-        enableSuggestions: false,
-        autocorrect: false,
-        obscuringCharacter: "*",
-        decoration: InputDecoration(
-            prefixIcon: Icon(Icons.vpn_key_rounded, color: Colors.white),
-            labelText: "비밀번호",
-            labelStyle: TextStyle(color: Colors.white),
-            border: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.white, width: 2.0),
-              borderRadius: BorderRadius.circular(5.0),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.white, width: 2.0),
-              borderRadius: BorderRadius.circular(5.0),
-            ),
-            fillColor: Colors.white),
-        style: TextStyle(color: Colors.white));
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: TextFormField(
+          controller: _userPasswordCtrl,
+          obscureText: true,
+          enableSuggestions: false,
+          autocorrect: false,
+          obscuringCharacter: "*",
+          decoration: InputDecoration(
+              prefixIcon: Icon(Icons.vpn_key_rounded, color: Colors.white),
+              labelText: "비밀번호",
+              labelStyle: TextStyle(color: Colors.white),
+              border: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.white, width: 2.0),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white, width: 2.0),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              fillColor: Colors.white),
+          style: TextStyle(color: Colors.white)),
+    );
   }
 
   Widget _loginButton(context) {
