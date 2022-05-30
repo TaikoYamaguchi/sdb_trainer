@@ -606,22 +606,41 @@ class _LoginPageState extends State<SignUpPage> {
   Widget _signUpButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            color: Color.fromRGBO(246, 58, 64, 20),
-            textColor: Colors.white,
-            disabledColor: Color.fromRGBO(246, 58, 64, 20),
-            disabledTextColor: Colors.black,
-            padding: EdgeInsets.all(8.0),
-            splashColor: Colors.blueAccent,
-            onPressed: () => _isSignupIndex == 0
-                ? setState(() {
-                    _signUpProfileCheck() ? _isSignupIndex = 1 : null;
-                  })
-                : _signUpProfileCheck()
-                    ? _signUpCheck()
-                    : null,
-            child: Text(isLoading ? 'loggin in.....' : "회원가입",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+        child: FutureBuilder(
+            future: _signUpProfileCheck(),
+            builder: (context, AsyncSnapshot<bool> snapshot) {
+              if (snapshot.data == true) {
+                return FlatButton(
+                    color: Color.fromRGBO(246, 58, 64, 20),
+                    textColor: Colors.white,
+                    disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                    disabledTextColor: Colors.black,
+                    padding: EdgeInsets.all(8.0),
+                    splashColor: Colors.blueAccent,
+                    onPressed: () => _isSignupIndex == 0
+                        ? setState(() {
+                            _isSignupIndex = 1;
+                          })
+                        : _signUpCheck(),
+                    child: Text(isLoading ? 'loggin in.....' : "회원가입",
+                        style: TextStyle(fontSize: 20.0, color: Colors.white)));
+              } else {
+                return FlatButton(
+                    color: Color.fromRGBO(246, 58, 64, 20),
+                    textColor: Colors.white,
+                    disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                    disabledTextColor: Colors.black,
+                    padding: EdgeInsets.all(8.0),
+                    splashColor: Colors.blueAccent,
+                    onPressed: () => _isSignupIndex == 0
+                        ? setState(() {
+                            null;
+                          })
+                        : null,
+                    child: Text(isLoading ? 'loggin in.....' : "회원가입",
+                        style: TextStyle(fontSize: 20.0, color: Colors.white)));
+              }
+            }));
   }
 
   Widget _weightSubmitButton(context) {
@@ -699,13 +718,26 @@ class _LoginPageState extends State<SignUpPage> {
             : showToast("입력을 확인해주세요"));
   }
 
-  bool _signUpProfileCheck() {
+  Future<bool> _signUpProfileCheck() async {
     if (_isSignupIndex == 0) {
       if (_userEmailCtrl.text != "" &&
           _userNicknameCtrl.text != "" &&
           _userPasswordCtrl.text != "" &&
           _userPhoneNumberCtrl.text != "") {
-        return true;
+        var user =
+            await UserInfo(userEmail: _userEmailCtrl.text).getUserByEmail();
+        print("00000");
+        print(user);
+        if (user == null) {
+          print("11111");
+          print(user);
+          return true;
+        } else {
+          print("2222");
+          print(user);
+          showToast("중복된 이메일이 있습니다.");
+          return false;
+        }
       } else {
         showToast("빈칸을 채워주세요");
         return false;

@@ -160,6 +160,14 @@ class UserSignUp {
       String? user_token = await storage.read(key: "sdb_token");
 
       return utf8.decode(response.bodyBytes);
+    } else if (response.statusCode == 404) {
+      print("404");
+      showToast("중복된 닉네임 입니다.");
+      throw Error();
+    } else if (response.statusCode == 403) {
+      print("403");
+      showToast("중복된 이메일 입니다.");
+      throw Error();
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
       throw Exception('Failed to load post');
@@ -219,9 +227,11 @@ class UserEdit {
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);
+    } else if (response.statusCode == 404) {
+      showToast("중복된 닉네임 입니다.");
+      throw Error();
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
-      showToast("중복된 닉네임 입니다.");
       throw Error();
     }
   }
@@ -254,10 +264,16 @@ class UserInfo {
     //await Future.delayed(Duration(milliseconds: 1000));
   }
 
-  Future<User> getUserByEmail() async {
+  Future<User?> getUserByEmail() async {
     String jsonString = await _userByEmailFromServer();
     final jsonResponse = json.decode(jsonString);
-    User user = User.fromJson(jsonResponse);
-    return (user);
+    print("3333");
+    print(jsonResponse);
+    if (jsonResponse == null) {
+      return null;
+    } else {
+      User user = User.fromJson(jsonResponse);
+      return (user);
+    }
   }
 }
