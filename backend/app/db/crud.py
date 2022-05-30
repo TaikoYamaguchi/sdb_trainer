@@ -23,6 +23,12 @@ def get_users(
     return db.query(models.User).all()
 
 def create_user(db: Session, user: schemas.UserCreate):
+    db_nickname = get_user_by_nickname(db,user.nickname)
+    if db_nickname:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail="닉네임이 중복 됐습니다")
+    db_email= get_user_by_email(db,user.email)
+    if db_email:
+        raise HTTPException(status.HTTP_403_NOT_FOUND, detail="이메일이 중복 됐습니다")
     hashed_password = get_password_hash(user.password)
     db_user = models.User(
         email=user.email,
@@ -50,12 +56,20 @@ def create_user(db: Session, user: schemas.UserCreate):
 def get_user_by_email(db: Session, email: str) -> schemas.UserBase:
     return db.query(models.User).filter(models.User.email == email).first()
 
+def get_user_by_nickname(db: Session, nickname: str) -> schemas.UserBase:
+    return db.query(models.User).filter(models.User.nickname == nickname).first()
+
+
 def get_user_by_phone_number(db: Session, phone_number: str) -> schemas.UserBase:
     return db.query(models.User).filter(models.User.phone_number == phone_number).first()
 
 def edit_user(
     db: Session, email: str, user: schemas.UserEdit
 ) -> schemas.UserBase:
+    db_nickname = get_user_by_nickname(db,user.nickname)
+    if db_nickname:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail="닉네임이 중복 됐습니다")
+
     db_user = get_user_by_email(db, email)
     if not db_user:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User not found")

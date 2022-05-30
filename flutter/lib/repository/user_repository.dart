@@ -4,6 +4,7 @@ import '../src/model/userdata.dart';
 import 'package:http/http.dart' as http;
 import 'package:sdb_trainer/localhost.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:sdb_trainer/src/utils/util.dart';
 
 class UserService {
   static Future<String> _loadUserdataFromServer() async {
@@ -220,6 +221,7 @@ class UserEdit {
       return utf8.decode(response.bodyBytes);
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      showToast("중복된 닉네임 입니다.");
       throw Error();
     }
   }
