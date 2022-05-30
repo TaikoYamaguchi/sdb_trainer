@@ -729,9 +729,15 @@ class _LoginPageState extends State<SignUpPage> {
         print("00000");
         print(user);
         if (user == null) {
-          print("11111");
-          print(user);
-          return true;
+          var userNickname =
+              await UserNickname(userNickname: _userNicknameCtrl.text)
+                  .getUserByNickname();
+          if (userNickname == null) {
+            return true;
+          } else {
+            showToast("중복된 닉네임입니다.");
+            return false;
+          }
         } else {
           print("2222");
           print(user);

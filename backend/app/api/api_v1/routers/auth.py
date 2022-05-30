@@ -1,4 +1,4 @@
-from app.db.crud import create_user, get_user_by_email, get_user_by_phone_number, edit_user
+from app.db.crud import create_user, get_user_by_email, get_user_by_phone_number, edit_user, get_user_by_nickname
 from app.db.schemas import User, UserCreate, UserEdit
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import APIRouter, Depends, Request, HTTPException, status
@@ -132,6 +132,19 @@ async def user_email(
     db=Depends(get_db),
 ):
     user = get_user_by_email(db, email)
+    return user
+
+@r.get(
+    "/users/{nickname}",
+    response_model=User,
+    response_model_exclude_none=True,
+)
+async def user_nickname(
+    request: Request,
+    nickname: str,
+    db=Depends(get_db),
+):
+    user = get_user_by_nickname(db, nickname)
     return user
 
 
