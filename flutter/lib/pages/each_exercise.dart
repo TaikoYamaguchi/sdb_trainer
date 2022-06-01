@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
@@ -27,6 +28,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   var _userdataProvider;
   var _historydataProvider;
   var _workoutdataProvider;
+  var _routinetimeProvider;
   bool _isstarted = false;
   bool _isChecked = false;
   double top = 0;
@@ -37,8 +39,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   List<TextEditingController> repsController = [];
   var _start_date ;
   var _finish_date ;
-  var _runtime = 0;
-  Timer? _timer;
+  var runtime = 0;
+  Timer? timer1;
 
   late List<hisdata.Exercises> exerciseList = [];
 
@@ -344,7 +346,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                 child:  Column(
                   children: [
                     Container(
-                      child: Text('$_runtime', style: TextStyle(fontSize: 25, color: Colors.white))
+                      child: Consumer<RoutineTimeProvider>(builder: (context, provider, child){
+                        return Text(provider.routineTime.toString(), style: TextStyle(fontSize: 25, color: Colors.white));
+                      })
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -363,36 +367,26 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               )),
                         ),
                         Container(
-                          child:  _isstarted == false
-                              ? ElevatedButton(
-                                  style: ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
-                                  onPressed: (){
-                                    setState(() {
-                                      _isstarted = !_isstarted;
-                                    });
-                                    _start_date = DateTime.now();
-                                    print(_start_date.toString().substring(0,10));
-                                    _start_timer();
-                                  },
-                                  child: const Text('Start Workout'),
-                              )
-                              : ElevatedButton(
-                                  style: ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
-                                  onPressed: (){
-                                    setState(() {
-                                      _isstarted = !_isstarted;
+                          child:
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
+                              onPressed: (){
+                                setState(() {
+                                  _isstarted = !_isstarted;
+                                });
+                                _start_date = DateTime.now();
+                                print(_start_date.toString().substring(0,10));
+                                if (_routinetimeProvider.isstarted){
+                                  recordExercise();
+                                  _editHistoryCheck();
+                                }
+                                _routinetimeProvider.routinecheck();
 
-                                    });
-                                    print(_start_date);
-                                    print(_finish_date);
-                                    print(widget.exercisedetail.sets[1].reps);
-                                    recordExercise();
-                                    _editHistoryCheck();
-                                    _stop_timer();
-
-                                  },
-                                  child: const Text('Finish Workout'),
-                              )
+                              },
+                              child: Consumer<RoutineTimeProvider>(builder: (builder, provider, child){
+                                return Text(provider.routineButton);
+                              }),
+                            )
 
                         ),
                         Container(
@@ -422,26 +416,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     );
   }
 
-  void _start_timer(){
-    var counter = 10001;
-    _timer  = Timer.periodic(Duration(seconds: 1), (timer){
-      setState(() {
-        _runtime++;
-        print(_runtime);
-      });
-      if (counter == 0) {
-        print('cancel timer');
-        timer.cancel();
-      }
-    });
-  }
-  void _stop_timer(){
-    _timer!.cancel();
-    setState(() {
-      _runtime = 0;
-    });
-
-  }
 
   void recordExercise(){
     final suggestions = widget.exercisedetail.sets.where((sets){
@@ -466,7 +440,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
 
   void _editHistoryCheck() async {
     print(_userdataProvider.userdata.email);
-    HistoryPost(user_email: _userdataProvider.userdata.email, exercises: exerciseList, new_record: 120, workout_time: _runtime)
+    HistoryPost(user_email: _userdataProvider.userdata.email, exercises: exerciseList, new_record: 120, workout_time: _routinetimeProvider.routineTime)
         .postHistory()
         .then((data) => data["user_email"] != null
         ? _historydataProvider.getdata()
@@ -478,6 +452,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _historydataProvider = Provider.of<HistorydataProvider>(context, listen: false);
     _workoutdataProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
+    _routinetimeProvider = Provider.of<RoutineTimeProvider>(context, listen: false);
     return Scaffold(
       appBar: _appbarWidget(),
       body: _exercisedetailWidget(),

@@ -6,6 +6,7 @@ import 'package:sdb_trainer/pages/app.dart';
 import 'package:sdb_trainer/pages/login.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
+import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/staticPageState.dart';
 import 'package:sdb_trainer/providers/chartIndexState.dart';
@@ -32,7 +33,9 @@ void main() {
     ChangeNotifierProvider(
         create: (BuildContext context) => WorkoutdataProvider()),
     ChangeNotifierProvider(
-        create: (BuildContext context) => HistorydataProvider())
+        create: (BuildContext context) => HistorydataProvider()),
+    ChangeNotifierProvider(
+        create: (BuildContext context) => RoutineTimeProvider())
   ], child: MyApp()));
 }
 
