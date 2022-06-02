@@ -17,10 +17,11 @@ import 'package:sdb_trainer/src/model/workoutdata.dart';
 class EachExerciseDetails extends StatefulWidget {
   dynamic exercisedetail;
   List eachuniqueinfo;
+  int ueindex;
   int eindex;
   int rindex;
   EachExerciseDetails(
-      {Key? key, required this.exercisedetail, required this.eachuniqueinfo, required this.eindex, required this.rindex})
+      {Key? key, required this.exercisedetail, required this.eachuniqueinfo, required this.eindex, required this.ueindex, required this.rindex})
       : super(key: key);
 
 
@@ -154,12 +155,15 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      widget.exercisedetail.name,
-                      style: TextStyle(color: Colors.white, fontSize: 48),
-                    ),
+                    Consumer<WorkoutdataProvider>(builder: (builder,provider,child) {
+                      var _exercise = provider.workoutdata.routinedatas[widget.rindex].exercises[widget.eindex];
+                      return Text(
+                        _exercise.name,
+                        style: TextStyle(color: Colors.white, fontSize: 48),
+                      );
+                    }),
                     Consumer<ExercisesdataProvider>(builder: (builder,provider,child){
-                      var _info = provider.exercisesdata.exercises[widget.eindex];
+                      var _info = provider.exercisesdata.exercises[widget.ueindex];
                       return Text(
                         "Best 1RM: ${_info.onerm}/${_info.goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
                         style: TextStyle(color: Color(0xFF717171), fontSize: 21),
@@ -404,7 +408,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               onPressed: (){
 
                                 _start_date = DateTime.now();
-                                print(_start_date.toString().substring(0,10));
                                 if (_routinetimeProvider.isstarted){
                                   recordExercise();
                                   _editHistoryCheck();
@@ -466,9 +469,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
       }
 
       if (monerm > _eachex.onerm){
-        modifyExercise(monerm);
+        modifyExercise(monerm,exercise_all[n].name);
       }
     }
+    _postExerciseCheck();
 
   }
 
@@ -490,9 +494,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
 
   }
 
-  void modifyExercise(double newonerm){
-    _exercise[_exercise.indexWhere((element) => element.name == widget.exercisedetail.name)].onerm = newonerm;
-    _postExerciseCheck();
+  void modifyExercise(double newonerm, exname){
+    _exercise[_exercise.indexWhere((element) => element.name == exname)].onerm = newonerm;
+
   }
 
   void _postExerciseCheck() async {

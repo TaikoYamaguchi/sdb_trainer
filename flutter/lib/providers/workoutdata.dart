@@ -16,19 +16,16 @@ class WorkoutdataProvider extends ChangeNotifier {
 
   boolcheck(rindex, eindex, sindex, newvalue) {
     _workoutdata.routinedatas[rindex].exercises[eindex].sets[sindex].ischecked = newvalue;
-    print(_workoutdata.routinedatas[rindex].exercises[eindex].sets[sindex].ischecked);
     notifyListeners();
   }
 
   weightcheck(rindex, eindex, sindex, newvalue) {
     _workoutdata.routinedatas[rindex].exercises[eindex].sets[sindex].weight = newvalue;
-    print(_workoutdata.routinedatas[rindex].exercises[eindex].sets[sindex].weight);
     notifyListeners();
   }
 
   repscheck(rindex, eindex, sindex, newvalue) {
     _workoutdata.routinedatas[rindex].exercises[eindex].sets[sindex].reps = newvalue;
-    print(_workoutdata.routinedatas[rindex].exercises[eindex].sets[sindex].reps);
     notifyListeners();
   }
 

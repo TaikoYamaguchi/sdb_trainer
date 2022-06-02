@@ -119,7 +119,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                     child: EachExerciseDetails(
                       exercisedetail: widget.exerciselist[index],
                       eachuniqueinfo: exinfo,
-                      eindex: widget.uniqueinfo.indexWhere((element) => element.name == widget.exerciselist[index].name),
+                      ueindex: widget.uniqueinfo.indexWhere((element) => element.name == widget.exerciselist[index].name),
+                      eindex: index,
                       rindex: widget.routineindex,
                     ),
                     transitionEffect: TransitionEffect.RIGHT_TO_LEFT
