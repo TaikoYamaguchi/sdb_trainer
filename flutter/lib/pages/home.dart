@@ -19,11 +19,24 @@ class Home extends StatelessWidget {
   var _historydataAll;
 
   PreferredSizeWidget _appbarWidget() {
-    if (_userdataProvider.userdata != null) {
+    //if (_userdataProvider.userdata != null) {
       return AppBar(
-        title: Text(
-          _userdataProvider.userdata.nickname + "님",
-          style: TextStyle(color: Colors.white),
+        title: Consumer<UserdataProvider>(
+          builder: (builder, provider, child) {
+            if(provider.userdata != null){
+              return Text(
+                provider.userdata.nickname + "님",
+                style: TextStyle(color: Colors.white),
+              );
+            }
+            else {
+              return PreferredSize(
+                  preferredSize: Size.fromHeight(56.0),
+                  child: Container(
+                      color: Colors.black,
+                      child: Center(child: CircularProgressIndicator())));
+            }
+          }
         ),
         actions: [
           IconButton(
@@ -36,12 +49,7 @@ class Home extends StatelessWidget {
         ],
         backgroundColor: Colors.black,
       );
-    }
-    return PreferredSize(
-        preferredSize: Size.fromHeight(56.0),
-        child: Container(
-            color: Colors.black,
-            child: Center(child: CircularProgressIndicator())));
+
   }
 
   Widget _homeWidget(_exunique) {
@@ -167,7 +175,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     _historydataAll = Provider.of<HistorydataProvider>(context, listen: false);
     _historydataAll.getHistorydataAll();
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: true);
+    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _userdataProvider.getdata();
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
