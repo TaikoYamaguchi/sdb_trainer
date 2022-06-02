@@ -11,9 +11,32 @@ import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/userProfileGoal.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/cupertino.dart';
 
-class Feed extends StatelessWidget {
+class Feed extends StatefulWidget {
   Feed({Key? key}) : super(key: key);
+
+  @override
+  State<Feed> createState() => _FeedState();
+}
+
+class _FeedState extends State<Feed> {
+  var _feedListCtrl = 1;
+
+  final Map<int, Widget> _feedList = const <int, Widget>{
+    1: Padding(
+      child: Text("모두 보기", style: TextStyle(color: Colors.white, fontSize: 14)),
+      padding: const EdgeInsets.all(10.0),
+    ),
+    2: Padding(
+        child:
+            Text("친구 보기", style: TextStyle(color: Colors.white, fontSize: 14)),
+        padding: const EdgeInsets.all(10.0)),
+    3: Padding(
+        child:
+            Text("나만 보기", style: TextStyle(color: Colors.white, fontSize: 14)),
+        padding: const EdgeInsets.all(10.0))
+  };
 
   var _historydataAll;
 
@@ -31,24 +54,32 @@ class Feed extends StatelessWidget {
   }
 
   Widget _feedCardList(context) {
-    return ListView.separated(
-        itemBuilder: (BuildContext _context, int index) {
-          return Center(
-              child: _feedCard(_historydataAll.historydataAll.sdbdatas[index]));
-        },
-        separatorBuilder: (BuildContext _context, int index) {
-          return Container(
-            alignment: Alignment.center,
-            height: 1,
-            color: Colors.black,
-            child: Container(
-              alignment: Alignment.center,
-              height: 1,
-              color: Color(0xFF717171),
-            ),
-          );
-        },
-        itemCount: _historydataAll.historydataAll.sdbdatas.length);
+    return Column(
+      children: [
+        _feedControllerWidget(),
+        Expanded(
+          child: ListView.separated(
+              itemBuilder: (BuildContext _context, int index) {
+                return Center(
+                    child: _feedCard(
+                        _historydataAll.historydataAll.sdbdatas[index]));
+              },
+              separatorBuilder: (BuildContext _context, int index) {
+                return Container(
+                  alignment: Alignment.center,
+                  height: 1,
+                  color: Colors.black,
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 1,
+                    color: Color(0xFF717171),
+                  ),
+                );
+              },
+              itemCount: _historydataAll.historydataAll.sdbdatas.length),
+        ),
+      ],
+    );
   }
 
   Widget _feedCard(SDBdata) {
@@ -170,6 +201,27 @@ class Feed extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _feedControllerWidget() {
+    return SizedBox(
+      width: double.infinity,
+      child: Container(
+        color: Colors.black,
+        child: CupertinoSlidingSegmentedControl(
+            groupValue: _feedListCtrl,
+            children: _feedList,
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            backgroundColor: Colors.black,
+            thumbColor: Color.fromRGBO(25, 106, 223, 20),
+            onValueChanged: (i) {
+              setState(() {
+                _feedListCtrl = i as int;
+                print(_feedListCtrl);
+              });
+            }),
       ),
     );
   }

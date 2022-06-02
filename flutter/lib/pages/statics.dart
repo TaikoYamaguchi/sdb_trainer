@@ -270,36 +270,10 @@ class _CalendarState extends State<Calendar> {
     _chartIndex = Provider.of<ChartIndexProvider>(context);
     _isChartWidget = Provider.of<StaticPageProvider>(context);
     return Scaffold(
-      appBar: _appbarWidget(),
-      backgroundColor: Colors.black,
-      body: _isChartWidget.isChartWidget
-          ? (_isLoading ? null : _chartWidget())
-          : (_isLoading ? null : _staticsWidget()),
-      floatingActionButton: FloatingActionButton.extended(
-          onPressed: () => showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                      title: const Text("Add Exercise"),
-                      content: TextFormField(controller: _eventController),
-                      actions: [
-                        TextButton(
-                          child: const Text("Cancel"),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                        TextButton(
-                          child: const Text("Ok"),
-                          onPressed: () {
-                            if (_eventController.text.isEmpty) {
-                            } else {}
-                            Navigator.pop(context);
-                            _eventController.clear();
-                            setState(() {});
-                            return;
-                          },
-                        )
-                      ])),
-          label: const Text("Add Exercise"),
-          icon: const Icon(Icons.add)),
-    );
+        appBar: _appbarWidget(),
+        backgroundColor: Colors.black,
+        body: _isChartWidget.isChartWidget
+            ? (_isLoading ? null : _chartWidget())
+            : (_isLoading ? null : _staticsWidget()));
   }
 }
