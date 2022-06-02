@@ -15,7 +15,8 @@ class EachWorkoutDetails extends StatefulWidget {
   String workouttitle;
   List<wod.Exercises> exerciselist;
   List uniqueinfo;
-  EachWorkoutDetails({Key? key, required this.workouttitle, required this.exerciselist, required this.uniqueinfo}) : super(key: key);
+  int routineindex;
+  EachWorkoutDetails({Key? key, required this.workouttitle, required this.exerciselist, required this.uniqueinfo, required this.routineindex}) : super(key: key);
 
   @override
   _EachWorkoutDetailsState createState() => _EachWorkoutDetailsState();
@@ -47,9 +48,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
       leading: IconButton(
         icon: Icon(Icons.arrow_back_ios_outlined),
         onPressed: (){
-          _editWorkoutCheck();
+          //_editWorkoutCheck();
           Navigator.of(context).pop();
-          Provider.of<WorkoutdataProvider>(context, listen: false).getdata();
+          //Provider.of<WorkoutdataProvider>(context, listen: false).getdata();
         },
       ),
       title: Row(
@@ -61,7 +62,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
         ],
       ),
       actions: [
-        _isexsearch == true
+        _isexsearch
             ? IconButton(
           iconSize: 30,
           icon: Icon(Icons.check_rounded),
@@ -103,17 +104,23 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
       child: ListView.separated(
           padding: EdgeInsets.symmetric(horizontal: 5),
           itemBuilder: (BuildContext _context, int index){
+            print(widget.exerciselist[index].name);
+            print(widget.uniqueinfo[0].name);
             final exinfo = widget.uniqueinfo.where((unique){
-              final info = unique.name;
-              return info.contains(widget.exerciselist[index].name);
+              return (unique.name == widget.exerciselist[index].name);
             }).toList();
+            print(exinfo);
             if(index==0){top = 20; bottom = 0;} else if (index==widget.exerciselist.length-1){top = 0;bottom = 20;} else {top = 0;bottom = 0;};
             return GestureDetector(
               onTap: () {
-                Navigator.push(context,Transition(
+                _isexsearch
+                ? setState(() {widget.exerciselist.removeAt(index);})
+                : Navigator.push(context,Transition(
                     child: EachExerciseDetails(
                       exercisedetail: widget.exerciselist[index],
                       eachuniqueinfo: exinfo,
+                      eindex: widget.uniqueinfo.indexWhere((element) => element.name == widget.exerciselist[index].name),
+                      rindex: widget.routineindex,
                     ),
                     transitionEffect: TransitionEffect.RIGHT_TO_LEFT
                 ));
@@ -150,7 +157,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                             ),
                             Expanded(child: SizedBox()),
                             Text(
-                                "1RM: ${exinfo[0].onerm}/${exinfo[0].goal}unit",
+                                "1RM: ${exinfo[0].onerm}/${exinfo[0].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
                                 style: TextStyle(fontSize: 13, color: Color(0xFF717171))
                             ),
                           ],
@@ -231,6 +238,10 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   }
 
   Widget exercisesWidget(exuniq, bool shirink) {
+    List existlist=[];
+    for (int i = 0; i< widget.exerciselist.length; i++){
+      existlist.add(widget.exerciselist[i].name);
+    }
     double top = 0;
     double bottom = 0;
     return Expanded(
@@ -238,6 +249,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
       child: ListView.separated(
           padding: EdgeInsets.symmetric(horizontal: 5),
           itemBuilder: (BuildContext _context, int index) {
+            bool alreadyexist = existlist.contains(exuniq[index].name);
             if (index == 0) {
               top = 20;
               bottom = 0;
@@ -252,7 +264,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             return GestureDetector(
               onTap: (){
                 setState(() {
-                  widget.exerciselist.add(new wod.Exercises(name: exuniq[index].name, sets: wod.setslist, onerm: exuniq[index].onerm, rest: 0));
+                  alreadyexist ? print("already") : widget.exerciselist.add(new wod.Exercises(name: exuniq[index].name, sets: wod.setslist, onerm: exuniq[index].onerm, rest: 0));
                 });
 
               },
@@ -273,7 +285,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                     children: [
                       Text(
                         exuniq[index].name,
-                        style: TextStyle(fontSize: 21, color: Colors.white),
+                        style: TextStyle(fontSize: 21, color: alreadyexist ? Colors.black : Colors.white),
                       ),
                       Container(
                         child: Row(
@@ -281,12 +293,12 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                           children: [
                             Text("Rest: need to set",
                                 style: TextStyle(
-                                    fontSize: 13, color: Color(0xFF717171))),
+                                    fontSize: 13, color: alreadyexist ? Colors.black : Color(0xFF717171))),
                             Expanded(child: SizedBox()),
                             Text(
-                                "1RM: ${exuniq[index].onerm}/${exuniq[index].goal} unit",
+                                "1RM: ${exuniq[index].onerm}/${exuniq[index].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
                                 style: TextStyle(
-                                    fontSize: 13, color: Color(0xFF717171))),
+                                    fontSize: 13, color: alreadyexist ? Colors.black : Color(0xFF717171))),
                           ],
                         ),
                       )
@@ -316,7 +328,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
     );
   }
 
+
   void searchExercise(String query){
+
     final suggestions = _testdata0.where((exercise){
       final exTitle = exercise.name;
       return (exTitle.contains(query)) as bool;
@@ -328,10 +342,12 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   @override
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    Provider.of<WorkoutdataProvider>(context, listen: false).getdata();
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
+    //for(int i = 0; i< widget.exerciselist.length; i++){
+    //}
+    print(_exercisesdataProvider.exercisesdata.exercises.length);
     return Scaffold(
       appBar: _appbarWidget(),
       body: _isexsearch

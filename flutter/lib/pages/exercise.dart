@@ -81,7 +81,7 @@ class ExerciseState extends State<Exercise> {
     );
   }
 
-  Widget _workoutWidget() {
+  Widget _workoutWidget(edata, wdata) {
     return Container(
       color: Colors.black,
       child: ListView.separated(
@@ -90,7 +90,7 @@ class ExerciseState extends State<Exercise> {
             if (index == 0) {
               top = 20;
               bottom = 0;
-            } else if (index == _workoutdataProvider.workoutdata!.routinedatas.length - 1) {
+            } else if (index == wdata.routinedatas.length - 1) {
               top = 0;
               bottom = 20;
             } else {
@@ -104,10 +104,11 @@ class ExerciseState extends State<Exercise> {
                     context,
                     Transition(
                         child: EachWorkoutDetails(
-                            workouttitle: _workoutdataProvider.workoutdata.routinedatas[index].name,
-                            exerciselist:
-                            _workoutdataProvider.workoutdata.routinedatas[index].exercises,
-                            uniqueinfo: _exercisesdataProvider.exercisesdata.exercises),
+                            workouttitle: wdata.routinedatas[index].name,
+                            exerciselist: wdata.routinedatas[index].exercises,
+                            uniqueinfo: edata,
+                            routineindex: index,
+                        ),
                         transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
               },
               child: Container(
@@ -129,23 +130,23 @@ class ExerciseState extends State<Exercise> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            _workoutdataProvider.workoutdata.routinedatas[index].name,
+                            wdata.routinedatas[index].name,
                             style: TextStyle(fontSize: 21, color: Colors.white),
                           ),
                           Text(
-                              "${_workoutdataProvider.workoutdata.routinedatas[index].exercises.length} Exercises",
+                              "${wdata.routinedatas[index].exercises.length} Exercises",
                               style:
                                   TextStyle(fontSize: 13, color: Color(0xFF717171)))
                         ],
                       ),
                       IconButton(
                         onPressed: (){
-                          _deleteWorkoutCheck(_workoutdataProvider.workoutdata.routinedatas[index].id);
+                          _deleteWorkoutCheck(wdata.routinedatas[index].id);
                           setState(() {
                             //_workoutdataProvider.workoutdata.routinedatas.removeAt(index);
                           });
-                          print(_workoutdataProvider.workoutdata.routinedatas.length);
-                          print(_workoutdataProvider.workoutdata.routinedatas.length);
+                          print(wdata.routinedatas.length);
+                          print(wdata.routinedatas.length);
 
                         },
                         icon: Icon(Icons.delete),
@@ -170,7 +171,7 @@ class ExerciseState extends State<Exercise> {
               ),
             );
           },
-          itemCount: _workoutdataProvider.workoutdata.routinedatas.length),
+          itemCount: wdata.routinedatas.length),
     );
   }
 
@@ -261,10 +262,10 @@ class ExerciseState extends State<Exercise> {
     );
   }
 
-  Widget _bodyWidget(edata) {
+  Widget _bodyWidget(edata, wdata) {
     switch (swap) {
       case 1:
-        return _workoutWidget();
+        return _workoutWidget(edata, wdata);
 
       case -1:
         return exercisesWidget(edata, false);
@@ -335,7 +336,7 @@ class ExerciseState extends State<Exercise> {
       body: Consumer2<ExercisesdataProvider,WorkoutdataProvider>(
           builder: (context, provider1, provider2, widget) {
             if (provider2.workoutdata != null) {
-              return _bodyWidget(provider1.exercisesdata.exercises);
+              return _bodyWidget(provider1.exercisesdata.exercises, provider2.workoutdata);
             }
             return Container(
               color: Colors.black,

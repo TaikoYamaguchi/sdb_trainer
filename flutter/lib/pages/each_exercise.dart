@@ -1,9 +1,10 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
+import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:provider/provider.dart';
@@ -16,9 +17,12 @@ import 'package:sdb_trainer/src/model/workoutdata.dart';
 class EachExerciseDetails extends StatefulWidget {
   dynamic exercisedetail;
   List eachuniqueinfo;
+  int eindex;
+  int rindex;
   EachExerciseDetails(
-      {Key? key, required this.exercisedetail, required this.eachuniqueinfo})
+      {Key? key, required this.exercisedetail, required this.eachuniqueinfo, required this.eindex, required this.rindex})
       : super(key: key);
+
 
   @override
   _EachExerciseDetailsState createState() => _EachExerciseDetailsState();
@@ -27,8 +31,11 @@ class EachExerciseDetails extends StatefulWidget {
 class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   var _userdataProvider;
   var _historydataProvider;
+  var _exercisesdataProvider;
   var _workoutdataProvider;
   var _routinetimeProvider;
+  var _exercise;
+  var _uniqinfo;
   bool _isstarted = false;
   bool _isChecked = false;
   double top = 0;
@@ -54,7 +61,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
       leading: IconButton(
         icon: Icon(Icons.arrow_back_ios_outlined),
         onPressed: (){
-          //_editWorkoutCheck();
+          _editWorkoutCheck();
           Navigator.of(context).pop();
         },
       ),
@@ -67,12 +74,35 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   }
 
   void _editWorkoutCheck() async {
-    print(_workoutdataProvider.name);
-    WorkoutEdit(user_email: _userdataProvider.userdata.email, name: _workoutdataProvider.name,  exercises: _workoutdataProvider.exercises)
-        .editWorkout()
-        .then((data) => data["user_email"] != null
-        ? showToast("done!")
-        : showToast("입력을 확인해주세요"));
+    if(_routinetimeProvider.isstarted){
+      WorkoutEdit(
+          user_email: _userdataProvider.userdata.email,
+          name: _workoutdataProvider.workoutdata.routinedatas[widget.rindex].name,
+          exercises: _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises)
+          .editWorkout()
+          .then((data) => data["user_email"] != null
+          ? showToast("done!")
+          : showToast("입력을 확인해주세요"));
+    }
+    else {
+      var exercise_all = _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises;
+      for(int n = 0; n< exercise_all.length; n++){
+        for (int i = 0; i< exercise_all[n].sets.length; i++){
+          exercise_all[n].sets[i].ischecked = false;
+        }
+      }
+      WorkoutEdit(
+          user_email: _userdataProvider.userdata.email,
+          name: _workoutdataProvider.workoutdata.routinedatas[widget.rindex].name,
+          exercises: exercise_all)
+          .editWorkout()
+          .then((data) => data["user_email"] != null
+          ? showToast("done!")
+          : showToast("입력을 확인해주세요"));
+
+    }
+    print(_userdataProvider.userdata.email);
+
   }
 
   Widget _exercisedetailWidget() {
@@ -102,7 +132,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  "Rest Timer off",
+                  "Rest Timer off ${widget.eindex}",
                   style: TextStyle(
                     color: Color(0xFF717171),
                     fontSize: 21,
@@ -128,12 +158,17 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                       widget.exercisedetail.name,
                       style: TextStyle(color: Colors.white, fontSize: 48),
                     ),
-                    Text(
-                      "Best 1RM: ${widget.eachuniqueinfo[0].onerm}/${widget.eachuniqueinfo[0].goal}unit",
-                      style: TextStyle(color: Color(0xFF717171), fontSize: 21),
-                    ),
+                    Consumer<ExercisesdataProvider>(builder: (builder,provider,child){
+                      var _info = provider.exercisesdata.exercises[widget.eindex];
+                      return Text(
+                        "Best 1RM: ${_info.onerm}/${_info.goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
+                        style: TextStyle(color: Color(0xFF717171), fontSize: 21),
+                      );
+                    })
+                    ,
                   ],
-                )),
+                )
+            ),
             Container(
                 padding: EdgeInsets.only(right: 10),
                 height: 25,
@@ -156,7 +191,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                     Container(
                         width: 70,
                         child: Text(
-                          "Weight()",
+                          "Weight(${_userdataProvider.userdata.weight_unit})",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 14,
@@ -190,156 +225,153 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   ],
                 )),
             Expanded(
-              child: ListView.separated(
-                  itemBuilder: (BuildContext _context, int index) {
-                    weightController.add(new TextEditingController());
-                    repsController.add(new TextEditingController());
-                    return Container(
-                      padding: EdgeInsets.only(right: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: 80,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Transform.scale(
-                                  scale: 1.2,
-                                  child: Checkbox(
-                                      checkColor: Colors.black,
-                                      fillColor:
-                                          MaterialStateProperty.resolveWith(
-                                              getColor),
-                                      value: widget.exercisedetail!.sets[index]
-                                          .ischecked,
-                                      onChanged: (newvalue) {
-                                        setState(() {
-                                          widget.exercisedetail.sets[index]
-                                              .ischecked = newvalue!;
-                                        });
-                                        print(widget.exercisedetail!.sets[index]
-                                            .ischecked!);
-                                      }),
-                                ),
-                                Container(
-                                  width: 25,
-                                  child: Text(
-                                    "${index + 1}",
-                                    style: TextStyle(
-                                      fontSize: 21,
-                                      color: Colors.white,
+              child: Consumer<WorkoutdataProvider>(
+                builder: (builder, provider, child ) {
+                  var _sets =  provider.workoutdata.routinedatas[widget.rindex].exercises[widget.eindex].sets;
+                  return ListView.separated(
+                      itemBuilder: (BuildContext _context, int index) {
+                        weightController.add(new TextEditingController());
+                        repsController.add(new TextEditingController());
+                        return Container(
+                          padding: EdgeInsets.only(right: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                width: 80,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Transform.scale(
+                                      scale: 1.2,
+                                      child: Checkbox(
+                                              checkColor: Colors.black,
+                                              fillColor:
+                                                  MaterialStateProperty.resolveWith(
+                                                      getColor),
+                                              value: _sets[index].ischecked,
+                                              onChanged: (newvalue) {
+                                                _workoutdataProvider.boolcheck(widget.rindex,widget.eindex,index,newvalue);
+                                              })
                                     ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            width: 70,
-                            child: TextField(
-                              controller: weightController[index],
-                              keyboardType: TextInputType.number,
-                              style: TextStyle(
-                                fontSize: 21,
-                                color: Colors.white,
-                              ),
-                              textAlign: TextAlign.center,
-                              decoration: InputDecoration(
-                                hintText:
-                                    "${widget.exercisedetail.sets[index].weight}",
-                                hintStyle: TextStyle(
-                                  fontSize: 21,
-                                  color: Colors.white,
+                                    Container(
+                                      width: 25,
+                                      child: Text(
+                                        "${index + 1}",
+                                        style: TextStyle(
+                                          fontSize: 21,
+                                          color: Colors.white,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              onChanged: (text) {
-                                double changeweight;
-                                if (text == "") {
-                                  changeweight = 0.0;
-                                } else {
-                                  changeweight = double.parse(text);
-                                }
-                                setState(() {
-                                  widget.exercisedetail.sets[index].weight =
-                                      changeweight;
-                                });
-                                print(text);
-                                print(widget.exercisedetail.sets[index].weight);
-                              },
-                            ),
-                          ),
-                          Container(
-                              width: 35,
-                              child: SvgPicture.asset("assets/svg/multiply.svg",
-                                  color: Colors.white, height: 19)),
-                          Container(
-                            width: 40,
-                            child: TextField(
-                              controller: repsController[index],
-                              keyboardType: TextInputType.number,
-                              style: TextStyle(
-                                fontSize: 21,
-                                color: Colors.white,
+                              Container(
+                                width: 70,
+                                child: TextField(
+                                      controller: weightController[index],
+                                      keyboardType: TextInputType.number,
+                                      style: TextStyle(
+                                        fontSize: 21,
+                                        color: Colors.white,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      decoration: InputDecoration(
+                                        hintText:
+                                            "${_sets[index].weight}",
+                                        hintStyle: TextStyle(
+                                          fontSize: 21,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      onChanged: (text) {
+                                        double changeweight;
+                                        if (text == "") {
+                                          changeweight = 0.0;
+                                        } else {
+                                          changeweight = double.parse(text);
+                                        }
+                                        _workoutdataProvider.weightcheck(widget.rindex,widget.eindex,index,changeweight);
+                                        print(text);
+                                      },
+                                    )
+                                  ,
                               ),
-                              textAlign: TextAlign.center,
-                              decoration: InputDecoration(
-                                hintText:
-                                    "${widget.exercisedetail.sets[index].reps}",
-                                hintStyle: TextStyle(
-                                  fontSize: 21,
-                                  color: Colors.white,
-                                ),
+                              Container(
+                                  width: 35,
+                                  child: SvgPicture.asset("assets/svg/multiply.svg",
+                                      color: Colors.white, height: 19)),
+                              Container(
+                                width: 40,
+                                child: TextField(
+                                      controller: repsController[index],
+                                      keyboardType: TextInputType.number,
+                                      style: TextStyle(
+                                        fontSize: 21,
+                                        color: Colors.white,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      decoration: InputDecoration(
+                                        hintText:
+                                            "${_sets[index].reps}",
+                                        hintStyle: TextStyle(
+                                          fontSize: 21,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      onChanged: (text) {
+                                        int changereps;
+                                        if (text == "") {
+                                          changereps = 1;
+                                        } else {
+                                          changereps = int.parse(text);
+                                        }
+                                        _workoutdataProvider.repscheck(widget.rindex,widget.eindex,index,changereps);
+
+                                      },
+                                    ),
                               ),
-                              onChanged: (text) {
-                                int changereps;
-                                if (text == "") {
-                                  changereps = 1;
-                                } else {
-                                  changereps = int.parse(text);
-                                }
-                                setState(() {
-                                  widget.exercisedetail.sets[index].reps =
-                                      changereps;
-                                });
-                              },
-                            ),
+                              Container(
+                                width: 70,
+                                child: (_sets[index].reps != 1)
+                                          ? Text(
+                                            "${(_sets[index].weight * (1 + _sets[index].reps / 30)).toStringAsFixed(1)}",
+                                            style: TextStyle(
+                                                fontSize: 21, color: Colors.white),
+                                            textAlign: TextAlign.center,
+                                          )
+                                          : Text(
+                                            "${_sets[index].weight}",
+                                            style: TextStyle(
+                                                fontSize: 21, color: Colors.white),
+                                            textAlign: TextAlign.center,
+                                          )
+
+                              ),
+                            ],
                           ),
-                          Container(
-                            width: 70,
-                            child: (widget.exercisedetail.sets[index].reps != 1)
-                                ? Text(
-                                    "${(widget.exercisedetail.sets[index].weight * (1 + widget.exercisedetail.sets[index].reps / 30)).toStringAsFixed(1)}",
-                                    style: TextStyle(
-                                        fontSize: 21, color: Colors.white),
-                                    textAlign: TextAlign.center,
-                                  )
-                                : Text(
-                                    "${widget.exercisedetail.sets[index].weight}",
-                                    style: TextStyle(
-                                        fontSize: 21, color: Colors.white),
-                                    textAlign: TextAlign.center,
-                                  ),
+                        );
+                      },
+                      separatorBuilder: (BuildContext _context, int index) {
+                        return Container(
+                          alignment: Alignment.center,
+                          height: 1,
+                          color: Colors.black,
+                          child: Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.symmetric(horizontal: 10),
+                            height: 1,
+                            color: Color(0xFF717171),
                           ),
-                        ],
-                      ),
-                    );
-                  },
-                  separatorBuilder: (BuildContext _context, int index) {
-                    return Container(
-                      alignment: Alignment.center,
-                      height: 1,
-                      color: Colors.black,
-                      child: Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.symmetric(horizontal: 10),
-                        height: 1,
-                        color: Color(0xFF717171),
-                      ),
-                    );
-                  },
-                  itemCount: widget.exercisedetail.sets.length),
+                        );
+                      },
+                      itemCount: _sets.length
+
+                  );
+                }
+              ),
             ),
             Container(
                 padding: EdgeInsets.only(bottom: 10),
@@ -356,9 +388,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                         Container(
                           child: IconButton(
                               onPressed: () {
-                                setState(() {
-                                  widget.exercisedetail.sets.removeLast();
-                                });
+                                _workoutdataProvider.setsminus(widget.rindex,widget.eindex);
+
                               },
                               icon: Icon(
                                 Icons.remove,
@@ -371,9 +402,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
                               onPressed: (){
-                                setState(() {
-                                  _isstarted = !_isstarted;
-                                });
+
                                 _start_date = DateTime.now();
                                 print(_start_date.toString().substring(0,10));
                                 if (_routinetimeProvider.isstarted){
@@ -392,13 +421,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                         Container(
                           child: IconButton(
                               onPressed: () {
-                                setState(() {
-                                  widget.exercisedetail.sets.add(new Sets(
-                                      index: widget.exercisedetail.sets.length + 1,
-                                      weight: 0.0,
-                                      reps: 1,
-                                      ischecked: false));
-                                });
+                                _workoutdataProvider.setsplus(widget.rindex,widget.eindex);
+
                               },
                               icon: Icon(
                                 Icons.add,
@@ -418,32 +442,69 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
 
 
   void recordExercise(){
-    final suggestions = widget.exercisedetail.sets.where((sets){
-      return sets.ischecked as bool;
-    }).toList();
-    double monerm=0;
-    for (int i = 0; i< suggestions.length; i++){
-      if(suggestions[i].reps != 1){
-        if(monerm < suggestions[i].weight * (1 + suggestions[i].reps / 30)){
-          monerm = suggestions[i].weight * (1 + suggestions[i].reps / 30);
+    print(widget.rindex);
+    var exercise_all = _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises;
+    for (int n = 0; n< exercise_all.length; n++){
+      var recordedsets = exercise_all[n].sets.where((sets){
+        return (sets.ischecked as bool && sets.weight != 0);
+      }).toList();
+      double monerm=0;
+      for (int i = 0; i< recordedsets.length; i++){
+        if(recordedsets[i].reps != 1){
+          if(monerm < recordedsets[i].weight * (1 + recordedsets[i].reps / 30)){
+            monerm = recordedsets[i].weight * (1 + recordedsets[i].reps / 30);
+          }
+        }else if(monerm < recordedsets[i].weight){
+          monerm = recordedsets[i].weight;
         }
-
-      }else if(monerm < suggestions[i].weight){
-        monerm = suggestions[i].weight;
+      }
+      var _eachex = _exercise[_exercise.indexWhere((element) => element.name == exercise_all[n].name)];
+      print(recordedsets.isEmpty);
+      if(!recordedsets.isEmpty){
+        exerciseList.add(hisdata.Exercises(name: exercise_all[n].name, sets: recordedsets , onerm: monerm, goal: _eachex.goal, date: DateTime.now().toString().substring(0,10)));
+        print(exerciseList.length);
       }
 
+      if (monerm > _eachex.onerm){
+        modifyExercise(monerm);
+      }
     }
-
-    exerciseList.add(hisdata.Exercises(name: widget.exercisedetail.name, sets: suggestions , onerm: monerm, goal: widget.eachuniqueinfo[0].goal, date: DateTime.now().toString().substring(0,10)));
 
   }
 
   void _editHistoryCheck() async {
     print(_userdataProvider.userdata.email);
-    HistoryPost(user_email: _userdataProvider.userdata.email, exercises: exerciseList, new_record: 120, workout_time: _routinetimeProvider.routineTime)
-        .postHistory()
+    if(!exerciseList.isEmpty){
+      HistoryPost(user_email: _userdataProvider.userdata.email, exercises: exerciseList, new_record: 120, workout_time: _routinetimeProvider.routineTime)
+          .postHistory()
+          .then((data) => data["user_email"] != null
+          ? {
+        _historydataProvider.getdata(),
+        exerciseList=[]
+      }
+          : showToast("입력을 확인해주세요"));
+    }
+    else{
+      print("no exercises");
+    }
+
+  }
+
+  void modifyExercise(double newonerm){
+    _exercise[_exercise.indexWhere((element) => element.name == widget.exercisedetail.name)].onerm = newonerm;
+    _postExerciseCheck();
+  }
+
+  void _postExerciseCheck() async {
+    ExerciseEdit(
+        user_email: _userdataProvider.userdata.email,
+        exercises: _exercise)
+        .editExercise()
         .then((data) => data["user_email"] != null
-        ? _historydataProvider.getdata()
+        ? {
+          showToast("수정 완료"),
+          _exercisesdataProvider.getdata()
+        }
         : showToast("입력을 확인해주세요"));
   }
 
@@ -453,6 +514,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     _historydataProvider = Provider.of<HistorydataProvider>(context, listen: false);
     _workoutdataProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
     _routinetimeProvider = Provider.of<RoutineTimeProvider>(context, listen: false);
+    _exercisesdataProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
+    _exercise = _exercisesdataProvider.exercisesdata.exercises;
+
     return Scaffold(
       appBar: _appbarWidget(),
       body: _exercisedetailWidget(),
