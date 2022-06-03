@@ -12,22 +12,22 @@ import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
-import 'package:sdb_trainer/src/model/workoutdata.dart';
+import 'package:sdb_trainer/src/model/workoutdata.dart' as wod;
 
-class EachExerciseDetails extends StatefulWidget {
+class UniqueExerciseDetails extends StatefulWidget {
   int ueindex;
   int eindex;
   int rindex;
-  EachExerciseDetails(
+  UniqueExerciseDetails(
       {Key? key,  required this.eindex, required this.ueindex, required this.rindex})
       : super(key: key);
 
 
   @override
-  _EachExerciseDetailsState createState() => _EachExerciseDetailsState();
+  _UniqueExerciseDetailsState createState() => _UniqueExerciseDetailsState();
 }
 
-class _EachExerciseDetailsState extends State<EachExerciseDetails> {
+class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
   var _userdataProvider;
   var _historydataProvider;
   var _exercisesdataProvider;
@@ -43,11 +43,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   int? reps;
   List<TextEditingController> weightController = [];
   List<TextEditingController> repsController = [];
-  var _start_date ;
-  var _finish_date ;
   var runtime = 0;
   Timer? timer1;
-
   late List<hisdata.Exercises> exerciseList = [];
 
   @override
@@ -60,8 +57,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
       leading: IconButton(
         icon: Icon(Icons.arrow_back_ios_outlined),
         onPressed: (){
-          _editWorkoutCheck();
           Navigator.of(context).pop();
+          dispose();
         },
       ),
       title: Text(
@@ -117,13 +114,15 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         .editWorkout()
         .then((data) => data["user_email"] != null
         ? {
-          showToast("done!"),
-          _workoutdataProvider.getdata()
-        }
+      showToast("done!"),
+      _workoutdataProvider.getdata()
+    }
         : showToast("입력을 확인해주세요"));
   }
 
   Widget _exercisedetailWidget() {
+    var _exampleex = wod.Exercises(name: _exercisesdataProvider.exercisesdata.exercises[widget.ueindex].name, sets: wod.setslist, onerm: _exercisesdataProvider.exercisesdata.exercises[widget.ueindex].onerm, rest: 0);
+    var _sets = _exampleex.sets;
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
         MaterialState.pressed,
@@ -146,44 +145,38 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
           children: [
             Container(
                 child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  "Rest Timer off",
-                  style: TextStyle(
-                    color: Color(0xFF717171),
-                    fontSize: 21,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Consumer<WorkoutdataProvider>(
-                  builder: (builder, provider, child) {
-                    _exercise = provider.workoutdata.routinedatas[widget.rindex].exercises[widget.eindex];
-                    return Text(
-                      "Rest: ${_exercise.rest}",
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      "Rest Timer off",
+                      style: TextStyle(
+                        color: Color(0xFF717171),
+                        fontSize: 21,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+
+                    Text(
+                      "Rest: ${_exampleex.rest}",
                       style: TextStyle(
                         color: Color(0xFF717171),
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
-                    );
-                  }
-                ),
-              ],
-            )),
+                    )
+                  ],
+                )),
             Container(
                 height: 130,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Consumer<WorkoutdataProvider>(builder: (builder,provider,child) {
-                      var _exercise = provider.workoutdata.routinedatas[widget.rindex].exercises[widget.eindex];
-                      return Text(
-                        _exercise.name,
+                    Text(
+                        _exampleex.name,
                         style: TextStyle(color: Colors.white, fontSize: 48),
-                      );
-                    }),
+                    ),
                     Consumer<ExercisesdataProvider>(builder: (builder,provider,child){
                       var _info = provider.exercisesdata.exercises[widget.ueindex];
                       return Text(
@@ -251,162 +244,159 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   ],
                 )),
             Expanded(
-              child: Consumer<WorkoutdataProvider>(
-                builder: (builder, provider, child ) {
-                  var _sets =  provider.workoutdata.routinedatas[widget.rindex].exercises[widget.eindex].sets;
-                  return ListView.separated(
-                      itemBuilder: (BuildContext _context, int index) {
-                        weightController.add(new TextEditingController());
-                        repsController.add(new TextEditingController());
-                        return Container(
-                          padding: EdgeInsets.only(right: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                width: 80,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Transform.scale(
-                                      scale: 1.2,
-                                      child: Checkbox(
+              child: ListView.separated(
+                        itemBuilder: (BuildContext _context, int index) {
+
+                          weightController.add(new TextEditingController());
+                          repsController.add(new TextEditingController());
+                          return Container(
+                            padding: EdgeInsets.only(right: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  width: 80,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Transform.scale(
+                                          scale: 1.2,
+                                          child: Checkbox(
                                               checkColor: Colors.black,
                                               fillColor:
-                                                  MaterialStateProperty.resolveWith(
-                                                      getColor),
+                                              MaterialStateProperty.resolveWith(
+                                                  getColor),
                                               value: _sets[index].ischecked,
                                               onChanged: (newvalue) {
                                                 _workoutdataProvider.boolcheck(widget.rindex,widget.eindex,index,newvalue);
                                               })
-                                    ),
-                                    Container(
-                                      width: 25,
-                                      child: Text(
-                                        "${index + 1}",
-                                        style: TextStyle(
-                                          fontSize: 21,
-                                          color: Colors.white,
-                                        ),
-                                        textAlign: TextAlign.center,
                                       ),
-                                    ),
-                                  ],
+                                      Container(
+                                        width: 25,
+                                        child: Text(
+                                          "${index + 1}",
+                                          style: TextStyle(
+                                            fontSize: 21,
+                                            color: Colors.white,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                width: 70,
-                                child: TextField(
-                                      controller: weightController[index],
-                                      keyboardType: TextInputType.number,
-                                      style: TextStyle(
-                                        fontSize: 21,
-                                        color: Colors.white,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                      decoration: InputDecoration(
-                                        hintText:
-                                            "${_sets[index].weight}",
-                                        hintStyle: TextStyle(
-                                          fontSize: 21,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      onChanged: (text) {
-                                        double changeweight;
-                                        if (text == "") {
-                                          changeweight = 0.0;
-                                        } else {
-                                          changeweight = double.parse(text);
-                                        }
-                                        _workoutdataProvider.weightcheck(widget.rindex,widget.eindex,index,changeweight);
-                                        print(text);
-                                      },
-                                    )
-                                  ,
-                              ),
-                              Container(
-                                  width: 35,
-                                  child: SvgPicture.asset("assets/svg/multiply.svg",
-                                      color: Colors.white, height: 19)),
-                              Container(
-                                width: 40,
-                                child: TextField(
-                                      controller: repsController[index],
-                                      keyboardType: TextInputType.number,
-                                      style: TextStyle(
-                                        fontSize: 21,
-                                        color: Colors.white,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                      decoration: InputDecoration(
-                                        hintText:
-                                            "${_sets[index].reps}",
-                                        hintStyle: TextStyle(
-                                          fontSize: 21,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      onChanged: (text) {
-                                        int changereps;
-                                        if (text == "") {
-                                          changereps = 1;
-                                        } else {
-                                          changereps = int.parse(text);
-                                        }
-                                        _workoutdataProvider.repscheck(widget.rindex,widget.eindex,index,changereps);
-
-                                      },
+                                Container(
+                                  width: 70,
+                                  child: TextField(
+                                    controller: weightController[index],
+                                    keyboardType: TextInputType.number,
+                                    style: TextStyle(
+                                      fontSize: 21,
+                                      color: Colors.white,
                                     ),
-                              ),
-                              Container(
-                                width: 70,
-                                child: (_sets[index].reps != 1)
-                                          ? Text(
-                                            "${(_sets[index].weight * (1 + _sets[index].reps / 30)).toStringAsFixed(1)}",
-                                            style: TextStyle(
-                                                fontSize: 21, color: Colors.white),
-                                            textAlign: TextAlign.center,
-                                          )
-                                          : Text(
-                                            "${_sets[index].weight}",
-                                            style: TextStyle(
-                                                fontSize: 21, color: Colors.white),
-                                            textAlign: TextAlign.center,
-                                          )
+                                    textAlign: TextAlign.center,
+                                    decoration: InputDecoration(
+                                      hintText:
+                                      "${_sets[index].weight}",
+                                      hintStyle: TextStyle(
+                                        fontSize: 21,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    onChanged: (text) {
+                                      double changeweight;
+                                      if (text == "") {
+                                        changeweight = 0.0;
+                                      } else {
+                                        changeweight = double.parse(text);
+                                      }
+                                      _workoutdataProvider.weightcheck(widget.rindex,widget.eindex,index,changeweight);
+                                      print(text);
+                                    },
+                                  )
+                                  ,
+                                ),
+                                Container(
+                                    width: 35,
+                                    child: SvgPicture.asset("assets/svg/multiply.svg",
+                                        color: Colors.white, height: 19)),
+                                Container(
+                                  width: 40,
+                                  child: TextField(
+                                    controller: repsController[index],
+                                    keyboardType: TextInputType.number,
+                                    style: TextStyle(
+                                      fontSize: 21,
+                                      color: Colors.white,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    decoration: InputDecoration(
+                                      hintText:
+                                      "${_sets[index].reps}",
+                                      hintStyle: TextStyle(
+                                        fontSize: 21,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    onChanged: (text) {
+                                      int changereps;
+                                      if (text == "") {
+                                        changereps = 1;
+                                      } else {
+                                        changereps = int.parse(text);
+                                      }
+                                      _workoutdataProvider.repscheck(widget.rindex,widget.eindex,index,changereps);
 
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      separatorBuilder: (BuildContext _context, int index) {
-                        return Container(
-                          alignment: Alignment.center,
-                          height: 1,
-                          color: Colors.black,
-                          child: Container(
+                                    },
+                                  ),
+                                ),
+                                Container(
+                                    width: 70,
+                                    child: (_sets[index].reps != 1)
+                                        ? Text(
+                                      "${(_sets[index].weight! * (1 + _sets[index].reps / 30)).toStringAsFixed(1)}",
+                                      style: TextStyle(
+                                          fontSize: 21, color: Colors.white),
+                                      textAlign: TextAlign.center,
+                                    )
+                                        : Text(
+                                      "${_sets[index].weight}",
+                                      style: TextStyle(
+                                          fontSize: 21, color: Colors.white),
+                                      textAlign: TextAlign.center,
+                                    )
+
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        separatorBuilder: (BuildContext _context, int index) {
+                          return Container(
                             alignment: Alignment.center,
-                            margin: EdgeInsets.symmetric(horizontal: 10),
                             height: 1,
-                            color: Color(0xFF717171),
-                          ),
-                        );
-                      },
-                      itemCount: _sets.length
+                            color: Colors.black,
+                            child: Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              height: 1,
+                              color: Color(0xFF717171),
+                            ),
+                          );
+                        },
+                        itemCount: _sets.length
 
-                  );
-                }
-              ),
+                    )
+
             ),
             Container(
                 padding: EdgeInsets.only(bottom: 10),
                 child:  Column(
                   children: [
                     Container(
-                      child: Consumer<RoutineTimeProvider>(builder: (context, provider, child){
-                        return Text(provider.routineTime.toString(), style: TextStyle(fontSize: 25, color: Colors.white));
-                      })
+                        child: Consumer<RoutineTimeProvider>(builder: (context, provider, child){
+                          return Text(provider.routineTime.toString(), style: TextStyle(fontSize: 25, color: Colors.white));
+                        })
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -414,7 +404,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                         Container(
                           child: IconButton(
                               onPressed: () {
-                                _workoutdataProvider.setsminus(widget.rindex,widget.eindex);
+                                setState(() {
+                                  _sets.removeLast();
+                                });
 
                               },
                               icon: Icon(
@@ -424,21 +416,16 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               )),
                         ),
                         Container(
-                          child:
+                            child:
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
                               onPressed: (){
-
-                                _start_date = DateTime.now();
                                 if (_routinetimeProvider.isstarted){
                                   recordExercise();
                                   _editHistoryCheck();
                                   _editWorkoutwoCheck();
-
                                 }
-
                                 _routinetimeProvider.routinecheck();
-
                               },
                               child: Consumer<RoutineTimeProvider>(builder: (builder, provider, child){
                                 return Text(provider.routineButton);
@@ -527,9 +514,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         .editExercise()
         .then((data) => data["user_email"] != null
         ? {
-          showToast("수정 완료"),
-          _exercisesdataProvider.getdata()
-        }
+      showToast("수정 완료"),
+      _exercisesdataProvider.getdata()
+    }
         : showToast("입력을 확인해주세요"));
   }
 
@@ -548,3 +535,4 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     );
   }
 }
+

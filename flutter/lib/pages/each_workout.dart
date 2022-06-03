@@ -117,8 +117,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 ? setState(() {widget.exerciselist.removeAt(index);})
                 : Navigator.push(context,Transition(
                     child: EachExerciseDetails(
-                      exercisedetail: widget.exerciselist[index],
-                      eachuniqueinfo: exinfo,
                       ueindex: widget.uniqueinfo.indexWhere((element) => element.name == widget.exerciselist[index].name),
                       eindex: index,
                       rindex: widget.routineindex,

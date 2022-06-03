@@ -4,7 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/pages/each_exercise.dart';
 import 'package:sdb_trainer/pages/each_workout.dart';
+import 'package:sdb_trainer/pages/unique_exercise.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
@@ -262,13 +264,103 @@ class ExerciseState extends State<Exercise> {
     );
   }
 
+  Widget exercisesWidget2(exuniq, userdata, bool shirink) {
+    double top = 0;
+    double bottom = 0;
+    return Container(
+      color: Colors.black,
+      child: ListView.separated(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          itemBuilder: (BuildContext _context, int index) {
+            if (index == 0) {
+              top = 20;
+              bottom = 0;
+            } else if (index == exuniq.length - 1) {
+              top = 0;
+              bottom = 20;
+            } else {
+              top = 0;
+              bottom = 0;
+            }
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(context,Transition(
+                    child: UniqueExerciseDetails(
+                      ueindex: index,
+                      eindex: index,
+                      rindex: -1,
+                    ),
+                    transitionEffect: TransitionEffect.RIGHT_TO_LEFT
+                  )
+                );
+              },
+              child: Container(
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                      color: Color(0xFF212121),
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(top),
+                          bottomRight: Radius.circular(bottom),
+                          topLeft: Radius.circular(top),
+                          bottomLeft: Radius.circular(bottom))),
+                  height: 52,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        exuniq[index].name,
+                        style: TextStyle(fontSize: 21, color: Colors.white),
+                      ),
+                      Container(
+                        child: Row(
+                          //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text("Rest: need to set",
+                                style: TextStyle(
+                                    fontSize: 13, color: Color(0xFF717171))),
+                            Expanded(child: SizedBox()),
+                            Text(
+                                "1RM: ${exuniq[index].onerm}/${exuniq[index].goal.toStringAsFixed(1)}${userdata.weight_unit}",
+                                style: TextStyle(
+                                    fontSize: 13, color: Color(0xFF717171))),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+          separatorBuilder: (BuildContext _context, int index) {
+            return Container(
+              alignment: Alignment.center,
+              height: 1,
+              color: Color(0xFF212121),
+              child: Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                height: 1,
+                color: Color(0xFF717171),
+              ),
+            );
+          },
+          scrollDirection: Axis.vertical,
+          shrinkWrap: shirink,
+          itemCount: exuniq.length
+      ),
+    );
+  }
+
   Widget _bodyWidget(edata, wdata) {
     switch (swap) {
       case 1:
         return _workoutWidget(edata, wdata);
 
       case -1:
-        return exercisesWidget(edata, _userdataProvider.userdata, false);
+        return exercisesWidget2(edata, _userdataProvider.userdata, false);
     }
     return Container();
   }
