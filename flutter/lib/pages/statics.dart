@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -28,7 +29,7 @@ class _CalendarState extends State<Calendar> {
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
-
+  var _userdataProvider;
   var _isChartWidget;
   var _chartIndex;
   bool _isLoading = true;
@@ -199,7 +200,7 @@ class _CalendarState extends State<Calendar> {
         ),
         _getEventsfromDay(_selectedDay).isEmpty != true
             ? ExerciseState.exercisesWidget(
-                _getEventsfromDay(_selectedDay).first.exercises, true)
+                _getEventsfromDay(_selectedDay).first.exercises,_userdataProvider.userdata, true)
             : Container()
       ],
     );
@@ -266,6 +267,7 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
+    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     initializeDateFormatting('pt_BR', null);
     _chartIndex = Provider.of<ChartIndexProvider>(context);
     _isChartWidget = Provider.of<StaticPageProvider>(context);
