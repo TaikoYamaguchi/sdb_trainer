@@ -30,7 +30,7 @@ def table_has_column(table, column):
 
 def upgrade():
     if not table_has_column("user", "isMan"):
-        op.add_column("user", sa.Column("isMan", sa.BOOLEAN, nullable=False, server_default="true"))
+        op.add_column("user", sa.Column("isMan", sa.ARRAY(sa.String)))
 
     pass
 

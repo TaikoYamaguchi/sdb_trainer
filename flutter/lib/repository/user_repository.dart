@@ -144,6 +144,8 @@ class UserSignUp {
     formData["password"] = password;
     formData["phone_number"] = userPhonenumber;
     formData["email"] = userEmail;
+    formData["like"] = [];
+    formData["dislike"] = [];
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/usercreate");
     var response = await http.post(url, body: json.encode(formData));

@@ -78,6 +78,10 @@ class HistoryPost {
     formData["exercises"] = jsonEncode(exercises);
     formData["new_record"] = new_record;
     formData["workout_time"] = workout_time;
+    formData["like"] = [];
+    formData["dislike"] = [];
+    formData["image"] = [];
+    formData["comment"] = "";
     print(formData);
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/historycreate");

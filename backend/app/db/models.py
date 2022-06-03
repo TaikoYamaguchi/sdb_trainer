@@ -24,6 +24,8 @@ class User(Base):
     isMan = Column(Boolean, nullable=False, default=True)
     is_active = Column(Boolean, default=True)
     is_superuser = Column(Boolean, default=False)
+    like = Column(MutableList.as_mutable(ARRAY(String)))
+    dislike = Column(MutableList.as_mutable(ARRAY(String)))
     
     
 class Workout(Base):
@@ -43,6 +45,10 @@ class History(Base):
     date = Column(DateTime, nullable=False)
     new_record = Column(Integer, nullable=False)
     workout_time = Column(Integer, nullable=False)
+    like = Column(MutableList.as_mutable(ARRAY(String)))
+    dislike = Column(MutableList.as_mutable(ARRAY(String)))
+    image = Column(MutableList.as_mutable(ARRAY(String)))
+    comment = Column(String)
 
 class Exercises(Base):
     __tablename__ = "exercises"

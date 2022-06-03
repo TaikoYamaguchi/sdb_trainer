@@ -14,7 +14,11 @@ def create_history(db: Session, history: schemas.HistoryCreate):
         exercises = history.exercises,
         new_record=history.new_record,
         date = datetime.datetime.utcnow()+datetime.timedelta(hours=9),
-        workout_time=history.workout_time
+        workout_time=history.workout_time,
+        like=[],
+        dislike=[],
+        image=[],
+        comment=""
     )
     print(history.user_email)
     db.add(db_history)

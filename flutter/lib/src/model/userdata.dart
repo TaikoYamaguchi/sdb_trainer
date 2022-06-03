@@ -13,6 +13,8 @@ class User {
   final int level;
   final int point;
   final String created_at;
+  final List like;
+  final List dislike;
 
   User(
       {required this.id,
@@ -28,7 +30,9 @@ class User {
       required this.isMan,
       required this.level,
       required this.point,
-      required this.created_at});
+      required this.created_at,
+      required this.like,
+      required this.dislike});
 
   factory User.fromJson(Map<String, dynamic> parsedJson) {
     return User(
@@ -45,6 +49,8 @@ class User {
         isMan: parsedJson['isMan'],
         level: parsedJson['level'],
         point: parsedJson['point'],
-        created_at: parsedJson["created_at"]);
+        created_at: parsedJson["created_at"],
+        like: parsedJson["like"],
+        dislike: parsedJson["dislike"]);
   }
 }
