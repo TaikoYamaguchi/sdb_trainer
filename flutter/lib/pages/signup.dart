@@ -636,7 +636,7 @@ class _LoginPageState extends State<SignUpPage> {
                         ? setState(() {
                             null;
                           })
-                        : null,
+                        : _signUpCheck(),
                     child: Text(isLoading ? 'loggin in.....' : "회원가입",
                         style: TextStyle(fontSize: 20.0, color: Colors.white)));
               }
@@ -676,6 +676,7 @@ class _LoginPageState extends State<SignUpPage> {
   }
 
   void _signUpCheck() async {
+    print("yess");
     UserSignUp(
             userEmail: _userEmailCtrl.text,
             userName: _userNameCtrl.text,

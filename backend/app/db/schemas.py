@@ -14,6 +14,8 @@ class UserBase(BaseModel):
     height_unit:str
     weight_unit:str
     isMan:bool=True
+    like:list
+    dislike:list
 
 
 class UserOut(UserBase):
@@ -51,6 +53,10 @@ class HistoryBase(BaseModel):
     exercises : t.Any
     new_record: int
     workout_time: int
+    like:list
+    dislike:list
+    image:list
+    comment:str
     class Config:
         orm_mode = True
 
