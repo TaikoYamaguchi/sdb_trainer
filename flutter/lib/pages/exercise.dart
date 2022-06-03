@@ -69,14 +69,15 @@ class ExerciseState extends State<Exercise> {
               icon: Icon(Icons.swap_horiz_outlined))
         ],
       ),
-      actions: [
-        IconButton(
-          icon: SvgPicture.asset("assets/svg/add.svg"),
-          onPressed: () {
+      actions: swap == 1
+        ? [IconButton(
+            icon: SvgPicture.asset("assets/svg/add.svg"),
+            onPressed: () {
             _displayTextInputDialog(context);
-          },
-        )
-      ],
+            },
+          )]
+        : null
+      ,
       backgroundColor: Colors.black,
     );
   }
@@ -184,7 +185,7 @@ class ExerciseState extends State<Exercise> {
         : showToast("입력을 확인해주세요"));
   }
 
-  static Widget exercisesWidget(exuniq, bool shirink) {
+  static Widget exercisesWidget(exuniq, userdata, bool shirink) {
     double top = 0;
     double bottom = 0;
     return Container(
@@ -202,7 +203,6 @@ class ExerciseState extends State<Exercise> {
               top = 0;
               bottom = 0;
             }
-            ;
             return Container(
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 20),
@@ -231,7 +231,7 @@ class ExerciseState extends State<Exercise> {
                                   fontSize: 13, color: Color(0xFF717171))),
                           Expanded(child: SizedBox()),
                           Text(
-                              "1RM: ${exuniq[index].onerm}/${exuniq[index].goal} unit",
+                              "1RM: ${exuniq[index].onerm}/${exuniq[index].goal.toStringAsFixed(1)}${userdata.weight_unit}",
                               style: TextStyle(
                                   fontSize: 13, color: Color(0xFF717171))),
                         ],
@@ -268,7 +268,7 @@ class ExerciseState extends State<Exercise> {
         return _workoutWidget(edata, wdata);
 
       case -1:
-        return exercisesWidget(edata, false);
+        return exercisesWidget(edata, _userdataProvider.userdata, false);
     }
     return Container();
   }
@@ -323,7 +323,7 @@ class ExerciseState extends State<Exercise> {
 
   @override
   Widget build(BuildContext context) {
-    _userdataProvider = Provider.of<UserdataProvider>(context);
+    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _exercisesdataProvider.getdata();

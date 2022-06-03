@@ -99,11 +99,30 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
           .editWorkout()
           .then((data) => data["user_email"] != null
           ? showToast("done!")
+
           : showToast("입력을 확인해주세요"));
 
     }
-    print(_userdataProvider.userdata.email);
+  }
 
+  void _editWorkoutwoCheck() async {
+    var exercise_all = _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises;
+    for(int n = 0; n< exercise_all.length; n++){
+      for (int i = 0; i< exercise_all[n].sets.length; i++){
+        exercise_all[n].sets[i].ischecked = false;
+      }
+    }
+    WorkoutEdit(
+        user_email: _userdataProvider.userdata.email,
+        name: _workoutdataProvider.workoutdata.routinedatas[widget.rindex].name,
+        exercises: exercise_all)
+        .editWorkout()
+        .then((data) => data["user_email"] != null
+        ? {
+          showToast("done!"),
+          _workoutdataProvider.getdata()
+        }
+        : showToast("입력을 확인해주세요"));
   }
 
   Widget _exercisedetailWidget() {
@@ -133,7 +152,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  "Rest Timer off ${widget.eindex}",
+                  "Rest Timer off",
                   style: TextStyle(
                     color: Color(0xFF717171),
                     fontSize: 21,
@@ -411,7 +430,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 if (_routinetimeProvider.isstarted){
                                   recordExercise();
                                   _editHistoryCheck();
+                                  _editWorkoutwoCheck();
+
                                 }
+
                                 _routinetimeProvider.routinecheck();
 
                               },
@@ -445,7 +467,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
 
 
   void recordExercise(){
-    print(widget.rindex);
     var exercise_all = _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises;
     for (int n = 0; n< exercise_all.length; n++){
       var recordedsets = exercise_all[n].sets.where((sets){
@@ -462,10 +483,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         }
       }
       var _eachex = _exercise[_exercise.indexWhere((element) => element.name == exercise_all[n].name)];
-      print(recordedsets.isEmpty);
       if(!recordedsets.isEmpty){
         exerciseList.add(hisdata.Exercises(name: exercise_all[n].name, sets: recordedsets , onerm: monerm, goal: _eachex.goal, date: DateTime.now().toString().substring(0,10)));
-        print(exerciseList.length);
       }
 
       if (monerm > _eachex.onerm){
@@ -477,7 +496,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   }
 
   void _editHistoryCheck() async {
-    print(_userdataProvider.userdata.email);
     if(!exerciseList.isEmpty){
       HistoryPost(user_email: _userdataProvider.userdata.email, exercises: exerciseList, new_record: 120, workout_time: _routinetimeProvider.routineTime)
           .postHistory()
