@@ -34,6 +34,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   var _workoutdataProvider;
   var _routinetimeProvider;
   var _exercise;
+  var _exercises;
   var _uniqinfo;
   bool _isstarted = false;
   bool _isChecked = false;
@@ -541,7 +542,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
           monerm = recordedsets[i].weight;
         }
       }
-      var _eachex = _exercise[_exercise.indexWhere((element) => element.name == exercise_all[n].name)];
+      var _eachex = _exercises[_exercises.indexWhere((element) => element.name == exercise_all[n].name)];
       if(!recordedsets.isEmpty){
         exerciseList.add(hisdata.Exercises(name: exercise_all[n].name, sets: recordedsets , onerm: monerm, goal: _eachex.goal, date: DateTime.now().toString().substring(0,10)));
       }
@@ -572,14 +573,14 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   }
 
   void modifyExercise(double newonerm, exname){
-    _exercise[_exercise.indexWhere((element) => element.name == exname)].onerm = newonerm;
+    _exercises[_exercises.indexWhere((element) => element.name == exname)].onerm = newonerm;
 
   }
 
   void _postExerciseCheck() async {
     ExerciseEdit(
         user_email: _userdataProvider.userdata.email,
-        exercises: _exercise)
+        exercises: _exercises)
         .editExercise()
         .then((data) => data["user_email"] != null
         ? {
@@ -596,7 +597,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     _workoutdataProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
     _routinetimeProvider = Provider.of<RoutineTimeProvider>(context, listen: false);
     _exercisesdataProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
-    _exercise = _exercisesdataProvider.exercisesdata.exercises;
+    _exercises = _exercisesdataProvider.exercisesdata.exercises;
 
     return Scaffold(
       appBar: _appbarWidget(),

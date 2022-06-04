@@ -99,45 +99,27 @@ class _FeedState extends State<Feed> {
             color: Color(0xFF717171),
             child: Column(
               children: [
-                FutureBuilder(
-                    future: UserInfo(userEmail: SDBdata.user_email)
-                        .getUserByEmail()
-                        .then((data) => {user = data}),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      if (snapshot.hasData == false) {
-                        return CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 5),
-                            child: Row(
-                              children: [
-                                Text(
-                                  SDBdata.user_email,
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.white),
-                                ),
-                              ],
-                            ));
-                      } else {
-                        return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  user.nickname,
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.white),
-                                ),
-                                Text(SDBdata.date.substring(2, 10),
-                                    style: TextStyle(
-                                        fontSize: 18, color: Colors.white))
-                              ],
-                            ));
-                      }
-                    }),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20, vertical: 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Consumer<UserdataProvider>(
+                        builder: (builder, provider,child) {
+                          return Text(
+                            provider.userdata.nickname,
+                            style: TextStyle(
+                                fontSize: 18, color: Colors.white),
+                          );
+                        }
+                      ),
+                      Text(SDBdata.date.substring(2, 10),
+                          style: TextStyle(
+                              fontSize: 18, color: Colors.white))
+                    ],
+                  )
+                ),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 0),

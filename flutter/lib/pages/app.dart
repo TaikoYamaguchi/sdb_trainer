@@ -14,10 +14,17 @@ import 'package:sdb_trainer/repository/user_repository.dart';
 
 import 'statics.dart';
 
-class App extends StatelessWidget {
-  App({Key? key}) : super(key: key);
+class App extends StatefulWidget {
+  const App({Key? key}) : super(key: key);
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
   var _bodyStater;
   var _loginState;
+  int _currentIndex = 0;
 
   BottomNavigationBarItem _bottomNavigationBarItem(
       String iconName, String label) {
@@ -38,9 +45,11 @@ class App extends StatelessWidget {
       unselectedFontSize: 20,
       onTap: (int index) {
         print(index);
-        _bodyStater.change(index);
+        setState((){
+          _currentIndex = index;
+        });
       },
-      currentIndex: _bodyStater.bodystate,
+      currentIndex: _currentIndex,
       items: [
         _bottomNavigationBarItem("home", "홈"),
         _bottomNavigationBarItem("dumbel", "운동"),
@@ -71,18 +80,29 @@ class App extends StatelessWidget {
     return Container();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     _bodyStater = Provider.of<BodyStater>(context);
     _loginState = Provider.of<LoginPageProvider>(context);
     return Scaffold(
       body: _loginState.isLogin
-          ? _bodyWidget()
+          ? IndexedStack(
+          index: _currentIndex,
+          children: <Widget>[
+            Home(),
+            TabNavigator(),
+            Feed(),
+            Calendar(),
+            Profile()
+          ])
           : _loginState.isSignUp
-              ? SignUpPage()
-              : LoginPage(),
+          ? SignUpPage()
+          : LoginPage(),
       bottomNavigationBar:
-          _loginState.isLogin ? _bottomNavigationBarwidget() : null,
+      _loginState.isLogin ? _bottomNavigationBarwidget() : null,
     );
   }
 }
+
