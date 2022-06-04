@@ -177,8 +177,7 @@ class Home extends StatelessWidget {
     _historydataAll.getHistorydataAll();
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _userdataProvider.getdata();
-    _exercisesdataProvider =
-        Provider.of<ExercisesdataProvider>(context, listen: false);
+    _exercisesdataProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     _exercisesdataProvider.getdata();
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
     _staticPageState = Provider.of<StaticPageProvider>(context, listen: false);
