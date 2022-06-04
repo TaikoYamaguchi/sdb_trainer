@@ -124,6 +124,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   }
 
   Widget _exercisedetailWidget() {
+    int ueindex = _exercisesdataProvider.exercisesdata.exercises.indexWhere((element) => element.name == _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises[widget.eindex].name);
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
         MaterialState.pressed,
@@ -185,7 +186,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                       );
                     }),
                     Consumer<ExercisesdataProvider>(builder: (builder,provider,child){
-                      var _info = provider.exercisesdata.exercises[widget.ueindex];
+                      var _info = provider.exercisesdata.exercises[ueindex];
                       return Text(
                         "Best 1RM: ${_info.onerm}/${_info.goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
                         style: TextStyle(color: Color(0xFF717171), fontSize: 21),
@@ -403,11 +404,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                 padding: EdgeInsets.only(bottom: 10),
                 child:  Column(
                   children: [
-                    Container(
-                      child: Consumer<RoutineTimeProvider>(builder: (context, provider, child){
-                        return Text(provider.routineTime.toString(), style: TextStyle(fontSize: 25, color: Colors.white));
-                      })
-                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -422,6 +418,53 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 color: Colors.white,
                                 size: 40,
                               )),
+                        ),
+                        Container(
+                          child: Consumer<RoutineTimeProvider>(builder: (context, provider, child){
+                            return Text(provider.routineTime.toString(), style: TextStyle(fontSize: 25, color: Colors.white));
+                          })
+                        ),
+                        Container(
+                          child: IconButton(
+                              onPressed: () {
+                                _workoutdataProvider.setsplus(widget.rindex,widget.eindex);
+
+                              },
+                              icon: Icon(
+                                Icons.add,
+                                color: Colors.white,
+                                size: 40,
+                              )),
+                        )
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                            child: widget.eindex != 0
+                                ?IconButton(
+                                onPressed: () {
+
+                                  setState((){
+                                    widget.eindex = widget.eindex -1 ;
+                                  });
+
+                                },
+                                icon: Icon(
+                                  Icons.arrow_back_ios_outlined,
+                                  color: Colors.white,
+                                  size: 40,
+                                ))
+                                : IconButton(
+                                onPressed: () {
+
+                                },
+                                icon: Icon(
+                                  null,
+                                  color: Colors.white,
+                                  size: 40,
+                                ))
                         ),
                         Container(
                           child:
@@ -447,16 +490,29 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
 
                         ),
                         Container(
-                          child: IconButton(
+                          child: widget.eindex != _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises.length-1
+                              ?IconButton(
                               onPressed: () {
-                                _workoutdataProvider.setsplus(widget.rindex,widget.eindex);
+
+                                setState((){
+                                  widget.eindex = widget.eindex +1 ;
+                                });
 
                               },
                               icon: Icon(
-                                Icons.add,
+                                Icons.arrow_forward_ios_outlined,
                                 color: Colors.white,
                                 size: 40,
-                              )),
+                              ))
+                              : IconButton(
+                              onPressed: () {
+
+                              },
+                              icon: Icon(
+                                null,
+                                color: Colors.white,
+                                size: 40,
+                              ))
                         )
                       ],
                     ),
