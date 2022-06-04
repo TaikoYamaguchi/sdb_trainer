@@ -38,7 +38,7 @@ class ExerciseState extends State<Exercise> {
   
 
   late List<Exercises> exerciseList = [
-    Exercises(name: "스쿼트", sets: setslist , onerm: 0.0, rest: 1),
+    Exercises(name: "스쿼트", sets: Setslist().setslist , onerm: 0.0, rest: 1),
   ];
 
 
@@ -287,8 +287,6 @@ class ExerciseState extends State<Exercise> {
                 Navigator.push(context,Transition(
                     child: UniqueExerciseDetails(
                       ueindex: index,
-                      eindex: index,
-                      rindex: -1,
                     ),
                     transitionEffect: TransitionEffect.RIGHT_TO_LEFT
                   )

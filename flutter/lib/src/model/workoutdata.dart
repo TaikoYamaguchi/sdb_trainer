@@ -73,7 +73,7 @@ class RoutinedataList {
 
 class Sets {
   final int index;
-  double? weight;
+  double weight;
   int reps;
   bool? ischecked;
   Sets(
@@ -92,8 +92,10 @@ class Sets {
   }
 }
 
-List<Sets> setslist = [
+class Setslist {
+  List<Sets> setslist = [
   Sets(index:0, weight: 0.0, reps: 1 , ischecked: false),
   Sets(index:1, weight: 0.0, reps: 1 , ischecked: false),
   Sets(index:2, weight: 0.0, reps: 1 , ischecked: false)
 ];
+}

@@ -263,7 +263,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             return GestureDetector(
               onTap: (){
                 setState(() {
-                  alreadyexist ? print("already") : widget.exerciselist.add(new wod.Exercises(name: exuniq[index].name, sets: wod.setslist, onerm: exuniq[index].onerm, rest: 0));
+                  alreadyexist ? print("already") : widget.exerciselist.add(new wod.Exercises(name: exuniq[index].name, sets: wod.Setslist().setslist, onerm: exuniq[index].onerm, rest: 0));
                 });
 
               },

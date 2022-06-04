@@ -5,7 +5,6 @@ import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
-import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
@@ -16,10 +15,9 @@ import 'package:sdb_trainer/src/model/workoutdata.dart' as wod;
 
 class UniqueExerciseDetails extends StatefulWidget {
   int ueindex;
-  int eindex;
-  int rindex;
+
   UniqueExerciseDetails(
-      {Key? key,  required this.eindex, required this.ueindex, required this.rindex})
+      {Key? key,   required this.ueindex})
       : super(key: key);
 
 
@@ -46,11 +44,14 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
   var runtime = 0;
   Timer? timer1;
   late List<hisdata.Exercises> exerciseList = [];
+  var _exampleex;
+  var _sets = wod.Setslist().setslist;
 
   @override
   void initState() {
     super.initState();
   }
+
 
   PreferredSizeWidget _appbarWidget() {
     return AppBar(
@@ -58,7 +59,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
         icon: Icon(Icons.arrow_back_ios_outlined),
         onPressed: (){
           Navigator.of(context).pop();
-          dispose();
+
         },
       ),
       title: Text(
@@ -69,60 +70,9 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
     );
   }
 
-  void _editWorkoutCheck() async {
-    if(_routinetimeProvider.isstarted){
-      WorkoutEdit(
-          user_email: _userdataProvider.userdata.email,
-          name: _workoutdataProvider.workoutdata.routinedatas[widget.rindex].name,
-          exercises: _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises)
-          .editWorkout()
-          .then((data) => data["user_email"] != null
-          ? showToast("done!")
-          : showToast("입력을 확인해주세요"));
-    }
-    else {
-      var exercise_all = _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises;
-      for(int n = 0; n< exercise_all.length; n++){
-        for (int i = 0; i< exercise_all[n].sets.length; i++){
-          exercise_all[n].sets[i].ischecked = false;
-        }
-      }
-      WorkoutEdit(
-          user_email: _userdataProvider.userdata.email,
-          name: _workoutdataProvider.workoutdata.routinedatas[widget.rindex].name,
-          exercises: exercise_all)
-          .editWorkout()
-          .then((data) => data["user_email"] != null
-          ? showToast("done!")
-
-          : showToast("입력을 확인해주세요"));
-
-    }
-  }
-
-  void _editWorkoutwoCheck() async {
-    var exercise_all = _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises;
-    for(int n = 0; n< exercise_all.length; n++){
-      for (int i = 0; i< exercise_all[n].sets.length; i++){
-        exercise_all[n].sets[i].ischecked = false;
-      }
-    }
-    WorkoutEdit(
-        user_email: _userdataProvider.userdata.email,
-        name: _workoutdataProvider.workoutdata.routinedatas[widget.rindex].name,
-        exercises: exercise_all)
-        .editWorkout()
-        .then((data) => data["user_email"] != null
-        ? {
-      showToast("done!"),
-      _workoutdataProvider.getdata()
-    }
-        : showToast("입력을 확인해주세요"));
-  }
 
   Widget _exercisedetailWidget() {
-    var _exampleex = wod.Exercises(name: _exercisesdataProvider.exercisesdata.exercises[widget.ueindex].name, sets: wod.setslist, onerm: _exercisesdataProvider.exercisesdata.exercises[widget.ueindex].onerm, rest: 0);
-    var _sets = _exampleex.sets;
+    _exampleex = new wod.Exercises(name: _exercisesdataProvider.exercisesdata.exercises[widget.ueindex].name, sets: _sets, onerm: _exercisesdataProvider.exercisesdata.exercises[widget.ueindex].onerm, rest: 0);
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
         MaterialState.pressed,
@@ -246,7 +196,6 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
             Expanded(
               child: ListView.separated(
                         itemBuilder: (BuildContext _context, int index) {
-
                           weightController.add(new TextEditingController());
                           repsController.add(new TextEditingController());
                           return Container(
@@ -268,7 +217,9 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                                                   getColor),
                                               value: _sets[index].ischecked,
                                               onChanged: (newvalue) {
-                                                _workoutdataProvider.boolcheck(widget.rindex,widget.eindex,index,newvalue);
+                                                setState((){
+                                                  _sets[index].ischecked = newvalue;
+                                                });
                                               })
                                       ),
                                       Container(
@@ -310,8 +261,10 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                                       } else {
                                         changeweight = double.parse(text);
                                       }
-                                      _workoutdataProvider.weightcheck(widget.rindex,widget.eindex,index,changeweight);
-                                      print(text);
+                                      setState((){
+                                        _sets[index].weight = changeweight;
+                                      });
+                                      print(_sets[index].weight);
                                     },
                                   )
                                   ,
@@ -345,7 +298,9 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                                       } else {
                                         changereps = int.parse(text);
                                       }
-                                      _workoutdataProvider.repscheck(widget.rindex,widget.eindex,index,changereps);
+                                      setState((){
+                                        _sets[index].reps = changereps;
+                                      });
 
                                     },
                                   ),
@@ -354,7 +309,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                                     width: 70,
                                     child: (_sets[index].reps != 1)
                                         ? Text(
-                                      "${(_sets[index].weight! * (1 + _sets[index].reps / 30)).toStringAsFixed(1)}",
+                                      "${(_sets[index].weight * (1 + _sets[index].reps / 30)).toStringAsFixed(1)}",
                                       style: TextStyle(
                                           fontSize: 21, color: Colors.white),
                                       textAlign: TextAlign.center,
@@ -423,7 +378,6 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                                 if (_routinetimeProvider.isstarted){
                                   recordExercise();
                                   _editHistoryCheck();
-                                  _editWorkoutwoCheck();
                                 }
                                 _routinetimeProvider.routinecheck();
                               },
@@ -436,8 +390,9 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                         Container(
                           child: IconButton(
                               onPressed: () {
-                                _workoutdataProvider.setsplus(widget.rindex,widget.eindex);
-
+                                setState(() {
+                                  _sets.add( new wod.Sets(index:0, weight: 0.0, reps: 1 , ischecked: false));
+                                });
                               },
                               icon: Icon(
                                 Icons.add,
@@ -457,31 +412,29 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
 
 
   void recordExercise(){
-    var exercise_all = _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises;
-    for (int n = 0; n< exercise_all.length; n++){
-      var recordedsets = exercise_all[n].sets.where((sets){
-        return (sets.ischecked as bool && sets.weight != 0);
-      }).toList();
-      double monerm=0;
-      for (int i = 0; i< recordedsets.length; i++){
-        if(recordedsets[i].reps != 1){
-          if(monerm < recordedsets[i].weight * (1 + recordedsets[i].reps / 30)){
-            monerm = recordedsets[i].weight * (1 + recordedsets[i].reps / 30);
-          }
-        }else if(monerm < recordedsets[i].weight){
-          monerm = recordedsets[i].weight;
+    var recordedsets = _sets.where((sets){
+      return (sets.ischecked as bool && sets.weight != 0);
+    }).toList();
+    double monerm=0;
+    for (int i = 0; i< recordedsets.length; i++){
+      if(recordedsets[i].reps != 1){
+        if(monerm < recordedsets[i].weight * (1 + recordedsets[i].reps / 30)){
+          monerm = recordedsets[i].weight * (1 + recordedsets[i].reps / 30);
         }
-      }
-      var _eachex = _exercise[_exercise.indexWhere((element) => element.name == exercise_all[n].name)];
-      if(!recordedsets.isEmpty){
-        exerciseList.add(hisdata.Exercises(name: exercise_all[n].name, sets: recordedsets , onerm: monerm, goal: _eachex.goal, date: DateTime.now().toString().substring(0,10)));
-      }
-
-      if (monerm > _eachex.onerm){
-        modifyExercise(monerm,exercise_all[n].name);
+      }else if(monerm < recordedsets[i].weight){
+        monerm = recordedsets[i].weight;
       }
     }
-    _postExerciseCheck();
+    if(!recordedsets.isEmpty){
+      exerciseList.add(hisdata.Exercises(name: _exampleex.name, sets: recordedsets , onerm: monerm, goal: _exercise[widget.ueindex].goal, date: DateTime.now().toString().substring(0,10)));
+    }
+
+    if (monerm > _exampleex.onerm){
+      modifyExercise(monerm,_exampleex.name);
+      _postExerciseCheck();
+    }
+
+
 
   }
 
@@ -533,6 +486,17 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
       appBar: _appbarWidget(),
       body: _exercisedetailWidget(),
     );
+  }
+
+  @override
+  void dispose(){
+    print('dispose');
+    super.dispose();
+  }
+  @override
+  void deactivate(){
+    print('deactivate');
+    super.deactivate();
   }
 }
 

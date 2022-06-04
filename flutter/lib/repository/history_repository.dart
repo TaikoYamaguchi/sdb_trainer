@@ -82,7 +82,6 @@ class HistoryPost {
     formData["dislike"] = [];
     formData["image"] = [];
     formData["comment"] = "";
-    print(formData);
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/historycreate");
     var response = await http.post(url, body: json.encode(formData));

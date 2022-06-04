@@ -46,7 +46,6 @@ class ExercisePost {
   });
   Future<String> _exercisePostFromServer() async {
     var formData = new Map<String, dynamic>();
-    print(user_email);
     print(json.encode(exercises));
     formData["user_email"] = user_email;
     formData["exercises"] = jsonEncode(exercises);
