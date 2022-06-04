@@ -9,16 +9,19 @@ class SDBdata {
   final String? date;
   final int new_record;
   final int workout_time;
+  final List<dynamic> like;
+  final String? comment;
   SDBdata(
       {required this.id,
       required this.user_email,
       required this.exercises,
       required this.date,
       required this.new_record,
-      required this.workout_time});
+      required this.workout_time,
+      required this.like,
+      required this.comment});
 
   factory SDBdata.fromJson(Map<String, dynamic> parsedJson) {
-
     var list = parsedJson['exercises'].runtimeType == String
         ? json.decode(parsedJson['exercises']) as List
         : parsedJson['exercises'] as List;
@@ -31,7 +34,9 @@ class SDBdata {
         exercises: exerciseList,
         date: parsedJson["date"],
         new_record: parsedJson["new_record"],
-        workout_time: parsedJson["workout_time"]);
+        workout_time: parsedJson["workout_time"],
+        like: parsedJson["like"],
+        comment: parsedJson["comment"]);
   }
 }
 
@@ -47,7 +52,8 @@ class Exercises {
       required this.onerm,
       required this.goal,
       required this.date});
-  Map toJson() => {"name": name, "sets": sets, "onerm": onerm, "goal": goal, "date": date};
+  Map toJson() =>
+      {"name": name, "sets": sets, "onerm": onerm, "goal": goal, "date": date};
   factory Exercises.fromJson(Map<String, dynamic> parsedJson) {
     var list = parsedJson["sets"] as List;
     List<Sets> setList = list.map((i) => Sets.fromJson(i)).toList();
@@ -75,9 +81,8 @@ class SDBdataList {
   }
 }
 
-
 List<Sets> setslist_his = [
-  Sets(index:0, weight: 0.0, reps: 1, ischecked: true),
-  Sets(index:1, weight: 0.0, reps: 1, ischecked: true),
-  Sets(index:2, weight: 0.0, reps: 1, ischecked: true)
+  Sets(index: 0, weight: 0.0, reps: 1, ischecked: true),
+  Sets(index: 1, weight: 0.0, reps: 1, ischecked: true),
+  Sets(index: 2, weight: 0.0, reps: 1, ischecked: true)
 ];

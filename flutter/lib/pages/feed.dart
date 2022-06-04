@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
-import 'package:sdb_trainer/repository/user_repository.dart';
+import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 
 import 'package:sdb_trainer/pages/userProfile.dart';
@@ -13,6 +13,7 @@ import 'package:sdb_trainer/pages/userProfileGoal.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:like_button/like_button.dart';
+import 'package:sdb_trainer/providers/userdata.dart';
 
 class Feed extends StatefulWidget {
   Feed({Key? key}) : super(key: key);
@@ -40,11 +41,14 @@ class _FeedState extends State<Feed> {
   };
 
   var _historydataAll;
+  var _userdataProvider;
 
   @override
   Widget build(BuildContext context) {
     _historydataAll = Provider.of<HistorydataProvider>(context, listen: false);
     _historydataAll.getHistorydataAll();
+    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _userdataProvider.getdata();
     print("111111");
     print(_historydataAll.historydataAll.sdbdatas[0].exercises[0]);
     return Scaffold(
@@ -194,7 +198,7 @@ class _FeedState extends State<Feed> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    _feedLikeButton(),
+                    _feedLikeButton(SDBdata),
                   ],
                 )
               ],
@@ -205,13 +209,13 @@ class _FeedState extends State<Feed> {
     );
   }
 
-  Widget _feedLikeButton() {
+  Widget _feedLikeButton(SDBdata) {
     var buttonSize = 28.0;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: LikeButton(
-        onTap: null,
         size: buttonSize,
+        isLiked: onIsLikedCheck(SDBdata),
         circleColor:
             CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
         bubblesColor: BubblesColor(
@@ -225,13 +229,16 @@ class _FeedState extends State<Feed> {
             size: buttonSize,
           );
         },
-        likeCount: 665,
+        onTap: (bool isLiked) async {
+          return onLikeButtonTapped(isLiked, SDBdata);
+        },
+        likeCount: SDBdata.like.length,
         countBuilder: (int? count, bool isLiked, String text) {
           var color = isLiked ? Colors.deepPurpleAccent : Colors.grey;
           Widget result;
           if (count == 0) {
             result = Text(
-              "love",
+              text,
               style: TextStyle(color: color),
             );
           } else
@@ -243,6 +250,39 @@ class _FeedState extends State<Feed> {
         },
       ),
     );
+  }
+
+  bool onIsLikedCheck(SDBdata) {
+    if (SDBdata.like.contains(_userdataProvider.userdata.email)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool?> onLikeButtonTapped(bool isLiked, SDBdata) async {
+    print(isLiked);
+    if (isLiked == true) {
+      var history = await HistoryLike(
+              history_id: SDBdata.id,
+              user_email: _userdataProvider.userdata.email,
+              status: "remove",
+              disorlike: "like")
+          .patchHistoryLike();
+      print("false");
+      print(history);
+      return false;
+    } else {
+      var history = await HistoryLike(
+              history_id: SDBdata.id,
+              user_email: _userdataProvider.userdata.email,
+              status: "append",
+              disorlike: "like")
+          .patchHistoryLike();
+      print(history);
+      print("true");
+      return !isLiked;
+    }
   }
 
   Widget _feedControllerWidget() {
