@@ -105,3 +105,8 @@ class ExercisesOut(ExercisesBase):
     class config:
         orm_mode = True
 
+class ManageLikeHistory(BaseModel):
+    history_id:int
+    email:str
+    status:str
+    disorlike:str

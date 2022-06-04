@@ -12,6 +12,7 @@ import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/userProfileGoal.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:like_button/like_button.dart';
 
 class Feed extends StatefulWidget {
   Feed({Key? key}) : super(key: key);
@@ -193,14 +194,53 @@ class _FeedState extends State<Feed> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    IconButton(onPressed: null, icon: Icon(Icons.thumb_up)),
-                    IconButton(onPressed: null, icon: Icon(Icons.thumb_down))
+                    _feedLikeButton(),
                   ],
                 )
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _feedLikeButton() {
+    var buttonSize = 28.0;
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: LikeButton(
+        onTap: null,
+        size: buttonSize,
+        circleColor:
+            CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+        bubblesColor: BubblesColor(
+          dotPrimaryColor: Color(0xff33b5e5),
+          dotSecondaryColor: Color(0xff0099cc),
+        ),
+        likeBuilder: (bool isLiked) {
+          return Icon(
+            Icons.favorite,
+            color: isLiked ? Colors.deepPurpleAccent : Colors.grey,
+            size: buttonSize,
+          );
+        },
+        likeCount: 665,
+        countBuilder: (int? count, bool isLiked, String text) {
+          var color = isLiked ? Colors.deepPurpleAccent : Colors.grey;
+          Widget result;
+          if (count == 0) {
+            result = Text(
+              "love",
+              style: TextStyle(color: color),
+            );
+          } else
+            result = Text(
+              text,
+              style: TextStyle(color: color),
+            );
+          return result;
+        },
       ),
     );
   }
