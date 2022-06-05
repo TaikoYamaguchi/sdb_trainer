@@ -16,6 +16,7 @@ class UserBase(BaseModel):
     isMan:bool=True
     like:list
     dislike:list
+    favor_exercise:list
 
 
 class UserOut(UserBase):

@@ -121,7 +121,9 @@ class _ProfileNicknameState extends State<ProfileNickname> {
               userHeightUnit: _userdataProvider.userdata.height_unit,
               userWeightUnit: _userdataProvider.userdata.weight_unit,
               userImage: "",
-              password: "")
+              password: "",
+              userFavorExercise: _userdataProvider.userdata.favor_exercise
+      )
           .editUser()
           .then((data) => data["username"] != null
               ? {

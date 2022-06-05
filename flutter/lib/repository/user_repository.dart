@@ -146,6 +146,7 @@ class UserSignUp {
     formData["email"] = userEmail;
     formData["like"] = [];
     formData["dislike"] = [];
+    formData["favor_exercise"] = [];
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/usercreate");
     var response = await http.post(url, body: json.encode(formData));
@@ -203,6 +204,7 @@ class UserEdit {
   final String userWeightUnit;
   final String userImage;
   final String password;
+  final String userFavorExercise;
   UserEdit(
       {required this.userEmail,
       required this.userName,
@@ -212,7 +214,9 @@ class UserEdit {
       required this.userHeightUnit,
       required this.userWeightUnit,
       required this.userImage,
-      required this.password});
+      required this.password,
+      required this.userFavorExercise
+      });
   Future<String> _userEditFromServer() async {
     var formData = new Map<String, dynamic>();
     formData["username"] = userName;
@@ -223,6 +227,7 @@ class UserEdit {
     formData["height_unit"] = userHeightUnit;
     formData["weight_unit"] = userWeightUnit;
     formData["password"] = password;
+    formData["favor_exercise"] = userFavorExercise;
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/users/" + userEmail);
     var response = await http.put(url, body: json.encode(formData));

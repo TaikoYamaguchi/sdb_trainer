@@ -26,6 +26,7 @@ class User(Base):
     is_superuser = Column(Boolean, default=False)
     like = Column(MutableList.as_mutable(ARRAY(String)))
     dislike = Column(MutableList.as_mutable(ARRAY(String)))
+    favor_exercise = Column(MutableList.as_mutable(ARRAY(String)))
     
     
 class Workout(Base):
