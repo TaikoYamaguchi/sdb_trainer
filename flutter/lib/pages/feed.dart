@@ -10,6 +10,7 @@ import 'package:sdb_trainer/providers/userdata.dart';
 
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/userProfileGoal.dart';
+import 'package:sdb_trainer/pages/feed_friend.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:like_button/like_button.dart';
@@ -53,7 +54,22 @@ class _FeedState extends State<Feed> {
     print(_historydataAll.historydataAll.sdbdatas[0].exercises[0]);
     return Scaffold(
         appBar: AppBar(
-            title: Text("피드", style: TextStyle(color: Colors.white)),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("피드", style: TextStyle(color: Colors.white)),
+                FlatButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          Transition(
+                              child: FeedFriend(),
+                              transitionEffect:
+                                  TransitionEffect.RIGHT_TO_LEFT));
+                    },
+                    child: Text("친구관리", style: TextStyle(color: Colors.white))),
+              ],
+            ),
             backgroundColor: Colors.black),
         body: _feedCardList(context));
   }
@@ -99,27 +115,45 @@ class _FeedState extends State<Feed> {
             color: Color(0xFF717171),
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Consumer<UserdataProvider>(
-                        builder: (builder, provider,child) {
-                          return Text(
-                            provider.userdata.nickname,
-                            style: TextStyle(
-                                fontSize: 18, color: Colors.white),
-                          );
-                        }
-                      ),
-                      Text(SDBdata.date.substring(2, 10),
-                          style: TextStyle(
-                              fontSize: 18, color: Colors.white))
-                    ],
-                  )
-                ),
+                FutureBuilder(
+                    future: UserInfo(userEmail: SDBdata.user_email)
+                        .getUserByEmail()
+                        .then((data) => {user = data}),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasData == false) {
+                        return CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 5),
+                            child: Row(
+                              children: [
+                                Text(
+                                  SDBdata.user_email,
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.white),
+                                ),
+                              ],
+                            ));
+                      } else {
+                        return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  user.nickname,
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.white),
+                                ),
+                                Text(SDBdata.date.substring(2, 10),
+                                    style: TextStyle(
+                                        fontSize: 18, color: Colors.white))
+                              ],
+                            ));
+                      }
+                    }),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 0),

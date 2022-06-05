@@ -1,4 +1,4 @@
-from app.db.crud import create_user, get_user_by_email, get_user_by_phone_number, edit_user, get_user_by_nickname
+from app.db.crud import create_user, get_user_by_email, get_user_by_phone_number, edit_user, get_user_by_nickname, get_users_by_nickname
 from app.db.schemas import User, UserCreate, UserEdit
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import APIRouter, Depends, Request, HTTPException, status
@@ -122,7 +122,7 @@ async def user_phone_number(
 
 
 @r.get(
-    "/users/{email}",
+    "/user/{email}",
     response_model=User,
     response_model_exclude_none=True,
 )
@@ -135,7 +135,7 @@ async def user_email(
     return user
 
 @r.get(
-    "/users/{nickname}",
+    "/userNickname/{nickname}",
     response_model=User,
     response_model_exclude_none=True,
 )
@@ -147,9 +147,23 @@ async def user_nickname(
     user = get_user_by_nickname(db, nickname)
     return user
 
+@r.get(
+    "/usersNickname/{nickname}",
+    response_model=t.List[User],
+    response_model_exclude_none=True,
+)
+async def users_nickname(
+    request: Request,
+    nickname: str,
+    db=Depends(get_db),
+):
+    user = get_users_by_nickname(db, nickname)
+    return user
+
+
 
 @r.put(
-    "/users/{email}", response_model=User, response_model_exclude_none=True
+    "/user/{email}", response_model=User, response_model_exclude_none=True
 )
 async def user_edit(
     request: Request,

@@ -61,6 +61,9 @@ def get_user_by_email(db: Session, email: str) -> schemas.UserBase:
 def get_user_by_nickname(db: Session, nickname: str) -> schemas.UserBase:
     return db.query(models.User).filter(models.User.nickname == nickname).first()
 
+def get_users_by_nickname(db: Session, nickname: str) -> t.List[schemas.UserOut]:
+    return db.query(models.User).filter(models.User.nickname.contains(nickname)).all()
+
 
 def get_user_by_phone_number(db: Session, phone_number: str) -> schemas.UserBase:
     return db.query(models.User).filter(models.User.phone_number == phone_number).first()

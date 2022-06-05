@@ -10,7 +10,7 @@ class UserService {
   static Future<String> _loadUserdataFromServer() async {
     final storage = new FlutterSecureStorage();
     String? user_email = await storage.read(key: "sdb_email");
-    var url = Uri.parse(LocalHost.getLocalHost() + "/api/users/" + user_email!);
+    var url = Uri.parse(LocalHost.getLocalHost() + "/api/user/" + user_email!);
     var response = await http.get(url);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
@@ -224,7 +224,7 @@ class UserEdit {
     formData["weight_unit"] = userWeightUnit;
     formData["password"] = password;
 
-    var url = Uri.parse(LocalHost.getLocalHost() + "/api/users/" + userEmail);
+    var url = Uri.parse(LocalHost.getLocalHost() + "/api/user/" + userEmail);
     var response = await http.put(url, body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
@@ -249,7 +249,7 @@ class UserInfo {
   final String userEmail;
   UserInfo({required this.userEmail});
   Future<String> _userByEmailFromServer() async {
-    var url = Uri.parse(LocalHost.getLocalHost() + "/api/users/" + userEmail);
+    var url = Uri.parse(LocalHost.getLocalHost() + "/api/user/" + userEmail);
     print("useremail");
     print(userEmail);
     var response = await http.get(url);
@@ -284,8 +284,8 @@ class UserNickname {
   final String userNickname;
   UserNickname({required this.userNickname});
   Future<String> _userByNicknameFromServer() async {
-    var url =
-        Uri.parse(LocalHost.getLocalHost() + "/api/users/" + userNickname);
+    var url = Uri.parse(
+        LocalHost.getLocalHost() + "/api/userNickname/" + userNickname);
     var response = await http.get(url);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
@@ -309,6 +309,40 @@ class UserNickname {
       return null;
     } else {
       User user = User.fromJson(jsonResponse);
+      return (user);
+    }
+  }
+}
+
+class UserNicknameAll {
+  final String userNickname;
+  UserNicknameAll({required this.userNickname});
+  Future<String> _usersByNicknameFromServer() async {
+    var url = Uri.parse(
+        LocalHost.getLocalHost() + "/api/usersNickname/" + userNickname);
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      String jsonString = utf8.decode(response.bodyBytes);
+      final jsonResponse = json.decode(jsonString);
+      return utf8.decode(response.bodyBytes);
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to load post');
+    }
+    //API통신
+    //await Future.delayed(Duration(milliseconds: 1000));
+  }
+
+  Future<UserList?> getUsersByNickname() async {
+    String jsonString = await _usersByNicknameFromServer();
+    final jsonResponse = json.decode(jsonString);
+    print("3333");
+    print(jsonResponse);
+    if (jsonResponse == null) {
+      return null;
+    } else {
+      UserList user = UserList.fromJson(jsonResponse);
       return (user);
     }
   }
