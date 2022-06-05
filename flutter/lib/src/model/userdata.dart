@@ -59,3 +59,18 @@ class User {
     );
   }
 }
+
+class UserList {
+  final List<User> userdatas;
+
+  UserList({
+    required this.userdatas,
+  });
+
+  factory UserList.fromJson(List<dynamic> parsedJson) {
+    List<User> userdatas = <User>[];
+    userdatas = parsedJson.map((i) => User.fromJson(i)).toList();
+
+    return new UserList(userdatas: userdatas);
+  }
+}
