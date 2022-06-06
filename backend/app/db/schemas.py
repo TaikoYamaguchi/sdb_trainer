@@ -111,3 +111,9 @@ class ManageLikeHistory(BaseModel):
     email:str
     status:str
     disorlike:str
+
+class ManageLikeUser(BaseModel):
+    liked_email:str
+    email:str
+    status:str
+    disorlike:str

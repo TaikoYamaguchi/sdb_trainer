@@ -94,3 +94,22 @@ def edit_user(
     return db_user
 
 
+def manage_like_by_liked_email(db: Session,likeContent:schemas.ManageLikeUser) -> schemas.UserOut:
+    db_user = db.query(models.User).filter(models.User.email == likeContent.email).first()
+    if likeContent.disorlike == "like": 
+        if likeContent.status == "append":
+            db_user.like.append(likeContent.liked_email)
+        if likeContent.status == "remove":
+            db_user.like.remove(likeContent.liked_email)
+        setattr(db_user, "like", db_user.like)
+    if likeContent.disorlike == "dislike": 
+        if likeContent.status == "append":
+            db_user.dislike.append(likeContent.liked_email)
+        if likeContent.status == "remove":
+            db_user.dislike.remove(likeContent.liked_email)
+        setattr(db_user, "dislike", db_user.dislike)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
