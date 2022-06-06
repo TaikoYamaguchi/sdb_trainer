@@ -20,4 +20,11 @@ class HistorydataProvider extends ChangeNotifier {
       notifyListeners();
     });
   }
+
+  getFriendsHistorydata(email) {
+    HistorydataFriends(user_email: email).loadSDBdataFriends().then((value) {
+      _historydataAll = value;
+      notifyListeners();
+    });
+  }
 }

@@ -1,4 +1,4 @@
-from app.db.crud_history import create_history, get_histories_by_email, get_histories, manage_like_by_history_id
+from app.db.crud_history import create_history, get_friends_histories, get_histories_by_email, get_histories, manage_like_by_history_id
 from fastapi import APIRouter, Request, Depends, Response, encoders
 import typing as t
 
@@ -44,6 +44,21 @@ async def histories_list(
 ):
 
     histories = get_histories(db)
+    # This is necessary for react-admin to work
+    return histories
+
+@r.get(
+    "/historyFriends/{email}",
+    response_model=t.List[HistoryOut],
+    response_model_exclude_none=True,
+)
+async def histories_friends_list(
+    response: Response,
+    email=str,
+    db=Depends(get_db),
+):
+
+    histories = get_friends_histories(db, email)
     # This is necessary for react-admin to work
     return histories
 

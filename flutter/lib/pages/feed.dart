@@ -45,7 +45,6 @@ class _FeedState extends State<Feed> {
   @override
   Widget build(BuildContext context) {
     _historydataAll = Provider.of<HistorydataProvider>(context, listen: false);
-    _historydataAll.getHistorydataAll();
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     print("111111");
     return Scaffold(
@@ -69,8 +68,7 @@ class _FeedState extends State<Feed> {
             backgroundColor: Colors.black),
         body: _userdataProvider.userdata != null
             ? _feedCardList(context)
-            : Center(child: CircularProgressIndicator())
-    );
+            : Center(child: CircularProgressIndicator()));
   }
 
   Widget _feedCardList(context) {
@@ -79,28 +77,27 @@ class _FeedState extends State<Feed> {
         _feedControllerWidget(),
         Expanded(
           child: Consumer<HistorydataProvider>(
-            builder: (builder, provider, child) {
-              return ListView.separated(
-                  itemBuilder: (BuildContext _context, int index) {
-                    return Center(
-                        child: _feedCard(
-                            provider.historydataAll.sdbdatas[index]));
-                  },
-                  separatorBuilder: (BuildContext _context, int index) {
-                    return Container(
+              builder: (builder, provider, child) {
+            return ListView.separated(
+                itemBuilder: (BuildContext _context, int index) {
+                  return Center(
+                      child:
+                          _feedCard(provider.historydataAll.sdbdatas[index]));
+                },
+                separatorBuilder: (BuildContext _context, int index) {
+                  return Container(
+                    alignment: Alignment.center,
+                    height: 1,
+                    color: Colors.black,
+                    child: Container(
                       alignment: Alignment.center,
                       height: 1,
-                      color: Colors.black,
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: 1,
-                        color: Color(0xFF717171),
-                      ),
-                    );
-                  },
-                  itemCount: provider.historydataAll.sdbdatas.length);
-            }
-          ),
+                      color: Color(0xFF717171),
+                    ),
+                  );
+                },
+                itemCount: provider.historydataAll.sdbdatas.length);
+          }),
         ),
       ],
     );
@@ -118,27 +115,23 @@ class _FeedState extends State<Feed> {
             color: Color(0xFF717171),
             child: Column(
               children: [
-                Consumer<UserdataProvider>(
-                  builder: (builder, provider, child) {
-                    return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 5),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      provider.userdata.nickname,
-                                      style: TextStyle(
-                                          fontSize: 18, color: Colors.white),
-                                    ),
-                                    Text(SDBdata.date.substring(2, 10),
-                                        style: TextStyle(
-                                            fontSize: 18, color: Colors.white))
-                                  ],
-                                ));
-                  }
-                ),
-
+                Consumer<UserdataProvider>(builder: (builder, provider, child) {
+                  return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            provider.userdata.nickname,
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                          Text(SDBdata.date.substring(2, 10),
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.white))
+                        ],
+                      ));
+                }),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
@@ -300,6 +293,14 @@ class _FeedState extends State<Feed> {
             onValueChanged: (i) {
               setState(() {
                 _feedListCtrl = i as int;
+                if (_feedListCtrl == 2) {
+                  _historydataAll
+                      .getFriendsHistorydata(_userdataProvider.userdata.email);
+                } else if (_feedListCtrl == 1) {
+                  _historydataAll.getHistorydataAll();
+                } else if (_feedListCtrl == 2) {
+                  _historydataAll.getdata();
+                }
                 print(_feedListCtrl);
               });
             }),

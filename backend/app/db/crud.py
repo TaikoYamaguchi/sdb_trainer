@@ -69,6 +69,11 @@ def get_users_by_nickname(db: Session, nickname: str) -> t.List[schemas.UserOut]
 def get_user_by_phone_number(db: Session, phone_number: str) -> schemas.UserBase:
     return db.query(models.User).filter(models.User.phone_number == phone_number).first()
 
+def get_friends_by_email(db: Session, email: str) -> t.List[schemas.UserBase]:
+    user = db.query(models.User).filter(models.User.email==email).first()
+    print(user.email)
+    return db.query(models.User).filter(models.User.email.in_(user.like)).all()
+
 def edit_user(
     db: Session, email: str, user: schemas.UserEdit
 ) -> schemas.UserBase:

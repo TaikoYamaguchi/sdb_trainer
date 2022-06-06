@@ -390,3 +390,36 @@ class UserLike {
     return (jsonResponse);
   }
 }
+
+class UserLikeFriends {
+  final String user_email;
+  UserLikeFriends({
+    required this.user_email,
+  });
+  Future<String> _userLikeFriendsFromServer() async {
+    var url =
+        Uri.parse(LocalHost.getLocalHost() + "/api/friends/${user_email}");
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      String jsonString = utf8.decode(response.bodyBytes);
+      final jsonResponse = json.decode(jsonString);
+
+      return utf8.decode(response.bodyBytes);
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<UserList?> getUserLikeFriends() async {
+    String jsonString = await _userLikeFriendsFromServer();
+    final jsonResponse = json.decode(jsonString);
+    if (jsonResponse == null) {
+      return null;
+    } else {
+      UserList user = UserList.fromJson(jsonResponse);
+      return (user);
+    }
+  }
+}

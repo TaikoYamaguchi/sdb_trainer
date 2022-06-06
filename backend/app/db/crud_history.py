@@ -34,6 +34,11 @@ def get_histories(db: Session) -> t.List[schemas.HistoryOut]:
     histories = db.query(models.History).order_by(models.History.id.desc()).all()
     return histories
 
+def get_friends_histories(db: Session, email:str) -> t.List[schemas.HistoryOut]:
+    user = db.query(models.User).filter(models.User.email==email).first()
+    histories = db.query(models.History).filter(models.History.user_email.in_(user.like)).order_by(models.History.id.desc()).all()
+    return histories
+
 def manage_like_by_history_id(db: Session,likeContent:schemas.ManageLikeHistory) -> schemas.HistoryOut:
     db_hisotry = db.query(models.History).filter(models.History.id == likeContent.history_id).first()
     if likeContent.disorlike == "like": 

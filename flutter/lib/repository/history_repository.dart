@@ -60,6 +60,30 @@ class HistorydataAll {
   }
 }
 
+class HistorydataFriends {
+  final String user_email;
+  HistorydataFriends({required this.user_email});
+  Future<String> _loadFriendsSDBdataFromServer() async {
+    var url = Uri.parse(
+        LocalHost.getLocalHost() + "/api/historyFriends/${user_email}");
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      return utf8.decode(response.bodyBytes);
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<SDBdataList> loadSDBdataFriends() async {
+    String jsonString = await _loadFriendsSDBdataFromServer();
+    final jsonResponse = json.decode(jsonString);
+    SDBdataList sdbdata = SDBdataList.fromJson(jsonResponse);
+    return (sdbdata);
+  }
+}
+
 class HistoryPost {
   final String user_email;
   final List<Exercises> exercises;
