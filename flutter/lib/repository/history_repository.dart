@@ -32,9 +32,7 @@ class ExerciseService {
   static Future<SDBdataList> loadSDBdata() async {
     String jsonString = await _loadSDBdataFromServer();
     final jsonResponse = json.decode(jsonString);
-    print(jsonResponse);
     SDBdataList sdbdata = SDBdataList.fromJson(jsonResponse);
-    print(sdbdata);
     return (sdbdata);
   }
 }

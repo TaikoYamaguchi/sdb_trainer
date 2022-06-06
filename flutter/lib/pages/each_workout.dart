@@ -344,8 +344,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
-    //for(int i = 0; i< widget.exerciselist.length; i++){
-    //}
     print(_exercisesdataProvider.exercisesdata.exercises.length);
     return Scaffold(
       appBar: _appbarWidget(),

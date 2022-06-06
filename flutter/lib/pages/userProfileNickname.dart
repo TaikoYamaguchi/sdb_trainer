@@ -122,7 +122,7 @@ class _ProfileNicknameState extends State<ProfileNickname> {
               userWeightUnit: _userdataProvider.userdata.weight_unit,
               userImage: "",
               password: "",
-              userFavorExercise: _userdataProvider.userdata.favor_exercise
+              userFavorExercise: []
       )
           .editUser()
           .then((data) => data["username"] != null

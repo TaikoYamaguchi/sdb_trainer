@@ -14,12 +14,13 @@ class UserBase(BaseModel):
     height_unit:str
     weight_unit:str
     isMan:bool=True
-    like:list
-    dislike:list
+
     favor_exercise:list
 
 
 class UserOut(UserBase):
+    like:list
+    dislike:list
     pass
 
 
@@ -45,6 +46,8 @@ class User(UserBase):
     level: int = 1
     point: int = 0
     created_at: datetime
+    like:list
+    dislike:list
   
     class Config:
         orm_mode = True
@@ -117,3 +120,10 @@ class ManageLikeUser(BaseModel):
     email:str
     status:str
     disorlike:str
+
+class ManageUserFavor(BaseModel):
+    liked_email:str
+    email:str
+    status:str
+    disorlike:str
+

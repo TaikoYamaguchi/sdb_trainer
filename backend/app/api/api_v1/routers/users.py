@@ -46,3 +46,19 @@ async def user_likes(
     # This is necessary for react-admin to work
     return user
 
+'''
+@r.patch(
+    "/user/favor",
+    response_model=User,
+    response_model_exclude_none=True,
+)
+
+async def user_favor_ex(
+    response: Response,
+    likeContent: ManageUserFavor,
+    db=Depends(get_db),
+):
+    user = manage_like_by_liked_email(db, likeContent)
+    # This is necessary for react-admin to work
+    return user
+'''

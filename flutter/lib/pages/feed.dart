@@ -298,7 +298,8 @@ class _FeedState extends State<Feed> {
                       .getFriendsHistorydata(_userdataProvider.userdata.email);
                 } else if (_feedListCtrl == 1) {
                   _historydataAll.getHistorydataAll();
-                } else if (_feedListCtrl == 2) {
+                } else if (_feedListCtrl == 3) {
+                  print("나만보기");
                   _historydataAll.getdata();
                 }
                 print(_feedListCtrl);

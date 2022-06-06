@@ -204,7 +204,7 @@ class UserEdit {
   final String userWeightUnit;
   final String userImage;
   final String password;
-  final String userFavorExercise;
+  final List userFavorExercise;
   UserEdit(
       {required this.userEmail,
       required this.userName,
@@ -230,6 +230,7 @@ class UserEdit {
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/user/" + userEmail);
     var response = await http.put(url, body: json.encode(formData));
+    print(response.statusCode);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);

@@ -10,6 +10,7 @@ class HistorydataProvider extends ChangeNotifier {
   getdata() {
     ExerciseService.loadSDBdata().then((value) {
       _historydata = value;
+      _historydataAll = value;
       notifyListeners();
     });
   }
