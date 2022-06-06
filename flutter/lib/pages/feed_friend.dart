@@ -5,6 +5,7 @@ import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
+import 'package:like_button/like_button.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
@@ -26,6 +27,7 @@ class _FeedFriendState extends State<FeedFriend> {
   late var _testdata = _testdata0;
   var _exercisesdataProvider;
   var _usersdata;
+  var _userdataProvider;
 
   @override
   void initState() {
@@ -109,7 +111,81 @@ class _FeedFriendState extends State<FeedFriend> {
 
   Widget _friend_listWidget(user) {
     return Container(
-        child: Text(user.nickname, style: TextStyle(color: Colors.white)));
+        child: Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child:
+                  Icon(Icons.account_circle, color: Colors.white, size: 28.0),
+            ),
+            Text(user.nickname,
+                style: TextStyle(color: Colors.white, fontSize: 18.0)),
+          ]),
+          _feedLikeButton(user)
+        ],
+      ),
+    ));
+  }
+
+  Widget _feedLikeButton(User) {
+    var buttonSize = 28.0;
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: LikeButton(
+        size: buttonSize,
+        isLiked: onIsLikedCheck(User),
+        circleColor:
+            CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+        bubblesColor: BubblesColor(
+          dotPrimaryColor: Color(0xff33b5e5),
+          dotSecondaryColor: Color(0xff0099cc),
+        ),
+        likeBuilder: (bool isLiked) {
+          return Icon(
+            Icons.favorite,
+            color: isLiked ? Colors.deepPurpleAccent : Colors.grey,
+            size: buttonSize,
+          );
+        },
+        onTap: (bool isLiked) async {
+          return onLikeButtonTapped(isLiked, User);
+        },
+      ),
+    );
+  }
+
+  bool onIsLikedCheck(User) {
+    if (_userdataProvider.userdata.like.contains(User.email)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool?> onLikeButtonTapped(bool isLiked, User) async {
+    print(isLiked);
+    if (isLiked == true) {
+      var user = await UserLike(
+              liked_email: User.email,
+              user_email: _userdataProvider.userdata.email,
+              status: "remove",
+              disorlike: "like")
+          .patchUserLike();
+      return false;
+    } else {
+      var user = await UserLike(
+              liked_email: User.email,
+              user_email: _userdataProvider.userdata.email,
+              status: "append",
+              disorlike: "like")
+          .patchUserLike();
+      print("true");
+      return !isLiked;
+    }
   }
 
   @override
@@ -117,6 +193,8 @@ class _FeedFriendState extends State<FeedFriend> {
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
+    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _userdataProvider.getdata();
     return Scaffold(
       appBar: _appbarWidget(),
       body: _friend_searchWidget(),
