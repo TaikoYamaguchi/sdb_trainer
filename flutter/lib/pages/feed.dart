@@ -47,9 +47,7 @@ class _FeedState extends State<Feed> {
     _historydataAll = Provider.of<HistorydataProvider>(context, listen: false);
     _historydataAll.getHistorydataAll();
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _userdataProvider.getdata();
     print("111111");
-    print(_historydataAll.historydataAll.sdbdatas[0].exercises[0]);
     return Scaffold(
         appBar: AppBar(
             title: Row(
@@ -69,7 +67,10 @@ class _FeedState extends State<Feed> {
               ],
             ),
             backgroundColor: Colors.black),
-        body: _feedCardList(context));
+        body: _userdataProvider.userdata != null
+            ? _feedCardList(context)
+            : Center(child: CircularProgressIndicator())
+    );
   }
 
   Widget _feedCardList(context) {
@@ -77,25 +78,29 @@ class _FeedState extends State<Feed> {
       children: [
         _feedControllerWidget(),
         Expanded(
-          child: ListView.separated(
-              itemBuilder: (BuildContext _context, int index) {
-                return Center(
-                    child: _feedCard(
-                        _historydataAll.historydataAll.sdbdatas[index]));
-              },
-              separatorBuilder: (BuildContext _context, int index) {
-                return Container(
-                  alignment: Alignment.center,
-                  height: 1,
-                  color: Colors.black,
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: 1,
-                    color: Color(0xFF717171),
-                  ),
-                );
-              },
-              itemCount: _historydataAll.historydataAll.sdbdatas.length),
+          child: Consumer<HistorydataProvider>(
+            builder: (builder, provider, child) {
+              return ListView.separated(
+                  itemBuilder: (BuildContext _context, int index) {
+                    return Center(
+                        child: _feedCard(
+                            provider.historydataAll.sdbdatas[index]));
+                  },
+                  separatorBuilder: (BuildContext _context, int index) {
+                    return Container(
+                      alignment: Alignment.center,
+                      height: 1,
+                      color: Colors.black,
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 1,
+                        color: Color(0xFF717171),
+                      ),
+                    );
+                  },
+                  itemCount: provider.historydataAll.sdbdatas.length);
+            }
+          ),
         ),
       ],
     );
@@ -113,45 +118,27 @@ class _FeedState extends State<Feed> {
             color: Color(0xFF717171),
             child: Column(
               children: [
-                FutureBuilder(
-                    future: UserInfo(userEmail: SDBdata.user_email)
-                        .getUserByEmail()
-                        .then((data) => {user = data}),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      if (snapshot.hasData == false) {
-                        return CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 5),
-                            child: Row(
-                              children: [
-                                Text(
-                                  SDBdata.user_email,
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.white),
-                                ),
-                              ],
-                            ));
-                      } else {
-                        return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  user.nickname,
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.white),
-                                ),
-                                Text(SDBdata.date.substring(2, 10),
-                                    style: TextStyle(
-                                        fontSize: 18, color: Colors.white))
-                              ],
-                            ));
-                      }
-                    }),
+                Consumer<UserdataProvider>(
+                  builder: (builder, provider, child) {
+                    return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 5),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      provider.userdata.nickname,
+                                      style: TextStyle(
+                                          fontSize: 18, color: Colors.white),
+                                    ),
+                                    Text(SDBdata.date.substring(2, 10),
+                                        style: TextStyle(
+                                            fontSize: 18, color: Colors.white))
+                                  ],
+                                ));
+                  }
+                ),
+
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 0),

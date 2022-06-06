@@ -23,62 +23,68 @@ class Profile extends StatelessWidget {
       appBar: AppBar(
           title: Text("설정", style: TextStyle(color: Colors.white)),
           backgroundColor: Colors.black),
-      body: Column(children: [
-        ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  Transition(
-                      child: UserProfile(),
-                      transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-            },
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
-            child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 50,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(_userdataProvider.userdata.nickname,
-                          style: TextStyle(color: Colors.white)),
-                      Icon(Icons.chevron_right, color: Colors.white),
-                    ]))),
-        ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  Transition(
-                      child: ProfileGoal(),
-                      transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-            },
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
-            child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 50,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("목표설정", style: TextStyle(color: Colors.white)),
-                      Icon(Icons.chevron_right, color: Colors.white),
-                    ]))),
-        ElevatedButton(
-            onPressed: () => _userLogOut(),
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
-            child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 50,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("로그아웃", style: TextStyle(color: Colors.white)),
-                      Icon(Icons.chevron_right, color: Colors.white),
-                    ]))),
-      ]),
+      body: _userdataProvider.userdata != null
+          ? _profile(context)
+          : Center(child: CircularProgressIndicator()),
       backgroundColor: Colors.black,
     );
+  }
+
+  Widget _profile (context) {
+    return Column(children: [
+      ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                Transition(
+                    child: UserProfile(),
+                    transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+          },
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
+          child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(_userdataProvider.userdata.nickname,
+                        style: TextStyle(color: Colors.white)),
+                    Icon(Icons.chevron_right, color: Colors.white),
+                  ]))),
+      ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                Transition(
+                    child: ProfileGoal(),
+                    transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+          },
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
+          child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("목표설정", style: TextStyle(color: Colors.white)),
+                    Icon(Icons.chevron_right, color: Colors.white),
+                  ]))),
+      ElevatedButton(
+          onPressed: () => _userLogOut(),
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
+          child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("로그아웃", style: TextStyle(color: Colors.white)),
+                    Icon(Icons.chevron_right, color: Colors.white),
+                  ]))),
+    ]);
   }
 
   void _userLogOut() {
