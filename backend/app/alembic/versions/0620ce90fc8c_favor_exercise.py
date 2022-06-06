@@ -28,7 +28,7 @@ def table_has_column(table, column):
 
 
 def upgrade():
-    if not table_has_column("user", "like"):
+    if not table_has_column("user", "favor_exercise"):
         op.add_column("user", sa.Column("favor_exercise", sa.ARRAY(sa.String)))
 
 
