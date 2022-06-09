@@ -28,9 +28,11 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
   var _exercisesdataProvider;
   var _usersdata;
   var _userdataProvider;
+  var friendsInputSwitch = false;
 
   @override
   void initState() {
+    _searchFriendInitial();
     super.initState();
   }
 
@@ -72,7 +74,12 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
                   ),
                 ),
                 onChanged: (text) {
-                  searchFriend(text.toString());
+                  if (text.toString() == null) {
+                    _searchFriendInitial();
+                  } else {
+                    searchFriend(text.toString());
+                  }
+                  print(text.toString());
                 }),
           ),
           Expanded(
@@ -104,6 +111,13 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
   void searchFriend(String query) async {
     final suggestions =
         await UserNicknameAll(userNickname: query).getUsersByNickname();
+    print(suggestions);
+
+    setState(() => _usersdata = suggestions);
+  }
+
+  void _searchFriendInitial() async {
+    final suggestions = await UserAll().getUsers();
     print(suggestions);
 
     setState(() => _usersdata = suggestions);
@@ -145,11 +159,13 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
           dotSecondaryColor: Color(0xff0099cc),
         ),
         likeBuilder: (bool isLiked) {
-          return Icon(
-            Icons.favorite,
-            color: isLiked ? Colors.deepPurpleAccent : Colors.grey,
-            size: buttonSize,
-          );
+          return User.email == _userdataProvider.userdata.email
+              ? Container()
+              : Icon(
+                  Icons.favorite,
+                  color: isLiked ? Colors.deepPurpleAccent : Colors.grey,
+                  size: buttonSize,
+                );
         },
         onTap: (bool isLiked) async {
           return onLikeButtonTapped(isLiked, User);
@@ -195,6 +211,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
     _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _userdataProvider.getdata();
+
     return Scaffold(
       appBar: _appbarWidget(),
       body: _friend_searchWidget(),

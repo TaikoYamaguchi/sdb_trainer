@@ -41,6 +41,10 @@ class _FeedState extends State<Feed> {
 
   var _historydataAll;
   var _userdataProvider;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,8 +85,8 @@ class _FeedState extends State<Feed> {
             return ListView.separated(
                 itemBuilder: (BuildContext _context, int index) {
                   return Center(
-                      child:
-                          _feedCard(provider.historydataAll.sdbdatas[index]));
+                      child: _feedCard(
+                          provider.historydataAll.sdbdatas[index], index));
                 },
                 separatorBuilder: (BuildContext _context, int index) {
                   return Container(
@@ -103,7 +107,7 @@ class _FeedState extends State<Feed> {
     );
   }
 
-  Widget _feedCard(SDBdata) {
+  Widget _feedCard(SDBdata, index) {
     var user;
     return Container(
       height: 200,
@@ -115,23 +119,39 @@ class _FeedState extends State<Feed> {
             color: Color(0xFF717171),
             child: Column(
               children: [
-                Consumer<UserdataProvider>(builder: (builder, provider, child) {
-                  return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            provider.userdata.nickname,
-                            style: TextStyle(fontSize: 18, color: Colors.white),
-                          ),
-                          Text(SDBdata.date.substring(2, 10),
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.white))
-                        ],
-                      ));
-                }),
+                Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FutureBuilder(
+                            future: UserInfo(userEmail: SDBdata.user_email)
+                                .getUserByEmail(),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              if (snapshot.hasData == false) {
+                                return CircularProgressIndicator();
+                              } else if (snapshot.hasError) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'Error: ${snapshot.error}',
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                );
+                              } else {
+                                return Text(
+                                  snapshot.data.nickname,
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.white),
+                                );
+                              }
+                            }),
+                        Text(SDBdata.date.substring(2, 10),
+                            style: TextStyle(fontSize: 18, color: Colors.white))
+                      ],
+                    )),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
@@ -343,5 +363,17 @@ class _FeedState extends State<Feed> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    print('dispose');
+    super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
   }
 }

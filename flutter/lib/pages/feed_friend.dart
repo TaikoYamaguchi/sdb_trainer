@@ -30,6 +30,7 @@ class _FeedFriendState extends State<FeedFriend> {
   var _exercisesdataProvider;
   var _usersdata;
   var _userdataProvider;
+  var friendsInputSwitch = false;
 
   @override
   void initState() {
@@ -64,6 +65,7 @@ class _FeedFriendState extends State<FeedFriend> {
   }
 
   Widget _friend_searchWidget() {
+    _userdataProvider.getUsersFriendsAll();
     return Container(
         color: Colors.black,
         child: Column(children: [

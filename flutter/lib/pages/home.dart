@@ -20,36 +20,32 @@ class Home extends StatelessWidget {
 
   PreferredSizeWidget _appbarWidget() {
     //if (_userdataProvider.userdata != null) {
-      return AppBar(
-        title: Consumer<UserdataProvider>(
-          builder: (builder, provider, child) {
-            if(provider.userdata != null){
-              return Text(
-                provider.userdata.nickname + "님",
-                style: TextStyle(color: Colors.white),
-              );
-            }
-            else {
-              return PreferredSize(
-                  preferredSize: Size.fromHeight(56.0),
-                  child: Container(
-                      color: Colors.black,
-                      child: Center(child: CircularProgressIndicator())));
-            }
-          }
-        ),
-        actions: [
-          IconButton(
-            icon: SvgPicture.asset("assets/svg/chart.svg"),
-            onPressed: () {
-              _bodyStater.change(3);
-              _staticPageState.change(false);
-            },
-          )
-        ],
-        backgroundColor: Colors.black,
-      );
-
+    return AppBar(
+      title: Consumer<UserdataProvider>(builder: (builder, provider, child) {
+        if (provider.userdata != null) {
+          return Text(
+            provider.userdata.nickname + "님",
+            style: TextStyle(color: Colors.white),
+          );
+        } else {
+          return PreferredSize(
+              preferredSize: Size.fromHeight(56.0),
+              child: Container(
+                  color: Colors.black,
+                  child: Center(child: CircularProgressIndicator())));
+        }
+      }),
+      actions: [
+        IconButton(
+          icon: SvgPicture.asset("assets/svg/chart.svg"),
+          onPressed: () {
+            _bodyStater.change(3);
+            _staticPageState.change(false);
+          },
+        )
+      ],
+      backgroundColor: Colors.black,
+    );
   }
 
   Widget _homeWidget(_exunique) {
@@ -119,9 +115,9 @@ class Home extends StatelessWidget {
     return _exunique.exercises.length > index
         ? GestureDetector(
             onTap: () => {
-              _bodyStater.change(3),
               _chartIndex.change(index),
-              _staticPageState.change(true)
+              _staticPageState.change(true),
+              _bodyStater.change(3),
             },
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -177,7 +173,8 @@ class Home extends StatelessWidget {
     _historydataAll.getHistorydataAll();
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _userdataProvider.getdata();
-    _exercisesdataProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
+    _exercisesdataProvider =
+        Provider.of<ExercisesdataProvider>(context, listen: false);
     _exercisesdataProvider.getdata();
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
     _staticPageState = Provider.of<StaticPageProvider>(context, listen: false);

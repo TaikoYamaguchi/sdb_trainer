@@ -1,4 +1,4 @@
-from app.db.crud import create_user, get_friends_by_email, get_user_by_email, get_user_by_phone_number, edit_user, get_user_by_nickname, get_users_by_nickname, manage_like_by_liked_email
+from app.db.crud import create_user, get_friends_by_email, get_user_by_email, get_user_by_phone_number, edit_user, get_user_by_nickname, get_users_by_nickname, manage_like_by_liked_email, get_users
 from app.db.schemas import User, UserCreate, UserEdit, ManageLikeUser
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import APIRouter, Depends, Request, HTTPException, status
@@ -145,6 +145,18 @@ async def friend_email(
     db=Depends(get_db),
 ):
     user = get_friends_by_email(db, email)
+    return user
+
+@r.get(
+    "/users",
+    response_model=t.List[User],
+    response_model_exclude_none=True,
+)
+async def user_all(
+    request: Request,
+    db=Depends(get_db),
+):
+    user = get_users(db)
     return user
 
 @r.get(

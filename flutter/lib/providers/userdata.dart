@@ -8,12 +8,14 @@ class UserdataProvider extends ChangeNotifier {
   var _userKakaoImage;
   var _userKakaoGender;
   var _userFriends;
+  var _userFeedData;
   get userdata => _userdata;
   get userKakaoEmail => _userKakaoEmail;
   get userKakaoName => _userKakaoName;
   get userKakaoImage => _userKakaoImage;
   get userKakaoGender => _userKakaoGender;
   get userFriends => _userFriends;
+  get userFeedData => _userFeedData;
 
   getdata() {
     UserService.loadUserdata().then((value) {
@@ -25,6 +27,21 @@ class UserdataProvider extends ChangeNotifier {
   getFriendsdata(email) {
     UserLikeFriends(user_email: email).getUserLikeFriends().then((value) {
       _userFriends = value;
+      notifyListeners();
+    });
+  }
+
+  getUsersFriendsAll() {
+    print("caclacla");
+    UserAll().getUsers().then((value) {
+      _userFriends = value;
+      notifyListeners();
+    });
+  }
+
+  getUserdata(email) {
+    UserInfo(userEmail: email).getUserByEmail().then((value) {
+      _userFeedData = value;
       notifyListeners();
     });
   }

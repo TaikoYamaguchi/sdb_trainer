@@ -45,11 +45,11 @@ class _AppState extends State<App> {
       unselectedFontSize: 20,
       onTap: (int index) {
         print(index);
-        setState((){
-          _currentIndex = index;
+        setState(() {
+          _bodyStater.change(index);
         });
       },
-      currentIndex: _currentIndex,
+      currentIndex: _bodyStater.bodystate,
       items: [
         _bottomNavigationBarItem("home", "홈"),
         _bottomNavigationBarItem("dumbel", "운동"),
@@ -80,29 +80,24 @@ class _AppState extends State<App> {
     return Container();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    _bodyStater = Provider.of<BodyStater>(context);
+    _bodyStater = Provider.of<BodyStater>(context, listen: true);
     _loginState = Provider.of<LoginPageProvider>(context);
     return Scaffold(
       body: _loginState.isLogin
-          ? IndexedStack(
-          index: _currentIndex,
-          children: <Widget>[
-            Home(),
-            TabNavigator(),
-            Feed(),
-            Calendar(),
-            Profile()
-          ])
+          ? IndexedStack(index: _bodyStater.bodystate, children: <Widget>[
+              Home(),
+              TabNavigator(),
+              Feed(),
+              Calendar(),
+              Profile()
+            ])
           : _loginState.isSignUp
-          ? SignUpPage()
-          : LoginPage(),
+              ? SignUpPage()
+              : LoginPage(),
       bottomNavigationBar:
-      _loginState.isLogin ? _bottomNavigationBarwidget() : null,
+          _loginState.isLogin ? _bottomNavigationBarwidget() : null,
     );
   }
 }
-

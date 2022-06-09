@@ -353,6 +353,35 @@ class UserNicknameAll {
   }
 }
 
+class UserAll {
+  Future<String> _usersAllFromServer() async {
+    var url = Uri.parse(LocalHost.getLocalHost() + "/api/users");
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      String jsonString = utf8.decode(response.bodyBytes);
+      final jsonResponse = json.decode(jsonString);
+      return utf8.decode(response.bodyBytes);
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to load post');
+    }
+    //API통신
+    //await Future.delayed(Duration(milliseconds: 1000));
+  }
+
+  Future<UserList?> getUsers() async {
+    String jsonString = await _usersAllFromServer();
+    final jsonResponse = json.decode(jsonString);
+    if (jsonResponse == null) {
+      return null;
+    } else {
+      UserList user = UserList.fromJson(jsonResponse);
+      return (user);
+    }
+  }
+}
+
 class UserLike {
   final String liked_email;
   final String user_email;

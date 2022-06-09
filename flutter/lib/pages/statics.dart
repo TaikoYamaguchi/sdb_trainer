@@ -200,7 +200,9 @@ class _CalendarState extends State<Calendar> {
         ),
         _getEventsfromDay(_selectedDay).isEmpty != true
             ? ExerciseState.exercisesWidget(
-                _getEventsfromDay(_selectedDay).first.exercises,_userdataProvider.userdata, true)
+                _getEventsfromDay(_selectedDay).first.exercises,
+                _userdataProvider.userdata,
+                true)
             : Container()
       ],
     );
@@ -271,6 +273,7 @@ class _CalendarState extends State<Calendar> {
     initializeDateFormatting('pt_BR', null);
     _chartIndex = Provider.of<ChartIndexProvider>(context);
     _isChartWidget = Provider.of<StaticPageProvider>(context);
+    _getChartSourcefromDay();
     return Scaffold(
         appBar: _appbarWidget(),
         backgroundColor: Colors.black,
