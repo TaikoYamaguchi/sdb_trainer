@@ -104,6 +104,19 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     }
   }
 
+  void _editWorkoutwCheck() async {
+    if(_routinetimeProvider.isstarted){
+      WorkoutEdit(
+          user_email: _userdataProvider.userdata.email,
+          name: _workoutdataProvider.workoutdata.routinedatas[widget.rindex].name,
+          exercises: _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises)
+          .editWorkout()
+          .then((data) => data["user_email"] != null
+          ? showToast("done!")
+          : showToast("입력을 확인해주세요"));
+    }
+  }
+
   void _editWorkoutwoCheck() async {
     var exercise_all = _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises;
     for(int n = 0; n< exercise_all.length; n++){
@@ -279,7 +292,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                       getColor),
                                               value: _sets[index].ischecked,
                                               onChanged: (newvalue) {
+
                                                 _workoutdataProvider.boolcheck(widget.rindex,widget.eindex,index,newvalue);
+                                                _editWorkoutwCheck();
                                               })
                                     ),
                                     Container(

@@ -402,6 +402,10 @@ class ExerciseState extends State<Exercise> {
             padding: EdgeInsets.all(8.0),
             splashColor: Colors.blueAccent,
             onPressed: ()  {
+              setState((){
+                _workoutdataProvider.workoutdata.routinedatas.add(new Routinedata(id: _workoutdataProvider.workoutdata.routinedatas.length, user_email: _userdataProvider.userdata.email, name: _workoutNameCtrl.text, exercises: exerciseList, date: null, routine_time: null));
+              });
+
               _postWorkoutCheck();
               _workoutNameCtrl.clear();
               Navigator.of(context, rootNavigator: true).pop();
