@@ -34,13 +34,9 @@ class ExerciseState extends State<Exercise> {
   int swap = 1;
   String _title = "Workout List";
 
-
-  
-
   late List<Exercises> exerciseList = [
-    Exercises(name: "스쿼트", sets: Setslist().setslist , onerm: 0.0, rest: 1),
+    Exercises(name: "스쿼트", sets: Setslist().setslist, onerm: 0.0, rest: 1),
   ];
-
 
   @override
   void initState() {
@@ -72,14 +68,15 @@ class ExerciseState extends State<Exercise> {
         ],
       ),
       actions: swap == 1
-        ? [IconButton(
-            icon: SvgPicture.asset("assets/svg/add.svg"),
-            onPressed: () {
-            _displayTextInputDialog(context);
-            },
-          )]
-        : null
-      ,
+          ? [
+              IconButton(
+                icon: SvgPicture.asset("assets/svg/add.svg"),
+                onPressed: () {
+                  _displayTextInputDialog(context);
+                },
+              )
+            ]
+          : null,
       backgroundColor: Colors.black,
     );
   }
@@ -107,10 +104,10 @@ class ExerciseState extends State<Exercise> {
                     context,
                     Transition(
                         child: EachWorkoutDetails(
-                            workouttitle: wdata.routinedatas[index].name,
-                            exerciselist: wdata.routinedatas[index].exercises,
-                            uniqueinfo: edata,
-                            routineindex: index,
+                          workouttitle: wdata.routinedatas[index].name,
+                          exerciselist: wdata.routinedatas[index].exercises,
+                          uniqueinfo: edata,
+                          routineindex: index,
                         ),
                         transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
               },
@@ -138,19 +135,18 @@ class ExerciseState extends State<Exercise> {
                           ),
                           Text(
                               "${wdata.routinedatas[index].exercises.length} Exercises",
-                              style:
-                                  TextStyle(fontSize: 13, color: Color(0xFF717171)))
+                              style: TextStyle(
+                                  fontSize: 13, color: Color(0xFF717171)))
                         ],
                       ),
                       IconButton(
-                        onPressed: (){
+                        onPressed: () {
                           _deleteWorkoutCheck(wdata.routinedatas[index].id);
                           setState(() {
                             //_workoutdataProvider.workoutdata.routinedatas.removeAt(index);
                           });
                           print(wdata.routinedatas.length);
                           print(wdata.routinedatas.length);
-
                         },
                         icon: Icon(Icons.delete),
                         color: Colors.white,
@@ -179,12 +175,10 @@ class ExerciseState extends State<Exercise> {
   }
 
   void _deleteWorkoutCheck(int id) async {
-
-    WorkoutDelete(id: id)
-        .deleteWorkout()
-        .then((data) => data["user_email"] != null
-        ? _workoutdataProvider.getdata()
-        : showToast("입력을 확인해주세요"));
+    WorkoutDelete(id: id).deleteWorkout().then((data) =>
+        data["user_email"] != null
+            ? _workoutdataProvider.getdata()
+            : showToast("입력을 확인해주세요"));
   }
 
   static Widget exercisesWidget(exuniq, userdata, bool shirink) {
@@ -233,7 +227,9 @@ class ExerciseState extends State<Exercise> {
                                   fontSize: 13, color: Color(0xFF717171))),
                           Expanded(child: SizedBox()),
                           Text(
-                              "1RM: ${exuniq[index].onerm}/${exuniq[index].goal.toStringAsFixed(1)}${userdata.weight_unit}",
+                              "1RM: " +
+                                  exuniq[index].onerm.toStringAsFixed(1) +
+                                  "/${exuniq[index].goal.toStringAsFixed(1)}${userdata.weight_unit}",
                               style: TextStyle(
                                   fontSize: 13, color: Color(0xFF717171))),
                         ],
@@ -259,8 +255,7 @@ class ExerciseState extends State<Exercise> {
           },
           scrollDirection: Axis.vertical,
           shrinkWrap: shirink,
-          itemCount: exuniq.length
-      ),
+          itemCount: exuniq.length),
     );
   }
 
@@ -270,93 +265,91 @@ class ExerciseState extends State<Exercise> {
     return Container(
       color: Colors.black,
       child: Consumer2<ExercisesdataProvider, UserdataProvider>(
-        builder: (builer, exercise, user, child) {
-          var _userdata = user.userdata;
-          var _exunique = exercise.exercisesdata.exercises;
+          builder: (builer, exercise, user, child) {
+        var _userdata = user.userdata;
+        var _exunique = exercise.exercisesdata.exercises;
 
-          return ListView.separated(
-              padding: EdgeInsets.symmetric(horizontal: 5),
-              itemBuilder: (BuildContext _context, int index) {
-                if (index == 0) {
-                  top = 20;
-                  bottom = 0;
-                } else if (index == _exunique.length - 1) {
-                  top = 0;
-                  bottom = 20;
-                } else {
-                  top = 0;
-                  bottom = 0;
-                }
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(context,Transition(
+        return ListView.separated(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          itemBuilder: (BuildContext _context, int index) {
+            if (index == 0) {
+              top = 20;
+              bottom = 0;
+            } else if (index == _exunique.length - 1) {
+              top = 0;
+              bottom = 20;
+            } else {
+              top = 0;
+              bottom = 0;
+            }
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    Transition(
                         child: UniqueExerciseDetails(
                           ueindex: index,
                         ),
-                        transitionEffect: TransitionEffect.RIGHT_TO_LEFT
-                      )
-                    );
-                  },
-                  child: Container(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      decoration: BoxDecoration(
-                          color: Color(0xFF212121),
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(top),
-                              bottomRight: Radius.circular(bottom),
-                              topLeft: Radius.circular(top),
-                              bottomLeft: Radius.circular(bottom))),
-                      height: 52,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                                _exunique[index].name,
-                                style: TextStyle(fontSize: 21, color: Colors.white),
-                              ),
-                          Container(
-                            child: Row(
-                              //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Text("Rest: need to set",
-                                    style: TextStyle(
-                                        fontSize: 13, color: Color(0xFF717171))),
-                                Expanded(child: SizedBox()),
-                                Text(
-                                        "1RM: ${_exunique[index].onerm}/${_exunique[index].goal.toStringAsFixed(1)}${_userdata.weight_unit}",
-                                        style: TextStyle(
-                                            fontSize: 13, color: Color(0xFF717171))),
-                              ],
-                            ),
-                          )
-                        ],
+                        transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+              },
+              child: Container(
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                      color: Color(0xFF212121),
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(top),
+                          bottomRight: Radius.circular(bottom),
+                          topLeft: Radius.circular(top),
+                          bottomLeft: Radius.circular(bottom))),
+                  height: 52,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _exunique[index].name,
+                        style: TextStyle(fontSize: 21, color: Colors.white),
                       ),
-                    ),
+                      Container(
+                        child: Row(
+                          //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text("Rest: need to set",
+                                style: TextStyle(
+                                    fontSize: 13, color: Color(0xFF717171))),
+                            Expanded(child: SizedBox()),
+                            Text(
+                                "1RM: ${_exunique[index].onerm}/${_exunique[index].goal.toStringAsFixed(1)}${_userdata.weight_unit}",
+                                style: TextStyle(
+                                    fontSize: 13, color: Color(0xFF717171))),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
-                );
-              },
-              separatorBuilder: (BuildContext _context, int index) {
-                return Container(
-                  alignment: Alignment.center,
-                  height: 1,
-                  color: Color(0xFF212121),
-                  child: Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                    height: 1,
-                    color: Color(0xFF717171),
-                  ),
-                );
-              },
-              scrollDirection: Axis.vertical,
-              shrinkWrap: shirink,
-
-              itemCount: _exunique.length,
-          );
-        }
-      ),
+                ),
+              ),
+            );
+          },
+          separatorBuilder: (BuildContext _context, int index) {
+            return Container(
+              alignment: Alignment.center,
+              height: 1,
+              color: Color(0xFF212121),
+              child: Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                height: 1,
+                color: Color(0xFF717171),
+              ),
+            );
+          },
+          scrollDirection: Axis.vertical,
+          shrinkWrap: shirink,
+          itemCount: _exunique.length,
+        );
+      }),
     );
   }
 
@@ -380,13 +373,15 @@ class ExerciseState extends State<Exercise> {
             content: TextField(
               onChanged: (value) {
                 setState(() {
-                   print(value);
+                  print(value);
                 });
               },
               controller: _workoutNameCtrl,
               decoration: InputDecoration(hintText: "Text Field in Dialog"),
             ),
-            actions: <Widget>[_workoutSubmitButton(context),],
+            actions: <Widget>[
+              _workoutSubmitButton(context),
+            ],
           );
         });
   }
@@ -401,9 +396,17 @@ class ExerciseState extends State<Exercise> {
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
             splashColor: Colors.blueAccent,
-            onPressed: ()  {
-              setState((){
-                _workoutdataProvider.workoutdata.routinedatas.add(new Routinedata(id: _workoutdataProvider.workoutdata.routinedatas.length, user_email: _userdataProvider.userdata.email, name: _workoutNameCtrl.text, exercises: exerciseList, date: null, routine_time: null));
+            onPressed: () {
+              setState(() {
+                _workoutdataProvider.workoutdata.routinedatas.add(
+                    new Routinedata(
+                        id: _workoutdataProvider
+                            .workoutdata.routinedatas.length,
+                        user_email: _userdataProvider.userdata.email,
+                        name: _workoutNameCtrl.text,
+                        exercises: exerciseList,
+                        date: null,
+                        routine_time: null));
               });
 
               _postWorkoutCheck();
@@ -415,12 +418,14 @@ class ExerciseState extends State<Exercise> {
   }
 
   void _postWorkoutCheck() async {
-
-    WorkoutPost(user_email: _userdataProvider.userdata.email, name: _workoutNameCtrl.text,  exercises: exerciseList)
+    WorkoutPost(
+            user_email: _userdataProvider.userdata.email,
+            name: _workoutNameCtrl.text,
+            exercises: exerciseList)
         .postWorkout()
         .then((data) => data["user_email"] != null
-        ? _workoutdataProvider.getdata()
-        : showToast("입력을 확인해주세요"));
+            ? _workoutdataProvider.getdata()
+            : showToast("입력을 확인해주세요"));
   }
 
   @override
@@ -433,22 +438,20 @@ class ExerciseState extends State<Exercise> {
         Provider.of<WorkoutdataProvider>(context, listen: false);
     _workoutdataProvider.getdata();
 
-
     return Scaffold(
-      appBar: _appbarWidget(),
-      body: Consumer2<ExercisesdataProvider,WorkoutdataProvider>(
-          builder: (context, provider1, provider2, widget) {
-            if (provider2.workoutdata != null) {
-              return _bodyWidget(provider1.exercisesdata.exercises, provider2.workoutdata);
-            }
-            return Container(
-              color: Colors.black,
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          })
-
-    );
+        appBar: _appbarWidget(),
+        body: Consumer2<ExercisesdataProvider, WorkoutdataProvider>(
+            builder: (context, provider1, provider2, widget) {
+          if (provider2.workoutdata != null) {
+            return _bodyWidget(
+                provider1.exercisesdata.exercises, provider2.workoutdata);
+          }
+          return Container(
+            color: Colors.black,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }));
   }
 }

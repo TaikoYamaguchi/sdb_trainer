@@ -35,7 +35,7 @@ class _FeedState extends State<Feed> {
         padding: const EdgeInsets.all(10.0)),
     3: Padding(
         child:
-            Text("나만 보기", style: TextStyle(color: Colors.white, fontSize: 14)),
+            Text("내 피드", style: TextStyle(color: Colors.white, fontSize: 14)),
         padding: const EdgeInsets.all(10.0))
   };
 
@@ -109,8 +109,10 @@ class _FeedState extends State<Feed> {
 
   Widget _feedCard(SDBdata, index) {
     var user;
+    print(SDBdata.comment);
+    print("comment");
     return Container(
-      height: 200,
+      width: MediaQuery.of(context).size.width,
       color: Colors.black,
       child: Center(
         child: Padding(
@@ -187,33 +189,32 @@ class _FeedState extends State<Feed> {
                     ],
                   ),
                 ),
-                Expanded(
-                  flex: 10,
-                  child: ListView.separated(
-                      itemBuilder: (BuildContext _context, int index) {
-                        return Center(
-                            child: _exerciseWidget(
-                                SDBdata.exercises[index], index));
-                      },
-                      separatorBuilder: (BuildContext _context, int index) {
-                        return Container(
+                ListView.separated(
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext _context, int index) {
+                      return Center(
+                          child:
+                              _exerciseWidget(SDBdata.exercises[index], index));
+                    },
+                    separatorBuilder: (BuildContext _context, int index) {
+                      return Container(
+                        alignment: Alignment.center,
+                        height: 1,
+                        color: Colors.black,
+                        child: Container(
                           alignment: Alignment.center,
                           height: 1,
-                          color: Colors.black,
-                          child: Container(
-                            alignment: Alignment.center,
-                            height: 1,
-                            color: Color(0xFF717171),
-                          ),
-                        );
-                      },
-                      itemCount: SDBdata.exercises.length),
-                ),
+                          color: Color(0xFF717171),
+                        ),
+                      );
+                    },
+                    itemCount: SDBdata.exercises.length),
+                SDBdata.comment != ""
+                    ? _feedTextField(SDBdata.comment)
+                    : Container(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    _feedLikeButton(SDBdata),
-                  ],
+                  children: [_feedLikeButton(SDBdata), _feedCommentButton()],
                 )
               ],
             ),
@@ -223,10 +224,40 @@ class _FeedState extends State<Feed> {
     );
   }
 
+  Widget _feedTextField(text) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          flex: 10,
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+            child: Text(text,
+                style: TextStyle(color: Colors.white, fontSize: 14.0)),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _feedCommentButton() {
+    return Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Row(
+          children: [
+            IconButton(
+                onPressed: null,
+                icon: Icon(Icons.message, color: Colors.grey, size: 28.0)),
+            Text("0", style: TextStyle(color: Colors.white, fontSize: 18.0))
+          ],
+        ));
+  }
+
   Widget _feedLikeButton(SDBdata) {
     var buttonSize = 28.0;
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(4.0),
       child: LikeButton(
         size: buttonSize,
         isLiked: onIsLikedCheck(SDBdata),
@@ -237,10 +268,13 @@ class _FeedState extends State<Feed> {
           dotSecondaryColor: Color(0xff0099cc),
         ),
         likeBuilder: (bool isLiked) {
-          return Icon(
-            Icons.favorite,
-            color: isLiked ? Colors.deepPurpleAccent : Colors.grey,
-            size: buttonSize,
+          return Padding(
+            padding: const EdgeInsets.only(right: 40.0),
+            child: Icon(
+              Icons.favorite,
+              color: isLiked ? Colors.deepPurpleAccent : Colors.white,
+              size: buttonSize,
+            ),
           );
         },
         onTap: (bool isLiked) async {
@@ -248,17 +282,17 @@ class _FeedState extends State<Feed> {
         },
         likeCount: SDBdata.like.length,
         countBuilder: (int? count, bool isLiked, String text) {
-          var color = isLiked ? Colors.deepPurpleAccent : Colors.grey;
+          var color = isLiked ? Colors.deepPurpleAccent : Colors.white;
           Widget result;
           if (count == 0) {
             result = Text(
               text,
-              style: TextStyle(color: color),
+              style: TextStyle(color: color, fontSize: 18.0),
             );
           } else
             result = Text(
               text,
-              style: TextStyle(color: color),
+              style: TextStyle(color: color, fontSize: 18.0),
             );
           return result;
         },
@@ -354,7 +388,7 @@ class _FeedState extends State<Feed> {
             Container(
               width: 80,
               child: Text(
-                Exercises.onerm.toString(),
+                Exercises.onerm.toStringAsFixed(1),
                 style: TextStyle(fontSize: 18, color: Colors.white),
                 textAlign: TextAlign.center,
               ),
