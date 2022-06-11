@@ -41,6 +41,7 @@ class _FeedState extends State<Feed> {
 
   var _historydataAll;
   var _userdataProvider;
+  var _historyCommentCtrl;
   @override
   void initState() {
     super.initState();
@@ -150,8 +151,30 @@ class _FeedState extends State<Feed> {
                                 );
                               }
                             }),
-                        Text(SDBdata.date.substring(2, 10),
-                            style: TextStyle(fontSize: 18, color: Colors.white))
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 4.0),
+                              child: Text(SDBdata.date.substring(2, 10),
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.white)),
+                            ),
+                            SDBdata.user_email ==
+                                    _userdataProvider.userdata.email
+                                ? GestureDetector(
+                                    onTap: () {
+                                      _historyCommentCtrl =
+                                          TextEditingController(
+                                              text: SDBdata.comment);
+                                      ;
+                                      _displayTextInputDialog(
+                                          context, SDBdata.id);
+                                    },
+                                    child: Icon(Icons.menu,
+                                        color: Colors.white, size: 18.0))
+                                : Container()
+                          ],
+                        ),
                       ],
                     )),
                 Padding(
@@ -222,6 +245,52 @@ class _FeedState extends State<Feed> {
         ),
       ),
     );
+  }
+
+  Future<void> _displayTextInputDialog(BuildContext context, history_id) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('코멘트를 입력해주세요'),
+            content: TextField(
+              onChanged: (value) {
+                setState(() {
+                  print(value);
+                });
+              },
+              controller: _historyCommentCtrl,
+              decoration: InputDecoration(hintText: "Text Field in Dialog"),
+            ),
+            actions: <Widget>[
+              _historyCommentSubmitButton(context, history_id),
+            ],
+          );
+        });
+  }
+
+  Widget _historyCommentSubmitButton(context, history_id) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+            color: Color.fromRGBO(246, 58, 64, 20),
+            textColor: Colors.white,
+            disabledColor: Color.fromRGBO(246, 58, 64, 20),
+            disabledTextColor: Colors.black,
+            padding: EdgeInsets.all(8.0),
+            splashColor: Colors.blueAccent,
+            onPressed: () {
+              HistoryCommentEdit(
+                      history_id: history_id,
+                      user_email: _userdataProvider.userdata.email,
+                      comment: _historyCommentCtrl.text)
+                  .patchHistoryComment();
+
+              _historyCommentCtrl.clear();
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            child: Text("comment 입력",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
   Widget _feedTextField(text) {

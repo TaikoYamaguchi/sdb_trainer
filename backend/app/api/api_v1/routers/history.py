@@ -1,9 +1,9 @@
-from app.db.crud_history import create_history, get_friends_histories, get_histories_by_email, get_histories, manage_like_by_history_id
+from app.db.crud_history import create_history, edit_comment_by_id, get_friends_histories, get_histories_by_email, get_histories, manage_like_by_history_id
 from fastapi import APIRouter, Request, Depends, Response, encoders
 import typing as t
 
 from app.db.session import get_db
-from app.db.schemas import HistoryCreate, HistoryOut, ManageLikeHistory
+from app.db.schemas import HistoryCommentEdit, HistoryCreate, HistoryOut, ManageLikeHistory
 
 
 history_router = r = APIRouter()
@@ -74,6 +74,20 @@ async def history_likes(
     db=Depends(get_db),
 ):
     history = manage_like_by_history_id(db, likeContent)
+    # This is necessary for react-admin to work
+    return history
+
+@r.patch(
+    "/history/comment/edit",
+    response_model=HistoryOut,
+    response_model_exclude_none=True,
+)
+async def history_comment(
+    response: Response,
+    history:HistoryCommentEdit,
+    db=Depends(get_db),
+):
+    history = edit_comment_by_id(db, history)
     # This is necessary for react-admin to work
     return history
 

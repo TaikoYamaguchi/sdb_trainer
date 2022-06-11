@@ -57,4 +57,12 @@ def manage_like_by_history_id(db: Session,likeContent:schemas.ManageLikeHistory)
     db.refresh(db_hisotry)
     return db_hisotry
 
+def edit_comment_by_id(db: Session,history:schemas.HistoryCommentEdit) -> schemas.HistoryOut:
+    db_history = db.query(models.History).filter(models.History.id == history.id).first()
+    if(db_history.email == history.email):
+        setattr(db_history, "comment", history.comment)
+    db.commit()
+    db.refresh(db_history)
+    return db_history
+
 

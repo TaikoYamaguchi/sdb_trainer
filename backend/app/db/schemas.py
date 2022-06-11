@@ -127,3 +127,8 @@ class ManageUserFavor(BaseModel):
     status:str
     disorlike:str
 
+class HistoryCommentEdit(BaseModel):
+    id:int
+    email:str
+    comment:str
+
