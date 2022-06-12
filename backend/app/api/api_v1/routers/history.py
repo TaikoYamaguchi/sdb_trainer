@@ -84,10 +84,10 @@ async def history_likes(
 )
 async def history_comment(
     response: Response,
-    history:HistoryCommentEdit,
+    history_edit:HistoryCommentEdit,
     db=Depends(get_db),
 ):
-    history = edit_comment_by_id(db, history)
+    history = edit_comment_by_id(db, history_edit)
     # This is necessary for react-admin to work
     return history
 
