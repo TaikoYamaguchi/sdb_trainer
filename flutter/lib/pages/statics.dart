@@ -203,7 +203,8 @@ class _CalendarState extends State<Calendar> {
                   EdgeInsets.symmetric(horizontal: 5.0, vertical: 3.0)),
         ),
         _getEventsfromDay(_selectedDay).isEmpty != true
-            ? _allchartExercisesWidget(_getEventsfromDay(_selectedDay))
+            ? _allchartExercisesWidget(
+                List.from(_getEventsfromDay(_selectedDay).reversed))
             : Container()
       ],
     );
