@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sdb_trainer/pages/static_exercise.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:transition/transition.dart';
 import '../repository/history_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
@@ -14,6 +16,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:sdb_trainer/providers/chartIndexState.dart';
 import 'package:sdb_trainer/providers/staticPageState.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/pages/unique_exercise.dart';
 
 class Calendar extends StatefulWidget {
   @override
@@ -62,6 +65,7 @@ class _CalendarState extends State<Calendar> {
     for (int i = 0; i < _sdbData!.sdbdatas.length; i++) {
       if (_sdbData!.sdbdatas[i].date!.substring(0, 10) == date_calendar) {
         if (selectedEvents[date] != null) {
+          print(_sdbData!.sdbdatas[i]);
           selectedEvents[date]!.add(_sdbData!.sdbdatas[i]);
         } else {
           selectedEvents[date] = [_sdbData!.sdbdatas[i]];
@@ -199,12 +203,139 @@ class _CalendarState extends State<Calendar> {
                   EdgeInsets.symmetric(horizontal: 5.0, vertical: 3.0)),
         ),
         _getEventsfromDay(_selectedDay).isEmpty != true
-            ? ExerciseState.exercisesWidget(
-                _getEventsfromDay(_selectedDay).first.exercises,
-                _userdataProvider.userdata,
-                true)
+            ? _allchartExercisesWidget(_getEventsfromDay(_selectedDay))
             : Container()
       ],
+    );
+  }
+
+  Widget _allchartExercisesWidget(exercises) {
+    return Expanded(
+      child: ListView.separated(
+          itemBuilder: (BuildContext _context, int index) {
+            return _chartExercisesWidget(exercises[index].exercises,
+                exercises[index].id, _userdataProvider.userdata, true, index);
+          },
+          separatorBuilder: (BuildContext _context, int index) {
+            return Container(
+              alignment: Alignment.center,
+              height: 1,
+              color: Color(0xFF212121),
+              child: Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                height: 1,
+                color: Color(0xFF717171),
+              ),
+            );
+          },
+          itemCount: exercises.length,
+          shrinkWrap: true,
+          scrollDirection: Axis.vertical),
+    );
+  }
+
+  Widget _chartExercisesWidget(
+      exuniq, history_id, userdata, bool shirink, index) {
+    double top = 0;
+    double bottom = 0;
+    return Container(
+      color: Colors.black,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("훈련 " + (index + 1).toString(),
+                    style: TextStyle(fontSize: 18, color: Colors.white)),
+              ),
+            ],
+          ),
+          ListView.separated(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              itemBuilder: (BuildContext _context, int index) {
+                if (index == 0) {
+                  top = 20;
+                  bottom = 0;
+                } else if (index == exuniq.length - 1) {
+                  top = 0;
+                  bottom = 20;
+                } else {
+                  top = 0;
+                  bottom = 0;
+                }
+                print("historyyyyyyy");
+                print(exuniq);
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        Transition(
+                            child: StaticsExerciseDetails(
+                                exercise: exuniq[index],
+                                index: index,
+                                origin_exercises: exuniq,
+                                history_id: history_id),
+                            transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                        color: Color(0xFF212121),
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(top),
+                            bottomRight: Radius.circular(bottom),
+                            topLeft: Radius.circular(top),
+                            bottomLeft: Radius.circular(bottom))),
+                    height: 52,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          exuniq[index].name,
+                          style: TextStyle(fontSize: 21, color: Colors.white),
+                        ),
+                        Container(
+                          child: Row(
+                            //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text("Rest: need to set",
+                                  style: TextStyle(
+                                      fontSize: 13, color: Color(0xFF717171))),
+                              Expanded(child: SizedBox()),
+                              Text(
+                                  "1RM: " +
+                                      exuniq[index].onerm.toStringAsFixed(1) +
+                                      "/${exuniq[index].goal.toStringAsFixed(1)}${userdata.weight_unit}",
+                                  style: TextStyle(
+                                      fontSize: 13, color: Color(0xFF717171))),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              },
+              separatorBuilder: (BuildContext _context, int index) {
+                return Container(
+                  alignment: Alignment.center,
+                  height: 1,
+                  color: Color(0xFF212121),
+                  child: Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    height: 1,
+                    color: Color(0xFF717171),
+                  ),
+                );
+              },
+              shrinkWrap: shirink,
+              itemCount: exuniq.length),
+        ],
+      ),
     );
   }
 

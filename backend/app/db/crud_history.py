@@ -59,10 +59,20 @@ def manage_like_by_history_id(db: Session,likeContent:schemas.ManageLikeHistory)
 
 def edit_comment_by_id(db: Session,history:schemas.HistoryCommentEdit) -> schemas.HistoryOut:
     db_history = db.query(models.History).filter(models.History.id == history.id).first()
-    if(db_history.email == history.email):
+    if(db_history.user_email == history.email):
         setattr(db_history, "comment", history.comment)
     db.commit()
     db.refresh(db_history)
     return db_history
+
+def edit_exercies_by_id(db: Session,history:schemas.HistoryExercisesEdit) -> schemas.HistoryOut:
+    db_history = db.query(models.History).filter(models.History.id == history.id).first()
+    if(db_history.user_email == history.email):
+        setattr(db_history, "exercises", history.exercises)
+    db.commit()
+    db.refresh(db_history)
+    return db_history
+
+
 
 

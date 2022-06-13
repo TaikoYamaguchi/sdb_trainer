@@ -199,3 +199,43 @@ class HistoryCommentEdit {
     return (jsonResponse);
   }
 }
+
+class HistoryExercisesEdit {
+  final int history_id;
+  final String user_email;
+  final List<Exercises> exercises;
+  HistoryExercisesEdit(
+      {required this.history_id,
+      required this.user_email,
+      required this.exercises});
+  Future<String> _historyExercisesEditfromServer() async {
+    print("id");
+    print(history_id);
+    print(user_email);
+    print(exercises);
+    var formData = new Map<String, dynamic>();
+    formData["id"] = history_id;
+    formData["email"] = user_email;
+    formData["exercises"] = exercises;
+
+    var url =
+        Uri.parse(LocalHost.getLocalHost() + "/api/history/exercises/edit");
+    var response = await http.patch(url, body: json.encode(formData));
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      String jsonString = utf8.decode(response.bodyBytes);
+      final jsonResponse = json.decode(jsonString);
+
+      return utf8.decode(response.bodyBytes);
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<Map<String, dynamic>> patchHistoryExercises() async {
+    String jsonString = await _historyExercisesEditfromServer();
+    final jsonResponse = json.decode(jsonString);
+    return (jsonResponse);
+  }
+}

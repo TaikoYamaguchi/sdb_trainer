@@ -132,3 +132,8 @@ class HistoryCommentEdit(BaseModel):
     email:str
     comment:str
 
+class HistoryExercisesEdit(BaseModel):
+    id:int
+    email:str
+    exercises:t.Any
+
