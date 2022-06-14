@@ -74,6 +74,7 @@ class ExercisesBase(BaseModel):
 
 class WorkoutBase(BaseModel):
     user_email: str
+    id: int
     name: str
     exercises: t.Any
     routine_time: float

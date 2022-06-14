@@ -36,7 +36,6 @@ class RoutineRepository {
   }
 }
 
-
 class WorkoutPost {
   final String user_email;
   final String name;
@@ -47,8 +46,6 @@ class WorkoutPost {
     required this.exercises,
   });
   Future<String> _workoutPostFromServer() async {
-
-
     var formData = new Map<String, dynamic>();
     print(user_email);
     //print(json.encode(Encoded_sets));
@@ -81,20 +78,21 @@ class WorkoutPost {
 
 class WorkoutEdit {
   final String user_email;
+  final int id;
   final String name;
   final List<Exercises> exercises;
   WorkoutEdit({
     required this.user_email,
+    required this.id,
     required this.name,
     required this.exercises,
   });
   Future<String> _workoutEditFromServer() async {
-
-
     var formData = new Map<String, dynamic>();
     print(user_email);
     //print(json.encode(Encoded_sets));
     formData["user_email"] = user_email;
+    formData["id"] = id;
     formData["name"] = name;
     formData["exercises"] = jsonEncode(exercises);
     formData["routine_time"] = 0;
@@ -127,7 +125,8 @@ class WorkoutDelete {
     required this.id,
   });
   Future<String> _workoutDeleteFromServer() async {
-    var url = Uri.parse(LocalHost.getLocalHost() + "/api/workout/" + id.toString());
+    var url =
+        Uri.parse(LocalHost.getLocalHost() + "/api/workout/" + id.toString());
     var response = await http.delete(url);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.

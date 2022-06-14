@@ -78,6 +78,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   void _editWorkoutCheck() async {
     if (_routinetimeProvider.isstarted) {
       WorkoutEdit(
+              id: _workoutdataProvider
+                  .workoutdata.routinedatas[widget.rindex].id,
               user_email: _userdataProvider.userdata.email,
               name: _workoutdataProvider
                   .workoutdata.routinedatas[widget.rindex].name,
@@ -96,6 +98,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         }
       }
       WorkoutEdit(
+              id: _workoutdataProvider
+                  .workoutdata.routinedatas[widget.rindex].id,
               user_email: _userdataProvider.userdata.email,
               name: _workoutdataProvider
                   .workoutdata.routinedatas[widget.rindex].name,
@@ -110,6 +114,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   void _editWorkoutwCheck() async {
     if (_routinetimeProvider.isstarted) {
       WorkoutEdit(
+              id: _workoutdataProvider
+                  .workoutdata.routinedatas[widget.rindex].id,
               user_email: _userdataProvider.userdata.email,
               name: _workoutdataProvider
                   .workoutdata.routinedatas[widget.rindex].name,
@@ -131,6 +137,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
       }
     }
     WorkoutEdit(
+            id: _workoutdataProvider.workoutdata.routinedatas[widget.rindex].id,
             user_email: _userdataProvider.userdata.email,
             name: _workoutdataProvider
                 .workoutdata.routinedatas[widget.rindex].name,

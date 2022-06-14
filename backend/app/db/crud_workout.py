@@ -39,7 +39,7 @@ def get_workouts_by_id(db: Session, input_id: int) -> t.List[schemas.WorkoutOut]
 
 def edit_workout(db: Session, workout: schemas.WorkoutCreate):
 
-    db_workout = get_workouts_by_email_name(db, workout.user_email, workout.name)
+    db_workout = get_workouts_by_id(db, workout.id)
     if not db_workout:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User not found")
     update_workout = workout.dict(exclude_unset=True)
