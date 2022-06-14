@@ -81,10 +81,12 @@ class WorkoutPost {
 
 class WorkoutEdit {
   final String user_email;
+  final int id;
   final String name;
   final List<Exercises> exercises;
   WorkoutEdit({
     required this.user_email,
+    required this.id,
     required this.name,
     required this.exercises,
   });
@@ -95,6 +97,7 @@ class WorkoutEdit {
     print(user_email);
     //print(json.encode(Encoded_sets));
     formData["user_email"] = user_email;
+    formData["id"] = id;
     formData["name"] = name;
     formData["exercises"] = jsonEncode(exercises);
     formData["routine_time"] = 0;

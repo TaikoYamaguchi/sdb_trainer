@@ -12,11 +12,12 @@ import 'package:transition/transition.dart';
 
 
 class EachWorkoutDetails extends StatefulWidget {
+  int rid;
   String workouttitle;
   List<wod.Exercises> exerciselist;
   List uniqueinfo;
   int routineindex;
-  EachWorkoutDetails({Key? key, required this.workouttitle, required this.exerciselist, required this.uniqueinfo, required this.routineindex}) : super(key: key);
+  EachWorkoutDetails({Key? key, required this.rid, required this.workouttitle, required this.exerciselist, required this.uniqueinfo, required this.routineindex}) : super(key: key);
 
   @override
   _EachWorkoutDetailsState createState() => _EachWorkoutDetailsState();
@@ -25,6 +26,7 @@ class EachWorkoutDetails extends StatefulWidget {
 class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   var _userdataProvider;
   final controller = TextEditingController();
+  TextEditingController _workoutNameCtrl = TextEditingController(text: "");
   var _exercisesdataProvider;
   var _testdata0;
   late var _testdata = _testdata0;
@@ -55,9 +57,16 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
       ),
       title: Row(
         children: [
-          Text(
-            widget.workouttitle,
-            style:TextStyle(color: Colors.white, fontSize: 30),
+          GestureDetector(
+            onTap: (){
+              _displayTextInputDialog();
+            },
+            child: Container(
+              child: Text(
+                widget.workouttitle,
+                style:TextStyle(color: Colors.white, fontSize: 30),
+              ),
+            ),
           ),
         ],
       ),
@@ -88,9 +97,60 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
     );
   }
 
+  void _displayTextInputDialog()  {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('TextField in Dialog'),
+            content: TextField(
+              onChanged: (value) {},
+              controller: _workoutNameCtrl,
+              decoration: InputDecoration(hintText: "Text Field in Dialog"),
+            ),
+            actions: <Widget>[
+              _workoutSubmitButton(context),
+            ],
+          );
+        });
+  }
+
+  Widget _workoutSubmitButton(context) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+            color: Color.fromRGBO(246, 58, 64, 20),
+            textColor: Colors.white,
+            disabledColor: Color.fromRGBO(246, 58, 64, 20),
+            disabledTextColor: Colors.black,
+            padding: EdgeInsets.all(8.0),
+            splashColor: Colors.blueAccent,
+            onPressed: () {
+              _editWorkoutNameCheck(_workoutNameCtrl.text);
+              _workoutNameCtrl.clear();
+              Navigator.of(context, rootNavigator: true).pop();
+
+            },
+            child: Text("workout 이름 제출",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+  }
+
+  void _editWorkoutNameCheck(newname) async {
+    print(newname);
+    setState((){
+      widget.workouttitle = newname;
+    });
+    print(widget.workouttitle);
+    WorkoutEdit(user_email: _userdataProvider.userdata.email, id: widget.rid , name: newname,  exercises: widget.exerciselist)
+        .editWorkout()
+        .then((data) => data["user_email"] != null
+        ? {showToast("done!")}
+        : showToast("입력을 확인해주세요"));
+  }
+
   void _editWorkoutCheck() async {
     print(_userdataProvider.userdata.email);
-    WorkoutEdit(user_email: _userdataProvider.userdata.email, name: widget.workouttitle,  exercises: widget.exerciselist)
+    WorkoutEdit(user_email: _userdataProvider.userdata.email, id: widget.rid, name: widget.workouttitle,  exercises: widget.exerciselist)
         .editWorkout()
         .then((data) => data["user_email"] != null
         ? showToast("done!")

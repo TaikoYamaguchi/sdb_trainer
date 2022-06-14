@@ -72,7 +72,7 @@ class ExerciseState extends State<Exercise> {
               IconButton(
                 icon: SvgPicture.asset("assets/svg/add.svg"),
                 onPressed: () {
-                  _displayTextInputDialog(context);
+                  _displayTextInputDialog();
                 },
               )
             ]
@@ -104,6 +104,7 @@ class ExerciseState extends State<Exercise> {
                     context,
                     Transition(
                         child: EachWorkoutDetails(
+                          rid: wdata.routinedatas[index].id,
                           workouttitle: wdata.routinedatas[index].name,
                           exerciselist: wdata.routinedatas[index].exercises,
                           uniqueinfo: edata,
@@ -364,8 +365,8 @@ class ExerciseState extends State<Exercise> {
     return Container();
   }
 
-  Future<void> _displayTextInputDialog(BuildContext context) async {
-    return showDialog(
+  void _displayTextInputDialog()  {
+    showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
