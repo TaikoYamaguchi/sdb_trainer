@@ -9,6 +9,7 @@ class WorkoutdataProvider extends ChangeNotifier {
   getdata() {
     RoutineRepository.loadRoutinedata().then((value) {
       _workoutdata = value;
+      print("getdataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa?");
       notifyListeners();
     });
 
@@ -31,6 +32,11 @@ class WorkoutdataProvider extends ChangeNotifier {
 
   setsminus(rindex, eindex) {
     _workoutdata.routinedatas[rindex].exercises[eindex].sets.removeLast();
+    notifyListeners();
+  }
+
+  addroutine(routine) {
+    _workoutdata.routinedatas.add(routine);
     notifyListeners();
   }
 

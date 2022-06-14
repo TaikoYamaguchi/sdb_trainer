@@ -371,11 +371,7 @@ class ExerciseState extends State<Exercise> {
           return AlertDialog(
             title: Text('TextField in Dialog'),
             content: TextField(
-              onChanged: (value) {
-                setState(() {
-                  print(value);
-                });
-              },
+              onChanged: (value) {},
               controller: _workoutNameCtrl,
               decoration: InputDecoration(hintText: "Text Field in Dialog"),
             ),
@@ -397,8 +393,8 @@ class ExerciseState extends State<Exercise> {
             padding: EdgeInsets.all(8.0),
             splashColor: Colors.blueAccent,
             onPressed: () {
-              setState(() {
-                _workoutdataProvider.workoutdata.routinedatas.add(
+
+              _workoutdataProvider.addroutine(
                     new Routinedata(
                         id: _workoutdataProvider
                             .workoutdata.routinedatas.length,
@@ -407,11 +403,11 @@ class ExerciseState extends State<Exercise> {
                         exercises: exerciseList,
                         date: null,
                         routine_time: null));
-              });
 
               _postWorkoutCheck();
               _workoutNameCtrl.clear();
               Navigator.of(context, rootNavigator: true).pop();
+
             },
             child: Text("workout 이름 제출",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
