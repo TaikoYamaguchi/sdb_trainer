@@ -50,6 +50,7 @@ class History(Base):
     dislike = Column(MutableList.as_mutable(ARRAY(String)))
     image = Column(MutableList.as_mutable(ARRAY(String)))
     comment = Column(String)
+    nickname = Column(String,unique=True, index=True,  nullable=False)
 
 class Exercises(Base):
     __tablename__ = "exercises"

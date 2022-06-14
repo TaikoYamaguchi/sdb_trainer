@@ -32,10 +32,7 @@ class ExercisesRepository {
     Exercisesdata exercisesdata = Exercisesdata.fromJson(jsonResponse);
     return (exercisesdata);
   }
-
 }
-
-
 
 class ExercisePost {
   final String user_email;

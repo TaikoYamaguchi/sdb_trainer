@@ -84,6 +84,7 @@ class HistorydataFriends {
 
 class HistoryPost {
   final String user_email;
+  final String nickname;
   final List<Exercises> exercises;
   final int new_record;
   final int workout_time;
@@ -92,6 +93,7 @@ class HistoryPost {
     required this.exercises,
     required this.new_record,
     required this.workout_time,
+    required this.nickname,
   });
   Future<String> _historyPostFromServer() async {
     var formData = new Map<String, dynamic>();
@@ -104,6 +106,7 @@ class HistoryPost {
     formData["dislike"] = [];
     formData["image"] = [];
     formData["comment"] = "";
+    formData["nickname"] = nickname;
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/historycreate");
     var response = await http.post(url, body: json.encode(formData));

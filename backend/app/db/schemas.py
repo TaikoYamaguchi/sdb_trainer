@@ -61,6 +61,7 @@ class HistoryBase(BaseModel):
     dislike:list
     image:list
     comment:str
+    nickname:str
     class Config:
         orm_mode = True
 

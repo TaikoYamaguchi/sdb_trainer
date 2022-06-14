@@ -182,10 +182,10 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
     }
   }
 
-  Future<bool?> onLikeButtonTapped(bool isLiked, User) async {
+  bool onLikeButtonTapped(bool isLiked, User) {
     print(isLiked);
     if (isLiked == true) {
-      var user = await UserLike(
+      var user = UserLike(
               liked_email: User.email,
               user_email: _userdataProvider.userdata.email,
               status: "remove",
@@ -193,7 +193,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
           .patchUserLike();
       return false;
     } else {
-      var user = await UserLike(
+      var user = UserLike(
               liked_email: User.email,
               user_email: _userdataProvider.userdata.email,
               status: "append",

@@ -438,7 +438,8 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
               user_email: _userdataProvider.userdata.email,
               exercises: exerciseList,
               new_record: 120,
-              workout_time: _routinetimeProvider.routineTime)
+              workout_time: _routinetimeProvider.routineTime,
+              nickname: _userdataProvider.userdata.nickname)
           .postHistory()
           .then((data) => data["user_email"] != null
               ? {_historydataProvider.getdata(), exerciseList = []}

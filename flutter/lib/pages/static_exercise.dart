@@ -434,7 +434,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
               exercises: widget.origin_exercises)
           .patchHistoryExercises()
           .then((data) => data["user_email"] != null
-              ? showToast("수정 완료")
+              ? {showToast("수정 완료"), Navigator.of(context).pop()}
               : showToast("입력을 확인해주세요"));
     } else {
       print("no exercises");

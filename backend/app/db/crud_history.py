@@ -18,7 +18,8 @@ def create_history(db: Session, history: schemas.HistoryCreate):
         like=[],
         dislike=[],
         image=[],
-        comment=""
+        comment="",
+        nickname=history.nickname,
     )
     print(history.user_email)
     db.add(db_history)

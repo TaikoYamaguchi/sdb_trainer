@@ -40,6 +40,7 @@ class _FeedState extends State<Feed> {
   };
 
   var _historydataAll;
+  var _historydata;
   var _userdataProvider;
   var _historyCommentCtrl;
   @override
@@ -51,6 +52,7 @@ class _FeedState extends State<Feed> {
   Widget build(BuildContext context) {
     _historydataAll = Provider.of<HistorydataProvider>(context, listen: false);
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _feedController(_feedListCtrl);
     print("111111");
     return Scaffold(
         appBar: AppBar(
@@ -86,8 +88,7 @@ class _FeedState extends State<Feed> {
             return ListView.separated(
                 itemBuilder: (BuildContext _context, int index) {
                   return Center(
-                      child: _feedCard(
-                          provider.historydataAll.sdbdatas[index], index));
+                      child: _feedCard(_historydata.sdbdatas[index], index));
                 },
                 separatorBuilder: (BuildContext _context, int index) {
                   return Container(
@@ -101,7 +102,7 @@ class _FeedState extends State<Feed> {
                     ),
                   );
                 },
-                itemCount: provider.historydataAll.sdbdatas.length);
+                itemCount: _historydata.sdbdatas.length);
           }),
         ),
       ],
@@ -128,29 +129,10 @@ class _FeedState extends State<Feed> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        FutureBuilder(
-                            future: UserInfo(userEmail: SDBdata.user_email)
-                                .getUserByEmail(),
-                            builder:
-                                (BuildContext context, AsyncSnapshot snapshot) {
-                              if (snapshot.hasData == false) {
-                                return CircularProgressIndicator();
-                              } else if (snapshot.hasError) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    'Error: ${snapshot.error}',
-                                    style: TextStyle(fontSize: 15),
-                                  ),
-                                );
-                              } else {
-                                return Text(
-                                  snapshot.data.nickname,
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.white),
-                                );
-                              }
-                            }),
+                        Text(
+                          SDBdata.nickname,
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
                         Row(
                           children: [
                             Padding(
@@ -377,27 +359,23 @@ class _FeedState extends State<Feed> {
     }
   }
 
-  Future<bool?> onLikeButtonTapped(bool isLiked, SDBdata) async {
+  bool onLikeButtonTapped(bool isLiked, SDBdata) {
     print(isLiked);
     if (isLiked == true) {
-      var history = await HistoryLike(
+      HistoryLike(
               history_id: SDBdata.id,
               user_email: _userdataProvider.userdata.email,
               status: "remove",
               disorlike: "like")
           .patchHistoryLike();
-      print("false");
-      print(history);
       return false;
     } else {
-      var history = await HistoryLike(
+      HistoryLike(
               history_id: SDBdata.id,
               user_email: _userdataProvider.userdata.email,
               status: "append",
               disorlike: "like")
           .patchHistoryLike();
-      print(history);
-      print("true");
       return !isLiked;
     }
   }
@@ -416,20 +394,22 @@ class _FeedState extends State<Feed> {
             onValueChanged: (i) {
               setState(() {
                 _feedListCtrl = i as int;
-                if (_feedListCtrl == 2) {
-                  _historydataAll
-                      .getFriendsHistorydata(_userdataProvider.userdata.email);
-                } else if (_feedListCtrl == 1) {
-                  _historydataAll.getHistorydataAll();
-                } else if (_feedListCtrl == 3) {
-                  print("나만보기");
-                  _historydataAll.getdata();
-                }
-                print(_feedListCtrl);
+                _feedController(_feedListCtrl);
               });
             }),
       ),
     );
+  }
+
+  void _feedController(_feedListCtrl) {
+    if (_feedListCtrl == 2) {
+      _historydata = _historydataAll.historydataFriends;
+    } else if (_feedListCtrl == 1) {
+      _historydata = _historydataAll.historydataAll;
+    } else if (_feedListCtrl == 3) {
+      _historydata = _historydataAll.historydata;
+      print("나만보기");
+    }
   }
 
   Widget _exerciseWidget(Exercises, index) {
