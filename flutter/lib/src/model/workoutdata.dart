@@ -3,7 +3,7 @@ import 'dart:convert';
 class Routinedata {
   final int id;
   final String user_email;
-  final String name;
+  String name;
   final List<Exercises> exercises;
   final String? date;
   final double? routine_time;

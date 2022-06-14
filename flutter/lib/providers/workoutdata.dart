@@ -40,6 +40,12 @@ class WorkoutdataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  namechange(rindex ,newname) {
+    _workoutdata.routinedatas[rindex].name = newname;
+    notifyListeners();
+  }
+
+
   setsplus(rindex, eindex) {
     _workoutdata.routinedatas[rindex].exercises[eindex].sets.add(new Sets(
         index: _workoutdata.routinedatas[rindex].exercises[eindex].sets.length + 1,

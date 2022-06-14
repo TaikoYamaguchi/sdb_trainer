@@ -105,7 +105,6 @@ class ExerciseState extends State<Exercise> {
                     Transition(
                         child: EachWorkoutDetails(
                           rid: wdata.routinedatas[index].id,
-                          workouttitle: wdata.routinedatas[index].name,
                           exerciselist: wdata.routinedatas[index].exercises,
                           uniqueinfo: edata,
                           routineindex: index,

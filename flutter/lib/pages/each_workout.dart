@@ -13,11 +13,10 @@ import 'package:transition/transition.dart';
 
 class EachWorkoutDetails extends StatefulWidget {
   int rid;
-  String workouttitle;
   List<wod.Exercises> exerciselist;
   List uniqueinfo;
   int routineindex;
-  EachWorkoutDetails({Key? key, required this.rid, required this.workouttitle, required this.exerciselist, required this.uniqueinfo, required this.routineindex}) : super(key: key);
+  EachWorkoutDetails({Key? key, required this.rid, required this.exerciselist, required this.uniqueinfo, required this.routineindex}) : super(key: key);
 
   @override
   _EachWorkoutDetailsState createState() => _EachWorkoutDetailsState();
@@ -25,6 +24,7 @@ class EachWorkoutDetails extends StatefulWidget {
 
 class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   var _userdataProvider;
+  var _workoutdataProvider;
   final controller = TextEditingController();
   TextEditingController _workoutNameCtrl = TextEditingController(text: "");
   var _exercisesdataProvider;
@@ -62,9 +62,13 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               _displayTextInputDialog();
             },
             child: Container(
-              child: Text(
-                widget.workouttitle,
-                style:TextStyle(color: Colors.white, fontSize: 30),
+              child: Consumer<WorkoutdataProvider>(
+                builder: (builder, provider, child) {
+                  return Text(
+                    provider.workoutdata.routinedatas[widget.routineindex].name,
+                    style:TextStyle(color: Colors.white, fontSize: 30),
+                  );
+                }
               ),
             ),
           ),
@@ -136,21 +140,19 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   }
 
   void _editWorkoutNameCheck(newname) async {
-    print(newname);
-    setState((){
-      widget.workouttitle = newname;
-    });
-    print(widget.workouttitle);
+
+    _workoutdataProvider.namechange(widget.routineindex,newname);
+
     WorkoutEdit(user_email: _userdataProvider.userdata.email, id: widget.rid , name: newname,  exercises: widget.exerciselist)
         .editWorkout()
         .then((data) => data["user_email"] != null
-        ? {showToast("done!")}
+        ? {showToast("done!"),_workoutdataProvider.getdata()}
         : showToast("입력을 확인해주세요"));
   }
 
   void _editWorkoutCheck() async {
     print(_userdataProvider.userdata.email);
-    WorkoutEdit(user_email: _userdataProvider.userdata.email, id: widget.rid, name: widget.workouttitle,  exercises: widget.exerciselist)
+    WorkoutEdit(user_email: _userdataProvider.userdata.email, id: widget.rid, name: _workoutdataProvider.workoutdata.routinedatas[widget.routineindex].name,  exercises: widget.exerciselist)
         .editWorkout()
         .then((data) => data["user_email"] != null
         ? showToast("done!")
@@ -401,6 +403,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   @override
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _workoutdataProvider =
+        Provider.of<WorkoutdataProvider>(context, listen: false);
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
