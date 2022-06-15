@@ -35,6 +35,11 @@ class WorkoutdataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  removeroutineAt(rindex) {
+    _workoutdata.routinedatas.removeAt(rindex);
+    notifyListeners();
+  }
+
   addroutine(routine) {
     _workoutdata.routinedatas.add(routine);
     notifyListeners();

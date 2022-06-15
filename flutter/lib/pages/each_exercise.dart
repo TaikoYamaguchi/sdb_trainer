@@ -498,24 +498,26 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                       size: 40,
                                     ))),
                         Container(
-                            child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              textStyle: const TextStyle(fontSize: 20)),
-                          onPressed: () {
-                            _start_date = DateTime.now();
-                            if (_routinetimeProvider.isstarted) {
-                              recordExercise();
-                              _editHistoryCheck();
-                              _editWorkoutwoCheck();
-                            }
-
-                            _routinetimeProvider.routinecheck();
-                          },
-                          child: Consumer<RoutineTimeProvider>(
+                            child: Consumer<RoutineTimeProvider>(
                               builder: (builder, provider, child) {
-                            return Text(provider.routineButton);
-                          }),
-                        )),
+                                return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                                  primary: provider.buttoncolor,
+                                  textStyle: const TextStyle(fontSize: 20)),
+                          onPressed: () {
+                                _start_date = DateTime.now();
+                                if (_routinetimeProvider.isstarted) {
+                                  recordExercise();
+                                  _editHistoryCheck();
+                                  _editWorkoutwoCheck();
+                                }
+
+                                _routinetimeProvider.routinecheck();
+                          },
+                          child:  Text(provider.routineButton),
+                        );
+                              }
+                            )),
                         Container(
                             child: widget.eindex !=
                                     _workoutdataProvider

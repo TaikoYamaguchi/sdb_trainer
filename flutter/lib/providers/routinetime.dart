@@ -10,6 +10,8 @@ class RoutineTimeProvider extends ChangeNotifier {
   bool get isstarted => _isstarted;
   String _routineButton = 'Start Workout';
   String get routineButton => _routineButton;
+  Color _buttoncolor = Color(0xFF2196F3);
+  Color get buttoncolor => _buttoncolor;
   void routinecheck(){
     if(_isstarted==false)
     {
@@ -26,6 +28,7 @@ class RoutineTimeProvider extends ChangeNotifier {
         }
       });
       _routineButton = 'Finish Workout';
+      _buttoncolor = Color(0xFF9C27B0);
       _isstarted = !_isstarted;
       notifyListeners();
     }
@@ -33,6 +36,7 @@ class RoutineTimeProvider extends ChangeNotifier {
       timer1!.cancel();
       _routineTime=0;
       _routineButton = 'Start Workout';
+      _buttoncolor = Color(0xFF2196F3);
       _isstarted = !_isstarted;
       notifyListeners();
     }

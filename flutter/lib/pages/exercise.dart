@@ -141,12 +141,8 @@ class ExerciseState extends State<Exercise> {
                       ),
                       IconButton(
                         onPressed: () {
-                          _deleteWorkoutCheck(wdata.routinedatas[index].id);
-                          setState(() {
-                            //_workoutdataProvider.workoutdata.routinedatas.removeAt(index);
-                          });
-                          print(wdata.routinedatas.length);
-                          print(wdata.routinedatas.length);
+
+                          _displayDeleteAlert(wdata.routinedatas[index].id,index);
                         },
                         icon: Icon(Icons.delete),
                         color: Colors.white,
@@ -172,6 +168,40 @@ class ExerciseState extends State<Exercise> {
           },
           itemCount: wdata.routinedatas.length),
     );
+  }
+
+  void _displayDeleteAlert(did, rindex)  {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('TextField in Dialog'),
+            content: Text('Are you Sure to Delete?'),
+            actions: <Widget>[
+              _DeleteConfirmButton(did, rindex),
+            ],
+          );
+        });
+  }
+
+  Widget _DeleteConfirmButton(did, rindex) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+            color: Color.fromRGBO(246, 58, 64, 20),
+            textColor: Colors.white,
+            disabledColor: Color.fromRGBO(246, 58, 64, 20),
+            disabledTextColor: Colors.black,
+            padding: EdgeInsets.all(8.0),
+            splashColor: Colors.blueAccent,
+            onPressed: () {
+              _workoutdataProvider.removeroutineAt(rindex);
+              _deleteWorkoutCheck(did);
+              Navigator.of(context, rootNavigator: true).pop();
+
+            },
+            child: Text("Confirm",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
   void _deleteWorkoutCheck(int id) async {
