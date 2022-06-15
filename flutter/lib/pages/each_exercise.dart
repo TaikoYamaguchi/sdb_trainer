@@ -510,6 +510,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                   recordExercise();
                                   _editHistoryCheck();
                                   _editWorkoutwoCheck();
+                                  Navigator.pop(context);
                                 }
 
                                 _routinetimeProvider.routinecheck();
