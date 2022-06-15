@@ -311,12 +311,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                   getColor),
                                           value: _sets[index].ischecked,
                                           onChanged: (newvalue) {
-                                            _workoutdataProvider.boolcheck(
-                                                widget.rindex,
-                                                widget.eindex,
-                                                index,
-                                                newvalue);
-                                            _editWorkoutwCheck();
+                                            _routinetimeProvider.isstarted
+                                              ? [_workoutdataProvider.boolcheck(widget.rindex, widget.eindex, index, newvalue),
+                                            _editWorkoutwCheck()]
+                                              : _displayStartAlert(index, newvalue);
                                           })),
                                   Container(
                                     width: 25,
@@ -553,6 +551,41 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         ),
       ),
     );
+  }
+
+  void _displayStartAlert(index, newvalue)  {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('TextField in Dialog'),
+            content: Text('Do you want to start workout?'),
+            actions: <Widget>[
+              _StartConfirmButton(index,newvalue),
+            ],
+          );
+        });
+  }
+
+  Widget _StartConfirmButton(index,newvalue) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+            color: Color.fromRGBO(246, 58, 64, 20),
+            textColor: Colors.white,
+            disabledColor: Color.fromRGBO(246, 58, 64, 20),
+            disabledTextColor: Colors.black,
+            padding: EdgeInsets.all(8.0),
+            splashColor: Colors.blueAccent,
+            onPressed: () {
+
+              _routinetimeProvider.routinecheck();
+              _workoutdataProvider.boolcheck(widget.rindex, widget.eindex, index, newvalue);
+              _editWorkoutwCheck();
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            child: Text("Confirm",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
   void recordExercise() {
