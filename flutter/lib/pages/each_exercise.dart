@@ -568,24 +568,47 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   }
 
   Widget _StartConfirmButton(index,newvalue) {
-    return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            color: Color.fromRGBO(246, 58, 64, 20),
-            textColor: Colors.white,
-            disabledColor: Color.fromRGBO(246, 58, 64, 20),
-            disabledTextColor: Colors.black,
-            padding: EdgeInsets.all(8.0),
-            splashColor: Colors.blueAccent,
-            onPressed: () {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/25),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+              width: MediaQuery.of(context).size.width/4,
+              child: FlatButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                  disabledTextColor: Colors.black,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () {
 
-              _routinetimeProvider.routinecheck();
-              _workoutdataProvider.boolcheck(widget.rindex, widget.eindex, index, newvalue);
-              _editWorkoutwCheck();
-              Navigator.of(context, rootNavigator: true).pop();
-            },
-            child: Text("Confirm",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                    _routinetimeProvider.routinecheck();
+                    _workoutdataProvider.boolcheck(widget.rindex, widget.eindex, index, newvalue);
+                    _editWorkoutwCheck();
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                  child: Text("Confirm",
+                      style: TextStyle(fontSize: 20.0, color: Colors.white)))),
+          SizedBox(
+              width: MediaQuery.of(context).size.width/4,
+              child: FlatButton(
+                  color: Colors.red,
+                  textColor: Colors.white,
+                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                  disabledTextColor: Colors.black,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () {
+                    newvalue = !newvalue;
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                  child: Text("Cancel",
+                      style: TextStyle(fontSize: 20.0, color: Colors.white))))
+        ],
+      ),
+    );
   }
 
   void recordExercise() {
