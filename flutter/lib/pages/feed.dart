@@ -52,6 +52,9 @@ class _FeedState extends State<Feed> {
   Widget build(BuildContext context) {
     _historydataAll = Provider.of<HistorydataProvider>(context, listen: false);
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+
+    _historydataAll.getdata();
+    _historydataAll.getFriendsHistorydata(_userdataProvider.userdata.email);
     _feedController(_feedListCtrl);
     print("111111");
     return Scaffold(
