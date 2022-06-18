@@ -32,7 +32,6 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
 
   @override
   void initState() {
-    _searchFriendInitial();
     super.initState();
   }
 
@@ -74,12 +73,16 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
                   ),
                 ),
                 onChanged: (text) {
-                  if (text.toString() == null) {
-                    _searchFriendInitial();
+                  print(text.toString());
+                  if (text.toString() == "") {
+                    print("nulllllllllllllll");
+                    friendsInputSwitch = false;
+                    setState(
+                        () => _usersdata = _userdataProvider.userFriendsAll);
                   } else {
                     searchFriend(text.toString());
+                    friendsInputSwitch = true;
                   }
-                  print(text.toString());
                 }),
           ),
           Expanded(
@@ -111,13 +114,6 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
   void searchFriend(String query) async {
     final suggestions =
         await UserNicknameAll(userNickname: query).getUsersByNickname();
-    print(suggestions);
-
-    setState(() => _usersdata = suggestions);
-  }
-
-  void _searchFriendInitial() async {
-    final suggestions = await UserAll().getUsers();
     print(suggestions);
 
     setState(() => _usersdata = suggestions);
@@ -191,6 +187,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
               status: "remove",
               disorlike: "like")
           .patchUserLike();
+      _userdataProvider.patchUserLikedata(User, "remove");
       return false;
     } else {
       var user = UserLike(
@@ -200,6 +197,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
               disorlike: "like")
           .patchUserLike();
       print("true");
+      _userdataProvider.patchUserLikedata(User, "append");
       return !isLiked;
     }
   }
@@ -211,6 +209,10 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
     _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _userdataProvider.getdata();
+    _userdataProvider.getUsersFriendsAll();
+    if (friendsInputSwitch == false) {
+      _usersdata = _userdataProvider.userFriendsAll;
+    }
 
     return Scaffold(
       appBar: _appbarWidget(),

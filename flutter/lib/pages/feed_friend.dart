@@ -65,15 +65,13 @@ class _FeedFriendState extends State<FeedFriend> {
   }
 
   Widget _friend_searchWidget() {
-    _userdataProvider.getUsersFriendsAll();
     return Container(
         color: Colors.black,
         child: Column(children: [
           Expanded(
             child:
                 Consumer<UserdataProvider>(builder: (builder, provider, child) {
-              provider.getdata();
-              provider.getFriendsdata(provider.userdata.email);
+              print(provider.userFriends.userdatas);
               return provider.userFriends == null
                   ? Container()
                   : ListView.separated(
@@ -167,6 +165,7 @@ class _FeedFriendState extends State<FeedFriend> {
               status: "remove",
               disorlike: "like")
           .patchUserLike();
+      _userdataProvider.patchUserLikedata(User, "remove");
       return false;
     } else {
       UserLike(
@@ -175,6 +174,7 @@ class _FeedFriendState extends State<FeedFriend> {
               status: "append",
               disorlike: "like")
           .patchUserLike();
+      _userdataProvider.patchUserLikedata(User, "append");
       print("true");
       return !isLiked;
     }
@@ -186,6 +186,9 @@ class _FeedFriendState extends State<FeedFriend> {
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _userdataProvider.getUsersFriendsAll();
+
+    _userdataProvider.getFriendsdata(_userdataProvider.userdata.email);
 
     return Scaffold(
       appBar: _appbarWidget(),

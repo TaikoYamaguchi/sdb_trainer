@@ -8,6 +8,7 @@ class UserdataProvider extends ChangeNotifier {
   var _userKakaoImage;
   var _userKakaoGender;
   var _userFriends;
+  var _userFriendsAll;
   var _userFeedData;
   get userdata => _userdata;
   get userKakaoEmail => _userKakaoEmail;
@@ -15,6 +16,7 @@ class UserdataProvider extends ChangeNotifier {
   get userKakaoImage => _userKakaoImage;
   get userKakaoGender => _userKakaoGender;
   get userFriends => _userFriends;
+  get userFriendsAll => _userFriendsAll;
   get userFeedData => _userFeedData;
 
   getdata() {
@@ -34,7 +36,7 @@ class UserdataProvider extends ChangeNotifier {
   getUsersFriendsAll() {
     print("caclacla");
     UserAll().getUsers().then((value) {
-      _userFriends = value;
+      _userFriendsAll = value;
       notifyListeners();
     });
   }
@@ -71,5 +73,24 @@ class UserdataProvider extends ChangeNotifier {
       _userKakaoGender = false;
     }
     notifyListeners();
+  }
+
+  patchUserLikedata(User, status) {
+    if (status == "remove") {
+      _userdata.like.remove(User.email);
+      _userFriends.userdatas
+          .removeAt(_userFriends.userdatas.indexWhere((userdata) {
+        if (userdata.email == User.email) {
+          return true;
+        } else {
+          return false;
+        }
+      }));
+      notifyListeners();
+    } else if (status == "append") {
+      _userdata.like.add(User.email);
+      _userFriends.userdatas.add(User);
+      notifyListeners();
+    }
   }
 }
