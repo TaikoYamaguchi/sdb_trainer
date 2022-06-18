@@ -238,11 +238,7 @@ class _FeedState extends State<Feed> {
           return AlertDialog(
             title: Text('코멘트를 입력해주세요'),
             content: TextField(
-              onChanged: (value) {
-                setState(() {
-                  print(value);
-                });
-              },
+              onChanged: null,
               controller: _historyCommentCtrl,
               decoration: InputDecoration(hintText: "Text Field in Dialog"),
             ),

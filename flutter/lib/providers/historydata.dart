@@ -91,7 +91,6 @@ class HistorydataProvider extends ChangeNotifier {
     _historydata.sdbdatas.indexWhere((sdbdata) {
       if (sdbdata.id == SDBdata.id) {
         sdbdata.comment = comment;
-        print(sdbdata.comment);
         return true;
       } else {
         return false;
@@ -100,7 +99,6 @@ class HistorydataProvider extends ChangeNotifier {
     _historydataFriends.sdbdatas.indexWhere((sdbdata) {
       if (sdbdata.id == SDBdata.id) {
         sdbdata.comment = comment;
-        print(sdbdata.comment);
         return true;
       } else {
         return false;
@@ -109,7 +107,6 @@ class HistorydataProvider extends ChangeNotifier {
     _historydataAll.sdbdatas.indexWhere((sdbdata) {
       if (sdbdata.id == SDBdata.id) {
         sdbdata.comment = comment;
-        print(sdbdata.comment);
         return true;
       } else {
         return false;
