@@ -35,6 +35,7 @@ class _CalendarState extends State<Calendar> {
   var _userdataProvider;
   var _isChartWidget;
   var _chartIndex;
+  TooltipBehavior? _tooltipBehavior;
   bool _isLoading = true;
 
   TextEditingController _eventController = TextEditingController();
@@ -43,6 +44,7 @@ class _CalendarState extends State<Calendar> {
   void initState() {
     // TODO: implement initState
     selectedEvents = {};
+    _tooltipBehavior = TooltipBehavior(enable: true);
 
     ExerciseService.loadSDBdata().then((sdbdatas) {
       _sdbData = sdbdatas;
@@ -536,6 +538,7 @@ class _CalendarState extends State<Calendar> {
                       text: "SBD Chart",
                       textStyle: TextStyle(color: Colors.white)),
                   primaryXAxis: DateTimeAxis(),
+                  tooltipBehavior: _tooltipBehavior,
                   legend: Legend(
                       isVisible: true,
                       textStyle: TextStyle(color: Colors.white)),

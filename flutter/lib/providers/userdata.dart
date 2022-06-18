@@ -89,6 +89,7 @@ class UserdataProvider extends ChangeNotifier {
       notifyListeners();
     } else if (status == "append") {
       _userdata.like.add(User.email);
+      notifyListeners();
       _userFriends.userdatas.add(User);
       notifyListeners();
     }

@@ -55,36 +55,39 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
     return Container(
         color: Colors.black,
         child: Column(children: [
-          Container(
-            margin: const EdgeInsets.fromLTRB(10, 16, 10, 16),
-            child: TextField(
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: Color(0xFF717171),
+          Consumer<UserdataProvider>(builder: (builder, provider, child) {
+            return Container(
+              margin: const EdgeInsets.fromLTRB(10, 16, 10, 16),
+              child: TextField(
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Color(0xFF717171),
+                    ),
+                    hintText: "닉네임 검색",
+                    hintStyle:
+                        TextStyle(fontSize: 20.0, color: Color(0xFF717171)),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(width: 3, color: Color(0xFF717171)),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                   ),
-                  hintText: "닉네임 검색",
-                  hintStyle:
-                      TextStyle(fontSize: 20.0, color: Color(0xFF717171)),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(width: 3, color: Color(0xFF717171)),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-                onChanged: (text) {
-                  print(text.toString());
-                  if (text.toString() == "") {
-                    print("nulllllllllllllll");
-                    friendsInputSwitch = false;
-                    setState(
-                        () => _usersdata = _userdataProvider.userFriendsAll);
-                  } else {
-                    searchFriend(text.toString());
-                    friendsInputSwitch = true;
-                  }
-                }),
-          ),
+                  onChanged: (text) {
+                    print(text.toString());
+                    if (text.toString() == "") {
+                      print("nulllllllllllllll");
+                      friendsInputSwitch = false;
+                      setState(
+                          () => _usersdata = _userdataProvider.userFriendsAll);
+                    } else {
+                      searchFriend(text.toString());
+                      friendsInputSwitch = true;
+                    }
+                  }),
+            );
+          }),
           Expanded(
             child: _usersdata == null
                 ? Container()
@@ -214,9 +217,14 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
       _usersdata = _userdataProvider.userFriendsAll;
     }
 
-    return Scaffold(
-      appBar: _appbarWidget(),
-      body: _friend_searchWidget(),
+    return WillPopScope(
+      child: Scaffold(
+        appBar: _appbarWidget(),
+        body: _friend_searchWidget(),
+      ),
+      onWillPop: () async {
+        return true;
+      },
     );
   }
 
