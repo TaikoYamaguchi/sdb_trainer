@@ -198,6 +198,7 @@ class _FeedState extends State<Feed> {
                 ),
                 ListView.separated(
                     shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (BuildContext _context, int index) {
                       return Center(
                           child:

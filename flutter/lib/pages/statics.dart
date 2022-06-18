@@ -417,6 +417,7 @@ class _CalendarState extends State<Calendar> {
                   ),
                 );
               },
+              physics: NeverScrollableScrollPhysics(),
               shrinkWrap: shirink,
               itemCount: exuniq.length),
         ],
@@ -513,6 +514,7 @@ class _CalendarState extends State<Calendar> {
                     ),
                   );
                 },
+                physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: sets.length),
           ),
