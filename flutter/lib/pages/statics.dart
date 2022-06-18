@@ -35,8 +35,9 @@ class _CalendarState extends State<Calendar> {
   var _userdataProvider;
   var _isChartWidget;
   var _chartIndex;
-  TooltipBehavior? _tooltipBehavior;
+  late TooltipBehavior _tooltipBehavior;
   bool _isLoading = true;
+  late ZoomPanBehavior _zoomPanBehavior;
 
   TextEditingController _eventController = TextEditingController();
 
@@ -45,6 +46,15 @@ class _CalendarState extends State<Calendar> {
     // TODO: implement initState
     selectedEvents = {};
     _tooltipBehavior = TooltipBehavior(enable: true);
+    _zoomPanBehavior = ZoomPanBehavior(
+        enablePinching: true,
+        enableDoubleTapZooming: true,
+        enableSelectionZooming: true,
+        selectionRectBorderColor: Colors.red,
+        selectionRectBorderWidth: 2,
+        selectionRectColor: Colors.grey,
+        enablePanning: true,
+        maximumZoomLevel: 0.7);
 
     ExerciseService.loadSDBdata().then((sdbdatas) {
       _sdbData = sdbdatas;
@@ -539,21 +549,33 @@ class _CalendarState extends State<Calendar> {
                       textStyle: TextStyle(color: Colors.white)),
                   primaryXAxis: DateTimeAxis(),
                   tooltipBehavior: _tooltipBehavior,
+                  zoomPanBehavior: _zoomPanBehavior,
                   legend: Legend(
                       isVisible: true,
+                      position: LegendPosition.bottom,
                       textStyle: TextStyle(color: Colors.white)),
-                  series: <ChartSeries>[
+                  series: <SplineSeries>[
                 // Renders line chart
-                LineSeries<Exercises, DateTime>(
+                SplineSeries<Exercises, DateTime>(
                     isVisibleInLegend: true,
                     name: "1rm",
+                    width: 3,
+                    enableTooltip: true,
+                    color: Colors.blue[600],
+                    dataLabelSettings: DataLabelSettings(
+                        isVisible: true,
+                        textStyle:
+                            TextStyle(color: Colors.white, fontSize: 10)),
                     dataSource: _sdbChartData!,
                     xValueMapper: (Exercises sales, _) =>
                         DateTime.parse(sales.date!),
                     yValueMapper: (Exercises sales, _) => sales.onerm),
-                LineSeries<Exercises, DateTime>(
+
+                SplineSeries<Exercises, DateTime>(
                     isVisibleInLegend: true,
+                    color: Colors.orange,
                     name: "goal",
+                    width: 2,
                     dataSource: _sdbChartData!,
                     xValueMapper: (Exercises sales, _) =>
                         DateTime.parse(sales.date!),
