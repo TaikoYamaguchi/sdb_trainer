@@ -30,4 +30,91 @@ class HistorydataProvider extends ChangeNotifier {
       notifyListeners();
     });
   }
+
+  patchHistoryLikedata(SDBdata, email, status) {
+    if (status == "remove") {
+      _historydata.sdbdatas.indexWhere((sdbdata) {
+        if (sdbdata.id == SDBdata.id) {
+          sdbdata.like.remove(email);
+          return true;
+        } else {
+          return false;
+        }
+      });
+      _historydataFriends.sdbdatas.indexWhere((sdbdata) {
+        if (sdbdata.id == SDBdata.id) {
+          sdbdata.like.remove(email);
+          return true;
+        } else {
+          return false;
+        }
+      });
+      _historydataAll.sdbdatas.indexWhere((sdbdata) {
+        if (sdbdata.id == SDBdata.id) {
+          sdbdata.like.remove(email);
+          return true;
+        } else {
+          return false;
+        }
+      });
+      notifyListeners();
+    } else if (status == "append") {
+      _historydata.sdbdatas.indexWhere((sdbdata) {
+        if (sdbdata.id == SDBdata.id) {
+          sdbdata.like.add(email);
+          return true;
+        } else {
+          return false;
+        }
+      });
+      _historydataFriends.sdbdatas.indexWhere((sdbdata) {
+        if (sdbdata.id == SDBdata.id) {
+          sdbdata.like.add(email);
+          return true;
+        } else {
+          return false;
+        }
+      });
+      _historydataAll.sdbdatas.indexWhere((sdbdata) {
+        if (sdbdata.id == SDBdata.id) {
+          sdbdata.like.add(email);
+          return true;
+        } else {
+          return false;
+        }
+      });
+      notifyListeners();
+    }
+  }
+
+  patchHistoryCommentdata(SDBdata, comment) {
+    _historydata.sdbdatas.indexWhere((sdbdata) {
+      if (sdbdata.id == SDBdata.id) {
+        sdbdata.comment = comment;
+        print(sdbdata.comment);
+        return true;
+      } else {
+        return false;
+      }
+    });
+    _historydataFriends.sdbdatas.indexWhere((sdbdata) {
+      if (sdbdata.id == SDBdata.id) {
+        sdbdata.comment = comment;
+        print(sdbdata.comment);
+        return true;
+      } else {
+        return false;
+      }
+    });
+    _historydataAll.sdbdatas.indexWhere((sdbdata) {
+      if (sdbdata.id == SDBdata.id) {
+        sdbdata.comment = comment;
+        print(sdbdata.comment);
+        return true;
+      } else {
+        return false;
+      }
+    });
+    notifyListeners();
+  }
 }

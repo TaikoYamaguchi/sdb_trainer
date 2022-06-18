@@ -10,7 +10,7 @@ class SDBdata {
   final int new_record;
   final int workout_time;
   final List<dynamic> like;
-  final String? comment;
+  String? comment;
   final String? nickname;
   SDBdata(
       {required this.id,

@@ -55,7 +55,6 @@ class _FeedState extends State<Feed> {
 
     _historydataAll.getdata();
     _historydataAll.getFriendsHistorydata(_userdataProvider.userdata.email);
-    _feedController(_feedListCtrl);
     print("111111");
     return Scaffold(
         appBar: AppBar(
@@ -88,6 +87,7 @@ class _FeedState extends State<Feed> {
         Expanded(
           child: Consumer<HistorydataProvider>(
               builder: (builder, provider, child) {
+            _feedController(_feedListCtrl);
             return ListView.separated(
                 itemBuilder: (BuildContext _context, int index) {
                   return Center(
@@ -152,8 +152,7 @@ class _FeedState extends State<Feed> {
                                           TextEditingController(
                                               text: SDBdata.comment);
                                       ;
-                                      _displayTextInputDialog(
-                                          context, SDBdata.id);
+                                      _displayTextInputDialog(context, SDBdata);
                                     },
                                     child: Icon(Icons.menu,
                                         color: Colors.white, size: 18.0))
@@ -232,7 +231,7 @@ class _FeedState extends State<Feed> {
     );
   }
 
-  Future<void> _displayTextInputDialog(BuildContext context, history_id) async {
+  Future<void> _displayTextInputDialog(BuildContext context, SDBdata) async {
     return showDialog(
         context: context,
         builder: (context) {
@@ -248,13 +247,13 @@ class _FeedState extends State<Feed> {
               decoration: InputDecoration(hintText: "Text Field in Dialog"),
             ),
             actions: <Widget>[
-              _historyCommentSubmitButton(context, history_id),
+              _historyCommentSubmitButton(context, SDBdata),
             ],
           );
         });
   }
 
-  Widget _historyCommentSubmitButton(context, history_id) {
+  Widget _historyCommentSubmitButton(context, SDBdata) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
@@ -266,10 +265,12 @@ class _FeedState extends State<Feed> {
             splashColor: Colors.blueAccent,
             onPressed: () {
               HistoryCommentEdit(
-                      history_id: history_id,
+                      history_id: SDBdata.id,
                       user_email: _userdataProvider.userdata.email,
                       comment: _historyCommentCtrl.text)
                   .patchHistoryComment();
+              _historydataAll.patchHistoryCommentdata(
+                  SDBdata, _historyCommentCtrl.text);
 
               _historyCommentCtrl.clear();
               Navigator.of(context, rootNavigator: true).pop();
@@ -371,6 +372,9 @@ class _FeedState extends State<Feed> {
               status: "remove",
               disorlike: "like")
           .patchHistoryLike();
+      _historydataAll.patchHistoryLikedata(
+          SDBdata, _userdataProvider.userdata.email, "remove");
+      print("isit runned");
       return false;
     } else {
       HistoryLike(
@@ -379,6 +383,8 @@ class _FeedState extends State<Feed> {
               status: "append",
               disorlike: "like")
           .patchHistoryLike();
+      _historydataAll.patchHistoryLikedata(
+          SDBdata, _userdataProvider.userdata.email, "append");
       return !isLiked;
     }
   }
