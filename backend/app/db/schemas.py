@@ -14,11 +14,13 @@ class UserBase(BaseModel):
     height_unit:str
     weight_unit:str
     isMan:bool=True
-
     favor_exercise:list
 
 
 class UserOut(UserBase):
+    selfIntroduce:str
+    history_cnt:int
+    comment_cnt:int
     like:list
     dislike:list
     pass
@@ -48,6 +50,9 @@ class User(UserBase):
     created_at: datetime
     like:list
     dislike:list
+    selfIntroduce:str
+    history_cnt:int
+    comment_cnt:int
   
     class Config:
         orm_mode = True
@@ -62,6 +67,8 @@ class HistoryBase(BaseModel):
     image:list
     comment:str
     nickname:str
+    comment_length:int
+    isVisible:bool=True
     class Config:
         orm_mode = True
 
@@ -86,6 +93,7 @@ class WorkoutCreate(WorkoutBase):
         orm_mode = True
 
 class HistoryCreate(HistoryBase):
+    ip:str
     class config:
         orm_mode = True
 
@@ -138,4 +146,63 @@ class HistoryExercisesEdit(BaseModel):
     id:int
     email:str
     exercises:t.Any
+
+
+class CommentBase(BaseModel):
+    history_id:int
+    reply_id:int
+    writer_email:str
+    writer_nickname:str
+    content:str
+    
+    class Config:
+        orm_mode = True
+
+class CommentCreate(CommentBase):
+    password:t.Optional[str]
+    ip:str
+    
+    class Config:
+        orm_mode = True
+
+class CommentOut(CommentBase):
+    id:int
+    likes:list
+    dislikes:list
+    comment_created_at:datetime
+    comment_modified_at:datetime
+
+    class Config:
+        orm_mode = True
+
+class CommentDelete(BaseModel):
+    id:int
+    password:str
+    class Config:
+        orm_mode = True
+
+class ManageLikeComment(BaseModel):
+    comment_id:int
+    email:str
+    status:str
+    disorlike:str
+
+class TemporaryImageCreate(BaseModel):
+    image:str = ""
+    views:int = 0
+    class Config:
+        orm_mode = True
+
+class TemporaryImage(TemporaryImageCreate):
+    id :int
+
+class TemporaryVideoCreate(BaseModel):
+    video:str = ""
+    views:int = 0
+    class Config:
+        orm_mode = True
+
+class TemporaryVideo(TemporaryVideoCreate):
+    id :int
+
 

@@ -1,13 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sdb_trainer/providers/exercisesdata.dart';
-import 'package:sdb_trainer/providers/routinetime.dart';
-import 'package:sdb_trainer/providers/workoutdata.dart';
-import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:provider/provider.dart';
-import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
@@ -33,14 +28,7 @@ class StaticsExerciseDetails extends StatefulWidget {
 
 class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
   var _userdataProvider;
-  var _historydataProvider;
-  var _exercisesdataProvider;
-  var _workoutdataProvider;
-  var _routinetimeProvider;
-  var _exercise;
-  var _uniqinfo;
-  bool _isstarted = false;
-  bool _isChecked = false;
+  var _originExercise;
   double top = 0;
   double bottom = 0;
   double? weight;
@@ -55,6 +43,12 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
 
   @override
   void initState() {
+    _originExercise = widget.exercise;
+    _exampleex = wod.Exercises(
+        name: widget.exercise.name,
+        sets: widget.exercise.sets,
+        onerm: widget.exercise.onerm,
+        rest: 0);
     super.initState();
   }
 
@@ -75,11 +69,6 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
   }
 
   Widget _exercisedetailWidget() {
-    _exampleex = new wod.Exercises(
-        name: widget.exercise.name,
-        sets: widget.exercise.sets,
-        onerm: widget.exercise.onerm,
-        rest: 0);
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
         MaterialState.pressed,
@@ -133,7 +122,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                       style: TextStyle(color: Colors.white, fontSize: 48),
                     ),
                     Text(
-                      "Best 1RM: ${widget.exercise.onerm}/${widget.exercise.goal!.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
+                      "Best 1RM: ${widget.exercise.onerm!.toStringAsFixed(1)}/${widget.exercise.goal!.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
                       style: TextStyle(color: Color(0xFF717171), fontSize: 21),
                     )
                   ],
@@ -444,13 +433,6 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
   @override
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _historydataProvider =
-        Provider.of<HistorydataProvider>(context, listen: false);
-    _workoutdataProvider =
-        Provider.of<WorkoutdataProvider>(context, listen: false);
-    _routinetimeProvider =
-        Provider.of<RoutineTimeProvider>(context, listen: false);
-
     return Scaffold(
       appBar: _appbarWidget(),
       body: _exercisedetailWidget(),

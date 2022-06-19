@@ -48,6 +48,9 @@ def create_user(db: Session, user: schemas.UserCreate):
         like=[],
         dislike=[],
         favor_exercise=[],
+        selfIntroduce="",
+        history_cnt=0,
+        comment_cnt=0,
         hashed_password=hashed_password,
         created_at=datetime.datetime.utcnow()+datetime.timedelta(hours=9),
     )

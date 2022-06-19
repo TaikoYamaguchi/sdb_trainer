@@ -8,7 +8,7 @@ from sqlalchemy.sql import func
 
 from . import models, schemas
 
-def create_history(db: Session, history: schemas.HistoryCreate):
+def create_history(db: Session, history: schemas.HistoryCreate, ip:str):
     db_history = models.History(
         user_email=history.user_email,
         exercises = history.exercises,
@@ -20,6 +20,9 @@ def create_history(db: Session, history: schemas.HistoryCreate):
         image=[],
         comment="",
         nickname=history.nickname,
+        comment_length=0,
+        isVisible=True,
+        ip = ip
     )
     print(history.user_email)
     db.add(db_history)

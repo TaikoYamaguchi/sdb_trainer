@@ -14,14 +14,14 @@ async def history_create(
     history: HistoryCreate,
     db=Depends(get_db),
 ):
-    return create_history(db, history)
+    return create_history(db, history, request.headers["x-forwarded-for"])
 
 @r.get(
     "/history/{email}",
     response_model=t.List[HistoryOut],
     response_model_exclude_none=True,
 )
-async def histories_list(
+async def histories_list_email(
     response: Response,
     email:str,
     db=Depends(get_db),
@@ -30,8 +30,6 @@ async def histories_list(
     histories = get_histories_by_email(db, email)
     # This is neSSScessaSSry for react-admin to work
     return histories
-
-
 
 @r.get(
     "/history",

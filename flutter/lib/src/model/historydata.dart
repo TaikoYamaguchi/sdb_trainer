@@ -12,6 +12,7 @@ class SDBdata {
   final List<dynamic> like;
   String? comment;
   final String? nickname;
+  final int comment_length;
   SDBdata(
       {required this.id,
       required this.user_email,
@@ -21,7 +22,8 @@ class SDBdata {
       required this.workout_time,
       required this.like,
       required this.comment,
-      required this.nickname});
+      required this.nickname,
+      required this.comment_length});
 
   factory SDBdata.fromJson(Map<String, dynamic> parsedJson) {
     var list = parsedJson['exercises'].runtimeType == String
@@ -39,7 +41,8 @@ class SDBdata {
         workout_time: parsedJson["workout_time"],
         like: parsedJson["like"],
         comment: parsedJson["comment"],
-        nickname: parsedJson["nickname"]);
+        nickname: parsedJson["nickname"],
+        comment_length: parsedJson["comment_length"]);
   }
 }
 
