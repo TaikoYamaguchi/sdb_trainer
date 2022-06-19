@@ -163,17 +163,26 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   Widget _exercisesWidget(bool shirink) {
     return Container(
       color: Colors.black,
-      child: ListView.separated(
+      child: ReorderableListView.builder(
+          onReorder: (int oldIndex, int newIndex) {
+            setState(() {
+              if (oldIndex < newIndex) {
+                newIndex -= 1;
+              }
+              final item = widget.exerciselist.removeAt(oldIndex);
+              widget.exerciselist.insert(newIndex, item);
+              _editWorkoutCheck();
+            });
+          },
           padding: EdgeInsets.symmetric(horizontal: 5),
           itemBuilder: (BuildContext _context, int index){
-            print(widget.exerciselist[index].name);
-            print(widget.uniqueinfo[0].name);
             final exinfo = widget.uniqueinfo.where((unique){
               return (unique.name == widget.exerciselist[index].name);
             }).toList();
             print(exinfo);
             if(index==0){top = 20; bottom = 0;} else if (index==widget.exerciselist.length-1){top = 0;bottom = 20;} else {top = 0;bottom = 0;};
             return GestureDetector(
+              key: Key('$index'),
               onTap: () {
                 _isexsearch
                 ? setState(() {widget.exerciselist.removeAt(index);})
@@ -186,50 +195,64 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                     transitionEffect: TransitionEffect.RIGHT_TO_LEFT
                 ));
               },
-              child: Container(
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                      color: Color(0xFF212121),
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(top),
-                          bottomRight: Radius.circular(bottom),
-                          topLeft: Radius.circular(top),
-                          bottomLeft: Radius.circular(bottom)
-                      )
-                  ),
-                  height: 52,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.exerciselist[index].name,
-                        style: TextStyle(fontSize: 21, color: Colors.white),
-                      ),
-
-                      Container(
-                        child: Row(
-                          //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                                "Rest: ${widget.exerciselist[index].rest}",
-                                style: TextStyle(fontSize: 13, color: Color(0xFF717171))
-                            ),
-                            Expanded(child: SizedBox()),
-                            Text(
-                                "1RM: ${exinfo[0].onerm}/${exinfo[0].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
-                                style: TextStyle(fontSize: 13, color: Color(0xFF717171))
-                            ),
-                          ],
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                        color: Color(0xFF212121),
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(top),
+                            bottomRight: Radius.circular(bottom),
+                            topLeft: Radius.circular(top),
+                            bottomLeft: Radius.circular(bottom)
+                        )
+                    ),
+                    height: 52,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.exerciselist[index].name,
+                          style: TextStyle(fontSize: 21, color: Colors.white),
                         ),
-                      )
-                    ],
+
+                        Container(
+                          child: Row(
+                            //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                  "Rest: ${widget.exerciselist[index].rest}",
+                                  style: TextStyle(fontSize: 13, color: Color(0xFF717171))
+                              ),
+                              Expanded(child: SizedBox()),
+                              Text(
+                                  "1RM: ${exinfo[0].onerm}/${exinfo[0].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
+                                  style: TextStyle(fontSize: 13, color: Color(0xFF717171))
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
+                  index == widget.exerciselist.length-1
+                  ? Container()
+                  : Container(alignment: Alignment.center,
+                    height:1, color: Color(0xFF212121),
+                    child: Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      height:1, color: Color(0xFF717171),
+                    ),
+
+                  )
+                ],
               ),
             );
           },
+          /*
           separatorBuilder: (BuildContext _context, int index){
             return Container(
               alignment: Alignment.center,
@@ -242,6 +265,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             );
 
           },
+           */
           shrinkWrap: shirink,
           itemCount: widget.exerciselist.length
       ),
