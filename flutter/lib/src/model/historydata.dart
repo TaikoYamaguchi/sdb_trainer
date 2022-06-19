@@ -46,6 +46,42 @@ class SDBdata {
   }
 }
 
+class Comment {
+  final int id;
+  final int history_id;
+  final int reply_id;
+  final String writer_email;
+  final String writer_nickname;
+  final String content;
+  final List<dynamic> likes;
+  final String comment_created_at;
+  final String comment_modified_at;
+  Comment(
+      {required this.id,
+      required this.history_id,
+      required this.reply_id,
+      required this.writer_email,
+      required this.writer_nickname,
+      required this.content,
+      required this.likes,
+      required this.comment_created_at,
+      required this.comment_modified_at});
+
+  factory Comment.fromJson(Map<String, dynamic> parsedJson) {
+    return Comment(
+      id: parsedJson['id'],
+      history_id: parsedJson['history_id'],
+      reply_id: parsedJson['reply_id'],
+      writer_email: parsedJson['writer_email'],
+      writer_nickname: parsedJson['writer_nickname'],
+      content: parsedJson['content'],
+      likes: parsedJson["likes"],
+      comment_created_at: parsedJson["comment_created_at"],
+      comment_modified_at: parsedJson["comment_modified_at"],
+    );
+  }
+}
+
 class Exercises {
   final String name;
   final List<Sets> sets;
@@ -69,6 +105,21 @@ class Exercises {
         onerm: parsedJson["onerm"],
         goal: parsedJson["goal"],
         date: parsedJson["date"]);
+  }
+}
+
+class CommentList {
+  final List<Comment> comments;
+
+  CommentList({
+    required this.comments,
+  });
+
+  factory CommentList.fromJson(List<dynamic> parsedJson) {
+    List<Comment> comments = <Comment>[];
+    comments = parsedJson.map((i) => Comment.fromJson(i)).toList();
+
+    return new CommentList(comments: comments);
   }
 }
 

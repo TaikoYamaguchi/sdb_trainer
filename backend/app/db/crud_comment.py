@@ -19,6 +19,9 @@ def get_comments_by_history_id(db: Session, history_id: int) -> t.List[schemas.C
         ), models.Comment.id
     ).filter(models.Comment.history_id == history_id).all()
 
+def get_comments_all(db: Session) -> t.List[schemas.CommentOut]:
+    return db.query(models.Comment).all()
+
 def create_comment(db: Session, comment: schemas.CommentCreate, ip):
     db_comment = models.Comment(
         history_id=comment.history_id,
@@ -28,7 +31,7 @@ def create_comment(db: Session, comment: schemas.CommentCreate, ip):
         content=comment.content,
         likes=[],
         dislikes=[],
-        password = comment.password,
+        password = "",
         ip = ip,
         comment_created_at=datetime.datetime.utcnow() + datetime.timedelta(hours=9),
         comment_modified_at=datetime.datetime.utcnow() + datetime.timedelta(hours=9),
@@ -49,7 +52,7 @@ def create_comment(db: Session, comment: schemas.CommentCreate, ip):
         db.refresh((db_user))
     return db_comment
 
-def delete_auth_comment(db: Session, comment_id: int, password:str, user:schemas.User):
+def delete_auth_comment(db: Session, comment_id: int, user:schemas.User):
     db_comment = db.query(models.Comment).filter(models.Comment.id == comment_id).first()
     print(db_comment)
     if user.is_superuser == True :

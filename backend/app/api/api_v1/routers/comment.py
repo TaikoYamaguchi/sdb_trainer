@@ -1,7 +1,7 @@
 
 
 from app.core.auth import get_current_active_user, get_current_user
-from app.db.crud_comment import create_comment, delete_auth_comment, get_comments_by_history_id, manage_like_by_comment_id
+from app.db.crud_comment import create_comment, delete_auth_comment, get_comments_all, get_comments_by_history_id, manage_like_by_comment_id
 from fastapi import APIRouter, Request, Depends, Response, encoders
 import typing as t
 
@@ -17,6 +17,13 @@ async def comment_create(
     db=Depends(get_db),
 ):
     return create_comment(db, comment, request.headers["x-forwarded-for"])
+
+@r.get("/comments", response_model=t.List[CommentOut], response_model_exclude_none=True)
+async def comments_all(
+    request: Request,
+    db=Depends(get_db),
+):
+    return get_comments_all(db)
 
 @r.get(
     "/comments/{post_id}",
@@ -55,4 +62,4 @@ async def comment_auth_delete(
     db=Depends(get_db),
     user=Depends(get_current_user)
 ):
-    return delete_auth_comment(db, comment.id, comment.password, user)
+    return delete_auth_comment(db, comment.id, user)

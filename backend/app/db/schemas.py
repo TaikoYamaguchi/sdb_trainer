@@ -156,9 +156,6 @@ class CommentBase(BaseModel):
         orm_mode = True
 
 class CommentCreate(CommentBase):
-    password:t.Optional[str]
-    ip:str
-    
     class Config:
         orm_mode = True
 
@@ -174,7 +171,6 @@ class CommentOut(CommentBase):
 
 class CommentDelete(BaseModel):
     id:int
-    password:str
     class Config:
         orm_mode = True
 

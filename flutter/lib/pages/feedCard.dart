@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
+import 'package:sdb_trainer/repository/comment_repository.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:sdb_trainer/pages/userProfile.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
@@ -34,7 +35,8 @@ class FeedCard extends StatefulWidget {
 class _FeedCardState extends State<FeedCard> {
   var _historyCommentCtrl;
   var _userdataProvider;
-  var _historydataAll;
+  var _historyProvider;
+  var _commentListbyId;
   TextEditingController _commentInputCtrl = TextEditingController(text: "");
   late var _commentInfo = {
     "feedList": widget.feedListCtrl,
@@ -54,7 +56,11 @@ class _FeedCardState extends State<FeedCard> {
 
   Widget _feedCard(SDBdata, index) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _historydataAll = Provider.of<HistorydataProvider>(context, listen: false);
+    _historyProvider = Provider.of<HistorydataProvider>(context, listen: false);
+
+    _commentListbyId = _historyProvider.commentAll.comments
+        .where((comment) => comment.history_id == SDBdata.id)
+        .toList();
     return Container(
       width: MediaQuery.of(context).size.width,
       color: Colors.black,
@@ -171,11 +177,32 @@ class _FeedCardState extends State<FeedCard> {
                     ? Column(
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          Text(
-                            "yessssss",
-                            style: TextStyle(color: Colors.white, fontSize: 21),
-                          ),
-                          _commentTextInput()
+                          ListView.separated(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemBuilder: (BuildContext _context, int index) {
+                                return Padding(
+                                    padding: EdgeInsets.all(4.0),
+                                    child: Text(_commentListbyId[index].content,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 14.0)));
+                              },
+                              separatorBuilder:
+                                  (BuildContext _context, int index) {
+                                return Container(
+                                  alignment: Alignment.center,
+                                  height: 1,
+                                  color: Colors.black,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: 1,
+                                    color: Color(0xFF717171),
+                                  ),
+                                );
+                              },
+                              itemCount: _commentListbyId.length),
+                          _commentTextInput(SDBdata)
                         ],
                       )
                     : Container()
@@ -221,7 +248,7 @@ class _FeedCardState extends State<FeedCard> {
                       user_email: _userdataProvider.userdata.email,
                       comment: _historyCommentCtrl.text)
                   .patchHistoryComment();
-              _historydataAll.patchHistoryCommentdata(
+              _historyProvider.patchHistoryCommentdata(
                   SDBdata, _historyCommentCtrl.text);
 
               _historyCommentCtrl.clear();
@@ -346,7 +373,7 @@ class _FeedCardState extends State<FeedCard> {
               status: "remove",
               disorlike: "like")
           .patchHistoryLike();
-      _historydataAll.patchHistoryLikedata(
+      _historyProvider.patchHistoryLikedata(
           SDBdata, _userdataProvider.userdata.email, "remove");
       print("isit runned");
       return false;
@@ -357,13 +384,13 @@ class _FeedCardState extends State<FeedCard> {
               status: "append",
               disorlike: "like")
           .patchHistoryLike();
-      _historydataAll.patchHistoryLikedata(
+      _historyProvider.patchHistoryLikedata(
           SDBdata, _userdataProvider.userdata.email, "append");
       return !isLiked;
     }
   }
 
-  Widget _commentTextInput() {
+  Widget _commentTextInput(SDBdata) {
     return Row(
       children: [
         Flexible(
@@ -372,11 +399,12 @@ class _FeedCardState extends State<FeedCard> {
             child: TextFormField(
               keyboardType: TextInputType.multiline,
               controller: _commentInputCtrl,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.white, fontSize: 12.0),
               decoration: InputDecoration(
                 hintText: "댓글을 남길 수 있어요",
-                hintStyle: TextStyle(color: Colors.white),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                hintStyle: TextStyle(color: Colors.white, fontSize: 12.0),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
                 border: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.white, width: 1.0),
                   borderRadius: BorderRadius.circular(5.0),
@@ -391,7 +419,16 @@ class _FeedCardState extends State<FeedCard> {
         ),
         GestureDetector(
           child: Icon(Icons.arrow_upward, color: Colors.white),
-          onTap: null,
+          onTap: () {
+            CommentCreate(
+                    history_id: SDBdata.id,
+                    reply_id: 0,
+                    writer_email: _userdataProvider.userdata.email,
+                    writer_nickname: _userdataProvider.userdata.nickname,
+                    content: _commentInputCtrl.text)
+                .postComment();
+            _commentInputCtrl.clear();
+          },
         )
       ],
     );

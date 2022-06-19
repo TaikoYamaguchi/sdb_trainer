@@ -1,13 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
+import 'package:sdb_trainer/repository/comment_repository.dart';
 
 class HistorydataProvider extends ChangeNotifier {
   var _historydata;
   var _historydataAll;
   var _historydataFriends;
+  var _commentAll;
   get historydata => _historydata;
   get historydataAll => _historydataAll;
   get historydataFriends => _historydataFriends;
+  get commentAll => _commentAll;
 
   getdata() {
     ExerciseService.loadSDBdata().then((value) {
@@ -20,6 +23,13 @@ class HistorydataProvider extends ChangeNotifier {
   getHistorydataAll() {
     HistorydataAll.loadSDBdataAll().then((value) {
       _historydataAll = value;
+      notifyListeners();
+    });
+  }
+
+  getCommentAll() {
+    CommentsAll.getCommentsAll().then((value) {
+      _commentAll = value;
       notifyListeners();
     });
   }
