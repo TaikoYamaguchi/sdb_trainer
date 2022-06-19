@@ -43,6 +43,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   int? reps;
   List<Controllerlist> weightController = [];
   List<Controllerlist> repsController = [];
+  PageController? controller;
 
   var runtime = 0;
   Timer? timer1;
@@ -145,7 +146,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   }
 
   Widget _exercisedetailPage() {
-    final PageController controller = PageController(initialPage: widget.eindex);
+    controller= PageController(initialPage: widget.eindex);
     int numEx = _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises.length;
     for (int i = 0; i < numEx; i++){
       weightController.add(new Controllerlist());
@@ -488,24 +489,39 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                       children: [
                         Container(
                             child: pindex != 0
-                                ? IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        pindex = pindex - 1;
-                                      });
-                                    },
-                                    icon: Icon(
-                                      Icons.arrow_back_ios_outlined,
-                                      color: Colors.white,
-                                      size: 40,
-                                    ))
-                                : IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      null,
-                                      color: Colors.white,
-                                      size: 40,
-                                    ))),
+                                ? Container(
+                                  width: MediaQuery.of(context).size.width/4,
+                                  child: Row(
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {
+                                            controller!.previousPage(duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+
+                                          },
+                                          icon: Icon(
+                                            Icons.arrow_back_ios_outlined,
+                                            color: Colors.white,
+                                            size: 40,
+                                          )),
+                                      Consumer<WorkoutdataProvider>(
+                                        builder: (builder, provider, child) {
+                                          return Expanded(child: Text(provider.workoutdata.routinedatas[widget.rindex].exercises[pindex-1].name, overflow: TextOverflow.fade, style: TextStyle(color: Colors.white), ));
+
+                                        }
+                                      )
+                                    ],
+                                  ),
+                                )
+                                : Container(
+                                  width: MediaQuery.of(context).size.width/4,
+                                  child: IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        null,
+                                        color: Colors.white,
+                                        size: 40,
+                                      )),
+                                )),
                         Container(
                             child: Consumer<RoutineTimeProvider>(
                               builder: (builder, provider, child) {
@@ -535,24 +551,39 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                             .exercises
                                             .length -
                                         1
-                                ? IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        pindex = pindex + 1;
-                                      });
-                                    },
-                                    icon: Icon(
-                                      Icons.arrow_forward_ios_outlined,
-                                      color: Colors.white,
-                                      size: 40,
-                                    ))
-                                : IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      null,
-                                      color: Colors.white,
-                                      size: 40,
-                                    )))
+                                ? Container(
+                                  width: MediaQuery.of(context).size.width/4,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Consumer<WorkoutdataProvider>(
+                                          builder: (builder, provider, child) {
+                                            return Expanded(child: Text(provider.workoutdata.routinedatas[widget.rindex].exercises[pindex+1].name, overflow: TextOverflow.fade, style: TextStyle(color: Colors.white,), ));
+
+                                          }
+                                      ),
+                                      IconButton(
+                                          onPressed: () {
+                                            controller!.nextPage(duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+                                          },
+                                          icon: Icon(
+                                            Icons.arrow_forward_ios_outlined,
+                                            color: Colors.white,
+                                            size: 40,
+                                          )),
+                                    ],
+                                  ),
+                                )
+                                : Container(
+                                  width: MediaQuery.of(context).size.width/4,
+                                  child: IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        null,
+                                        color: Colors.white,
+                                        size: 40,
+                                      )),
+                                ))
                       ],
                     ),
                   ],
