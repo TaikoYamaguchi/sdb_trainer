@@ -37,17 +37,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   var _routinetimeProvider;
   var _exercise;
   var _exercises;
-  var _uniqinfo;
-  bool _isstarted = false;
-  bool _isChecked = false;
   double top = 0;
   double bottom = 0;
   double? weight;
   int? reps;
   List<TextEditingController> weightController = [];
   List<TextEditingController> repsController = [];
-  var _start_date;
-  var _finish_date;
   var runtime = 0;
   Timer? timer1;
 
@@ -503,7 +498,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                   primary: provider.buttoncolor,
                                   textStyle: const TextStyle(fontSize: 20)),
                           onPressed: () {
-                                _start_date = DateTime.now();
                                 if (_routinetimeProvider.isstarted) {
                                   recordExercise();
                                   _editHistoryCheck();

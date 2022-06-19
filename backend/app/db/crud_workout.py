@@ -37,7 +37,7 @@ def get_workouts_by_id(db: Session, input_id: int) -> t.List[schemas.WorkoutOut]
     print(workouts_id)
     return workouts_id
 
-def edit_workout(db: Session, workout: schemas.WorkoutCreate):
+def edit_workout(db: Session, workout: schemas.WorkoutEdit):
 
     db_workout = get_workouts_by_id(db, workout.id)
     if not db_workout:

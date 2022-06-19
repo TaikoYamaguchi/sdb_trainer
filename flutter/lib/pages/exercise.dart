@@ -424,15 +424,7 @@ class ExerciseState extends State<Exercise> {
             splashColor: Colors.blueAccent,
             onPressed: () {
 
-              _workoutdataProvider.addroutine(
-                    new Routinedata(
-                        id: _workoutdataProvider
-                            .workoutdata.routinedatas.length,
-                        user_email: _userdataProvider.userdata.email,
-                        name: _workoutNameCtrl.text,
-                        exercises: exerciseList,
-                        date: null,
-                        routine_time: null));
+
 
               _postWorkoutCheck();
               _workoutNameCtrl.clear();
