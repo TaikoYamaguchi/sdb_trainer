@@ -74,7 +74,6 @@ class ExercisesBase(BaseModel):
 
 class WorkoutBase(BaseModel):
     user_email: str
-    id: int
     name: str
     exercises: t.Any
     routine_time: float
@@ -82,14 +81,6 @@ class WorkoutBase(BaseModel):
         orm_mode = True
 
 class WorkoutCreate(WorkoutBase):
-    user_email: str
-    name: str
-    exercises: t.Any
-    routine_time: float
-    class config:
-        orm_mode = True
-
-class WorkoutEdit(WorkoutBase):
     class config:
         orm_mode = True
 
