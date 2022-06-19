@@ -41,8 +41,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   double bottom = 0;
   double? weight;
   int? reps;
-  List<TextEditingController> weightController = [];
-  List<TextEditingController> repsController = [];
+  List<Controllerlist> weightController = [];
+  List<Controllerlist> repsController = [];
+
   var runtime = 0;
   Timer? timer1;
 
@@ -143,12 +144,22 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             : showToast("입력을 확인해주세요"));
   }
 
-  Widget _exercisedetailWidget() {
+  Widget _exercisedetailPage() {
+    return PageView.builder(
+      itemBuilder: (context, pindex) {
+        weightController.add(new Controllerlist());
+        repsController.add(new Controllerlist());
+        return _exercisedetailWidget(pindex);
+      },
+      itemCount: _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises.length,
+    );
+  }
+
+  Widget _exercisedetailWidget(pindex) {
     int ueindex = _exercisesdataProvider.exercisesdata.exercises.indexWhere(
         (element) =>
             element.name ==
-            _workoutdataProvider.workoutdata.routinedatas[widget.rindex]
-                .exercises[widget.eindex].name);
+            _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises[pindex].name);
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
         MaterialState.pressed,
@@ -185,7 +196,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                 Consumer<WorkoutdataProvider>(
                     builder: (builder, provider, child) {
                   _exercise = provider.workoutdata.routinedatas[widget.rindex]
-                      .exercises[widget.eindex];
+                      .exercises[pindex];
                   return Text(
                     "Rest: ${_exercise.rest}",
                     style: TextStyle(
@@ -205,7 +216,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                     Consumer<WorkoutdataProvider>(
                         builder: (builder, provider, child) {
                       var _exercise = provider.workoutdata
-                          .routinedatas[widget.rindex].exercises[widget.eindex];
+                          .routinedatas[widget.rindex].exercises[pindex];
                       return Text(
                         _exercise.name,
                         style: TextStyle(color: Colors.white, fontSize: 48),
@@ -281,11 +292,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
               child: Consumer<WorkoutdataProvider>(
                   builder: (builder, provider, child) {
                 var _sets = provider.workoutdata.routinedatas[widget.rindex]
-                    .exercises[widget.eindex].sets;
+                    .exercises[pindex].sets;
                 return ListView.separated(
                     itemBuilder: (BuildContext _context, int index) {
-                      weightController.add(new TextEditingController());
-                      repsController.add(new TextEditingController());
+                      weightController[pindex].controllerlist.add(new TextEditingController());
+                      repsController[pindex].controllerlist.add(new TextEditingController());
                       return Container(
                         padding: EdgeInsets.only(right: 10),
                         child: Row(
@@ -307,7 +318,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                           value: _sets[index].ischecked,
                                           onChanged: (newvalue) {
                                             _routinetimeProvider.isstarted
-                                              ? [_workoutdataProvider.boolcheck(widget.rindex, widget.eindex, index, newvalue),
+                                              ? [_workoutdataProvider.boolcheck(widget.rindex, pindex, index, newvalue),
                                             _editWorkoutwCheck()]
                                               : _displayStartAlert(index, newvalue);
                                           })),
@@ -328,7 +339,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             Container(
                               width: 70,
                               child: TextField(
-                                controller: weightController[index],
+                                controller: weightController[pindex].controllerlist[index],
                                 keyboardType: TextInputType.number,
                                 style: TextStyle(
                                   fontSize: 21,
@@ -351,7 +362,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                   }
                                   _workoutdataProvider.weightcheck(
                                       widget.rindex,
-                                      widget.eindex,
+                                      pindex,
                                       index,
                                       changeweight);
                                   print(text);
@@ -367,7 +378,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             Container(
                               width: 40,
                               child: TextField(
-                                controller: repsController[index],
+                                controller: repsController[pindex].controllerlist[index],
                                 keyboardType: TextInputType.number,
                                 style: TextStyle(
                                   fontSize: 21,
@@ -389,7 +400,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                     changereps = int.parse(text);
                                   }
                                   _workoutdataProvider.repscheck(widget.rindex,
-                                      widget.eindex, index, changereps);
+                                      pindex, index, changereps);
                                 },
                               ),
                             ),
@@ -439,7 +450,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           child: IconButton(
                               onPressed: () {
                                 _workoutdataProvider.setsminus(
-                                    widget.rindex, widget.eindex);
+                                    widget.rindex, pindex);
                               },
                               icon: Icon(
                                 Icons.remove,
@@ -457,7 +468,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           child: IconButton(
                               onPressed: () {
                                 _workoutdataProvider.setsplus(
-                                    widget.rindex, widget.eindex);
+                                    widget.rindex, pindex);
                               },
                               icon: Icon(
                                 Icons.add,
@@ -471,11 +482,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                            child: widget.eindex != 0
+                            child: pindex != 0
                                 ? IconButton(
                                     onPressed: () {
                                       setState(() {
-                                        widget.eindex = widget.eindex - 1;
+                                        pindex = pindex - 1;
                                       });
                                     },
                                     icon: Icon(
@@ -512,7 +523,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               }
                             )),
                         Container(
-                            child: widget.eindex !=
+                            child: pindex !=
                                     _workoutdataProvider
                                             .workoutdata
                                             .routinedatas[widget.rindex]
@@ -522,7 +533,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 ? IconButton(
                                     onPressed: () {
                                       setState(() {
-                                        widget.eindex = widget.eindex + 1;
+                                        pindex = pindex + 1;
                                       });
                                     },
                                     icon: Icon(
@@ -687,7 +698,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
 
     return Scaffold(
       appBar: _appbarWidget(),
-      body: _exercisedetailWidget(),
+      body: _exercisedetailPage(),
     );
   }
 }

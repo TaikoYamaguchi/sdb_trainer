@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 class Routinedata {
   final int id;
   final String user_email;
@@ -98,4 +100,8 @@ class Setslist {
   Sets(index:1, weight: 0.0, reps: 1 , ischecked: false),
   Sets(index:2, weight: 0.0, reps: 1 , ischecked: false)
 ];
+}
+
+class Controllerlist {
+  List<TextEditingController> controllerlist = [];
 }
