@@ -67,8 +67,6 @@ class HistoryBase(BaseModel):
     image:list
     comment:str
     nickname:str
-    comment_length:int
-    isVisible:bool=True
     class Config:
         orm_mode = True
 
@@ -91,7 +89,6 @@ class WorkoutCreate(WorkoutBase):
         orm_mode = True
 
 class HistoryCreate(HistoryBase):
-    ip:str
     class config:
         orm_mode = True
 
@@ -108,6 +105,8 @@ class WorkoutOut(WorkoutBase):
 class HistoryOut(HistoryBase):
     id: int
     date: datetime
+    comment_length:int
+    isVisible:bool=True
     class config:
         orm_mode = True
 

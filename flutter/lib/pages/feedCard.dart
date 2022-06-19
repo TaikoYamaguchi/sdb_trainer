@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
@@ -18,7 +19,12 @@ import 'package:sdb_trainer/providers/userdata.dart';
 class FeedCard extends StatefulWidget {
   hisdata.SDBdata sdbdata;
   int index;
-  FeedCard({Key? key, required this.sdbdata, required this.index})
+  int feedListCtrl;
+  FeedCard(
+      {Key? key,
+      required this.sdbdata,
+      required this.index,
+      required this.feedListCtrl})
       : super(key: key);
 
   @override
@@ -29,6 +35,11 @@ class _FeedCardState extends State<FeedCard> {
   var _historyCommentCtrl;
   var _userdataProvider;
   var _historydataAll;
+  TextEditingController _commentInputCtrl = TextEditingController(text: "");
+  late var _commentInfo = {
+    "feedList": widget.feedListCtrl,
+    "feedVisible": false
+  };
   @override
   void initState() {
     super.initState();
@@ -36,14 +47,14 @@ class _FeedCardState extends State<FeedCard> {
 
   @override
   Widget build(BuildContext context) {
+    print(_commentInfo);
+    print(widget.feedListCtrl);
     return _feedCard(widget.sdbdata, widget.index);
   }
 
   Widget _feedCard(SDBdata, index) {
-    bool commentVisible = false;
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _historydataAll = Provider.of<HistorydataProvider>(context, listen: false);
-    print(commentVisible);
     return Container(
       width: MediaQuery.of(context).size.width,
       color: Colors.black,
@@ -152,13 +163,20 @@ class _FeedCardState extends State<FeedCard> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     _feedLikeButton(SDBdata),
-                    _feedCommentButton(SDBdata, commentVisible)
+                    _feedCommentButton(SDBdata)
                   ],
                 ),
-                commentVisible == true
-                    ? Text(
-                        "yessssss",
-                        style: TextStyle(color: Colors.white, fontSize: 21),
+                _commentInfo["feedList"] == widget.feedListCtrl &&
+                        _commentInfo["feedVisible"] == true
+                    ? Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Text(
+                            "yessssss",
+                            style: TextStyle(color: Colors.white, fontSize: 21),
+                          ),
+                          _commentTextInput()
+                        ],
                       )
                     : Container()
               ],
@@ -230,16 +248,33 @@ class _FeedCardState extends State<FeedCard> {
     );
   }
 
-  Widget _feedCommentButton(SDBdata, commentVisible) {
+  Widget _feedCommentButton(SDBdata) {
     return Padding(
         padding: const EdgeInsets.all(4.0),
         child: Row(
           children: [
             IconButton(
                 onPressed: () {
-                  print(commentVisible);
-                  commentVisible = true;
-                  print(commentVisible);
+                  setState(() {
+                    if (_commentInfo["feedList"] == widget.feedListCtrl) {
+                      if (_commentInfo["feedVisible"] == true) {
+                        _commentInfo = {
+                          "feedList": widget.feedListCtrl,
+                          "feedVisible": false
+                        };
+                      } else {
+                        _commentInfo = {
+                          "feedList": widget.feedListCtrl,
+                          "feedVisible": true
+                        };
+                      }
+                    } else {
+                      _commentInfo = {
+                        "feedList": widget.feedListCtrl,
+                        "feedVisible": true
+                      };
+                    }
+                  });
                 },
                 icon: Icon(Icons.message, color: Colors.white, size: 28.0)),
             Text(SDBdata.comment_length.toString(),
@@ -326,6 +361,40 @@ class _FeedCardState extends State<FeedCard> {
           SDBdata, _userdataProvider.userdata.email, "append");
       return !isLiked;
     }
+  }
+
+  Widget _commentTextInput() {
+    return Row(
+      children: [
+        Flexible(
+          child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: TextFormField(
+              keyboardType: TextInputType.multiline,
+              controller: _commentInputCtrl,
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                hintText: "댓글을 남길 수 있어요",
+                hintStyle: TextStyle(color: Colors.white),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                border: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white, width: 1.0),
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+              ),
+            ),
+          ),
+        ),
+        GestureDetector(
+          child: Icon(Icons.arrow_upward, color: Colors.white),
+          onTap: null,
+        )
+      ],
+    );
   }
 
   Widget _exerciseWidget(Exercises, index) {
