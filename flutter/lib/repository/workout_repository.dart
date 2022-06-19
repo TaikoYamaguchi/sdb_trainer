@@ -50,6 +50,7 @@ class WorkoutPost {
     print(user_email);
     //print(json.encode(Encoded_sets));
     formData["user_email"] = user_email;
+    formData["id"] = 0;
     formData["name"] = name;
     formData["exercises"] = jsonEncode(exercises);
     formData["routine_time"] = 0;
