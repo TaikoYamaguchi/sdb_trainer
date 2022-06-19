@@ -227,7 +227,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                               ),
                               Expanded(child: SizedBox()),
                               Text(
-                                  "1RM: ${exinfo[0].onerm}/${exinfo[0].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
+                                  "1RM: ${exinfo[0].onerm.toStringAsFixed(1)}/${exinfo[0].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
                                   style: TextStyle(fontSize: 13, color: Color(0xFF717171))
                               ),
                             ],
