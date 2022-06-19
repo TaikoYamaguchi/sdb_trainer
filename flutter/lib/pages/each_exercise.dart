@@ -225,7 +225,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                         builder: (builder, provider, child) {
                       var _info = provider.exercisesdata.exercises[ueindex];
                       return Text(
-                        "Best 1RM: ${_info.onerm}/${_info.goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
+                        "Best 1RM: ${_info.onerm.toStringAsFixed(1)}/${_info.goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
                         style:
                             TextStyle(color: Color(0xFF717171), fontSize: 21),
                       );

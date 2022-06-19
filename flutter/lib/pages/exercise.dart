@@ -141,7 +141,7 @@ class ExerciseState extends State<Exercise> {
                       IconButton(
                         onPressed: () {
 
-                          _displayDeleteAlert(wdata.routinedatas[index].id,index);
+                          _displayDeleteAlert(index);
                         },
                         icon: Icon(Icons.delete),
                         color: Colors.white,
@@ -169,7 +169,7 @@ class ExerciseState extends State<Exercise> {
     );
   }
 
-  void _displayDeleteAlert(did, rindex)  {
+  void _displayDeleteAlert(rindex)  {
     showDialog(
         context: context,
         builder: (context) {
@@ -177,13 +177,13 @@ class ExerciseState extends State<Exercise> {
             title: Text('TextField in Dialog'),
             content: Text('Are you Sure to Delete?'),
             actions: <Widget>[
-              _DeleteConfirmButton(did, rindex),
+              _DeleteConfirmButton(rindex),
             ],
           );
         });
   }
 
-  Widget _DeleteConfirmButton(did, rindex) {
+  Widget _DeleteConfirmButton(rindex) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
@@ -195,7 +195,7 @@ class ExerciseState extends State<Exercise> {
             splashColor: Colors.blueAccent,
             onPressed: () {
               _workoutdataProvider.removeroutineAt(rindex);
-              _deleteWorkoutCheck(did);
+              _editWorkoutCheck();
               Navigator.of(context, rootNavigator: true).pop();
 
             },
