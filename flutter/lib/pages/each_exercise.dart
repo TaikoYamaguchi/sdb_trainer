@@ -145,13 +145,18 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   }
 
   Widget _exercisedetailPage() {
+    final PageController controller = PageController(initialPage: widget.eindex);
+    int numEx = _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises.length;
+    for (int i = 0; i < numEx; i++){
+      weightController.add(new Controllerlist());
+      repsController.add(new Controllerlist());
+    }
     return PageView.builder(
+      controller: controller,
       itemBuilder: (context, pindex) {
-        weightController.add(new Controllerlist());
-        repsController.add(new Controllerlist());
         return _exercisedetailWidget(pindex);
       },
-      itemCount: _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises.length,
+      itemCount: numEx,
     );
   }
 
