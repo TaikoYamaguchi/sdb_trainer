@@ -2,38 +2,61 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-class Routinedata {
-  final int id;
-  final String user_email;
+
+
+
+class Routinedatas {
   String name;
   final List<Exercises> exercises;
-  final String? date;
   final double? routine_time;
-  Routinedata(
-      {required this.id,
-      required this.user_email,
+  Routinedatas(
+      {
       required this.name,
       required this.exercises,
-      required this.date,
       required this.routine_time});
 
-  factory Routinedata.fromJson(Map<String, dynamic> parsedJson) {
+  Map toJson() => {"name": name, "exercises": exercises, "routine_time": routine_time};
 
+  factory Routinedatas.fromJson(Map<String, dynamic> parsedJson) {
     var list = parsedJson['exercises'].runtimeType == String
         ? json.decode(parsedJson['exercises']) as List
         : parsedJson['exercises'] as List;
-
     List<Exercises> exerciseList =
         list.map((i) => Exercises.fromJson(i)).toList();
-    return Routinedata(
-        id: parsedJson['id'],
-        user_email: parsedJson['user_email'],
+    return Routinedatas(
         name: parsedJson['name'],
         exercises: exerciseList,
-        date: parsedJson["date"],
         routine_time: parsedJson["routine_time"]);
   }
 }
+
+class Routinedata {
+  final int id;
+  final String user_email;
+  final List<Routinedatas> routinedatas;
+  final String? date;
+  Routinedata({
+    required this.id,
+    required this.user_email,
+    required this.routinedatas,
+    required this.date,
+  });
+
+  factory Routinedata.fromJson(Map<String, dynamic> parsedJson) {
+    var list = parsedJson['routinedatas'].runtimeType == String
+        ? json.decode(parsedJson['routinedatas']) as List
+        : parsedJson['routinedatas'] as List;
+    List<Routinedatas> routinedatas = list.map((i) => Routinedatas.fromJson(i)).toList();
+
+    return Routinedata(
+      id: parsedJson["id"],
+      user_email: parsedJson['user_email'],
+      routinedatas: routinedatas,
+      date: parsedJson["date"],
+    );
+  }
+}
+
 
 class Exercises {
   final String name;
@@ -58,20 +81,7 @@ class Exercises {
   }
 }
 
-class RoutinedataList {
-  final List<Routinedata> routinedatas;
 
-  RoutinedataList({
-    required this.routinedatas,
-  });
-
-  factory RoutinedataList.fromJson(List<dynamic> parsedJson) {
-    List<Routinedata> routinedatas = <Routinedata>[];
-    routinedatas = parsedJson.map((i) => Routinedata.fromJson(i)).toList();
-
-    return new RoutinedataList(routinedatas: routinedatas);
-  }
-}
 
 class Sets {
   final int index;

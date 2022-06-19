@@ -75,32 +75,28 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   void _editWorkoutCheck() async {
     if (_routinetimeProvider.isstarted) {
       WorkoutEdit(
-              id: _workoutdataProvider
-                  .workoutdata.routinedatas[widget.rindex].id,
-              user_email: _userdataProvider.userdata.email,
-              name: _workoutdataProvider
-                  .workoutdata.routinedatas[widget.rindex].name,
-              exercises: _workoutdataProvider
-                  .workoutdata.routinedatas[widget.rindex].exercises)
+            id: _workoutdataProvider
+                .workoutdata.id,
+            user_email: _userdataProvider.userdata.email,
+            routinedatas: _workoutdataProvider
+                .workoutdata.routinedatas)
           .editWorkout()
           .then((data) => data["user_email"] != null
               ? showToast("done!")
               : showToast("입력을 확인해주세요"));
     } else {
-      var exercise_all = _workoutdataProvider
-          .workoutdata.routinedatas[widget.rindex].exercises;
-      for (int n = 0; n < exercise_all.length; n++) {
-        for (int i = 0; i < exercise_all[n].sets.length; i++) {
-          exercise_all[n].sets[i].ischecked = false;
+      var routinedatas_all = _workoutdataProvider
+          .workoutdata.routinedatas;
+      for (int n = 0; n < routinedatas_all[widget.rindex].exercises.length; n++) {
+        for (int i = 0; i < routinedatas_all[widget.rindex].exercises[n].sets.length; i++) {
+          routinedatas_all[widget.rindex].exercises[n].sets[i].ischecked = false;
         }
       }
       WorkoutEdit(
-              id: _workoutdataProvider
-                  .workoutdata.routinedatas[widget.rindex].id,
-              user_email: _userdataProvider.userdata.email,
-              name: _workoutdataProvider
-                  .workoutdata.routinedatas[widget.rindex].name,
-              exercises: exercise_all)
+            id: _workoutdataProvider
+                .workoutdata.id,
+            user_email: _userdataProvider.userdata.email,
+            routinedatas: routinedatas_all)
           .editWorkout()
           .then((data) => data["user_email"] != null
               ? showToast("done!")
@@ -111,13 +107,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   void _editWorkoutwCheck() async {
     if (_routinetimeProvider.isstarted) {
       WorkoutEdit(
-              id: _workoutdataProvider
-                  .workoutdata.routinedatas[widget.rindex].id,
-              user_email: _userdataProvider.userdata.email,
-              name: _workoutdataProvider
-                  .workoutdata.routinedatas[widget.rindex].name,
-              exercises: _workoutdataProvider
-                  .workoutdata.routinedatas[widget.rindex].exercises)
+            id: _workoutdataProvider
+                .workoutdata.id,
+            user_email: _userdataProvider.userdata.email,
+            routinedatas: _workoutdataProvider
+                .workoutdata.routinedatas)
           .editWorkout()
           .then((data) => data["user_email"] != null
               ? showToast("done!")
@@ -126,23 +120,22 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   }
 
   void _editWorkoutwoCheck() async {
-    var exercise_all =
-        _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises;
-    for (int n = 0; n < exercise_all.length; n++) {
-      for (int i = 0; i < exercise_all[n].sets.length; i++) {
-        exercise_all[n].sets[i].ischecked = false;
+    var routinedatas_all = _workoutdataProvider
+        .workoutdata.routinedatas;
+    for (int n = 0; n < routinedatas_all[widget.rindex].exercises.length; n++) {
+      for (int i = 0; i < routinedatas_all[widget.rindex].exercises[n].sets.length; i++) {
+        routinedatas_all[widget.rindex].exercises[n].sets[i].ischecked = false;
       }
     }
     WorkoutEdit(
-            id: _workoutdataProvider.workoutdata.routinedatas[widget.rindex].id,
-            user_email: _userdataProvider.userdata.email,
-            name: _workoutdataProvider
-                .workoutdata.routinedatas[widget.rindex].name,
-            exercises: exercise_all)
+        id: _workoutdataProvider
+            .workoutdata.id,
+        user_email: _userdataProvider.userdata.email,
+        routinedatas: routinedatas_all)
         .editWorkout()
         .then((data) => data["user_email"] != null
-            ? {showToast("done!"), _workoutdataProvider.getdata()}
-            : showToast("입력을 확인해주세요"));
+        ? showToast("done!")
+        : showToast("입력을 확인해주세요"));
   }
 
   Widget _exercisedetailPage() {

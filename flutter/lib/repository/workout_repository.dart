@@ -27,23 +27,20 @@ class RoutineRepository {
     }
   }
 
-  static Future<RoutinedataList> loadRoutinedata() async {
+  static Future<Routinedata> loadRoutinedata() async {
     String jsonString = await _loadRoutinedataFromServer();
     final jsonResponse = json.decode(jsonString);
-    RoutinedataList routinedata = RoutinedataList.fromJson(jsonResponse);
-    routinedata.routinedatas.sort((a, b) => a.id.compareTo(b.id));
+    Routinedata routinedata = Routinedata.fromJson(jsonResponse);
     return (routinedata);
   }
 }
 
 class WorkoutPost {
   final String user_email;
-  final String name;
-  final List<Exercises> exercises;
+  final List<Routinedatas> routinedatas;
   WorkoutPost({
     required this.user_email,
-    required this.name,
-    required this.exercises,
+    required this.routinedatas,
   });
   Future<String> _workoutPostFromServer() async {
     var formData = new Map<String, dynamic>();
@@ -51,9 +48,7 @@ class WorkoutPost {
     //print(json.encode(Encoded_sets));
     formData["user_email"] = user_email;
     formData["id"] = 0;
-    formData["name"] = name;
-    formData["exercises"] = jsonEncode(exercises);
-    formData["routine_time"] = 0;
+    formData["routinedatas"] = jsonEncode(routinedatas);
     print(formData);
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/workoutcreate");
@@ -80,13 +75,11 @@ class WorkoutPost {
 class WorkoutEdit {
   final String user_email;
   final int id;
-  final String name;
-  final List<Exercises> exercises;
+  final List<Routinedatas> routinedatas;
   WorkoutEdit({
     required this.user_email,
     required this.id,
-    required this.name,
-    required this.exercises,
+    required this.routinedatas,
   });
   Future<String> _workoutEditFromServer() async {
     var formData = new Map<String, dynamic>();
@@ -94,9 +87,7 @@ class WorkoutEdit {
     //print(json.encode(Encoded_sets));
     formData["user_email"] = user_email;
     formData["id"] = id;
-    formData["name"] = name;
-    formData["exercises"] = jsonEncode(exercises);
-    formData["routine_time"] = 0;
+    formData["routinedatas"] = jsonEncode(routinedatas);
     print(formData);
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/workout");

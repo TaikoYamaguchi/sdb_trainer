@@ -18,7 +18,7 @@ async def workout_create(
 
 @r.get(
     "/workout/{email}",
-    response_model=t.List[WorkoutOut],
+    response_model=WorkoutOut,
     response_model_exclude_none=True,
 )
 async def workouts_list(

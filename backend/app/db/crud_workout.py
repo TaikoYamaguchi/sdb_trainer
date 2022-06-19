@@ -12,10 +12,8 @@ from . import models, schemas
 def create_workout(db: Session, workout: schemas.WorkoutCreate):
     db_workout = models.Workout(
         user_email=workout.user_email,
-        name = workout.name,
-        exercises = workout.exercises,
+        routinedatas = workout.routinedatas,
         date = datetime.datetime.utcnow()+datetime.timedelta(hours=9),
-        routine_time=workout.routine_time
     )
     print(workout.user_email)
     db.add(db_workout)
@@ -23,16 +21,16 @@ def create_workout(db: Session, workout: schemas.WorkoutCreate):
     db.refresh(db_workout)
     return db_workout
 
-def get_workouts_by_email(db: Session, email: str) -> t.List[schemas.WorkoutOut]:
-    workouts = db.query(models.Workout).filter(models.Workout.user_email == email).all()
+def get_workouts_by_email(db: Session, email: str) -> schemas.WorkoutOut:
+    workouts = db.query(models.Workout).filter(models.Workout.user_email == email).first()
     return workouts
 
-def get_workouts_by_email_name(db: Session, email: str, input_name: str) -> t.List[schemas.WorkoutOut]:
+def get_workouts_by_email_name(db: Session, email: str, input_name: str) -> schemas.WorkoutOut:
     workouts_email_name = db.query(models.Workout).filter(models.Workout.user_email == email, models.Workout.name == input_name).first()
     print(workouts_email_name)
     return workouts_email_name
 
-def get_workouts_by_id(db: Session, input_id: int) -> t.List[schemas.WorkoutOut]:
+def get_workouts_by_id(db: Session, input_id: int) -> schemas.WorkoutOut:
     workouts_id = db.query(models.Workout).get(input_id)
     print(workouts_id)
     return workouts_id

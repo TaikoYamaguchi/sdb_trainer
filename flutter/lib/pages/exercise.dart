@@ -104,7 +104,6 @@ class ExerciseState extends State<Exercise> {
                     context,
                     Transition(
                         child: EachWorkoutDetails(
-                          rid: wdata.routinedatas[index].id,
                           exerciselist: wdata.routinedatas[index].exercises,
                           uniqueinfo: edata,
                           routineindex: index,
@@ -425,16 +424,13 @@ class ExerciseState extends State<Exercise> {
             onPressed: () {
 
               _workoutdataProvider.addroutine(
-                    new Routinedata(
-                        id: _workoutdataProvider
-                            .workoutdata.routinedatas.length,
-                        user_email: _userdataProvider.userdata.email,
+                    new Routinedatas(
                         name: _workoutNameCtrl.text,
                         exercises: exerciseList,
-                        date: null,
-                        routine_time: null));
+                        routine_time: 0
+                    ));
 
-              _postWorkoutCheck();
+              _editWorkoutCheck();
               _workoutNameCtrl.clear();
               Navigator.of(context, rootNavigator: true).pop();
 
@@ -443,11 +439,19 @@ class ExerciseState extends State<Exercise> {
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
+  void _editWorkoutCheck() async {
+    print(_userdataProvider.userdata.email);
+    WorkoutEdit(user_email: _userdataProvider.userdata.email, id: _workoutdataProvider.workoutdata.id, routinedatas: _workoutdataProvider.workoutdata.routinedatas)
+        .editWorkout()
+        .then((data) => data["user_email"] != null
+        ? showToast("done!")
+        : showToast("입력을 확인해주세요"));
+  }
+
   void _postWorkoutCheck() async {
     WorkoutPost(
             user_email: _userdataProvider.userdata.email,
-            name: _workoutNameCtrl.text,
-            exercises: exerciseList)
+            routinedatas: _workoutdataProvider.routinedatas)
         .postWorkout()
         .then((data) => data["user_email"] != null
             ? _workoutdataProvider.getdata()

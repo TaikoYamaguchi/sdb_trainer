@@ -12,11 +12,10 @@ import 'package:transition/transition.dart';
 
 
 class EachWorkoutDetails extends StatefulWidget {
-  int rid;
   List<wod.Exercises> exerciselist;
   List uniqueinfo;
   int routineindex;
-  EachWorkoutDetails({Key? key, required this.rid, required this.exerciselist, required this.uniqueinfo, required this.routineindex}) : super(key: key);
+  EachWorkoutDetails({Key? key,  required this.exerciselist, required this.uniqueinfo, required this.routineindex}) : super(key: key);
 
   @override
   _EachWorkoutDetailsState createState() => _EachWorkoutDetailsState();
@@ -143,7 +142,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
 
     _workoutdataProvider.namechange(widget.routineindex,newname);
 
-    WorkoutEdit(user_email: _userdataProvider.userdata.email, id: widget.rid , name: newname,  exercises: widget.exerciselist)
+    WorkoutEdit(user_email: _userdataProvider.userdata.email, id: _workoutdataProvider.workoutdata.id , routinedatas: _workoutdataProvider.workoutdata.routinedatas)
         .editWorkout()
         .then((data) => data["user_email"] != null
         ? {showToast("done!"),_workoutdataProvider.getdata()}
@@ -152,7 +151,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
 
   void _editWorkoutCheck() async {
     print(_userdataProvider.userdata.email);
-    WorkoutEdit(user_email: _userdataProvider.userdata.email, id: widget.rid, name: _workoutdataProvider.workoutdata.routinedatas[widget.routineindex].name,  exercises: widget.exerciselist)
+    WorkoutEdit(user_email: _userdataProvider.userdata.email, id: _workoutdataProvider.workoutdata.id, routinedatas: _workoutdataProvider.workoutdata.routinedatas)
         .editWorkout()
         .then((data) => data["user_email"] != null
         ? showToast("done!")

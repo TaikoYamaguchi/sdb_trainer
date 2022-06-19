@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:sdb_trainer/pages/home.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
@@ -653,7 +654,7 @@ class _LoginPageState extends State<SignUpPage> {
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
             splashColor: Colors.blueAccent,
-            onPressed: () => _postExerciseCheck(),
+            onPressed: () => [_postWorkoutCheck(),_postExerciseCheck()],
             child: Text(isLoading ? 'loggin in.....' : "운동 정보 제출",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
@@ -717,6 +718,16 @@ class _LoginPageState extends State<SignUpPage> {
         .then((data) => data["user_email"] != null
             ? {_bodyStater.change(0), _loginState.change(true)}
             : showToast("입력을 확인해주세요"));
+  }
+
+  void _postWorkoutCheck() async {
+    WorkoutPost(
+        user_email: _userEmailCtrl.text,
+        routinedatas: [])
+        .postWorkout()
+        .then((data) => data["user_email"] != null
+        ? showToast("new workout")
+        : showToast("입력을 확인해주세요"));
   }
 
   Future<bool> _signUpProfileCheck() async {

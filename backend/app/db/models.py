@@ -36,10 +36,8 @@ class Workout(Base):
     __tablename__ = "workout"
     id = Column(Integer, primary_key=True, index=True)
     user_email = Column(String, unique=True, index=True, nullable=False)
-    name = Column(String, unique=True, index=True, nullable=False)
-    exercises = Column(JSON, index=True, nullable=False)
+    routinedatas = Column(JSON, index=True, nullable=False)
     date = Column(DateTime, nullable=False)
-    routine_time = Column(Float, nullable=False)
 
 class History(Base):
     __tablename__ = "history"
