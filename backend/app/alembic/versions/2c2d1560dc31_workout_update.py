@@ -23,16 +23,6 @@ def upgrade():
     tables = inspector.get_table_names()
 
     op.drop_table("workout")
-
-    if "workout" not in tables:
-            op.create_table(
-                "workout",
-                sa.Column("id", sa.Integer, primary_key=True),
-                sa.Column("user_email", sa.String(50), nullable=False),
-                sa.Column("routinedatas", JSONB),
-                sa.Column("date", sa.DateTime, nullable=False),
-            )
-
     pass
 
 
