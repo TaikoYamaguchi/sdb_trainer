@@ -30,7 +30,7 @@ class Profile extends StatelessWidget {
     );
   }
 
-  Widget _profile (context) {
+  Widget _profile(context) {
     return Column(children: [
       ElevatedButton(
           onPressed: () {
@@ -91,5 +91,9 @@ class Profile extends StatelessWidget {
     UserLogOut.logOut();
     _loginState.change(false);
     _loginState.changeSignup(false);
+    _userdataProvider.setUserKakaoEmail(null);
+    _userdataProvider.setUserKakaoName(null);
+    _userdataProvider.setUserKakaoImage(null);
+    _userdataProvider.setUserKakaoGender(null);
   }
 }

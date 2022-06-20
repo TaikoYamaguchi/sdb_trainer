@@ -67,3 +67,29 @@ class CommentsAll {
     return (comment);
   }
 }
+
+class CommentDelete {
+  final int comment_id;
+  CommentDelete({required this.comment_id});
+  Future<String> _deleteCommentServer() async {
+    var url = Uri.parse(
+        LocalHost.getLocalHost() + "/api/comment/" + comment_id.toString());
+    var response = await http.delete(
+      url,
+    );
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      return utf8.decode(response.bodyBytes);
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<Comment> deleteComment() async {
+    String jsonString = await _deleteCommentServer();
+    final jsonResponse = json.decode(jsonString);
+    Comment comment = Comment.fromJson(jsonResponse);
+    return (comment);
+  }
+}

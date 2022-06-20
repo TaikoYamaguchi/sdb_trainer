@@ -15,6 +15,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:like_button/like_button.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
+import 'package:sdb_trainer/src/model/userdata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 
 class FeedCard extends StatefulWidget {
@@ -37,6 +38,7 @@ class _FeedCardState extends State<FeedCard> {
   var _userdataProvider;
   var _historyProvider;
   var _commentListbyId;
+  var _tapPosition;
   TextEditingController _commentInputCtrl = TextEditingController(text: "");
   late var _commentInfo = {
     "feedList": widget.feedListCtrl,
@@ -44,6 +46,7 @@ class _FeedCardState extends State<FeedCard> {
   };
   @override
   void initState() {
+    _tapPosition = Offset(0.0, 0.0);
     super.initState();
   }
 
@@ -57,10 +60,16 @@ class _FeedCardState extends State<FeedCard> {
   Widget _feedCard(SDBdata, index) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _historyProvider = Provider.of<HistorydataProvider>(context, listen: false);
+    _userdataProvider.getUsersFriendsAll();
+    _userdataProvider.getdata();
 
-    _commentListbyId = _historyProvider.commentAll.comments
-        .where((comment) => comment.history_id == SDBdata.id)
-        .toList();
+    if (_historyProvider.commentAll != null) {
+      _commentListbyId = _historyProvider.commentAll.comments
+          .where((comment) => comment.history_id == SDBdata.id)
+          .toList();
+    } else {
+      _commentListbyId = [];
+    }
     return Container(
       width: MediaQuery.of(context).size.width,
       color: Colors.black,
@@ -177,31 +186,17 @@ class _FeedCardState extends State<FeedCard> {
                     ? Column(
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          ListView.separated(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemBuilder: (BuildContext _context, int index) {
-                                return Padding(
-                                    padding: EdgeInsets.all(4.0),
-                                    child: Text(_commentListbyId[index].content,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 14.0)));
-                              },
-                              separatorBuilder:
-                                  (BuildContext _context, int index) {
-                                return Container(
-                                  alignment: Alignment.center,
-                                  height: 1,
-                                  color: Colors.black,
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    height: 1,
-                                    color: Color(0xFF717171),
-                                  ),
-                                );
-                              },
-                              itemCount: _commentListbyId.length),
+                          Container(
+                            alignment: Alignment.center,
+                            height: 1,
+                            color: Colors.black,
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 1,
+                              color: Color(0xFF717171),
+                            ),
+                          ),
+                          _commentContent(),
                           _commentTextInput(SDBdata)
                         ],
                       )
@@ -211,6 +206,102 @@ class _FeedCardState extends State<FeedCard> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _commentContent() {
+    return ListView.separated(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemBuilder: (BuildContext _context, int index) {
+          return Padding(
+              padding: EdgeInsets.all(4.0),
+              child: _commentContentCore(_commentListbyId[index]));
+        },
+        separatorBuilder: (BuildContext _context, int index) {
+          return Container(
+            alignment: Alignment.center,
+            height: 1,
+            color: Colors.black,
+            child: Container(
+              alignment: Alignment.center,
+              height: 1,
+              color: Color(0xFF717171),
+            ),
+          );
+        },
+        itemCount: _commentListbyId.length);
+  }
+
+  Widget _commentContentCore(Comment) {
+    User user = _userdataProvider.userFriendsAll.userdatas
+        .where((user) => user.email == Comment.writer_email)
+        .toList()[0];
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Flexible(
+          child: Row(
+            children: [
+              user.image == ""
+                  ? Icon(
+                      Icons.account_circle,
+                      color: Colors.grey,
+                      size: 38.0,
+                    )
+                  : CircleAvatar(
+                      radius: 18.0,
+                      backgroundImage: NetworkImage(user.image),
+                      backgroundColor: Colors.transparent),
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 4.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(Comment.writer_nickname,
+                          style: TextStyle(color: Colors.grey, fontSize: 12.0)),
+                      Text(Comment.content,
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 14.0)),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        user.email == Comment.writer_email
+            ? GestureDetector(
+                child: Icon(
+                  Icons.more_vert,
+                  color: Colors.grey,
+                  size: 18.0,
+                ),
+                onTapDown: _storePosition,
+                onTap: () {
+                  showMenu(
+                      context: context,
+                      position: RelativeRect.fromRect(
+                          _tapPosition & Size(30, 30),
+                          Offset.zero & Size(0, 0)),
+                      items: [
+                        PopupMenuItem(
+                            onTap: () {
+                              CommentDelete(comment_id: Comment.id)
+                                  .deleteComment();
+                            },
+                            padding: EdgeInsets.all(0.0),
+                            child: ListTile(
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 4.0, vertical: 0.0),
+                                leading: Icon(Icons.delete),
+                                title: Text("삭제"))),
+                      ]);
+                },
+              )
+            : Container()
+      ],
     );
   }
 
@@ -417,18 +508,21 @@ class _FeedCardState extends State<FeedCard> {
             ),
           ),
         ),
-        GestureDetector(
-          child: Icon(Icons.arrow_upward, color: Colors.white),
-          onTap: () {
-            CommentCreate(
-                    history_id: SDBdata.id,
-                    reply_id: 0,
-                    writer_email: _userdataProvider.userdata.email,
-                    writer_nickname: _userdataProvider.userdata.nickname,
-                    content: _commentInputCtrl.text)
-                .postComment();
-            _commentInputCtrl.clear();
-          },
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          child: GestureDetector(
+            child: Icon(Icons.arrow_upward, color: Colors.white),
+            onTap: () {
+              CommentCreate(
+                      history_id: SDBdata.id,
+                      reply_id: 0,
+                      writer_email: _userdataProvider.userdata.email,
+                      writer_nickname: _userdataProvider.userdata.nickname,
+                      content: _commentInputCtrl.text)
+                  .postComment();
+              _commentInputCtrl.clear();
+            },
+          ),
         )
       ],
     );
@@ -468,6 +562,10 @@ class _FeedCardState extends State<FeedCard> {
         ),
       ),
     );
+  }
+
+  void _storePosition(TapDownDetails details) {
+    _tapPosition = details.globalPosition;
   }
 
   @override

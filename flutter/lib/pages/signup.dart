@@ -607,41 +607,27 @@ class _LoginPageState extends State<SignUpPage> {
   Widget _signUpButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FutureBuilder(
-            future: _signUpProfileCheck(),
-            builder: (context, AsyncSnapshot<bool> snapshot) {
-              if (snapshot.data == true) {
-                return FlatButton(
-                    color: Color.fromRGBO(246, 58, 64, 20),
-                    textColor: Colors.white,
-                    disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                    disabledTextColor: Colors.black,
-                    padding: EdgeInsets.all(8.0),
-                    splashColor: Colors.blueAccent,
-                    onPressed: () => _isSignupIndex == 0
-                        ? setState(() {
-                            _isSignupIndex = 1;
-                          })
-                        : _signUpCheck(),
-                    child: Text(isLoading ? 'loggin in.....' : "회원가입",
-                        style: TextStyle(fontSize: 20.0, color: Colors.white)));
-              } else {
-                return FlatButton(
-                    color: Color.fromRGBO(246, 58, 64, 20),
-                    textColor: Colors.white,
-                    disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                    disabledTextColor: Colors.black,
-                    padding: EdgeInsets.all(8.0),
-                    splashColor: Colors.blueAccent,
-                    onPressed: () => _isSignupIndex == 0
-                        ? setState(() {
-                            null;
-                          })
-                        : _signUpCheck(),
-                    child: Text(isLoading ? 'loggin in.....' : "회원가입",
-                        style: TextStyle(fontSize: 20.0, color: Colors.white)));
-              }
-            }));
+        child: FlatButton(
+            color: Color.fromRGBO(246, 58, 64, 20),
+            textColor: Colors.white,
+            disabledColor: Color.fromRGBO(246, 58, 64, 20),
+            disabledTextColor: Colors.black,
+            padding: EdgeInsets.all(8.0),
+            splashColor: Colors.blueAccent,
+            onPressed: () => _isSignupIndex == 0
+                ? setState(() {
+                    showToast("회원정보 확인 후 이동해드릴게요");
+                    _signUpProfileCheck().then((value) {
+                      if (value) {
+                        setState(() {
+                          _isSignupIndex = 1;
+                        });
+                      }
+                    });
+                  })
+                : {_signUpCheck(), showToast("회원가입 중이니 기다려주세요.")},
+            child: Text(isLoading ? 'loggin in.....' : "회원가입",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
   Widget _weightSubmitButton(context) {
@@ -654,7 +640,7 @@ class _LoginPageState extends State<SignUpPage> {
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
             splashColor: Colors.blueAccent,
-            onPressed: () => [_postWorkoutCheck(),_postExerciseCheck()],
+            onPressed: () => _postExerciseCheck(),
             child: Text(isLoading ? 'loggin in.....' : "운동 정보 제출",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
@@ -677,7 +663,7 @@ class _LoginPageState extends State<SignUpPage> {
   }
 
   void _signUpCheck() async {
-    print("yess");
+    showToast("회원가입이 완료 중이니 기다려주세요");
     UserSignUp(
             userEmail: _userEmailCtrl.text,
             userName: _userNameCtrl.text,
@@ -691,23 +677,22 @@ class _LoginPageState extends State<SignUpPage> {
             password: _userPasswordCtrl.text)
         .signUpUser()
         .then((data) => data["username"] != null
-            ? UserLogin(
-                    userEmail: _userEmailCtrl.text,
-                    password: _userPasswordCtrl.text)
-                .loginUser()
-                .then((token) => token["access_token"] != null
-                    ? {
-                        setState(() {
-                          _isSignupIndex = 3;
-                        }),
-                        _initialGoalCheck(),
-                        print(exerciseList[0]),
-                        print(exerciseList[0].goal),
-                        print(exerciseList[1].goal),
-                        print(exerciseList[2].goal),
-                        print(exerciseList.length)
-                      }
-                    : showToast("아이디와 비밀번호를 확인해주세요"))
+            ? {
+                _initialGoalCheck(),
+                setState(() {
+                  _isSignupIndex = 3;
+                }),
+                UserLogin(
+                        userEmail: _userEmailCtrl.text,
+                        password: _userPasswordCtrl.text)
+                    .loginUser()
+                    .then((token) {
+                  token["access_token"] != null
+                      ? {}
+                      : showToast("아이디와 비밀번호를 확인해주세요");
+                }),
+                _postWorkoutCheck()
+              }
             : showToast("회원가입을 할 수 없습니다"));
   }
 
@@ -721,13 +706,11 @@ class _LoginPageState extends State<SignUpPage> {
   }
 
   void _postWorkoutCheck() async {
-    WorkoutPost(
-        user_email: _userEmailCtrl.text,
-        routinedatas: [])
+    WorkoutPost(user_email: _userEmailCtrl.text, routinedatas: [])
         .postWorkout()
         .then((data) => data["user_email"] != null
-        ? showToast("new workout")
-        : showToast("입력을 확인해주세요"));
+            ? showToast("Workout 생성 완료")
+            : showToast("입력을 확인해주세요"));
   }
 
   Future<bool> _signUpProfileCheck() async {
@@ -738,8 +721,6 @@ class _LoginPageState extends State<SignUpPage> {
           _userPhoneNumberCtrl.text != "") {
         var user =
             await UserInfo(userEmail: _userEmailCtrl.text).getUserByEmail();
-        print("00000");
-        print(user);
         if (user == null) {
           var userNickname =
               await UserNickname(userNickname: _userNicknameCtrl.text)
@@ -751,8 +732,6 @@ class _LoginPageState extends State<SignUpPage> {
             return false;
           }
         } else {
-          print("2222");
-          print(user);
           showToast("중복된 이메일이 있습니다.");
           return false;
         }

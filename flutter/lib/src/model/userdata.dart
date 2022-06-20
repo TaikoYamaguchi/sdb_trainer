@@ -14,28 +14,30 @@ class User {
   final int point;
   final String created_at;
   final List like;
+  final String image;
   final List dislike;
   final List favor_exercise;
 
-  User(
-      {required this.id,
-      required this.email,
-      required this.username,
-      required this.nickname,
-      required this.height,
-      required this.weight,
-      required this.height_unit,
-      required this.weight_unit,
-      required this.is_active,
-      required this.is_superuser,
-      required this.isMan,
-      required this.level,
-      required this.point,
-      required this.created_at,
-      required this.like,
-      required this.dislike,
-      required this.favor_exercise,
-      });
+  User({
+    required this.id,
+    required this.email,
+    required this.username,
+    required this.nickname,
+    required this.height,
+    required this.weight,
+    required this.height_unit,
+    required this.weight_unit,
+    required this.is_active,
+    required this.is_superuser,
+    required this.isMan,
+    required this.level,
+    required this.point,
+    required this.created_at,
+    required this.like,
+    required this.image,
+    required this.dislike,
+    required this.favor_exercise,
+  });
 
   factory User.fromJson(Map<String, dynamic> parsedJson) {
     return User(
@@ -54,9 +56,9 @@ class User {
         point: parsedJson['point'],
         created_at: parsedJson["created_at"],
         like: parsedJson["like"],
+        image: parsedJson["image"],
         dislike: parsedJson["dislike"],
-        favor_exercise: parsedJson["favor_exercise"]
-    );
+        favor_exercise: parsedJson["favor_exercise"]);
   }
 }
 

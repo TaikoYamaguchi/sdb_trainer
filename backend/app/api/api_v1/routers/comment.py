@@ -54,7 +54,7 @@ async def comment_likes(
     return comments
 
 @r.delete(
-    "/comments/auth/{comment_id}", response_model=CommentOut, response_model_exclude_none=True
+    "/comment/{comment_id}", response_model=CommentOut, response_model_exclude_none=True
 )
 async def comment_auth_delete(
     request: Request,
