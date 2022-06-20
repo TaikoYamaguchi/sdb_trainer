@@ -47,25 +47,25 @@ class SDBdata {
 }
 
 class Comment {
-  final int id;
+  final int? id;
   final int history_id;
   final int reply_id;
   final String writer_email;
   final String writer_nickname;
   final String content;
-  final List<dynamic> likes;
-  final String comment_created_at;
-  final String comment_modified_at;
+  final List<dynamic>? likes;
+  final String? comment_created_at;
+  final String? comment_modified_at;
   Comment(
-      {required this.id,
+      {this.id,
       required this.history_id,
       required this.reply_id,
       required this.writer_email,
       required this.writer_nickname,
       required this.content,
-      required this.likes,
-      required this.comment_created_at,
-      required this.comment_modified_at});
+      this.likes,
+      this.comment_created_at,
+      this.comment_modified_at});
 
   factory Comment.fromJson(Map<String, dynamic> parsedJson) {
     return Comment(

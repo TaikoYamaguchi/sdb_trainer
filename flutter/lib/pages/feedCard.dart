@@ -76,134 +76,138 @@ class _FeedCardState extends State<FeedCard> {
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Card(
-            color: Color(0xFF717171),
-            child: Column(
-              children: [
-                Padding(
+          child: Consumer<HistorydataProvider>(
+              builder: (builder, provider, child) {
+            return Card(
+              color: Color(0xFF717171),
+              child: Column(
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            SDBdata.nickname,
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 4.0),
+                                child: Text(SDBdata.date.substring(2, 10),
+                                    style: TextStyle(
+                                        fontSize: 18, color: Colors.white)),
+                              ),
+                              SDBdata.user_email ==
+                                      _userdataProvider.userdata.email
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        _historyCommentCtrl =
+                                            TextEditingController(
+                                                text: SDBdata.comment);
+                                        ;
+                                        _displayTextInputDialog(
+                                            context, SDBdata);
+                                      },
+                                      child: Icon(Icons.menu,
+                                          color: Colors.white, size: 18.0))
+                                  : Container()
+                            ],
+                          ),
+                        ],
+                      )),
+                  Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          SDBdata.nickname,
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 4.0),
-                              child: Text(SDBdata.date.substring(2, 10),
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.white)),
-                            ),
-                            SDBdata.user_email ==
-                                    _userdataProvider.userdata.email
-                                ? GestureDetector(
-                                    onTap: () {
-                                      _historyCommentCtrl =
-                                          TextEditingController(
-                                              text: SDBdata.comment);
-                                      ;
-                                      _displayTextInputDialog(context, SDBdata);
-                                    },
-                                    child: Icon(Icons.menu,
-                                        color: Colors.white, size: 18.0))
-                                : Container()
-                          ],
-                        ),
+                        Container(
+                            width: 120,
+                            child: Text(
+                              "운동",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                            )),
+                        Container(
+                            width: 70,
+                            child: Text("sets",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                                textAlign: TextAlign.center)),
+                        Container(
+                            width: 80,
+                            child: Text("1rm",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                                textAlign: TextAlign.center))
                       ],
-                    )),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                          width: 120,
-                          child: Text(
-                            "운동",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                            ),
-                          )),
-                      Container(
-                          width: 70,
-                          child: Text("sets",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                              ),
-                              textAlign: TextAlign.center)),
-                      Container(
-                          width: 80,
-                          child: Text("1rm",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                              ),
-                              textAlign: TextAlign.center))
-                    ],
+                    ),
                   ),
-                ),
-                ListView.separated(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext _context, int index) {
-                      return Center(
-                          child:
-                              _exerciseWidget(SDBdata.exercises[index], index));
-                    },
-                    separatorBuilder: (BuildContext _context, int index) {
-                      return Container(
-                        alignment: Alignment.center,
-                        height: 1,
-                        color: Colors.black,
-                        child: Container(
+                  ListView.separated(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (BuildContext _context, int index) {
+                        return Center(
+                            child: _exerciseWidget(
+                                SDBdata.exercises[index], index));
+                      },
+                      separatorBuilder: (BuildContext _context, int index) {
+                        return Container(
                           alignment: Alignment.center,
                           height: 1,
-                          color: Color(0xFF717171),
-                        ),
-                      );
-                    },
-                    itemCount: SDBdata.exercises.length),
-                SDBdata.comment != ""
-                    ? _feedTextField(SDBdata.comment)
-                    : Container(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    _feedLikeButton(SDBdata),
-                    _feedCommentButton(SDBdata)
-                  ],
-                ),
-                _commentInfo["feedList"] == widget.feedListCtrl &&
-                        _commentInfo["feedVisible"] == true
-                    ? Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Container(
+                          color: Colors.black,
+                          child: Container(
                             alignment: Alignment.center,
                             height: 1,
-                            color: Colors.black,
-                            child: Container(
+                            color: Color(0xFF717171),
+                          ),
+                        );
+                      },
+                      itemCount: SDBdata.exercises.length),
+                  SDBdata.comment != ""
+                      ? _feedTextField(SDBdata.comment)
+                      : Container(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      _feedLikeButton(SDBdata),
+                      _feedCommentButton(SDBdata)
+                    ],
+                  ),
+                  _commentInfo["feedList"] == widget.feedListCtrl &&
+                          _commentInfo["feedVisible"] == true
+                      ? Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Container(
                               alignment: Alignment.center,
                               height: 1,
-                              color: Color(0xFF717171),
+                              color: Colors.black,
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 1,
+                                color: Color(0xFF717171),
+                              ),
                             ),
-                          ),
-                          _commentContent(),
-                          _commentTextInput(SDBdata)
-                        ],
-                      )
-                    : Container()
-              ],
-            ),
-          ),
+                            _commentContent(),
+                            _commentTextInput(SDBdata)
+                          ],
+                        )
+                      : Container()
+                ],
+              ),
+            );
+          }),
         ),
       ),
     );
@@ -288,6 +292,7 @@ class _FeedCardState extends State<FeedCard> {
                       items: [
                         PopupMenuItem(
                             onTap: () {
+                              _historyProvider.deleteCommentAll(Comment);
                               CommentDelete(comment_id: Comment.id)
                                   .deleteComment();
                             },
@@ -513,13 +518,20 @@ class _FeedCardState extends State<FeedCard> {
           child: GestureDetector(
             child: Icon(Icons.arrow_upward, color: Colors.white),
             onTap: () {
+              _historyProvider.addCommentAll(hisdata.Comment(
+                  history_id: SDBdata.id,
+                  reply_id: 0,
+                  writer_email: _userdataProvider.userdata.email,
+                  writer_nickname: _userdataProvider.userdata.nickname,
+                  content: _commentInputCtrl.text));
               CommentCreate(
                       history_id: SDBdata.id,
                       reply_id: 0,
                       writer_email: _userdataProvider.userdata.email,
                       writer_nickname: _userdataProvider.userdata.nickname,
                       content: _commentInputCtrl.text)
-                  .postComment();
+                  .postComment()
+                  .then(_historyProvider.getCommentAll());
               _commentInputCtrl.clear();
             },
           ),

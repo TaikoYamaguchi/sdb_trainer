@@ -34,6 +34,22 @@ class HistorydataProvider extends ChangeNotifier {
     });
   }
 
+  addCommentAll(Comment) {
+    _commentAll.comments.add(Comment);
+    notifyListeners();
+  }
+
+  deleteCommentAll(Comment) {
+    _commentAll.comments.removeAt(_commentAll.comments.indexWhere((comment) {
+      if (comment.id == Comment.id) {
+        return true;
+      } else {
+        return false;
+      }
+    }));
+    notifyListeners();
+  }
+
   getFriendsHistorydata(email) {
     HistorydataFriends(user_email: email).loadSDBdataFriends().then((value) {
       _historydataFriends = value;
