@@ -275,7 +275,7 @@ class _FeedCardState extends State<FeedCard> {
             ],
           ),
         ),
-        user.email == Comment.writer_email
+        _userdataProvider.userdata.email == Comment.writer_email
             ? GestureDetector(
                 child: Icon(
                   Icons.more_vert,
@@ -530,8 +530,7 @@ class _FeedCardState extends State<FeedCard> {
                       writer_email: _userdataProvider.userdata.email,
                       writer_nickname: _userdataProvider.userdata.nickname,
                       content: _commentInputCtrl.text)
-                  .postComment()
-                  .then(_historyProvider.getCommentAll());
+                  .postComment();
               _commentInputCtrl.clear();
             },
           ),

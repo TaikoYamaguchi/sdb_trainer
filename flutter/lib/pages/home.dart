@@ -41,6 +41,7 @@ class Home extends StatelessWidget {
           onPressed: () {
             _bodyStater.change(3);
             _staticPageState.change(false);
+            _chartIndex.changePageController(1);
           },
         )
       ],
@@ -116,6 +117,7 @@ class Home extends StatelessWidget {
         ? GestureDetector(
             onTap: () => {
               _chartIndex.change(index),
+              _chartIndex.changePageController(0),
               _staticPageState.change(true),
               _bodyStater.change(3),
             },

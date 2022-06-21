@@ -38,6 +38,7 @@ class _CalendarState extends State<Calendar> {
   late TooltipBehavior _tooltipBehavior;
   bool _isLoading = true;
   late ZoomPanBehavior _zoomPanBehavior;
+  PageController? _isPageController;
 
   TextEditingController _eventController = TextEditingController();
 
@@ -114,6 +115,22 @@ class _CalendarState extends State<Calendar> {
     super.dispose();
   }
 
+  Widget _staticsPages() {
+    return Consumer<ChartIndexProvider>(builder: (builder, provider, child) {
+      return PageView(
+        controller: provider.isPageController,
+        children: [_chartWidget(), _staticsWidget()],
+        onPageChanged: (page) {
+          if (page == 1) {
+            _isChartWidget.change(false);
+          } else if (page == 0) {
+            _isChartWidget.change(true);
+          }
+        },
+      );
+    });
+  }
+
   PreferredSizeWidget _appbarWidget() {
     return AppBar(
       title:
@@ -123,6 +140,7 @@ class _CalendarState extends State<Calendar> {
               ? SvgPicture.asset("assets/svg/chart_statics_on.svg")
               : SvgPicture.asset("assets/svg/chart_statics_off.svg"),
           onPressed: () {
+            _chartIndex.changePageController(0);
             _isChartWidget.change(true);
           },
         ),
@@ -132,6 +150,7 @@ class _CalendarState extends State<Calendar> {
               ? SvgPicture.asset("assets/svg/calendar_statics_off.svg")
               : SvgPicture.asset("assets/svg/calendar_statics_on.svg"),
           onPressed: () {
+            _chartIndex.changePageController(1);
             _isChartWidget.change(false);
           },
         ),
@@ -622,8 +641,6 @@ class _CalendarState extends State<Calendar> {
     return Scaffold(
         appBar: _appbarWidget(),
         backgroundColor: Colors.black,
-        body: _isChartWidget.isChartWidget
-            ? (_isLoading ? null : _chartWidget())
-            : (_isLoading ? null : _staticsWidget()));
+        body: _isLoading ? null : _staticsPages());
   }
 }
