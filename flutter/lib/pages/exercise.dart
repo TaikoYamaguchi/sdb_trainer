@@ -106,7 +106,7 @@ class ExerciseState extends State<Exercise> {
                         child: EachWorkoutDetails(
                           exerciselist: wdata.routinedatas[index].exercises,
                           uniqueinfo: edata,
-                          routineindex: index,
+                          rindex: index,
                         ),
                         transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
               },

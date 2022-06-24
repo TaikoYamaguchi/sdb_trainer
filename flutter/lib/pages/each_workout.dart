@@ -14,8 +14,8 @@ import 'package:transition/transition.dart';
 class EachWorkoutDetails extends StatefulWidget {
   List<wod.Exercises> exerciselist;
   List uniqueinfo;
-  int routineindex;
-  EachWorkoutDetails({Key? key,  required this.exerciselist, required this.uniqueinfo, required this.routineindex}) : super(key: key);
+  int rindex;
+  EachWorkoutDetails({Key? key,  required this.exerciselist, required this.uniqueinfo, required this.rindex}) : super(key: key);
 
   @override
   _EachWorkoutDetailsState createState() => _EachWorkoutDetailsState();
@@ -64,7 +64,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               child: Consumer<WorkoutdataProvider>(
                 builder: (builder, provider, child) {
                   return Text(
-                    provider.workoutdata.routinedatas[widget.routineindex].name,
+                    provider.workoutdata.routinedatas[widget.rindex].name,
                     style:TextStyle(color: Colors.white, fontSize: 30),
                   );
                 }
@@ -141,7 +141,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
 
   void _editWorkoutNameCheck(newname) async {
 
-    _workoutdataProvider.namechange(widget.routineindex,newname);
+    _workoutdataProvider.namechange(widget.rindex,newname);
 
     WorkoutEdit(user_email: _userdataProvider.userdata.email, id: _workoutdataProvider.workoutdata.id , routinedatas: _workoutdataProvider.workoutdata.routinedatas)
         .editWorkout()
@@ -163,111 +163,116 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   Widget _exercisesWidget(bool shirink) {
     return Container(
       color: Colors.black,
-      child: ReorderableListView.builder(
-          onReorder: (int oldIndex, int newIndex) {
-            setState(() {
-              if (oldIndex < newIndex) {
-                newIndex -= 1;
-              }
-              final item = widget.exerciselist.removeAt(oldIndex);
-              widget.exerciselist.insert(newIndex, item);
-              _editWorkoutCheck();
-            });
-          },
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          itemBuilder: (BuildContext _context, int index){
-            final exinfo = widget.uniqueinfo.where((unique){
-              return (unique.name == widget.exerciselist[index].name);
-            }).toList();
-            print(exinfo);
-            if(index==0){top = 20; bottom = 0;} else if (index==widget.exerciselist.length-1){top = 0;bottom = 20;} else {top = 0;bottom = 0;};
-            return GestureDetector(
-              key: Key('$index'),
-              onTap: () {
-                _isexsearch
-                ? setState(() {widget.exerciselist.removeAt(index);})
-                : Navigator.push(context,Transition(
-                    child: EachExerciseDetails(
-                      ueindex: widget.uniqueinfo.indexWhere((element) => element.name == widget.exerciselist[index].name),
-                      eindex: index,
-                      rindex: widget.routineindex,
-                    ),
-                    transitionEffect: TransitionEffect.RIGHT_TO_LEFT
-                ));
+      child: Consumer2<WorkoutdataProvider, ExercisesdataProvider>(
+        builder: (builder, wdp, exp, child) {
+          List exlist=wdp.workoutdata.routinedatas[widget.rindex].exercises;
+          return ReorderableListView.builder(
+              onReorder: (int oldIndex, int newIndex) {
+                setState(() {
+                  if (oldIndex < newIndex) {
+                    newIndex -= 1;
+                  }
+                  final item = exlist.removeAt(oldIndex);
+                  exlist.insert(newIndex, item);
+                  _editWorkoutCheck();
+                });
               },
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    decoration: BoxDecoration(
-                        color: Color(0xFF212121),
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(top),
-                            bottomRight: Radius.circular(bottom),
-                            topLeft: Radius.circular(top),
-                            bottomLeft: Radius.circular(bottom)
-                        )
-                    ),
-                    height: 52,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.exerciselist[index].name,
-                          style: TextStyle(fontSize: 21, color: Colors.white),
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              itemBuilder: (BuildContext _context, int index){
+                final exinfo = widget.uniqueinfo.where((unique){
+                  return (unique.name == exlist[index].name);
+                }).toList();
+                print(exinfo);
+                if(index==0){top = 20; bottom = 0;} else if (index==exlist.length-1){top = 0;bottom = 20;} else {top = 0;bottom = 0;};
+                return GestureDetector(
+                  key: Key('$index'),
+                  onTap: () {
+                    _isexsearch
+                    ? setState(() {exlist.removeAt(index);})
+                    : Navigator.push(context,Transition(
+                        child: EachExerciseDetails(
+                          ueindex: widget.uniqueinfo.indexWhere((element) => element.name == exlist[index].name),
+                          eindex: index,
+                          rindex: widget.rindex,
+                        ),
+                        transitionEffect: TransitionEffect.RIGHT_TO_LEFT
+                    ));
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        decoration: BoxDecoration(
+                            color: Color(0xFF212121),
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(top),
+                                bottomRight: Radius.circular(bottom),
+                                topLeft: Radius.circular(top),
+                                bottomLeft: Radius.circular(bottom)
+                            )
+                        ),
+                        height: 52,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              exlist[index].name,
+                              style: TextStyle(fontSize: 21, color: Colors.white),
+                            ),
+
+                            Container(
+                              child: Row(
+                                //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(
+                                      "Rest: ${exlist[index].rest}",
+                                      style: TextStyle(fontSize: 13, color: Color(0xFF717171))
+                                  ),
+                                  Expanded(child: SizedBox()),
+                                  Text(
+                                      "1RM: ${exinfo[0].onerm.toStringAsFixed(1)}/${exinfo[0].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
+                                      style: TextStyle(fontSize: 13, color: Color(0xFF717171))
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      index == exlist.length-1
+                      ? Container()
+                      : Container(alignment: Alignment.center,
+                        height:1, color: Color(0xFF212121),
+                        child: Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.symmetric(horizontal: 10),
+                          height:1, color: Color(0xFF717171),
                         ),
 
-                        Container(
-                          child: Row(
-                            //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text(
-                                  "Rest: ${widget.exerciselist[index].rest}",
-                                  style: TextStyle(fontSize: 13, color: Color(0xFF717171))
-                              ),
-                              Expanded(child: SizedBox()),
-                              Text(
-                                  "1RM: ${exinfo[0].onerm.toStringAsFixed(1)}/${exinfo[0].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
-                                  style: TextStyle(fontSize: 13, color: Color(0xFF717171))
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                      )
+                    ],
                   ),
-                  index == widget.exerciselist.length-1
-                  ? Container()
-                  : Container(alignment: Alignment.center,
-                    height:1, color: Color(0xFF212121),
-                    child: Container(
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.symmetric(horizontal: 10),
-                      height:1, color: Color(0xFF717171),
-                    ),
+                );
+              },
+              /*
+              separatorBuilder: (BuildContext _context, int index){
+                return Container(
+                  alignment: Alignment.center,
+                  height:1, color: Color(0xFF212121),
+                  child: Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    height:1, color: Color(0xFF717171),
+                  ),
+                );
 
-                  )
-                ],
-              ),
-            );
-          },
-          /*
-          separatorBuilder: (BuildContext _context, int index){
-            return Container(
-              alignment: Alignment.center,
-              height:1, color: Color(0xFF212121),
-              child: Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                height:1, color: Color(0xFF717171),
-              ),
-            );
-
-          },
-           */
-          shrinkWrap: shirink,
-          itemCount: widget.exerciselist.length
+              },
+               */
+              shrinkWrap: shirink,
+              itemCount: exlist.length
+          );
+        }
       ),
     );
   }
@@ -324,91 +329,96 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
 
   Widget exercisesWidget(exuniq, bool shirink) {
     List existlist=[];
-    for (int i = 0; i< widget.exerciselist.length; i++){
-      existlist.add(widget.exerciselist[i].name);
+    for (int i = 0; i< _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exersises.length; i++){
+      existlist.add(_workoutdataProvider.workoutdata.routinedatas[widget.rindex].exersises[i].name);
     }
     double top = 0;
     double bottom = 0;
     return Expanded(
       //color: Colors.black,
-      child: ListView.separated(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          itemBuilder: (BuildContext _context, int index) {
-            bool alreadyexist = existlist.contains(exuniq[index].name);
-            if (index == 0) {
-              top = 20;
-              bottom = 0;
-            } else if (index == exuniq.length - 1) {
-              top = 0;
-              bottom = 20;
-            } else {
-              top = 0;
-              bottom = 0;
-            }
-            ;
-            return GestureDetector(
-              onTap: (){
-                setState(() {
-                  alreadyexist ? print("already") : widget.exerciselist.add(new wod.Exercises(name: exuniq[index].name, sets: wod.Setslist().setslist, onerm: exuniq[index].onerm, rest: 0));
-                });
+      child: Consumer<WorkoutdataProvider>(
+        builder: (builder, provider, child) {
+           List exlist =  provider.workoutdata.routinedatas[widget.rindex].exercises;
+          return ListView.separated(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              itemBuilder: (BuildContext _context, int index) {
+                bool alreadyexist = existlist.contains(exuniq[index].name);
+                if (index == 0) {
+                  top = 20;
+                  bottom = 0;
+                } else if (index == exuniq.length - 1) {
+                  top = 0;
+                  bottom = 20;
+                } else {
+                  top = 0;
+                  bottom = 0;
+                }
+                ;
+                return GestureDetector(
+                  onTap: (){
+                    setState(() {
+                      alreadyexist ? print("already") : exlist.add(new wod.Exercises(name: exuniq[index].name, sets: wod.Setslist().setslist, onerm: exuniq[index].onerm, rest: 0));
+                    });
 
-              },
-              child: Container(
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                      color: Color(0xFF212121),
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(top),
-                          bottomRight: Radius.circular(bottom),
-                          topLeft: Radius.circular(top),
-                          bottomLeft: Radius.circular(bottom))),
-                  height: 52,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        exuniq[index].name,
-                        style: TextStyle(fontSize: 21, color: alreadyexist ? Colors.black : Colors.white),
+                  },
+                  child: Container(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      decoration: BoxDecoration(
+                          color: Color(0xFF212121),
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(top),
+                              bottomRight: Radius.circular(bottom),
+                              topLeft: Radius.circular(top),
+                              bottomLeft: Radius.circular(bottom))),
+                      height: 52,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            exuniq[index].name,
+                            style: TextStyle(fontSize: 21, color: alreadyexist ? Colors.black : Colors.white),
+                          ),
+                          Container(
+                            child: Row(
+                              //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text("Rest: need to set",
+                                    style: TextStyle(
+                                        fontSize: 13, color: alreadyexist ? Colors.black : Color(0xFF717171))),
+                                Expanded(child: SizedBox()),
+                                Text(
+                                    "1RM: ${exuniq[index].onerm}/${exuniq[index].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
+                                    style: TextStyle(
+                                        fontSize: 13, color: alreadyexist ? Colors.black : Color(0xFF717171))),
+                              ],
+                            ),
+                          )
+                        ],
                       ),
-                      Container(
-                        child: Row(
-                          //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text("Rest: need to set",
-                                style: TextStyle(
-                                    fontSize: 13, color: alreadyexist ? Colors.black : Color(0xFF717171))),
-                            Expanded(child: SizedBox()),
-                            Text(
-                                "1RM: ${exuniq[index].onerm}/${exuniq[index].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
-                                style: TextStyle(
-                                    fontSize: 13, color: alreadyexist ? Colors.black : Color(0xFF717171))),
-                          ],
-                        ),
-                      )
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            );
-          },
-          separatorBuilder: (BuildContext _context, int index) {
-            return Container(
-              alignment: Alignment.center,
-              height: 1,
-              color: Color(0xFF212121),
-              child: Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                height: 1,
-                color: Color(0xFF717171),
-              ),
-            );
-          },
-          scrollDirection: Axis.vertical,
-          shrinkWrap: shirink,
-          itemCount: exuniq.length
+                );
+              },
+              separatorBuilder: (BuildContext _context, int index) {
+                return Container(
+                  alignment: Alignment.center,
+                  height: 1,
+                  color: Color(0xFF212121),
+                  child: Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    height: 1,
+                    color: Color(0xFF717171),
+                  ),
+                );
+              },
+              scrollDirection: Axis.vertical,
+              shrinkWrap: shirink,
+              itemCount: exuniq.length
+          );
+        }
       ),
     );
   }
