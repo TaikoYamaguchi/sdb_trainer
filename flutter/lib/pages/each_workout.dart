@@ -79,6 +79,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
           iconSize: 30,
           icon: Icon(Icons.check_rounded),
           onPressed: () {
+            _workoutdataProvider.exinwdlist();
             _editWorkoutCheck();
             Provider.of<WorkoutdataProvider>(context, listen: false).getdata();
             setState(() {

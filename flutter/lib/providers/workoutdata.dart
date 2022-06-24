@@ -50,6 +50,9 @@ class WorkoutdataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  exinwdlist(){
+    notifyListeners();
+  }
 
   setsplus(rindex, eindex) {
     _workoutdata.routinedatas[rindex].exercises[eindex].sets.add(new Sets(
