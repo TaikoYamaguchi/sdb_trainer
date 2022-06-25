@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/navigators/exercise_navi.dart';
+import 'package:sdb_trainer/navigators/profile_navi.dart';
 import 'package:sdb_trainer/pages/exercise.dart';
 import 'package:sdb_trainer/pages/home.dart';
 import 'package:sdb_trainer/pages/login.dart';
@@ -75,7 +76,7 @@ class _AppState extends State<App> {
         return Calendar();
 
       case 4:
-        return Profile();
+        return TabNavigator();
     }
     return Container();
   }
@@ -91,7 +92,7 @@ class _AppState extends State<App> {
               TabNavigator(),
               Feed(),
               Calendar(),
-              Profile()
+              TabProfileNavigator()
             ])
           : _loginState.isSignUp
               ? SignUpPage()
