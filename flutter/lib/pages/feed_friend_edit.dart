@@ -75,9 +75,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
                     ),
                   ),
                   onChanged: (text) {
-                    print(text.toString());
                     if (text.toString() == "") {
-                      print("nulllllllllllllll");
                       friendsInputSwitch = false;
                       setState(
                           () => _usersdata = _userdataProvider.userFriendsAll);

@@ -25,6 +25,9 @@ class _LoginPageState extends State<SignUpPage> {
   var _userProvider;
   var _isSignupIndex = 0;
   bool isLoading = false;
+  bool _isEmailused = false;
+  bool _isNickNameused = false;
+  bool _isPhoneNumberused = false;
 
   final Map<String, Widget> _heightUnitList = const <String, Widget>{
     "cm": Padding(
@@ -351,17 +354,44 @@ class _LoginPageState extends State<SignUpPage> {
   Widget _emailWidget() {
     return TextFormField(
       autofocus: true,
+      onChanged: (text) {
+        if (_userProvider.userFriendsAll.userdatas
+                .where((user) {
+                  if (user.email == text.toString()) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                })
+                .toList()
+                .length ==
+            0) {
+          setState(() {
+            _isEmailused = false;
+          });
+          print(false);
+        } else
+          setState(() {
+            _isEmailused = true;
+          });
+        print(true);
+      },
       controller: _userEmailCtrl,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
-        labelText: "이메일",
-        labelStyle: TextStyle(color: Colors.white),
-        border: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.white, width: 2.0),
+        labelText: _isEmailused == false ? "이메일" : "사용 불가 이메일",
+        labelStyle:
+            TextStyle(color: _isEmailused == false ? Colors.white : Colors.red),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+              color: _isEmailused == false ? Colors.blue : Colors.red,
+              width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2.0),
+          borderSide: BorderSide(
+              color: _isEmailused == false ? Colors.white : Colors.red,
+              width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
       ),
@@ -448,17 +478,44 @@ class _LoginPageState extends State<SignUpPage> {
 
   Widget _nicknameWidget() {
     return TextFormField(
+      onChanged: (text) {
+        if (_userProvider.userFriendsAll.userdatas
+                .where((user) {
+                  if (user.nickname == text.toString()) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                })
+                .toList()
+                .length ==
+            0) {
+          setState(() {
+            _isNickNameused = false;
+          });
+          print(false);
+        } else
+          setState(() {
+            _isNickNameused = true;
+          });
+        print(true);
+      },
       controller: _userNicknameCtrl,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
-        labelText: "닉네임",
-        labelStyle: TextStyle(color: Colors.white),
-        border: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.white, width: 2.0),
+        labelText: _isNickNameused == false ? "닉네임" : "사용 불가 닉네임",
+        labelStyle: TextStyle(
+            color: _isNickNameused == false ? Colors.white : Colors.red),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+              color: _isNickNameused == false ? Colors.white : Colors.red,
+              width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2.0),
+          borderSide: BorderSide(
+              color: _isNickNameused == false ? Colors.white : Colors.red,
+              width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
       ),
@@ -552,18 +609,28 @@ class _LoginPageState extends State<SignUpPage> {
 
   Widget _phoneNumberWidget() {
     return TextFormField(
+      onChanged: (text) {
+        setState(() {
+          _isPhoneNumberused = false;
+        });
+      },
       controller: _userPhoneNumberCtrl,
       keyboardType: TextInputType.number,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
-        labelText: "휴대폰(-없이)",
-        labelStyle: TextStyle(color: Colors.white),
-        border: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.white, width: 2.0),
+        labelText: _isPhoneNumberused == false ? "휴대폰(-없이)" : "중복된 전화번호",
+        labelStyle: TextStyle(
+            color: _isPhoneNumberused == false ? Colors.white : Colors.red),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+              color: _isPhoneNumberused == false ? Colors.white : Colors.red,
+              width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2.0),
+          borderSide: BorderSide(
+              color: _isPhoneNumberused == false ? Colors.white : Colors.red,
+              width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
       ),
@@ -616,7 +683,6 @@ class _LoginPageState extends State<SignUpPage> {
             splashColor: Colors.blueAccent,
             onPressed: () => _isSignupIndex == 0
                 ? setState(() {
-                    showToast("회원정보 확인 후 이동해드릴게요");
                     _signUpProfileCheck().then((value) {
                       if (value) {
                         setState(() {
@@ -719,24 +785,25 @@ class _LoginPageState extends State<SignUpPage> {
           _userNicknameCtrl.text != "" &&
           _userPasswordCtrl.text != "" &&
           _userPhoneNumberCtrl.text != "") {
-        var user =
-            await UserInfo(userEmail: _userEmailCtrl.text).getUserByEmail();
-        if (user == null) {
-          var userNickname =
-              await UserNickname(userNickname: _userNicknameCtrl.text)
-                  .getUserByNickname();
-          if (userNickname == null) {
+        if (_isEmailused == true || _isNickNameused == true) {
+          showToast("이메일 및 닉네임 확인해주세요.");
+          return false;
+        } else {
+          showToast("회원정보 확인 후 이동해드릴게요");
+          var user =
+              await UserPhoneCheck(userPhoneNumber: _userPhoneNumberCtrl.text)
+                  .getUserByPhoneNumber();
+          if (user == null) {
             return true;
           } else {
-            showToast("중복된 닉네임입니다.");
+            setState(() {
+              _isPhoneNumberused = true;
+            });
+            showToast("중복된 폰번호 입니다.");
             return false;
           }
-        } else {
-          showToast("중복된 이메일이 있습니다.");
-          return false;
         }
       } else {
-        showToast("빈칸을 채워주세요");
         return false;
       }
     } else if (_isSignupIndex == 1) {

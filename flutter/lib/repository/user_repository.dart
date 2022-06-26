@@ -453,3 +453,37 @@ class UserLikeFriends {
     }
   }
 }
+
+class UserPhoneCheck {
+  final String userPhoneNumber;
+  UserPhoneCheck({required this.userPhoneNumber});
+  Future<String> _userByPhoneNumberFromServer() async {
+    var url =
+        Uri.parse(LocalHost.getLocalHost() + "/api/create/" + userPhoneNumber);
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      String jsonString = utf8.decode(response.bodyBytes);
+      final jsonResponse = json.decode(jsonString);
+      return utf8.decode(response.bodyBytes);
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to load post');
+    }
+    //API통신
+    //await Future.delayed(Duration(milliseconds: 1000));
+  }
+
+  Future<User?> getUserByPhoneNumber() async {
+    String jsonString = await _userByPhoneNumberFromServer();
+    final jsonResponse = json.decode(jsonString);
+    print("3333");
+    print(jsonResponse);
+    if (jsonResponse == null) {
+      return null;
+    } else {
+      User user = User.fromJson(jsonResponse);
+      return (user);
+    }
+  }
+}

@@ -10,6 +10,7 @@ import 'package:sdb_trainer/pages/signup.dart';
 import 'package:sdb_trainer/pages/profile.dart';
 import 'package:sdb_trainer/pages/feed.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
+import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 
@@ -26,6 +27,7 @@ class _AppState extends State<App> {
   var _bodyStater;
   var _loginState;
   int _currentIndex = 0;
+  var _userdataProvider;
 
   BottomNavigationBarItem _bottomNavigationBarItem(
       String iconName, String label) {
@@ -85,6 +87,8 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     _bodyStater = Provider.of<BodyStater>(context, listen: true);
     _loginState = Provider.of<LoginPageProvider>(context);
+    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _userdataProvider.getUsersFriendsAll();
     return Scaffold(
       body: _loginState.isLogin
           ? IndexedStack(index: _bodyStater.bodystate, children: <Widget>[
