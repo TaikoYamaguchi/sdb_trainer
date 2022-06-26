@@ -4,7 +4,7 @@ import 'package:sdb_trainer/src/model/workoutdata.dart';
 
 class WorkoutdataProvider extends ChangeNotifier {
   var _workoutdata;
-  var backupdata;
+  List<Exercises>? backupdata;
   get workoutdata => _workoutdata;
 
   getdata() {
@@ -70,12 +70,13 @@ class WorkoutdataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  dataBU(){
-    backupdata = _workoutdata;
+  dataBU(rindex){
+    backupdata = new List.from(_workoutdata.routinedatas[rindex].exercises);
+
   }
 
-  changebudata(){
-    _workoutdata = backupdata;
+  changebudata(rindex){
+    _workoutdata.routinedatas[rindex].exercises = backupdata;
     notifyListeners();
   }
 

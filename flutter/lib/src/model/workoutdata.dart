@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 class Routinedatas {
   String name;
-  final List<Exercises> exercises;
+  List<Exercises> exercises;
   final double? routine_time;
   Routinedatas(
       {

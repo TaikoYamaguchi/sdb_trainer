@@ -51,7 +51,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
         ? IconButton(
         icon: Icon(Icons.arrow_back_ios_outlined),
         onPressed: (){
-          _workoutdataProvider.changebudata();
+          _workoutdataProvider.changebudata(widget.rindex);
           Navigator.of(context).pop();
         },
       )
@@ -97,7 +97,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             : IconButton(
           icon: SvgPicture.asset("assets/svg/add.svg"),
           onPressed: () {
-            _workoutdataProvider.dataBU();
+            _workoutdataProvider.dataBU(widget.rindex);
 
             setState(() {
               _isexsearch= !_isexsearch ;
@@ -196,7 +196,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                   key: Key('$index'),
                   onTap: () {
                     _isexsearch
-                    ? _workoutdataProvider.removeexAt(widget.rindex, index)
+                    ? [_workoutdataProvider.removeexAt(widget.rindex, index)]
                     : Navigator.push(context,Transition(
                         child: EachExerciseDetails(
                           ueindex: widget.uniqueinfo.indexWhere((element) => element.name == exlist[index].name),
