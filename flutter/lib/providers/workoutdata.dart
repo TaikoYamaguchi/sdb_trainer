@@ -4,12 +4,22 @@ import 'package:sdb_trainer/src/model/workoutdata.dart';
 
 class WorkoutdataProvider extends ChangeNotifier {
   var _workoutdata;
+  var backupdata;
   get workoutdata => _workoutdata;
 
   getdata() {
     RoutineRepository.loadRoutinedata().then((value) {
       _workoutdata = value;
       print("getdataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa?");
+      notifyListeners();
+    });
+
+  }
+
+  getdatawbu() {
+    RoutineRepository.loadRoutinedata().then((value) {
+      _workoutdata = value;
+      print("getdataaaaaaaaaawbu?");
       notifyListeners();
     });
 
@@ -45,12 +55,27 @@ class WorkoutdataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  removeexAt(rindex,eindex) {
+    _workoutdata.routinedatas[rindex].exercises.removeAt(eindex);
+    notifyListeners();
+  }
+
+  addexAt(rindex,ex) {
+    _workoutdata.routinedatas[rindex].exercises.add(ex);
+    notifyListeners();
+  }
+
   namechange(rindex ,newname) {
     _workoutdata.routinedatas[rindex].name = newname;
     notifyListeners();
   }
 
-  exinwdlist(){
+  dataBU(){
+    backupdata = _workoutdata;
+  }
+
+  changebudata(){
+    _workoutdata = backupdata;
     notifyListeners();
   }
 

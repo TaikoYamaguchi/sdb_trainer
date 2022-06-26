@@ -24,6 +24,7 @@ class EachWorkoutDetails extends StatefulWidget {
 class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   var _userdataProvider;
   var _workoutdataProvider;
+  var backupwddata;
   final controller = TextEditingController();
   TextEditingController _workoutNameCtrl = TextEditingController(text: "");
   var _exercisesdataProvider;
@@ -46,7 +47,15 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   PreferredSizeWidget _appbarWidget(){
 
     return AppBar(
-      leading: IconButton(
+      leading: _isexsearch
+        ? IconButton(
+        icon: Icon(Icons.arrow_back_ios_outlined),
+        onPressed: (){
+          _workoutdataProvider.changebudata();
+          Navigator.of(context).pop();
+        },
+      )
+      : IconButton(
         icon: Icon(Icons.arrow_back_ios_outlined),
         onPressed: (){
           //_editWorkoutCheck();
@@ -79,9 +88,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
           iconSize: 30,
           icon: Icon(Icons.check_rounded),
           onPressed: () {
-            _workoutdataProvider.exinwdlist();
             _editWorkoutCheck();
-            Provider.of<WorkoutdataProvider>(context, listen: false).getdata();
             setState(() {
               _isexsearch= !_isexsearch ;
             });
@@ -90,6 +97,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             : IconButton(
           icon: SvgPicture.asset("assets/svg/add.svg"),
           onPressed: () {
+            _workoutdataProvider.dataBU();
 
             setState(() {
               _isexsearch= !_isexsearch ;
@@ -155,7 +163,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
     WorkoutEdit(user_email: _userdataProvider.userdata.email, id: _workoutdataProvider.workoutdata.id, routinedatas: _workoutdataProvider.workoutdata.routinedatas)
         .editWorkout()
         .then((data) => data["user_email"] != null
-        ? showToast("done!")
+        ? [showToast("done!"), _workoutdataProvider.getdata()]
         : showToast("입력을 확인해주세요"));
   }
 
@@ -188,7 +196,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                   key: Key('$index'),
                   onTap: () {
                     _isexsearch
-                    ? setState(() {exlist.removeAt(index);})
+                    ? _workoutdataProvider.removeexAt(widget.rindex, index)
                     : Navigator.push(context,Transition(
                         child: EachExerciseDetails(
                           ueindex: widget.uniqueinfo.indexWhere((element) => element.name == exlist[index].name),
@@ -328,17 +336,20 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   }
 
   Widget exercisesWidget(exuniq, bool shirink) {
-    List existlist=[];
-    for (int i = 0; i< _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exersises.length; i++){
-      existlist.add(_workoutdataProvider.workoutdata.routinedatas[widget.rindex].exersises[i].name);
-    }
+
     double top = 0;
     double bottom = 0;
     return Expanded(
       //color: Colors.black,
       child: Consumer<WorkoutdataProvider>(
         builder: (builder, provider, child) {
-           List exlist =  provider.workoutdata.routinedatas[widget.rindex].exercises;
+          List exlist =  provider.workoutdata.routinedatas[widget.rindex].exercises;
+          List existlist=[];
+          for (int i = 0; i< exlist.length; i++){
+            existlist.add(exlist[i].name);
+          }
+
+
           return ListView.separated(
               padding: EdgeInsets.symmetric(horizontal: 5),
               itemBuilder: (BuildContext _context, int index) {
@@ -357,7 +368,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 return GestureDetector(
                   onTap: (){
                     setState(() {
-                      alreadyexist ? print("already") : exlist.add(new wod.Exercises(name: exuniq[index].name, sets: wod.Setslist().setslist, onerm: exuniq[index].onerm, rest: 0));
+                      alreadyexist ? print("already") : _workoutdataProvider.addexAt(widget.rindex,new wod.Exercises(name: exuniq[index].name, sets: wod.Setslist().setslist, onerm: exuniq[index].onerm, rest: 0));
                     });
 
                   },

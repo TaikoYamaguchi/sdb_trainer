@@ -84,88 +84,93 @@ class ExerciseState extends State<Exercise> {
   Widget _workoutWidget(edata, wdata) {
     return Container(
       color: Colors.black,
-      child: ListView.separated(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          itemBuilder: (BuildContext _context, int index) {
-            if (index == 0) {
-              top = 20;
-              bottom = 0;
-            } else if (index == wdata.routinedatas.length - 1) {
-              top = 0;
-              bottom = 20;
-            } else {
-              top = 0;
-              bottom = 0;
-            }
-            ;
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    Transition(
-                        child: EachWorkoutDetails(
-                          exerciselist: wdata.routinedatas[index].exercises,
-                          uniqueinfo: edata,
-                          rindex: index,
-                        ),
-                        transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-              },
-              child: Container(
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                      color: Color(0xFF212121),
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(top),
-                          bottomRight: Radius.circular(bottom),
-                          topLeft: Radius.circular(top),
-                          bottomLeft: Radius.circular(bottom))),
-                  height: 52,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Consumer<WorkoutdataProvider>(
+        builder: (builder, provider, child) {
+          List routinelist = provider.workoutdata.routinedatas;
+          return ListView.separated(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              itemBuilder: (BuildContext _context, int index) {
+                if (index == 0) {
+                  top = 20;
+                  bottom = 0;
+                } else if (index == routinelist.length - 1) {
+                  top = 0;
+                  bottom = 20;
+                } else {
+                  top = 0;
+                  bottom = 0;
+                }
+                ;
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        Transition(
+                            child: EachWorkoutDetails(
+                              exerciselist: routinelist[index].exercises,
+                              uniqueinfo: edata,
+                              rindex: index,
+                            ),
+                            transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+                  },
+                  child: Container(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      decoration: BoxDecoration(
+                          color: Color(0xFF212121),
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(top),
+                              bottomRight: Radius.circular(bottom),
+                              topLeft: Radius.circular(top),
+                              bottomLeft: Radius.circular(bottom))),
+                      height: 52,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            wdata.routinedatas[index].name,
-                            style: TextStyle(fontSize: 21, color: Colors.white),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                routinelist[index].name,
+                                style: TextStyle(fontSize: 21, color: Colors.white),
+                              ),
+                              Text(
+                                  "${routinelist[index].exercises.length} Exercises",
+                                  style: TextStyle(
+                                      fontSize: 13, color: Color(0xFF717171)))
+                            ],
                           ),
-                          Text(
-                              "${wdata.routinedatas[index].exercises.length} Exercises",
-                              style: TextStyle(
-                                  fontSize: 13, color: Color(0xFF717171)))
+                          IconButton(
+                            onPressed: () {
+
+                              _displayDeleteAlert(index);
+                            },
+                            icon: Icon(Icons.delete),
+                            color: Colors.white,
+                          )
                         ],
                       ),
-                      IconButton(
-                        onPressed: () {
-
-                          _displayDeleteAlert(index);
-                        },
-                        icon: Icon(Icons.delete),
-                        color: Colors.white,
-                      )
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            );
-          },
-          separatorBuilder: (BuildContext _context, int index) {
-            return Container(
-              alignment: Alignment.center,
-              height: 1,
-              color: Color(0xFF212121),
-              child: Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                height: 1,
-                color: Color(0xFF717171),
-              ),
-            );
-          },
-          itemCount: wdata.routinedatas.length),
+                );
+              },
+              separatorBuilder: (BuildContext _context, int index) {
+                return Container(
+                  alignment: Alignment.center,
+                  height: 1,
+                  color: Color(0xFF212121),
+                  child: Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    height: 1,
+                    color: Color(0xFF717171),
+                  ),
+                );
+              },
+              itemCount: routinelist.length);
+        }
+      ),
     );
   }
 
