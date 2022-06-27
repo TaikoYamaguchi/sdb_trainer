@@ -1,4 +1,4 @@
-from app.db.crud_history import create_history, edit_comment_by_id, edit_exercies_by_id, get_friends_histories, get_histories_by_email, get_histories, manage_like_by_history_id
+from app.db.crud_history import create_history, edit_comment_by_id, edit_exercies_by_id, get_friends_histories, get_histories_by_email, get_histories, manage_like_by_history_id, visible_auth_history
 from fastapi import APIRouter, Request, Depends, Response, encoders
 import typing as t
 
@@ -109,7 +109,7 @@ async def history_exercises_edit(
 @r.patch(
     "/historyVisible", response_model=HistoryOut, response_model_exclude_none=True
 )
-async def visible_auth_history(
+async def history_visible_edit(
     response: Response,
     history:ManageVisibleHistory,
     db=Depends(get_db),
