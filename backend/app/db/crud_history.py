@@ -82,12 +82,10 @@ def visible_auth_history(db:Session,history:schemas.ManageVisibleHistory, user:s
     if user.email == db_history.writer_email:
         if history.status == "true":
             setattr(db_history, "isVisible", True)
-            db.add(db_history)
             db.commit()
             db.refresh((db_history))
         elif history.status == "false":
             setattr(db_history, "isVisible", False)
-            db.add(db_history)
             db.commit()
             db.refresh((db_history))
 
