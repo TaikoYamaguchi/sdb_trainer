@@ -2,8 +2,10 @@ from app.db.crud_history import create_history, edit_comment_by_id, edit_exercie
 from fastapi import APIRouter, Request, Depends, Response, encoders
 import typing as t
 
+
+from app.core.auth import get_current_active_user, get_current_user
 from app.db.session import get_db
-from app.db.schemas import HistoryCommentEdit, HistoryCreate, HistoryExercisesEdit, HistoryOut, ManageLikeHistory
+from app.db.schemas import HistoryCommentEdit, HistoryCreate, HistoryExercisesEdit, HistoryOut, ManageLikeHistory, ManageVisibleHistory
 
 
 history_router = r = APIRouter()
@@ -104,3 +106,13 @@ async def history_exercises_edit(
     return history
 
 
+@r.patch(
+    "/historyVisible", response_model=HistoryOut, response_model_exclude_none=True
+)
+async def visible_auth_history(
+    request: Request,
+    history:ManageVisibleHistory,
+    db=Depends(get_db),
+    user=Depends(get_current_user)
+):
+    return visible_auth_history(db, history, user)

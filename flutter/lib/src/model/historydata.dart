@@ -13,6 +13,7 @@ class SDBdata {
   String? comment;
   final String? nickname;
   final int comment_length;
+  final bool? isVisible;
   SDBdata(
       {required this.id,
       required this.user_email,
@@ -23,7 +24,8 @@ class SDBdata {
       required this.like,
       required this.comment,
       required this.nickname,
-      required this.comment_length});
+      required this.comment_length,
+      required this.isVisible});
 
   factory SDBdata.fromJson(Map<String, dynamic> parsedJson) {
     var list = parsedJson['exercises'].runtimeType == String
@@ -33,16 +35,18 @@ class SDBdata {
     List<Exercises> exerciseList =
         list.map((i) => Exercises.fromJson(i)).toList();
     return SDBdata(
-        id: parsedJson['id'],
-        user_email: parsedJson['user_email'],
-        exercises: exerciseList,
-        date: parsedJson["date"],
-        new_record: parsedJson["new_record"],
-        workout_time: parsedJson["workout_time"],
-        like: parsedJson["like"],
-        comment: parsedJson["comment"],
-        nickname: parsedJson["nickname"],
-        comment_length: parsedJson["comment_length"]);
+      id: parsedJson['id'],
+      user_email: parsedJson['user_email'],
+      exercises: exerciseList,
+      date: parsedJson["date"],
+      new_record: parsedJson["new_record"],
+      workout_time: parsedJson["workout_time"],
+      like: parsedJson["like"],
+      comment: parsedJson["comment"],
+      nickname: parsedJson["nickname"],
+      comment_length: parsedJson["comment_length"],
+      isVisible: parsedJson["isVisible"],
+    );
   }
 }
 

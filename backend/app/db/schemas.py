@@ -116,6 +116,10 @@ class ExercisesOut(ExercisesBase):
     class config:
         orm_mode = True
 
+class ManageVisibleHistory(BaseModel):
+    history_id:int
+    status:str
+
 class ManageLikeHistory(BaseModel):
     history_id:int
     email:str

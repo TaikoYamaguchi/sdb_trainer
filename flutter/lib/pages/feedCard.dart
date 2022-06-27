@@ -54,7 +54,10 @@ class _FeedCardState extends State<FeedCard> {
   Widget build(BuildContext context) {
     print(_commentInfo);
     print(widget.feedListCtrl);
-    return _feedCard(widget.sdbdata, widget.index);
+    return (widget.feedListCtrl == 1 && widget.sdbdata.isVisible == false) ||
+            (widget.feedListCtrl == 2 && widget.sdbdata.isVisible == false)
+        ? Container()
+        : _feedCard(widget.sdbdata, widget.index);
   }
 
   Widget _feedCard(SDBdata, index) {
@@ -62,7 +65,9 @@ class _FeedCardState extends State<FeedCard> {
     _historyProvider = Provider.of<HistorydataProvider>(context, listen: false);
     _userdataProvider.getUsersFriendsAll();
     _userdataProvider.getdata();
-
+    User user = _userdataProvider.userFriendsAll.userdatas
+        .where((user) => user.email == SDBdata.user_email)
+        .toList()[0];
     if (_historyProvider.commentAll != null) {
       _commentListbyId = _historyProvider.commentAll.comments
           .where((comment) => comment.history_id == SDBdata.id)
@@ -84,13 +89,31 @@ class _FeedCardState extends State<FeedCard> {
                 children: [
                   Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 5),
+                          horizontal: 10, vertical: 5),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            SDBdata.nickname,
-                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          Row(
+                            children: [
+                              user.image == ""
+                                  ? Icon(
+                                      Icons.account_circle,
+                                      color: Colors.grey,
+                                      size: 38.0,
+                                    )
+                                  : CircleAvatar(
+                                      radius: 18.0,
+                                      backgroundImage: NetworkImage(user.image),
+                                      backgroundColor: Colors.transparent),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 5.0),
+                                child: Text(
+                                  SDBdata.nickname,
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.white),
+                                ),
+                              ),
+                            ],
                           ),
                           Row(
                             children: [
@@ -98,21 +121,74 @@ class _FeedCardState extends State<FeedCard> {
                                 padding: const EdgeInsets.only(right: 4.0),
                                 child: Text(SDBdata.date.substring(2, 10),
                                     style: TextStyle(
-                                        fontSize: 18, color: Colors.white)),
+                                        fontSize: 18, color: Colors.grey)),
                               ),
                               SDBdata.user_email ==
                                       _userdataProvider.userdata.email
                                   ? GestureDetector(
+                                      onTapDown: _storePosition,
                                       onTap: () {
-                                        _historyCommentCtrl =
-                                            TextEditingController(
-                                                text: SDBdata.comment);
-                                        ;
-                                        _displayTextInputDialog(
-                                            context, SDBdata);
+                                        showMenu(
+                                          context: context,
+                                          position: RelativeRect.fromRect(
+                                              _tapPosition & Size(30, 30),
+                                              Offset.zero & Size(0, 0)),
+                                          items: [
+                                            PopupMenuItem(
+                                                child: ListTile(
+                                                    contentPadding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 4.0,
+                                                            vertical: 0.0),
+                                                    leading:
+                                                        Icon(Icons.mode_edit),
+                                                    title: Text("코멘트")),
+                                                onTap: () {
+                                                  _historyCommentCtrl =
+                                                      TextEditingController(
+                                                          text:
+                                                              SDBdata.comment);
+                                                  Future<void>.delayed(
+                                                      const Duration(), // OR const Duration(milliseconds: 500),
+                                                      () =>
+                                                          _displayTextInputDialog(
+                                                              context,
+                                                              SDBdata));
+                                                }),
+                                            PopupMenuItem(
+                                                child: ListTile(
+                                                    contentPadding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 4.0,
+                                                            vertical: 0.0),
+                                                    leading: SDBdata.isVisible
+                                                        ? Icon(Icons
+                                                            .filter_list_off)
+                                                        : Icon(
+                                                            Icons.filter_list),
+                                                    title: SDBdata.isVisible
+                                                        ? Text("숨김")
+                                                        : Text("보임")),
+                                                onTap: () {
+                                                  if (SDBdata.isVisible) {
+                                                    HistoryVisibleEdit(
+                                                            history_id:
+                                                                SDBdata.id,
+                                                            status: "false")
+                                                        .patchHistoryVisible();
+                                                  } else {
+                                                    HistoryVisibleEdit(
+                                                            history_id:
+                                                                SDBdata.id,
+                                                            status: "true")
+                                                        .patchHistoryVisible();
+                                                  }
+                                                }),
+                                          ],
+                                        );
                                       },
-                                      child: Icon(Icons.menu,
-                                          color: Colors.white, size: 18.0))
+                                      child: Icon(Icons.more_vert,
+                                          color: Colors.grey, size: 18.0))
                                   : Container()
                             ],
                           ),
