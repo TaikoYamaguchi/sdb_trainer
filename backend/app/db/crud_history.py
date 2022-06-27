@@ -77,7 +77,7 @@ def edit_exercies_by_id(db: Session,history:schemas.HistoryExercisesEdit) -> sch
     db.refresh(db_history)
     return db_history
 
-def visible_auth_history(db:Session,history:schemas.ManageVisibleHistory, user:schemas.User):
+def visible_auth_history(db:Session,history:schemas.ManageVisibleHistory, user:schemas.User) -> schemas.HistoryOut:
     db_history = db.query(models.History).filter(models.History.id == history.history_id).first()
     if user.email == db_history.writer_email:
         if history.status == "true":

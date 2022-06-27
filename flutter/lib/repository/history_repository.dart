@@ -255,7 +255,7 @@ class HistoryVisibleEdit {
     final storage = new FlutterSecureStorage();
     String? token = await storage.read(key: "sdb_token");
     var formData = new Map<String, dynamic>();
-    formData["id"] = history_id;
+    formData["history_id"] = history_id;
     formData["status"] = status;
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/historyVisible");
