@@ -79,7 +79,7 @@ def edit_exercies_by_id(db: Session,history:schemas.HistoryExercisesEdit) -> sch
 
 def visible_auth_history(db:Session,history:schemas.ManageVisibleHistory, user:schemas.User) -> schemas.HistoryOut:
     db_history = db.query(models.History).filter(models.History.id == history.history_id).first()
-    if user.email == db_history.writer_email:
+    if user.email == db_history.user_email:
         if history.status == "true":
             setattr(db_history, "isVisible", True)
             db.commit()
