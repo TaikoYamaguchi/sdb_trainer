@@ -110,7 +110,7 @@ async def history_exercises_edit(
     "/historyVisible", response_model=HistoryOut, response_model_exclude_none=True
 )
 async def visible_auth_history(
-    request: Request,
+    response: Response,
     history:ManageVisibleHistory,
     db=Depends(get_db),
     user=Depends(get_current_user)
