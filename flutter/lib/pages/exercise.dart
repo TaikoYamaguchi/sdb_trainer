@@ -81,9 +81,10 @@ class ExerciseState extends State<Exercise> {
     );
   }
 
-  Widget _workoutWidget(edata, wdata) {
+  Widget _workoutWidget() {
     return Container(
       color: Colors.black,
+<<<<<<< HEAD
       child: Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
         List routinelist = provider.workoutdata.routinedatas;
         return ListView.separated(
@@ -147,10 +148,104 @@ class ExerciseState extends State<Exercise> {
                           },
                           icon: Icon(Icons.delete),
                           color: Colors.white,
+=======
+      child: Consumer<WorkoutdataProvider>(
+        builder: (builder, provider, child) {
+          List routinelist = provider.workoutdata.routinedatas;
+          return ReorderableListView.builder(
+              onReorder: (int oldIndex, int newIndex) {
+                setState(() {
+                  if (oldIndex < newIndex) {
+                    newIndex -= 1;
+                  }
+                  final item = routinelist.removeAt(oldIndex);
+                  routinelist.insert(newIndex, item);
+                  _editWorkoutCheck();
+                });
+              },
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              itemBuilder: (BuildContext _context, int index) {
+                if (index == 0) {
+                  top = 20;
+                  bottom = 0;
+                } else if (index == routinelist.length - 1) {
+                  top = 0;
+                  bottom = 20;
+                } else {
+                  top = 0;
+                  bottom = 0;
+                }
+                ;
+                return GestureDetector(
+                  key: Key('$index'),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        Transition(
+                            child: EachWorkoutDetails(
+                              exerciselist: routinelist[index].exercises,
+                              rindex: index,
+                            ),
+                            transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+                  },
+                  child: Container(
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          decoration: BoxDecoration(
+                              color: Color(0xFF212121),
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(top),
+                                  bottomRight: Radius.circular(bottom),
+                                  topLeft: Radius.circular(top),
+                                  bottomLeft: Radius.circular(bottom))),
+                          height: 52,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    routinelist[index].name,
+                                    style: TextStyle(fontSize: 21, color: Colors.white),
+                                  ),
+                                  Text(
+                                      "${routinelist[index].exercises.length} Exercises",
+                                      style: TextStyle(
+                                          fontSize: 13, color: Color(0xFF717171)))
+                                ],
+                              ),
+                              IconButton(
+                                onPressed: () {
+
+                                  _displayDeleteAlert(index);
+                                },
+                                icon: Icon(Icons.delete),
+                                color: Colors.white,
+                              ),
+
+                            ],
+                          ),
+                        ),
+                        index == routinelist.length-1
+                            ? Container()
+                            : Container(alignment: Alignment.center,
+                          height:1, color: Color(0xFF212121),
+                          child: Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.symmetric(horizontal: 10),
+                            height:1, color: Color(0xFF717171),
+                          ),
+
+>>>>>>> 2e5528b46d090f60d0ac3947fe2495ae4f3a3a77
                         )
                       ],
                     ),
                   ),
+<<<<<<< HEAD
                 ),
               );
             },
@@ -160,15 +255,37 @@ class ExerciseState extends State<Exercise> {
                 height: 1,
                 color: Color(0xFF212121),
                 child: Container(
+=======
+                );
+              },
+              /*
+              separatorBuilder: (BuildContext _context, int index) {
+                return Container(
+>>>>>>> 2e5528b46d090f60d0ac3947fe2495ae4f3a3a77
                   alignment: Alignment.center,
                   margin: EdgeInsets.symmetric(horizontal: 10),
                   height: 1,
+<<<<<<< HEAD
                   color: Color(0xFF717171),
                 ),
               );
             },
             itemCount: routinelist.length);
       }),
+=======
+                  color: Color(0xFF212121),
+                  child: Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    height: 1,
+                    color: Color(0xFF717171),
+                  ),
+                );
+              },*/
+              itemCount: routinelist.length);
+        }
+      ),
+>>>>>>> 2e5528b46d090f60d0ac3947fe2495ae4f3a3a77
     );
   }
 
@@ -177,8 +294,8 @@ class ExerciseState extends State<Exercise> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('TextField in Dialog'),
-            content: Text('Are you Sure to Delete?'),
+            title: Text('Delete Alert', style: TextStyle(fontWeight: FontWeight.bold)),
+            content: Text('이 루틴을 지우시겠습니까?'),
             actions: <Widget>[
               _DeleteConfirmButton(rindex),
             ],
@@ -384,10 +501,10 @@ class ExerciseState extends State<Exercise> {
     );
   }
 
-  Widget _bodyWidget(edata, wdata) {
+  Widget _bodyWidget() {
     switch (swap) {
       case 1:
-        return _workoutWidget(edata, wdata);
+        return _workoutWidget();
 
       case -1:
         return exercisesWidget2(false);
@@ -445,8 +562,8 @@ class ExerciseState extends State<Exercise> {
             routinedatas: _workoutdataProvider.workoutdata.routinedatas)
         .editWorkout()
         .then((data) => data["user_email"] != null
-            ? showToast("done!")
-            : showToast("입력을 확인해주세요"));
+        ? [showToast("done!"), _workoutdataProvider.getdata()]
+        : showToast("입력을 확인해주세요"));
   }
 
   void _postWorkoutCheck() async {
@@ -467,15 +584,13 @@ class ExerciseState extends State<Exercise> {
     _exercisesdataProvider.getdata();
     _workoutdataProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
-    _workoutdataProvider.getdata();
-
     return Scaffold(
         appBar: _appbarWidget(),
         body: Consumer2<ExercisesdataProvider, WorkoutdataProvider>(
             builder: (context, provider1, provider2, widget) {
+
           if (provider2.workoutdata != null) {
-            return _bodyWidget(
-                provider1.exercisesdata.exercises, provider2.workoutdata);
+            return _bodyWidget();
           }
           return Container(
             color: Colors.black,
