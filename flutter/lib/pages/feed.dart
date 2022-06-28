@@ -57,9 +57,6 @@ class _FeedState extends State<Feed> {
 
     _userdataProvider.getFriendsdata(_userdataProvider.userdata.email);
 
-    _historydataAll.getdata();
-    _historydataAll.getCommentAll();
-    _historydataAll.getFriendsHistorydata(_userdataProvider.userdata.email);
     print("111111");
     return Scaffold(
         appBar: AppBar(

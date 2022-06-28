@@ -184,18 +184,9 @@ class ExerciseState extends State<Exercise> {
             /*
               separatorBuilder: (BuildContext _context, int index) {
                 return Container(
->>>>>>> 2e5528b46d090f60d0ac3947fe2495ae4f3a3a77
                   alignment: Alignment.center,
                   margin: EdgeInsets.symmetric(horizontal: 10),
                   height: 1,
-<<<<<<< HEAD
-                  color: Color(0xFF717171),
-                ),
-              );
-            },
-            itemCount: routinelist.length);
-      }),
-=======
                   color: Color(0xFF212121),
                   child: Container(
                     alignment: Alignment.center,
