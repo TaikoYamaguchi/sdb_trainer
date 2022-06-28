@@ -294,8 +294,15 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                     .exercises[pindex].sets;
                 return ListView.separated(
                     itemBuilder: (BuildContext _context, int index) {
-                      weightController[pindex].controllerlist.add(new TextEditingController());
-                      repsController[pindex].controllerlist.add(new TextEditingController());
+                      weightController[pindex].controllerlist.add(new TextEditingController(
+                          text: _sets[index].weight == 0
+                              ? null
+                              : (_sets[index].weight % 1) == 0
+                                ? _sets[index].weight.toStringAsFixed(0)
+                                : _sets[index].weight.toStringAsFixed(1)
+
+                      ));
+                      repsController[pindex].controllerlist.add(new TextEditingController(text: _sets[index].reps.toStringAsFixed(0)));
                       return Container(
                         padding: EdgeInsets.only(right: 10),
                         child: Row(
