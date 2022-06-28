@@ -56,6 +56,7 @@ class _FeedState extends State<Feed> {
     _userdataProvider.getUsersFriendsAll();
 
     _userdataProvider.getFriendsdata(_userdataProvider.userdata.email);
+    _historydataAll.getFriendsHistorydata(_userdataProvider.userdata.email);
 
     print("111111");
     return Scaffold(

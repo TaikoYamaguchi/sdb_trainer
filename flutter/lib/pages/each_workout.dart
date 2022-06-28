@@ -10,11 +10,12 @@ import 'package:sdb_trainer/src/model/workoutdata.dart' as wod;
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:transition/transition.dart';
 
-
 class EachWorkoutDetails extends StatefulWidget {
   List<wod.Exercises> exerciselist;
   int rindex;
-  EachWorkoutDetails({Key? key,  required this.exerciselist,  required this.rindex}) : super(key: key);
+  EachWorkoutDetails(
+      {Key? key, required this.exerciselist, required this.rindex})
+      : super(key: key);
 
   @override
   _EachWorkoutDetailsState createState() => _EachWorkoutDetailsState();
@@ -34,49 +35,45 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   double top = 0;
   double bottom = 0;
   int swap = 1;
-  bool _isexsearch=false;
-
+  bool _isexsearch = false;
 
   @override
   void initState() {
     super.initState();
-
   }
 
-  PreferredSizeWidget _appbarWidget(){
-
+  PreferredSizeWidget _appbarWidget() {
     return AppBar(
       leading: _isexsearch
-        ? IconButton(
-        icon: Icon(Icons.arrow_back_ios_outlined),
-        onPressed: (){
-          _workoutdataProvider.changebudata(widget.rindex);
-          Navigator.of(context).pop();
-        },
-      )
-      : IconButton(
-        icon: Icon(Icons.arrow_back_ios_outlined),
-        onPressed: (){
-          //_editWorkoutCheck();
-          Navigator.of(context).pop();
-          //Provider.of<WorkoutdataProvider>(context, listen: false).getdata();
-        },
-      ),
+          ? IconButton(
+              icon: Icon(Icons.arrow_back_ios_outlined),
+              onPressed: () {
+                _workoutdataProvider.changebudata(widget.rindex);
+                Navigator.of(context).pop();
+              },
+            )
+          : IconButton(
+              icon: Icon(Icons.arrow_back_ios_outlined),
+              onPressed: () {
+                //_editWorkoutCheck();
+                Navigator.of(context).pop();
+                //Provider.of<WorkoutdataProvider>(context, listen: false).getdata();
+              },
+            ),
       title: Row(
         children: [
           GestureDetector(
-            onTap: (){
+            onTap: () {
               _displayTextInputDialog();
             },
             child: Container(
               child: Consumer<WorkoutdataProvider>(
-                builder: (builder, provider, child) {
-                  return Text(
-                    provider.workoutdata.routinedatas[widget.rindex].name,
-                    style:TextStyle(color: Colors.white, fontSize: 30),
-                  );
-                }
-              ),
+                  builder: (builder, provider, child) {
+                return Text(
+                  provider.workoutdata.routinedatas[widget.rindex].name,
+                  style: TextStyle(color: Colors.white, fontSize: 30),
+                );
+              }),
             ),
           ),
         ],
@@ -84,31 +81,31 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
       actions: [
         _isexsearch
             ? IconButton(
-          iconSize: 30,
-          icon: Icon(Icons.check_rounded),
-          onPressed: () {
-            _editWorkoutCheck();
-            setState(() {
-              _isexsearch= !_isexsearch ;
-            });
-          },
-        )
+                iconSize: 30,
+                icon: Icon(Icons.check_rounded),
+                onPressed: () {
+                  _editWorkoutCheck();
+                  setState(() {
+                    _isexsearch = !_isexsearch;
+                  });
+                },
+              )
             : IconButton(
-          icon: SvgPicture.asset("assets/svg/add.svg"),
-          onPressed: () {
-            _workoutdataProvider.dataBU(widget.rindex);
+                icon: SvgPicture.asset("assets/svg/add.svg"),
+                onPressed: () {
+                  _workoutdataProvider.dataBU(widget.rindex);
 
-            setState(() {
-              _isexsearch= !_isexsearch ;
-            });
-          },
-        )
+                  setState(() {
+                    _isexsearch = !_isexsearch;
+                  });
+                },
+              )
       ],
       backgroundColor: Colors.black,
     );
   }
 
-  void _displayTextInputDialog()  {
+  void _displayTextInputDialog() {
     showDialog(
         context: context,
         builder: (context) {
@@ -140,240 +137,91 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               _editWorkoutNameCheck(_workoutNameCtrl.text);
               _workoutNameCtrl.clear();
               Navigator.of(context, rootNavigator: true).pop();
-
             },
             child: Text("workout 이름 제출",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
   void _editWorkoutNameCheck(newname) async {
+    _workoutdataProvider.namechange(widget.rindex, newname);
 
-    _workoutdataProvider.namechange(widget.rindex,newname);
-
-    WorkoutEdit(user_email: _userdataProvider.userdata.email, id: _workoutdataProvider.workoutdata.id , routinedatas: _workoutdataProvider.workoutdata.routinedatas)
+    WorkoutEdit(
+            user_email: _userdataProvider.userdata.email,
+            id: _workoutdataProvider.workoutdata.id,
+            routinedatas: _workoutdataProvider.workoutdata.routinedatas)
         .editWorkout()
         .then((data) => data["user_email"] != null
-        ? {showToast("done!"),_workoutdataProvider.getdata()}
-        : showToast("입력을 확인해주세요"));
+            ? {showToast("done!"), _workoutdataProvider.getdata()}
+            : showToast("입력을 확인해주세요"));
   }
 
   void _editWorkoutCheck() async {
     print(_userdataProvider.userdata.email);
-    WorkoutEdit(user_email: _userdataProvider.userdata.email, id: _workoutdataProvider.workoutdata.id, routinedatas: _workoutdataProvider.workoutdata.routinedatas)
+    WorkoutEdit(
+            user_email: _userdataProvider.userdata.email,
+            id: _workoutdataProvider.workoutdata.id,
+            routinedatas: _workoutdataProvider.workoutdata.routinedatas)
         .editWorkout()
         .then((data) => data["user_email"] != null
-        ? [showToast("done!"), _workoutdataProvider.getdata()]
-        : showToast("입력을 확인해주세요"));
+            ? [showToast("done!"), _workoutdataProvider.getdata()]
+            : showToast("입력을 확인해주세요"));
   }
-
 
   Widget _exercisesWidget(bool shirink) {
     return Container(
       color: Colors.black,
       child: Consumer2<WorkoutdataProvider, ExercisesdataProvider>(
-        builder: (builder, wdp, exp, child) {
-          List exunique = exp.exercisesdata.exercises;
-          List exlist=wdp.workoutdata.routinedatas[widget.rindex].exercises;
-          return ReorderableListView.builder(
-              onReorder: (int oldIndex, int newIndex) {
-                setState(() {
-                  if (oldIndex < newIndex) {
-                    newIndex -= 1;
-                  }
-                  final item = exlist.removeAt(oldIndex);
-                  exlist.insert(newIndex, item);
-                  _editWorkoutCheck();
-                });
-              },
-              padding: EdgeInsets.symmetric(horizontal: 5),
-              itemBuilder: (BuildContext _context, int index){
-                final exinfo = exunique.where((unique){
-                  return (unique.name == exlist[index].name);
-                }).toList();
-                print(exinfo);
-                if(index==0){top = 20; bottom = 0;} else if (index==exlist.length-1){top = 0;bottom = 20;} else {top = 0;bottom = 0;};
-                return GestureDetector(
-                  key: Key('$index'),
-                  onTap: () {
-                    _isexsearch
-                    ? [_workoutdataProvider.removeexAt(widget.rindex, index)]
-                    : Navigator.push(context,Transition(
-                        child: EachExerciseDetails(
-                          ueindex: exunique.indexWhere((element) => element.name == exlist[index].name),
-                          eindex: index,
-                          rindex: widget.rindex,
-                        ),
-                        transitionEffect: TransitionEffect.RIGHT_TO_LEFT
-                    ));
-                  },
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        decoration: BoxDecoration(
-                            color: Color(0xFF212121),
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(top),
-                                bottomRight: Radius.circular(bottom),
-                                topLeft: Radius.circular(top),
-                                bottomLeft: Radius.circular(bottom)
-                            )
-                        ),
-                        height: 52,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              exlist[index].name,
-                              style: TextStyle(fontSize: 21, color: Colors.white),
-                            ),
-
-                            Container(
-                              child: Row(
-                                //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(
-                                      "Rest: ${exlist[index].rest}",
-                                      style: TextStyle(fontSize: 13, color: Color(0xFF717171))
-                                  ),
-                                  Expanded(child: SizedBox()),
-                                  Text(
-                                      "1RM: ${exinfo[0].onerm.toStringAsFixed(1)}/${exinfo[0].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
-                                      style: TextStyle(fontSize: 13, color: Color(0xFF717171))
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      index == exlist.length-1
-                      ? Container()
-                      : Container(alignment: Alignment.center,
-                        height:1, color: Color(0xFF212121),
-                        child: Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.symmetric(horizontal: 10),
-                          height:1, color: Color(0xFF717171),
-                        ),
-
-                      )
-                    ],
-                  ),
-                );
-              },
-              /*
-              separatorBuilder: (BuildContext _context, int index){
-                return Container(
-                  alignment: Alignment.center,
-                  height:1, color: Color(0xFF212121),
-                  child: Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                    height:1, color: Color(0xFF717171),
-                  ),
-                );
-
-              },
-               */
-              shrinkWrap: shirink,
-              itemCount: exlist.length
-          );
-        }
-      ),
-    );
-  }
-
-  Widget _exercises_searchWidget() {
-
-    return Container(
-      color: Colors.black,
-      child: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.fromLTRB(10, 16, 10, 16),
-            child: TextField(
-
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.search, color: Color(0xFF717171),),
-                hintText: "Exercise Name",
-                hintStyle: TextStyle(fontSize: 20.0, color: Color(0xFF717171)),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(width: 3, color: Color(0xFF717171)),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-              ),
-              onChanged: (text) {
-                searchExercise(text.toString());
-
-              }
-            ),
-          ),
-          AspectRatio(
-            aspectRatio: 1.3,
-              child: _exercisesWidget(true)
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5),
-            color: Color(0xFF212121),
-            height: 20,
-            child: Row(
-              children: [
-                Text(
-                  "Not in List",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ],
-            ),
-          ),
-          exercisesWidget(_testdata, true)
-
-        ],
-      ),
-    );
-  }
-
-  Widget exercisesWidget(exuniq, bool shirink) {
-
-    double top = 0;
-    double bottom = 0;
-    return Expanded(
-      //color: Colors.black,
-      child: Consumer<WorkoutdataProvider>(
-        builder: (builder, provider, child) {
-          List exlist =  provider.workoutdata.routinedatas[widget.rindex].exercises;
-          List existlist=[];
-          for (int i = 0; i< exlist.length; i++){
-            existlist.add(exlist[i].name);
-          }
-
-
-          return ListView.separated(
-              padding: EdgeInsets.symmetric(horizontal: 5),
-              itemBuilder: (BuildContext _context, int index) {
-                bool alreadyexist = existlist.contains(exuniq[index].name);
-                if (index == 0) {
-                  top = 20;
-                  bottom = 0;
-                } else if (index == exuniq.length - 1) {
-                  top = 0;
-                  bottom = 20;
-                } else {
-                  top = 0;
-                  bottom = 0;
+          builder: (builder, wdp, exp, child) {
+        List exunique = exp.exercisesdata.exercises;
+        List exlist = wdp.workoutdata.routinedatas[widget.rindex].exercises;
+        return ReorderableListView.builder(
+            onReorder: (int oldIndex, int newIndex) {
+              setState(() {
+                if (oldIndex < newIndex) {
+                  newIndex -= 1;
                 }
-                ;
-                return GestureDetector(
-                  onTap: (){
-                    setState(() {
-                      alreadyexist ? print("already") : _workoutdataProvider.addexAt(widget.rindex,new wod.Exercises(name: exuniq[index].name, sets: wod.Setslist().setslist, onerm: exuniq[index].onerm, rest: 0));
-                    });
-
-                  },
-                  child: Container(
-                    child: Container(
+                final item = exlist.removeAt(oldIndex);
+                exlist.insert(newIndex, item);
+                _editWorkoutCheck();
+              });
+            },
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            itemBuilder: (BuildContext _context, int index) {
+              final exinfo = exunique.where((unique) {
+                return (unique.name == exlist[index].name);
+              }).toList();
+              print(exinfo);
+              if (index == 0) {
+                top = 20;
+                bottom = 0;
+              } else if (index == exlist.length - 1) {
+                top = 0;
+                bottom = 20;
+              } else {
+                top = 0;
+                bottom = 0;
+              }
+              ;
+              return GestureDetector(
+                key: Key('$index'),
+                onTap: () {
+                  _isexsearch
+                      ? [_workoutdataProvider.removeexAt(widget.rindex, index)]
+                      : Navigator.push(
+                          context,
+                          Transition(
+                              child: EachExerciseDetails(
+                                ueindex: exunique.indexWhere((element) =>
+                                    element.name == exlist[index].name),
+                                eindex: index,
+                                rindex: widget.rindex,
+                              ),
+                              transitionEffect:
+                                  TransitionEffect.RIGHT_TO_LEFT));
+                },
+                child: Column(
+                  children: [
+                    Container(
                       padding: EdgeInsets.symmetric(horizontal: 20),
                       decoration: BoxDecoration(
                           color: Color(0xFF212121),
@@ -388,56 +236,225 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            exuniq[index].name,
-                            style: TextStyle(fontSize: 21, color: alreadyexist ? Colors.black : Colors.white),
+                            exlist[index].name,
+                            style: TextStyle(fontSize: 21, color: Colors.white),
                           ),
                           Container(
                             child: Row(
                               //mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Text("Rest: need to set",
+                                Text("Rest: ${exlist[index].rest}",
                                     style: TextStyle(
-                                        fontSize: 13, color: alreadyexist ? Colors.black : Color(0xFF717171))),
+                                        fontSize: 13,
+                                        color: Color(0xFF717171))),
                                 Expanded(child: SizedBox()),
                                 Text(
-                                    "1RM: ${exuniq[index].onerm}/${exuniq[index].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
+                                    "1RM: ${exinfo[0].onerm.toStringAsFixed(1)}/${exinfo[0].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
                                     style: TextStyle(
-                                        fontSize: 13, color: alreadyexist ? Colors.black : Color(0xFF717171))),
+                                        fontSize: 13,
+                                        color: Color(0xFF717171))),
                               ],
                             ),
                           )
                         ],
                       ),
                     ),
-                  ),
-                );
-              },
-              separatorBuilder: (BuildContext _context, int index) {
+                    index == exlist.length - 1
+                        ? Container()
+                        : Container(
+                            alignment: Alignment.center,
+                            height: 1,
+                            color: Color(0xFF212121),
+                            child: Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              height: 1,
+                              color: Color(0xFF717171),
+                            ),
+                          )
+                  ],
+                ),
+              );
+            },
+            /*
+              separatorBuilder: (BuildContext _context, int index){
                 return Container(
                   alignment: Alignment.center,
-                  height: 1,
-                  color: Color(0xFF212121),
+                  height:1, color: Color(0xFF212121),
                   child: Container(
                     alignment: Alignment.center,
                     margin: EdgeInsets.symmetric(horizontal: 10),
-                    height: 1,
-                    color: Color(0xFF717171),
+                    height:1, color: Color(0xFF717171),
                   ),
                 );
+
               },
-              scrollDirection: Axis.vertical,
-              shrinkWrap: shirink,
-              itemCount: exuniq.length
-          );
-        }
+               */
+            shrinkWrap: shirink,
+            itemCount: exlist.length);
+      }),
+    );
+  }
+
+  Widget _exercises_searchWidget() {
+    return Container(
+      color: Colors.black,
+      child: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.fromLTRB(10, 16, 10, 16),
+            child: TextField(
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Color(0xFF717171),
+                  ),
+                  hintText: "Exercise Name",
+                  hintStyle:
+                      TextStyle(fontSize: 20.0, color: Color(0xFF717171)),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: 3, color: Color(0xFF717171)),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+                onChanged: (text) {
+                  searchExercise(text.toString());
+                }),
+          ),
+          AspectRatio(aspectRatio: 1.3, child: _exercisesWidget(true)),
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5),
+            color: Color(0xFF212121),
+            height: 20,
+            child: Row(
+              children: [
+                Text(
+                  "Not in List",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+          exercisesWidget(_testdata, true)
+        ],
       ),
     );
   }
 
+  Widget exercisesWidget(exuniq, bool shirink) {
+    double top = 0;
+    double bottom = 0;
+    return Expanded(
+      //color: Colors.black,
+      child: Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
+        List exlist =
+            provider.workoutdata.routinedatas[widget.rindex].exercises;
+        List existlist = [];
+        for (int i = 0; i < exlist.length; i++) {
+          existlist.add(exlist[i].name);
+        }
 
-  void searchExercise(String query){
+        return ListView.separated(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            itemBuilder: (BuildContext _context, int index) {
+              bool alreadyexist = existlist.contains(exuniq[index].name);
+              if (index == 0) {
+                top = 20;
+                bottom = 0;
+              } else if (index == exuniq.length - 1) {
+                top = 0;
+                bottom = 20;
+              } else {
+                top = 0;
+                bottom = 0;
+              }
+              ;
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    alreadyexist
+                        ? print("already")
+                        : _workoutdataProvider.addexAt(
+                            widget.rindex,
+                            new wod.Exercises(
+                                name: exuniq[index].name,
+                                sets: wod.Setslist().setslist,
+                                onerm: exuniq[index].onerm,
+                                rest: 0));
+                  });
+                },
+                child: Container(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                        color: Color(0xFF212121),
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(top),
+                            bottomRight: Radius.circular(bottom),
+                            topLeft: Radius.circular(top),
+                            bottomLeft: Radius.circular(bottom))),
+                    height: 52,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          exuniq[index].name,
+                          style: TextStyle(
+                              fontSize: 21,
+                              color:
+                                  alreadyexist ? Colors.black : Colors.white),
+                        ),
+                        Container(
+                          child: Row(
+                            //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text("Rest: need to set",
+                                  style: TextStyle(
+                                      fontSize: 13,
+                                      color: alreadyexist
+                                          ? Colors.black
+                                          : Color(0xFF717171))),
+                              Expanded(child: SizedBox()),
+                              Text(
+                                  "1RM: ${exuniq[index].onerm}/${exuniq[index].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
+                                  style: TextStyle(
+                                      fontSize: 13,
+                                      color: alreadyexist
+                                          ? Colors.black
+                                          : Color(0xFF717171))),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+            separatorBuilder: (BuildContext _context, int index) {
+              return Container(
+                alignment: Alignment.center,
+                height: 1,
+                color: Color(0xFF212121),
+                child: Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  height: 1,
+                  color: Color(0xFF717171),
+                ),
+              );
+            },
+            scrollDirection: Axis.vertical,
+            shrinkWrap: shirink,
+            itemCount: exuniq.length);
+      }),
+    );
+  }
 
-    final suggestions = _testdata0.where((exercise){
+  void searchExercise(String query) {
+    final suggestions = _testdata0.where((exercise) {
       final exTitle = exercise.name;
       return (exTitle.contains(query)) as bool;
     }).toList();
@@ -455,11 +472,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
     _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
     print(_exercisesdataProvider.exercisesdata.exercises.length);
     return Scaffold(
-      appBar: _appbarWidget(),
-      body: _isexsearch
-      ? _exercises_searchWidget()
-      : _exercisesWidget(false)
-    );
-
+        appBar: _appbarWidget(),
+        body:
+            _isexsearch ? _exercises_searchWidget() : _exercisesWidget(false));
   }
 }

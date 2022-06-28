@@ -100,8 +100,6 @@ class _AppState extends State<App> {
         Provider.of<HistorydataProvider>(context, listen: false);
     _historydataProvider.getdata();
     _historydataProvider.getCommentAll();
-    _historydataProvider
-        .getFriendsHistorydata(_userdataProvider.userdata.email);
     return Scaffold(
       body: _loginState.isLogin
           ? IndexedStack(index: _bodyStater.bodystate, children: <Widget>[
