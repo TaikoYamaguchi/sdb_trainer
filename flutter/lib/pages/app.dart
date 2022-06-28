@@ -12,6 +12,7 @@ import 'package:sdb_trainer/pages/feed.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
+import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 
 import 'statics.dart';
@@ -24,6 +25,7 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  var _workoutdataProvider;
   var _bodyStater;
   var _loginState;
   int _currentIndex = 0;
@@ -89,6 +91,9 @@ class _AppState extends State<App> {
     _loginState = Provider.of<LoginPageProvider>(context);
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _userdataProvider.getUsersFriendsAll();
+    _workoutdataProvider =
+        Provider.of<WorkoutdataProvider>(context, listen: false);
+    _workoutdataProvider.getdata();
     return Scaffold(
       body: _loginState.isLogin
           ? IndexedStack(index: _bodyStater.bodystate, children: <Widget>[

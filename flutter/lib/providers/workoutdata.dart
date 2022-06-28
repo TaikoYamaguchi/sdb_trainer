@@ -50,6 +50,11 @@ class WorkoutdataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  insertroutineAt(rindex, data) {
+    _workoutdata.routinedatas.insert(rindex,data);
+    notifyListeners();
+  }
+
   addroutine(routine) {
     _workoutdata.routinedatas.add(routine);
     notifyListeners();

@@ -13,9 +13,8 @@ import 'package:transition/transition.dart';
 
 class EachWorkoutDetails extends StatefulWidget {
   List<wod.Exercises> exerciselist;
-  List uniqueinfo;
   int rindex;
-  EachWorkoutDetails({Key? key,  required this.exerciselist, required this.uniqueinfo, required this.rindex}) : super(key: key);
+  EachWorkoutDetails({Key? key,  required this.exerciselist,  required this.rindex}) : super(key: key);
 
   @override
   _EachWorkoutDetailsState createState() => _EachWorkoutDetailsState();
@@ -173,6 +172,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
       color: Colors.black,
       child: Consumer2<WorkoutdataProvider, ExercisesdataProvider>(
         builder: (builder, wdp, exp, child) {
+          List exunique = exp.exercisesdata.exercises;
           List exlist=wdp.workoutdata.routinedatas[widget.rindex].exercises;
           return ReorderableListView.builder(
               onReorder: (int oldIndex, int newIndex) {
@@ -187,7 +187,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               },
               padding: EdgeInsets.symmetric(horizontal: 5),
               itemBuilder: (BuildContext _context, int index){
-                final exinfo = widget.uniqueinfo.where((unique){
+                final exinfo = exunique.where((unique){
                   return (unique.name == exlist[index].name);
                 }).toList();
                 print(exinfo);
@@ -199,7 +199,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                     ? [_workoutdataProvider.removeexAt(widget.rindex, index)]
                     : Navigator.push(context,Transition(
                         child: EachExerciseDetails(
-                          ueindex: widget.uniqueinfo.indexWhere((element) => element.name == exlist[index].name),
+                          ueindex: exunique.indexWhere((element) => element.name == exlist[index].name),
                           eindex: index,
                           rindex: widget.rindex,
                         ),

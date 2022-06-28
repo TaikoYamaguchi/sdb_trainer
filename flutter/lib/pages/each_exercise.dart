@@ -592,8 +592,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('TextField in Dialog'),
-            content: Text('Do you want to start workout?'),
+            title: Text('Workout Start Alert',style: TextStyle(fontWeight: FontWeight.bold),),
+            content: Text('운동을 시작하시겠습니까?'),
             actions: <Widget>[
               _StartConfirmButton(index,newvalue),
             ],
