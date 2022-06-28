@@ -97,7 +97,7 @@ class _FeedState extends State<Feed> {
                 itemBuilder: (BuildContext _context, int index) {
                   return Center(
                       child: FeedCard(
-                          sdbdata: _historydata.sdbdatas[index],
+                          sdbdata: _historydata[index],
                           index: index,
                           feedListCtrl: _feedListCtrl));
                 },
@@ -113,7 +113,7 @@ class _FeedState extends State<Feed> {
                     ),
                   );
                 },
-                itemCount: _historydata.sdbdatas.length);
+                itemCount: _historydata.length);
           }),
         ),
       ],
@@ -143,11 +143,24 @@ class _FeedState extends State<Feed> {
 
   void _feedController(_feedListCtrl) {
     if (_feedListCtrl == 2) {
-      _historydata = _historydataAll.historydataFriends;
+      _historydata =
+          _historydataAll.historydataFriends.sdbdatas.where((sdbdata) {
+        if (sdbdata.isVisible == true) {
+          return true;
+        } else {
+          return false;
+        }
+      }).toList();
     } else if (_feedListCtrl == 1) {
-      _historydata = _historydataAll.historydataAll;
+      _historydata = _historydataAll.historydataAll.sdbdatas.where((sdbdata) {
+        if (sdbdata.isVisible == true) {
+          return true;
+        } else {
+          return false;
+        }
+      }).toList();
     } else if (_feedListCtrl == 3) {
-      _historydata = _historydataAll.historydata;
+      _historydata = _historydataAll.historydata.sdbdatas;
       print("나만보기");
     }
   }

@@ -282,3 +282,39 @@ class HistoryVisibleEdit {
     return (jsonResponse);
   }
 }
+
+class HistoryDelete {
+  final int history_id;
+  HistoryDelete({
+    required this.history_id,
+  });
+  Future<String> _historyDeletefromServer() async {
+    final storage = new FlutterSecureStorage();
+    String? token = await storage.read(key: "sdb_token");
+
+    var url = Uri.parse(
+        LocalHost.getLocalHost() + "/api/historyDelete/${history_id}");
+    var response = await http.delete(
+      url,
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer ${token}',
+      },
+    );
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      String jsonString = utf8.decode(response.bodyBytes);
+      final jsonResponse = json.decode(jsonString);
+
+      return utf8.decode(response.bodyBytes);
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<Map<String, dynamic>> deleteHistory() async {
+    String jsonString = await _historyDeletefromServer();
+    final jsonResponse = json.decode(jsonString);
+    return (jsonResponse);
+  }
+}

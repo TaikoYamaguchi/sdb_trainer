@@ -54,10 +54,7 @@ class _FeedCardState extends State<FeedCard> {
   Widget build(BuildContext context) {
     print(_commentInfo);
     print(widget.feedListCtrl);
-    return (widget.feedListCtrl == 1 && widget.sdbdata.isVisible == false) ||
-            (widget.feedListCtrl == 2 && widget.sdbdata.isVisible == false)
-        ? Container()
-        : _feedCard(widget.sdbdata, widget.index);
+    return _feedCard(widget.sdbdata, widget.index);
   }
 
   Widget _feedCard(SDBdata, index) {
@@ -171,12 +168,18 @@ class _FeedCardState extends State<FeedCard> {
                                                         : Text("보임")),
                                                 onTap: () {
                                                   if (SDBdata.isVisible) {
+                                                    _historyProvider
+                                                        .patchHistoryVisible(
+                                                            SDBdata, false);
                                                     HistoryVisibleEdit(
                                                             history_id:
                                                                 SDBdata.id,
                                                             status: "false")
                                                         .patchHistoryVisible();
                                                   } else {
+                                                    _historyProvider
+                                                        .patchHistoryVisible(
+                                                            SDBdata, true);
                                                     HistoryVisibleEdit(
                                                             history_id:
                                                                 SDBdata.id,
@@ -256,6 +259,11 @@ class _FeedCardState extends State<FeedCard> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      SDBdata.isVisible == false
+                          ? Text("숨겨진 피드",
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 14))
+                          : Container(),
                       _feedLikeButton(SDBdata),
                       _feedCommentButton(SDBdata)
                     ],

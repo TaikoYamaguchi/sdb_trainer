@@ -1,3 +1,4 @@
+from app.db.crud import get_user_by_email
 import datetime
 from pytz import timezone
 from fastapi import HTTPException, status
@@ -94,6 +95,28 @@ def visible_auth_history(db:Session,history:schemas.ManageVisibleHistory, user:s
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="작성자가 아닙니다",
         )
+    return db_history
+
+def delete_auth_history(db: Session, history_id: int, user:schemas.User):
+    db_history = db.query(models.History).filter(models.History.id == history_id).first()
+    if user.is_superuser == True :
+        db.delete(db_history)
+        db.commit()
+    else :
+        if user.email == db_history.user_email:
+                db.delete(db_history)
+                db.commit()
+                db.refresh(db_history)
+                db_user = get_user_by_email(db, db_history.writer_email)
+                setattr(db_user, "history_cnt", len(db.query(models.History).filter(models.History.user_email == db_history.user_email).all()))
+                db.add(db_user)
+                db.commit()
+                db.refresh((db_user))
+        else :
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="작성자가 아닙니다",
+            )
     return db_history
 
 

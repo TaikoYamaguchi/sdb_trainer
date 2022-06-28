@@ -140,4 +140,53 @@ class HistorydataProvider extends ChangeNotifier {
     });
     notifyListeners();
   }
+
+  patchHistoryVisible(SDBdata, bool status) {
+    _historydataFriends.sdbdatas.indexWhere((sdbdata) {
+      if (sdbdata.id == SDBdata.id) {
+        sdbdata.isVisible = status;
+        return true;
+      } else {
+        return false;
+      }
+    });
+    _historydataAll.sdbdatas.indexWhere((sdbdata) {
+      if (sdbdata.id == SDBdata.id) {
+        sdbdata.isVisible = status;
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    _historydata.sdbdatas.indexWhere((sdbdata) {
+      if (sdbdata.id == SDBdata.id) {
+        sdbdata.isVisible = status;
+        return true;
+      } else {
+        return false;
+      }
+    });
+    notifyListeners();
+  }
+
+  deleteHistorydata(history_id) {
+    _historydataAll.sdbdatas
+        .removeAt(_historydataAll.sdbdatas.indexWhere((sdbdata) {
+      if (sdbdata.id == history_id) {
+        return true;
+      } else {
+        return false;
+      }
+    }));
+
+    _historydata.sdbdatas.removeAt(_historydata.sdbdatas.indexWhere((sdbdata) {
+      if (sdbdata.id == history_id) {
+        return true;
+      } else {
+        return false;
+      }
+    }));
+    notifyListeners();
+  }
 }

@@ -70,6 +70,19 @@ class HistoryBase(BaseModel):
     class Config:
         orm_mode = True
 
+class HistoryDelete(BaseModel):
+    user_email : str
+    exercises : t.Any
+    new_record: int
+    workout_time: int
+    like:list
+    dislike:list
+    image:list
+    comment:str
+    nickname:str
+    class Config:
+        orm_mode = True
+
 class ExercisesBase(BaseModel):
     user_email : str
     exercises : t.Any

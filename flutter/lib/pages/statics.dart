@@ -17,6 +17,7 @@ import 'package:sdb_trainer/providers/chartIndexState.dart';
 import 'package:sdb_trainer/providers/staticPageState.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/unique_exercise.dart';
+import 'package:sdb_trainer/providers/historydata.dart';
 
 class Calendar extends StatefulWidget {
   @override
@@ -39,12 +40,16 @@ class _CalendarState extends State<Calendar> {
   bool _isLoading = true;
   late ZoomPanBehavior _zoomPanBehavior;
   PageController? _isPageController;
+  var _tapPosition;
+  var _historydataProvider;
+  var exercisesRawData;
 
   TextEditingController _eventController = TextEditingController();
 
   @override
   void initState() {
     // TODO: implement initState
+    _tapPosition = Offset(0.0, 0.0);
     selectedEvents = {};
     _tooltipBehavior = TooltipBehavior(enable: true);
     _zoomPanBehavior = ZoomPanBehavior(
@@ -62,6 +67,8 @@ class _CalendarState extends State<Calendar> {
       ExercisesRepository.loadExercisesdata().then((exercisesData) {
         _exercisesData = exercisesData;
         _getChartSourcefromDay();
+
+        exercisesRawData = List.from(_getEventsfromDay(_selectedDay).reversed);
         setState(() {
           _isLoading = false;
         });
@@ -241,26 +248,30 @@ class _CalendarState extends State<Calendar> {
 
   Widget _allchartExercisesWidget(exercises) {
     return Expanded(
-      child: ListView.separated(
-          itemBuilder: (BuildContext _context, int index) {
-            return _chartExercisesWidget(exercises[index].exercises,
-                exercises[index].id, _userdataProvider.userdata, true, index);
-          },
-          separatorBuilder: (BuildContext _context, int index) {
-            return Container(
-              alignment: Alignment.center,
-              height: 1,
-              color: Color(0xFF212121),
-              child: Container(
+      child: Consumer<HistorydataProvider>(builder: (builder, provider, child) {
+        return ListView.separated(
+            itemBuilder: (BuildContext _context, int index) {
+              print("thisisisialllllllllllchart");
+
+              return _chartExercisesWidget(exercises[index].exercises,
+                  exercises[index].id, _userdataProvider.userdata, true, index);
+            },
+            separatorBuilder: (BuildContext _context, int index) {
+              return Container(
                 alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(horizontal: 10),
                 height: 1,
-                color: Color(0xFF717171),
-              ),
-            );
-          },
-          itemCount: exercises.length,
-          scrollDirection: Axis.vertical),
+                color: Color(0xFF212121),
+                child: Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  height: 1,
+                  color: Color(0xFF717171),
+                ),
+              );
+            },
+            itemCount: exercises.length,
+            scrollDirection: Axis.vertical);
+      }),
     );
   }
 
@@ -360,12 +371,45 @@ class _CalendarState extends State<Calendar> {
       child: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text("훈련 " + (index + 1).toString(),
                     style: TextStyle(fontSize: 18, color: Colors.white)),
               ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  child: Icon(
+                    Icons.more_vert,
+                    color: Colors.grey,
+                    size: 18.0,
+                  ),
+                  onTapDown: _storePosition,
+                  onTap: () {
+                    showMenu(
+                        context: context,
+                        position: RelativeRect.fromRect(
+                            _tapPosition & Size(30, 30),
+                            Offset.zero & Size(0, 0)),
+                        items: [
+                          PopupMenuItem(
+                              onTap: () {
+                                Future<void>.delayed(
+                                    const Duration(), // OR const Duration(milliseconds: 500),
+                                    () => _displayDeleteAlert(history_id));
+                              },
+                              padding: EdgeInsets.all(0.0),
+                              child: ListTile(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 4.0, vertical: 0.0),
+                                  leading: Icon(Icons.delete),
+                                  title: Text("삭제"))),
+                        ]);
+                  },
+                ),
+              )
             ],
           ),
           ListView.separated(
@@ -631,12 +675,61 @@ class _CalendarState extends State<Calendar> {
     return chips;
   }
 
+  void _storePosition(TapDownDetails details) {
+    _tapPosition = details.globalPosition;
+  }
+
+  void _displayDeleteAlert(history_id) {
+    print(history_id);
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('운동을 지우시겠습니까?'),
+            content: Text('정말로 운동을 지우시나요?'),
+            actions: <Widget>[
+              _DeleteConfirmButton(history_id),
+            ],
+          );
+        });
+  }
+
+  Widget _DeleteConfirmButton(history_id) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+            color: Color.fromRGBO(246, 58, 64, 20),
+            textColor: Colors.white,
+            disabledColor: Color.fromRGBO(246, 58, 64, 20),
+            disabledTextColor: Colors.black,
+            padding: EdgeInsets.all(8.0),
+            splashColor: Colors.blueAccent,
+            onPressed: () {
+              _historydataProvider.deleteHistorydata(history_id);
+              _sdbData!.sdbdatas
+                  .removeAt(_sdbData!.sdbdatas.indexWhere((sdbdata) {
+                if (sdbdata.id == history_id) {
+                  setState(() {});
+                  HistoryDelete(history_id: history_id).deleteHistory();
+                  return true;
+                } else {
+                  return false;
+                }
+              }));
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            child: Text("Confirm",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+  }
+
   @override
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     initializeDateFormatting('pt_BR', null);
     _chartIndex = Provider.of<ChartIndexProvider>(context);
     _isChartWidget = Provider.of<StaticPageProvider>(context);
+    _historydataProvider =
+        Provider.of<HistorydataProvider>(context, listen: false);
     _getChartSourcefromDay();
     return Scaffold(
         appBar: _appbarWidget(),

@@ -84,97 +84,95 @@ class ExerciseState extends State<Exercise> {
   Widget _workoutWidget(edata, wdata) {
     return Container(
       color: Colors.black,
-      child: Consumer<WorkoutdataProvider>(
-        builder: (builder, provider, child) {
-          List routinelist = provider.workoutdata.routinedatas;
-          return ListView.separated(
-              padding: EdgeInsets.symmetric(horizontal: 5),
-              itemBuilder: (BuildContext _context, int index) {
-                if (index == 0) {
-                  top = 20;
-                  bottom = 0;
-                } else if (index == routinelist.length - 1) {
-                  top = 0;
-                  bottom = 20;
-                } else {
-                  top = 0;
-                  bottom = 0;
-                }
-                ;
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        Transition(
-                            child: EachWorkoutDetails(
-                              exerciselist: routinelist[index].exercises,
-                              uniqueinfo: edata,
-                              rindex: index,
-                            ),
-                            transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-                  },
-                  child: Container(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      decoration: BoxDecoration(
-                          color: Color(0xFF212121),
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(top),
-                              bottomRight: Radius.circular(bottom),
-                              topLeft: Radius.circular(top),
-                              bottomLeft: Radius.circular(bottom))),
-                      height: 52,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                routinelist[index].name,
-                                style: TextStyle(fontSize: 21, color: Colors.white),
-                              ),
-                              Text(
-                                  "${routinelist[index].exercises.length} Exercises",
-                                  style: TextStyle(
-                                      fontSize: 13, color: Color(0xFF717171)))
-                            ],
+      child: Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
+        List routinelist = provider.workoutdata.routinedatas;
+        return ListView.separated(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            itemBuilder: (BuildContext _context, int index) {
+              if (index == 0) {
+                top = 20;
+                bottom = 0;
+              } else if (index == routinelist.length - 1) {
+                top = 0;
+                bottom = 20;
+              } else {
+                top = 0;
+                bottom = 0;
+              }
+              ;
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      Transition(
+                          child: EachWorkoutDetails(
+                            exerciselist: routinelist[index].exercises,
+                            uniqueinfo: edata,
+                            rindex: index,
                           ),
-                          IconButton(
-                            onPressed: () {
-
-                              _displayDeleteAlert(index);
-                            },
-                            icon: Icon(Icons.delete),
-                            color: Colors.white,
-                          )
-                        ],
-                      ),
+                          transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+                },
+                child: Container(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                        color: Color(0xFF212121),
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(top),
+                            bottomRight: Radius.circular(bottom),
+                            topLeft: Radius.circular(top),
+                            bottomLeft: Radius.circular(bottom))),
+                    height: 52,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              routinelist[index].name,
+                              style:
+                                  TextStyle(fontSize: 21, color: Colors.white),
+                            ),
+                            Text(
+                                "${routinelist[index].exercises.length} Exercises",
+                                style: TextStyle(
+                                    fontSize: 13, color: Color(0xFF717171)))
+                          ],
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            _displayDeleteAlert(index);
+                          },
+                          icon: Icon(Icons.delete),
+                          color: Colors.white,
+                        )
+                      ],
                     ),
                   ),
-                );
-              },
-              separatorBuilder: (BuildContext _context, int index) {
-                return Container(
+                ),
+              );
+            },
+            separatorBuilder: (BuildContext _context, int index) {
+              return Container(
+                alignment: Alignment.center,
+                height: 1,
+                color: Color(0xFF212121),
+                child: Container(
                   alignment: Alignment.center,
+                  margin: EdgeInsets.symmetric(horizontal: 10),
                   height: 1,
-                  color: Color(0xFF212121),
-                  child: Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                    height: 1,
-                    color: Color(0xFF717171),
-                  ),
-                );
-              },
-              itemCount: routinelist.length);
-        }
-      ),
+                  color: Color(0xFF717171),
+                ),
+              );
+            },
+            itemCount: routinelist.length);
+      }),
     );
   }
 
-  void _displayDeleteAlert(rindex)  {
+  void _displayDeleteAlert(rindex) {
     showDialog(
         context: context,
         builder: (context) {
@@ -202,7 +200,6 @@ class ExerciseState extends State<Exercise> {
               _workoutdataProvider.removeroutineAt(rindex);
               _editWorkoutCheck();
               Navigator.of(context, rootNavigator: true).pop();
-
             },
             child: Text("Confirm",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
@@ -398,7 +395,7 @@ class ExerciseState extends State<Exercise> {
     return Container();
   }
 
-  void _displayTextInputDialog()  {
+  void _displayTextInputDialog() {
     showDialog(
         context: context,
         builder: (context) {
@@ -427,18 +424,14 @@ class ExerciseState extends State<Exercise> {
             padding: EdgeInsets.all(8.0),
             splashColor: Colors.blueAccent,
             onPressed: () {
-
-              _workoutdataProvider.addroutine(
-                    new Routinedatas(
-                        name: _workoutNameCtrl.text,
-                        exercises: exerciseList,
-                        routine_time: 0
-                    ));
+              _workoutdataProvider.addroutine(new Routinedatas(
+                  name: _workoutNameCtrl.text,
+                  exercises: exerciseList,
+                  routine_time: 0));
 
               _editWorkoutCheck();
               _workoutNameCtrl.clear();
               Navigator.of(context, rootNavigator: true).pop();
-
             },
             child: Text("workout 이름 제출",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
@@ -446,11 +439,14 @@ class ExerciseState extends State<Exercise> {
 
   void _editWorkoutCheck() async {
     print(_userdataProvider.userdata.email);
-    WorkoutEdit(user_email: _userdataProvider.userdata.email, id: _workoutdataProvider.workoutdata.id, routinedatas: _workoutdataProvider.workoutdata.routinedatas)
+    WorkoutEdit(
+            user_email: _userdataProvider.userdata.email,
+            id: _workoutdataProvider.workoutdata.id,
+            routinedatas: _workoutdataProvider.workoutdata.routinedatas)
         .editWorkout()
         .then((data) => data["user_email"] != null
-        ? showToast("done!")
-        : showToast("입력을 확인해주세요"));
+            ? showToast("done!")
+            : showToast("입력을 확인해주세요"));
   }
 
   void _postWorkoutCheck() async {

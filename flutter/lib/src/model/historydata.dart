@@ -13,7 +13,7 @@ class SDBdata {
   String? comment;
   final String? nickname;
   final int comment_length;
-  final bool? isVisible;
+  bool? isVisible;
   SDBdata(
       {required this.id,
       required this.user_email,
