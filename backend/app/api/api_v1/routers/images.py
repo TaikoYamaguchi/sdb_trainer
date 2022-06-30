@@ -1,4 +1,6 @@
 
+from app.db.crud import edit_image_by_user_email
+from app.core.auth import get_current_user
 import os
 import shutil
 from app.db.crud_image import create_temporay_image, get_image_by_id
@@ -15,7 +17,12 @@ images_router = r = APIRouter()
 
 @r.post("/temp/images", response_model=TemporaryImage, response_model_exclude_none=True)
 async def create_image( db=Depends(get_db),
+
+    user=Depends(get_current_user),
     file : UploadFile = File(...)):
+    print("sssssssssssssssssssssssssssssssss")
+    print(file)
+    print(file.filename)
 
     format = file.content_type.replace("image/","")
     if (format == "jpeg"):
@@ -24,16 +31,22 @@ async def create_image( db=Depends(get_db),
     BASE_DIR=os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
     file_uuid=str(uuid.uuid4())
 
-    file_path=os.path.join(BASE_DIR, "images",file_uuid+"."+format)
+    file_path=os.path.join(BASE_DIR, "images",file_uuid)
+    print(file)
     print(file_path)
     if not os.path.exists(BASE_DIR):
         os.mkdir(BASE_DIR)
+    if not os.path.exists(BASE_DIR+"/images"):
+        os.mkdir(BASE_DIR+"/images")
 
     with open(file_path,"wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
     image_resize(file_path)
-    return create_temporay_image(db, file_path)
+    db_image = create_temporay_image(db, file_path)
+    edit_image_by_user_email(db, user,db_image.id)
+
+    return db_image
 
 @r.get(
     "/images/{image_id}"

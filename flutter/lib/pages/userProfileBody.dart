@@ -215,9 +215,8 @@ class _ProfileBodyState extends State<ProfileBody> {
               userWeight: _userWeightCtrl.text.toString(),
               userHeightUnit: _userHeightUnitCtrl,
               userWeightUnit: _userWeightUnitCtrl,
-              userImage: "",
-              password: "",
-              userFavorExercise: [""])
+              userImage: _userdataProvider.userdata.nickname.image,
+              userFavorExercise: _userdataProvider.userdata.favor_exercise)
           .editUser()
           .then((data) => data["username"] != null
               ? {

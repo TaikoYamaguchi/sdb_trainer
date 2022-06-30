@@ -78,7 +78,7 @@ def get_friends_by_email(db: Session, email: str) -> t.List[schemas.UserBase]:
     return db.query(models.User).filter(models.User.email.in_(user.like)).all()
 
 def edit_user(
-    db: Session, email: str, user: schemas.UserEdit
+    db: Session, email: str, user: schemas.UserBase
 ) -> schemas.UserBase:
     db_nickname = get_user_by_nickname(db,user.nickname)
     if db_nickname:
@@ -89,10 +89,6 @@ def edit_user(
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User not found")
     update_data = user.dict(exclude_unset=True)
 
-    if user.password != "":
-        update_data["hashed_password"] = get_password_hash(user.password)
-        del update_data["password"]
-
     for key, value in update_data.items():
         setattr(db_user, key, value)
 
@@ -100,7 +96,6 @@ def edit_user(
     db.commit()
     db.refresh(db_user)
     return db_user
-
 
 def manage_like_by_liked_email(db: Session,likeContent:schemas.ManageLikeUser) -> schemas.UserOut:
     db_user = db.query(models.User).filter(models.User.email == likeContent.email).first()
@@ -119,5 +114,14 @@ def manage_like_by_liked_email(db: Session,likeContent:schemas.ManageLikeUser) -
     db.commit()
     db.refresh(db_user)
     return db_user
+
+def edit_image_by_user_email(db: Session,user:schemas.User, image_id : int) -> schemas.UserOut:
+    db_user = db.query(models.User).filter(models.User.email == user.email).first()
+    setattr(db_user, "image", f"http://172.25.2.124:8000/api/images/{image_id}")
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
 
 

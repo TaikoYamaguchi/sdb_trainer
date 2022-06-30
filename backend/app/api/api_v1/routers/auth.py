@@ -1,5 +1,5 @@
 from app.db.crud import create_user, get_friends_by_email, get_user_by_email, get_user_by_phone_number, edit_user, get_user_by_nickname, get_users_by_nickname, manage_like_by_liked_email, get_users
-from app.db.schemas import User, UserCreate, UserEdit, ManageLikeUser
+from app.db.schemas import User, UserCreate, UserEdit, ManageLikeUser, UserBase
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import APIRouter, Depends, Request, HTTPException, status
 from datetime import timedelta
@@ -193,7 +193,7 @@ async def users_nickname(
 async def user_edit(
     request: Request,
     email: str,
-    user: UserEdit,
+    user: UserBase,
     db=Depends(get_db),
 ):
     """

@@ -13,8 +13,8 @@ class ProfileNickname extends StatefulWidget {
 class _ProfileNicknameState extends State<ProfileNickname> {
   bool isLoading = false;
   var _userdataProvider;
+  var _userNicknameCtrl;
   bool _isNickNameused = false;
-  TextEditingController _userNicknameCtrl = TextEditingController(text: "");
 
   @override
   void initState() {
@@ -24,6 +24,9 @@ class _ProfileNicknameState extends State<ProfileNickname> {
   @override
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _userNicknameCtrl = TextEditingController(text: "");
+    _userNicknameCtrl.selection = TextSelection.fromPosition(
+        TextPosition(offset: _userNicknameCtrl.text.length));
     return Scaffold(appBar: _appbarWidget(), body: _signupProfileWidget());
   }
 
@@ -74,7 +77,6 @@ class _ProfileNicknameState extends State<ProfileNickname> {
   Widget _nicknameWidget() {
     return TextFormField(
       onChanged: (text) {
-        print(text);
         if (_userdataProvider.userFriendsAll.userdatas
                 .where((user) {
                   if (user.nickname == text.toString()) {
@@ -98,10 +100,8 @@ class _ProfileNicknameState extends State<ProfileNickname> {
       },
       controller: _userNicknameCtrl,
       style: TextStyle(color: Colors.white),
-      autofocus: true,
       decoration: InputDecoration(
         hintText: _userdataProvider.userdata.nickname,
-        hintStyle: TextStyle(color: Colors.white),
         labelText: _isNickNameused == false ? "닉네임" : "사용 불가 닉네임",
         labelStyle: TextStyle(
             color: _isNickNameused == false ? Colors.white : Colors.red),
@@ -158,7 +158,7 @@ class _ProfileNicknameState extends State<ProfileNickname> {
                 }
               : showToast("수정할 수 없습니다"));
     } else {
-      showToast("닉네임을 입력 및 수정해주세요");
+      showToast("닉네임을 입력해주세요");
     }
   }
 }

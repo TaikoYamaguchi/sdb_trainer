@@ -8,10 +8,14 @@ import 'package:sdb_trainer/providers/userdata.dart';
 
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/userProfileGoal.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'dart:async';
 
 class Profile extends StatelessWidget {
   Profile({Key? key}) : super(key: key);
 
+  final ImagePicker _picker = ImagePicker();
   var _userdataProvider;
   var _loginState;
 
@@ -28,6 +32,15 @@ class Profile extends StatelessWidget {
           : Center(child: CircularProgressIndicator()),
       backgroundColor: Colors.black,
     );
+  }
+
+  Future<void> _pickImg() async {
+    final XFile? selectImage =
+        await _picker.pickImage(source: ImageSource.gallery);
+    if (selectImage != null) {
+      dynamic sendData = selectImage.path;
+      UserImageEdit(file: sendData).patchUserImage();
+    }
   }
 
   Widget _profile(context) {
@@ -84,6 +97,22 @@ class Profile extends StatelessWidget {
                     Text("로그아웃", style: TextStyle(color: Colors.white)),
                     Icon(Icons.chevron_right, color: Colors.white),
                   ]))),
+      SizedBox(height: 30),
+      GestureDetector(
+        onTap: () {
+          _pickImg();
+        },
+        child: _userdataProvider.userdata.image == ""
+            ? Icon(
+                Icons.account_circle,
+                color: Colors.grey,
+                size: 200.0,
+              )
+            : CircleAvatar(
+                radius: 100.0,
+                backgroundImage: NetworkImage(_userdataProvider.userdata.image),
+                backgroundColor: Colors.transparent),
+      ),
     ]);
   }
 

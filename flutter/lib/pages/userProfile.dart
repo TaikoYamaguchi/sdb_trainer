@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/userProfileNickname.dart';
 import 'package:sdb_trainer/pages/userProfileBody.dart';
 import 'package:sdb_trainer/pages/userProfileGoal.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'dart:async';
 
 class UserProfile extends StatefulWidget {
   UserProfile({Key? key}) : super(key: key);
@@ -16,9 +20,19 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   var _userdataProvider;
+  final ImagePicker _picker = ImagePicker();
   @override
   void initState() {
     super.initState();
+  }
+
+  Future<void> _pickImg() async {
+    final XFile? selectImage =
+        await _picker.pickImage(source: ImageSource.gallery);
+    if (selectImage != null) {
+      dynamic sendData = selectImage.path;
+      UserImageEdit(file: sendData).patchUserImage();
+    }
   }
 
   PreferredSizeWidget _appbarWidget() {
@@ -110,6 +124,27 @@ class _UserProfileState extends State<UserProfile> {
                   Container(),
                 ])),
       ),
+      SizedBox(height: 30),
+      GestureDetector(
+        onTap: () {
+          _pickImg();
+        },
+        child: _userdataProvider.userdata.image == ""
+            ? Icon(
+                Icons.account_circle,
+                color: Colors.grey,
+                size: 200.0,
+              )
+            : CircleAvatar(
+                radius: 100.0,
+                backgroundImage: NetworkImage(_userdataProvider.userdata.image),
+                backgroundColor: Colors.transparent),
+      ),
+      FlatButton(
+          onPressed: () {
+            _pickImg();
+          },
+          child: Text("사진 편집", style: TextStyle(color: Colors.white)))
     ]);
   }
 

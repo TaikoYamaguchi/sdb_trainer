@@ -377,8 +377,10 @@ class _FeedCardState extends State<FeedCard> {
                         PopupMenuItem(
                             onTap: () {
                               _historyProvider.deleteCommentAll(Comment);
-                              CommentDelete(comment_id: Comment.id)
-                                  .deleteComment();
+                              Future<void>.delayed(
+                                  const Duration(), // OR const Duration(milliseconds: 500),
+                                  () => CommentDelete(comment_id: Comment.id)
+                                      .deleteComment());
                             },
                             padding: EdgeInsets.all(0.0),
                             child: ListTile(
@@ -484,7 +486,7 @@ class _FeedCardState extends State<FeedCard> {
                   });
                 },
                 icon: Icon(Icons.message, color: Colors.white, size: 28.0)),
-            Text(SDBdata.comment_length.toString(),
+            Text(_commentListbyId.length.toString(),
                 style: TextStyle(color: Colors.white, fontSize: 18.0))
           ],
         ));

@@ -9,7 +9,7 @@ from . import models, schemas
 
 def create_temporay_image(db: Session, file_name:str):
     print(file_name)
-    db_image = models.TemporaryVideo(
+    db_image = models.TemporaryImage(
         image=file_name,
         views=0
     )
@@ -21,7 +21,7 @@ def create_temporay_image(db: Session, file_name:str):
 
 def get_image_by_id(db: Session, image_id:int):
     
-    db_image = db.query(models.TemporaryVideo).filter(models.TemporaryVideo.id == image_id).first()
+    db_image = db.query(models.TemporaryImage).filter(models.TemporaryImage.id == image_id).first()
     setattr(db_image, "views", db_image.views+1)
     db.add(db_image)
     db.commit()

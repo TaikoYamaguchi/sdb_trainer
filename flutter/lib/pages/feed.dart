@@ -58,7 +58,6 @@ class _FeedState extends State<Feed> {
     _userdataProvider.getFriendsdata(_userdataProvider.userdata.email);
     _historydataAll.getFriendsHistorydata(_userdataProvider.userdata.email);
 
-    print("111111");
     return Scaffold(
         appBar: AppBar(
             title: Row(
@@ -78,9 +77,19 @@ class _FeedState extends State<Feed> {
               ],
             ),
             backgroundColor: Colors.black),
-        body: _userdataProvider.userdata != null
-            ? _feedCardList(context)
-            : Center(child: CircularProgressIndicator()));
+        body: RefreshIndicator(
+          child: _userdataProvider.userdata != null
+              ? _feedCardList(context)
+              : Center(child: CircularProgressIndicator()),
+          onRefresh: _onRefresh,
+        ));
+  }
+
+  Future<void> _onRefresh() {
+    _historydataAll.getFriendsHistorydata(_userdataProvider.userdata.email);
+    _historydataAll.getdata();
+    _historydataAll.getCommentAll();
+    return Future<void>.value();
   }
 
   Widget _feedCardList(context) {

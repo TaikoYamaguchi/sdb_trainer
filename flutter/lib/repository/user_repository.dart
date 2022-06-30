@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:sdb_trainer/localhost.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
+import 'dart:io';
+import 'package:dio/dio.dart';
 
 class UserService {
   static Future<String> _loadUserdataFromServer() async {
@@ -203,7 +205,6 @@ class UserEdit {
   final String userHeightUnit;
   final String userWeightUnit;
   final String userImage;
-  final String password;
   final List userFavorExercise;
   UserEdit(
       {required this.userEmail,
@@ -214,7 +215,6 @@ class UserEdit {
       required this.userHeightUnit,
       required this.userWeightUnit,
       required this.userImage,
-      required this.password,
       required this.userFavorExercise});
   Future<String> _userEditFromServer() async {
     var formData = new Map<String, dynamic>();
@@ -225,7 +225,6 @@ class UserEdit {
     formData["weight"] = userWeight;
     formData["height_unit"] = userHeightUnit;
     formData["weight_unit"] = userWeightUnit;
-    formData["password"] = password;
     formData["favor_exercise"] = userFavorExercise;
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/user/" + userEmail);
@@ -476,6 +475,45 @@ class UserPhoneCheck {
 
   Future<User?> getUserByPhoneNumber() async {
     String jsonString = await _userByPhoneNumberFromServer();
+    final jsonResponse = json.decode(jsonString);
+    print("3333");
+    print(jsonResponse);
+    if (jsonResponse == null) {
+      return null;
+    } else {
+      User user = User.fromJson(jsonResponse);
+      return (user);
+    }
+  }
+}
+
+class UserImageEdit {
+  final dynamic file;
+  UserImageEdit({required this.file});
+  Future<String> _patchUserImageFromServer() async {
+    final storage = new FlutterSecureStorage();
+    String? token = await storage.read(key: "sdb_token");
+    var formData =
+        FormData.fromMap({'file': await MultipartFile.fromFile(file)});
+    var dio = new Dio();
+    try {
+      dio.options.contentType = 'multipart/form-data';
+      dio.options.maxRedirects.isFinite;
+      dio.options.headers["Authorization"] = "Bearer " + token!;
+
+      var response = await dio.post(
+        LocalHost.getLocalHost() + '/api/temp/images',
+        data: formData,
+      );
+      print('성공적으로 업로드했습니다');
+      return response.data;
+    } catch (e) {
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<User?> patchUserImage() async {
+    String jsonString = await _patchUserImageFromServer();
     final jsonResponse = json.decode(jsonString);
     print("3333");
     print(jsonResponse);
