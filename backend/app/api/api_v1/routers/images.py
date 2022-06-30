@@ -31,7 +31,7 @@ async def create_image( db=Depends(get_db),
     BASE_DIR=os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
     file_uuid=str(uuid.uuid4())
 
-    file_path=os.path.join(BASE_DIR, "images",file_uuid)
+    file_path=os.path.join(BASE_DIR, "images",file_uuid+".png")
     print(file)
     print(file_path)
     if not os.path.exists(BASE_DIR):
