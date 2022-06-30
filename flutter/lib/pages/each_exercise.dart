@@ -41,6 +41,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   double bottom = 0;
   double? weight;
   int? reps;
+  TextEditingController _resttimectrl = TextEditingController(text: "");
   List<Controllerlist> weightController = [];
   List<Controllerlist> repsController = [];
   PageController? controller;
@@ -105,7 +106,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   }
 
   void _editWorkoutwCheck() async {
-    if (_routinetimeProvider.isstarted) {
       WorkoutEdit(
             id: _workoutdataProvider
                 .workoutdata.id,
@@ -116,7 +116,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
           .then((data) => data["user_email"] != null
               ? showToast("done!")
               : showToast("입력을 확인해주세요"));
-    }
+
   }
 
   void _editWorkoutwoCheck() async {
@@ -184,27 +184,42 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
-                  "Rest Timer off",
-                  style: TextStyle(
-                    color: Color(0xFF717171),
-                    fontSize: 21,
-                    fontWeight: FontWeight.bold,
+                GestureDetector(
+                  onTap:() {
+                    _routinetimeProvider.restcheck();
+                    _routinetimeProvider.resttimecheck(_workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises[pindex].rest);
+                  },
+                  child: Consumer<RoutineTimeProvider>(
+                    builder: (builder, provider, child) {
+                      return Text(
+                        provider.restbutton,
+                        style: TextStyle(
+                          color: provider.restbuttoncolor,
+                          fontSize: 21,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    }
                   ),
                 ),
-                Consumer<WorkoutdataProvider>(
-                    builder: (builder, provider, child) {
-                  _exercise = provider.workoutdata.routinedatas[widget.rindex]
-                      .exercises[pindex];
-                  return Text(
-                    "Rest: ${_exercise.rest}",
-                    style: TextStyle(
-                      color: Color(0xFF717171),
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  );
-                }),
+                GestureDetector(
+                  onTap:() {
+                    _displaySetRestAlert();
+                  },
+                  child: Consumer<WorkoutdataProvider>(
+                      builder: (builder, provider, child) {
+                    _exercise = provider.workoutdata.routinedatas[widget.rindex]
+                        .exercises[pindex];
+                    return Text(
+                      "Rest: ${_exercise.rest}",
+                      style: TextStyle(
+                        color: Color(0xFF717171),
+                        fontSize: 21,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  }),
+                ),
               ],
             )),
             Container(
@@ -324,7 +339,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                           value: _sets[index].ischecked,
                                           onChanged: (newvalue) {
                                             _routinetimeProvider.isstarted
-                                              ? [_workoutdataProvider.boolcheck(widget.rindex, pindex, index, newvalue),
+                                              ? [_workoutdataProvider.boolcheck(widget.rindex, pindex, index, newvalue),_routinetimeProvider.resettimer(),
                                             _editWorkoutwCheck()]
                                               : _displayStartAlert(index, newvalue);
                                           })),
@@ -466,7 +481,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                         ),
                         Container(child: Consumer<RoutineTimeProvider>(
                             builder: (context, provider, child) {
-                          return Text(provider.routineTime.toString(),
+                          return Text(provider.userest ?provider.timeron.toString() :provider.routineTime.toString(),
                               style:
                                   TextStyle(fontSize: 25, color: Colors.white));
                         })),
@@ -592,6 +607,52 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         ),
       ),
     );
+  }
+
+  void _displaySetRestAlert()  {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Set Rest Time',style: TextStyle(fontWeight: FontWeight.bold),),
+            content: TextField(
+              controller: _resttimectrl,
+              keyboardType: TextInputType.number,
+              style: TextStyle(
+                fontSize: 21,
+                color: Colors.black,
+              ),
+              textAlign: TextAlign.center,
+              decoration: InputDecoration(
+                hintText: "Type Resting time",
+                hintStyle: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                ),
+              ),
+              onChanged: (text) {
+                int changetime;
+                changetime = int.parse(text);
+                _routinetimeProvider.resttimecheck(changetime);
+
+              },
+            ),
+            actions: <Widget>[
+                FlatButton(
+                color: Colors.blue,
+                  textColor: Colors.white,
+                  child: Text('OK'),
+                  onPressed: () {
+                    _workoutdataProvider.resttimecheck(widget.rindex, widget.eindex, _routinetimeProvider.changetime);
+                    _editWorkoutwCheck();
+                    _resttimectrl.clear();
+                    Navigator.of(context, rootNavigator: true).pop();
+
+                  },
+                ),
+            ],
+          );
+        });
   }
 
   void _displayStartAlert(index, newvalue)  {

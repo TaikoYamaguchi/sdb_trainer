@@ -62,7 +62,7 @@ class Exercises {
   final String name;
   final List<Sets> sets;
   final double? onerm;
-  final int rest;
+  int rest;
   Exercises(
       {required this.name,
       required this.sets,
