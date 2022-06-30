@@ -12,7 +12,7 @@ def image_resize(filepath):
         img.thumbnail((900, int(new_height)))
         print(img.size)
         print(filepath)
-        img.save(filepath)
+        img.save(filepath+".png")
         print("successsss")
         img.close()
 
