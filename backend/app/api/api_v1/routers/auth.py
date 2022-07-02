@@ -1,5 +1,6 @@
-from app.db.crud import create_user, get_friends_by_email, get_user_by_email, get_user_by_phone_number, edit_user, get_user_by_nickname, get_users_by_nickname, manage_like_by_liked_email, get_users
-from app.db.schemas import User, UserCreate, UserEdit, ManageLikeUser, UserBase
+from app.core.sms import send_sms_find_user, verification_user
+from app.db.crud import create_user, get_friends_by_email, get_user_by_email, get_user_by_phone_number, edit_user, get_user_by_nickname, get_user_by_sms_verifiaction, get_users_by_nickname, manage_like_by_liked_email, get_users
+from app.db.schemas import FindUser, FindUserCode, User, UserCreate, UserEdit, ManageLikeUser, UserBase
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import APIRouter, Depends, Request, HTTPException, status
 from datetime import timedelta
@@ -183,6 +184,37 @@ async def users_nickname(
     db=Depends(get_db),
 ):
     user = get_users_by_nickname(db, nickname)
+    return user
+
+@r.patch(
+    "/userFind",
+)
+async def send_sms(
+    phone_number : FindUser,
+    db=Depends(get_db),
+):
+    user = get_user_by_phone_number(db, phone_number.phone_number)
+    print(user)
+    if user != None :
+        send_sms_find_user(phone_number.phone_number)
+    else :
+        raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="휴대폰이 없습니다",
+            )
+
+
+
+
+@r.patch(
+    "/userFindVerify",
+    response_model=User, response_model_exclude_none=True
+)
+async def verify_sms(
+    sms : FindUserCode,
+    db=Depends(get_db),
+):
+    user = get_user_by_sms_verifiaction(db, sms)
     return user
 
 

@@ -1,3 +1,4 @@
+from app.core.sms import verification_user
 import datetime
 
 from pytz import timezone
@@ -71,6 +72,11 @@ def get_users_by_nickname(db: Session, nickname: str) -> t.List[schemas.UserOut]
 
 def get_user_by_phone_number(db: Session, phone_number: str) -> schemas.UserBase:
     return db.query(models.User).filter(models.User.phone_number == phone_number).first()
+
+def get_user_by_sms_verifiaction(db: Session, sms:schemas.FindUserCode) -> schemas.UserBase:
+    status = verification_user(sms.phone_number, sms.verifyCode)
+    if status == "approved":
+        return db.query(models.User).filter(models.User.phone_number == sms.phone_number).first()
 
 def get_friends_by_email(db: Session, email: str) -> t.List[schemas.UserBase]:
     user = db.query(models.User).filter(models.User.email==email).first()

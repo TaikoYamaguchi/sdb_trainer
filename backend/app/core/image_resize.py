@@ -1,19 +1,14 @@
 import os
-from PIL import Image
+from PIL import Image, ImageOps
 
 def image_resize(filepath):
-    print(filepath)
     img = Image.open(filepath)
-    print(img)
-    print(img.size)
-    width, height = img.size
+    fixed_img = ImageOps.exif_transpose(img)  # for rotation corrected
+    width, height = fixed_img.size
     if (width > 900):
         new_height = height * 900 / width
-        img.thumbnail((900, int(new_height)))
-        print(img.size)
-        print(filepath)
-        img.save(filepath)
-        print("successsss")
+        fixed_img.thumbnail((900, int(new_height)))
+        img.save(filepath, optimize=True)
         img.close()
 
 

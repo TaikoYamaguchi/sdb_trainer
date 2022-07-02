@@ -224,3 +224,8 @@ class TokenData(BaseModel):
     email: str = None
     permissions: str = "user"
 
+class FindUser(BaseModel):
+    phone_number : str
+
+class FindUserCode(FindUser):
+    verifyCode : str

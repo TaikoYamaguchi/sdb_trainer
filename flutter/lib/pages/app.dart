@@ -31,7 +31,6 @@ class _AppState extends State<App> {
   var _loginState;
   int _currentIndex = 0;
   var _userdataProvider;
-  var _historydataProvider;
 
   BottomNavigationBarItem _bottomNavigationBarItem(
       String iconName, String label) {
@@ -96,10 +95,6 @@ class _AppState extends State<App> {
     _workoutdataProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
     _workoutdataProvider.getdata();
-    _historydataProvider =
-        Provider.of<HistorydataProvider>(context, listen: false);
-    _historydataProvider.getdata();
-    _historydataProvider.getCommentAll();
     return Scaffold(
       body: _loginState.isLogin
           ? IndexedStack(index: _bodyStater.bodystate, children: <Widget>[

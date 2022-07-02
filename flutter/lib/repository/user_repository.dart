@@ -525,3 +525,73 @@ class UserImageEdit {
     }
   }
 }
+
+class UserFind {
+  final String phone_number;
+  UserFind({required this.phone_number});
+  Future<String> _smsByPhoneFromServer() async {
+    var formData = new Map<String, dynamic>();
+    formData["phone_number"] = phone_number;
+    var url = Uri.parse(LocalHost.getLocalHost() + "/api/userFind");
+    var response = await http.patch(url, body: json.encode(formData));
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      String jsonString = utf8.decode(response.bodyBytes);
+      final jsonResponse = json.decode(jsonString);
+      return utf8.decode(response.bodyBytes);
+    } else if (response.statusCode == 401) {
+      print("401");
+      showToast("존재 하지 않는 번호입니다.");
+      throw Error();
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<User?> findUserSmsImage() async {
+    String jsonString = await _smsByPhoneFromServer();
+    final jsonResponse = json.decode(jsonString);
+    if (jsonResponse == null) {
+      return null;
+    }
+  }
+}
+
+class UserFindVerification {
+  final String phone_number;
+  final String verify_code;
+  UserFindVerification({required this.phone_number, required this.verify_code});
+  Future<String> _smsVerificationFromServer() async {
+    var formData = new Map<String, dynamic>();
+    formData["phone_number"] = phone_number;
+    formData["verifyCode"] = verify_code;
+    var url = Uri.parse(LocalHost.getLocalHost() + "/api/userFindVerify");
+    var response = await http.patch(url, body: json.encode(formData));
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      String jsonString = utf8.decode(response.bodyBytes);
+      final jsonResponse = json.decode(jsonString);
+      return utf8.decode(response.bodyBytes);
+    } else if (response.statusCode == 401) {
+      print("401");
+      showToast("인증 번호를 확인해주세요.");
+      throw Error();
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      showToast("인증 번호를 확인해주세요.");
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<User?> findUserSmsImage() async {
+    String jsonString = await _smsVerificationFromServer();
+    final jsonResponse = json.decode(jsonString);
+    if (jsonResponse == null) {
+      return null;
+    } else {
+      User user = User.fromJson(jsonResponse);
+      return (user);
+    }
+  }
+}

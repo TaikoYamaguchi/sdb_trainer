@@ -173,6 +173,8 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     _historydataAll = Provider.of<HistorydataProvider>(context, listen: false);
     _historydataAll.getHistorydataAll();
+    _historydataAll.getdata();
+    _historydataAll.getCommentAll();
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _userdataProvider.getdata();
     _exercisesdataProvider =

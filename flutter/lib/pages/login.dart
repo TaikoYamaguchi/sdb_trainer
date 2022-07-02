@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:sdb_trainer/pages/home.dart';
+import 'package:sdb_trainer/pages/userFind.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
@@ -10,6 +11,7 @@ import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:provider/provider.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:transition/transition.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -78,12 +80,34 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     _loginWithKakao(context),
                     _loginWithGoogle(context),
+                    _findUser(context),
                     Expanded(
                       flex: 1,
                       child: SizedBox(),
                     ),
                   ]))),
     ));
+  }
+
+  Widget _findUser(context) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+            color: Colors.black,
+            textColor: Colors.white,
+            disabledColor: Colors.black,
+            disabledTextColor: Colors.black,
+            padding: EdgeInsets.all(8.0),
+            splashColor: Colors.blueAccent,
+            onPressed: () => isLoading
+                ? null
+                : Navigator.push(
+                    context,
+                    Transition(
+                        child: UserFindPage(),
+                        transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
+            child: Text(isLoading ? 'loading in.....' : "계정을 잊어버리셨나요?",
+                style: TextStyle(fontSize: 14.0, color: Colors.white))));
   }
 
   Widget _emailWidget() {
