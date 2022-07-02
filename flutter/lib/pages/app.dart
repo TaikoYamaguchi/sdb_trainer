@@ -16,6 +16,7 @@ import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
+import 'dart:math' as math;
 
 import 'statics.dart';
 
@@ -116,7 +117,31 @@ class _AppState extends State<App> {
               ? SignUpPage()
               : LoginPage()
       ,
-      floatingActionButton: (_routinetimeProvider.isstarted && _bodyStater.bodystate != 1) ? ExpandableFab(distance: 112.0,children: [],) : null
+      floatingActionButton: (_routinetimeProvider.isstarted && _bodyStater.bodystate != 1)
+          ? ExpandableFab(
+        distance: 105,
+        children: [
+          SizedBox(
+              width: 100,
+              height: 40,
+              child: FlatButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                  disabledTextColor: Colors.black,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () {
+                    _routinetimeProvider.restcheck();
+                  },
+                  child: Consumer<RoutineTimeProvider>(
+                    builder: (builder, provider, child) {
+                      return Text(provider.userest ?provider.timeron.toString() :provider.routineTime.toString());
+                    }
+                  ))),
+          ActionButton(onPressed: null, icon: Icon(Icons.stop),)
+        ],)
+          : null
       ,
 
       bottomNavigationBar:
@@ -140,7 +165,10 @@ class ExpandableFab extends StatefulWidget {
   State<ExpandableFab> createState() => _ExpandableFabState();
 }
 
-class _ExpandableFabState extends State<ExpandableFab> {
+class _ExpandableFabState extends State<ExpandableFab>
+    with SingleTickerProviderStateMixin{
+  late final AnimationController _controller;
+  late final Animation<double> _expandAnimation;
   bool _open = false;
 
 
@@ -149,11 +177,33 @@ class _ExpandableFabState extends State<ExpandableFab> {
   void initState() {
     super.initState();
     _open = widget.initialOpen ?? false;
+    _controller = AnimationController(
+      value: _open ? 1.0 : 0.0,
+      duration: const Duration(milliseconds: 250),
+      vsync: this,
+    );
+    _expandAnimation = CurvedAnimation(
+      curve: Curves.fastOutSlowIn,
+      reverseCurve: Curves.easeOutQuad,
+      parent: _controller,
+    );
   }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
 
   void _toggle() {
     setState(() {
       _open = !_open;
+      if (_open) {
+        _controller.forward();
+      } else {
+        _controller.reverse();
+      }
     });
   }
 
@@ -165,10 +215,30 @@ class _ExpandableFabState extends State<ExpandableFab> {
         clipBehavior: Clip.none,
         children: [
           _buildTapToCloseFab(),
+          ..._buildExpandingActionButtons(),
           _buildTapToOpenFab(),
         ],
       ),
     );
+  }
+
+  List<Widget> _buildExpandingActionButtons() {
+    final children = <Widget>[];
+    final count = widget.children.length;
+    final step = widget.distance ;
+    for (var i = 0, distances = 50.0;
+    i < count;
+    i++, distances += step) {
+      children.add(
+        _ExpandingActionButton(
+          directionInDegrees: 0,
+          maxDistance: distances,
+          progress: _expandAnimation,
+          child: widget.children[i],
+        ),
+      );
+    }
+    return children;
   }
 
   Widget _buildTapToCloseFab() {
@@ -177,7 +247,7 @@ class _ExpandableFabState extends State<ExpandableFab> {
       height: 56.0,
       child: Center(
         child: Material(
-          shape: BeveledRectangleBorder(),
+          shape: CircleBorder(),
           clipBehavior: Clip.antiAlias,
           elevation: 4.0,
           child: InkWell(
@@ -194,6 +264,8 @@ class _ExpandableFabState extends State<ExpandableFab> {
       ),
     );
   }
+
+
 
   Widget _buildTapToOpenFab() {
     return IgnorePointer(
@@ -226,4 +298,83 @@ class _ExpandableFabState extends State<ExpandableFab> {
       ),
     );
   }
+
 }
+
+@immutable
+class _ExpandingActionButton extends StatelessWidget {
+  const _ExpandingActionButton({
+    required this.directionInDegrees,
+    required this.maxDistance,
+    required this.progress,
+    required this.child,
+  });
+
+  final double directionInDegrees;
+  final double maxDistance;
+  final Animation<double> progress;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: progress,
+      builder: (context, child) {
+        final offset = Offset.fromDirection(
+          directionInDegrees ,
+          progress.value * maxDistance,
+        );
+        return Positioned(
+          right: 4.0 + offset.dx,
+          bottom: 8 + offset.dy,
+          child: Transform.rotate(
+            angle: (1.0 - progress.value) * math.pi / 2,
+            child: child!,
+          ),
+        );
+      },
+      child: FadeTransition(
+        opacity: progress,
+        child: child,
+      ),
+    );
+  }
+}
+
+@immutable
+class ActionButton extends StatelessWidget {
+  const ActionButton({
+    Key? key,
+    this.onPressed,
+    required this.icon,
+  }) : super(key: key);
+
+  final VoidCallback? onPressed;
+  final Widget icon;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return SizedBox(
+      width: 40,
+      height: 40,
+      child: Center(
+        child: Material(
+
+          shape: const CircleBorder(),
+          clipBehavior: Clip.antiAlias,
+          color: theme.colorScheme.secondary,
+          elevation: 4.0,
+          child: IconButton(
+            iconSize: 20,
+            onPressed: onPressed,
+            icon: icon,
+            color: theme.colorScheme.onSecondary,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
