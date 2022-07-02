@@ -40,8 +40,8 @@ class RoutineTimeProvider extends ChangeNotifier {
     _changetime = resttime;
 
   }
-  resettimer() {
-    _timeron = _changetime;
+  resettimer(resttime) {
+    _timeron = resttime;
     notifyListeners();
 
   }

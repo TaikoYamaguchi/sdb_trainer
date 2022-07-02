@@ -204,7 +204,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                 ),
                 GestureDetector(
                   onTap:() {
-                    _displaySetRestAlert();
+                    _displaySetRestAlert(pindex);
                   },
                   child: Consumer<WorkoutdataProvider>(
                       builder: (builder, provider, child) {
@@ -339,8 +339,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                           value: _sets[index].ischecked,
                                           onChanged: (newvalue) {
                                             _routinetimeProvider.isstarted
-                                              ? [_workoutdataProvider.boolcheck(widget.rindex, pindex, index, newvalue),_routinetimeProvider.resettimer(),
-                                            _editWorkoutwCheck()]
+                                              ? [_workoutdataProvider.boolcheck(widget.rindex, pindex, index, newvalue),
+                                              newvalue == true
+                                              ? _routinetimeProvider.resettimer(provider.workoutdata.routinedatas[widget.rindex].exercises[pindex].rest) : null,
+                                              _editWorkoutwCheck()]
                                               : _displayStartAlert(index, newvalue);
                                           })),
                                   Container(
@@ -609,7 +611,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     );
   }
 
-  void _displaySetRestAlert()  {
+  void _displaySetRestAlert(pindex)  {
     showDialog(
         context: context,
         builder: (context) {
@@ -643,7 +645,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   textColor: Colors.white,
                   child: Text('OK'),
                   onPressed: () {
-                    _workoutdataProvider.resttimecheck(widget.rindex, widget.eindex, _routinetimeProvider.changetime);
+                    _workoutdataProvider.resttimecheck(widget.rindex, pindex, _routinetimeProvider.changetime);
                     _editWorkoutwCheck();
                     _resttimectrl.clear();
                     Navigator.of(context, rootNavigator: true).pop();
@@ -797,6 +799,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     return Scaffold(
       appBar: _appbarWidget(),
       body: _exercisedetailPage(),
+
     );
   }
 }

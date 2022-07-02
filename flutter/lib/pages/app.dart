@@ -10,6 +10,7 @@ import 'package:sdb_trainer/pages/signup.dart';
 import 'package:sdb_trainer/pages/profile.dart';
 import 'package:sdb_trainer/pages/feed.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
+import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
@@ -26,6 +27,7 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  var _routinetimeProvider;
   var _workoutdataProvider;
   var _bodyStater;
   var _loginState;
@@ -40,6 +42,8 @@ class _AppState extends State<App> {
       label: label,
     );
   }
+
+
 
   Widget _bottomNavigationBarwidget() {
     return BottomNavigationBar(
@@ -95,6 +99,8 @@ class _AppState extends State<App> {
     _workoutdataProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
     _workoutdataProvider.getdata();
+    _routinetimeProvider =
+        Provider.of<RoutineTimeProvider>(context, listen: false);
     return Scaffold(
       body: _loginState.isLogin
           ? IndexedStack(index: _bodyStater.bodystate, children: <Widget>[
@@ -106,9 +112,116 @@ class _AppState extends State<App> {
             ])
           : _loginState.isSignUp
               ? SignUpPage()
-              : LoginPage(),
+              : LoginPage()
+      ,
+      floatingActionButton: _routinetimeProvider.isstarted ? ExpandableFab(distance: 112.0,children: [],) : null
+      ,
+
       bottomNavigationBar:
           _loginState.isLogin ? _bottomNavigationBarwidget() : null,
+    );
+  }
+}
+
+@immutable
+class ExpandableFab extends StatefulWidget {
+
+  const ExpandableFab({Key? key, this.initialOpen,
+    required this.distance,
+    required this.children,}) : super(key: key);
+
+  final bool? initialOpen;
+  final double distance;
+  final List<Widget> children;
+
+  @override
+  State<ExpandableFab> createState() => _ExpandableFabState();
+}
+
+class _ExpandableFabState extends State<ExpandableFab> {
+  bool _open = false;
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    _open = widget.initialOpen ?? false;
+  }
+
+  void _toggle() {
+    setState(() {
+      _open = !_open;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox.expand(
+      child: Stack(
+        alignment: Alignment.bottomRight,
+        clipBehavior: Clip.none,
+        children: [
+          _buildTapToCloseFab(),
+          _buildTapToOpenFab(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTapToCloseFab() {
+    return SizedBox(
+      width: 56.0,
+      height: 56.0,
+      child: Center(
+        child: Material(
+          shape: BeveledRectangleBorder(),
+          clipBehavior: Clip.antiAlias,
+          elevation: 4.0,
+          child: InkWell(
+            onTap: _toggle,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(
+                Icons.close,
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTapToOpenFab() {
+    return IgnorePointer(
+      ignoring: _open,
+      child: AnimatedContainer(
+        transformAlignment: Alignment.center,
+        transform: Matrix4.diagonal3Values(
+          _open ? 0.7 : 1.0,
+          _open ? 0.7 : 1.0,
+          1.0,
+        ),
+        duration: const Duration(milliseconds: 250),
+        curve: const Interval(0.0, 0.5, curve: Curves.easeOut),
+        child: AnimatedOpacity(
+          opacity: _open ? 0 : 1.0,
+          curve: const Interval(0.25, 1.0, curve: Curves.easeInOut),
+          duration: const Duration(milliseconds: 250),
+          child: FloatingActionButton(
+            onPressed: (){
+              print('open');
+              _toggle();
+              },
+            child: Consumer<RoutineTimeProvider>(
+              builder: (builder, provider, child) {
+                return Text(provider.userest ?provider.timeron.toString() :provider.routineTime.toString());
+              }
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
