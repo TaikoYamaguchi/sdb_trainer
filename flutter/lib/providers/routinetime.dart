@@ -50,7 +50,6 @@ class RoutineTimeProvider extends ChangeNotifier {
     if(_isstarted==false)
     {
       int counter = 10001;
-      _timeron = _changetime;
       timer1  = Timer.periodic(Duration(seconds: 1), (timer){
         _routineTime++;
         _timeron--;
@@ -73,6 +72,7 @@ class RoutineTimeProvider extends ChangeNotifier {
     else{
       timer1!.cancel();
       _routineTime=0;
+      _timeron = 0;
       _routineButton = 'Start Workout';
       _buttoncolor = Color(0xFF2196F3);
       _isstarted = !_isstarted;

@@ -340,10 +340,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                           onChanged: (newvalue) {
                                             _routinetimeProvider.isstarted
                                               ? [_workoutdataProvider.boolcheck(widget.rindex, pindex, index, newvalue),
-                                              newvalue == true
-                                              ? _routinetimeProvider.resettimer(provider.workoutdata.routinedatas[widget.rindex].exercises[pindex].rest) : null,
+                                              newvalue == true ? _routinetimeProvider.resettimer(provider.workoutdata.routinedatas[widget.rindex].exercises[pindex].rest) : null,
                                               _editWorkoutwCheck()]
-                                              : _displayStartAlert(index, newvalue);
+                                              : _displayStartAlert(pindex, index, newvalue);
                                           })),
                                   Container(
                                     width: 25,
@@ -483,7 +482,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                         ),
                         Container(child: Consumer<RoutineTimeProvider>(
                             builder: (context, provider, child) {
-                          return Text(provider.userest ?provider.timeron.toString() :provider.routineTime.toString(),
+                          return Text(provider.userest ? provider.timeron.toString() :provider.routineTime.toString(),
                               style:
                                   TextStyle(fontSize: 25, color: Colors.white));
                         })),
@@ -553,8 +552,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                   _editWorkoutwoCheck();
                                   Navigator.pop(context);
                                 }
-
-                                _routinetimeProvider.routinecheck();
+                                provider.resettimer(_workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises[pindex].rest);
+                                provider.routinecheck();
                           },
                           child:  Text(provider.routineButton),
                         );
@@ -645,6 +644,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   textColor: Colors.white,
                   child: Text('OK'),
                   onPressed: () {
+
                     _workoutdataProvider.resttimecheck(widget.rindex, pindex, _routinetimeProvider.changetime);
                     _editWorkoutwCheck();
                     _resttimectrl.clear();
@@ -657,7 +657,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         });
   }
 
-  void _displayStartAlert(index, newvalue)  {
+  void _displayStartAlert(pindex, sindex, newvalue)  {
     showDialog(
         context: context,
         builder: (context) {
@@ -665,13 +665,13 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             title: Text('Workout Start Alert',style: TextStyle(fontWeight: FontWeight.bold),),
             content: Text('운동을 시작하시겠습니까?'),
             actions: <Widget>[
-              _StartConfirmButton(index,newvalue),
+              _StartConfirmButton(pindex, sindex,newvalue),
             ],
           );
         });
   }
 
-  Widget _StartConfirmButton(index,newvalue) {
+  Widget _StartConfirmButton(pindex ,sindex,newvalue) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/25),
       child: Row(
@@ -687,9 +687,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   padding: EdgeInsets.all(8.0),
                   splashColor: Colors.blueAccent,
                   onPressed: () {
-
+                    _routinetimeProvider.resettimer(_workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises[pindex].rest);
                     _routinetimeProvider.routinecheck();
-                    _workoutdataProvider.boolcheck(widget.rindex, widget.eindex, index, newvalue);
+                    _workoutdataProvider.boolcheck(widget.rindex, pindex, sindex, newvalue);
                     _editWorkoutwCheck();
                     Navigator.of(context, rootNavigator: true).pop();
                   },
