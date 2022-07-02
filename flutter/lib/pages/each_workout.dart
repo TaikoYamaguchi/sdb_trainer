@@ -3,9 +3,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/each_exercise.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
+import 'package:sdb_trainer/providers/historydata.dart';
+import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
+import 'package:sdb_trainer/repository/exercises_repository.dart';
+import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
+import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'package:sdb_trainer/src/model/workoutdata.dart' as wod;
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:transition/transition.dart';
@@ -22,14 +27,18 @@ class EachWorkoutDetails extends StatefulWidget {
 }
 
 class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
+  var _historydataProvider;
+  var _routinetimeProvider;
   var _userdataProvider;
   var _workoutdataProvider;
   var backupwddata;
+  var _exercises;
   final controller = TextEditingController();
   TextEditingController _workoutNameCtrl = TextEditingController(text: "");
   var _exercisesdataProvider;
   var _testdata0;
   late var _testdata = _testdata0;
+  late List<hisdata.Exercises> exerciseList = [];
 
   List<Map<String, dynamic>> datas = [];
   double top = 0;
@@ -49,15 +58,18 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               icon: Icon(Icons.arrow_back_ios_outlined),
               onPressed: () {
                 _workoutdataProvider.changebudata(widget.rindex);
-                Navigator.of(context).pop();
+                setState(() {
+                  _isexsearch = !_isexsearch;
+                });
               },
             )
           : IconButton(
               icon: Icon(Icons.arrow_back_ios_outlined),
               onPressed: () {
-                //_editWorkoutCheck();
-                Navigator.of(context).pop();
-                //Provider.of<WorkoutdataProvider>(context, listen: false).getdata();
+                _routinetimeProvider.isstarted
+                    ? _displayFinishAlert()
+                    : Navigator.of(context).pop();
+
               },
             ),
       title: Row(
@@ -103,6 +115,151 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
       ],
       backgroundColor: Colors.black,
     );
+  }
+
+  void _editWorkoutwoCheck() async {
+    var routinedatas_all = _workoutdataProvider
+        .workoutdata.routinedatas;
+    for (int n = 0; n < routinedatas_all[widget.rindex].exercises.length; n++) {
+      for (int i = 0; i < routinedatas_all[widget.rindex].exercises[n].sets.length; i++) {
+        routinedatas_all[widget.rindex].exercises[n].sets[i].ischecked = false;
+      }
+    }
+    WorkoutEdit(
+        id: _workoutdataProvider
+            .workoutdata.id,
+        user_email: _userdataProvider.userdata.email,
+        routinedatas: routinedatas_all)
+        .editWorkout()
+        .then((data) => data["user_email"] != null
+        ? showToast("done!")
+        : showToast("입력을 확인해주세요"));
+  }
+
+  void _displayFinishAlert()  {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Workout Finish Alert',style: TextStyle(fontWeight: FontWeight.bold),),
+            content: Text('운동을 끝마치겠습니까?'),
+            actions: <Widget>[
+              _StartConfirmButton(),
+            ],
+          );
+        });
+  }
+
+  Widget _StartConfirmButton() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/25),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+              width: MediaQuery.of(context).size.width/4,
+              child: FlatButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                  disabledTextColor: Colors.black,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () {
+
+                    _routinetimeProvider.routinecheck();
+                    recordExercise();
+                    _editHistoryCheck();
+                    _editWorkoutwoCheck();
+                    Navigator.of(context, rootNavigator: true).pop();
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Confirm",
+                      style: TextStyle(fontSize: 20.0, color: Colors.white)))),
+          SizedBox(
+              width: MediaQuery.of(context).size.width/4,
+              child: FlatButton(
+                  color: Colors.red,
+                  textColor: Colors.white,
+                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                  disabledTextColor: Colors.black,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                  child: Text("Cancel",
+                      style: TextStyle(fontSize: 20.0, color: Colors.white))))
+        ],
+      ),
+    );
+  }
+
+  void recordExercise() {
+    var exercise_all =
+        _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises;
+    for (int n = 0; n < exercise_all.length; n++) {
+      var recordedsets = exercise_all[n].sets.where((sets) {
+        return (sets.ischecked as bool && sets.weight != 0);
+      }).toList();
+      double monerm = 0;
+      for (int i = 0; i < recordedsets.length; i++) {
+        if (recordedsets[i].reps != 1) {
+          if (monerm <
+              recordedsets[i].weight * (1 + recordedsets[i].reps / 30)) {
+            monerm = recordedsets[i].weight * (1 + recordedsets[i].reps / 30);
+          }
+        } else if (monerm < recordedsets[i].weight) {
+          monerm = recordedsets[i].weight;
+        }
+      }
+      var _eachex = _exercises[_exercises
+          .indexWhere((element) => element.name == exercise_all[n].name)];
+      if (!recordedsets.isEmpty) {
+        exerciseList.add(hisdata.Exercises(
+            name: exercise_all[n].name,
+            sets: recordedsets,
+            onerm: monerm,
+            goal: _eachex.goal,
+            date: DateTime.now().toString().substring(0, 10)));
+      }
+
+      if (monerm > _eachex.onerm) {
+        modifyExercise(monerm, exercise_all[n].name);
+      }
+    }
+    _postExerciseCheck();
+  }
+
+  void _editHistoryCheck() async {
+    if (!exerciseList.isEmpty) {
+      HistoryPost(
+          user_email: _userdataProvider.userdata.email,
+          exercises: exerciseList,
+          new_record: 120,
+          workout_time: _routinetimeProvider.routineTime,
+          nickname: _userdataProvider.userdata.nickname)
+          .postHistory()
+          .then((data) => data["user_email"] != null
+          ? {_historydataProvider.getdata(), exerciseList = []}
+          : showToast("입력을 확인해주세요"));
+    } else {
+      print("no exercises");
+    }
+  }
+
+  void modifyExercise(double newonerm, exname) {
+    _exercises[_exercises.indexWhere((element) => element.name == exname)]
+        .onerm = newonerm;
+  }
+
+  void _postExerciseCheck() async {
+    ExerciseEdit(
+        user_email: _userdataProvider.userdata.email, exercises: _exercises)
+        .editExercise()
+        .then((data) => data["user_email"] != null
+        ? {showToast("수정 완료"), _exercisesdataProvider.getdata()}
+        : showToast("입력을 확인해주세요"));
   }
 
   void _displayTextInputDialog() {
@@ -464,13 +621,17 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
 
   @override
   Widget build(BuildContext context) {
+    _historydataProvider =
+        Provider.of<HistorydataProvider>(context, listen: false);
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _workoutdataProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
+    _exercises = _exercisesdataProvider.exercisesdata.exercises;
     _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
-    print(_exercisesdataProvider.exercisesdata.exercises.length);
+    _routinetimeProvider =
+        Provider.of<RoutineTimeProvider>(context, listen: false);
     return Scaffold(
         appBar: _appbarWidget(),
         body:

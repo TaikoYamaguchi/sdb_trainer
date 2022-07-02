@@ -103,7 +103,9 @@ class _AppState extends State<App> {
         Provider.of<RoutineTimeProvider>(context, listen: false);
     return Scaffold(
       body: _loginState.isLogin
-          ? IndexedStack(index: _bodyStater.bodystate, children: <Widget>[
+          ? IndexedStack(
+          index: _bodyStater.bodystate,
+          children: <Widget>[
               Home(),
               TabNavigator(),
               Feed(),
@@ -114,7 +116,7 @@ class _AppState extends State<App> {
               ? SignUpPage()
               : LoginPage()
       ,
-      floatingActionButton: _routinetimeProvider.isstarted ? ExpandableFab(distance: 112.0,children: [],) : null
+      floatingActionButton: (_routinetimeProvider.isstarted && _bodyStater.bodystate != 1) ? ExpandableFab(distance: 112.0,children: [],) : null
       ,
 
       bottomNavigationBar:

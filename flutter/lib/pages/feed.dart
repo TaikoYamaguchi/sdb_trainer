@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/pages/app.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
+import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
@@ -23,6 +25,7 @@ class Feed extends StatefulWidget {
 }
 
 class _FeedState extends State<Feed> {
+  var _routinetimeProvider;
   var _feedListCtrl = 1;
 
   final Map<int, Widget> _feedList = const <int, Widget>{
@@ -57,7 +60,8 @@ class _FeedState extends State<Feed> {
 
     _userdataProvider.getFriendsdata(_userdataProvider.userdata.email);
     _historydataAll.getFriendsHistorydata(_userdataProvider.userdata.email);
-
+    _routinetimeProvider =
+        Provider.of<RoutineTimeProvider>(context, listen: false);
     return Scaffold(
         appBar: AppBar(
             title: Row(
@@ -82,7 +86,9 @@ class _FeedState extends State<Feed> {
               ? _feedCardList(context)
               : Center(child: CircularProgressIndicator()),
           onRefresh: _onRefresh,
-        ));
+        ),
+        floatingActionButton: _routinetimeProvider.isstarted ? ExpandableFab(distance: 112.0,children: [],) : null
+    );
   }
 
   Future<void> _onRefresh() {
