@@ -17,12 +17,16 @@ class RoutineTimeProvider extends ChangeNotifier {
   bool _userest = false;
   bool get userest => _userest;
   String restbutton = 'Rest Timer off';
-  Color _restbuttoncolor = Color(0xFF2196F3);
+  Color _restbuttoncolor = Color(0xFF717171);
   Color get restbuttoncolor => _restbuttoncolor;
   String _routineButton = 'Start Workout';
   String get routineButton => _routineButton;
-  Color _buttoncolor = Color(0xFF717171);
+  Color _buttoncolor = Color(0xFF2196F3);
   Color get buttoncolor => _buttoncolor;
+
+  getinfo() {
+    notifyListeners();
+  }
 
   restcheck() {
     _userest

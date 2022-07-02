@@ -789,6 +789,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         Provider.of<WorkoutdataProvider>(context, listen: false);
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
+
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _exercises = _exercisesdataProvider.exercisesdata.exercises;
