@@ -26,6 +26,11 @@ class UserdataProvider extends ChangeNotifier {
     });
   }
 
+  setUserdata(user) {
+    _userdata = user;
+    notifyListeners();
+  }
+
   getFriendsdata(email) {
     UserLikeFriends(user_email: email).getUserLikeFriends().then((value) {
       _userFriends = value;

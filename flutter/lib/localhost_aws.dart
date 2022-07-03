@@ -1,5 +1,5 @@
 class LocalHost {
   static String getLocalHost() {
-    return "http://100.21.25.6:8000";
+    return "http://43.200.121.48:8000";
   }
 }
