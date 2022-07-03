@@ -10,6 +10,8 @@ class RoutineTimeProvider extends ChangeNotifier {
   int get changetime => _changetime;
   int _timeron = 0;
   int get timeron => _timeron;
+  int _nowonrindex = 0;
+  int get nowonrindex => _nowonrindex;
 
   Timer? timer1;
   bool _isstarted = false;
@@ -46,7 +48,7 @@ class RoutineTimeProvider extends ChangeNotifier {
 
   }
 
-  void routinecheck(){
+  void routinecheck(rindex){
     if(_isstarted==false)
     {
       int counter = 10001;
@@ -67,6 +69,7 @@ class RoutineTimeProvider extends ChangeNotifier {
       _routineButton = 'Finish Workout';
       _buttoncolor = Color(0xFF9C27B0);
       _isstarted = !_isstarted;
+      _nowonrindex = rindex;
       notifyListeners();
     }
     else{

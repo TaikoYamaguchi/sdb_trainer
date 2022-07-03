@@ -482,9 +482,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                         ),
                         Container(child: Consumer<RoutineTimeProvider>(
                             builder: (context, provider, child) {
-                          return Text(provider.userest ? provider.timeron.toString() :provider.routineTime.toString(),
+                          return Text(provider.userest
+                              ? '${(provider.timeron/60).floor().toString()}:${((provider.timeron%60)/10).floor().toString()}${((provider.timeron%60)%10).toString()}'
+                              : '${(provider.routineTime/60).floor().toString()}:${((provider.routineTime%60)/10).floor().toString()}${((provider.routineTime%60)%10).toString()}',
                               style:
-                                  TextStyle(fontSize: 25, color: Colors.white));
+                                  TextStyle(fontSize: 25, color: (provider.userest && provider.timeron<0) ? Colors.red : Colors.white));
                         })),
                         Container(
                           child: IconButton(
@@ -553,7 +555,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                   Navigator.pop(context);
                                 }
                                 provider.resettimer(_workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises[pindex].rest);
-                                provider.routinecheck();
+                                provider.routinecheck(widget.rindex);
                           },
                           child:  Text(provider.routineButton),
                         );
@@ -688,7 +690,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   splashColor: Colors.blueAccent,
                   onPressed: () {
                     _routinetimeProvider.resettimer(_workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises[pindex].rest);
-                    _routinetimeProvider.routinecheck();
+                    _routinetimeProvider.routinecheck(widget.rindex);
                     _workoutdataProvider.boolcheck(widget.rindex, pindex, sindex, newvalue);
                     _editWorkoutwCheck();
                     Navigator.of(context, rootNavigator: true).pop();
@@ -795,6 +797,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _exercises = _exercisesdataProvider.exercisesdata.exercises;
+
 
     return Scaffold(
       appBar: _appbarWidget(),

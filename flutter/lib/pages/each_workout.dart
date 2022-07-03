@@ -167,7 +167,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                   splashColor: Colors.blueAccent,
                   onPressed: () {
 
-                    _routinetimeProvider.routinecheck();
+                    _routinetimeProvider.routinecheck(widget.rindex);
                     recordExercise();
                     _editHistoryCheck();
                     _editWorkoutwoCheck();

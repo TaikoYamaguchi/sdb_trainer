@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sdb_trainer/providers/exercisesdata.dart';
+import 'package:sdb_trainer/providers/historydata.dart';
+import 'package:sdb_trainer/repository/exercises_repository.dart';
+import 'package:sdb_trainer/repository/history_repository.dart';
+import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/navigators/exercise_navi.dart';
@@ -15,7 +20,8 @@ import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
-import 'package:sdb_trainer/providers/historydata.dart';
+import 'package:sdb_trainer/repository/workout_repository.dart';
+import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'dart:math' as math;
 
 import 'statics.dart';
@@ -28,7 +34,11 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  var _historydataProvider;
+  var _exercisesdataProvider;
+  var _exercises;
   var _routinetimeProvider;
+  late List<hisdata.Exercises> exerciseList = [];
   var _workoutdataProvider;
   var _bodyStater;
   var _loginState;
@@ -71,25 +81,152 @@ class _AppState extends State<App> {
     );
   }
 
-  Widget _bodyWidget() {
-    switch (_bodyStater.bodystate) {
-      case 0:
-        return Home();
 
-      case 1:
-        return TabNavigator();
 
-      case 2:
-        return Feed();
-
-      case 3:
-        return Calendar();
-
-      case 4:
-        return TabNavigator();
+  void _editWorkoutwoCheck() async {
+    var routinedatas_all = _workoutdataProvider
+        .workoutdata.routinedatas;
+    for (int n = 0; n < routinedatas_all[_routinetimeProvider.nowonrindex].exercises.length; n++) {
+      for (int i = 0; i < routinedatas_all[_routinetimeProvider.nowonrindex].exercises[n].sets.length; i++) {
+        routinedatas_all[_routinetimeProvider.nowonrindex].exercises[n].sets[i].ischecked = false;
+      }
     }
-    return Container();
+    WorkoutEdit(
+        id: _workoutdataProvider
+            .workoutdata.id,
+        user_email: _userdataProvider.userdata.email,
+        routinedatas: routinedatas_all)
+        .editWorkout()
+        .then((data) => data["user_email"] != null
+        ? showToast("done!")
+        : showToast("입력을 확인해주세요"));
   }
+
+  void _displayFinishAlert()  {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Workout Finish Alert',style: TextStyle(fontWeight: FontWeight.bold),),
+            content: Text('운동을 끝마치겠습니까?'),
+            actions: <Widget>[
+              _StartConfirmButton(),
+            ],
+          );
+        });
+  }
+
+  Widget _StartConfirmButton() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/25),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+              width: MediaQuery.of(context).size.width/4,
+              child: FlatButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                  disabledTextColor: Colors.black,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () {
+
+                    _routinetimeProvider.routinecheck(0);
+                    recordExercise();
+                    _editHistoryCheck();
+                    _editWorkoutwoCheck();
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                  child: Text("Confirm",
+                      style: TextStyle(fontSize: 20.0, color: Colors.white)))),
+          SizedBox(
+              width: MediaQuery.of(context).size.width/4,
+              child: FlatButton(
+                  color: Colors.red,
+                  textColor: Colors.white,
+                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                  disabledTextColor: Colors.black,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                  child: Text("Cancel",
+                      style: TextStyle(fontSize: 20.0, color: Colors.white))))
+        ],
+      ),
+    );
+  }
+
+  void recordExercise() {
+    var exercise_all =
+        _workoutdataProvider.workoutdata.routinedatas[_routinetimeProvider.nowonrindex].exercises;
+    for (int n = 0; n < exercise_all.length; n++) {
+      var recordedsets = exercise_all[n].sets.where((sets) {
+        return (sets.ischecked as bool && sets.weight != 0);
+      }).toList();
+      double monerm = 0;
+      for (int i = 0; i < recordedsets.length; i++) {
+        if (recordedsets[i].reps != 1) {
+          if (monerm <
+              recordedsets[i].weight * (1 + recordedsets[i].reps / 30)) {
+            monerm = recordedsets[i].weight * (1 + recordedsets[i].reps / 30);
+          }
+        } else if (monerm < recordedsets[i].weight) {
+          monerm = recordedsets[i].weight;
+        }
+      }
+      var _eachex = _exercises[_exercises
+          .indexWhere((element) => element.name == exercise_all[n].name)];
+      if (!recordedsets.isEmpty) {
+        exerciseList.add(hisdata.Exercises(
+            name: exercise_all[n].name,
+            sets: recordedsets,
+            onerm: monerm,
+            goal: _eachex.goal,
+            date: DateTime.now().toString().substring(0, 10)));
+      }
+
+      if (monerm > _eachex.onerm) {
+        modifyExercise(monerm, exercise_all[n].name);
+      }
+    }
+    _postExerciseCheck();
+  }
+
+  void _editHistoryCheck() async {
+    if (!exerciseList.isEmpty) {
+      HistoryPost(
+          user_email: _userdataProvider.userdata.email,
+          exercises: exerciseList,
+          new_record: 120,
+          workout_time: _routinetimeProvider.routineTime,
+          nickname: _userdataProvider.userdata.nickname)
+          .postHistory()
+          .then((data) => data["user_email"] != null
+          ? {_historydataProvider.getdata(), exerciseList = []}
+          : showToast("입력을 확인해주세요"));
+    } else {
+      print("no exercises");
+    }
+  }
+
+  void modifyExercise(double newonerm, exname) {
+    _exercises[_exercises.indexWhere((element) => element.name == exname)]
+        .onerm = newonerm;
+  }
+
+  void _postExerciseCheck() async {
+    ExerciseEdit(
+        user_email: _userdataProvider.userdata.email, exercises: _exercises)
+        .editExercise()
+        .then((data) => data["user_email"] != null
+        ? {showToast("수정 완료"), _exercisesdataProvider.getdata()}
+        : showToast("입력을 확인해주세요"));
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -100,8 +237,14 @@ class _AppState extends State<App> {
     _workoutdataProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
     _workoutdataProvider.getdata();
+    _exercisesdataProvider =
+        Provider.of<ExercisesdataProvider>(context, listen: false);
+    _exercises = _exercisesdataProvider.exercisesdata.exercises;
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
+    _historydataProvider =
+        Provider.of<HistorydataProvider>(context, listen: false);
+
     return Scaffold(
       body: _loginState.isLogin
           ? IndexedStack(
@@ -117,31 +260,40 @@ class _AppState extends State<App> {
               ? SignUpPage()
               : LoginPage()
       ,
-      floatingActionButton: (_routinetimeProvider.isstarted && _bodyStater.bodystate != 1)
-          ? ExpandableFab(
-        distance: 105,
-        children: [
-          SizedBox(
-              width: 100,
-              height: 40,
-              child: FlatButton(
-                  color: Colors.blue,
-                  textColor: Colors.white,
-                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                  disabledTextColor: Colors.black,
-                  padding: EdgeInsets.all(8.0),
-                  splashColor: Colors.blueAccent,
-                  onPressed: () {
-                    _routinetimeProvider.restcheck();
-                  },
-                  child: Consumer<RoutineTimeProvider>(
-                    builder: (builder, provider, child) {
-                      return Text(provider.userest ?provider.timeron.toString() :provider.routineTime.toString());
-                    }
-                  ))),
-          ActionButton(onPressed: null, icon: Icon(Icons.stop),)
-        ],)
-          : null
+      floatingActionButton: Consumer<RoutineTimeProvider>(
+        builder: (builder, provider, child) {
+          return Container(
+            child: (provider.isstarted && _bodyStater.bodystate != 1)
+                ? ExpandableFab(
+              distance: 105,
+              children: [
+                SizedBox(
+                    width: 100,
+                    height: 40,
+                    child: FlatButton(
+                        color: Colors.blue,
+                        textColor: Colors.white,
+                        disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                        disabledTextColor: Colors.black,
+                        padding: EdgeInsets.all(8.0),
+                        splashColor: Colors.blueAccent,
+                        onPressed: () {
+                          provider.restcheck();
+                        },
+                        child: Text(provider.userest
+                                ? '${(provider.timeron/60).floor().toString()}:${((provider.timeron%60)/10).floor().toString()}${((provider.timeron%60)%10).toString()}'
+                                : '${(provider.routineTime/60).floor().toString()}:${((provider.routineTime%60)/10).floor().toString()}${((provider.routineTime%60)%10).toString()}',
+                                style:
+                                TextStyle( color: (provider.userest && provider.timeron<0) ? Colors.red : Colors.white)
+                        )
+                    )
+                ),
+                ActionButton(onPressed: _displayFinishAlert, icon: Icon(Icons.stop),)
+              ],)
+                : null,
+          );
+        }
+      )
       ,
 
       bottomNavigationBar:
@@ -290,7 +442,11 @@ class _ExpandableFabState extends State<ExpandableFab>
               },
             child: Consumer<RoutineTimeProvider>(
               builder: (builder, provider, child) {
-                return Text(provider.userest ?provider.timeron.toString() :provider.routineTime.toString());
+                return Text(provider.userest
+                    ? '${(provider.timeron/60).floor().toString()}:${((provider.timeron%60)/10).floor().toString()}${((provider.timeron%60)%10).toString()}'
+                    : '${(provider.routineTime/60).floor().toString()}:${((provider.routineTime%60)/10).floor().toString()}${((provider.routineTime%60)%10).toString()}',
+                    style:
+                    TextStyle( color: (provider.userest && provider.timeron<0) ? Colors.red : Colors.white));
               }
             ),
           ),
