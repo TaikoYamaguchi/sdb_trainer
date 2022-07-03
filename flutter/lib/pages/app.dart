@@ -281,8 +281,10 @@ class _AppState extends State<App> {
                           provider.restcheck();
                         },
                         child: Text(provider.userest
-                                ? '${(provider.timeron/60).floor().toString()}:${((provider.timeron%60)/10).floor().toString()}${((provider.timeron%60)%10).toString()}'
-                                : '${(provider.routineTime/60).floor().toString()}:${((provider.routineTime%60)/10).floor().toString()}${((provider.routineTime%60)%10).toString()}',
+                            ? provider.timeron<0
+                            ? '-${(-provider.timeron/60).floor().toString()}:${((-provider.timeron%60)/10).floor().toString()}${((-provider.timeron%60)%10).toString()}'
+                            : '${(provider.timeron/60).floor().toString()}:${((provider.timeron%60)/10).floor().toString()}${((provider.timeron%60)%10).toString()}'
+                            : '${(provider.routineTime/60).floor().toString()}:${((provider.routineTime%60)/10).floor().toString()}${((provider.routineTime%60)%10).toString()}',
                                 style:
                                 TextStyle( color: (provider.userest && provider.timeron<0) ? Colors.red : Colors.white)
                         )
