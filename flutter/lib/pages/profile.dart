@@ -36,7 +36,7 @@ class Profile extends StatelessWidget {
 
   Future<void> _pickImg() async {
     final XFile? selectImage =
-        await _picker.pickImage(source: ImageSource.gallery);
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 10);
     if (selectImage != null) {
       dynamic sendData = selectImage.path;
       UserImageEdit(file: sendData).patchUserImage();

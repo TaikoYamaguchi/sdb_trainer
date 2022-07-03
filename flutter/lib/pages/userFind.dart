@@ -54,7 +54,7 @@ class _UserFindPageState extends State<UserFindPage> {
                       flex: 2,
                       child: SizedBox(),
                     ),
-                    Text("휴대폰으로 계정 찾기",
+                    Text("휴대폰으로 계정 찾기(현재 사용이 어렵습니다. 고객센터로 문의 부탁드립니다)",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 32,
@@ -64,6 +64,7 @@ class _UserFindPageState extends State<UserFindPage> {
                     ),
                     _phoneNumberWidget(),
                     _isVerification ? _codeWidget() : Container(),
+                    user != null ? _userWidget() : Container(),
                     Expanded(
                       flex: 3,
                       child: SizedBox(),
@@ -73,6 +74,39 @@ class _UserFindPageState extends State<UserFindPage> {
                     ),
                     _editButton(context),
                   ]))),
+    );
+  }
+
+  Widget _userWidget() {
+    return Row(
+      children: [
+        Text("아이디는 ${user.email} 입니다.", style: TextStyle(color: Colors.white)),
+        TextFormField(
+          enabled: _isVerification == false,
+          controller: _userPhoneNumberCtrl,
+          style: TextStyle(color: Colors.white),
+          autofocus: true,
+          keyboardType:
+              TextInputType.numberWithOptions(signed: true, decimal: true),
+          decoration: InputDecoration(
+            labelText: _isPhoneEmpty == false ? "휴대폰" : "휴대폰으로 가입한 정보가 없습니다",
+            labelStyle: TextStyle(
+                color: _isPhoneEmpty == false ? Colors.white : Colors.red),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: _isPhoneEmpty == false ? Colors.white : Colors.red,
+                  width: 2.0),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: _isPhoneEmpty == false ? Colors.white : Colors.red,
+                  width: 2.0),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+          ),
+        ),
+      ],
     );
   }
 

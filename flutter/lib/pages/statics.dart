@@ -202,8 +202,12 @@ class _CalendarState extends State<Calendar> {
             isTodayHighlighted: true,
             selectedDecoration: BoxDecoration(
               color: Colors.blue,
-              borderRadius: BorderRadius.circular(5.0),
               shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            outsideDecoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(5.0),
             ),
             markerDecoration:
                 BoxDecoration(color: Colors.white, shape: BoxShape.circle),
@@ -216,17 +220,17 @@ class _CalendarState extends State<Calendar> {
             outsideTextStyle:
                 TextStyle(color: Color.fromRGBO(113, 113, 113, 100)),
             todayDecoration: BoxDecoration(
+              shape: BoxShape.rectangle,
               color: Colors.green[600],
               borderRadius: BorderRadius.circular(5.0),
-              shape: BoxShape.rectangle,
             ),
             defaultDecoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5.0),
               shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(5.0),
             ),
             weekendDecoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5.0),
               shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(5.0),
             ),
           ),
           headerStyle: const HeaderStyle(
