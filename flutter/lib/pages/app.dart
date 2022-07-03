@@ -264,6 +264,7 @@ class _AppState extends State<App> {
       ,
       floatingActionButton: Consumer<RoutineTimeProvider>(
         builder: (builder, provider, child) {
+
           return Container(
             child: (provider.isstarted && _bodyStater.bodystate != 1)
                 ? ExpandableFab(
@@ -447,7 +448,9 @@ class _ExpandableFabState extends State<ExpandableFab>
             child: Consumer<RoutineTimeProvider>(
               builder: (builder, provider, child) {
                 return Text(provider.userest
-                    ? '${(provider.timeron/60).floor().toString()}:${((provider.timeron%60)/10).floor().toString()}${((provider.timeron%60)%10).toString()}'
+                    ? provider.timeron<0
+                    ? '-${(-provider.timeron/60).floor().toString()}:${((-provider.timeron%60)/10).floor().toString()}${((-provider.timeron%60)%10).toString()}'
+                    : '${(provider.timeron/60).floor().toString()}:${((provider.timeron%60)/10).floor().toString()}${((provider.timeron%60)%10).toString()}'
                     : '${(provider.routineTime/60).floor().toString()}:${((provider.routineTime%60)/10).floor().toString()}${((provider.routineTime%60)%10).toString()}',
                     style:
                     TextStyle( color: (provider.userest && provider.timeron<0) ? Colors.red : Colors.white));
