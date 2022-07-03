@@ -8,7 +8,7 @@ def image_resize(filepath):
     if (width > 900):
         new_height = height * 900 / width
         fixed_img.thumbnail((900, int(new_height)))
-        img.save(filepath, optimize=True)
-        img.close()
+        fixed_img.save(filepath, optimize=True)
+        fixed_img.close()
 
 
