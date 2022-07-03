@@ -103,6 +103,7 @@ class _AppState extends State<App> {
   }
 
   void _displayFinishAlert()  {
+    _exercises = _exercisesdataProvider.exercisesdata.exercises;
     showDialog(
         context: context,
         builder: (context) {
@@ -239,7 +240,8 @@ class _AppState extends State<App> {
     _workoutdataProvider.getdata();
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
-    _exercises = _exercisesdataProvider.exercisesdata.exercises;
+    _exercisesdataProvider.getdata();
+
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
     _historydataProvider =
@@ -282,8 +284,8 @@ class _AppState extends State<App> {
                         },
                         child: Text(provider.userest
                             ? provider.timeron<0
-                            ? '-${(-provider.timeron/60).floor().toString()}:${((-provider.timeron%60)/10).floor().toString()}${((-provider.timeron%60)%10).toString()}'
-                            : '${(provider.timeron/60).floor().toString()}:${((provider.timeron%60)/10).floor().toString()}${((provider.timeron%60)%10).toString()}'
+                              ? '-${(-provider.timeron/60).floor().toString()}:${((-provider.timeron%60)/10).floor().toString()}${((-provider.timeron%60)%10).toString()}'
+                              : '${(provider.timeron/60).floor().toString()}:${((provider.timeron%60)/10).floor().toString()}${((provider.timeron%60)%10).toString()}'
                             : '${(provider.routineTime/60).floor().toString()}:${((provider.routineTime%60)/10).floor().toString()}${((provider.routineTime%60)%10).toString()}',
                                 style:
                                 TextStyle( color: (provider.userest && provider.timeron<0) ? Colors.red : Colors.white)

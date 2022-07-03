@@ -54,9 +54,9 @@ class _FeedState extends State<Feed> {
     _historydataAll = Provider.of<HistorydataProvider>(context, listen: false);
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _userdataProvider.getUsersFriendsAll();
-
-    _userdataProvider.getFriendsdata(_userdataProvider.userdata.email);
-    _historydataAll.getFriendsHistorydata(_userdataProvider.userdata.email);
+    _userdataProvider.userdata != null
+     ? [_userdataProvider.getFriendsdata(_userdataProvider.userdata.email), _historydataAll.getFriendsHistorydata(_userdataProvider.userdata.email)]
+     : null ;
 
     return Scaffold(
         appBar: AppBar(
