@@ -483,7 +483,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                         Container(child: Consumer<RoutineTimeProvider>(
                             builder: (context, provider, child) {
                           return Text(provider.userest
-                              ? '${(provider.timeron/60).floor().toString()}:${((provider.timeron%60)/10).floor().toString()}${((provider.timeron%60)%10).toString()}'
+                              ? provider.timeron<0
+                                ? '-${(-provider.timeron/60).floor().toString()}:${((-provider.timeron%60)/10).floor().toString()}${((-provider.timeron%60)%10).toString()}'
+                                : '${(provider.timeron/60).floor().toString()}:${((provider.timeron%60)/10).floor().toString()}${((provider.timeron%60)%10).toString()}'
                               : '${(provider.routineTime/60).floor().toString()}:${((provider.routineTime%60)/10).floor().toString()}${((provider.routineTime%60)%10).toString()}',
                               style:
                                   TextStyle(fontSize: 25, color: (provider.userest && provider.timeron<0) ? Colors.red : Colors.white));
