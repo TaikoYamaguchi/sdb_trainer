@@ -39,7 +39,9 @@ class Profile extends StatelessWidget {
         await _picker.pickImage(source: ImageSource.gallery, imageQuality: 10);
     if (selectImage != null) {
       dynamic sendData = selectImage.path;
-      UserImageEdit(file: sendData).patchUserImage();
+      UserImageEdit(file: sendData).patchUserImage().then((data) {
+        _userdataProvider.setUserdata(data);
+      });
     }
   }
 
@@ -99,20 +101,22 @@ class Profile extends StatelessWidget {
                   ]))),
       SizedBox(height: 30),
       GestureDetector(
-        onTap: () {
-          _pickImg();
-        },
-        child: _userdataProvider.userdata.image == ""
-            ? Icon(
-                Icons.account_circle,
-                color: Colors.grey,
-                size: 200.0,
-              )
-            : CircleAvatar(
-                radius: 100.0,
-                backgroundImage: NetworkImage(_userdataProvider.userdata.image),
-                backgroundColor: Colors.transparent),
-      ),
+          onTap: () {
+            _pickImg();
+          },
+          child: _userdataProvider.userdata.image == ""
+              ? Icon(
+                  Icons.account_circle,
+                  color: Colors.grey,
+                  size: 200.0,
+                )
+              : Consumer<UserdataProvider>(builder: (builder, rpovider, child) {
+                  return CircleAvatar(
+                      radius: 100.0,
+                      backgroundImage:
+                          NetworkImage(_userdataProvider.userdata.image),
+                      backgroundColor: Colors.transparent);
+                })),
     ]);
   }
 
