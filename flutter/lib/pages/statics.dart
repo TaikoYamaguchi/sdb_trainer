@@ -55,7 +55,6 @@ class _CalendarState extends State<Calendar> {
         selectionRectColor: Colors.grey,
         enablePanning: true,
         maximumZoomLevel: 0.7);
-    _getChartSourcefromDay();
     super.initState();
   }
 
@@ -325,7 +324,7 @@ class _CalendarState extends State<Calendar> {
                     child: Row(
                       //mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text("Rest: need to set",
+                        Text("",
                             style: TextStyle(
                                 fontSize: 13, color: Color(0xFF717171))),
                         Expanded(child: SizedBox()),
@@ -444,9 +443,6 @@ class _CalendarState extends State<Calendar> {
                           child: Row(
                             //mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Text("Rest: need to set",
-                                  style: TextStyle(
-                                      fontSize: 13, color: Color(0xFF717171))),
                               Expanded(child: SizedBox()),
                               Text(
                                   "1RM: " +

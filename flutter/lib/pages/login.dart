@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                       flex: 3,
                       child: SizedBox(),
                     ),
-                    Text("SDB 훈련소",
+                    Text("SUPERO",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 54,
