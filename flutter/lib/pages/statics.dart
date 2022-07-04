@@ -8,16 +8,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:transition/transition.dart';
 import '../repository/history_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
-import 'package:sdb_trainer/repository/exercises_repository.dart';
 import '../src/model/historydata.dart';
-import '../src/model/exercisesdata.dart' as ExercisesData;
-import 'package:sdb_trainer/pages/exercise.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:sdb_trainer/providers/chartIndexState.dart';
 import 'package:sdb_trainer/providers/staticPageState.dart';
 import 'package:provider/provider.dart';
-import 'package:sdb_trainer/pages/unique_exercise.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
+import 'package:sdb_trainer/providers/exercisesdata.dart';
 
 class Calendar extends StatefulWidget {
   @override
@@ -26,9 +23,7 @@ class Calendar extends StatefulWidget {
 
 class _CalendarState extends State<Calendar> {
   late Map<DateTime, List<SDBdata>> selectedEvents;
-  SDBdataList? _sdbData;
   List<Exercises>? _sdbChartData = [];
-  ExercisesData.Exercisesdata? _exercisesData;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
@@ -42,7 +37,7 @@ class _CalendarState extends State<Calendar> {
   PageController? _isPageController;
   var _tapPosition;
   var _historydataProvider;
-  var exercisesRawData;
+  var _exercisesdataProvider;
 
   TextEditingController _eventController = TextEditingController();
 
@@ -61,32 +56,26 @@ class _CalendarState extends State<Calendar> {
         selectionRectColor: Colors.grey,
         enablePanning: true,
         maximumZoomLevel: 0.7);
-
-    ExerciseService.loadSDBdata().then((sdbdatas) {
-      _sdbData = sdbdatas;
-      ExercisesRepository.loadExercisesdata().then((exercisesData) {
-        _exercisesData = exercisesData;
-        _getChartSourcefromDay();
-
-        exercisesRawData = List.from(_getEventsfromDay(_selectedDay).reversed);
-        setState(() {
-          _isLoading = false;
-        });
-      });
-    });
-
+    _getChartSourcefromDay();
     super.initState();
   }
 
   List<SDBdata> _getEventsfromDay(DateTime date) {
     String date_calendar = DateFormat('yyyy-MM-dd').format(date);
     selectedEvents = {};
-    for (int i = 0; i < _sdbData!.sdbdatas.length; i++) {
-      if (_sdbData!.sdbdatas[i].date!.substring(0, 10) == date_calendar) {
+    for (int i = 0;
+        i < _historydataProvider.historydata!.sdbdatas.length;
+        i++) {
+      if (_historydataProvider.historydata!.sdbdatas[i].date!
+              .substring(0, 10) ==
+          date_calendar) {
         if (selectedEvents[date] != null) {
-          selectedEvents[date]!.add(_sdbData!.sdbdatas[i]);
+          selectedEvents[date]!
+              .add(_historydataProvider.historydata!.sdbdatas[i]);
         } else {
-          selectedEvents[date] = [_sdbData!.sdbdatas[i]];
+          selectedEvents[date] = [
+            _historydataProvider.historydata!.sdbdatas[i]
+          ];
         }
       }
     }
@@ -96,21 +85,18 @@ class _CalendarState extends State<Calendar> {
 
   void _getChartSourcefromDay() async {
     _sdbChartData = [];
-    var _sdbChartDataExample = _sdbData!.sdbdatas
+    var _sdbChartDataExample = _historydataProvider.historydata!.sdbdatas
         .map((name) => name.exercises
-            .where((name) => name.name.contains(
-                _exercisesData!.exercises[_chartIndex.chartIndex].name))
+            .where((name) => name.name.contains(_exercisesdataProvider
+                    .exercisesdata!.exercises[_chartIndex.chartIndex].name)
+                ? true
+                : false)
             .toList())
         .toList();
-    print(_sdbChartDataExample);
     for (int i = 0; i < _sdbChartDataExample.length; i++) {
-      print(_sdbChartDataExample.length);
-      print(_sdbChartDataExample[i]);
       if (_sdbChartDataExample[i].isEmpty) {
-        print(null);
         null;
       } else {
-        print("not null");
         _sdbChartData!.add(_sdbChartDataExample[i][0]);
       }
     }
@@ -255,8 +241,6 @@ class _CalendarState extends State<Calendar> {
       child: Consumer<HistorydataProvider>(builder: (builder, provider, child) {
         return ListView.separated(
             itemBuilder: (BuildContext _context, int index) {
-              print("thisisisialllllllllllchart");
-
               return _chartExercisesWidget(exercises[index].exercises,
                   exercises[index].id, _userdataProvider.userdata, true, index);
             },
@@ -280,8 +264,6 @@ class _CalendarState extends State<Calendar> {
   }
 
   Widget _onechartExercisesWidget(exercises) {
-    print("thiissssssssss chart");
-    print(exercises);
     return Expanded(
       child: ListView.separated(
           itemBuilder: (BuildContext _context, int index) {
@@ -429,8 +411,6 @@ class _CalendarState extends State<Calendar> {
                   top = 0;
                   bottom = 0;
                 }
-                print("historyyyyyyy");
-                print(exuniq);
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -656,15 +636,13 @@ class _CalendarState extends State<Calendar> {
 
   List<Widget> techChips() {
     List<Widget> chips = [];
-
-    print("1111");
-    print(_exercisesData);
-    print("1111");
-    for (int i = 0; i < _exercisesData!.exercises.length; i++) {
+    for (int i = 0;
+        i < _exercisesdataProvider.exercisesdata!.exercises.length;
+        i++) {
       Widget item = Padding(
         padding: const EdgeInsets.only(left: 10, right: 5),
         child: ChoiceChip(
-          label: Text(_exercisesData!.exercises[i].name),
+          label: Text(_exercisesdataProvider.exercisesdata!.exercises[i].name),
           labelStyle: TextStyle(color: Colors.black),
           selected: _chartIndex.chartIndex == i,
           selectedColor: Colors.deepOrange,
@@ -684,7 +662,6 @@ class _CalendarState extends State<Calendar> {
   }
 
   void _displayDeleteAlert(history_id) {
-    print(history_id);
     showDialog(
         context: context,
         builder: (context) {
@@ -710,8 +687,9 @@ class _CalendarState extends State<Calendar> {
             splashColor: Colors.blueAccent,
             onPressed: () {
               _historydataProvider.deleteHistorydata(history_id);
-              _sdbData!.sdbdatas
-                  .removeAt(_sdbData!.sdbdatas.indexWhere((sdbdata) {
+              _historydataProvider.historydata!.sdbdatas.removeAt(
+                  _historydataProvider.historydata!.sdbdatas
+                      .indexWhere((sdbdata) {
                 if (sdbdata.id == history_id) {
                   setState(() {});
                   HistoryDelete(history_id: history_id).deleteHistory();
@@ -734,6 +712,8 @@ class _CalendarState extends State<Calendar> {
     _isChartWidget = Provider.of<StaticPageProvider>(context);
     _historydataProvider =
         Provider.of<HistorydataProvider>(context, listen: false);
+    _exercisesdataProvider =
+        Provider.of<ExercisesdataProvider>(context, listen: false);
     _getChartSourcefromDay();
     return Scaffold(
         appBar: _appbarWidget(),

@@ -39,9 +39,9 @@ class UserdataProvider extends ChangeNotifier {
   }
 
   getUsersFriendsAll() {
-    print("caclacla");
     UserAll().getUsers().then((value) {
       _userFriendsAll = value;
+
       notifyListeners();
     });
   }

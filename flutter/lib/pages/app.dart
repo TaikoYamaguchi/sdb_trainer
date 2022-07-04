@@ -54,8 +54,6 @@ class _AppState extends State<App> {
     );
   }
 
-
-
   Widget _bottomNavigationBarwidget() {
     return BottomNavigationBar(
       backgroundColor: Color(0xFF212121),
@@ -81,34 +79,44 @@ class _AppState extends State<App> {
     );
   }
 
-
-
   void _editWorkoutwoCheck() async {
-    var routinedatas_all = _workoutdataProvider
-        .workoutdata.routinedatas;
-    for (int n = 0; n < routinedatas_all[_routinetimeProvider.nowonrindex].exercises.length; n++) {
-      for (int i = 0; i < routinedatas_all[_routinetimeProvider.nowonrindex].exercises[n].sets.length; i++) {
-        routinedatas_all[_routinetimeProvider.nowonrindex].exercises[n].sets[i].ischecked = false;
+    var routinedatas_all = _workoutdataProvider.workoutdata.routinedatas;
+    for (int n = 0;
+        n < routinedatas_all[_routinetimeProvider.nowonrindex].exercises.length;
+        n++) {
+      for (int i = 0;
+          i <
+              routinedatas_all[_routinetimeProvider.nowonrindex]
+                  .exercises[n]
+                  .sets
+                  .length;
+          i++) {
+        routinedatas_all[_routinetimeProvider.nowonrindex]
+            .exercises[n]
+            .sets[i]
+            .ischecked = false;
       }
     }
     WorkoutEdit(
-        id: _workoutdataProvider
-            .workoutdata.id,
-        user_email: _userdataProvider.userdata.email,
-        routinedatas: routinedatas_all)
+            id: _workoutdataProvider.workoutdata.id,
+            user_email: _userdataProvider.userdata.email,
+            routinedatas: routinedatas_all)
         .editWorkout()
         .then((data) => data["user_email"] != null
-        ? showToast("done!")
-        : showToast("입력을 확인해주세요"));
+            ? showToast("done!")
+            : showToast("입력을 확인해주세요"));
   }
 
-  void _displayFinishAlert()  {
+  void _displayFinishAlert() {
     _exercises = _exercisesdataProvider.exercisesdata.exercises;
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Workout Finish Alert',style: TextStyle(fontWeight: FontWeight.bold),),
+            title: Text(
+              'Workout Finish Alert',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             content: Text('운동을 끝마치겠습니까?'),
             actions: <Widget>[
               _StartConfirmButton(),
@@ -119,12 +127,13 @@ class _AppState extends State<App> {
 
   Widget _StartConfirmButton() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/25),
+      margin: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 25),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-              width: MediaQuery.of(context).size.width/4,
+              width: MediaQuery.of(context).size.width / 4,
               child: FlatButton(
                   color: Colors.blue,
                   textColor: Colors.white,
@@ -133,7 +142,6 @@ class _AppState extends State<App> {
                   padding: EdgeInsets.all(8.0),
                   splashColor: Colors.blueAccent,
                   onPressed: () {
-
                     _routinetimeProvider.routinecheck(0);
                     recordExercise();
                     _editHistoryCheck();
@@ -143,7 +151,7 @@ class _AppState extends State<App> {
                   child: Text("Confirm",
                       style: TextStyle(fontSize: 20.0, color: Colors.white)))),
           SizedBox(
-              width: MediaQuery.of(context).size.width/4,
+              width: MediaQuery.of(context).size.width / 4,
               child: FlatButton(
                   color: Colors.red,
                   textColor: Colors.white,
@@ -162,8 +170,8 @@ class _AppState extends State<App> {
   }
 
   void recordExercise() {
-    var exercise_all =
-        _workoutdataProvider.workoutdata.routinedatas[_routinetimeProvider.nowonrindex].exercises;
+    var exercise_all = _workoutdataProvider
+        .workoutdata.routinedatas[_routinetimeProvider.nowonrindex].exercises;
     for (int n = 0; n < exercise_all.length; n++) {
       var recordedsets = exercise_all[n].sets.where((sets) {
         return (sets.ischecked as bool && sets.weight != 0);
@@ -200,15 +208,15 @@ class _AppState extends State<App> {
   void _editHistoryCheck() async {
     if (!exerciseList.isEmpty) {
       HistoryPost(
-          user_email: _userdataProvider.userdata.email,
-          exercises: exerciseList,
-          new_record: 120,
-          workout_time: _routinetimeProvider.routineTime,
-          nickname: _userdataProvider.userdata.nickname)
+              user_email: _userdataProvider.userdata.email,
+              exercises: exerciseList,
+              new_record: 120,
+              workout_time: _routinetimeProvider.routineTime,
+              nickname: _userdataProvider.userdata.nickname)
           .postHistory()
           .then((data) => data["user_email"] != null
-          ? {_historydataProvider.getdata(), exerciseList = []}
-          : showToast("입력을 확인해주세요"));
+              ? {_historydataProvider.getdata(), exerciseList = []}
+              : showToast("입력을 확인해주세요"));
     } else {
       print("no exercises");
     }
@@ -221,13 +229,12 @@ class _AppState extends State<App> {
 
   void _postExerciseCheck() async {
     ExerciseEdit(
-        user_email: _userdataProvider.userdata.email, exercises: _exercises)
+            user_email: _userdataProvider.userdata.email, exercises: _exercises)
         .editExercise()
         .then((data) => data["user_email"] != null
-        ? {showToast("수정 완료"), _exercisesdataProvider.getdata()}
-        : showToast("입력을 확인해주세요"));
+            ? {showToast("수정 완료"), _exercisesdataProvider.getdata()}
+            : showToast("입력을 확인해주세요"));
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -249,9 +256,7 @@ class _AppState extends State<App> {
 
     return Scaffold(
       body: _loginState.isLogin
-          ? IndexedStack(
-          index: _bodyStater.bodystate,
-          children: <Widget>[
+          ? IndexedStack(index: _bodyStater.bodystate, children: <Widget>[
               Home(),
               TabNavigator(),
               Feed(),
@@ -260,47 +265,47 @@ class _AppState extends State<App> {
             ])
           : _loginState.isSignUp
               ? SignUpPage()
-              : LoginPage()
-      ,
-      floatingActionButton: Consumer<RoutineTimeProvider>(
-        builder: (builder, provider, child) {
-
-          return Container(
-            child: (provider.isstarted && _bodyStater.bodystate != 1)
-                ? ExpandableFab(
-              distance: 105,
-              children: [
-                SizedBox(
-                    width: 100,
-                    height: 40,
-                    child: FlatButton(
-                        color: Colors.blue,
-                        textColor: Colors.white,
-                        disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                        disabledTextColor: Colors.black,
-                        padding: EdgeInsets.all(8.0),
-                        splashColor: Colors.blueAccent,
-                        onPressed: () {
-                          provider.restcheck();
-                        },
-                        child: Text(provider.userest
-                            ? provider.timeron<0
-                              ? '-${(-provider.timeron/60).floor().toString()}:${((-provider.timeron%60)/10).floor().toString()}${((-provider.timeron%60)%10).toString()}'
-                              : '${(provider.timeron/60).floor().toString()}:${((provider.timeron%60)/10).floor().toString()}${((provider.timeron%60)%10).toString()}'
-                            : '${(provider.routineTime/60).floor().toString()}:${((provider.routineTime%60)/10).floor().toString()}${((provider.routineTime%60)%10).toString()}',
-                                style:
-                                TextStyle( color: (provider.userest && provider.timeron<0) ? Colors.red : Colors.white)
-                        )
+              : LoginPage(),
+      floatingActionButton:
+          Consumer<RoutineTimeProvider>(builder: (builder, provider, child) {
+        return Container(
+          child: (provider.isstarted && _bodyStater.bodystate != 1)
+              ? ExpandableFab(
+                  distance: 105,
+                  children: [
+                    SizedBox(
+                        width: 100,
+                        height: 40,
+                        child: FlatButton(
+                            color: Colors.blue,
+                            textColor: Colors.white,
+                            disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                            disabledTextColor: Colors.black,
+                            padding: EdgeInsets.all(8.0),
+                            splashColor: Colors.blueAccent,
+                            onPressed: () {
+                              provider.restcheck();
+                            },
+                            child: Text(
+                                provider.userest
+                                    ? provider.timeron < 0
+                                        ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
+                                        : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
+                                    : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                                style: TextStyle(
+                                    color: (provider.userest &&
+                                            provider.timeron < 0)
+                                        ? Colors.red
+                                        : Colors.white)))),
+                    ActionButton(
+                      onPressed: _displayFinishAlert,
+                      icon: Icon(Icons.stop),
                     )
-                ),
-                ActionButton(onPressed: _displayFinishAlert, icon: Icon(Icons.stop),)
-              ],)
-                : null,
-          );
-        }
-      )
-      ,
-
+                  ],
+                )
+              : null,
+        );
+      }),
       bottomNavigationBar:
           _loginState.isLogin ? _bottomNavigationBarwidget() : null,
     );
@@ -309,10 +314,12 @@ class _AppState extends State<App> {
 
 @immutable
 class ExpandableFab extends StatefulWidget {
-
-  const ExpandableFab({Key? key, this.initialOpen,
+  const ExpandableFab({
+    Key? key,
+    this.initialOpen,
     required this.distance,
-    required this.children,}) : super(key: key);
+    required this.children,
+  }) : super(key: key);
 
   final bool? initialOpen;
   final double distance;
@@ -323,12 +330,10 @@ class ExpandableFab extends StatefulWidget {
 }
 
 class _ExpandableFabState extends State<ExpandableFab>
-    with SingleTickerProviderStateMixin{
+    with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _expandAnimation;
   bool _open = false;
-
-
 
   @override
   void initState() {
@@ -351,7 +356,6 @@ class _ExpandableFabState extends State<ExpandableFab>
     _controller.dispose();
     super.dispose();
   }
-
 
   void _toggle() {
     setState(() {
@@ -382,10 +386,8 @@ class _ExpandableFabState extends State<ExpandableFab>
   List<Widget> _buildExpandingActionButtons() {
     final children = <Widget>[];
     final count = widget.children.length;
-    final step = widget.distance ;
-    for (var i = 0, distances = 50.0;
-    i < count;
-    i++, distances += step) {
+    final step = widget.distance;
+    for (var i = 0, distances = 50.0; i < count; i++, distances += step) {
       children.add(
         _ExpandingActionButton(
           directionInDegrees: 0,
@@ -422,8 +424,6 @@ class _ExpandableFabState extends State<ExpandableFab>
     );
   }
 
-
-
   Widget _buildTapToOpenFab() {
     return IgnorePointer(
       ignoring: _open,
@@ -441,27 +441,28 @@ class _ExpandableFabState extends State<ExpandableFab>
           curve: const Interval(0.25, 1.0, curve: Curves.easeInOut),
           duration: const Duration(milliseconds: 250),
           child: FloatingActionButton(
-            onPressed: (){
+            onPressed: () {
               print('open');
               _toggle();
-              },
+            },
             child: Consumer<RoutineTimeProvider>(
-              builder: (builder, provider, child) {
-                return Text(provider.userest
-                    ? provider.timeron<0
-                    ? '-${(-provider.timeron/60).floor().toString()}:${((-provider.timeron%60)/10).floor().toString()}${((-provider.timeron%60)%10).toString()}'
-                    : '${(provider.timeron/60).floor().toString()}:${((provider.timeron%60)/10).floor().toString()}${((provider.timeron%60)%10).toString()}'
-                    : '${(provider.routineTime/60).floor().toString()}:${((provider.routineTime%60)/10).floor().toString()}${((provider.routineTime%60)%10).toString()}',
-                    style:
-                    TextStyle( color: (provider.userest && provider.timeron<0) ? Colors.red : Colors.white));
-              }
-            ),
+                builder: (builder, provider, child) {
+              return Text(
+                  provider.userest
+                      ? provider.timeron < 0
+                          ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
+                          : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
+                      : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                  style: TextStyle(
+                      color: (provider.userest && provider.timeron < 0)
+                          ? Colors.red
+                          : Colors.white));
+            }),
           ),
         ),
       ),
     );
   }
-
 }
 
 @immutable
@@ -484,7 +485,7 @@ class _ExpandingActionButton extends StatelessWidget {
       animation: progress,
       builder: (context, child) {
         final offset = Offset.fromDirection(
-          directionInDegrees ,
+          directionInDegrees,
           progress.value * maxDistance,
         );
         return Positioned(
@@ -523,7 +524,6 @@ class ActionButton extends StatelessWidget {
       height: 40,
       child: Center(
         child: Material(
-
           shape: const CircleBorder(),
           clipBehavior: Clip.antiAlias,
           color: theme.colorScheme.secondary,
@@ -539,5 +539,3 @@ class ActionButton extends StatelessWidget {
     );
   }
 }
-
-

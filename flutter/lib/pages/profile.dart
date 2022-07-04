@@ -126,7 +126,7 @@ class Profile extends StatelessWidget {
     _loginState.changeSignup(false);
     _userdataProvider.setUserKakaoEmail(null);
     _userdataProvider.setUserKakaoName(null);
-    _userdataProvider.setUserKakaoImage(null);
+    _userdataProvider.setUserKakaoImageUrl(null);
     _userdataProvider.setUserKakaoGender(null);
   }
 }
