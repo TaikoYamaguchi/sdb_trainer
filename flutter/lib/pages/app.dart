@@ -240,7 +240,7 @@ class _AppState extends State<App> {
     _bodyStater = Provider.of<BodyStater>(context, listen: true);
     _loginState = Provider.of<LoginPageProvider>(context);
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _userdataProvider.getUsersFriendsAll();
+    _userdataProvider.getUsersFriendsAll(context);
     _workoutdataProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
     _workoutdataProvider.getdata();

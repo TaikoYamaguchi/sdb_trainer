@@ -53,7 +53,7 @@ class _FeedState extends State<Feed> {
   Widget build(BuildContext context) {
     _historydataAll = Provider.of<HistorydataProvider>(context, listen: false);
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _userdataProvider.getUsersFriendsAll();
+    _userdataProvider.getUsersFriendsAll(context);
     _userdataProvider.userdata != null
         ? [
             _userdataProvider.getFriendsdata(_userdataProvider.userdata.email),

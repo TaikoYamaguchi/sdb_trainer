@@ -207,7 +207,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
     _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _userdataProvider.getdata();
-    _userdataProvider.getUsersFriendsAll();
+    _userdataProvider.getUsersFriendsAll(context);
     if (friendsInputSwitch == false) {
       _usersdata = _userdataProvider.userFriendsAll;
     }

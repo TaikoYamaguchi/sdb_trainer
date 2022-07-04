@@ -183,7 +183,7 @@ class _FeedFriendState extends State<FeedFriend> {
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _userdataProvider.getUsersFriendsAll();
+    _userdataProvider.getUsersFriendsAll(context);
     _userdataProvider.getFriendsdata(_userdataProvider.userdata.email);
 
     return Scaffold(

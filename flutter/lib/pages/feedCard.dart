@@ -58,7 +58,6 @@ class _FeedCardState extends State<FeedCard> {
   Widget _feedCard(SDBdata, index) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _historyProvider = Provider.of<HistorydataProvider>(context, listen: false);
-    _userdataProvider.getUsersFriendsAll();
     _userdataProvider.getdata();
     User user = _userdataProvider.userFriendsAll.userdatas
         .where((user) => user.email == SDBdata.user_email)
