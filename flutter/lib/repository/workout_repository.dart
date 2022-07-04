@@ -44,12 +44,9 @@ class WorkoutPost {
   });
   Future<String> _workoutPostFromServer() async {
     var formData = new Map<String, dynamic>();
-    print(user_email);
-    //print(json.encode(Encoded_sets));
     formData["user_email"] = user_email;
     formData["id"] = 0;
     formData["routinedatas"] = jsonEncode(routinedatas);
-    print(formData);
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/workoutcreate");
     var response = await http.post(url, body: json.encode(formData));
@@ -83,12 +80,9 @@ class WorkoutEdit {
   });
   Future<String> _workoutEditFromServer() async {
     var formData = new Map<String, dynamic>();
-    print(user_email);
-    //print(json.encode(Encoded_sets));
     formData["user_email"] = user_email;
     formData["id"] = id;
     formData["routinedatas"] = jsonEncode(routinedatas);
-    print(formData);
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/workout");
     var response = await http.put(url, body: json.encode(formData));

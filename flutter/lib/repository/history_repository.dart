@@ -98,7 +98,6 @@ class HistoryPost {
   });
   Future<String> _historyPostFromServer() async {
     var formData = new Map<String, dynamic>();
-    print(user_email);
     formData["user_email"] = user_email;
     formData["exercises"] = jsonEncode(exercises);
     formData["new_record"] = new_record;
@@ -213,10 +212,6 @@ class HistoryExercisesEdit {
       required this.user_email,
       required this.exercises});
   Future<String> _historyExercisesEditfromServer() async {
-    print("id");
-    print(history_id);
-    print(user_email);
-    print(exercises);
     var formData = new Map<String, dynamic>();
     formData["id"] = history_id;
     formData["email"] = user_email;

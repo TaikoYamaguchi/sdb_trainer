@@ -52,8 +52,6 @@ class _FeedCardState extends State<FeedCard> {
 
   @override
   Widget build(BuildContext context) {
-    print(_commentInfo);
-    print(widget.feedListCtrl);
     return _feedCard(widget.sdbdata, widget.index);
   }
 
@@ -547,7 +545,6 @@ class _FeedCardState extends State<FeedCard> {
   }
 
   bool onLikeButtonTapped(bool isLiked, SDBdata) {
-    print(isLiked);
     if (isLiked == true) {
       HistoryLike(
               history_id: SDBdata.id,
@@ -557,7 +554,6 @@ class _FeedCardState extends State<FeedCard> {
           .patchHistoryLike();
       _historyProvider.patchHistoryLikedata(
           SDBdata, _userdataProvider.userdata.email, "remove");
-      print("isit runned");
       return false;
     } else {
       HistoryLike(

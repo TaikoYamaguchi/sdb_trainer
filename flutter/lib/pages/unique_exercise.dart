@@ -262,7 +262,6 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                                   setState(() {
                                     _sets[index].weight = changeweight;
                                   });
-                                  print(_sets[index].weight);
                                 },
                               ),
                             ),

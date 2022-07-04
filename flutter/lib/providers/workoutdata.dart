@@ -10,33 +10,32 @@ class WorkoutdataProvider extends ChangeNotifier {
   getdata() {
     RoutineRepository.loadRoutinedata().then((value) {
       _workoutdata = value;
-      print("getdataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa?");
       notifyListeners();
     });
-
   }
 
   getdatawbu() {
     RoutineRepository.loadRoutinedata().then((value) {
       _workoutdata = value;
-      print("getdataaaaaaaaaawbu?");
       notifyListeners();
     });
-
   }
 
   boolcheck(rindex, eindex, sindex, newvalue) {
-    _workoutdata.routinedatas[rindex].exercises[eindex].sets[sindex].ischecked = newvalue;
+    _workoutdata.routinedatas[rindex].exercises[eindex].sets[sindex].ischecked =
+        newvalue;
     notifyListeners();
   }
 
   weightcheck(rindex, eindex, sindex, newvalue) {
-    _workoutdata.routinedatas[rindex].exercises[eindex].sets[sindex].weight = newvalue;
+    _workoutdata.routinedatas[rindex].exercises[eindex].sets[sindex].weight =
+        newvalue;
     notifyListeners();
   }
 
   repscheck(rindex, eindex, sindex, newvalue) {
-    _workoutdata.routinedatas[rindex].exercises[eindex].sets[sindex].reps = newvalue;
+    _workoutdata.routinedatas[rindex].exercises[eindex].sets[sindex].reps =
+        newvalue;
     notifyListeners();
   }
 
@@ -56,7 +55,7 @@ class WorkoutdataProvider extends ChangeNotifier {
   }
 
   insertroutineAt(rindex, data) {
-    _workoutdata.routinedatas.insert(rindex,data);
+    _workoutdata.routinedatas.insert(rindex, data);
     notifyListeners();
   }
 
@@ -65,38 +64,37 @@ class WorkoutdataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  removeexAt(rindex,eindex) {
+  removeexAt(rindex, eindex) {
     _workoutdata.routinedatas[rindex].exercises.removeAt(eindex);
     notifyListeners();
   }
 
-  addexAt(rindex,ex) {
+  addexAt(rindex, ex) {
     _workoutdata.routinedatas[rindex].exercises.add(ex);
     notifyListeners();
   }
 
-  namechange(rindex ,newname) {
+  namechange(rindex, newname) {
     _workoutdata.routinedatas[rindex].name = newname;
     notifyListeners();
   }
 
-  dataBU(rindex){
+  dataBU(rindex) {
     backupdata = new List.from(_workoutdata.routinedatas[rindex].exercises);
-
   }
 
-  changebudata(rindex){
+  changebudata(rindex) {
     _workoutdata.routinedatas[rindex].exercises = backupdata;
     notifyListeners();
   }
 
   setsplus(rindex, eindex) {
     _workoutdata.routinedatas[rindex].exercises[eindex].sets.add(new Sets(
-        index: _workoutdata.routinedatas[rindex].exercises[eindex].sets.length + 1,
+        index:
+            _workoutdata.routinedatas[rindex].exercises[eindex].sets.length + 1,
         weight: 0.0,
         reps: 1,
         ischecked: false));
     notifyListeners();
   }
-
 }

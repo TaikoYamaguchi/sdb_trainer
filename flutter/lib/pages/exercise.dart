@@ -468,7 +468,6 @@ class ExerciseState extends State<Exercise> {
   }
 
   void _editWorkoutCheck() async {
-    print(_userdataProvider.userdata.email);
     WorkoutEdit(
             user_email: _userdataProvider.userdata.email,
             id: _workoutdataProvider.workoutdata.id,

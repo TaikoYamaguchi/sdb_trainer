@@ -115,7 +115,6 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
   void searchFriend(String query) async {
     final suggestions =
         await UserNicknameAll(userNickname: query).getUsersByNickname();
-    print(suggestions);
 
     setState(() => _usersdata = suggestions);
   }
@@ -180,7 +179,6 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
   }
 
   bool onLikeButtonTapped(bool isLiked, User) {
-    print(isLiked);
     if (isLiked == true) {
       var user = UserLike(
               liked_email: User.email,
@@ -197,7 +195,6 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
               status: "append",
               disorlike: "like")
           .patchUserLike();
-      print("true");
       _userdataProvider.patchUserLikedata(User, "append");
       return !isLiked;
     }

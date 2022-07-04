@@ -70,11 +70,8 @@ class UserdataProvider extends ChangeNotifier {
 
   setUserKakaoGender(state) {
     if (state.toString() == "Gender.male") {
-      print(state);
-      print("male");
       _userKakaoGender = true;
     } else {
-      print("female");
       _userKakaoGender = false;
     }
     notifyListeners();

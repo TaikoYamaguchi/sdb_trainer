@@ -55,8 +55,12 @@ class _FeedState extends State<Feed> {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _userdataProvider.getUsersFriendsAll();
     _userdataProvider.userdata != null
-     ? [_userdataProvider.getFriendsdata(_userdataProvider.userdata.email), _historydataAll.getFriendsHistorydata(_userdataProvider.userdata.email)]
-     : null ;
+        ? [
+            _userdataProvider.getFriendsdata(_userdataProvider.userdata.email),
+            _historydataAll
+                .getFriendsHistorydata(_userdataProvider.userdata.email)
+          ]
+        : null;
 
     return Scaffold(
         appBar: AppBar(
@@ -168,7 +172,6 @@ class _FeedState extends State<Feed> {
       }).toList();
     } else if (_feedListCtrl == 3) {
       _historydata = _historydataAll.historydata.sdbdatas;
-      print("나만보기");
     }
   }
 

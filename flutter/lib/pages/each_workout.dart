@@ -69,7 +69,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 _routinetimeProvider.isstarted
                     ? _displayFinishAlert()
                     : Navigator.of(context).pop();
-
               },
             ),
       title: Row(
@@ -118,30 +117,33 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   }
 
   void _editWorkoutwoCheck() async {
-    var routinedatas_all = _workoutdataProvider
-        .workoutdata.routinedatas;
+    var routinedatas_all = _workoutdataProvider.workoutdata.routinedatas;
     for (int n = 0; n < routinedatas_all[widget.rindex].exercises.length; n++) {
-      for (int i = 0; i < routinedatas_all[widget.rindex].exercises[n].sets.length; i++) {
+      for (int i = 0;
+          i < routinedatas_all[widget.rindex].exercises[n].sets.length;
+          i++) {
         routinedatas_all[widget.rindex].exercises[n].sets[i].ischecked = false;
       }
     }
     WorkoutEdit(
-        id: _workoutdataProvider
-            .workoutdata.id,
-        user_email: _userdataProvider.userdata.email,
-        routinedatas: routinedatas_all)
+            id: _workoutdataProvider.workoutdata.id,
+            user_email: _userdataProvider.userdata.email,
+            routinedatas: routinedatas_all)
         .editWorkout()
         .then((data) => data["user_email"] != null
-        ? showToast("done!")
-        : showToast("입력을 확인해주세요"));
+            ? showToast("done!")
+            : showToast("입력을 확인해주세요"));
   }
 
-  void _displayFinishAlert()  {
+  void _displayFinishAlert() {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Workout Finish Alert',style: TextStyle(fontWeight: FontWeight.bold),),
+            title: Text(
+              'Workout Finish Alert',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             content: Text('운동을 끝마치겠습니까?'),
             actions: <Widget>[
               _StartConfirmButton(),
@@ -152,12 +154,13 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
 
   Widget _StartConfirmButton() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/25),
+      margin: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 25),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-              width: MediaQuery.of(context).size.width/4,
+              width: MediaQuery.of(context).size.width / 4,
               child: FlatButton(
                   color: Colors.blue,
                   textColor: Colors.white,
@@ -166,7 +169,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                   padding: EdgeInsets.all(8.0),
                   splashColor: Colors.blueAccent,
                   onPressed: () {
-
                     _routinetimeProvider.routinecheck(widget.rindex);
                     recordExercise();
                     _editHistoryCheck();
@@ -177,7 +179,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                   child: Text("Confirm",
                       style: TextStyle(fontSize: 20.0, color: Colors.white)))),
           SizedBox(
-              width: MediaQuery.of(context).size.width/4,
+              width: MediaQuery.of(context).size.width / 4,
               child: FlatButton(
                   color: Colors.red,
                   textColor: Colors.white,
@@ -234,15 +236,15 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   void _editHistoryCheck() async {
     if (!exerciseList.isEmpty) {
       HistoryPost(
-          user_email: _userdataProvider.userdata.email,
-          exercises: exerciseList,
-          new_record: 120,
-          workout_time: _routinetimeProvider.routineTime,
-          nickname: _userdataProvider.userdata.nickname)
+              user_email: _userdataProvider.userdata.email,
+              exercises: exerciseList,
+              new_record: 120,
+              workout_time: _routinetimeProvider.routineTime,
+              nickname: _userdataProvider.userdata.nickname)
           .postHistory()
           .then((data) => data["user_email"] != null
-          ? {_historydataProvider.getdata(), exerciseList = []}
-          : showToast("입력을 확인해주세요"));
+              ? {_historydataProvider.getdata(), exerciseList = []}
+              : showToast("입력을 확인해주세요"));
     } else {
       print("no exercises");
     }
@@ -255,11 +257,11 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
 
   void _postExerciseCheck() async {
     ExerciseEdit(
-        user_email: _userdataProvider.userdata.email, exercises: _exercises)
+            user_email: _userdataProvider.userdata.email, exercises: _exercises)
         .editExercise()
         .then((data) => data["user_email"] != null
-        ? {showToast("수정 완료"), _exercisesdataProvider.getdata()}
-        : showToast("입력을 확인해주세요"));
+            ? {showToast("수정 완료"), _exercisesdataProvider.getdata()}
+            : showToast("입력을 확인해주세요"));
   }
 
   void _displayTextInputDialog() {
@@ -313,7 +315,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   }
 
   void _editWorkoutCheck() async {
-    print(_userdataProvider.userdata.email);
     WorkoutEdit(
             user_email: _userdataProvider.userdata.email,
             id: _workoutdataProvider.workoutdata.id,
@@ -347,7 +348,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               final exinfo = exunique.where((unique) {
                 return (unique.name == exlist[index].name);
               }).toList();
-              print(exinfo);
               if (index == 0) {
                 top = 20;
                 bottom = 0;

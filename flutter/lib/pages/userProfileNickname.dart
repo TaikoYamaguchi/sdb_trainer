@@ -74,7 +74,6 @@ class _ProfileNicknameState extends State<ProfileNickname> {
   Widget _nicknameWidget() {
     return TextFormField(
       onChanged: (text) {
-        print(text);
         if (_userdataProvider.userFriendsAll.userdatas
                 .where((user) {
                   if (user.nickname == text.toString()) {
@@ -89,12 +88,10 @@ class _ProfileNicknameState extends State<ProfileNickname> {
           setState(() {
             _isNickNameused = false;
           });
-          print(false);
         } else
           setState(() {
             _isNickNameused = true;
           });
-        print(true);
       },
       controller: _userNicknameCtrl,
       style: TextStyle(color: Colors.white),
@@ -137,7 +134,6 @@ class _ProfileNicknameState extends State<ProfileNickname> {
   }
 
   void _editCheck() async {
-    print(_userNicknameCtrl.text);
     if (_userNicknameCtrl.text != "" && _isNickNameused == false) {
       UserEdit(
               userEmail: _userdataProvider.userdata.email,

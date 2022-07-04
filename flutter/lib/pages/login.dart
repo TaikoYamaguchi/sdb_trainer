@@ -191,7 +191,6 @@ class _LoginPageState extends State<LoginPage> {
         print('로그인 실패 $error');
       }
     }
-    print("yesss");
   }
 
   Widget _loginWithKakao(context) {
@@ -357,8 +356,6 @@ class _LoginPageState extends State<LoginPage> {
       _loginState.change(true);
     } else {
       try {
-        print(_userEmailCtrl.text);
-        print(_userPasswordCtrl.text);
         var order = await UserLoginKakao(
           userEmail: _userEmailCtrl.text,
         ).loginKakaoUser().then((token) => token["access_token"] != null
@@ -375,7 +372,6 @@ class _LoginPageState extends State<LoginPage> {
   void _storageLoginCheck() async {
     final storage = FlutterSecureStorage();
     String? storageEmail = await storage.read(key: "sdb_email");
-    print(storageEmail);
     if (storageEmail != null && storageEmail != "") {
       _bodyStater.change(0);
       _loginState.change(true);

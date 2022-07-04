@@ -414,8 +414,6 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
   }
 
   void _editHistoryCheck() async {
-    print(widget.origin_exercises);
-    print("this is historyyyyyyyyyyy");
     if (!widget.origin_exercises.isEmpty) {
       HistoryExercisesEdit(
               history_id: widget.history_id,
@@ -425,9 +423,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
           .then((data) => data["user_email"] != null
               ? {showToast("수정 완료"), Navigator.of(context).pop()}
               : showToast("입력을 확인해주세요"));
-    } else {
-      print("no exercises");
-    }
+    } else {}
   }
 
   @override

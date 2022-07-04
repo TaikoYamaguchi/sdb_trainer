@@ -58,7 +58,6 @@ class UserLogin {
 
       return utf8.decode(response.bodyBytes);
     } else {
-      print(1);
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
       throw Exception('Failed to load post');
     }
@@ -68,8 +67,6 @@ class UserLogin {
 
   Future<Map<String, dynamic>> loginUser() async {
     String jsonString = await _userLoginFromServer();
-    print(3);
-    print(jsonString);
     final jsonResponse = json.decode(jsonString);
     return (jsonResponse);
   }
@@ -96,7 +93,6 @@ class UserLoginKakao {
 
       return utf8.decode(response.bodyBytes);
     } else {
-      print(1);
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
       throw Exception('Failed to load post');
     }
@@ -166,11 +162,9 @@ class UserSignUp {
 
       return utf8.decode(response.bodyBytes);
     } else if (response.statusCode == 404) {
-      print("404");
       showToast("중복된 닉네임 입니다.");
       throw Error();
     } else if (response.statusCode == 403) {
-      print("403");
       showToast("중복된 이메일 입니다.");
       throw Error();
     } else {
@@ -229,7 +223,6 @@ class UserEdit {
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/user/" + userEmail);
     var response = await http.put(url, body: json.encode(formData));
-    print(response.statusCode);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);
@@ -254,8 +247,6 @@ class UserInfo {
   UserInfo({required this.userEmail});
   Future<String> _userByEmailFromServer() async {
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/user/" + userEmail);
-    print("useremail");
-    print(userEmail);
     var response = await http.get(url);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
@@ -273,8 +264,6 @@ class UserInfo {
   Future<User?> getUserByEmail() async {
     String jsonString = await _userByEmailFromServer();
     final jsonResponse = json.decode(jsonString);
-    print("3333");
-    print(jsonResponse);
     if (jsonResponse == null) {
       return null;
     } else {
@@ -307,8 +296,6 @@ class UserNickname {
   Future<User?> getUserByNickname() async {
     String jsonString = await _userByNicknameFromServer();
     final jsonResponse = json.decode(jsonString);
-    print("3333");
-    print(jsonResponse);
     if (jsonResponse == null) {
       return null;
     } else {
@@ -341,8 +328,6 @@ class UserNicknameAll {
   Future<UserList?> getUsersByNickname() async {
     String jsonString = await _usersByNicknameFromServer();
     final jsonResponse = json.decode(jsonString);
-    print("3333");
-    print(jsonResponse);
     if (jsonResponse == null) {
       return null;
     } else {
@@ -476,8 +461,6 @@ class UserPhoneCheck {
   Future<User?> getUserByPhoneNumber() async {
     String jsonString = await _userByPhoneNumberFromServer();
     final jsonResponse = json.decode(jsonString);
-    print("3333");
-    print(jsonResponse);
     if (jsonResponse == null) {
       return null;
     } else {
@@ -505,7 +488,6 @@ class UserImageEdit {
         LocalHost.getLocalHost() + '/api/temp/images',
         data: formData,
       );
-      print('성공적으로 업로드했습니다');
       return response.data;
     } catch (e) {
       throw Exception('Failed to load post');
@@ -515,8 +497,6 @@ class UserImageEdit {
   Future<User?> patchUserImage() async {
     String jsonString = await _patchUserImageFromServer();
     final jsonResponse = json.decode(jsonString);
-    print("3333");
-    print(jsonResponse);
     if (jsonResponse == null) {
       return null;
     } else {
@@ -540,7 +520,6 @@ class UserFind {
       final jsonResponse = json.decode(jsonString);
       return utf8.decode(response.bodyBytes);
     } else if (response.statusCode == 401) {
-      print("401");
       showToast("존재 하지 않는 번호입니다.");
       throw Error();
     } else {
@@ -574,7 +553,6 @@ class UserFindVerification {
       final jsonResponse = json.decode(jsonString);
       return utf8.decode(response.bodyBytes);
     } else if (response.statusCode == 401) {
-      print("401");
       showToast("인증 번호를 확인해주세요.");
       throw Error();
     } else {

@@ -15,12 +15,9 @@ class Exercisesdata {
   });
 
   factory Exercisesdata.fromJson(Map<String, dynamic> parsedJson) {
-    print(parsedJson);
-    print(parsedJson['exercises']);
     var list = parsedJson['exercises'].runtimeType == String
         ? json.decode(parsedJson['exercises']) as List
         : parsedJson['exercises'] as List;
-    print(list);
     List<Exercises> exerciseList =
         list.map((i) => Exercises.fromJson(i)).toList();
     return new Exercisesdata(

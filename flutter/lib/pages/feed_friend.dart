@@ -71,7 +71,6 @@ class _FeedFriendState extends State<FeedFriend> {
           Expanded(
             child:
                 Consumer<UserdataProvider>(builder: (builder, provider, child) {
-              print(provider.userFriends.userdatas);
               return provider.userFriends == null
                   ? Container()
                   : ListView.separated(
@@ -157,7 +156,6 @@ class _FeedFriendState extends State<FeedFriend> {
   }
 
   bool onLikeButtonTapped(bool isLiked, User) {
-    print(isLiked);
     if (isLiked == true) {
       UserLike(
               liked_email: User.email,
@@ -175,7 +173,6 @@ class _FeedFriendState extends State<FeedFriend> {
               disorlike: "like")
           .patchUserLike();
       _userdataProvider.patchUserLikedata(User, "append");
-      print("true");
       return !isLiked;
     }
   }

@@ -63,7 +63,6 @@ class _AppState extends State<App> {
       unselectedItemColor: Color(0xFF717171),
       unselectedFontSize: 20,
       onTap: (int index) {
-        print(index);
         setState(() {
           _bodyStater.change(index);
         });

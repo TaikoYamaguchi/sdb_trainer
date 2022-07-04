@@ -169,6 +169,15 @@ class Home extends StatelessWidget {
         : Container();
   }
 
+  void _preCacheImage(context) {
+    _userdataProvider.userFriendsAll.userdatas
+        .where((user) => user.image != "")
+        .toList()
+        .map((user) {
+      precacheImage(Image.network(user.image).image, context);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     _historydataAll = Provider.of<HistorydataProvider>(context, listen: false);
@@ -177,10 +186,7 @@ class Home extends StatelessWidget {
     _historydataAll.getCommentAll();
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _userdataProvider.getdata();
-    _userdataProvider.userFriendsAll.userdatas
-        .where((user) => user.image != "")
-        .toList()
-        .map((user) => precacheImage(Image.network(user.image).image, context));
+    _preCacheImage(context);
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _exercisesdataProvider.getdata();

@@ -32,7 +32,6 @@ class _CalendarState extends State<Calendar> {
   var _isChartWidget;
   var _chartIndex;
   late TooltipBehavior _tooltipBehavior;
-  bool _isLoading = true;
   late ZoomPanBehavior _zoomPanBehavior;
   PageController? _isPageController;
   var _tapPosition;
@@ -718,6 +717,6 @@ class _CalendarState extends State<Calendar> {
     return Scaffold(
         appBar: _appbarWidget(),
         backgroundColor: Colors.black,
-        body: _isLoading ? null : _staticsPages());
+        body: _staticsPages());
   }
 }

@@ -187,7 +187,6 @@ class _UserFindPageState extends State<UserFindPage> {
   }
 
   void _phoneNumberCheck() async {
-    print(_userPhoneNumberCtrl.text);
     if (_userPhoneNumberCtrl.text != "") {
       UserFind(phone_number: _userPhoneNumberCtrl.text)
           .findUserSmsImage()
@@ -201,7 +200,6 @@ class _UserFindPageState extends State<UserFindPage> {
   }
 
   void _verficationCodeCheck() async {
-    print(_userPhoneNumberCtrl.text);
     if (_userPhoneNumberCtrl.text != "" &&
         _userVerificationCodeCtrl.text != "") {
       UserFindVerification(
@@ -211,7 +209,6 @@ class _UserFindPageState extends State<UserFindPage> {
           .then((data) => {
                 setState(() {
                   user = data;
-                  print(user);
                 })
               });
     }

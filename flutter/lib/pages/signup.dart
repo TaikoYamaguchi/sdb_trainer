@@ -369,12 +369,10 @@ class _LoginPageState extends State<SignUpPage> {
           setState(() {
             _isEmailused = false;
           });
-          print(false);
         } else
           setState(() {
             _isEmailused = true;
           });
-        print(true);
       },
       controller: _userEmailCtrl,
       style: TextStyle(color: Colors.white),
@@ -493,12 +491,10 @@ class _LoginPageState extends State<SignUpPage> {
           setState(() {
             _isNickNameused = false;
           });
-          print(false);
         } else
           setState(() {
             _isNickNameused = true;
           });
-        print(true);
       },
       controller: _userNicknameCtrl,
       style: TextStyle(color: Colors.white),
@@ -573,7 +569,6 @@ class _LoginPageState extends State<SignUpPage> {
         onValueChanged: (i) {
           setState(() {
             _userWeightUnitCtrl = i as String;
-            print(_userWeightUnitCtrl);
           });
         });
   }
@@ -587,7 +582,6 @@ class _LoginPageState extends State<SignUpPage> {
         onValueChanged: (i) {
           setState(() {
             _userHeightUnitCtrl = i as String;
-            print(_userHeightUnitCtrl);
           });
         });
   }
@@ -602,7 +596,6 @@ class _LoginPageState extends State<SignUpPage> {
         onValueChanged: (i) {
           setState(() {
             _userGenderCtrl = i as bool;
-            print(_userGenderCtrl);
           });
         });
   }
@@ -763,7 +756,6 @@ class _LoginPageState extends State<SignUpPage> {
   }
 
   void _postExerciseCheck() async {
-    print(exerciseList);
     ExercisePost(user_email: _userEmailCtrl.text, exercises: exerciseList)
         .postExercise()
         .then((data) => data["user_email"] != null

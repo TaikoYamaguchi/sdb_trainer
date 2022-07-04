@@ -32,7 +32,6 @@ class _ProfileGoalState extends State<ProfileGoal> {
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context);
     _exercisesdataProvider = Provider.of<ExercisesdataProvider>(context);
-    print(_exercisesdataProvider.exercisesdata.exercises);
     _exerciseList = _exercisesdataProvider.exercisesdata.exercises;
 
     return Scaffold(appBar: _appbarWidget(), body: _signupExerciseWidget());
