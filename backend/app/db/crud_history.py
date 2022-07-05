@@ -105,8 +105,6 @@ def delete_auth_history(db: Session, history_id: int, user:schemas.User):
     else :
         if user.email == db_history.user_email:
                 db.delete(db_history)
-                db.commit()
-                db.refresh(db_history)
                 db_user = get_user_by_email(db, db_history.writer_email)
                 setattr(db_user, "history_cnt", len(db.query(models.History).filter(models.History.user_email == db_history.user_email).all()))
                 db.add(db_user)

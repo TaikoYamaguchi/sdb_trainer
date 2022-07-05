@@ -151,8 +151,8 @@ class _CalendarState extends State<Calendar> {
   }
 
   Widget _staticsWidget() {
-    return Column(
-      children: [
+    return Consumer<HistorydataProvider>(builder: (builder, provider, child) {
+      return Column(children: [
         TableCalendar(
           firstDay: DateTime(1990),
           lastDay: DateTime(2050),
@@ -230,14 +230,13 @@ class _CalendarState extends State<Calendar> {
             ? _allchartExercisesWidget(
                 List.from(_getEventsfromDay(_selectedDay).reversed))
             : Container()
-      ],
-    );
+      ]);
+    });
   }
 
   Widget _allchartExercisesWidget(exercises) {
     return Expanded(
-      child: Consumer<HistorydataProvider>(builder: (builder, provider, child) {
-        return ListView.separated(
+        child: ListView.separated(
             itemBuilder: (BuildContext _context, int index) {
               return _chartExercisesWidget(exercises[index].exercises,
                   exercises[index].id, _userdataProvider.userdata, true, index);
@@ -256,9 +255,7 @@ class _CalendarState extends State<Calendar> {
               );
             },
             itemCount: exercises.length,
-            scrollDirection: Axis.vertical);
-      }),
-    );
+            scrollDirection: Axis.vertical));
   }
 
   Widget _onechartExercisesWidget(exercises) {
@@ -350,6 +347,7 @@ class _CalendarState extends State<Calendar> {
       exuniq, history_id, userdata, bool shirink, index) {
     double top = 0;
     double bottom = 0;
+    print(history_id);
     return Container(
       color: Colors.black,
       child: Column(
@@ -664,13 +662,14 @@ class _CalendarState extends State<Calendar> {
             title: Text('운동을 지우시겠습니까?'),
             content: Text('정말로 운동을 지우시나요?'),
             actions: <Widget>[
-              _DeleteConfirmButton(history_id),
+              _deleteConfirmButton(history_id),
             ],
           );
         });
   }
 
-  Widget _DeleteConfirmButton(history_id) {
+  Widget _deleteConfirmButton(history_id) {
+    print(history_id);
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
@@ -682,17 +681,7 @@ class _CalendarState extends State<Calendar> {
             splashColor: Colors.blueAccent,
             onPressed: () {
               _historydataProvider.deleteHistorydata(history_id);
-              _historydataProvider.historydata!.sdbdatas.removeAt(
-                  _historydataProvider.historydata!.sdbdatas
-                      .indexWhere((sdbdata) {
-                if (sdbdata.id == history_id) {
-                  setState(() {});
-                  HistoryDelete(history_id: history_id).deleteHistory();
-                  return true;
-                } else {
-                  return false;
-                }
-              }));
+              HistoryDelete(history_id: history_id).deleteHistory();
               Navigator.of(context, rootNavigator: true).pop();
             },
             child: Text("Confirm",
