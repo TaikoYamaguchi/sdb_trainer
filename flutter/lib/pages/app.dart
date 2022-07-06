@@ -44,6 +44,7 @@ class _AppState extends State<App> {
   var _loginState;
   int _currentIndex = 0;
   var _userdataProvider;
+  int updatecount = 0;
 
   BottomNavigationBarItem _bottomNavigationBarItem(
       String iconName, String label) {
@@ -237,21 +238,25 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    _bodyStater = Provider.of<BodyStater>(context, listen: true);
-    _loginState = Provider.of<LoginPageProvider>(context);
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _userdataProvider.getUsersFriendsAll(context);
+    updatecount == 0
+    ? [updatecount++,
+      _bodyStater = Provider.of<BodyStater>(context, listen: true),
+    _loginState = Provider.of<LoginPageProvider>(context, listen: false),
+    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false),
+    //_userdataProvider.getUsersFriendsAll(context);
     _workoutdataProvider =
-        Provider.of<WorkoutdataProvider>(context, listen: false);
-    _workoutdataProvider.getdata();
+        Provider.of<WorkoutdataProvider>(context, listen: false),
+    _workoutdataProvider.getdata(),
     _exercisesdataProvider =
-        Provider.of<ExercisesdataProvider>(context, listen: false);
-    _exercisesdataProvider.getdata();
+        Provider.of<ExercisesdataProvider>(context, listen: false),
+    _exercisesdataProvider.getdata(),
 
     _routinetimeProvider =
-        Provider.of<RoutineTimeProvider>(context, listen: false);
+        Provider.of<RoutineTimeProvider>(context, listen: false),
     _historydataProvider =
-        Provider.of<HistorydataProvider>(context, listen: false);
+        Provider.of<HistorydataProvider>(context, listen: false)]
+    : null ;
+
 
     return Scaffold(
       body: _loginState.isLogin
