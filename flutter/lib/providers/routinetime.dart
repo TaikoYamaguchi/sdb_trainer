@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:vibration/vibration.dart';
 
 class RoutineTimeProvider extends ChangeNotifier {
   int _routineTime = 0;
@@ -56,8 +57,8 @@ class RoutineTimeProvider extends ChangeNotifier {
       timer1  = Timer.periodic(Duration(seconds: 1), (timer){
         _routineTime++;
         _timeron--;
-        if(_timeron == 0){
-          print('진동!!!!!!!!');
+        if(_timeron == 0) {
+          Vibration.vibrate(duration: 1000);
         }
         counter--;
         notifyListeners();

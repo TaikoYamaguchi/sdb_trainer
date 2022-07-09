@@ -704,9 +704,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
               },
             ),
             actions: <Widget>[
-              FlatButton(
-                color: Colors.blue,
-                textColor: Colors.white,
+              TextButton(
+                style: TextButton.styleFrom(
+                  primary: Colors.blue,
+                ),
                 child: Text('OK'),
                 onPressed: () {
                   _workoutdataProvider.resttimecheck(
@@ -747,13 +748,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         children: [
           SizedBox(
               width: MediaQuery.of(context).size.width / 4,
-              child: FlatButton(
-                  color: Colors.blue,
-                  textColor: Colors.white,
-                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                  disabledTextColor: Colors.black,
-                  padding: EdgeInsets.all(8.0),
-                  splashColor: Colors.blueAccent,
+              child: TextButton(
                   onPressed: () {
                     _routinetimeProvider.resettimer(_workoutdataProvider
                         .workoutdata
@@ -767,22 +762,17 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
                   child: Text("Confirm",
-                      style: TextStyle(fontSize: 20.0, color: Colors.white)))),
+                      style: TextStyle(fontSize: 20.0, color: Colors.blue)))),
           SizedBox(
               width: MediaQuery.of(context).size.width / 4,
-              child: FlatButton(
-                  color: Colors.red,
-                  textColor: Colors.white,
-                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                  disabledTextColor: Colors.black,
-                  padding: EdgeInsets.all(8.0),
-                  splashColor: Colors.blueAccent,
+              child: TextButton(
+
                   onPressed: () {
                     newvalue = !newvalue;
                     Navigator.of(context, rootNavigator: true).pop();
                   },
                   child: Text("Cancel",
-                      style: TextStyle(fontSize: 20.0, color: Colors.white))))
+                      style: TextStyle(fontSize: 20.0, color: Colors.red))))
         ],
       ),
     );
