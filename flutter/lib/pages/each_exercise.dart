@@ -234,10 +234,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                         builder: (builder, provider, child) {
                       var _exercise = provider.workoutdata
                           .routinedatas[widget.rindex].exercises[pindex];
-                      return Text(
-                        _exercise.name,
-                        style: TextStyle(color: Colors.white, fontSize: 48),
-                      );
+                      return
+                        _exercise.name.length < 8
+                        ? Text(_exercise.name, style: TextStyle(color: Colors.white, fontSize: 48),)
+                        : Text(_exercise.name, style: TextStyle(color: Colors.white, fontSize: 40),);
                     }),
                     Consumer<ExercisesdataProvider>(
                         builder: (builder, provider, child) {
@@ -565,7 +565,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                 .routinedatas[widget.rindex]
                                                 .exercises[pindex - 1]
                                                 .name,
-                                            overflow: TextOverflow.fade,
+                                            overflow: TextOverflow.ellipsis,
                                             style:
                                                 TextStyle(color: Colors.white),
                                           ));
@@ -630,7 +630,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                 .routinedatas[widget.rindex]
                                                 .exercises[pindex + 1]
                                                 .name,
-                                            overflow: TextOverflow.fade,
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               color: Colors.white,
                                             ),
