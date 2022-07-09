@@ -238,23 +238,19 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    updatecount > -1
+    _bodyStater = Provider.of<BodyStater>(context, listen: true);
+    _loginState = Provider.of<LoginPageProvider>(context);
+    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _workoutdataProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
+    _exercisesdataProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
+    _routinetimeProvider = Provider.of<RoutineTimeProvider>(context, listen: false);
+    _historydataProvider = Provider.of<HistorydataProvider>(context, listen: false);
+    updatecount == 0 && _loginState.isLogin
     ? [updatecount++,
-      _bodyStater = Provider.of<BodyStater>(context, listen: true),
-    _loginState = Provider.of<LoginPageProvider>(context),
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false),
     //_userdataProvider.getUsersFriendsAll(context);
-    _workoutdataProvider =
-        Provider.of<WorkoutdataProvider>(context, listen: false),
     _workoutdataProvider.getdata(),
-    _exercisesdataProvider =
-        Provider.of<ExercisesdataProvider>(context, listen: false),
-    _exercisesdataProvider.getdata(),
+    _exercisesdataProvider.getdata(),]
 
-    _routinetimeProvider =
-        Provider.of<RoutineTimeProvider>(context, listen: false),
-    _historydataProvider =
-        Provider.of<HistorydataProvider>(context, listen: false)]
     : null ;
 
 
