@@ -238,7 +238,7 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    updatecount == 0
+    updatecount > -1
     ? [updatecount++,
       _bodyStater = Provider.of<BodyStater>(context, listen: true),
     _loginState = Provider.of<LoginPageProvider>(context),

@@ -74,6 +74,8 @@ class _LoginPageState extends State<SignUpPage> {
     Exercises(name: "벤치프레스", onerm: 0, goal: 0.0)
   ];
 
+  List extra_Ex = ['밀리터리프레스', '체스트프레스'];
+
   List<TextEditingController> _onermController = [];
   List<TextEditingController> _goalController = [];
 
@@ -108,6 +110,12 @@ class _LoginPageState extends State<SignUpPage> {
     }
 
     return Scaffold(body: _signupWidget());
+  }
+
+  void add_extra_ex(){
+    for (int i = 0; i < extra_Ex.length; i++) {
+      exerciseList.add(Exercises(name: extra_Ex[i], onerm: 0, goal: 10));
+    }
   }
 
   Widget _signupWidget() {
@@ -756,6 +764,7 @@ class _LoginPageState extends State<SignUpPage> {
   }
 
   void _postExerciseCheck() async {
+    add_extra_ex();
     ExercisePost(user_email: _userEmailCtrl.text, exercises: exerciseList)
         .postExercise()
         .then((data) => data["user_email"] != null
