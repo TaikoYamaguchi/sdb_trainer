@@ -146,13 +146,13 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             ),
             content: Text('운동을 끝마치겠습니까?'),
             actions: <Widget>[
-              _StartConfirmButton(),
+              _FinishConfirmButton(),
             ],
           );
         });
   }
 
-  Widget _StartConfirmButton() {
+  Widget _FinishConfirmButton() {
     return Container(
       margin: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width / 25),

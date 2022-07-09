@@ -38,6 +38,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
   int? reps;
   List<TextEditingController> weightController = [];
   List<TextEditingController> repsController = [];
+  TextEditingController _resttimectrl = TextEditingController(text: "");
   var runtime = 0;
   Timer? timer1;
   late List<hisdata.Exercises> exerciseList = [];
@@ -54,7 +55,11 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
       leading: IconButton(
         icon: Icon(Icons.arrow_back_ios_outlined),
         onPressed: () {
-          Navigator.of(context).pop();
+          _routinetimeProvider.isstarted
+              ? _displayFinishAlert()
+              : [Navigator.of(context).pop(),
+                _routinetimeProvider.resttimecheck(0)];
+
         },
       ),
       title: Text(
@@ -62,6 +67,68 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
         style: TextStyle(color: Colors.white, fontSize: 30),
       ),
       backgroundColor: Colors.black,
+    );
+  }
+
+  void _displayFinishAlert() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'Workout Finish Alert',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            content: Text('운동을 끝마치겠습니까?'),
+            actions: <Widget>[
+              _FinishConfirmButton(),
+            ],
+          );
+        });
+  }
+
+  Widget _FinishConfirmButton() {
+    return Container(
+      margin: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 25),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+              width: MediaQuery.of(context).size.width / 4,
+              child: FlatButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                  disabledTextColor: Colors.black,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () {
+                    _routinetimeProvider.routinecheck(0);
+                    recordExercise();
+                    _editHistoryCheck();
+                    _routinetimeProvider.resttimecheck(0);
+                    Navigator.of(context, rootNavigator: true).pop();
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Confirm",
+                      style: TextStyle(fontSize: 20.0, color: Colors.white)))),
+          SizedBox(
+              width: MediaQuery.of(context).size.width / 4,
+              child: FlatButton(
+                  color: Colors.red,
+                  textColor: Colors.white,
+                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                  disabledTextColor: Colors.black,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                  child: Text("Cancel",
+                      style: TextStyle(fontSize: 20.0, color: Colors.white))))
+        ],
+      ),
     );
   }
 
@@ -95,36 +162,53 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
           children: [
             Container(
                 child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  "Rest Timer off",
-                  style: TextStyle(
-                    color: Color(0xFF717171),
-                    fontSize: 21,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  "Rest: ${_exampleex.rest}",
-                  style: TextStyle(
-                    color: Color(0xFF717171),
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              ],
-            )),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        _routinetimeProvider.restcheck();
+                        _routinetimeProvider.resttimecheck(int.parse(_resttimectrl.text));
+                      },
+                      child: Consumer<RoutineTimeProvider>(
+                          builder: (builder, provider, child) {
+                            return Text(
+                              provider.restbutton,
+                              style: TextStyle(
+                                color: provider.restbuttoncolor,
+                                fontSize: 21,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            );
+                          }),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        _displaySetRestAlert();
+                      },
+                      child: Consumer<RoutineTimeProvider>(
+                          builder: (builder, provider, child) {
+                            return Text(
+                              "Rest: ${provider.changetime}",
+                              style: TextStyle(
+                                color: Color(0xFF717171),
+                                fontSize: 21,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            );
+                          }),
+                    ),
+                  ],
+                )),
             Container(
                 height: 130,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      _exampleex.name,
-                      style: TextStyle(color: Colors.white, fontSize: 48),
-                    ),
+                    _exampleex.name.length < 8
+                      ? Text(_exampleex.name, style: TextStyle(color: Colors.white, fontSize: 48),)
+                      : Text(_exampleex.name, style: TextStyle(color: Colors.white, fontSize: 40),)
+                  ,
                     Consumer<ExercisesdataProvider>(
                         builder: (builder, provider, child) {
                       var _info =
@@ -217,9 +301,12 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                                                   getColor),
                                           value: _sets[index].ischecked,
                                           onChanged: (newvalue) {
-                                            setState(() {
-                                              _sets[index].ischecked = newvalue;
-                                            });
+                                            _routinetimeProvider.isstarted
+                                                ? [setState(() {_sets[index].ischecked = newvalue;}),
+                                                    newvalue == true
+                                                      ? _routinetimeProvider.resettimer(_routinetimeProvider.changetime)
+                                                      : null,]
+                                                : _displayStartAlert(index, newvalue);
                                           })),
                                   Container(
                                     width: 25,
@@ -340,9 +427,19 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                   children: [
                     Container(child: Consumer<RoutineTimeProvider>(
                         builder: (context, provider, child) {
-                      return Text(provider.routineTime.toString(),
-                          style: TextStyle(fontSize: 25, color: Colors.white));
-                    })),
+                          return Text(
+                              provider.userest
+                                  ? provider.timeron < 0
+                                  ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
+                                  : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
+                                  : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                              style: TextStyle(
+                                  fontSize: 25,
+                                  color:
+                                  (provider.userest && provider.timeron < 0)
+                                      ? Colors.red
+                                      : Colors.white));
+                        })),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -360,21 +457,25 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                               )),
                         ),
                         Container(
-                            child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              textStyle: const TextStyle(fontSize: 20)),
-                          onPressed: () {
-                            if (_routinetimeProvider.isstarted) {
-                              recordExercise();
-                              _editHistoryCheck();
-                            }
-                            _routinetimeProvider.routinecheck();
-                          },
-                          child: Consumer<RoutineTimeProvider>(
-                              builder: (builder, provider, child) {
-                            return Text(provider.routineButton);
-                          }),
-                        )),
+                            child: Consumer<RoutineTimeProvider>(
+                                builder: (builder, provider, child) {
+                                  return ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        primary: provider.buttoncolor,
+                                        textStyle: const TextStyle(fontSize: 20)),
+                                    onPressed: () {
+                                      if (_routinetimeProvider.isstarted) {
+                                        recordExercise();
+                                        _editHistoryCheck();
+                                        _routinetimeProvider.resttimecheck(0);
+                                        Navigator.pop(context);
+                                      }
+                                      provider.resettimer(provider.changetime);
+                                      provider.routinecheck(0);
+                                    },
+                                    child: Text(provider.routineButton),
+                                  );
+                                })),
                         Container(
                           child: IconButton(
                               onPressed: () {
@@ -460,6 +561,112 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
         .then((data) => data["user_email"] != null
             ? {showToast("수정 완료"), _exercisesdataProvider.getdata()}
             : showToast("입력을 확인해주세요"));
+  }
+
+  void _displayStartAlert( sindex, newvalue) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'Workout Start Alert',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            content: Text('운동을 시작하시겠습니까?'),
+            actions: <Widget>[
+              _StartConfirmButton( sindex, newvalue),
+            ],
+          );
+        });
+  }
+
+  Widget _StartConfirmButton( sindex, newvalue) {
+    return Container(
+      margin: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 25),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+              width: MediaQuery.of(context).size.width / 4,
+              child: FlatButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                  disabledTextColor: Colors.black,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () {
+                    _routinetimeProvider.resettimer(_routinetimeProvider.changetime);
+                    _routinetimeProvider.routinecheck(0);
+                    setState(() {_sets[sindex].ischecked = newvalue;});
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                  child: Text("Confirm",
+                      style: TextStyle(fontSize: 20.0, color: Colors.white)))),
+          SizedBox(
+              width: MediaQuery.of(context).size.width / 4,
+              child: FlatButton(
+                  color: Colors.red,
+                  textColor: Colors.white,
+                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                  disabledTextColor: Colors.black,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () {
+                    newvalue = !newvalue;
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                  child: Text("Cancel",
+                      style: TextStyle(fontSize: 20.0, color: Colors.white))))
+        ],
+      ),
+    );
+  }
+
+  void _displaySetRestAlert() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'Set Rest Time',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            content: TextField(
+              controller: _resttimectrl,
+              keyboardType: TextInputType.number,
+              style: TextStyle(
+                fontSize: 21,
+                color: Colors.black,
+              ),
+              textAlign: TextAlign.center,
+              decoration: InputDecoration(
+                hintText: "Type Resting time",
+                hintStyle: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                ),
+              ),
+              onChanged: (text) {
+                int changetime;
+                changetime = int.parse(text);
+                _routinetimeProvider.resttimecheck(changetime);
+              },
+            ),
+            actions: <Widget>[
+              FlatButton(
+                color: Colors.blue,
+                textColor: Colors.white,
+                child: Text('OK'),
+                onPressed: () {
+                  _resttimectrl.clear();
+                  Navigator.of(context, rootNavigator: true).pop();
+                },
+              ),
+            ],
+          );
+        });
   }
 
   @override

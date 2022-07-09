@@ -584,7 +584,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                           size: 40,
                                         )),
                                   )),
-                        Container(child: Consumer<RoutineTimeProvider>(
+                        Container(
+                            child: Consumer<RoutineTimeProvider>(
                             builder: (builder, provider, child) {
                           return ElevatedButton(
                             style: ElevatedButton.styleFrom(
