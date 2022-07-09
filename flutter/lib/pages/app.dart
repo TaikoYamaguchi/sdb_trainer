@@ -241,7 +241,7 @@ class _AppState extends State<App> {
     updatecount == 0
     ? [updatecount++,
       _bodyStater = Provider.of<BodyStater>(context, listen: true),
-    _loginState = Provider.of<LoginPageProvider>(context, listen: false),
+    _loginState = Provider.of<LoginPageProvider>(context),
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false),
     //_userdataProvider.getUsersFriendsAll(context);
     _workoutdataProvider =
