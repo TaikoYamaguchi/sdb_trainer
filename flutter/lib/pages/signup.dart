@@ -74,7 +74,9 @@ class _LoginPageState extends State<SignUpPage> {
     Exercises(name: "벤치프레스", onerm: 0, goal: 0.0)
   ];
 
-  List extra_Ex = ['밀리터리프레스', '체스트프레스'];
+  List extra_Ex = ['밀리터리프레스', '체스트프레스', '오버헤드프레스', '벤트오버바벨로우', '풀업', '바벨컬' ,'덤벨컬' ,'카프레이즈', '치닝', '딥스', '디클라인벤치프레스', '인클라인벤치프레스',
+    '랫풀다운', '레그프레스', '파워레그프레스', '레그컬', '레그익스텐션', '행잉레그레이즈', '덤벨로우', '사이드래터럴레이즈', '프론트래터럴레이즈', '리어델토이드플라이', '체스트플라이', '뎀벨플라이',
+    '프론트스쿼트', '숄더프레스'];
 
   List<TextEditingController> _onermController = [];
   List<TextEditingController> _goalController = [];
