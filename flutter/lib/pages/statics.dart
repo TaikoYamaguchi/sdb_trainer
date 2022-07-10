@@ -107,9 +107,10 @@ class _CalendarState extends State<Calendar> {
   }
 
   Widget _staticsPages() {
-    return Consumer<ChartIndexProvider>(builder: (builder, provider, child) {
+    return Consumer2<ChartIndexProvider, StaticPageProvider>(
+        builder: (builder, provider1, provider2, child) {
       return PageView(
-        controller: provider.isPageController,
+        controller: provider1.isPageController,
         children: [_chartWidget(), _staticsWidget()],
         onPageChanged: (page) {
           if (page == 1) {
@@ -124,28 +125,32 @@ class _CalendarState extends State<Calendar> {
 
   PreferredSizeWidget _appbarWidget() {
     return AppBar(
-      title:
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-        IconButton(
-          icon: _isChartWidget.isChartWidget
-              ? SvgPicture.asset("assets/svg/chart_statics_on.svg")
-              : SvgPicture.asset("assets/svg/chart_statics_off.svg"),
-          onPressed: () {
-            _chartIndex.changePageController(0);
-            _isChartWidget.change(true);
-          },
-        ),
-        SizedBox(width: 150),
-        IconButton(
-          icon: _isChartWidget.isChartWidget
-              ? SvgPicture.asset("assets/svg/calendar_statics_off.svg")
-              : SvgPicture.asset("assets/svg/calendar_statics_on.svg"),
-          onPressed: () {
-            _chartIndex.changePageController(1);
-            _isChartWidget.change(false);
-          },
-        ),
-      ]),
+      title: Consumer2<ChartIndexProvider, StaticPageProvider>(
+          builder: (builder, provider1, provider2, child) {
+        return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              IconButton(
+                icon: _isChartWidget.isChartWidget
+                    ? SvgPicture.asset("assets/svg/chart_statics_on.svg")
+                    : SvgPicture.asset("assets/svg/chart_statics_off.svg"),
+                onPressed: () {
+                  _chartIndex.changePageController(0);
+                  _isChartWidget.change(true);
+                },
+              ),
+              SizedBox(width: 150),
+              IconButton(
+                icon: _isChartWidget.isChartWidget
+                    ? SvgPicture.asset("assets/svg/calendar_statics_off.svg")
+                    : SvgPicture.asset("assets/svg/calendar_statics_on.svg"),
+                onPressed: () {
+                  _chartIndex.changePageController(1);
+                  _isChartWidget.change(false);
+                },
+              ),
+            ]);
+      }),
       backgroundColor: Color(0xFF212121),
     );
   }
@@ -692,8 +697,8 @@ class _CalendarState extends State<Calendar> {
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     initializeDateFormatting('pt_BR', null);
-    _chartIndex = Provider.of<ChartIndexProvider>(context);
-    _isChartWidget = Provider.of<StaticPageProvider>(context);
+    _chartIndex = Provider.of<ChartIndexProvider>(context, listen: false);
+    _isChartWidget = Provider.of<StaticPageProvider>(context, listen: false);
     _historydataProvider =
         Provider.of<HistorydataProvider>(context, listen: false);
     _exercisesdataProvider =

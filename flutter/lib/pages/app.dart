@@ -8,18 +8,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/navigators/exercise_navi.dart';
 import 'package:sdb_trainer/navigators/profile_navi.dart';
-import 'package:sdb_trainer/pages/exercise.dart';
 import 'package:sdb_trainer/pages/home.dart';
 import 'package:sdb_trainer/pages/login.dart';
 import 'package:sdb_trainer/pages/signup.dart';
-import 'package:sdb_trainer/pages/profile.dart';
 import 'package:sdb_trainer/pages/feed.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
-import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'dart:math' as math;
@@ -42,7 +39,6 @@ class _AppState extends State<App> {
   var _workoutdataProvider;
   var _bodyStater;
   var _loginState;
-  int _currentIndex = 0;
   var _userdataProvider;
   int updatecount = 0;
 
@@ -64,9 +60,7 @@ class _AppState extends State<App> {
       unselectedItemColor: Color(0xFF717171),
       unselectedFontSize: 20,
       onTap: (int index) {
-        setState(() {
-          _bodyStater.change(index);
-        });
+        _bodyStater.change(index);
       },
       currentIndex: _bodyStater.bodystate,
       items: [
@@ -238,77 +232,79 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    _bodyStater = Provider.of<BodyStater>(context, listen: true);
-    _loginState = Provider.of<LoginPageProvider>(context);
+    _bodyStater = Provider.of<BodyStater>(context, listen: false);
+    _loginState = Provider.of<LoginPageProvider>(context, listen: false);
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _workoutdataProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
-    _exercisesdataProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
-    _routinetimeProvider = Provider.of<RoutineTimeProvider>(context, listen: false);
-    _historydataProvider = Provider.of<HistorydataProvider>(context, listen: false);
-    updatecount == 0 && _loginState.isLogin
-    ? [updatecount++,
-    //_userdataProvider.getUsersFriendsAll(context);
-    _workoutdataProvider.getdata(),
-    _exercisesdataProvider.getdata(),]
+    _workoutdataProvider =
+        Provider.of<WorkoutdataProvider>(context, listen: false);
+    _exercisesdataProvider =
+        Provider.of<ExercisesdataProvider>(context, listen: false);
+    _routinetimeProvider =
+        Provider.of<RoutineTimeProvider>(context, listen: false);
+    _historydataProvider =
+        Provider.of<HistorydataProvider>(context, listen: false);
+    _workoutdataProvider.getdata();
+    _exercisesdataProvider.getdata();
+    _userdataProvider.getUsersFriendsAll(context);
 
-    : null ;
-
-
-    return Scaffold(
-      body: _loginState.isLogin
-          ? IndexedStack(index: _bodyStater.bodystate, children: <Widget>[
-              Home(),
-              TabNavigator(),
-              Feed(),
-              Calendar(),
-              TabProfileNavigator()
-            ])
-          : _loginState.isSignUp
-              ? SignUpPage()
-              : LoginPage(),
-      floatingActionButton:
-          Consumer<RoutineTimeProvider>(builder: (builder, provider, child) {
-        return Container(
-          child: (provider.isstarted && _bodyStater.bodystate != 1)
-              ? ExpandableFab(
-                  distance: 105,
-                  children: [
-                    SizedBox(
-                        width: 100,
-                        height: 40,
-                        child: FlatButton(
-                            color: Colors.blue,
-                            textColor: Colors.white,
-                            disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                            disabledTextColor: Colors.black,
-                            padding: EdgeInsets.all(8.0),
-                            splashColor: Colors.blueAccent,
-                            onPressed: () {
-                              provider.restcheck();
-                            },
-                            child: Text(
-                                provider.userest
-                                    ? provider.timeron < 0
-                                        ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
-                                        : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
-                                    : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
-                                style: TextStyle(
-                                    color: (provider.userest &&
-                                            provider.timeron < 0)
-                                        ? Colors.red
-                                        : Colors.white)))),
-                    ActionButton(
-                      onPressed: _displayFinishAlert,
-                      icon: Icon(Icons.stop),
-                    )
-                  ],
-                )
-              : null,
-        );
-      }),
-      bottomNavigationBar:
-          _loginState.isLogin ? _bottomNavigationBarwidget() : null,
-    );
+    return Consumer2<BodyStater, LoginPageProvider>(
+        builder: (builder, provider1, provider2, child) {
+      return Scaffold(
+        body: _loginState.isLogin
+            ? IndexedStack(index: _bodyStater.bodystate, children: <Widget>[
+                Home(),
+                TabNavigator(),
+                Feed(),
+                Calendar(),
+                TabProfileNavigator()
+              ])
+            : _loginState.isSignUp
+                ? SignUpPage()
+                : LoginPage(),
+        floatingActionButton:
+            Consumer<RoutineTimeProvider>(builder: (builder, provider, child) {
+          return Container(
+            child: (provider.isstarted && _bodyStater.bodystate != 1)
+                ? ExpandableFab(
+                    distance: 105,
+                    children: [
+                      SizedBox(
+                          width: 100,
+                          height: 40,
+                          child: FlatButton(
+                              color: Colors.blue,
+                              textColor: Colors.white,
+                              disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                              disabledTextColor: Colors.black,
+                              padding: EdgeInsets.all(8.0),
+                              splashColor: Colors.blueAccent,
+                              onPressed: () {
+                                provider.restcheck();
+                              },
+                              child: Text(
+                                  provider.userest
+                                      ? provider.timeron < 0
+                                          ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
+                                          : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
+                                      : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                                  style: TextStyle(
+                                      color: (provider.userest &&
+                                              provider.timeron < 0)
+                                          ? Colors.red
+                                          : Colors.white)))),
+                      ActionButton(
+                        onPressed: _displayFinishAlert,
+                        icon: Icon(Icons.stop),
+                      )
+                    ],
+                  )
+                : null,
+          );
+        }),
+        bottomNavigationBar:
+            _loginState.isLogin ? _bottomNavigationBarwidget() : null,
+      );
+    });
   }
 }
 

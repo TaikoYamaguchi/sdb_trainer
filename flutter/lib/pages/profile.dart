@@ -21,8 +21,8 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _loginState = Provider.of<LoginPageProvider>(context);
-    _userdataProvider = Provider.of<UserdataProvider>(context);
+    _loginState = Provider.of<LoginPageProvider>(context, listen: false);
+    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
           title: Text("설정", style: TextStyle(color: Colors.white)),

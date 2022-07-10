@@ -133,9 +133,9 @@ class _LoginPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    _bodyStater = Provider.of<BodyStater>(context);
-    _loginState = Provider.of<LoginPageProvider>(context);
-    _userProvider = Provider.of<UserdataProvider>(context);
+    _bodyStater = Provider.of<BodyStater>(context, listen: false);
+    _loginState = Provider.of<LoginPageProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     if (_userProvider.userKakaoEmail != null) {
       _userEmailCtrl.text = _userProvider.userKakaoEmail;
     }
@@ -181,44 +181,38 @@ class _LoginPageState extends State<SignUpPage> {
       child: Center(
           child: Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Expanded(
-                      flex: 3,
-                      child: SizedBox(),
-                    ),
-                    Text("회원가입",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 32,
-                            fontWeight: FontWeight.w800)),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    _emailWidget(),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    _nicknameWidget(),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    _passwordWidget(),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    _phoneNumberWidget(),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: SizedBox(),
-                    ),
-                    _signUpButton(context),
-                    _loginButton(context),
-                  ]))),
+              child: SingleChildScrollView(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text("회원가입",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 32,
+                              fontWeight: FontWeight.w800)),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      _emailWidget(),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      _nicknameWidget(),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      _passwordWidget(),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      _phoneNumberWidget(),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      _signUpButton(context),
+                      _loginButton(context),
+                    ]),
+              ))),
     );
   }
 
