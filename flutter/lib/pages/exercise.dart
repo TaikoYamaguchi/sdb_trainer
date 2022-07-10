@@ -493,7 +493,6 @@ class ExerciseState extends State<Exercise> {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
-    _exercisesdataProvider.getdata();
     _workoutdataProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
     return Scaffold(

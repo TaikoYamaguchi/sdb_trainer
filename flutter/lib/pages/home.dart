@@ -172,18 +172,19 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _historydataAll = Provider.of<HistorydataProvider>(context, listen: false);
-    _historydataAll.getHistorydataAll();
-    _historydataAll.getdata();
-    _historydataAll.getCommentAll();
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _userdataProvider.getdata();
-    _userdataProvider.getUsersFriendsAll(context);
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
-    _exercisesdataProvider.getdata();
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
     _staticPageState = Provider.of<StaticPageProvider>(context, listen: false);
     _chartIndex = Provider.of<ChartIndexProvider>(context, listen: false);
+
+    _userdataProvider.getUsersFriendsAll(context);
+    _exercisesdataProvider.getdata();
+    _userdataProvider.getdata();
+    _historydataAll.getHistorydataAll();
+    _historydataAll.getdata();
+    _historydataAll.getCommentAll();
 
     return Scaffold(
         appBar: _appbarWidget(),
