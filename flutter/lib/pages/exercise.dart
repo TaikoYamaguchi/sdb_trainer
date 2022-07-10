@@ -9,6 +9,7 @@ import 'package:sdb_trainer/pages/unique_exercise.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
+import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/userdata.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
@@ -320,6 +321,15 @@ class ExerciseState extends State<Exercise> {
     );
   }
 
+  void _postExerciseCheck() async {
+    ExerciseEdit(
+        user_email: _userdataProvider.userdata.email, exercises: _exercisesdataProvider.exercisesdata.exercises)
+        .editExercise()
+        .then((data) => data["user_email"] != null
+        ? {showToast("수정 완료"), _exercisesdataProvider.getdata()}
+        : showToast("입력을 확인해주세요"));
+  }
+
   Widget exercisesWidget2(bool shirink) {
     double top = 0;
     double bottom = 0;
@@ -330,7 +340,17 @@ class ExerciseState extends State<Exercise> {
         var _userdata = user.userdata;
         var _exunique = exercise.exercisesdata.exercises;
 
-        return ListView.separated(
+        return ReorderableListView.builder(
+          onReorder: (int oldIndex, int newIndex) {
+            setState(() {
+              if (oldIndex < newIndex) {
+                newIndex -= 1;
+              }
+              final item = _exunique.removeAt(oldIndex);
+              _exunique.insert(newIndex, item);
+              _postExerciseCheck();
+            });
+          },
           padding: EdgeInsets.symmetric(horizontal: 5),
           itemBuilder: (BuildContext _context, int index) {
             if (index == 0) {
@@ -344,6 +364,7 @@ class ExerciseState extends State<Exercise> {
               bottom = 0;
             }
             return GestureDetector(
+              key: Key('$index'),
               onTap: () {
                 Navigator.push(
                     context,
@@ -354,58 +375,64 @@ class ExerciseState extends State<Exercise> {
                         transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
               },
               child: Container(
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                      color: Color(0xFF212121),
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(top),
-                          bottomRight: Radius.circular(bottom),
-                          topLeft: Radius.circular(top),
-                          bottomLeft: Radius.circular(bottom))),
-                  height: 52,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _exunique[index].name,
-                        style: TextStyle(fontSize: 21, color: Colors.white),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      decoration: BoxDecoration(
+                          color: Color(0xFF212121),
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(top),
+                              bottomRight: Radius.circular(bottom),
+                              topLeft: Radius.circular(top),
+                              bottomLeft: Radius.circular(bottom))),
+                      height: 52,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            _exunique[index].name,
+                            style: TextStyle(fontSize: 21, color: Colors.white),
+                          ),
+                          Container(
+                            child: Row(
+                              //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text("Rest: need to set",
+                                    style: TextStyle(
+                                        fontSize: 13, color: Color(0xFF717171))),
+                                Expanded(child: SizedBox()),
+                                Text(
+                                    "1RM: ${_exunique[index].onerm}/${_exunique[index].goal.toStringAsFixed(1)}${_userdata.weight_unit}",
+                                    style: TextStyle(
+                                        fontSize: 13, color: Color(0xFF717171))),
+                              ],
+                            ),
+                          ),
+
+                        ],
                       ),
-                      Container(
-                        child: Row(
-                          //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text("Rest: need to set",
-                                style: TextStyle(
-                                    fontSize: 13, color: Color(0xFF717171))),
-                            Expanded(child: SizedBox()),
-                            Text(
-                                "1RM: ${_exunique[index].onerm}/${_exunique[index].goal.toStringAsFixed(1)}${_userdata.weight_unit}",
-                                style: TextStyle(
-                                    fontSize: 13, color: Color(0xFF717171))),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+                    ),
+                    index == _exunique.length - 1
+                        ? Container()
+                        : Container(
+                      alignment: Alignment.center,
+                      height: 1,
+                      color: Color(0xFF212121),
+                      child: Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        height: 1,
+                        color: Color(0xFF717171),
+                      ),
+                    )
+                  ],
                 ),
               ),
             );
           },
-          separatorBuilder: (BuildContext _context, int index) {
-            return Container(
-              alignment: Alignment.center,
-              height: 1,
-              color: Color(0xFF212121),
-              child: Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                height: 1,
-                color: Color(0xFF717171),
-              ),
-            );
-          },
+
           scrollDirection: Axis.vertical,
           shrinkWrap: shirink,
           itemCount: _exunique.length,
