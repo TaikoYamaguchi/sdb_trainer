@@ -848,15 +848,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   @override
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _historydataProvider =
-        Provider.of<HistorydataProvider>(context, listen: false);
-    _workoutdataProvider =
-        Provider.of<WorkoutdataProvider>(context, listen: false);
-    _routinetimeProvider =
-        Provider.of<RoutineTimeProvider>(context, listen: false);
+    _historydataProvider = Provider.of<HistorydataProvider>(context, listen: false);
+    _workoutdataProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
+    _routinetimeProvider = Provider.of<RoutineTimeProvider>(context, listen: false);
 
-    _exercisesdataProvider =
-        Provider.of<ExercisesdataProvider>(context, listen: false);
+    _exercisesdataProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     _exercises = _exercisesdataProvider.exercisesdata.exercises;
 
     return Scaffold(
