@@ -704,6 +704,7 @@ class _CalendarState extends State<Calendar> {
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _getChartSourcefromDay();
+    print("this is sttttttttatics");
     return Scaffold(
         appBar: _appbarWidget(),
         backgroundColor: Colors.black,

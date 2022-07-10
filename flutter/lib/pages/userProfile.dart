@@ -155,6 +155,7 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    print("this is profileeeeeeeeee");
     return Scaffold(
         appBar: _appbarWidget(),
         body: _userProfileWidget(),
