@@ -30,8 +30,9 @@ class _ProfileGoalState extends State<ProfileGoal> {
 
   @override
   Widget build(BuildContext context) {
-    _userdataProvider = Provider.of<UserdataProvider>(context);
-    _exercisesdataProvider = Provider.of<ExercisesdataProvider>(context);
+    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _exercisesdataProvider =
+        Provider.of<ExercisesdataProvider>(context, listen: false);
     _exerciseList = _exercisesdataProvider.exercisesdata.exercises;
 
     return Scaffold(appBar: _appbarWidget(), body: _signupExerciseWidget());

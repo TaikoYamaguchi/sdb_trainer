@@ -44,7 +44,7 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   @override
   Widget build(BuildContext context) {
-    _userdataProvider = Provider.of<UserdataProvider>(context);
+    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     TextEditingController(text: _userdataProvider.userdata.nickname);
     _userWeightUnitCtrl = _userdataProvider.userdata.weight_unit;
     _userHeightUnitCtrl = _userdataProvider.userdata.height_unit;

@@ -8,6 +8,9 @@ import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
+import 'package:sdb_trainer/providers/exercisesdata.dart';
+import 'package:sdb_trainer/providers/historydata.dart';
+import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:provider/provider.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -37,9 +40,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    _bodyStater = Provider.of<BodyStater>(context);
-    _loginState = Provider.of<LoginPageProvider>(context);
-    _userProvider = Provider.of<UserdataProvider>(context);
+    _bodyStater = Provider.of<BodyStater>(context, listen: false);
+    _loginState = Provider.of<LoginPageProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
 
     return Scaffold(
         body: Container(
@@ -47,45 +50,39 @@ class _LoginPageState extends State<LoginPage> {
       child: Center(
           child: Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Expanded(
-                      flex: 3,
-                      child: SizedBox(),
-                    ),
-                    Text("SUPERO",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 54,
-                            fontWeight: FontWeight.w800)),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    _emailWidget(),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    _passwordWidget(),
-                    SizedBox(
-                      height: 14,
-                    ),
-                    _loginButton(context),
-                    SizedBox(
-                      height: 14,
-                    ),
-                    _signUpButton(context),
-                    SizedBox(
-                      height: 6,
-                    ),
-                    _loginWithKakao(context),
-                    _loginWithGoogle(context),
-                    _findUser(context),
-                    Expanded(
-                      flex: 1,
-                      child: SizedBox(),
-                    ),
-                  ]))),
+              child: SingleChildScrollView(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text("SUPERO",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 54,
+                              fontWeight: FontWeight.w800)),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      _emailWidget(),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      _passwordWidget(),
+                      SizedBox(
+                        height: 14,
+                      ),
+                      _loginButton(context),
+                      SizedBox(
+                        height: 14,
+                      ),
+                      _signUpButton(context),
+                      SizedBox(
+                        height: 6,
+                      ),
+                      _loginWithKakao(context),
+                      _loginWithGoogle(context),
+                      _findUser(context),
+                    ]),
+              ))),
     ));
   }
 
@@ -336,12 +333,17 @@ class _LoginPageState extends State<LoginPage> {
         storageEmail == _userEmailCtrl.text) {
       _bodyStater.change(0);
       _loginState.change(true);
+      initialProviderGet();
     } else {
       UserLogin(
               userEmail: _userEmailCtrl.text, password: _userPasswordCtrl.text)
           .loginUser()
           .then((token) => token["access_token"] != null
-              ? {_bodyStater.change(0), _loginState.change(true)}
+              ? {
+                  _bodyStater.change(0),
+                  _loginState.change(true),
+                  initialProviderGet()
+                }
               : showToast("아이디와 비밀번호를 확인해주세요"));
     }
   }
@@ -354,12 +356,17 @@ class _LoginPageState extends State<LoginPage> {
         storageEmail == _userEmailCtrl.text) {
       _bodyStater.change(0);
       _loginState.change(true);
+      initialProviderGet();
     } else {
       try {
         var order = await UserLoginKakao(
           userEmail: _userEmailCtrl.text,
         ).loginKakaoUser().then((token) => token["access_token"] != null
-            ? {_bodyStater.change(0), _loginState.change(true)}
+            ? {
+                _bodyStater.change(0),
+                _loginState.change(true),
+                initialProviderGet()
+              }
             : _loginState.changeSignup(true));
       } catch (error) {
         print(error);
@@ -375,6 +382,42 @@ class _LoginPageState extends State<LoginPage> {
     if (storageEmail != null && storageEmail != "") {
       _bodyStater.change(0);
       _loginState.change(true);
+      initialProviderGet();
     }
+  }
+
+  void initialProviderGet() async {
+    final _initUserdataProvider =
+        Provider.of<UserdataProvider>(context, listen: false);
+    final _initHistorydataProvider =
+        Provider.of<HistorydataProvider>(context, listen: false);
+
+    final _initExercisesdataProvider =
+        Provider.of<ExercisesdataProvider>(context, listen: false);
+    await _initUserdataProvider.getdata();
+    _initHistorydataProvider.getHistorydataAll();
+    _initHistorydataProvider.getdata();
+    _initHistorydataProvider.getCommentAll();
+    if (mounted) {
+      _initUserdataProvider.getUsersFriendsAll(context);
+    }
+    _initHistorydataProvider
+        .getFriendsHistorydata(_initUserdataProvider.userdata.email);
+    _initUserdataProvider.getFriendsdata(_initUserdataProvider.userdata.email);
+    _initExercisesdataProvider.getdata();
+
+    _initUserdataProvider.userdata != null
+        ? [
+            _initUserdataProvider
+                .getFriendsdata(_initUserdataProvider.userdata.email),
+            _initHistorydataProvider
+                .getFriendsHistorydata(_initUserdataProvider.userdata.email)
+          ]
+        : null;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

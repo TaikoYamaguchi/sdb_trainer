@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
@@ -13,7 +14,6 @@ import 'package:sdb_trainer/pages/feedCard.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:like_button/like_button.dart';
-import 'package:sdb_trainer/providers/userdata.dart';
 
 class Feed extends StatefulWidget {
   Feed({Key? key}) : super(key: key);
@@ -47,20 +47,41 @@ class _FeedState extends State<Feed> {
   @override
   void initState() {
     super.initState();
+    initialProviderGet();
+  }
+
+  void initialProviderGet() async {
+    final _initUserdataProvider =
+        Provider.of<UserdataProvider>(context, listen: false);
+    final _initHistorydataProvider =
+        Provider.of<HistorydataProvider>(context, listen: false);
+
+    final _initExercisesdataProvider =
+        Provider.of<ExercisesdataProvider>(context, listen: false);
+    await _initUserdataProvider.getdata();
+    _initHistorydataProvider
+        .getFriendsHistorydata(_initUserdataProvider.userdata.email);
+    _initUserdataProvider.getFriendsdata(_initUserdataProvider.userdata.email);
+    _initUserdataProvider.getUsersFriendsAll(context);
+    _initExercisesdataProvider.getdata();
+    _initHistorydataProvider.getHistorydataAll();
+    _initHistorydataProvider.getdata();
+    _initHistorydataProvider.getCommentAll();
+
+    _initUserdataProvider.userdata != null
+        ? [
+            _initUserdataProvider
+                .getFriendsdata(_initUserdataProvider.userdata.email),
+            _initHistorydataProvider
+                .getFriendsHistorydata(_initUserdataProvider.userdata.email)
+          ]
+        : null;
   }
 
   @override
   Widget build(BuildContext context) {
     _historydataAll = Provider.of<HistorydataProvider>(context, listen: false);
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _userdataProvider.getUsersFriendsAll(context);
-    _userdataProvider.userdata != null
-        ? [
-            _userdataProvider.getFriendsdata(_userdataProvider.userdata.email),
-            _historydataAll
-                .getFriendsHistorydata(_userdataProvider.userdata.email)
-          ]
-        : null;
 
     return Scaffold(
         appBar: AppBar(

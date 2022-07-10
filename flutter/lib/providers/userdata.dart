@@ -19,8 +19,8 @@ class UserdataProvider extends ChangeNotifier {
   get userFriendsAll => _userFriendsAll;
   get userFeedData => _userFeedData;
 
-  getdata() {
-    UserService.loadUserdata().then((value) {
+  getdata() async {
+    await UserService.loadUserdata().then((value) {
       _userdata = value;
       notifyListeners();
     });
@@ -32,6 +32,7 @@ class UserdataProvider extends ChangeNotifier {
   }
 
   getFriendsdata(email) {
+    print("friendddddddddddddddddddd");
     UserLikeFriends(user_email: email).getUserLikeFriends().then((value) {
       _userFriends = value;
       notifyListeners();
@@ -41,7 +42,6 @@ class UserdataProvider extends ChangeNotifier {
   getUsersFriendsAll(context) {
     UserAll().getUsers().then((value) {
       _userFriendsAll = value;
-
       print(_userFriendsAll.userdatas
           .where((user) => user.image != "")
           .toList()
