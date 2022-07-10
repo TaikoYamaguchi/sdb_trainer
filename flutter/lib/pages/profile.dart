@@ -23,6 +23,7 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     _loginState = Provider.of<LoginPageProvider>(context, listen: false);
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    print("this is profileeeeeeeeee");
     return Scaffold(
       appBar: AppBar(
           title: Text("설정", style: TextStyle(color: Colors.white)),

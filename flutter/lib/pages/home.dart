@@ -178,14 +178,6 @@ class Home extends StatelessWidget {
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
     _staticPageState = Provider.of<StaticPageProvider>(context, listen: false);
     _chartIndex = Provider.of<ChartIndexProvider>(context, listen: false);
-
-    _userdataProvider.getUsersFriendsAll(context);
-    _exercisesdataProvider.getdata();
-    _userdataProvider.getdata();
-    _historydataAll.getHistorydataAll();
-    _historydataAll.getdata();
-    _historydataAll.getCommentAll();
-
     return Scaffold(
         appBar: _appbarWidget(),
         body: Consumer<ExercisesdataProvider>(

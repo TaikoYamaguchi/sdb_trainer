@@ -245,7 +245,8 @@ class _AppState extends State<App> {
         Provider.of<HistorydataProvider>(context, listen: false);
     _workoutdataProvider.getdata();
     _exercisesdataProvider.getdata();
-    _userdataProvider.getUsersFriendsAll(context);
+    _userdataProvider.getUsersFriendsAll();
+    print("오잉 ");
 
     return Consumer2<BodyStater, LoginPageProvider>(
         builder: (builder, provider1, provider2, child) {

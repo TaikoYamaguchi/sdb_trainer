@@ -32,23 +32,15 @@ class UserdataProvider extends ChangeNotifier {
   }
 
   getFriendsdata(email) {
-    print("friendddddddddddddddddddd");
     UserLikeFriends(user_email: email).getUserLikeFriends().then((value) {
       _userFriends = value;
       notifyListeners();
     });
   }
 
-  getUsersFriendsAll(context) {
-    UserAll().getUsers().then((value) {
+  getUsersFriendsAll() async {
+    await UserAll().getUsers().then((value) {
       _userFriendsAll = value;
-      print(_userFriendsAll.userdatas
-          .where((user) => user.image != "")
-          .toList()
-          .map((user) {
-        print(user.image);
-        precacheImage(Image.network(user.image).image, context);
-      }));
 
       notifyListeners();
     });

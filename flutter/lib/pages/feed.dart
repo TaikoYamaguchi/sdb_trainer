@@ -58,15 +58,24 @@ class _FeedState extends State<Feed> {
 
     final _initExercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
-    await _initUserdataProvider.getdata();
     _initHistorydataProvider
         .getFriendsHistorydata(_initUserdataProvider.userdata.email);
     _initUserdataProvider.getFriendsdata(_initUserdataProvider.userdata.email);
-    _initUserdataProvider.getUsersFriendsAll(context);
+    _initUserdataProvider.getUsersFriendsAll();
     _initExercisesdataProvider.getdata();
     _initHistorydataProvider.getHistorydataAll();
     _initHistorydataProvider.getdata();
     _initHistorydataProvider.getCommentAll();
+
+    await _initUserdataProvider.getUsersFriendsAll();
+
+    _initUserdataProvider.userFriendsAll.userdatas
+        .where((user) => user.image != "")
+        .toList()
+        .map((user) {
+      print(user.image);
+      precacheImage(Image.network(user.image).image, context);
+    });
 
     _initUserdataProvider.userdata != null
         ? [
@@ -114,6 +123,7 @@ class _FeedState extends State<Feed> {
     _historydataAll.getFriendsHistorydata(_userdataProvider.userdata.email);
     _historydataAll.getdata();
     _historydataAll.getCommentAll();
+    _historydataAll.getHistorydataAll();
     return Future<void>.value();
   }
 
