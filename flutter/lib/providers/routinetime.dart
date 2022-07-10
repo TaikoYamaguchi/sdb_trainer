@@ -57,7 +57,7 @@ class RoutineTimeProvider extends ChangeNotifier {
       timer1  = Timer.periodic(Duration(seconds: 1), (timer){
         _routineTime++;
         _timeron--;
-        if(_timeron == 0) {
+        if(_timeron == 0 && _userest) {
           Vibration.vibrate(duration: 1000);
         }
         counter--;
