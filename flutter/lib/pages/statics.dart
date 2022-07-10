@@ -584,7 +584,10 @@ class _CalendarState extends State<Calendar> {
     return (Center(
         child: Column(
       children: [
-        Container(child: Row(children: techChips())),
+        Container(
+            height: 40,
+            child: ListView(
+                scrollDirection: Axis.horizontal, children: techChips())),
         Expanded(
           flex: 1,
           child: Container(
