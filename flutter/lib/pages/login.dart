@@ -394,16 +394,17 @@ class _LoginPageState extends State<LoginPage> {
 
     final _initExercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
-    await _initUserdataProvider.getdata();
+    await [
+      _initUserdataProvider.getdata(),
+      _initUserdataProvider.getUsersFriendsAll(),
+      _initHistorydataProvider.getdata()
+    ];
     _initHistorydataProvider.getHistorydataAll();
-    _initHistorydataProvider.getdata();
     _initHistorydataProvider.getCommentAll();
     _initHistorydataProvider
         .getFriendsHistorydata(_initUserdataProvider.userdata.email);
     _initUserdataProvider.getFriendsdata(_initUserdataProvider.userdata.email);
     _initExercisesdataProvider.getdata();
-
-    await _initUserdataProvider.getUsersFriendsAll();
 
     _initUserdataProvider.userFriendsAll.userdatas
         .where((user) => user.image != "")

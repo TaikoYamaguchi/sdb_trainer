@@ -12,11 +12,12 @@ class HistorydataProvider extends ChangeNotifier {
   get historydataFriends => _historydataFriends;
   get commentAll => _commentAll;
 
-  getdata() {
-    ExerciseService.loadSDBdata().then((value) {
+  getdata() async {
+    await ExerciseService.loadSDBdata().then((value) {
       _historydata = value;
 
       notifyListeners();
+      return _historydata;
     });
   }
 

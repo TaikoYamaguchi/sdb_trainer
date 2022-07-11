@@ -23,6 +23,7 @@ class UserdataProvider extends ChangeNotifier {
     await UserService.loadUserdata().then((value) {
       _userdata = value;
       notifyListeners();
+      return _userdata;
     });
   }
 
@@ -43,6 +44,7 @@ class UserdataProvider extends ChangeNotifier {
       _userFriendsAll = value;
 
       notifyListeners();
+      return _userFriendsAll;
     });
   }
 

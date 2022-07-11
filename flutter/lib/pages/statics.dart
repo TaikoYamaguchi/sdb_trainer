@@ -55,7 +55,58 @@ class _CalendarState extends State<Calendar> {
         selectionRectColor: Colors.grey,
         enablePanning: true,
         maximumZoomLevel: 0.7);
+    initialProviderGet();
     super.initState();
+  }
+
+  initialHistorydataGet() async {
+    final _initHistorydataProvider =
+        Provider.of<HistorydataProvider>(context, listen: false);
+    final _initExercisesdataProvider =
+        Provider.of<ExercisesdataProvider>(context, listen: false);
+
+    _initExercisesdataProvider.getdata();
+    await _initHistorydataProvider.getdata();
+  }
+
+  initialProviderGet() async {
+    final _initUserdataProvider =
+        Provider.of<UserdataProvider>(context, listen: false);
+    final _initHistorydataProvider =
+        Provider.of<HistorydataProvider>(context, listen: false);
+
+    final _initExercisesdataProvider =
+        Provider.of<ExercisesdataProvider>(context, listen: false);
+
+    await [
+      _initUserdataProvider.getdata(),
+      _initUserdataProvider.getUsersFriendsAll(),
+      _initHistorydataProvider.getdata()
+    ];
+    _initHistorydataProvider
+        .getFriendsHistorydata(_initUserdataProvider.userdata.email);
+    _initUserdataProvider.getFriendsdata(_initUserdataProvider.userdata.email);
+    _initUserdataProvider.getUsersFriendsAll();
+    _initExercisesdataProvider.getdata();
+    _initHistorydataProvider.getHistorydataAll();
+    _initHistorydataProvider.getCommentAll();
+
+    _initUserdataProvider.userFriendsAll.userdatas
+        .where((user) => user.image != "")
+        .toList()
+        .map((user) {
+      print(user.image);
+      precacheImage(Image.network(user.image).image, context);
+    });
+
+    _initUserdataProvider.userdata != null
+        ? [
+            _initUserdataProvider
+                .getFriendsdata(_initUserdataProvider.userdata.email),
+            _initHistorydataProvider
+                .getFriendsHistorydata(_initUserdataProvider.userdata.email)
+          ]
+        : null;
   }
 
   List<SDBdata> _getEventsfromDay(DateTime date) {
@@ -83,7 +134,10 @@ class _CalendarState extends State<Calendar> {
 
   void _getChartSourcefromDay() async {
     _sdbChartData = [];
-    var _sdbChartDataExample = _historydataProvider.historydata!.sdbdatas
+    if (_historydataProvider.historydata == null) {
+      await initialHistorydataGet();
+    }
+    var _sdbChartDataExample = _historydataProvider.historydata.sdbdatas
         .map((name) => name.exercises
             .where((name) => name.name.contains(_exercisesdataProvider
                     .exercisesdata!.exercises[_chartIndex.chartIndex].name)
@@ -638,7 +692,7 @@ class _CalendarState extends State<Calendar> {
   List<Widget> techChips() {
     List<Widget> chips = [];
     for (int i = 0;
-        i < _exercisesdataProvider.exercisesdata!.exercises.length;
+        i < _exercisesdataProvider.exercisesdata.exercises.length;
         i++) {
       Widget item = Padding(
         padding: const EdgeInsets.only(left: 10, right: 5),
