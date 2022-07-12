@@ -746,6 +746,17 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+
+          SizedBox(
+              width: MediaQuery.of(context).size.width / 4,
+              child: TextButton(
+
+                  onPressed: () {
+                    newvalue = !newvalue;
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                  child: Text("Cancel",
+                      style: TextStyle(fontSize: 20.0, color: Colors.red)))),
           SizedBox(
               width: MediaQuery.of(context).size.width / 4,
               child: TextButton(
@@ -763,16 +774,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   },
                   child: Text("Confirm",
                       style: TextStyle(fontSize: 20.0, color: Colors.blue)))),
-          SizedBox(
-              width: MediaQuery.of(context).size.width / 4,
-              child: TextButton(
-
-                  onPressed: () {
-                    newvalue = !newvalue;
-                    Navigator.of(context, rootNavigator: true).pop();
-                  },
-                  child: Text("Cancel",
-                      style: TextStyle(fontSize: 20.0, color: Colors.red))))
         ],
       ),
     );

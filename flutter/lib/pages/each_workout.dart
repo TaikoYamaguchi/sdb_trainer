@@ -636,9 +636,14 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
     _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
-    return Scaffold(
-        appBar: _appbarWidget(),
-        body:
-            _isexsearch ? _exercises_searchWidget() : _exercisesWidget(false));
+    return WillPopScope(
+      onWillPop: () async {
+        return true;
+      },
+      child: Scaffold(
+          appBar: _appbarWidget(),
+          body:
+              _isexsearch ? _exercises_searchWidget() : _exercisesWidget(false)),
+    );
   }
 }

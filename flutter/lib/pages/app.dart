@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
@@ -6,7 +8,7 @@ import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:sdb_trainer/navigators/exercise_navi.dart';
+import 'package:sdb_trainer/navigators/exercise_navi.dart'  ;
 import 'package:sdb_trainer/navigators/profile_navi.dart';
 import 'package:sdb_trainer/pages/home.dart';
 import 'package:sdb_trainer/pages/login.dart';
@@ -41,6 +43,7 @@ class _AppState extends State<App> {
   var _loginState;
   var _userdataProvider;
   int updatecount = 0;
+  final globalKey = GlobalKey();
 
   BottomNavigationBarItem _bottomNavigationBarItem(
       String iconName, String label) {
@@ -230,6 +233,37 @@ class _AppState extends State<App> {
             : showToast("입력을 확인해주세요"));
   }
 
+  Widget _AppCloseConfirmButton() {
+    return Container(
+      margin: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 25),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+
+          SizedBox(
+              width: MediaQuery.of(context).size.width / 4,
+              child: TextButton(
+
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop(false);
+                  },
+                  child: Text("Cancel",
+                      style: TextStyle(fontSize: 20.0, color: Colors.red)))),
+          SizedBox(
+              width: MediaQuery.of(context).size.width / 4,
+              child: TextButton(
+                  onPressed: () {
+                    exit(0);
+                  },
+                  child: Text("Confirm",
+                      style: TextStyle(fontSize: 20.0, color: Colors.blue)))),
+        ],
+      ),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
@@ -248,62 +282,84 @@ class _AppState extends State<App> {
     _userdataProvider.getUsersFriendsAll();
     print("오잉 ");
 
+
+
     return Consumer2<BodyStater, LoginPageProvider>(
         builder: (builder, provider1, provider2, child) {
-      return Scaffold(
-        body: _loginState.isLogin
-            ? IndexedStack(index: _bodyStater.bodystate, children: <Widget>[
-                Home(),
-                TabNavigator(),
-                Feed(),
-                Calendar(),
-                TabProfileNavigator()
-              ])
-            : _loginState.isSignUp
-                ? SignUpPage()
-                : LoginPage(),
-        floatingActionButton:
-            Consumer<RoutineTimeProvider>(builder: (builder, provider, child) {
-          return Container(
-            child: (provider.isstarted && _bodyStater.bodystate != 1)
-                ? ExpandableFab(
-                    distance: 105,
-                    children: [
-                      SizedBox(
-                          width: 100,
-                          height: 40,
-                          child: FlatButton(
-                              color: Colors.blue,
-                              textColor: Colors.white,
-                              disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                              disabledTextColor: Colors.black,
-                              padding: EdgeInsets.all(8.0),
-                              splashColor: Colors.blueAccent,
-                              onPressed: () {
-                                provider.restcheck();
-                              },
-                              child: Text(
-                                  provider.userest
-                                      ? provider.timeron < 0
-                                          ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
-                                          : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
-                                      : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
-                                  style: TextStyle(
-                                      color: (provider.userest &&
-                                              provider.timeron < 0)
-                                          ? Colors.red
-                                          : Colors.white)))),
-                      ActionButton(
-                        onPressed: _displayFinishAlert,
-                        icon: Icon(Icons.stop),
-                      )
-                    ],
-                  )
-                : null,
-          );
-        }),
-        bottomNavigationBar:
-            _loginState.isLogin ? _bottomNavigationBarwidget() : null,
+      return WillPopScope(
+        onWillPop: () async {
+          return
+          showDialog<bool>(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text(
+                    'App Close Alert',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  content: Text('App을 끄시겠습니까?'),
+                  actions: <Widget>[
+                    _AppCloseConfirmButton(),
+                  ],
+                );
+              }) == true ;
+        },
+        child: Scaffold(
+          key: globalKey,
+          body: _loginState.isLogin
+              ? IndexedStack(index: _bodyStater.bodystate, children: <Widget>[
+                  Home(),
+                  TabNavigator(),
+                  Feed(),
+                  Calendar(),
+                  TabProfileNavigator()
+                ])
+              : _loginState.isSignUp
+                  ? SignUpPage()
+                  : LoginPage(),
+          floatingActionButton:
+              Consumer<RoutineTimeProvider>(builder: (builder, provider, child) {
+            return Container(
+              child: (provider.isstarted && _bodyStater.bodystate != 1)
+                  ? ExpandableFab(
+                      distance: 105,
+                      children: [
+                        SizedBox(
+                            width: 100,
+                            height: 40,
+                            child: FlatButton(
+                                color: Colors.blue,
+                                textColor: Colors.white,
+                                disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                                disabledTextColor: Colors.black,
+                                padding: EdgeInsets.all(8.0),
+                                splashColor: Colors.blueAccent,
+                                onPressed: () {
+                                  provider.restcheck();
+                                },
+                                child: Text(
+                                    provider.userest
+                                        ? provider.timeron < 0
+                                            ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
+                                            : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
+                                        : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                                    style: TextStyle(
+                                        color: (provider.userest &&
+                                                provider.timeron < 0)
+                                            ? Colors.red
+                                            : Colors.white)))),
+                        ActionButton(
+                          onPressed: _displayFinishAlert,
+                          icon: Icon(Icons.stop),
+                        )
+                      ],
+                    )
+                  : null,
+            );
+          }),
+          bottomNavigationBar:
+              _loginState.isLogin ? _bottomNavigationBarwidget() : null,
+        ),
       );
     });
   }
