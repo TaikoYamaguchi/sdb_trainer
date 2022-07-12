@@ -45,6 +45,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   double bottom = 0;
   int swap = 1;
   bool _isexsearch = false;
+  var btnDisabled;
 
   @override
   void initState() {
@@ -52,6 +53,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   }
 
   PreferredSizeWidget _appbarWidget() {
+    btnDisabled = false;
     return AppBar(
       leading: _isexsearch
           ? IconButton(
@@ -68,7 +70,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               onPressed: () {
                 _routinetimeProvider.isstarted
                     ? _displayFinishAlert()
-                    : Navigator.of(context).pop();
+                    : btnDisabled == true
+                        ? null
+                        : Navigator.of(context).pop();
               },
             ),
       title: Row(
