@@ -10,12 +10,12 @@ import uuid
 from fastapi.responses import FileResponse
 from app.core.image_resize import image_resize
 from app.db.session import get_db
-from app.db.schemas import TemporaryImage, UserOut 
+from app.db.schemas import TemporaryImage, UserOut, User 
 images_router = r = APIRouter()
 
 
 
-@r.post("/temp/images", response_model=UserOut, response_model_exclude_none=True)
+@r.post("/temp/images", response_model=User, response_model_exclude_none=True)
 async def create_image( db=Depends(get_db),
 
     user=Depends(get_current_user),
@@ -43,8 +43,11 @@ async def create_image( db=Depends(get_db),
         shutil.copyfileobj(file.file, buffer)
 
     image_resize(file_path)
-    db_image = await create_temporay_image(db, file_path)
-    db_user = await edit_image_by_user_email(db, user,db_image.id)
+    db_image = create_temporay_image(db, file_path)
+    print("ueeeeeeeeeeeeeeeeeeeeeees")
+    print(db_image)
+    db_user = edit_image_by_user_email(db, user,db_image.id)
+    print(db_user)
 
     return db_user
 

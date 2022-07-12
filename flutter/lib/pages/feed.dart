@@ -82,7 +82,7 @@ class _FeedState extends State<Feed> {
   }
 
   Future<void> _onRefresh() {
-    _historydataAll.getFriendsHistorydata(_userdataProvider.userdata.email);
+    _historydataAll.getFriendsHistorydata();
     _historydataAll.getdata();
     _historydataAll.getCommentAll();
     _historydataAll.getHistorydataAll();

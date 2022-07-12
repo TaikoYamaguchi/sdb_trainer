@@ -473,7 +473,7 @@ class UserPhoneCheck {
 class UserImageEdit {
   final dynamic file;
   UserImageEdit({required this.file});
-  Future<String> _patchUserImageFromServer() async {
+  Future<Map<String, dynamic>> _patchUserImageFromServer() async {
     final storage = new FlutterSecureStorage();
     String? token = await storage.read(key: "sdb_token");
     var formData =
@@ -488,19 +488,20 @@ class UserImageEdit {
         LocalHost.getLocalHost() + '/api/temp/images',
         data: formData,
       );
+      print(response);
       return response.data;
     } catch (e) {
+      print(e);
       throw Exception('Failed to load post');
     }
   }
 
   Future<User?> patchUserImage() async {
-    String jsonString = await _patchUserImageFromServer();
-    final jsonResponse = json.decode(jsonString);
-    if (jsonResponse == null) {
+    var jsonString = await _patchUserImageFromServer();
+    if (jsonString == null) {
       return null;
     } else {
-      User user = User.fromJson(jsonResponse);
+      User user = User.fromJson(jsonString);
       return (user);
     }
   }
