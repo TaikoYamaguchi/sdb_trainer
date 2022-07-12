@@ -123,7 +123,7 @@ def manage_like_by_liked_email(db: Session,likeContent:schemas.ManageLikeUser) -
 
 def edit_image_by_user_email(db: Session,user:schemas.User, image_id : int) -> schemas.UserOut:
     db_user = db.query(models.User).filter(models.User.email == user.email).first()
-    setattr(db_user, "image", f"http://172.23.129.212:8000/api/images/{image_id}")
+    setattr(db_user, "image", f"http://43.200.121.48:8000/api/images/{image_id}")
     db.commit()
     db.refresh(db_user)
     return db_user
