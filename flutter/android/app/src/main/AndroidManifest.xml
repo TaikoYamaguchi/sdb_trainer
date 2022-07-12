@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tk_lck.sdb_trainer">
+    package="com.tk_lck.supero">
 <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="sdb_trainer"
+        android:label="Supero"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
