@@ -60,9 +60,9 @@ class HistorydataAll {
 }
 
 class HistorydataFriends {
-  final String user_email;
-  HistorydataFriends({required this.user_email});
   Future<String> _loadFriendsSDBdataFromServer() async {
+    final storage = new FlutterSecureStorage();
+    String? user_email = await storage.read(key: "sdb_email");
     var url = Uri.parse(
         LocalHost.getLocalHost() + "/api/historyFriends/${user_email}");
     var response = await http.get(url);

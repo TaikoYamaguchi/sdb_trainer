@@ -12,11 +12,12 @@ class HistorydataProvider extends ChangeNotifier {
   get historydataFriends => _historydataFriends;
   get commentAll => _commentAll;
 
-  getdata() {
-    ExerciseService.loadSDBdata().then((value) {
+  getdata() async {
+    await ExerciseService.loadSDBdata().then((value) {
       _historydata = value;
 
       notifyListeners();
+      return _historydata;
     });
   }
 
@@ -50,8 +51,8 @@ class HistorydataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  getFriendsHistorydata(email) {
-    HistorydataFriends(user_email: email).loadSDBdataFriends().then((value) {
+  getFriendsHistorydata() {
+    HistorydataFriends().loadSDBdataFriends().then((value) {
       _historydataFriends = value;
       notifyListeners();
     });
