@@ -45,6 +45,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   List<Controllerlist> weightController = [];
   List<Controllerlist> repsController = [];
   PageController? controller;
+  var btnDisabled;
 
   var runtime = 0;
   Timer? timer1;
@@ -57,12 +58,18 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   }
 
   PreferredSizeWidget _appbarWidget() {
+    btnDisabled = false;
     return AppBar(
       leading: IconButton(
         icon: Icon(Icons.arrow_back_ios_outlined),
         onPressed: () {
-          _editWorkoutCheck();
-          Navigator.of(context).pop();
+          btnDisabled == true
+              ? null
+              : [
+                  btnDisabled = true,
+                  Navigator.of(context).pop(),
+                  _editWorkoutCheck()
+                ];
         },
       ),
       title: Text(
@@ -234,10 +241,17 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                         builder: (builder, provider, child) {
                       var _exercise = provider.workoutdata
                           .routinedatas[widget.rindex].exercises[pindex];
-                      return
-                        _exercise.name.length < 8
-                        ? Text(_exercise.name, style: TextStyle(color: Colors.white, fontSize: 48),)
-                        : Text(_exercise.name, style: TextStyle(color: Colors.white, fontSize: 40),);
+                      return _exercise.name.length < 8
+                          ? Text(
+                              _exercise.name,
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 48),
+                            )
+                          : Text(
+                              _exercise.name,
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 40),
+                            );
                     }),
                     Consumer<ExercisesdataProvider>(
                         builder: (builder, provider, child) {
@@ -584,8 +598,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                           size: 40,
                                         )),
                                   )),
-                        Container(
-                            child: Consumer<RoutineTimeProvider>(
+                        Container(child: Consumer<RoutineTimeProvider>(
                             builder: (builder, provider, child) {
                           return ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -746,11 +759,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-
           SizedBox(
               width: MediaQuery.of(context).size.width / 4,
               child: TextButton(
-
                   onPressed: () {
                     newvalue = !newvalue;
                     Navigator.of(context, rootNavigator: true).pop();
@@ -849,11 +860,15 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   @override
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _historydataProvider = Provider.of<HistorydataProvider>(context, listen: false);
-    _workoutdataProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
-    _routinetimeProvider = Provider.of<RoutineTimeProvider>(context, listen: false);
+    _historydataProvider =
+        Provider.of<HistorydataProvider>(context, listen: false);
+    _workoutdataProvider =
+        Provider.of<WorkoutdataProvider>(context, listen: false);
+    _routinetimeProvider =
+        Provider.of<RoutineTimeProvider>(context, listen: false);
 
-    _exercisesdataProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
+    _exercisesdataProvider =
+        Provider.of<ExercisesdataProvider>(context, listen: false);
     _exercises = _exercisesdataProvider.exercisesdata.exercises;
 
     return Scaffold(

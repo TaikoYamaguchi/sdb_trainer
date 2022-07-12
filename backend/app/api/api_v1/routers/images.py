@@ -43,8 +43,8 @@ async def create_image( db=Depends(get_db),
         shutil.copyfileobj(file.file, buffer)
 
     image_resize(file_path)
-    db_image = create_temporay_image(db, file_path)
-    db_user =  edit_image_by_user_email(db, user,db_image.id)
+    db_image = await create_temporay_image(db, file_path)
+    db_user = await edit_image_by_user_email(db, user,db_image.id)
 
     return db_user
 

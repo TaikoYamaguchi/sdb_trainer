@@ -72,7 +72,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                     ? _displayFinishAlert()
                     : btnDisabled == true
                         ? null
-                        : Navigator.of(context).pop();
+                        : [btnDisabled = true, Navigator.of(context).pop()];
               },
             ),
       title: Row(
@@ -642,8 +642,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
       },
       child: Scaffold(
           appBar: _appbarWidget(),
-          body:
-              _isexsearch ? _exercises_searchWidget() : _exercisesWidget(false)),
+          body: _isexsearch
+              ? _exercises_searchWidget()
+              : _exercisesWidget(false)),
     );
   }
 }

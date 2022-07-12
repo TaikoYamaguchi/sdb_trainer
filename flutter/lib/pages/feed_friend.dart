@@ -31,6 +31,7 @@ class _FeedFriendState extends State<FeedFriend> {
   var _usersdata;
   var _userdataProvider;
   var friendsInputSwitch = false;
+  var btnDisabled;
 
   @override
   void initState() {
@@ -38,11 +39,17 @@ class _FeedFriendState extends State<FeedFriend> {
   }
 
   PreferredSizeWidget _appbarWidget() {
+    btnDisabled = false;
     return AppBar(
       leading: IconButton(
         icon: Icon(Icons.arrow_back_ios_outlined),
         onPressed: () {
-          Navigator.of(context).pop();
+          btnDisabled == true
+              ? null
+              : [
+                  btnDisabled = true,
+                  Navigator.of(context).pop(),
+                ];
         },
       ),
       title: Row(

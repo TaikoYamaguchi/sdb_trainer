@@ -29,6 +29,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
   var _usersdata;
   var _userdataProvider;
   var friendsInputSwitch = false;
+  var btnDisabled;
 
   @override
   void initState() {
@@ -40,7 +41,12 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
       leading: IconButton(
         icon: Icon(Icons.arrow_back_ios_outlined),
         onPressed: () {
-          Navigator.of(context).pop();
+          btnDisabled == true
+              ? null
+              : [
+                  btnDisabled = true,
+                  Navigator.of(context).pop(),
+                ];
         },
       ),
       title: Text(

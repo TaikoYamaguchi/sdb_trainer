@@ -44,6 +44,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
   late List<hisdata.Exercises> exerciseList = [];
   var _exampleex;
   var _sets = wod.Setslist().setslist;
+  var btnDisabled;
 
   @override
   void initState() {
@@ -51,15 +52,20 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
   }
 
   PreferredSizeWidget _appbarWidget() {
+    btnDisabled = false;
     return AppBar(
       leading: IconButton(
         icon: Icon(Icons.arrow_back_ios_outlined),
         onPressed: () {
           _routinetimeProvider.isstarted
               ? _displayFinishAlert()
-              : [Navigator.of(context).pop(),
-                _routinetimeProvider.resttimecheck(0)];
-
+              : btnDisabled == true
+                  ? null
+                  : [
+                      Navigator.of(context).pop(),
+                      btnDisabled = true,
+                      _routinetimeProvider.resttimecheck(0)
+                    ];
         },
       ),
       title: Text(
@@ -162,53 +168,59 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
           children: [
             Container(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        _routinetimeProvider.restcheck();
-                        _routinetimeProvider.resttimecheck(int.parse(_resttimectrl.text));
-                      },
-                      child: Consumer<RoutineTimeProvider>(
-                          builder: (builder, provider, child) {
-                            return Text(
-                              provider.restbutton,
-                              style: TextStyle(
-                                color: provider.restbuttoncolor,
-                                fontSize: 21,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            );
-                          }),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        _displaySetRestAlert();
-                      },
-                      child: Consumer<RoutineTimeProvider>(
-                          builder: (builder, provider, child) {
-                            return Text(
-                              "Rest: ${provider.changetime}",
-                              style: TextStyle(
-                                color: Color(0xFF717171),
-                                fontSize: 21,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            );
-                          }),
-                    ),
-                  ],
-                )),
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    _routinetimeProvider.restcheck();
+                    _routinetimeProvider
+                        .resttimecheck(int.parse(_resttimectrl.text));
+                  },
+                  child: Consumer<RoutineTimeProvider>(
+                      builder: (builder, provider, child) {
+                    return Text(
+                      provider.restbutton,
+                      style: TextStyle(
+                        color: provider.restbuttoncolor,
+                        fontSize: 21,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  }),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    _displaySetRestAlert();
+                  },
+                  child: Consumer<RoutineTimeProvider>(
+                      builder: (builder, provider, child) {
+                    return Text(
+                      "Rest: ${provider.changetime}",
+                      style: TextStyle(
+                        color: Color(0xFF717171),
+                        fontSize: 21,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  }),
+                ),
+              ],
+            )),
             Container(
                 height: 130,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _exampleex.name.length < 8
-                      ? Text(_exampleex.name, style: TextStyle(color: Colors.white, fontSize: 48),)
-                      : Text(_exampleex.name, style: TextStyle(color: Colors.white, fontSize: 40),)
-                  ,
+                        ? Text(
+                            _exampleex.name,
+                            style: TextStyle(color: Colors.white, fontSize: 48),
+                          )
+                        : Text(
+                            _exampleex.name,
+                            style: TextStyle(color: Colors.white, fontSize: 40),
+                          ),
                     Consumer<ExercisesdataProvider>(
                         builder: (builder, provider, child) {
                       var _info =
@@ -302,11 +314,20 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                                           value: _sets[index].ischecked,
                                           onChanged: (newvalue) {
                                             _routinetimeProvider.isstarted
-                                                ? [setState(() {_sets[index].ischecked = newvalue;}),
+                                                ? [
+                                                    setState(() {
+                                                      _sets[index].ischecked =
+                                                          newvalue;
+                                                    }),
                                                     newvalue == true
-                                                      ? _routinetimeProvider.resettimer(_routinetimeProvider.changetime)
-                                                      : null,]
-                                                : _displayStartAlert(index, newvalue);
+                                                        ? _routinetimeProvider
+                                                            .resettimer(
+                                                                _routinetimeProvider
+                                                                    .changetime)
+                                                        : null,
+                                                  ]
+                                                : _displayStartAlert(
+                                                    index, newvalue);
                                           })),
                                   Container(
                                     width: 25,
@@ -427,19 +448,18 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                   children: [
                     Container(child: Consumer<RoutineTimeProvider>(
                         builder: (context, provider, child) {
-                          return Text(
-                              provider.userest
-                                  ? provider.timeron < 0
+                      return Text(
+                          provider.userest
+                              ? provider.timeron < 0
                                   ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
                                   : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
-                                  : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
-                              style: TextStyle(
-                                  fontSize: 25,
-                                  color:
-                                  (provider.userest && provider.timeron < 0)
-                                      ? Colors.red
-                                      : Colors.white));
-                        })),
+                              : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                          style: TextStyle(
+                              fontSize: 25,
+                              color: (provider.userest && provider.timeron < 0)
+                                  ? Colors.red
+                                  : Colors.white));
+                    })),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -456,26 +476,25 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                                 size: 40,
                               )),
                         ),
-                        Container(
-                            child: Consumer<RoutineTimeProvider>(
-                                builder: (builder, provider, child) {
-                                  return ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        primary: provider.buttoncolor,
-                                        textStyle: const TextStyle(fontSize: 20)),
-                                    onPressed: () {
-                                      if (_routinetimeProvider.isstarted) {
-                                        recordExercise();
-                                        _editHistoryCheck();
-                                        _routinetimeProvider.resttimecheck(0);
-                                        Navigator.pop(context);
-                                      }
-                                      provider.resettimer(provider.changetime);
-                                      provider.routinecheck(0);
-                                    },
-                                    child: Text(provider.routineButton),
-                                  );
-                                })),
+                        Container(child: Consumer<RoutineTimeProvider>(
+                            builder: (builder, provider, child) {
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: provider.buttoncolor,
+                                textStyle: const TextStyle(fontSize: 20)),
+                            onPressed: () {
+                              if (_routinetimeProvider.isstarted) {
+                                recordExercise();
+                                _editHistoryCheck();
+                                _routinetimeProvider.resttimecheck(0);
+                                Navigator.pop(context);
+                              }
+                              provider.resettimer(provider.changetime);
+                              provider.routinecheck(0);
+                            },
+                            child: Text(provider.routineButton),
+                          );
+                        })),
                         Container(
                           child: IconButton(
                               onPressed: () {
@@ -563,7 +582,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
             : showToast("입력을 확인해주세요"));
   }
 
-  void _displayStartAlert( sindex, newvalue) {
+  void _displayStartAlert(sindex, newvalue) {
     showDialog(
         context: context,
         builder: (context) {
@@ -574,13 +593,13 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
             ),
             content: Text('운동을 시작하시겠습니까?'),
             actions: <Widget>[
-              _StartConfirmButton( sindex, newvalue),
+              _StartConfirmButton(sindex, newvalue),
             ],
           );
         });
   }
 
-  Widget _StartConfirmButton( sindex, newvalue) {
+  Widget _StartConfirmButton(sindex, newvalue) {
     return Container(
       margin: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width / 25),
@@ -597,9 +616,12 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                   padding: EdgeInsets.all(8.0),
                   splashColor: Colors.blueAccent,
                   onPressed: () {
-                    _routinetimeProvider.resettimer(_routinetimeProvider.changetime);
+                    _routinetimeProvider
+                        .resettimer(_routinetimeProvider.changetime);
                     _routinetimeProvider.routinecheck(0);
-                    setState(() {_sets[sindex].ischecked = newvalue;});
+                    setState(() {
+                      _sets[sindex].ischecked = newvalue;
+                    });
                     Navigator.of(context, rootNavigator: true).pop();
                   },
                   child: Text("Confirm",
