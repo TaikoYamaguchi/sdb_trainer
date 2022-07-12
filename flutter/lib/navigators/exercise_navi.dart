@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/exercise.dart';
-import 'package:sdb_trainer/providers/exercisesdata.dart';
-import 'package:sdb_trainer/providers/workoutdata.dart';
 
 class TabNavigatorRoutes {
   static const String root = '/';
   static const String detail = '/detail';
+
 }
 
-class TabNavigator extends StatelessWidget {
-  TabNavigator({Key? key}) : super(key: key);
+
+class TabNavigator extends StatefulWidget {
+  const TabNavigator({Key? key}) : super(key: key);
+
+  @override
+  State<TabNavigator> createState() => TabNavigatorState();
+}
+
+
+class TabNavigatorState extends State<TabNavigator> {
+  GlobalKey<NavigatorState> exKey = GlobalKey<NavigatorState>();
 
   void _push(BuildContext context) {
     var routeBuilders = _routeBuilders(context);
@@ -30,14 +37,16 @@ class TabNavigator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(exKey.currentState);
     var routeBuilders = _routeBuilders(context);
-
     return Navigator(
-        initialRoute: TabNavigatorRoutes.root,
-        onGenerateRoute: (routeSettings) {
-          return MaterialPageRoute(
-              builder: (context) =>
-                  routeBuilders[routeSettings.name]!(context));
-        });
+      key: exKey,
+      initialRoute: TabNavigatorRoutes.root,
+      onGenerateRoute: (routeSettings) {
+        return MaterialPageRoute(
+          builder: (context) =>
+            routeBuilders[routeSettings.name]!(context));
+      });
   }
 }
+
