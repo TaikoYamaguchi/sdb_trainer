@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:transition/transition.dart';
+import 'package:sdb_trainer/providers/workoutdata.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -394,15 +395,17 @@ class _LoginPageState extends State<LoginPage> {
 
     final _initExercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
+    final _workoutdataProvider =
+        Provider.of<WorkoutdataProvider>(context, listen: false);
     await [
       _initUserdataProvider.getdata(),
       _initUserdataProvider.getUsersFriendsAll(),
-      _initHistorydataProvider.getdata()
+      _initHistorydataProvider.getdata(),
+      _workoutdataProvider.getdata()
     ];
     _initHistorydataProvider.getHistorydataAll();
     _initHistorydataProvider.getCommentAll();
-    _initHistorydataProvider
-        .getFriendsHistorydata(_initUserdataProvider.userdata.email);
+    _initHistorydataProvider.getFriendsHistorydata();
     _initUserdataProvider.getFriendsdata(_initUserdataProvider.userdata.email);
     _initExercisesdataProvider.getdata();
 
@@ -418,8 +421,7 @@ class _LoginPageState extends State<LoginPage> {
         ? [
             _initUserdataProvider
                 .getFriendsdata(_initUserdataProvider.userdata.email),
-            _initHistorydataProvider
-                .getFriendsHistorydata(_initUserdataProvider.userdata.email)
+            _initHistorydataProvider.getFriendsHistorydata()
           ]
         : null;
   }

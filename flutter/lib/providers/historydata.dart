@@ -51,8 +51,8 @@ class HistorydataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  getFriendsHistorydata(email) {
-    HistorydataFriends(user_email: email).loadSDBdataFriends().then((value) {
+  getFriendsHistorydata() {
+    HistorydataFriends().loadSDBdataFriends().then((value) {
       _historydataFriends = value;
       notifyListeners();
     });

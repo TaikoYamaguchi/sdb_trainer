@@ -15,6 +15,7 @@ import 'package:sdb_trainer/providers/staticPageState.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
+import 'package:sdb_trainer/providers/workoutdata.dart';
 
 class Calendar extends StatefulWidget {
   @override
@@ -77,14 +78,16 @@ class _CalendarState extends State<Calendar> {
 
     final _initExercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
+    final _workoutdataProvider =
+        Provider.of<WorkoutdataProvider>(context, listen: false);
 
     await [
       _initUserdataProvider.getdata(),
       _initUserdataProvider.getUsersFriendsAll(),
-      _initHistorydataProvider.getdata()
+      _initHistorydataProvider.getdata(),
+      _workoutdataProvider.getdata()
     ];
-    _initHistorydataProvider
-        .getFriendsHistorydata(_initUserdataProvider.userdata.email);
+    _initHistorydataProvider.getFriendsHistorydata();
     _initUserdataProvider.getFriendsdata(_initUserdataProvider.userdata.email);
     _initUserdataProvider.getUsersFriendsAll();
     _initExercisesdataProvider.getdata();
@@ -103,8 +106,7 @@ class _CalendarState extends State<Calendar> {
         ? [
             _initUserdataProvider
                 .getFriendsdata(_initUserdataProvider.userdata.email),
-            _initHistorydataProvider
-                .getFriendsHistorydata(_initUserdataProvider.userdata.email)
+            _initHistorydataProvider.getFriendsHistorydata()
           ]
         : null;
   }

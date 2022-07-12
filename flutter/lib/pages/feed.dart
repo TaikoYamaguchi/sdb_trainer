@@ -47,48 +47,6 @@ class _FeedState extends State<Feed> {
   @override
   void initState() {
     super.initState();
-    initialProviderGet();
-  }
-
-  void initialProviderGet() async {
-    final _initUserdataProvider =
-        Provider.of<UserdataProvider>(context, listen: false);
-    final _initHistorydataProvider =
-        Provider.of<HistorydataProvider>(context, listen: false);
-
-    final _initExercisesdataProvider =
-        Provider.of<ExercisesdataProvider>(context, listen: false);
-
-    await [
-      _initUserdataProvider.getdata(),
-      _initUserdataProvider.getUsersFriendsAll(),
-      _initHistorydataProvider.getdata()
-    ];
-    _initHistorydataProvider
-        .getFriendsHistorydata(_initUserdataProvider.userdata.email);
-    _initUserdataProvider.getFriendsdata(_initUserdataProvider.userdata.email);
-    _initUserdataProvider.getUsersFriendsAll();
-    _initExercisesdataProvider.getdata();
-    _initHistorydataProvider.getHistorydataAll();
-    _initHistorydataProvider.getCommentAll();
-
-    _initUserdataProvider.userFriendsAll.userdatas
-        .where((user) => user.image != "")
-        .toList()
-        .map((user) {
-      print(user.image);
-      precacheImage(Image.network(user.image).image, context);
-    });
-
-    _initUserdataProvider.userdata != null
-        ? [
-            _initUserdataProvider
-                .getFriendsdata(_initUserdataProvider.userdata.email),
-            _initHistorydataProvider
-                .getFriendsHistorydata(_initUserdataProvider.userdata.email)
-          ]
-        : null;
-    super.initState();
   }
 
   @override
