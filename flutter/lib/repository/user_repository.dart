@@ -406,11 +406,9 @@ class UserLike {
 }
 
 class UserLikeFriends {
-  final String user_email;
-  UserLikeFriends({
-    required this.user_email,
-  });
   Future<String> _userLikeFriendsFromServer() async {
+    final storage = new FlutterSecureStorage();
+    String? user_email = await storage.read(key: "sdb_email");
     var url =
         Uri.parse(LocalHost.getLocalHost() + "/api/friends/${user_email}");
     var response = await http.get(url);

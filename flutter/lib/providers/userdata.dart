@@ -32,8 +32,8 @@ class UserdataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  getFriendsdata(email) {
-    UserLikeFriends(user_email: email).getUserLikeFriends().then((value) {
+  getFriendsdata() {
+    UserLikeFriends().getUserLikeFriends().then((value) {
       _userFriends = value;
       notifyListeners();
     });
@@ -97,6 +97,16 @@ class UserdataProvider extends ChangeNotifier {
       _userdata.like.add(User.email);
       notifyListeners();
       _userFriends.userdatas.add(User);
+      notifyListeners();
+    }
+  }
+
+  patchUserDislikedata(email, status) {
+    if (status == "remove") {
+      _userdata.dislike.remove(email);
+      notifyListeners();
+    } else if (status == "append") {
+      _userdata.dislike.add(email);
       notifyListeners();
     }
   }

@@ -74,219 +74,280 @@ class _FeedCardState extends State<FeedCard> {
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Consumer<HistorydataProvider>(
-              builder: (builder, provider, child) {
-            return Card(
-              color: Color(0xFF717171),
-              child: Column(
-                children: [
-                  Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              user.image == ""
-                                  ? Icon(
-                                      Icons.account_circle,
-                                      color: Colors.grey,
-                                      size: 38.0,
-                                    )
-                                  : CircleAvatar(
-                                      radius: 18.0,
-                                      backgroundImage: NetworkImage(user.image),
-                                      backgroundColor: Colors.transparent),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 5.0),
-                                child: Text(
-                                  SDBdata.nickname,
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.white),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 4.0),
-                                child: Text(SDBdata.date.substring(2, 10),
-                                    style: TextStyle(
-                                        fontSize: 18, color: Colors.grey)),
-                              ),
-                              SDBdata.user_email ==
-                                      _userdataProvider.userdata.email
-                                  ? GestureDetector(
-                                      onTapDown: _storePosition,
-                                      onTap: () {
-                                        showMenu(
-                                          context: context,
-                                          position: RelativeRect.fromRect(
-                                              _tapPosition & Size(30, 30),
-                                              Offset.zero & Size(0, 0)),
-                                          items: [
-                                            PopupMenuItem(
-                                                child: ListTile(
-                                                    contentPadding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 4.0,
-                                                            vertical: 0.0),
-                                                    leading:
-                                                        Icon(Icons.mode_edit),
-                                                    title: Text("코멘트")),
-                                                onTap: () {
-                                                  _historyCommentCtrl =
-                                                      TextEditingController(
-                                                          text:
-                                                              SDBdata.comment);
-                                                  Future<void>.delayed(
-                                                      const Duration(), // OR const Duration(milliseconds: 500),
-                                                      () =>
-                                                          _displayTextInputDialog(
-                                                              context,
-                                                              SDBdata));
-                                                }),
-                                            PopupMenuItem(
-                                                child: ListTile(
-                                                    contentPadding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 4.0,
-                                                            vertical: 0.0),
-                                                    leading: SDBdata.isVisible
-                                                        ? Icon(Icons
-                                                            .filter_list_off)
-                                                        : Icon(
-                                                            Icons.filter_list),
-                                                    title: SDBdata.isVisible
-                                                        ? Text("숨김")
-                                                        : Text("보임")),
-                                                onTap: () {
-                                                  if (SDBdata.isVisible) {
-                                                    _historyProvider
-                                                        .patchHistoryVisible(
-                                                            SDBdata, false);
-                                                    HistoryVisibleEdit(
-                                                            history_id:
-                                                                SDBdata.id,
-                                                            status: "false")
-                                                        .patchHistoryVisible();
-                                                  } else {
-                                                    _historyProvider
-                                                        .patchHistoryVisible(
-                                                            SDBdata, true);
-                                                    HistoryVisibleEdit(
-                                                            history_id:
-                                                                SDBdata.id,
-                                                            status: "true")
-                                                        .patchHistoryVisible();
-                                                  }
-                                                }),
-                                          ],
-                                        );
-                                      },
-                                      child: Icon(Icons.more_vert,
-                                          color: Colors.grey, size: 18.0))
-                                  : Container()
-                            ],
-                          ),
-                        ],
-                      )),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Consumer2<HistorydataProvider, UserdataProvider>(
+              builder: (builder, provider, provider2, child) {
+            return _userdataProvider.userdata.dislike.contains(user.email)
+                ? Container(
+                    child: Padding(
+                        padding: const EdgeInsets.only(left: 4.0),
+                        child: Text("차단된 사용자 입니다",
+                            style:
+                                TextStyle(color: Colors.grey, fontSize: 12.0))))
+                : Card(
+                    color: Color(0xFF717171),
+                    child: Column(
                       children: [
-                        Container(
-                            width: 120,
-                            child: Text(
-                              "운동",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                              ),
+                        Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    user.image == ""
+                                        ? Icon(
+                                            Icons.account_circle,
+                                            color: Colors.grey,
+                                            size: 38.0,
+                                          )
+                                        : CircleAvatar(
+                                            radius: 18.0,
+                                            backgroundImage:
+                                                NetworkImage(user.image),
+                                            backgroundColor:
+                                                Colors.transparent),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 5.0),
+                                      child: Text(
+                                        SDBdata.nickname,
+                                        style: TextStyle(
+                                            fontSize: 18, color: Colors.white),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 4.0),
+                                      child: Text(SDBdata.date.substring(2, 10),
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.grey)),
+                                    ),
+                                    GestureDetector(
+                                        onTapDown: _storePosition,
+                                        onTap: () {
+                                          SDBdata.user_email ==
+                                                  _userdataProvider
+                                                      .userdata.email
+                                              ? showMenu(
+                                                  context: context,
+                                                  position:
+                                                      RelativeRect.fromRect(
+                                                          _tapPosition &
+                                                              Size(30, 30),
+                                                          Offset.zero &
+                                                              Size(0, 0)),
+                                                  items: [
+                                                    PopupMenuItem(
+                                                        child: ListTile(
+                                                            contentPadding:
+                                                                EdgeInsets.symmetric(
+                                                                    horizontal:
+                                                                        4.0,
+                                                                    vertical:
+                                                                        0.0),
+                                                            leading: Icon(Icons
+                                                                .mode_edit),
+                                                            title: Text("코멘트")),
+                                                        onTap: () {
+                                                          _historyCommentCtrl =
+                                                              TextEditingController(
+                                                                  text: SDBdata
+                                                                      .comment);
+                                                          Future<void>.delayed(
+                                                              const Duration(), // OR const Duration(milliseconds: 500),
+                                                              () =>
+                                                                  _displayTextInputDialog(
+                                                                      context,
+                                                                      SDBdata));
+                                                        }),
+                                                    PopupMenuItem(
+                                                        child: ListTile(
+                                                            contentPadding:
+                                                                EdgeInsets.symmetric(
+                                                                    horizontal:
+                                                                        4.0,
+                                                                    vertical:
+                                                                        0.0),
+                                                            leading: SDBdata
+                                                                    .isVisible
+                                                                ? Icon(Icons
+                                                                    .filter_list_off)
+                                                                : Icon(Icons
+                                                                    .filter_list),
+                                                            title: SDBdata
+                                                                    .isVisible
+                                                                ? Text("숨김")
+                                                                : Text("보임")),
+                                                        onTap: () {
+                                                          if (SDBdata
+                                                              .isVisible) {
+                                                            _historyProvider
+                                                                .patchHistoryVisible(
+                                                                    SDBdata,
+                                                                    false);
+                                                            HistoryVisibleEdit(
+                                                                    history_id:
+                                                                        SDBdata
+                                                                            .id,
+                                                                    status:
+                                                                        "false")
+                                                                .patchHistoryVisible();
+                                                          } else {
+                                                            _historyProvider
+                                                                .patchHistoryVisible(
+                                                                    SDBdata,
+                                                                    true);
+                                                            HistoryVisibleEdit(
+                                                                    history_id:
+                                                                        SDBdata
+                                                                            .id,
+                                                                    status:
+                                                                        "true")
+                                                                .patchHistoryVisible();
+                                                          }
+                                                        }),
+                                                  ],
+                                                )
+                                              : showMenu(
+                                                  context: context,
+                                                  position:
+                                                      RelativeRect.fromRect(
+                                                          _tapPosition &
+                                                              Size(30, 30),
+                                                          Offset.zero &
+                                                              Size(0, 0)),
+                                                  items: [
+                                                    PopupMenuItem(
+                                                        child: ListTile(
+                                                            contentPadding:
+                                                                EdgeInsets.symmetric(
+                                                                    horizontal:
+                                                                        4.0,
+                                                                    vertical:
+                                                                        0.0),
+                                                            leading: Icon(Icons
+                                                                .remove_circle_outlined),
+                                                            title: Text("신고")),
+                                                        onTap: () {
+                                                          _historyCommentCtrl =
+                                                              TextEditingController(
+                                                                  text: SDBdata
+                                                                      .comment);
+                                                          Future<void>.delayed(
+                                                              const Duration(), // OR const Duration(milliseconds: 500),
+                                                              () => _displayDislikeAlert(
+                                                                  SDBdata
+                                                                      .user_email));
+                                                        }),
+                                                  ],
+                                                );
+                                        },
+                                        child: Icon(Icons.more_vert,
+                                            color: Colors.grey, size: 18.0))
+                                  ],
+                                ),
+                              ],
                             )),
-                        Container(
-                            width: 70,
-                            child: Text("sets",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                ),
-                                textAlign: TextAlign.center)),
-                        Container(
-                            width: 80,
-                            child: Text("1rm",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                ),
-                                textAlign: TextAlign.center))
-                      ],
-                    ),
-                  ),
-                  ListView.separated(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (BuildContext _context, int index) {
-                        return Center(
-                            child: _exerciseWidget(
-                                SDBdata.exercises[index], index));
-                      },
-                      separatorBuilder: (BuildContext _context, int index) {
-                        return Container(
-                          alignment: Alignment.center,
-                          height: 1,
-                          color: Colors.black,
-                          child: Container(
-                            alignment: Alignment.center,
-                            height: 1,
-                            color: Color(0xFF717171),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                  width: 120,
+                                  child: Text(
+                                    "운동",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                    ),
+                                  )),
+                              Container(
+                                  width: 70,
+                                  child: Text("sets",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                      ),
+                                      textAlign: TextAlign.center)),
+                              Container(
+                                  width: 80,
+                                  child: Text("1rm",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                      ),
+                                      textAlign: TextAlign.center))
+                            ],
                           ),
-                        );
-                      },
-                      itemCount: SDBdata.exercises.length),
-                  SDBdata.comment != ""
-                      ? _feedTextField(SDBdata.comment)
-                      : Container(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      SDBdata.isVisible == false
-                          ? Text("숨겨진 피드",
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 14))
-                          : Container(),
-                      _feedLikeButton(SDBdata),
-                      _feedCommentButton(SDBdata)
-                    ],
-                  ),
-                  _commentInfo["feedList"] == widget.feedListCtrl &&
-                          _commentInfo["feedVisible"] == true
-                      ? Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              height: 1,
-                              color: Colors.black,
-                              child: Container(
+                        ),
+                        ListView.separated(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (BuildContext _context, int index) {
+                              return Center(
+                                  child: _exerciseWidget(
+                                      SDBdata.exercises[index], index));
+                            },
+                            separatorBuilder:
+                                (BuildContext _context, int index) {
+                              return Container(
                                 alignment: Alignment.center,
                                 height: 1,
-                                color: Color(0xFF717171),
-                              ),
-                            ),
-                            _commentContent(),
-                            _commentTextInput(SDBdata)
+                                color: Colors.black,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  height: 1,
+                                  color: Color(0xFF717171),
+                                ),
+                              );
+                            },
+                            itemCount: SDBdata.exercises.length),
+                        SDBdata.comment != ""
+                            ? _feedTextField(SDBdata.comment)
+                            : Container(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            SDBdata.isVisible == false
+                                ? Text("숨겨진 피드",
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 14))
+                                : Container(),
+                            _feedLikeButton(SDBdata),
+                            _feedCommentButton(SDBdata)
                           ],
-                        )
-                      : Container()
-                ],
-              ),
-            );
+                        ),
+                        _commentInfo["feedList"] == widget.feedListCtrl &&
+                                _commentInfo["feedVisible"] == true
+                            ? Column(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Container(
+                                    alignment: Alignment.center,
+                                    height: 1,
+                                    color: Colors.black,
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      height: 1,
+                                      color: Color(0xFF717171),
+                                    ),
+                                  ),
+                                  _commentContent(),
+                                  _commentTextInput(SDBdata)
+                                ],
+                              )
+                            : Container()
+                      ],
+                    ),
+                  );
           }),
         ),
       ),
@@ -321,42 +382,48 @@ class _FeedCardState extends State<FeedCard> {
     User user = _userdataProvider.userFriendsAll.userdatas
         .where((user) => user.email == Comment.writer_email)
         .toList()[0];
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Flexible(
-          child: Row(
+    return _userdataProvider.userdata.dislike.contains(Comment.writer_email)
+        ? Container(
+            child: Padding(
+                padding: const EdgeInsets.only(left: 4.0),
+                child: Text("차단된 사용자 입니다",
+                    style: TextStyle(color: Colors.grey, fontSize: 12.0))))
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              user.image == ""
-                  ? Icon(
-                      Icons.account_circle,
-                      color: Colors.grey,
-                      size: 38.0,
-                    )
-                  : CircleAvatar(
-                      radius: 18.0,
-                      backgroundImage: NetworkImage(user.image),
-                      backgroundColor: Colors.transparent),
               Flexible(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 4.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(Comment.writer_nickname,
-                          style: TextStyle(color: Colors.grey, fontSize: 12.0)),
-                      Text(Comment.content,
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 14.0)),
-                    ],
-                  ),
+                child: Row(
+                  children: [
+                    user.image == ""
+                        ? Icon(
+                            Icons.account_circle,
+                            color: Colors.grey,
+                            size: 38.0,
+                          )
+                        : CircleAvatar(
+                            radius: 18.0,
+                            backgroundImage: NetworkImage(user.image),
+                            backgroundColor: Colors.transparent),
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 4.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(Comment.writer_nickname,
+                                style: TextStyle(
+                                    color: Colors.grey, fontSize: 12.0)),
+                            Text(Comment.content,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 14.0)),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
-        _userdataProvider.userdata.email == Comment.writer_email
-            ? GestureDetector(
+              GestureDetector(
                 child: Icon(
                   Icons.more_vert,
                   color: Colors.grey,
@@ -364,32 +431,54 @@ class _FeedCardState extends State<FeedCard> {
                 ),
                 onTapDown: _storePosition,
                 onTap: () {
-                  showMenu(
-                      context: context,
-                      position: RelativeRect.fromRect(
-                          _tapPosition & Size(30, 30),
-                          Offset.zero & Size(0, 0)),
-                      items: [
-                        PopupMenuItem(
-                            onTap: () {
-                              _historyProvider.deleteCommentAll(Comment);
-                              Future<void>.delayed(
-                                  const Duration(), // OR const Duration(milliseconds: 500),
-                                  () => CommentDelete(comment_id: Comment.id)
-                                      .deleteComment());
-                            },
-                            padding: EdgeInsets.all(0.0),
-                            child: ListTile(
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 4.0, vertical: 0.0),
-                                leading: Icon(Icons.delete),
-                                title: Text("삭제"))),
-                      ]);
+                  _userdataProvider.userdata.email == Comment.writer_email
+                      ? showMenu(
+                          context: context,
+                          position: RelativeRect.fromRect(
+                              _tapPosition & Size(30, 30),
+                              Offset.zero & Size(0, 0)),
+                          items: [
+                              PopupMenuItem(
+                                  onTap: () {
+                                    _historyProvider.deleteCommentAll(Comment);
+                                    Future<void>.delayed(
+                                        const Duration(), // OR const Duration(milliseconds: 500),
+                                        () => CommentDelete(
+                                                comment_id: Comment.id)
+                                            .deleteComment());
+                                  },
+                                  padding: EdgeInsets.all(0.0),
+                                  child: ListTile(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 4.0, vertical: 0.0),
+                                      leading: Icon(Icons.delete),
+                                      title: Text("삭제"))),
+                            ])
+                      : showMenu(
+                          context: context,
+                          position: RelativeRect.fromRect(
+                              _tapPosition & Size(30, 30),
+                              Offset.zero & Size(0, 0)),
+                          items: [
+                              PopupMenuItem(
+                                  onTap: () {
+                                    Future<void>.delayed(
+                                        const Duration(), // OR const Duration(milliseconds: 500),
+                                        () => _displayDislikeAlert(
+                                            Comment.writer_email));
+                                  },
+                                  padding: EdgeInsets.all(0.0),
+                                  child: ListTile(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 4.0, vertical: 0.0),
+                                      leading:
+                                          Icon(Icons.remove_circle_outlined),
+                                      title: Text("신고"))),
+                            ]);
                 },
               )
-            : Container()
-      ],
-    );
+            ],
+          );
   }
 
   Future<void> _displayTextInputDialog(BuildContext context, SDBdata) async {
@@ -566,6 +655,72 @@ class _FeedCardState extends State<FeedCard> {
     }
   }
 
+  Widget _onDisLikeButtonTapped(email) {
+    return Container(
+      margin: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 25),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+              width: MediaQuery.of(context).size.width / 4,
+              child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                  child: Text("Cancel",
+                      style: TextStyle(fontSize: 20.0, color: Colors.red)))),
+          SizedBox(
+              width: MediaQuery.of(context).size.width / 4,
+              child: TextButton(
+                  onPressed: () {
+                    var user = UserLike(
+                            liked_email: email,
+                            user_email: _userdataProvider.userdata.email,
+                            status: "append",
+                            disorlike: "dislike")
+                        .patchUserLike();
+                    _userdataProvider.patchUserDislikedata(email, "append");
+
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                  child: Text("Confirm",
+                      style: TextStyle(fontSize: 20.0, color: Colors.blue)))),
+        ],
+      ),
+    );
+  }
+
+  void _displayDislikeAlert(email) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              '친구 차단',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            content: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(height: 30, child: Text('피드와 댓글을 모두 차단하실 수 있어요')),
+                  SizedBox(
+                    height: 20,
+                    child: Text('친구 관리에서 다시 차단 해제 할 수 있어요',
+                        style: TextStyle(color: Colors.grey, fontSize: 12)),
+                  )
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              _onDisLikeButtonTapped(email),
+            ],
+          );
+        });
+  }
+
   Widget _commentTextInput(SDBdata) {
     return Row(
       children: [
@@ -577,7 +732,7 @@ class _FeedCardState extends State<FeedCard> {
               controller: _commentInputCtrl,
               style: TextStyle(color: Colors.white, fontSize: 12.0),
               decoration: InputDecoration(
-                hintText: "댓글을 남길 수 있어요",
+                hintText: "댓글 신고시 이용이 제한 될 수 있습니다.",
                 hintStyle: TextStyle(color: Colors.white, fontSize: 12.0),
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),

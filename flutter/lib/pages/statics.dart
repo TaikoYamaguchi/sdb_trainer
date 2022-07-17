@@ -88,7 +88,7 @@ class _CalendarState extends State<Calendar> {
       _workoutdataProvider.getdata()
     ];
     _initHistorydataProvider.getFriendsHistorydata();
-    _initUserdataProvider.getFriendsdata(_initUserdataProvider.userdata.email);
+    _initUserdataProvider.getFriendsdata();
     _initUserdataProvider.getUsersFriendsAll();
     _initExercisesdataProvider.getdata();
     _initHistorydataProvider.getHistorydataAll();
@@ -104,8 +104,7 @@ class _CalendarState extends State<Calendar> {
 
     _initUserdataProvider.userdata != null
         ? [
-            _initUserdataProvider
-                .getFriendsdata(_initUserdataProvider.userdata.email),
+            _initUserdataProvider.getFriendsdata(),
             _initHistorydataProvider.getFriendsHistorydata()
           ]
         : null;

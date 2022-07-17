@@ -14,17 +14,16 @@ import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'package:sdb_trainer/src/model/workoutdata.dart' as wod;
 import 'package:sdb_trainer/providers/exercisesdata.dart';
-import 'package:transition/transition.dart';
-import 'package:sdb_trainer/pages/feed_friend_dislike_edit.dart';
+import 'package:sdb_trainer/src/model/userdata.dart';
 
-class FeedFriendEdit extends StatefulWidget {
-  FeedFriendEdit({Key? key}) : super(key: key);
+class FeedFriendDislikeEdit extends StatefulWidget {
+  FeedFriendDislikeEdit({Key? key}) : super(key: key);
 
   @override
-  _FeedFriendEditState createState() => _FeedFriendEditState();
+  _FeedFriendDislikeEditState createState() => _FeedFriendDislikeEditState();
 }
 
-class _FeedFriendEditState extends State<FeedFriendEdit> {
+class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
   var _testdata0;
   late var _testdata = _testdata0;
   var _exercisesdataProvider;
@@ -51,94 +50,58 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
                 ];
         },
       ),
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text("친구 찾기", style: TextStyle(color: Colors.white)),
-          FlatButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    Transition(
-                        child: FeedFriendDislikeEdit(),
-                        transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-              },
-              child: Text("차단친구", style: TextStyle(color: Colors.white))),
-        ],
+      title: Text(
+        "차단 친구 관리",
+        style: TextStyle(color: Colors.white, fontSize: 30),
       ),
       backgroundColor: Colors.black,
     );
   }
 
-  Widget _friend_searchWidget() {
+  Widget _dislikeEditWidget() {
     return Container(
         color: Colors.black,
         child: Column(children: [
           Consumer<UserdataProvider>(builder: (builder, provider, child) {
-            return Container(
-              margin: const EdgeInsets.fromLTRB(10, 16, 10, 16),
-              child: TextField(
-                  style: TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.search,
-                      color: Color(0xFF717171),
+            print(_userdataProvider.userdata.dislike);
+            return Expanded(
+              child: _userdataProvider.userdata.dislike.isEmpty
+                  ? Container(
+                      color: Colors.black,
+                      child: Center(
+                        child: Text("차단 친구가 없네요",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 16)),
+                      ))
+                  : ListView.separated(
+                      itemBuilder: (BuildContext _context, int index) {
+                        return _dislikeListWidget(
+                            _userdataProvider.userdata.dislike[index]);
+                      },
+                      separatorBuilder: (BuildContext _context, int index) {
+                        return Container(
+                          alignment: Alignment.center,
+                          height: 1,
+                          color: Colors.black,
+                          child: Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.symmetric(horizontal: 10),
+                            height: 1,
+                            color: Color(0xFF717171),
+                          ),
+                        );
+                      },
+                      itemCount: _userdataProvider.userdata.dislike.length,
                     ),
-                    hintText: "닉네임 검색",
-                    hintStyle:
-                        TextStyle(fontSize: 20.0, color: Color(0xFF717171)),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(width: 3, color: Color(0xFF717171)),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                  onChanged: (text) {
-                    if (text.toString() == "") {
-                      friendsInputSwitch = false;
-                      setState(
-                          () => _usersdata = _userdataProvider.userFriendsAll);
-                    } else {
-                      searchFriend(text.toString());
-                      friendsInputSwitch = true;
-                    }
-                  }),
             );
           }),
-          Expanded(
-            child: _usersdata == null
-                ? Container()
-                : ListView.separated(
-                    itemBuilder: (BuildContext _context, int index) {
-                      return _friend_listWidget(_usersdata.userdatas[index]);
-                    },
-                    separatorBuilder: (BuildContext _context, int index) {
-                      return Container(
-                        alignment: Alignment.center,
-                        height: 1,
-                        color: Colors.black,
-                        child: Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.symmetric(horizontal: 10),
-                          height: 1,
-                          color: Color(0xFF717171),
-                        ),
-                      );
-                    },
-                    itemCount: _usersdata.userdatas.length,
-                  ),
-          )
         ]));
   }
 
-  void searchFriend(String query) async {
-    final suggestions =
-        await UserNicknameAll(userNickname: query).getUsersByNickname();
-
-    setState(() => _usersdata = suggestions);
-  }
-
-  Widget _friend_listWidget(user) {
+  Widget _dislikeListWidget(email) {
+    User user = _userdataProvider.userFriendsAll.userdatas
+        .where((user) => user.email == email)
+        .toList()[0];
     return Container(
         child: Padding(
       padding: const EdgeInsets.all(12.0),
@@ -154,13 +117,13 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
             Text(user.nickname,
                 style: TextStyle(color: Colors.white, fontSize: 18.0)),
           ]),
-          _feedLikeButton(user)
+          _dislikeEditButton(user)
         ],
       ),
     ));
   }
 
-  Widget _feedLikeButton(User) {
+  Widget _dislikeEditButton(User) {
     var buttonSize = 28.0;
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -174,13 +137,11 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
           dotSecondaryColor: Color(0xff0099cc),
         ),
         likeBuilder: (bool isLiked) {
-          return User.email == _userdataProvider.userdata.email
-              ? Container()
-              : Icon(
-                  Icons.favorite,
-                  color: isLiked ? Colors.deepPurpleAccent : Colors.grey,
-                  size: buttonSize,
-                );
+          return Icon(
+            Icons.remove_circle,
+            color: isLiked ? Colors.red.shade200 : Colors.grey,
+            size: buttonSize,
+          );
         },
         onTap: (bool isLiked) async {
           return onLikeButtonTapped(isLiked, User);
@@ -190,7 +151,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
   }
 
   bool onIsLikedCheck(User) {
-    if (_userdataProvider.userdata.like.contains(User.email)) {
+    if (_userdataProvider.userdata.dislike.contains(User.email)) {
       return true;
     } else {
       return false;
@@ -203,18 +164,18 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
               liked_email: User.email,
               user_email: _userdataProvider.userdata.email,
               status: "remove",
-              disorlike: "like")
+              disorlike: "dislike")
           .patchUserLike();
-      _userdataProvider.patchUserLikedata(User, "remove");
+      _userdataProvider.patchUserDislikedata(User.email, "remove");
       return false;
     } else {
       var user = UserLike(
               liked_email: User.email,
               user_email: _userdataProvider.userdata.email,
               status: "append",
-              disorlike: "like")
+              disorlike: "dislike")
           .patchUserLike();
-      _userdataProvider.patchUserLikedata(User, "append");
+      _userdataProvider.patchUserDislikedata(User.email, "append");
       return !isLiked;
     }
   }
@@ -232,7 +193,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
     return WillPopScope(
       child: Scaffold(
         appBar: _appbarWidget(),
-        body: _friend_searchWidget(),
+        body: _dislikeEditWidget(),
       ),
       onWillPop: () async {
         return true;

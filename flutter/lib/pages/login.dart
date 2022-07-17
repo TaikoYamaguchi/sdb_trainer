@@ -406,7 +406,7 @@ class _LoginPageState extends State<LoginPage> {
     _initHistorydataProvider.getHistorydataAll();
     _initHistorydataProvider.getCommentAll();
     _initHistorydataProvider.getFriendsHistorydata();
-    _initUserdataProvider.getFriendsdata(_initUserdataProvider.userdata.email);
+    _initUserdataProvider.getFriendsdata();
     _initExercisesdataProvider.getdata();
 
     _initUserdataProvider.userFriendsAll.userdatas
@@ -419,8 +419,7 @@ class _LoginPageState extends State<LoginPage> {
 
     _initUserdataProvider.userdata != null
         ? [
-            _initUserdataProvider
-                .getFriendsdata(_initUserdataProvider.userdata.email),
+            _initUserdataProvider.getFriendsdata(),
             _initHistorydataProvider.getFriendsHistorydata()
           ]
         : null;

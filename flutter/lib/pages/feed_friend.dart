@@ -55,7 +55,7 @@ class _FeedFriendState extends State<FeedFriend> {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("피드", style: TextStyle(color: Colors.white)),
+          Text("친구관리", style: TextStyle(color: Colors.white)),
           FlatButton(
               onPressed: () {
                 Navigator.push(
@@ -78,8 +78,14 @@ class _FeedFriendState extends State<FeedFriend> {
           Expanded(
             child:
                 Consumer<UserdataProvider>(builder: (builder, provider, child) {
-              return provider.userFriends == null
-                  ? Container()
+              return provider.userFriends.userdatas.isEmpty
+                  ? Container(
+                      color: Colors.black,
+                      child: Center(
+                        child: Text("친구를 찾고 추가해 보세요",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 16)),
+                      ))
                   : ListView.separated(
                       itemBuilder: (BuildContext _context, int index) {
                         return _friend_listWidget(
