@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/pages/friendProfile.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
@@ -93,29 +94,41 @@ class _FeedCardState extends State<FeedCard> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  children: [
-                                    user.image == ""
-                                        ? Icon(
-                                            Icons.account_circle,
-                                            color: Colors.grey,
-                                            size: 38.0,
-                                          )
-                                        : CircleAvatar(
-                                            radius: 18.0,
-                                            backgroundImage:
-                                                NetworkImage(user.image),
-                                            backgroundColor:
-                                                Colors.transparent),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 5.0),
-                                      child: Text(
-                                        SDBdata.nickname,
-                                        style: TextStyle(
-                                            fontSize: 18, color: Colors.white),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        Transition(
+                                            child: FriendProfile(user: user),
+                                            transitionEffect: TransitionEffect
+                                                .RIGHT_TO_LEFT));
+                                  },
+                                  child: Row(
+                                    children: [
+                                      user.image == ""
+                                          ? Icon(
+                                              Icons.account_circle,
+                                              color: Colors.grey,
+                                              size: 38.0,
+                                            )
+                                          : CircleAvatar(
+                                              radius: 18.0,
+                                              backgroundImage:
+                                                  NetworkImage(user.image),
+                                              backgroundColor:
+                                                  Colors.transparent),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 5.0),
+                                        child: Text(
+                                          SDBdata.nickname,
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.white),
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                                 Row(
                                   children: [
