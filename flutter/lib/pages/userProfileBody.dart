@@ -60,7 +60,10 @@ class _ProfileBodyState extends State<ProfileBody> {
     _userWeightCtrl.selection = TextSelection.fromPosition(
         TextPosition(offset: _userWeightCtrl.text.length));
 
-    return Scaffold(appBar: _appbarWidget(), body: _signupSettingWidget());
+    return Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: _appbarWidget(),
+        body: _signupSettingWidget());
   }
 
   PreferredSizeWidget _appbarWidget() {
@@ -215,14 +218,14 @@ class _ProfileBodyState extends State<ProfileBody> {
               userWeight: _userWeightCtrl.text.toString(),
               userHeightUnit: _userHeightUnitCtrl,
               userWeightUnit: _userWeightUnitCtrl,
-              userImage: _userdataProvider.userdata.nickname.image,
+              userImage: _userdataProvider.userdata.image,
               userFavorExercise: _userdataProvider.userdata.favor_exercise)
           .editUser()
           .then((data) => data["username"] != null
               ? {
                   showToast("수정 완료"),
                   _userdataProvider.getdata(),
-                  Navigator.of(context, rootNavigator: true).pop()
+                  Navigator.pop(context)
                 }
               : showToast("수정할 수 없습니다"));
     } else {

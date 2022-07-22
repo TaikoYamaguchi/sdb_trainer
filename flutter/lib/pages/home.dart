@@ -53,60 +53,64 @@ class Home extends StatelessWidget {
     return Container(
       color: Colors.black,
       child: Center(
-        child: Column(
-          children: <Widget>[
-            Text("Total SDB",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 54,
-                    fontWeight: FontWeight.w800)),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.baseline,
-                textBaseline: TextBaseline.alphabetic,
-                children: <Widget>[
-                  Text(
-                      (_exunique.exercises[0].onerm +
-                              _exunique.exercises[1].onerm +
-                              _exunique.exercises[2].onerm)
-                          .floor()
-                          .toString(),
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 54,
-                          fontWeight: FontWeight.w800)),
-                  Text(
-                      "/" +
-                          (_exunique.exercises[0].goal +
-                                  _exunique.exercises[1].goal +
-                                  _exunique.exercises[2].goal)
-                              .floor()
-                              .toString() +
-                          "kg",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600)),
-                ]),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Text('''"Shut up & Squat!"''',
-                  style: TextStyle(color: Colors.white, fontSize: 24)),
-            ),
-            Text('''Lifting Stats''',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w800)),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-              _homeGaugeChart(_exunique, 0, Color.fromRGBO(66, 0, 255, 100)),
-              _homeGaugeChart(_exunique, 1, Color.fromRGBO(0, 255, 25, 100)),
-            ]),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-              _homeGaugeChart(_exunique, 2, Color.fromRGBO(235, 0, 255, 100)),
-              _homeGaugeChart(_exunique, 3, Color.fromRGBO(0, 255, 240, 100))
-            ])
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Text("Total SDB",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 54,
+                      fontWeight: FontWeight.w800)),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  textBaseline: TextBaseline.alphabetic,
+                  children: <Widget>[
+                    Text(
+                        (_exunique.exercises[0].onerm +
+                                _exunique.exercises[1].onerm +
+                                _exunique.exercises[2].onerm)
+                            .floor()
+                            .toString(),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 54,
+                            fontWeight: FontWeight.w800)),
+                    Text(
+                        "/" +
+                            (_exunique.exercises[0].goal +
+                                    _exunique.exercises[1].goal +
+                                    _exunique.exercises[2].goal)
+                                .floor()
+                                .toString() +
+                            "kg",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600)),
+                  ]),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Text('''"Shut up & Squat!"''',
+                    style: TextStyle(color: Colors.white, fontSize: 24)),
+              ),
+              Text('''Lifting Stats''',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w800)),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: <
+                  Widget>[
+                _homeGaugeChart(_exunique, 0, Color.fromRGBO(66, 0, 255, 100)),
+                _homeGaugeChart(_exunique, 1, Color.fromRGBO(0, 255, 25, 100)),
+              ]),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: <
+                  Widget>[
+                _homeGaugeChart(_exunique, 2, Color.fromRGBO(235, 0, 255, 100)),
+                _homeGaugeChart(_exunique, 3, Color.fromRGBO(0, 255, 240, 100))
+              ])
+            ],
+          ),
         ),
       ),
     );

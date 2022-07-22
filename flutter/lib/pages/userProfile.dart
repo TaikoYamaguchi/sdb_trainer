@@ -48,108 +48,111 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   Widget _userProfileWidget() {
-    return Column(children: [
-      ElevatedButton(
-        onPressed: () {},
-        style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
-        child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: 50,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(_userdataProvider.userdata.email,
-                      style: TextStyle(color: Colors.white)),
-                  Container(),
-                ])),
-      ),
-      ElevatedButton(
-        onPressed: () {
-          Navigator.push(
-              context,
-              Transition(
-                  child: ProfileNickname(),
-                  transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-        },
-        style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
-        child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: 50,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(_userdataProvider.userdata.nickname,
-                      style: TextStyle(color: Colors.white)),
-                  Icon(Icons.chevron_right, color: Colors.white),
-                ])),
-      ),
-      ElevatedButton(
-        onPressed: () {
-          Navigator.push(
-              context,
-              Transition(
-                  child: ProfileBody(),
-                  transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-        },
-        style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
-        child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: 50,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                      _userdataProvider.userdata.height.toString() +
-                          _userdataProvider.userdata.height_unit +
-                          "/" +
-                          _userdataProvider.userdata.weight.toString() +
-                          _userdataProvider.userdata.weight_unit,
-                      style: TextStyle(color: Colors.white)),
-                  Icon(Icons.chevron_right, color: Colors.white),
-                ])),
-      ),
-      ElevatedButton(
-        onPressed: () {},
-        style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
-        child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: 50,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(_userdataProvider.userdata.isMan ? "남성" : "여성",
-                      style: TextStyle(color: Colors.white)),
-                  Container(),
-                ])),
-      ),
-      SizedBox(height: 30),
-      GestureDetector(
-          onTap: () {
-            _pickImg();
-          },
-          child: _userdataProvider.userdata.image == ""
-              ? Icon(
-                  Icons.account_circle,
-                  color: Colors.grey,
-                  size: 200.0,
-                )
-              : Consumer<UserdataProvider>(builder: (builder, rpovider, child) {
-                  return CircleAvatar(
-                      radius: 100.0,
-                      backgroundImage:
-                          NetworkImage(_userdataProvider.userdata.image),
-                      backgroundColor: Colors.transparent);
-                })),
-      FlatButton(
+    return SingleChildScrollView(
+      child: Column(children: [
+        ElevatedButton(
+          onPressed: () {},
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
+          child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(_userdataProvider.userdata.email,
+                        style: TextStyle(color: Colors.white)),
+                    Container(),
+                  ])),
+        ),
+        ElevatedButton(
           onPressed: () {
-            _pickImg();
+            Navigator.push(
+                context,
+                Transition(
+                    child: ProfileNickname(),
+                    transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
           },
-          child: Text("사진 편집", style: TextStyle(color: Colors.white)))
-    ]);
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
+          child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(_userdataProvider.userdata.nickname,
+                        style: TextStyle(color: Colors.white)),
+                    Icon(Icons.chevron_right, color: Colors.white),
+                  ])),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                Transition(
+                    child: ProfileBody(),
+                    transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+          },
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
+          child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                        _userdataProvider.userdata.height.toString() +
+                            _userdataProvider.userdata.height_unit +
+                            "/" +
+                            _userdataProvider.userdata.weight.toString() +
+                            _userdataProvider.userdata.weight_unit,
+                        style: TextStyle(color: Colors.white)),
+                    Icon(Icons.chevron_right, color: Colors.white),
+                  ])),
+        ),
+        ElevatedButton(
+          onPressed: () {},
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
+          child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(_userdataProvider.userdata.isMan ? "남성" : "여성",
+                        style: TextStyle(color: Colors.white)),
+                    Container(),
+                  ])),
+        ),
+        SizedBox(height: 30),
+        GestureDetector(
+            onTap: () {
+              _pickImg();
+            },
+            child: _userdataProvider.userdata.image == ""
+                ? Icon(
+                    Icons.account_circle,
+                    color: Colors.grey,
+                    size: 200.0,
+                  )
+                : Consumer<UserdataProvider>(
+                    builder: (builder, rpovider, child) {
+                    return CircleAvatar(
+                        radius: 100.0,
+                        backgroundImage:
+                            NetworkImage(_userdataProvider.userdata.image),
+                        backgroundColor: Colors.transparent);
+                  })),
+        FlatButton(
+            onPressed: () {
+              _pickImg();
+            },
+            child: Text("사진 편집", style: TextStyle(color: Colors.white)))
+      ]),
+    );
   }
 
   @override
@@ -157,6 +160,7 @@ class _UserProfileState extends State<UserProfile> {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     print("this is profileeeeeeeeee");
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: _appbarWidget(),
         body: _userProfileWidget(),
         backgroundColor: Colors.black);

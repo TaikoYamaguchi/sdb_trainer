@@ -86,11 +86,13 @@ def get_friends_by_email(db: Session, email: str) -> t.List[schemas.UserBase]:
 def edit_user(
     db: Session, email: str, user: schemas.UserBase
 ) -> schemas.UserBase:
+    db_user = get_user_by_email(db, email)
     db_nickname = get_user_by_nickname(db,user.nickname)
-    if db_nickname:
+    if user.nickname == db_user.nickname:
+        pass
+    elif db_nickname:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail="닉네임이 중복 됐습니다")
 
-    db_user = get_user_by_email(db, email)
     if not db_user:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User not found")
     update_data = user.dict(exclude_unset=True)
