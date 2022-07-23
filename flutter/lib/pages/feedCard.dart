@@ -62,6 +62,7 @@ class _FeedCardState extends State<FeedCard> {
     User user = _userdataProvider.userFriendsAll.userdatas
         .where((user) => user.email == SDBdata.user_email)
         .toList()[0];
+    print(user.nickname);
     if (_historyProvider.commentAll != null) {
       _commentListbyId = _historyProvider.commentAll.comments
           .where((comment) => comment.history_id == SDBdata.id)

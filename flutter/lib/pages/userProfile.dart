@@ -75,16 +75,19 @@ class _UserProfileState extends State<UserProfile> {
           },
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
-          child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 50,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(_userdataProvider.userdata.nickname,
-                        style: TextStyle(color: Colors.white)),
-                    Icon(Icons.chevron_right, color: Colors.white),
-                  ])),
+          child:
+              Consumer<UserdataProvider>(builder: (builder, rpovider, child) {
+            return SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 50,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(_userdataProvider.userdata.nickname,
+                          style: TextStyle(color: Colors.white)),
+                      Icon(Icons.chevron_right, color: Colors.white),
+                    ]));
+          }),
         ),
         ElevatedButton(
           onPressed: () {

@@ -92,6 +92,8 @@ def edit_user(
         pass
     elif db_nickname:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail="닉네임이 중복 됐습니다")
+    else :
+        edit_history_nickname_by_user_edit(db, email, user)
 
     if not db_user:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User not found")
@@ -129,6 +131,13 @@ def edit_image_by_user_email(db: Session,user:schemas.User, image_id : int) -> s
     db.commit()
     db.refresh(db_user)
     return db_user
+
+def edit_history_nickname_by_user_edit(db: Session, email:str, user : schemas.UserBase):
+    db_history = db.query(models.History).filter(models.History.user_email == email).all()
+    for i in range(len(db_history)):
+        setattr(db_history[i], "nickname", user.nickname)
+
+
 
 
 

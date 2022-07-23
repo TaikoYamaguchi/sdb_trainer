@@ -9,6 +9,7 @@ import 'package:sdb_trainer/pages/userProfileNickname.dart';
 import 'package:sdb_trainer/pages/userProfileBody.dart';
 import 'package:sdb_trainer/pages/userProfileGoal.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:like_button/like_button.dart';
 import 'dart:io';
 import 'dart:async';
 
@@ -53,9 +54,69 @@ class _FriendProfileState extends State<FriendProfile> {
                 : CircleAvatar(
                     radius: 100.0,
                     backgroundImage: NetworkImage(widget.user.image),
-                    backgroundColor: Colors.transparent))
+                    backgroundColor: Colors.transparent)),
+        Consumer<UserdataProvider>(builder: (builder, provider, child) {
+          return _feedLikeButton(provider, widget.user);
+        })
       ]),
     );
+  }
+
+  Widget _feedLikeButton(provider, User) {
+    var buttonSize = 28.0;
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: LikeButton(
+        size: buttonSize,
+        isLiked: onIsLikedCheck(provider, User),
+        circleColor:
+            CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+        bubblesColor: BubblesColor(
+          dotPrimaryColor: Color(0xff33b5e5),
+          dotSecondaryColor: Color(0xff0099cc),
+        ),
+        likeBuilder: (bool isLiked) {
+          return Icon(
+            Icons.favorite,
+            color: isLiked ? Colors.deepPurpleAccent : Colors.grey,
+            size: buttonSize,
+          );
+        },
+        onTap: (bool isLiked) async {
+          return onLikeButtonTapped(isLiked, User);
+        },
+      ),
+    );
+  }
+
+  bool onIsLikedCheck(provider, User) {
+    if (provider.userdata.like.contains(User.email)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool onLikeButtonTapped(bool isLiked, User) {
+    if (isLiked == true) {
+      UserLike(
+              liked_email: User.email,
+              user_email: _userdataProvider.userdata.email,
+              status: "remove",
+              disorlike: "like")
+          .patchUserLike();
+      _userdataProvider.patchUserLikedata(User, "remove");
+      return false;
+    } else {
+      UserLike(
+              liked_email: User.email,
+              user_email: _userdataProvider.userdata.email,
+              status: "append",
+              disorlike: "like")
+          .patchUserLike();
+      _userdataProvider.patchUserLikedata(User, "append");
+      return !isLiked;
+    }
   }
 
   @override
