@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/friendProfile.dart';
+import 'package:sdb_trainer/pages/friendHistory.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
@@ -302,28 +303,38 @@ class _FeedCardState extends State<FeedCard> {
                             ],
                           ),
                         ),
-                        ListView.separated(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (BuildContext _context, int index) {
-                              return Center(
-                                  child: _exerciseWidget(
-                                      SDBdata.exercises[index], index));
-                            },
-                            separatorBuilder:
-                                (BuildContext _context, int index) {
-                              return Container(
-                                alignment: Alignment.center,
-                                height: 1,
-                                color: Colors.black,
-                                child: Container(
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                Transition(
+                                    child: FriendHistory(sdbdata: SDBdata),
+                                    transitionEffect:
+                                        TransitionEffect.RIGHT_TO_LEFT));
+                          },
+                          child: ListView.separated(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemBuilder: (BuildContext _context, int index) {
+                                return Center(
+                                    child: _exerciseWidget(
+                                        SDBdata.exercises[index], index));
+                              },
+                              separatorBuilder:
+                                  (BuildContext _context, int index) {
+                                return Container(
                                   alignment: Alignment.center,
                                   height: 1,
-                                  color: Color(0xFF717171),
-                                ),
-                              );
-                            },
-                            itemCount: SDBdata.exercises.length),
+                                  color: Colors.black,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: 1,
+                                    color: Color(0xFF717171),
+                                  ),
+                                );
+                              },
+                              itemCount: SDBdata.exercises.length),
+                        ),
                         SDBdata.comment != ""
                             ? _feedTextField(SDBdata.comment)
                             : Container(),

@@ -541,6 +541,69 @@ class _CalendarState extends State<Calendar> {
     return Container(
       child: Column(
         children: [
+          Container(
+              padding: EdgeInsets.all(5.0),
+              height: 28,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 80,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 25,
+                          child: Text(
+                            "Set",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                      width: 70,
+                      child: Text(
+                        "Weight(${_userdataProvider.userdata.weight_unit})",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      )),
+                  Container(width: 35),
+                  Container(
+                      width: 40,
+                      child: Text(
+                        "Reps",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      )),
+                  Container(
+                      width: 70,
+                      child: Text(
+                        "1RM",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      )),
+                ],
+              )),
           SizedBox(
             child: ListView.separated(
                 itemBuilder: (BuildContext _context, int index) {
