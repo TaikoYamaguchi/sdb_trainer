@@ -23,13 +23,26 @@ class FriendProfile extends StatefulWidget {
 
 class _FriendProfileState extends State<FriendProfile> {
   var _userdataProvider;
+  var btnDisabled;
   @override
   void initState() {
     super.initState();
   }
 
   PreferredSizeWidget _appbarWidget() {
+    btnDisabled = false;
     return AppBar(
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios_outlined),
+        onPressed: () {
+          btnDisabled == true
+              ? null
+              : [
+                  btnDisabled = true,
+                  Navigator.of(context).pop(),
+                ];
+        },
+      ),
       title: Text(
         widget.user.nickname,
         style: TextStyle(color: Colors.white, fontSize: 30),
@@ -39,51 +52,117 @@ class _FriendProfileState extends State<FriendProfile> {
   }
 
   Widget _userProfileWidget() {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      color: Colors.black,
-      child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-        GestureDetector(
-            onTap: () {},
-            child: widget.user.image == ""
-                ? Icon(
-                    Icons.account_circle,
-                    color: Colors.grey,
-                    size: 200.0,
-                  )
-                : CircleAvatar(
-                    radius: 100.0,
-                    backgroundImage: NetworkImage(widget.user.image),
-                    backgroundColor: Colors.transparent)),
-        Consumer<UserdataProvider>(builder: (builder, provider, child) {
-          return _feedLikeButton(provider, widget.user);
-        })
-      ]),
+    return SingleChildScrollView(
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        color: Colors.black,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+          GestureDetector(
+              onTap: () {},
+              child: widget.user.image == ""
+                  ? Icon(
+                      Icons.account_circle,
+                      color: Colors.grey,
+                      size: 160.0,
+                    )
+                  : CircleAvatar(
+                      radius: 80.0,
+                      backgroundImage: NetworkImage(widget.user.image),
+                      backgroundColor: Colors.transparent)),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(
+                width: 70,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      widget.user.liked.length.toString(),
+                      style: TextStyle(
+                        color: Colors.deepPurpleAccent,
+                        fontSize: 24,
+                      ),
+                    ),
+                    Text("팔로워",
+                        style: TextStyle(color: Colors.white, fontSize: 16))
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: 70,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      widget.user.like.length.toString(),
+                      style: TextStyle(
+                        color: Colors.deepPurpleAccent,
+                        fontSize: 24,
+                      ),
+                    ),
+                    Text("팔로잉",
+                        style: TextStyle(color: Colors.white, fontSize: 16))
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: 70,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      widget.user.history_cnt.toString(),
+                      style: TextStyle(
+                        color: Colors.deepPurpleAccent,
+                        fontSize: 24,
+                      ),
+                    ),
+                    Text("운동기록",
+                        style: TextStyle(color: Colors.white, fontSize: 16))
+                  ],
+                ),
+              )
+            ],
+          ),
+          SizedBox(height: 32),
+          Consumer<UserdataProvider>(builder: (builder, provider, child) {
+            return _feedLikeButton(provider, widget.user);
+          })
+        ]),
+      ),
     );
   }
 
   Widget _feedLikeButton(provider, User) {
-    var buttonSize = 28.0;
+    bool isLiked = onIsLikedCheck(provider, User);
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: LikeButton(
-        size: buttonSize,
-        isLiked: onIsLikedCheck(provider, User),
-        circleColor:
-            CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
-        bubblesColor: BubblesColor(
-          dotPrimaryColor: Color(0xff33b5e5),
-          dotSecondaryColor: Color(0xff0099cc),
+      padding: const EdgeInsets.symmetric(horizontal: 32.0),
+      child: FlatButton(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: 40.0,
+          decoration: BoxDecoration(
+              color: isLiked ? Colors.deepPurpleAccent : Colors.grey,
+              borderRadius: BorderRadius.circular(10)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                  provider.userdata.email == User.email
+                      ? "본 계정입니다"
+                      : isLiked
+                          ? "팔로잉 중 "
+                          : "팔로우 하기 ",
+                  style: TextStyle(color: Colors.white, fontSize: 16)),
+            ],
+          ),
         ),
-        likeBuilder: (bool isLiked) {
-          return Icon(
-            Icons.favorite,
-            color: isLiked ? Colors.deepPurpleAccent : Colors.grey,
-            size: buttonSize,
-          );
-        },
-        onTap: (bool isLiked) async {
-          return onLikeButtonTapped(isLiked, User);
+        onPressed: () {
+          if (provider.userdata.email != User.email) {
+            onLikeButtonTapped(isLiked, User);
+          }
         },
       ),
     );

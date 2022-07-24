@@ -48,6 +48,8 @@ def create_user(db: Session, user: schemas.UserCreate):
         is_superuser=False,
         like=[],
         dislike=[],
+        liked=[],
+        disliked=[],
         favor_exercise=[],
         selfIntroduce="",
         history_cnt=0,
@@ -94,6 +96,7 @@ def edit_user(
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail="닉네임이 중복 됐습니다")
     else :
         edit_history_nickname_by_user_edit(db, email, user)
+        edit_comment_nickname_by_user_edit(db, email, user)
 
     if not db_user:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User not found")
@@ -109,18 +112,25 @@ def edit_user(
 
 def manage_like_by_liked_email(db: Session,likeContent:schemas.ManageLikeUser) -> schemas.UserOut:
     db_user = db.query(models.User).filter(models.User.email == likeContent.email).first()
+    db_friend = db.query(models.User).filter(models.User.email == likeContent.liked_email).first()
     if likeContent.disorlike == "like": 
         if likeContent.status == "append":
             db_user.like.append(likeContent.liked_email)
+            db_friend.liked.append(likeContent.email)
         if likeContent.status == "remove":
             db_user.like.remove(likeContent.liked_email)
+            db_friend.liked.remove(likeContent.email)
         setattr(db_user, "like", db_user.like)
+        setattr(db_friend, "liked", db_friend.liked)
     if likeContent.disorlike == "dislike": 
         if likeContent.status == "append":
             db_user.dislike.append(likeContent.liked_email)
+            db_friend.disliked.append(likeContent.email)
         if likeContent.status == "remove":
             db_user.dislike.remove(likeContent.liked_email)
+            db_friend.disliked.remove(likeContent.email)
         setattr(db_user, "dislike", db_user.dislike)
+        setattr(db_friend, "disliked", db_friend.disliked)
     db.commit()
     db.refresh(db_user)
     return db_user
@@ -134,8 +144,15 @@ def edit_image_by_user_email(db: Session,user:schemas.User, image_id : int) -> s
 
 def edit_history_nickname_by_user_edit(db: Session, email:str, user : schemas.UserBase):
     db_history = db.query(models.History).filter(models.History.user_email == email).all()
+    print(db_history)
     for i in range(len(db_history)):
         setattr(db_history[i], "nickname", user.nickname)
+
+def edit_comment_nickname_by_user_edit(db: Session, email:str, user : schemas.UserBase):
+    db_comment = db.query(models.Comment).filter(models.Comment.writer_email == email).all()
+    print(db_comment)
+    for i in range(len(db_comment)):
+        setattr(db_comment[i], "writer_nickname", user.nickname)
 
 
 

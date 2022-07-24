@@ -55,6 +55,7 @@ class _FeedState extends State<Feed> {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
 
     return Scaffold(
+        backgroundColor: Colors.black,
         appBar: AppBar(
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

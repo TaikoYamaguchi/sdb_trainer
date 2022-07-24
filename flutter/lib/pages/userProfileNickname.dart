@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
+import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 
 class ProfileNickname extends StatefulWidget {
@@ -13,6 +14,7 @@ class ProfileNickname extends StatefulWidget {
 class _ProfileNicknameState extends State<ProfileNickname> {
   bool isLoading = false;
   var _userdataProvider;
+  var _historydataProvider;
   bool _isNickNameused = false;
   TextEditingController _userNicknameCtrl = TextEditingController(text: "");
 
@@ -24,6 +26,8 @@ class _ProfileNicknameState extends State<ProfileNickname> {
   @override
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _historydataProvider =
+        Provider.of<HistorydataProvider>(context, listen: false);
     return Scaffold(appBar: _appbarWidget(), body: _signupProfileWidget());
   }
 
@@ -150,6 +154,9 @@ class _ProfileNicknameState extends State<ProfileNickname> {
               ? {
                   showToast("수정 완료"),
                   _userdataProvider.getdata(),
+                  _historydataProvider.getdata(),
+                  _historydataProvider.getHistorydataAll(),
+                  _historydataProvider.getCommentAll(),
                   Navigator.pop(context)
                 }
               : showToast("수정할 수 없습니다"));

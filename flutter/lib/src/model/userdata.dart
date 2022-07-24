@@ -12,10 +12,13 @@ class User {
   final bool is_superuser;
   final int level;
   final int point;
+  final int history_cnt;
   final String created_at;
-  final List like;
   final String image;
+  final List like;
   final List dislike;
+  final List liked;
+  final List disliked;
   final List favor_exercise;
 
   User({
@@ -32,10 +35,13 @@ class User {
     required this.isMan,
     required this.level,
     required this.point,
+    required this.history_cnt,
     required this.created_at,
     required this.like,
+    required this.liked,
     required this.image,
     required this.dislike,
+    required this.disliked,
     required this.favor_exercise,
   });
 
@@ -54,10 +60,13 @@ class User {
         isMan: parsedJson['isMan'],
         level: parsedJson['level'],
         point: parsedJson['point'],
+        history_cnt: parsedJson['history_cnt'],
         created_at: parsedJson["created_at"],
         like: parsedJson["like"],
+        liked: parsedJson["liked"],
         image: parsedJson["image"],
         dislike: parsedJson["dislike"],
+        disliked: parsedJson["disliked"],
         favor_exercise: parsedJson["favor_exercise"]);
   }
 }

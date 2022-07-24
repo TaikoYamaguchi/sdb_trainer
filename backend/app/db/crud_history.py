@@ -29,6 +29,13 @@ def create_history(db: Session, history: schemas.HistoryCreate, ip:str):
     db.add(db_history)
     db.commit()
     db.refresh(db_history)
+
+    if (history.user_email != "Anonymous"):
+        db_user = get_user_by_email(db, history.user_email)
+        setattr(db_user, "history_cnt", len(db.query(models.History).filter(models.History.user_email == history.user_email).all()))
+        db.add(db_user)
+        db.commit()
+        db.refresh((db_user))
     return db_history
 
 def get_histories_by_email(db: Session, email: str) -> t.List[schemas.HistoryOut]:

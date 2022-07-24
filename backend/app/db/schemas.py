@@ -23,6 +23,8 @@ class UserOut(UserBase):
     comment_cnt:int
     like:list
     dislike:list
+    liked:list
+    disliked:list
     pass
 
 
@@ -50,6 +52,8 @@ class User(UserBase):
     created_at: datetime
     like:list
     dislike:list
+    liked:list
+    disliked:list
     selfIntroduce:str
     history_cnt:int
     comment_cnt:int
