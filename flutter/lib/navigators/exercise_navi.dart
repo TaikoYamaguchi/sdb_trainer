@@ -39,14 +39,19 @@ class TabNavigatorState extends State<TabNavigator> {
   Widget build(BuildContext context) {
     print(exKey.currentState);
     var routeBuilders = _routeBuilders(context);
-    return Navigator(
-      key: exKey,
-      initialRoute: TabNavigatorRoutes.root,
-      onGenerateRoute: (routeSettings) {
-        return MaterialPageRoute(
-          builder: (context) =>
-            routeBuilders[routeSettings.name]!(context));
-      });
+    return WillPopScope(
+      onWillPop: () async{
+        return true;
+      },
+      child: Navigator(
+
+        initialRoute: TabNavigatorRoutes.root,
+        onGenerateRoute: (routeSettings) {
+          return MaterialPageRoute(
+            builder: (context) =>
+              routeBuilders[routeSettings.name]!(context));
+        }),
+    );
   }
 }
 

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
+import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
@@ -36,6 +37,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   var _exercisesdataProvider;
   var _workoutdataProvider;
   var _routinetimeProvider;
+  var _PopProvider;
   var _exercise;
   var _exercises;
   double top = 0;
@@ -895,10 +897,18 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _exercises = _exercisesdataProvider.exercisesdata.exercises;
+    _PopProvider = Provider.of<PopProvider>(context, listen: false);
 
-    return Scaffold(
-      appBar: _appbarWidget(),
-      body: _exercisedetailPage(),
-    );
+    return Consumer<PopProvider>(builder: (builder, provider, child) {
+      int _stack = provider.exstack;
+      _stack == 0
+          ? null
+          : [provider.exstackdown(), Navigator.of(context).pop()];
+
+      return Scaffold(
+        appBar: _appbarWidget(),
+        body: _exercisedetailPage(),
+      );
+    });
   }
 }

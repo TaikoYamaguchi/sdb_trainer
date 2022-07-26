@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:sdb_trainer/pages/exercise.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
+import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
@@ -38,6 +40,7 @@ class _AppState extends State<App> {
   var _exercisesdataProvider;
   var _exercises;
   var _routinetimeProvider;
+  var _PopProvider;
   late List<hisdata.Exercises> exerciseList = [];
   var _workoutdataProvider;
   var _bodyStater;
@@ -272,6 +275,8 @@ class _AppState extends State<App> {
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
+    _PopProvider =
+        Provider.of<PopProvider>(context, listen: false);
     _historydataProvider =
         Provider.of<HistorydataProvider>(context, listen: false);
     _userdataProvider.getUsersFriendsAll();
@@ -281,20 +286,14 @@ class _AppState extends State<App> {
         builder: (builder, provider1, provider2, child) {
       return WillPopScope(
         onWillPop: () async {
-          final shouldPop = await showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: Text(
-                    'App Close Alert',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  content: Text('App을 끄시겠습니까?'),
-                  actions: <Widget>[
-                    _AppCloseConfirmButton(),
-                  ],
-                );
-              });
+
+          final shouldPop;
+          _bodyStater.bodystate == 0
+              ? shouldPop = true
+              : [shouldPop = false,
+                _bodyStater.bodystate == 1 ? _PopProvider.exstackup() : null
+          ];
+
           return shouldPop!;
         },
         child: Scaffold(
