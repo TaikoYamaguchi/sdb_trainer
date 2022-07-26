@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
+import 'dart:math';
 
 class Calendar extends StatefulWidget {
   @override
@@ -714,21 +715,32 @@ class _CalendarState extends State<Calendar> {
                       text: "SBD Chart",
                       textStyle: TextStyle(color: Colors.white)),
                   primaryXAxis: DateTimeAxis(),
+                  primaryYAxis: NumericAxis(
+                      minimum: _sdbChartData!.length == 0
+                          ? 0
+                          : _sdbChartData!.length > 1
+                              ? _sdbChartData!
+                                  .reduce((curr, next) =>
+                                      curr.onerm! < next.onerm! ? curr : next)
+                                  .onerm
+                              : _sdbChartData![0].onerm),
                   tooltipBehavior: _tooltipBehavior,
                   zoomPanBehavior: _zoomPanBehavior,
                   legend: Legend(
                       isVisible: true,
                       position: LegendPosition.bottom,
                       textStyle: TextStyle(color: Colors.white)),
-                  series: <SplineSeries>[
+                  series: <LineSeries>[
                 // Renders line chart
-                SplineSeries<Exercises, DateTime>(
+                LineSeries<Exercises, DateTime>(
                     isVisibleInLegend: true,
+                    markerSettings: MarkerSettings(
+                        isVisible: true, color: Colors.blue[600]),
                     name: "1rm",
                     width: 3,
-                    enableTooltip: true,
                     color: Colors.blue[600],
                     dataLabelSettings: DataLabelSettings(
+                        showZeroValue: false,
                         isVisible: true,
                         textStyle:
                             TextStyle(color: Colors.white, fontSize: 10)),
@@ -737,7 +749,7 @@ class _CalendarState extends State<Calendar> {
                         DateTime.parse(sales.date!),
                     yValueMapper: (Exercises sales, _) => sales.onerm),
 
-                SplineSeries<Exercises, DateTime>(
+                LineSeries<Exercises, DateTime>(
                     isVisibleInLegend: true,
                     color: Colors.orange,
                     name: "goal",
