@@ -10,7 +10,7 @@ import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:sdb_trainer/navigators/exercise_navi.dart'  ;
+import 'package:sdb_trainer/navigators/exercise_navi.dart';
 import 'package:sdb_trainer/navigators/profile_navi.dart';
 import 'package:sdb_trainer/pages/home.dart';
 import 'package:sdb_trainer/pages/login.dart';
@@ -47,9 +47,6 @@ class _AppState extends State<App> {
   var _loginState;
   var _userdataProvider;
   int updatecount = 0;
-
-
-
 
   BottomNavigationBarItem _bottomNavigationBarItem(
       String iconName, String label) {
@@ -246,11 +243,9 @@ class _AppState extends State<App> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-
           SizedBox(
               width: MediaQuery.of(context).size.width / 4,
               child: TextButton(
-
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop(false);
                   },
@@ -269,7 +264,6 @@ class _AppState extends State<App> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
@@ -285,12 +279,8 @@ class _AppState extends State<App> {
         Provider.of<PopProvider>(context, listen: false);
     _historydataProvider =
         Provider.of<HistorydataProvider>(context, listen: false);
-    _workoutdataProvider.getdata();
-    _exercisesdataProvider.getdata();
     _userdataProvider.getUsersFriendsAll();
     print("오잉 ");
-
-
 
     return Consumer2<BodyStater, LoginPageProvider>(
         builder: (builder, provider1, provider2, child) {
@@ -318,8 +308,8 @@ class _AppState extends State<App> {
               : _loginState.isSignUp
                   ? SignUpPage()
                   : LoginPage(),
-          floatingActionButton:
-              Consumer<RoutineTimeProvider>(builder: (builder, provider, child) {
+          floatingActionButton: Consumer<RoutineTimeProvider>(
+              builder: (builder, provider, child) {
             return Container(
               child: (provider.isstarted && _bodyStater.bodystate != 1)
                   ? ExpandableFab(
