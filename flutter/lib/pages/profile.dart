@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 
@@ -17,12 +18,14 @@ class Profile extends StatelessWidget {
 
   final ImagePicker _picker = ImagePicker();
   var _userdataProvider;
+  var _PopProvider;
   var _loginState;
 
   @override
   Widget build(BuildContext context) {
     _loginState = Provider.of<LoginPageProvider>(context, listen: false);
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _PopProvider = Provider.of<PopProvider>(context, listen: false);
     print("this is profileeeeeeeeee");
     return Scaffold(
       appBar: AppBar(
@@ -52,6 +55,7 @@ class Profile extends StatelessWidget {
         child: Column(children: [
           ElevatedButton(
               onPressed: () {
+                _PopProvider.profilestackup();
                 Navigator.push(
                     context,
                     Transition(
@@ -76,6 +80,7 @@ class Profile extends StatelessWidget {
               })),
           ElevatedButton(
               onPressed: () {
+                _PopProvider.profilestackup();
                 Navigator.push(
                     context,
                     Transition(

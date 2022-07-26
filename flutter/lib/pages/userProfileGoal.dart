@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:sdb_trainer/providers/exercisesdata.dart';
+import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
@@ -35,7 +36,20 @@ class _ProfileGoalState extends State<ProfileGoal> {
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _exerciseList = _exercisesdataProvider.exercisesdata.exercises;
 
-    return Scaffold(appBar: _appbarWidget(), body: _signupExerciseWidget());
+    return Consumer<PopProvider>(
+        builder: (Builder, provider, child)
+        {
+          bool _popable = provider.isprostacking;
+          _popable == false
+              ? null
+              : [
+            provider.profilestackdown(),
+            provider.propopoff(),
+            Future.delayed(Duration.zero, () async {
+              Navigator.of(context).pop();
+            })
+          ];
+          return Scaffold(appBar: _appbarWidget(), body: _signupExerciseWidget()); });
   }
 
   PreferredSizeWidget _appbarWidget() {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
@@ -20,6 +21,7 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   var _userdataProvider;
+  var _PopProvider;
   final ImagePicker _picker = ImagePicker();
   @override
   void initState() {
@@ -52,6 +54,7 @@ class _UserProfileState extends State<UserProfile> {
       child: Column(children: [
         ElevatedButton(
           onPressed: () {
+            _PopProvider.profilestackup();
             Navigator.push(
                 context,
                 Transition(
@@ -76,6 +79,7 @@ class _UserProfileState extends State<UserProfile> {
         ),
         ElevatedButton(
           onPressed: () {
+            _PopProvider.profilestackup();
             Navigator.push(
                 context,
                 Transition(
@@ -146,11 +150,26 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _PopProvider = Provider.of<PopProvider>(context, listen: false);
     print("this is profileeeeeeeeee");
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: _appbarWidget(),
-        body: _userProfileWidget(),
-        backgroundColor: Colors.black);
+    return Consumer<PopProvider>(
+        builder: (Builder, provider, child)
+    {
+      bool _popable = provider.isprostacking;
+      _popable == false
+          ? null
+          : [
+        provider.profilestackdown(),
+        provider.propopoff(),
+        Future.delayed(Duration.zero, () async {
+          Navigator.of(context).pop();
+        })
+      ];
+      return Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: _appbarWidget(),
+          body: _userProfileWidget(),
+          backgroundColor: Colors.black);
+    });
   }
 }

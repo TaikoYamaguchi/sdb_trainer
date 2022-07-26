@@ -34,6 +34,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   var _userdataProvider;
   var _workoutdataProvider;
   var backupwddata;
+  var _PopProvider;
   var _exercises;
   final controller = TextEditingController();
   TextEditingController _workoutNameCtrl = TextEditingController(text: "");
@@ -463,7 +464,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 onTap: () {
                   _isexsearch
                       ? [_workoutdataProvider.removeexAt(widget.rindex, index)]
-                      : Navigator.push(
+                      : [_PopProvider.exstackup(),
+                        Navigator.push(
                           context,
                           Transition(
                               child: EachExerciseDetails(
@@ -473,7 +475,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                 rindex: widget.rindex,
                               ),
                               transitionEffect:
-                                  TransitionEffect.RIGHT_TO_LEFT));
+                                  TransitionEffect.RIGHT_TO_LEFT))];
                 },
                 child: Column(
                   children: [
@@ -731,14 +733,17 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
     _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
+    _PopProvider =
+        Provider.of<PopProvider>(context, listen: false);
     print("띠용");
     return Consumer<PopProvider>(
       builder: (Builder, provider, child) {
-        int _stack = provider.exstack;
-        _stack == 0
+        bool _popable = provider.isstacking;
+        _popable == false
             ? null
             : [
           provider.exstackdown(),
+          provider.popoff(),
           Future.delayed(Duration.zero, () async {
             Navigator.of(context).pop();
           })

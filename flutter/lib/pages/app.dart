@@ -291,7 +291,7 @@ class _AppState extends State<App> {
           _bodyStater.bodystate == 0
               ? shouldPop = true
               : [shouldPop = false,
-                _bodyStater.bodystate == 1 ? _PopProvider.exstackup() : null
+                _bodyStater.bodystate == 1 ? _PopProvider.popon() : _bodyStater.bodystate == 4 ? _PopProvider.propopon() : null
           ];
 
           return shouldPop!;
