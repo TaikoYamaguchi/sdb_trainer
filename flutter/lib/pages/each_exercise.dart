@@ -903,7 +903,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
       int _stack = provider.exstack;
       _stack == 0
           ? null
-          : [provider.exstackdown(), Navigator.of(context).pop()];
+          : [
+              provider.exstackdown(),
+              Future.delayed(Duration.zero, () async {
+                Navigator.of(context).pop();
+              })
+            ];
 
       return Scaffold(
         appBar: _appbarWidget(),
