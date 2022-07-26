@@ -15,6 +15,7 @@ import 'package:sdb_trainer/src/model/userdata.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:transition/transition.dart';
+import 'package:sdb_trainer/providers/popmanage.dart';
 
 class Exercise extends StatefulWidget {
   final onPush;
@@ -29,6 +30,7 @@ class ExerciseState extends State<Exercise> {
   var _userdataProvider;
   var _exercisesdataProvider;
   var _workoutdataProvider;
+  var _PopProvider;
   List<Map<String, dynamic>> datas = [];
   double top = 0;
   double bottom = 0;
@@ -326,11 +328,12 @@ class ExerciseState extends State<Exercise> {
 
   void _postExerciseCheck() async {
     ExerciseEdit(
-        user_email: _userdataProvider.userdata.email, exercises: _exercisesdataProvider.exercisesdata.exercises)
+            user_email: _userdataProvider.userdata.email,
+            exercises: _exercisesdataProvider.exercisesdata.exercises)
         .editExercise()
         .then((data) => data["user_email"] != null
-        ? {showToast("수정 완료"), _exercisesdataProvider.getdata()}
-        : showToast("입력을 확인해주세요"));
+            ? {showToast("수정 완료"), _exercisesdataProvider.getdata()}
+            : showToast("입력을 확인해주세요"));
   }
 
   Widget exercisesWidget2(bool shirink) {
@@ -404,38 +407,38 @@ class ExerciseState extends State<Exercise> {
                               children: [
                                 Text("Rest: need to set",
                                     style: TextStyle(
-                                        fontSize: 13, color: Color(0xFF717171))),
+                                        fontSize: 13,
+                                        color: Color(0xFF717171))),
                                 Expanded(child: SizedBox()),
                                 Text(
                                     "1RM: ${_exunique[index].onerm}/${_exunique[index].goal.toStringAsFixed(1)}${_userdata.weight_unit}",
                                     style: TextStyle(
-                                        fontSize: 13, color: Color(0xFF717171))),
+                                        fontSize: 13,
+                                        color: Color(0xFF717171))),
                               ],
                             ),
                           ),
-
                         ],
                       ),
                     ),
                     index == _exunique.length - 1
                         ? Container()
                         : Container(
-                      alignment: Alignment.center,
-                      height: 1,
-                      color: Color(0xFF212121),
-                      child: Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.symmetric(horizontal: 10),
-                        height: 1,
-                        color: Color(0xFF717171),
-                      ),
-                    )
+                            alignment: Alignment.center,
+                            height: 1,
+                            color: Color(0xFF212121),
+                            child: Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              height: 1,
+                              color: Color(0xFF717171),
+                            ),
+                          )
                   ],
                 ),
               ),
             );
           },
-
           scrollDirection: Axis.vertical,
           shrinkWrap: shirink,
           itemCount: _exunique.length,
@@ -525,19 +528,32 @@ class ExerciseState extends State<Exercise> {
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _workoutdataProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
-    return Scaffold(
-        appBar: _appbarWidget(),
-        body: Consumer2<ExercisesdataProvider, WorkoutdataProvider>(
-            builder: (context, provider1, provider2, widget) {
-          if (provider2.workoutdata != null) {
-            return _bodyWidget();
-          }
-          return Container(
-            color: Colors.black,
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }));
+    _PopProvider = Provider.of<PopProvider>(context, listen: false);
+    return Consumer<PopProvider>(builder: (builder, provider, child) {
+      int _stack = provider.exstack;
+      _stack == 0
+          ? null
+          : [
+              provider.exstackdown(),
+              Future.delayed(Duration.zero, () async {
+                Navigator.of(context).pop();
+              })
+            ];
+
+      return Scaffold(
+          appBar: _appbarWidget(),
+          body: Consumer2<ExercisesdataProvider, WorkoutdataProvider>(
+              builder: (context, provider1, provider2, widget) {
+            if (provider2.workoutdata != null) {
+              return _bodyWidget();
+            }
+            return Container(
+              color: Colors.black,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }));
+    });
   }
 }
