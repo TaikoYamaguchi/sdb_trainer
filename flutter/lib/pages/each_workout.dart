@@ -443,7 +443,10 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               final exinfo = exunique.where((unique) {
                 return (unique.name == exlist[index].name);
               }).toList();
-              if (index == 0) {
+              if (exlist.length == 1) {
+                top = 20;
+                bottom = 20;
+              } else if (index == 0) {
                 top = 20;
                 bottom = 0;
               } else if (index == exlist.length - 1) {
@@ -727,6 +730,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
     _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
+    print("띠용");
     return WillPopScope(
       onWillPop: () async {
         return true;

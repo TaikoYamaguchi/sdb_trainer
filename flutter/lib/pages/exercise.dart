@@ -100,7 +100,10 @@ class ExerciseState extends State<Exercise> {
             },
             padding: EdgeInsets.symmetric(horizontal: 5),
             itemBuilder: (BuildContext _context, int index) {
-              if (index == 0) {
+              if (routinelist.length == 1) {
+                top = 20;
+                bottom = 20;
+              } else if (index == 0) {
                 top = 20;
                 bottom = 0;
               } else if (index == routinelist.length - 1) {
