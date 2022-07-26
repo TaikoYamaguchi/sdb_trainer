@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/each_exercise.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
+import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
@@ -731,15 +732,23 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
     print("띠용");
-    return WillPopScope(
-      onWillPop: () async {
-        return true;
-      },
-      child: Scaffold(
-          appBar: _appbarWidget(),
-          body: _isexsearch
-              ? _exercises_searchWidget()
-              : _exercisesWidget(false)),
+    return Consumer<PopProvider>(
+      builder: (Builder, provider, child) {
+        int _stack = provider.exstack;
+        _stack == 0
+            ? null
+            : [
+          provider.exstackdown(),
+          Future.delayed(Duration.zero, () async {
+            Navigator.of(context).pop();
+          })
+        ];
+        return Scaffold(
+            appBar: _appbarWidget(),
+            body: _isexsearch
+                ? _exercises_searchWidget()
+                : _exercisesWidget(false));
+      }
     );
   }
 }

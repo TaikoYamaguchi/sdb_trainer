@@ -899,21 +899,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     _exercises = _exercisesdataProvider.exercisesdata.exercises;
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
 
-    return Consumer<PopProvider>(builder: (builder, provider, child) {
-      int _stack = provider.exstack;
-      _stack == 0
-          ? null
-          : [
-              provider.exstackdown(),
-              Future.delayed(Duration.zero, () async {
-                Navigator.of(context).pop();
-              })
-            ];
-
-      return Scaffold(
+    return Scaffold(
         appBar: _appbarWidget(),
         body: _exercisedetailPage(),
       );
-    });
   }
 }

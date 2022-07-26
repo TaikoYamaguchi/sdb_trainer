@@ -529,18 +529,7 @@ class ExerciseState extends State<Exercise> {
     _workoutdataProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
-    return Consumer<PopProvider>(builder: (builder, provider, child) {
-      int _stack = provider.exstack;
-      _stack == 0
-          ? null
-          : [
-              provider.exstackdown(),
-              Future.delayed(Duration.zero, () async {
-                Navigator.of(context).pop();
-              })
-            ];
-
-      return Scaffold(
+    return Scaffold(
           appBar: _appbarWidget(),
           body: Consumer2<ExercisesdataProvider, WorkoutdataProvider>(
               builder: (context, provider1, provider2, widget) {
@@ -554,6 +543,6 @@ class ExerciseState extends State<Exercise> {
               ),
             );
           }));
-    });
+
   }
 }
