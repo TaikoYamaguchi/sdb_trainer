@@ -71,7 +71,7 @@ class ExerciseState extends State<Exercise> {
       actions: swap == 1
           ? [
               IconButton(
-                icon: SvgPicture.asset("assets/svg/add.svg"),
+                icon: SvgPicture.asset("assets/svg/add_white.svg"),
                 onPressed: () {
                   _displayTextInputDialog();
                 },

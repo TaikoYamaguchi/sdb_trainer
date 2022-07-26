@@ -21,6 +21,7 @@ import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
+import 'package:tutorial/tutorial.dart';
 import 'dart:math' as math;
 
 import 'statics.dart';
@@ -43,7 +44,9 @@ class _AppState extends State<App> {
   var _loginState;
   var _userdataProvider;
   int updatecount = 0;
-  final globalKey = GlobalKey();
+
+
+
 
   BottomNavigationBarItem _bottomNavigationBarItem(
       String iconName, String label) {
@@ -288,8 +291,7 @@ class _AppState extends State<App> {
         builder: (builder, provider1, provider2, child) {
       return WillPopScope(
         onWillPop: () async {
-          return
-          showDialog<bool>(
+          final shouldPop = await showDialog(
               context: context,
               builder: (context) {
                 return AlertDialog(
@@ -302,10 +304,10 @@ class _AppState extends State<App> {
                     _AppCloseConfirmButton(),
                   ],
                 );
-              }) == true ;
+              });
+          return shouldPop!;
         },
         child: Scaffold(
-          key: globalKey,
           body: _loginState.isLogin
               ? IndexedStack(index: _bodyStater.bodystate, children: <Widget>[
                   Home(),

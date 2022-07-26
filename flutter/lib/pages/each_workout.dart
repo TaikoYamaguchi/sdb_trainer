@@ -14,6 +14,7 @@ import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'package:sdb_trainer/src/model/workoutdata.dart' as wod;
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:transition/transition.dart';
+import 'package:tutorial/tutorial.dart';
 
 class EachWorkoutDetails extends StatefulWidget {
   List<wod.Exercises> exerciselist;
@@ -47,8 +48,91 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   bool _isexsearch = false;
   var btnDisabled;
 
+  var keyMenu = GlobalKey();
+  var keyContainer = GlobalKey();
+  var keyChat = GlobalKey();
+
+  List<TutorialItem> itens = [];
+
+  //Iniciando o estado.
   @override
   void initState() {
+    itens.addAll({
+      TutorialItem(
+          globalKey: keyMenu,
+          touchScreen: true,
+          top: 200,
+          left: 50,
+          children: [
+            Text(
+              "+버튼을 눌러 원하는 운동을 추가 하세요",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            SizedBox(
+              height: 100,
+            )
+          ],
+          widgetNext: Text(
+            "Toque para continuar",
+            style: TextStyle(
+              color: Colors.purple,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          shapeFocus: ShapeFocus.oval),
+      TutorialItem(
+        globalKey: keyChat,
+        touchScreen: true,
+        top: 200,
+        left: 50,
+        children: [
+          Text(
+            "Qualquer duvida que aparecer , entre no nosso chat , estamos prontos para ajudar",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          SizedBox(
+            height: 100,
+          )
+        ],
+        widgetNext: Text(
+          "Toque para continuar",
+          style: TextStyle(
+            color: Colors.purple,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        shapeFocus: ShapeFocus.oval,
+      ),
+      TutorialItem(
+        globalKey: keyContainer,
+        touchScreen: true,
+        bottom: 50,
+        left: 50,
+        children: [
+          Text(
+            "Nessa sessão você vai ter acesso a todas as  Rasteirinhas",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          SizedBox(
+            height: 10,
+          )
+        ],
+        widgetNext: Text(
+          "Sair",
+          style: TextStyle(
+            color: Colors.purple,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        shapeFocus: ShapeFocus.square,
+      ),
+    });
+
+    ///FUNÇÃO QUE EXIBE O TUTORIAL.
+    Future.delayed(Duration(milliseconds: 400)).then((value) {
+      Tutorial.showTutorial(context, itens);
+    });
+
     super.initState();
   }
 
@@ -96,22 +180,29 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
       actions: [
         _isexsearch
             ? IconButton(
+          key: keyMenu,
                 iconSize: 30,
                 icon: Icon(Icons.check_rounded),
                 onPressed: () {
                   _editWorkoutCheck();
                   setState(() {
                     _isexsearch = !_isexsearch;
+
                   });
                 },
               )
             : IconButton(
-                icon: SvgPicture.asset("assets/svg/add.svg"),
+                key: keyMenu,
+                icon: SvgPicture.asset("assets/svg/add_white.svg"),
                 onPressed: () {
                   _workoutdataProvider.dataBU(widget.rindex);
 
                   setState(() {
                     _isexsearch = !_isexsearch;
+
+                  });
+                  Future.delayed(Duration(milliseconds: 400)).then((value) {
+                    Tutorial.showTutorial(context, itens);
                   });
                 },
               )

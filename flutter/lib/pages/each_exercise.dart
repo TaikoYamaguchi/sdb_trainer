@@ -539,6 +539,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               onPressed: () {
                                 _workoutdataProvider.setsplus(
                                     widget.rindex, pindex);
+                                weightController[pindex].controllerlist.clear();
+
                               },
                               icon: Icon(
                                 Icons.add,
