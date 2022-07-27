@@ -14,6 +14,7 @@ import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'package:sdb_trainer/src/model/workoutdata.dart' as wod;
 import 'package:sdb_trainer/src/utils/util.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:transition/transition.dart';
 import 'package:tutorial/tutorial.dart';
 
@@ -50,9 +51,14 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   bool _isexsearch = false;
   var btnDisabled;
 
-  var keyMenu = GlobalKey();
+  var keyPlus = GlobalKey();
   var keyContainer = GlobalKey();
-  var keyChat = GlobalKey();
+  var keyCheck = GlobalKey();
+  var keySearch = GlobalKey();
+  var keySelect = GlobalKey();
+
+
+
 
   List<TutorialItem> itens = [];
 
@@ -61,7 +67,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   void initState() {
     itens.addAll({
       TutorialItem(
-          globalKey: keyMenu,
+          globalKey: keyPlus,
           touchScreen: true,
           top: 200,
           left: 50,
@@ -75,7 +81,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             )
           ],
           widgetNext: Text(
-            "Toque para continuar",
+            "아무곳을 눌러 진행",
             style: TextStyle(
               color: Colors.purple,
               fontWeight: FontWeight.bold,
@@ -83,13 +89,13 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
           ),
           shapeFocus: ShapeFocus.oval),
       TutorialItem(
-        globalKey: keyChat,
+        globalKey: keySearch,
         touchScreen: true,
         top: 200,
         left: 50,
         children: [
           Text(
-            "Qualquer duvida que aparecer , entre no nosso chat , estamos prontos para ajudar",
+            "이곳에 검색하여 원하는 운동을 찾고,",
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
           SizedBox(
@@ -97,30 +103,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
           )
         ],
         widgetNext: Text(
-          "Toque para continuar",
-          style: TextStyle(
-            color: Colors.purple,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        shapeFocus: ShapeFocus.oval,
-      ),
-      TutorialItem(
-        globalKey: keyContainer,
-        touchScreen: true,
-        bottom: 50,
-        left: 50,
-        children: [
-          Text(
-            "Nessa sessão você vai ter acesso a todas as  Rasteirinhas",
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          SizedBox(
-            height: 10,
-          )
-        ],
-        widgetNext: Text(
-          "Sair",
+          "아무곳을 눌러 진행",
           style: TextStyle(
             color: Colors.purple,
             fontWeight: FontWeight.bold,
@@ -128,9 +111,57 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
         ),
         shapeFocus: ShapeFocus.square,
       ),
+      TutorialItem(
+        globalKey: keySelect,
+        touchScreen: true,
+        top: 200,
+        left: 50,
+        children: [
+          Text(
+            "운동을 클릭하여 원하는 운동을 추가한 뒤,",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          SizedBox(
+            height: 100,
+          )
+        ],
+        widgetNext: Text(
+          "아무곳을 눌러 진행",
+          style: TextStyle(
+            color: Colors.purple,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        shapeFocus: ShapeFocus.square,
+      ),
+      TutorialItem(
+        globalKey: keyCheck,
+        touchScreen: true,
+        top: 200,
+        left: 50,
+        children: [
+          Text(
+            "이곳을 눌러 Routine 수정을 완료하세요",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          SizedBox(
+            height: 100,
+          )
+        ],
+        widgetNext: Text(
+          "아무곳을 눌러 진행",
+          style: TextStyle(
+            color: Colors.purple,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        shapeFocus: ShapeFocus.oval,
+      ),
     });
 
     ///FUNÇÃO QUE EXIBE O TUTORIAL.
+
+
     Future.delayed(Duration(milliseconds: 400)).then((value) {
       Tutorial.showTutorial(context, itens);
     });
@@ -182,7 +213,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
       actions: [
         _isexsearch
             ? IconButton(
-          key: keyMenu,
+          key: keyCheck,
                 iconSize: 30,
                 icon: Icon(Icons.check_rounded),
                 onPressed: () {
@@ -194,7 +225,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 },
               )
             : IconButton(
-                key: keyMenu,
+                key: keyPlus,
                 icon: SvgPicture.asset("assets/svg/add_white.svg"),
                 onPressed: () {
                   _workoutdataProvider.dataBU(widget.rindex);
@@ -203,7 +234,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                     _isexsearch = !_isexsearch;
 
                   });
-                  Future.delayed(Duration(milliseconds: 400)).then((value) {
+                  Future.delayed(Duration(milliseconds: 100)).then((value) {
                     Tutorial.showTutorial(context, itens);
                   });
                 },
@@ -562,6 +593,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
           Container(
             margin: const EdgeInsets.fromLTRB(10, 16, 10, 16),
             child: TextField(
+                key: keySearch,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   prefixIcon: Icon(
@@ -604,6 +636,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
     double top = 0;
     double bottom = 0;
     return Expanded(
+      key: keySelect,
       //color: Colors.black,
       child: Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
         List exlist =
