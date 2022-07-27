@@ -119,7 +119,7 @@ class ExerciseState extends State<Exercise> {
               return GestureDetector(
                 key: Key('$index'),
                 onTap: () {
-                  _PopProvider.exstackup();
+                  _PopProvider.exstackup(1);
                   Navigator.push(
                       context,
                       Transition(

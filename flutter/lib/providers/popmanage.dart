@@ -22,8 +22,8 @@ class PopProvider extends ChangeNotifier {
     _isstacking = false;
   }
 
-  exstackup() {
-    _exstack++;
+  exstackup(order) {
+    _exstack= order;
   }
 
   exstackdown() {

@@ -495,7 +495,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 onTap: () {
                   _isexsearch
                       ? [_workoutdataProvider.removeexAt(widget.rindex, index)]
-                      : [_PopProvider.exstackup(),
+                      : [_PopProvider.exstackup(2),
                         Navigator.push(
                           context,
                           Transition(
@@ -772,6 +772,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
     return Consumer<PopProvider>(
       builder: (Builder, provider, child) {
         bool _popable = provider.isstacking;
+        print(_popable);
         _popable == false
             ? null
             : [
