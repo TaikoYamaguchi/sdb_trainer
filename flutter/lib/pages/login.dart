@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:sdb_trainer/pages/home.dart';
 import 'package:sdb_trainer/pages/userFind.dart';
@@ -397,11 +398,16 @@ class _LoginPageState extends State<LoginPage> {
         Provider.of<ExercisesdataProvider>(context, listen: false);
     final _workoutdataProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
+    final _PrefsProvider =
+    Provider.of<PrefsProvider>(context, listen: false);
     await [
       _initUserdataProvider.getdata(),
       _initUserdataProvider.getUsersFriendsAll(),
       _initHistorydataProvider.getdata(),
-      _workoutdataProvider.getdata()
+      _workoutdataProvider.getdata(),
+      print('하지롱'),
+      _PrefsProvider.getprefs(),
+      print('했지롱')
     ];
     _initHistorydataProvider.getHistorydataAll();
     _initHistorydataProvider.getCommentAll();

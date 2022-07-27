@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
+import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 
@@ -20,16 +22,33 @@ class Profile extends StatelessWidget {
   var _userdataProvider;
   var _PopProvider;
   var _loginState;
+  var _PrefsProvider;
+  var _bodyStater;
 
   @override
   Widget build(BuildContext context) {
     _loginState = Provider.of<LoginPageProvider>(context, listen: false);
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
+    _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
+    _bodyStater = Provider.of<BodyStater>(context, listen: false);
     print("this is profileeeeeeeeee");
     return Scaffold(
       appBar: AppBar(
           title: Text("설정", style: TextStyle(color: Colors.white)),
+          actions: [Container(alignment: Alignment.center,
+              child:
+              ElevatedButton(
+                  onPressed: (){
+                    _PopProvider.tutorpopon();
+
+                    Future.delayed(Duration(milliseconds: 400)).then((value) {
+                      _bodyStater.change(1);
+                    });
+                    _PrefsProvider.tutorstart();
+                    },
+                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
+                  child: Text('튜토리얼',style: TextStyle(color: Colors.white))))],
           backgroundColor: Colors.black),
       body: _userdataProvider.userdata != null
           ? _profile(context)

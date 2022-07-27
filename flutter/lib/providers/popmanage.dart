@@ -11,6 +11,18 @@ class PopProvider extends ChangeNotifier {
   bool get isstacking => _isstacking;
   bool _isprostacking = false;
   bool get isprostacking => _isprostacking;
+  bool _tutorpop = false;
+  bool get tutorpop => _tutorpop;
+
+  tutorpopon() {
+    _tutorpop = true;
+    print(_tutorpop);
+    notifyListeners();
+  }
+
+  tutorpopoff() {
+    _tutorpop = false;
+  }
 
   popon() {
     _exstack == 0

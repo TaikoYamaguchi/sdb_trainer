@@ -5,24 +5,64 @@ class PrefsProvider extends ChangeNotifier {
 
   bool? _eachworkouttutor = false;
   bool? get eachworkouttutor => _eachworkouttutor;
-  bool? _isprostacking = false;
-  bool? get isprostacking => _isprostacking;
+  bool? _stepone = false;
+  bool? get stepone => _stepone;
+  bool? _steptwo = false;
+  bool? get steptwo => _steptwo;
+  bool? _stepthree = false;
+  bool? get stepthree => _stepthree;
   var _prefs;
 
   getprefs() async{
     _prefs = await SharedPreferences.getInstance();
     _prefs.getBool('eachworkouttutor') == null
-        ? [_prefs.setBool('eachworkouttutor', true), _eachworkouttutor = _prefs.getBool('eachworkouttutor')]
-        : _eachworkouttutor = _prefs.getBool('eachworkouttutor');
+        ? [print('눌눌눌'),
+          await _prefs.setBool('eachworkouttutor', true),
+          _eachworkouttutor = _prefs.getBool('eachworkouttutor'),
+          _stepone = _eachworkouttutor,
+          _steptwo = _eachworkouttutor,
+          _stepthree = _eachworkouttutor
+          ]
+        : [_eachworkouttutor = _prefs.getBool('eachworkouttutor'),
+          _stepone = _eachworkouttutor,
+          _steptwo = _eachworkouttutor,
+          _stepthree = _eachworkouttutor
+          ];
+
+    notifyListeners();
+  }
+
+  steponedone() async{
+    _stepone = false;
+
+    notifyListeners();
+  }
+
+  steptwodone() async{
+    _steptwo = false;
+
+    notifyListeners();
+  }
+
+  stepthreedone() async{
+    _stepthree = false;
 
     notifyListeners();
   }
 
   tutordone() async{
-    final prefs = await SharedPreferences.getInstance();
-    prefs.getBool('eachworkouttutor') == null
-        ? [prefs.setBool('eachworkouttutor', true), _eachworkouttutor = prefs.getBool('eachworkouttutor')]
-        : _eachworkouttutor = prefs.getBool('eachworkouttutor');
+    await _prefs.setBool('eachworkouttutor', false);
+    _eachworkouttutor = _prefs.getBool('eachworkouttutor');
+
+    notifyListeners();
+  }
+
+  tutorstart() async{
+    await _prefs.setBool('eachworkouttutor', true);
+    _eachworkouttutor = _prefs.getBool('eachworkouttutor');
+    _stepone = _eachworkouttutor;
+    _steptwo = _eachworkouttutor;
+    _stepthree = _eachworkouttutor;
 
     notifyListeners();
   }

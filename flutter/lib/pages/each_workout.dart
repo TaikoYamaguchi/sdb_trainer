@@ -7,6 +7,7 @@ import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
+import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
@@ -36,6 +37,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   var _workoutdataProvider;
   var backupwddata;
   var _PopProvider;
+  var _PrefsProvider;
   var _exercises;
   final controller = TextEditingController();
   TextEditingController _workoutNameCtrl = TextEditingController(text: "");
@@ -43,6 +45,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   var _testdata0;
   late var _testdata = _testdata0;
   late List<hisdata.Exercises> exerciseList = [];
+  bool _inittutor = true;
 
   List<Map<String, dynamic>> datas = [];
   double top = 0;
@@ -162,14 +165,11 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
     ///FUNÇÃO QUE EXIBE O TUTORIAL.
 
 
-    Future.delayed(Duration(milliseconds: 400)).then((value) {
-      Tutorial.showTutorial(context, itens);
-    });
-
     super.initState();
   }
 
   PreferredSizeWidget _appbarWidget() {
+
     btnDisabled = false;
     return AppBar(
       leading: _isexsearch
@@ -234,9 +234,12 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                     _isexsearch = !_isexsearch;
 
                   });
-                  Future.delayed(Duration(milliseconds: 100)).then((value) {
-                    Tutorial.showTutorial(context, itens);
-                  });
+                  print(_PrefsProvider.eachworkouttutor);
+                  _PrefsProvider.eachworkouttutor
+                      ? [Future.delayed(Duration(milliseconds: 100)).then((value) {
+                        Tutorial.showTutorial(context, itens);
+                        }),_PrefsProvider.tutordone() ]
+                      : null;
                 },
               )
       ],
@@ -768,11 +771,24 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
         Provider.of<RoutineTimeProvider>(context, listen: false);
     _PopProvider =
         Provider.of<PopProvider>(context, listen: false);
+    _PrefsProvider =
+        Provider.of<PrefsProvider>(context, listen: false);
     print("띠용");
+    _PopProvider.tutorpopoff();
+    _PrefsProvider.eachworkouttutor
+        ? _PrefsProvider.steptwo
+        ? [Future.delayed(Duration(milliseconds: 400)).then((value) {
+      Tutorial.showTutorial(context, itens);
+      _PrefsProvider.steptwodone();
+    })]
+        : null
+        : null;
+
+
     return Consumer<PopProvider>(
       builder: (Builder, provider, child) {
+
         bool _popable = provider.isstacking;
-        print(_popable);
         _popable == false
             ? null
             : [
@@ -782,6 +798,20 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             Navigator.of(context).pop();
           })
         ];
+        print('working?1');
+        bool _tutorpop = provider.tutorpop;
+        _tutorpop == false
+            ? print('working?2')
+            : [
+              print('working?'),
+          provider.exstackup(0),
+          Future.delayed(Duration.zero, () async {
+            Navigator.of(context).popUntil((route) => route.isFirst);
+            _PopProvider.tutorpopoff();
+          })
+        ];
+
+
         return Scaffold(
             appBar: _appbarWidget(),
             body: _isexsearch

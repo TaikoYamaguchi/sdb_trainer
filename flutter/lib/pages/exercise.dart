@@ -8,6 +8,7 @@ import 'package:sdb_trainer/pages/each_workout.dart';
 import 'package:sdb_trainer/pages/unique_exercise.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
+import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
@@ -16,6 +17,7 @@ import 'package:sdb_trainer/src/model/workoutdata.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
+import 'package:tutorial/tutorial.dart';
 
 class Exercise extends StatefulWidget {
   final onPush;
@@ -31,6 +33,7 @@ class ExerciseState extends State<Exercise> {
   var _exercisesdataProvider;
   var _workoutdataProvider;
   var _PopProvider;
+  var _PrefsProvider;
   List<Map<String, dynamic>> datas = [];
   double top = 0;
   double bottom = 0;
@@ -41,8 +44,45 @@ class ExerciseState extends State<Exercise> {
     Exercises(name: "스쿼트", sets: Setslist().setslist, onerm: 0.0, rest: 1),
   ];
 
+  var keyPlus = GlobalKey();
+  var keyContainer = GlobalKey();
+  var keyCheck = GlobalKey();
+  var keySearch = GlobalKey();
+  var keySelect = GlobalKey();
+
+  List<TutorialItem> itens = [];
+
   @override
   void initState() {
+    itens.addAll({
+      TutorialItem(
+          globalKey: keyPlus,
+          touchScreen: true,
+          top: 200,
+          left: 50,
+          children: [
+            Text(
+              "+버튼을 눌러 원하는 이름의 루틴을 추가하세요",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            SizedBox(
+              height: 100,
+            )
+          ],
+          widgetNext: Text(
+            "아무곳을 눌러 진행",
+            style: TextStyle(
+              color: Colors.purple,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          shapeFocus: ShapeFocus.oval),
+
+    });
+
+    ///FUNÇÃO QUE EXIBE O TUTORIAL.
+
+
     super.initState();
   }
 
@@ -73,6 +113,7 @@ class ExerciseState extends State<Exercise> {
       actions: swap == 1
           ? [
               IconButton(
+                key:keyPlus,
                 icon: SvgPicture.asset("assets/svg/add_white.svg"),
                 onPressed: () {
                   _displayTextInputDialog();
@@ -530,6 +571,17 @@ class ExerciseState extends State<Exercise> {
     _workoutdataProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
+    _PrefsProvider =
+        Provider.of<PrefsProvider>(context, listen: false);
+    _PrefsProvider.eachworkouttutor
+        ? _PrefsProvider.stepone
+        ? [Future.delayed(Duration(milliseconds: 0)).then((value) {
+      Tutorial.showTutorial(context, itens);
+      _PrefsProvider.steponedone();
+    }),]
+        : null
+        : null;
+
     return Scaffold(
           appBar: _appbarWidget(),
           body: Consumer2<ExercisesdataProvider, WorkoutdataProvider>(
