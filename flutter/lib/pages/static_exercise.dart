@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
@@ -28,6 +29,7 @@ class StaticsExerciseDetails extends StatefulWidget {
 
 class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
   var _userdataProvider;
+  var _historydataProvider;
   var _originExercise;
   double top = 0;
   double bottom = 0;
@@ -60,9 +62,22 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
           Navigator.of(context).pop();
         },
       ),
-      title: Text(
-        "",
-        style: TextStyle(color: Colors.white, fontSize: 30),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("", style: TextStyle(color: Colors.white)),
+          GestureDetector(
+              onTap: () {
+                _historydataProvider.deleteExercisedata(
+                    widget.history_id, widget.index);
+                _deleteExerciseCheck();
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: Text("운동 삭제",
+                    style: TextStyle(color: Colors.white, fontSize: 16)),
+              )),
+        ],
       ),
       backgroundColor: Colors.black,
     );
@@ -90,37 +105,19 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  "Rest Timer off",
-                  style: TextStyle(
-                    color: Color(0xFF717171),
-                    fontSize: 21,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  "Rest: ${_exampleex.rest}",
-                  style: TextStyle(
-                    color: Color(0xFF717171),
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              ],
-            )),
-            Container(
                 height: 130,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      _exampleex.name,
-                      style: TextStyle(color: Colors.white, fontSize: 48),
-                    ),
+                    _exampleex.name.length < 8
+                        ? Text(
+                            _exampleex.name,
+                            style: TextStyle(color: Colors.white, fontSize: 48),
+                          )
+                        : Text(
+                            _exampleex.name,
+                            style: TextStyle(color: Colors.white, fontSize: 32),
+                          ),
                     Text(
                       "Best 1RM: ${widget.exercise.onerm!.toStringAsFixed(1)}/${widget.exercise.goal!.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
                       style: TextStyle(color: Color(0xFF717171), fontSize: 21),
@@ -426,9 +423,31 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
     } else {}
   }
 
+  void _deleteExerciseCheck() async {
+    print(widget.origin_exercises);
+    if (!widget.origin_exercises.isEmpty) {
+      HistoryExercisesEdit(
+              history_id: widget.history_id,
+              user_email: _userdataProvider.userdata.email,
+              exercises: widget.origin_exercises)
+          .patchHistoryExercises()
+          .then((data) => data["user_email"] != null
+              ? {showToast("수정 완료"), Navigator.of(context).pop()}
+              : showToast("입력을 확인해주세요"));
+    } else {
+      _historydataProvider.deleteHistorydata(widget.history_id);
+      HistoryDelete(history_id: widget.history_id).deleteHistory().then(
+          (data) => data["user_email"] != null
+              ? {showToast("수정 완료"), Navigator.of(context).pop()}
+              : showToast("입력을 확인해주세요"));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _historydataProvider =
+        Provider.of<HistorydataProvider>(context, listen: false);
     return Scaffold(
       appBar: _appbarWidget(),
       body: _exercisedetailWidget(),

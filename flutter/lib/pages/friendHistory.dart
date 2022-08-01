@@ -63,6 +63,7 @@ class _FriendHistoryState extends State<FriendHistory> {
 
   Widget _onechartExercisesWidget(exercises) {
     return ListView.separated(
+        physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext _context, int index) {
           return _onechartExerciseWidget(
               exercises[index], 0, _userdataProvider.userdata, true, index);

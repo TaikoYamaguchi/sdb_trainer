@@ -190,4 +190,29 @@ class HistorydataProvider extends ChangeNotifier {
     }));
     notifyListeners();
   }
+
+  deleteExercisedata(history_id, exercise_index) {
+    _historydataAll
+        .sdbdatas[_historydataAll.sdbdatas.indexWhere((sdbdata) {
+      if (sdbdata.id == history_id) {
+        return true;
+      } else {
+        return false;
+      }
+    })]
+        .exercises
+        .removeAt(exercise_index);
+
+    _historydata
+        .sdbdatas[_historydata.sdbdatas.indexWhere((sdbdata) {
+      if (sdbdata.id == history_id) {
+        return true;
+      } else {
+        return false;
+      }
+    })]
+        .exercises
+        .removeAt(exercise_index);
+    notifyListeners();
+  }
 }
