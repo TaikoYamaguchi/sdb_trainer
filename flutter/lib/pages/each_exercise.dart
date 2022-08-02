@@ -863,7 +863,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
               nickname: _userdataProvider.userdata.nickname)
           .postHistory()
           .then((data) => data["user_email"] != null
-              ? {_historydataProvider.getdata(), exerciseList = []}
+              ? {
+                  _historydataProvider.getdata(),
+                  _historydataProvider.getHistorydataAll(),
+                  exerciseList = []
+                }
               : showToast("입력을 확인해주세요"));
     } else {
       print("no exercises");
@@ -900,8 +904,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
 
     return Scaffold(
-        appBar: _appbarWidget(),
-        body: _exercisedetailPage(),
-      );
+      appBar: _appbarWidget(),
+      body: _exercisedetailPage(),
+    );
   }
 }

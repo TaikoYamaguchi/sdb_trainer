@@ -561,7 +561,11 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
               nickname: _userdataProvider.userdata.nickname)
           .postHistory()
           .then((data) => data["user_email"] != null
-              ? {_historydataProvider.getdata(), exerciseList = []}
+              ? {
+                  _historydataProvider.getdata(),
+                  _historydataProvider.getHistorydataAll(),
+                  exerciseList = []
+                }
               : showToast("입력을 확인해주세요"));
     } else {
       print("no exercises");

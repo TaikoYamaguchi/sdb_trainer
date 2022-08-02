@@ -68,8 +68,6 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
           Text("", style: TextStyle(color: Colors.white)),
           GestureDetector(
               onTap: () {
-                _historydataProvider.deleteExercisedata(
-                    widget.history_id, widget.index);
                 _deleteExerciseCheck();
               },
               child: Padding(
@@ -411,7 +409,12 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
   }
 
   void _editHistoryCheck() async {
-    if (!widget.origin_exercises.isEmpty) {
+    if (!widget.exercise.sets
+        .where((sets) {
+          return (sets.ischecked as bool && sets.weight != 0);
+        })
+        .toList()
+        .isEmpty) {
       HistoryExercisesEdit(
               history_id: widget.history_id,
               user_email: _userdataProvider.userdata.email,
@@ -420,11 +423,13 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
           .then((data) => data["user_email"] != null
               ? {showToast("수정 완료"), Navigator.of(context).pop()}
               : showToast("입력을 확인해주세요"));
-    } else {}
+    } else {
+      _deleteExerciseCheck();
+    }
   }
 
   void _deleteExerciseCheck() async {
-    print(widget.origin_exercises);
+    _historydataProvider.deleteExercisedata(widget.history_id, widget.index);
     if (!widget.origin_exercises.isEmpty) {
       HistoryExercisesEdit(
               history_id: widget.history_id,

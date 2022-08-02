@@ -215,7 +215,11 @@ class _AppState extends State<App> {
               nickname: _userdataProvider.userdata.nickname)
           .postHistory()
           .then((data) => data["user_email"] != null
-              ? {_historydataProvider.getdata(), exerciseList = []}
+              ? {
+                  _historydataProvider.getdata(),
+                  _historydataProvider.getHistorydataAll(),
+                  exerciseList = []
+                }
               : showToast("입력을 확인해주세요"));
     } else {
       print("no exercises");
@@ -275,8 +279,7 @@ class _AppState extends State<App> {
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
-    _PopProvider =
-        Provider.of<PopProvider>(context, listen: false);
+    _PopProvider = Provider.of<PopProvider>(context, listen: false);
     _historydataProvider =
         Provider.of<HistorydataProvider>(context, listen: false);
     _userdataProvider.getUsersFriendsAll();
@@ -286,13 +289,17 @@ class _AppState extends State<App> {
         builder: (builder, provider1, provider2, child) {
       return WillPopScope(
         onWillPop: () async {
-
           final shouldPop;
           _bodyStater.bodystate == 0
               ? shouldPop = true
-              : [shouldPop = false,
-                _bodyStater.bodystate == 1 ? _PopProvider.popon() : _bodyStater.bodystate == 4 ? _PopProvider.propopon() : null
-          ];
+              : [
+                  shouldPop = false,
+                  _bodyStater.bodystate == 1
+                      ? _PopProvider.popon()
+                      : _bodyStater.bodystate == 4
+                          ? _PopProvider.propopon()
+                          : null
+                ];
 
           return shouldPop!;
         },

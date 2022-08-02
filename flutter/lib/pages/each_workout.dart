@@ -60,9 +60,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   var keySearch = GlobalKey();
   var keySelect = GlobalKey();
 
-
-
-
   List<TutorialItem> itens = [];
 
   //Iniciando o estado.
@@ -164,12 +161,10 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
 
     ///FUNÇÃO QUE EXIBE O TUTORIAL.
 
-
     super.initState();
   }
 
   PreferredSizeWidget _appbarWidget() {
-
     btnDisabled = false;
     return AppBar(
       leading: _isexsearch
@@ -213,14 +208,13 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
       actions: [
         _isexsearch
             ? IconButton(
-          key: keyCheck,
+                key: keyCheck,
                 iconSize: 30,
                 icon: Icon(Icons.check_rounded),
                 onPressed: () {
                   _editWorkoutCheck();
                   setState(() {
                     _isexsearch = !_isexsearch;
-
                   });
                 },
               )
@@ -232,13 +226,16 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
 
                   setState(() {
                     _isexsearch = !_isexsearch;
-
                   });
                   print(_PrefsProvider.eachworkouttutor);
                   _PrefsProvider.eachworkouttutor
-                      ? [Future.delayed(Duration(milliseconds: 100)).then((value) {
-                        Tutorial.showTutorial(context, itens);
-                        }),_PrefsProvider.tutordone() ]
+                      ? [
+                          Future.delayed(Duration(milliseconds: 100))
+                              .then((value) {
+                            Tutorial.showTutorial(context, itens);
+                          }),
+                          _PrefsProvider.tutordone()
+                        ]
                       : null;
                 },
               )
@@ -374,7 +371,11 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               nickname: _userdataProvider.userdata.nickname)
           .postHistory()
           .then((data) => data["user_email"] != null
-              ? {_historydataProvider.getdata(), exerciseList = []}
+              ? {
+                  _historydataProvider.getdata(),
+                  _historydataProvider.getHistorydataAll(),
+                  exerciseList = []
+                }
               : showToast("입력을 확인해주세요"));
     } else {
       print("no exercises");
@@ -498,18 +499,20 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 onTap: () {
                   _isexsearch
                       ? [_workoutdataProvider.removeexAt(widget.rindex, index)]
-                      : [_PopProvider.exstackup(2),
-                        Navigator.push(
-                          context,
-                          Transition(
-                              child: EachExerciseDetails(
-                                ueindex: exunique.indexWhere((element) =>
-                                    element.name == exlist[index].name),
-                                eindex: index,
-                                rindex: widget.rindex,
-                              ),
-                              transitionEffect:
-                                  TransitionEffect.RIGHT_TO_LEFT))];
+                      : [
+                          _PopProvider.exstackup(2),
+                          Navigator.push(
+                              context,
+                              Transition(
+                                  child: EachExerciseDetails(
+                                    ueindex: exunique.indexWhere((element) =>
+                                        element.name == exlist[index].name),
+                                    eindex: index,
+                                    rindex: widget.rindex,
+                                  ),
+                                  transitionEffect:
+                                      TransitionEffect.RIGHT_TO_LEFT))
+                        ];
                 },
                 child: Column(
                   children: [
@@ -769,55 +772,50 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
     _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
-    _PopProvider =
-        Provider.of<PopProvider>(context, listen: false);
-    _PrefsProvider =
-        Provider.of<PrefsProvider>(context, listen: false);
+    _PopProvider = Provider.of<PopProvider>(context, listen: false);
+    _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
     print("띠용");
     _PopProvider.tutorpopoff();
     _PrefsProvider.eachworkouttutor
         ? _PrefsProvider.steptwo
-        ? [Future.delayed(Duration(milliseconds: 400)).then((value) {
-      Tutorial.showTutorial(context, itens);
-      _PrefsProvider.steptwodone();
-    })]
-        : null
+            ? [
+                Future.delayed(Duration(milliseconds: 400)).then((value) {
+                  Tutorial.showTutorial(context, itens);
+                  _PrefsProvider.steptwodone();
+                })
+              ]
+            : null
         : null;
 
-
-    return Consumer<PopProvider>(
-      builder: (Builder, provider, child) {
-
-        bool _popable = provider.isstacking;
-        _popable == false
-            ? null
-            : [
-          provider.exstackdown(),
-          provider.popoff(),
-          Future.delayed(Duration.zero, () async {
-            Navigator.of(context).pop();
-          })
-        ];
-        print('working?1');
-        bool _tutorpop = provider.tutorpop;
-        _tutorpop == false
-            ? print('working?2')
-            : [
+    return Consumer<PopProvider>(builder: (Builder, provider, child) {
+      bool _popable = provider.isstacking;
+      _popable == false
+          ? null
+          : [
+              provider.exstackdown(),
+              provider.popoff(),
+              Future.delayed(Duration.zero, () async {
+                Navigator.of(context).pop();
+              })
+            ];
+      print('working?1');
+      bool _tutorpop = provider.tutorpop;
+      _tutorpop == false
+          ? print('working?2')
+          : [
               print('working?'),
-          provider.exstackup(0),
-          Future.delayed(Duration.zero, () async {
-            Navigator.of(context).popUntil((route) => route.isFirst);
-            _PopProvider.tutorpopoff();
-          })
-        ];
+              provider.exstackup(0),
+              Future.delayed(Duration.zero, () async {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+                _PopProvider.tutorpopoff();
+              })
+            ];
 
-
-        return Scaffold(
-            appBar: _appbarWidget(),
-            body: _isexsearch
-                ? _exercises_searchWidget()
-                : _exercisesWidget(false));
-      }
-    );
+      return Scaffold(
+          appBar: _appbarWidget(),
+          body: _isexsearch
+              ? _exercises_searchWidget()
+              : _exercisesWidget(false));
+    });
   }
 }
