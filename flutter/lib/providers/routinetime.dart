@@ -6,6 +6,7 @@ import 'package:vibration/vibration.dart';
 
 class RoutineTimeProvider extends ChangeNotifier {
   int _routineTime = 0;
+  int _timetosubstract = 0;
   int get routineTime => _routineTime;
   int _changetime = 0;
   int get changetime => _changetime;
@@ -26,6 +27,8 @@ class RoutineTimeProvider extends ChangeNotifier {
   String get routineButton => _routineButton;
   Color _buttoncolor = Color(0xFF2196F3);
   Color get buttoncolor => _buttoncolor;
+  DateTime _starttime = DateTime(2022,08,06,10,30);
+  DateTime _timerstarttime = DateTime(2022,08,06,10,30);
 
   getinfo() {
     notifyListeners();
@@ -44,19 +47,30 @@ class RoutineTimeProvider extends ChangeNotifier {
     notifyListeners();
 
   }
+
+
   resettimer(resttime) {
     _timeron = resttime;
+    _timetosubstract = resttime;
+    _timerstarttime = DateTime.now();
     notifyListeners();
 
   }
 
+  getstarttime() {
+    _starttime = DateTime.now();
+
+  }
+
+
   void routinecheck(rindex){
+    getstarttime();
     if(_isstarted==false)
     {
       int counter = 10001;
       timer1  = Timer.periodic(Duration(seconds: 1), (timer){
-        _routineTime++;
-        _timeron--;
+        _routineTime=DateTime.now().difference(_starttime).inSeconds;
+        _timeron=_timetosubstract-DateTime.now().difference(_timerstarttime).inSeconds;
         if(_timeron == 0 && _userest) {
           Vibration.vibrate(duration: 1000);
         }
