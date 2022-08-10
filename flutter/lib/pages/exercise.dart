@@ -127,125 +127,150 @@ class ExerciseState extends State<Exercise> {
 
   Widget _workoutWidget() {
     return Container(
-      color: Colors.black,
-      child: Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
-        List routinelist = provider.workoutdata.routinedatas;
-        return ReorderableListView.builder(
-            onReorder: (int oldIndex, int newIndex) {
-              setState(() {
-                if (oldIndex < newIndex) {
-                  newIndex -= 1;
-                }
-                final item = routinelist.removeAt(oldIndex);
-                routinelist.insert(newIndex, item);
-                _editWorkoutCheck();
-              });
-            },
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            itemBuilder: (BuildContext _context, int index) {
-              if (routinelist.length == 1) {
-                top = 20;
-                bottom = 20;
-              } else if (index == 0) {
-                top = 20;
-                bottom = 0;
-              } else if (index == routinelist.length - 1) {
-                top = 0;
-                bottom = 20;
-              } else {
-                top = 0;
-                bottom = 0;
-              }
-              ;
-              return GestureDetector(
-                key: Key('$index'),
-                onTap: () {
-                  _PopProvider.exstackup(1);
-                  Navigator.push(
-                      context,
-                      Transition(
-                          child: EachWorkoutDetails(
-                            exerciselist: routinelist[index].exercises,
-                            rindex: index,
-                          ),
-                          transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-                },
-                child: Container(
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        decoration: BoxDecoration(
-                            color: Color(0xFF212121),
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(top),
-                                bottomRight: Radius.circular(bottom),
-                                topLeft: Radius.circular(top),
-                                bottomLeft: Radius.circular(bottom))),
-                        height: 52,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  routinelist[index].name,
-                                  style: TextStyle(
-                                      fontSize: 21, color: Colors.white),
+      child: Column(
+        children: [
+          Container(
+            height: 40,
+            alignment: Alignment.center,
+            color: Colors.black,
+            child: Center(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children:  [
+                  GestureDetector(
+                      onTap: (){},
+                      child: Text('My Routine', style: TextStyle(decoration: TextDecoration.underline, fontSize: 21, color: Colors.white),))
+                ],
+              ),
+            ),
+          ),
+
+          Expanded(
+            child: Container(
+              color: Colors.black,
+              child: Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
+                List routinelist = provider.workoutdata.routinedatas;
+                return ReorderableListView.builder(
+                    onReorder: (int oldIndex, int newIndex) {
+                      setState(() {
+                        if (oldIndex < newIndex) {
+                          newIndex -= 1;
+                        }
+                        final item = routinelist.removeAt(oldIndex);
+                        routinelist.insert(newIndex, item);
+                        _editWorkoutCheck();
+                      });
+                    },
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    itemBuilder: (BuildContext _context, int index) {
+                      if (routinelist.length == 1) {
+                        top = 20;
+                        bottom = 20;
+                      } else if (index == 0) {
+                        top = 20;
+                        bottom = 0;
+                      } else if (index == routinelist.length - 1) {
+                        top = 0;
+                        bottom = 20;
+                      } else {
+                        top = 0;
+                        bottom = 0;
+                      }
+                      ;
+                      return GestureDetector(
+                        key: Key('$index'),
+                        onTap: () {
+                          _PopProvider.exstackup(1);
+                          Navigator.push(
+                              context,
+                              Transition(
+                                  child: EachWorkoutDetails(
+                                    exerciselist: routinelist[index].exercises,
+                                    rindex: index,
+                                  ),
+                                  transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+                        },
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                decoration: BoxDecoration(
+                                    color: Color(0xFF212121),
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(top),
+                                        bottomRight: Radius.circular(bottom),
+                                        topLeft: Radius.circular(top),
+                                        bottomLeft: Radius.circular(bottom))),
+                                height: 52,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          routinelist[index].name,
+                                          style: TextStyle(
+                                              fontSize: 21, color: Colors.white),
+                                        ),
+                                        Text(
+                                            "${routinelist[index].exercises.length} Exercises",
+                                            style: TextStyle(
+                                                fontSize: 13, color: Color(0xFF717171)))
+                                      ],
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        _displayDeleteAlert(index);
+                                      },
+                                      icon: Icon(Icons.delete),
+                                      color: Colors.white,
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                    "${routinelist[index].exercises.length} Exercises",
-                                    style: TextStyle(
-                                        fontSize: 13, color: Color(0xFF717171)))
-                              ],
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                _displayDeleteAlert(index);
-                              },
-                              icon: Icon(Icons.delete),
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                      ),
-                      index == routinelist.length - 1
-                          ? Container()
-                          : Container(
-                              alignment: Alignment.center,
-                              height: 1,
-                              color: Color(0xFF212121),
-                              child: Container(
-                                alignment: Alignment.center,
-                                margin: EdgeInsets.symmetric(horizontal: 10),
-                                height: 1,
-                                color: Color(0xFF717171),
                               ),
-                            )
-                    ],
-                  ),
-                ),
-              );
-            },
-            /*
-              separatorBuilder: (BuildContext _context, int index) {
-                return Container(
-                  alignment: Alignment.center,
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  height: 1,
-                  color: Color(0xFF212121),
-                  child: Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                    height: 1,
-                    color: Color(0xFF717171),
-                  ),
-                );
-              },*/
-            itemCount: routinelist.length);
-      }),
+                              index == routinelist.length - 1
+                                  ? Container()
+                                  : Container(
+                                      alignment: Alignment.center,
+                                      height: 1,
+                                      color: Color(0xFF212121),
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        margin: EdgeInsets.symmetric(horizontal: 10),
+                                        height: 1,
+                                        color: Color(0xFF717171),
+                                      ),
+                                    )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    /*
+                      separatorBuilder: (BuildContext _context, int index) {
+                        return Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.symmetric(horizontal: 10),
+                          height: 1,
+                          color: Color(0xFF212121),
+                          child: Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.symmetric(horizontal: 10),
+                            height: 1,
+                            color: Color(0xFF717171),
+                          ),
+                        );
+                      },*/
+                    itemCount: routinelist.length);
+              }),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
