@@ -621,7 +621,7 @@ class ExerciseState extends State<Exercise> {
             onPressed: () {
               _workoutdataProvider.addroutine(new Routinedatas(
                   name: _workoutNameCtrl.text,
-                  exercises: exerciseList,
+                  exercises: [],
                   routine_time: 0));
 
               _editWorkoutCheck();
