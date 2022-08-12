@@ -33,6 +33,7 @@ class ExerciseState extends State<Exercise> {
   var _userdataProvider;
   var _exercisesdataProvider;
   var _workoutdataProvider;
+  var _RoutineMenuProvider;
   var _PopProvider;
   var _PrefsProvider;
   PageController? controller;
@@ -114,12 +115,19 @@ class ExerciseState extends State<Exercise> {
       ),
       actions: swap == 1
           ? [
-              IconButton(
-                key:keyPlus,
-                icon: SvgPicture.asset("assets/svg/add_white.svg"),
-                onPressed: () {
-                  _displayTextInputDialog();
-                },
+              Consumer<RoutineMenuStater>(
+                builder: (builder, provider, child) {
+                  if (provider.menustate == 0 ){
+                    return IconButton(
+                      key:keyPlus,
+                      icon: SvgPicture.asset("assets/svg/add_white.svg"),
+                      onPressed: () {
+                        _displayTextInputDialog();
+                      },
+                    );
+                  } else {return SizedBox();}
+
+                }
               )
             ]
           : null,
@@ -661,6 +669,7 @@ class ExerciseState extends State<Exercise> {
     _workoutdataProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
+    _RoutineMenuProvider = Provider.of<RoutineMenuStater>(context, listen: false);
     _PrefsProvider =
         Provider.of<PrefsProvider>(context, listen: false);
     _PrefsProvider.eachworkouttutor
