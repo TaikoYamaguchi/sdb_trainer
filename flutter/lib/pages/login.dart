@@ -133,6 +133,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _loginButtonPressed() async {
     if (await AuthApi.instance.hasToken()) {
+      print("yeeeeeeeeeeeeeeeeeeeeeeeeees");
       try {
         AccessTokenInfo tokenInfo = await UserApi.instance.accessTokenInfo();
         print('토큰 유효성 체크 성공 ${tokenInfo.id} ${tokenInfo.expiresIn}');
@@ -172,6 +173,7 @@ class _LoginPageState extends State<LoginPage> {
         }
       }
     } else {
+      print("yeeeeeeeeeeeeeeeeeeeeeeeeees");
       print('발급된 토큰 없음');
       try {
         OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
@@ -398,8 +400,7 @@ class _LoginPageState extends State<LoginPage> {
         Provider.of<ExercisesdataProvider>(context, listen: false);
     final _workoutdataProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
-    final _PrefsProvider =
-    Provider.of<PrefsProvider>(context, listen: false);
+    final _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
     await [
       _initUserdataProvider.getdata(),
       _initUserdataProvider.getUsersFriendsAll(),
