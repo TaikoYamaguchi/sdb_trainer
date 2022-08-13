@@ -36,6 +36,7 @@ class ExerciseState extends State<Exercise> {
   var _RoutineMenuProvider;
   var _PopProvider;
   var _PrefsProvider;
+  bool modecheck = false;
   PageController? controller;
   List<Map<String, dynamic>> datas = [];
   double top = 0;
@@ -43,9 +44,7 @@ class ExerciseState extends State<Exercise> {
   int swap = 1;
   String _title = "Workout List";
 
-  late List<Exercises> exerciseList = [
-    Exercises(name: "스쿼트", sets: Setslist().setslist, onerm: 0.0, rest: 1),
-  ];
+
 
   var keyPlus = GlobalKey();
   var keyContainer = GlobalKey();
@@ -551,7 +550,7 @@ class ExerciseState extends State<Exercise> {
                                         color: Color(0xFF717171))),
                                 Expanded(child: SizedBox()),
                                 Text(
-                                    "1RM: ${_exunique[index].onerm}/${_exunique[index].goal.toStringAsFixed(1)}${_userdata.weight_unit}",
+                                    "1RM: ${_exunique[index].onerm.toStringAsFixed(1)}/${_exunique[index].goal.toStringAsFixed(1)}${_userdata.weight_unit}",
                                     style: TextStyle(
                                         fontSize: 13,
                                         color: Color(0xFF717171))),
@@ -602,12 +601,53 @@ class ExerciseState extends State<Exercise> {
     showDialog(
         context: context,
         builder: (context) {
+          Color getColor(Set<MaterialState> states) {
+            const Set<MaterialState> interactiveStates = <MaterialState>{
+              MaterialState.pressed,
+            };
+            if (states.any(interactiveStates.contains)) {
+              return Colors.blue;
+            }
+            return Colors.black26;
+          }
+          _RoutineMenuProvider.modereset();
           return AlertDialog(
-            title: Text('TextField in Dialog'),
-            content: TextField(
-              onChanged: (value) {},
-              controller: _workoutNameCtrl,
-              decoration: InputDecoration(hintText: "Text Field in Dialog"),
+            title: Text('추가할 루틴이름을 입력하세요',style: TextStyle(fontWeight: FontWeight.bold),),
+            content: Container(
+              height: 120,
+              child: Column(
+                children: [
+                  TextField(
+                    onChanged: (value) {},
+                    controller: _workoutNameCtrl,
+                    decoration: InputDecoration(hintText: "Type Routine Name"),
+                  ),
+                  Container(
+                    height: 60,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+
+                        Text('운동 Program 모드', style: TextStyle(fontWeight: FontWeight.bold),),
+                        Transform.scale(
+                            scale: 1,
+                            child: Consumer<RoutineMenuStater>(
+                                builder: (builder, provider, child) {
+                                  return Checkbox(
+                                      checkColor: Colors.white,
+                                      activeColor: Colors.grey,
+                                      value: provider.ismodechecked,
+                                      onChanged: (newvalue) {
+                                        provider.modecheck();
+                                      });
+                                })
+
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
             actions: <Widget>[
               _workoutSubmitButton(context),
@@ -629,6 +669,7 @@ class ExerciseState extends State<Exercise> {
             onPressed: () {
               _workoutdataProvider.addroutine(new Routinedatas(
                   name: _workoutNameCtrl.text,
+                  mode: _RoutineMenuProvider.ismodechecked ? 1 :0,
                   exercises: [],
                   routine_time: 0));
 

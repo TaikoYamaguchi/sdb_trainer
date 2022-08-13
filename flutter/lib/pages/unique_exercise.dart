@@ -143,8 +143,6 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
         name:
             _exercisesdataProvider.exercisesdata.exercises[widget.ueindex].name,
         sets: _sets,
-        onerm: _exercisesdataProvider
-            .exercisesdata.exercises[widget.ueindex].onerm,
         rest: 0);
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{

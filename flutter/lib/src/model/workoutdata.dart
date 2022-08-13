@@ -3,33 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 
-
-
-class Routinedatas {
-  String name;
-  List<Exercises> exercises;
-  final double? routine_time;
-  Routinedatas(
-      {
-      required this.name,
-      required this.exercises,
-      required this.routine_time});
-
-  Map toJson() => {"name": name, "exercises": exercises, "routine_time": routine_time};
-
-  factory Routinedatas.fromJson(Map<String, dynamic> parsedJson) {
-    var list = parsedJson['exercises'].runtimeType == String
-        ? json.decode(parsedJson['exercises']) as List
-        : parsedJson['exercises'] as List;
-    List<Exercises> exerciseList =
-        list.map((i) => Exercises.fromJson(i)).toList();
-    return Routinedatas(
-        name: parsedJson['name'],
-        exercises: exerciseList,
-        routine_time: parsedJson["routine_time"]);
-  }
-}
-
 class Routinedata {
   final int id;
   final String user_email;
@@ -57,26 +30,55 @@ class Routinedata {
   }
 }
 
+class Routinedatas {
+  String name;
+  int mode;
+  List<Exercises> exercises;
+  final double? routine_time;
+  Routinedatas(
+      {
+        required this.name,
+        required this.mode,
+        required this.exercises,
+        required this.routine_time});
+
+  Map toJson() => {"name": name, "mode": mode, "exercises": exercises, "routine_time": routine_time};
+
+  factory Routinedatas.fromJson(Map<String, dynamic> parsedJson) {
+    var list = parsedJson['exercises'].runtimeType == String
+        ? json.decode(parsedJson['exercises']) as List
+        : parsedJson['exercises'] as List;
+    List<Exercises> exerciseList = parsedJson['mode'] == 0
+      ? list.map((i) => Exercises.fromJson(i)).toList()
+      : list.map((i) => Exercises.fromJson(i)).toList();
+    print('complete1');
+
+
+    return Routinedatas(
+        name: parsedJson['name'],
+        mode: parsedJson['mode'],
+        exercises: exerciseList,
+        routine_time: parsedJson["routine_time"]);
+  }
+}
+
 
 class Exercises {
   final String name;
   final List<Sets> sets;
-  final double? onerm;
   int rest;
   Exercises(
       {required this.name,
       required this.sets,
-      required this.onerm,
       required this.rest});
 
-  Map toJson() => {"name": name, "sets": sets, "onerm": onerm, "rest": rest};
+  Map toJson() => {"name": name, "sets": sets, "rest": rest};
   factory Exercises.fromJson(Map<String, dynamic> parsedJson) {
     var list = parsedJson["sets"] as List;
     List<Sets> setList = list.map((i) => Sets.fromJson(i)).toList();
     return Exercises(
         name: parsedJson["name"],
         sets: setList,
-        onerm: parsedJson["onerm"],
         rest: parsedJson["rest"]);
   }
 }
@@ -111,6 +113,8 @@ class Setslist {
   Sets(index:2, weight: 0.0, reps: 1 , ischecked: false)
 ];
 }
+
+
 
 class Controllerlist {
   List<TextEditingController> controllerlist = [];

@@ -49,7 +49,6 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
     _exampleex = wod.Exercises(
         name: widget.exercise.name,
         sets: widget.exercise.sets,
-        onerm: widget.exercise.onerm,
         rest: 0);
     super.initState();
   }
