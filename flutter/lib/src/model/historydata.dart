@@ -10,6 +10,7 @@ class SDBdata {
   final int new_record;
   final int workout_time;
   final List<dynamic> like;
+  List<dynamic>? image;
   String? comment;
   final String? nickname;
   final int comment_length;
@@ -22,6 +23,7 @@ class SDBdata {
       required this.new_record,
       required this.workout_time,
       required this.like,
+      required this.image,
       required this.comment,
       required this.nickname,
       required this.comment_length,
@@ -42,6 +44,7 @@ class SDBdata {
       new_record: parsedJson["new_record"],
       workout_time: parsedJson["workout_time"],
       like: parsedJson["like"],
+      image: parsedJson["image"],
       comment: parsedJson["comment"],
       nickname: parsedJson["nickname"],
       comment_length: parsedJson["comment_length"],

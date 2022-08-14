@@ -54,7 +54,7 @@ services:
     image: dpage/pgadmin4
     restart: always
     ports:
-     - 8088:80
+     - 8088:8088
     environment:
      - PGADMIN_DEFAULT_EMAIL=cksdnr1@gmail.com
      - PGADMIN_DEFAULT_PASSWORD=cksdnr0809!

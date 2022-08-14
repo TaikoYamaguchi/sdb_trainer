@@ -46,6 +46,8 @@ class _FeedCardState extends State<FeedCard> {
     "feedList": widget.feedListCtrl,
     "feedVisible": false
   };
+
+  late var _photoInfo = {"feedList": widget.feedListCtrl, "feedVisible": false};
   @override
   void initState() {
     _tapPosition = Offset(0.0, 0.0);
@@ -346,6 +348,7 @@ class _FeedCardState extends State<FeedCard> {
                                     style: TextStyle(
                                         color: Colors.grey, fontSize: 14))
                                 : Container(),
+                            _feedPhotoButton(SDBdata),
                             _feedLikeButton(SDBdata),
                             _feedCommentButton(SDBdata)
                           ],
@@ -417,35 +420,44 @@ class _FeedCardState extends State<FeedCard> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
-                child: Row(
-                  children: [
-                    user.image == ""
-                        ? Icon(
-                            Icons.account_circle,
-                            color: Colors.grey,
-                            size: 38.0,
-                          )
-                        : CircleAvatar(
-                            radius: 18.0,
-                            backgroundImage: NetworkImage(user.image),
-                            backgroundColor: Colors.transparent),
-                    Flexible(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 4.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(Comment.writer_nickname,
-                                style: TextStyle(
-                                    color: Colors.grey, fontSize: 12.0)),
-                            Text(Comment.content,
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 14.0)),
-                          ],
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        Transition(
+                            child: FriendProfile(user: user),
+                            transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+                  },
+                  child: Row(
+                    children: [
+                      user.image == ""
+                          ? Icon(
+                              Icons.account_circle,
+                              color: Colors.grey,
+                              size: 38.0,
+                            )
+                          : CircleAvatar(
+                              radius: 18.0,
+                              backgroundImage: NetworkImage(user.image),
+                              backgroundColor: Colors.transparent),
+                      Flexible(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 4.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(Comment.writer_nickname,
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 12.0)),
+                              Text(Comment.content,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 14.0)),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               GestureDetector(
@@ -602,6 +614,42 @@ class _FeedCardState extends State<FeedCard> {
         ));
   }
 
+  Widget _feedPhotoButton(SDBdata) {
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(4.0, 4.0, 12.0, 4.0),
+        child: Row(
+          children: [
+            IconButton(
+                onPressed: () {
+                  setState(() {
+                    if (_photoInfo["feedList"] == widget.feedListCtrl) {
+                      if (_photoInfo["feedVisible"] == true) {
+                        _photoInfo = {
+                          "feedList": widget.feedListCtrl,
+                          "feedVisible": false
+                        };
+                      } else {
+                        _photoInfo = {
+                          "feedList": widget.feedListCtrl,
+                          "feedVisible": true
+                        };
+                      }
+                    } else {
+                      _photoInfo = {
+                        "feedList": widget.feedListCtrl,
+                        "feedVisible": true
+                      };
+                    }
+                  });
+                },
+                icon: Icon(Icons.camera_alt_rounded,
+                    color: Colors.white, size: 28.0)),
+            Text(SDBdata.image.length.toString(),
+                style: TextStyle(color: Colors.white, fontSize: 18.0))
+          ],
+        ));
+  }
+
   Widget _feedLikeButton(SDBdata) {
     var buttonSize = 28.0;
     return Padding(
@@ -617,7 +665,7 @@ class _FeedCardState extends State<FeedCard> {
         ),
         likeBuilder: (bool isLiked) {
           return Padding(
-            padding: const EdgeInsets.only(right: 40.0),
+            padding: const EdgeInsets.only(right: 4.0),
             child: Icon(
               Icons.favorite,
               color: isLiked ? Colors.deepPurpleAccent : Colors.white,
