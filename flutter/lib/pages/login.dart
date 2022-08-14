@@ -331,14 +331,28 @@ class _LoginPageState extends State<LoginPage> {
 
   void _loginCheck() async {
     final storage = FlutterSecureStorage();
-    String? storageEmail = await storage.read(key: "sdb_email");
-    if (storageEmail != null &&
-        storageEmail != "" &&
-        storageEmail == _userEmailCtrl.text) {
-      _bodyStater.change(0);
-      _loginState.change(true);
-      initialProviderGet();
-    } else {
+    try {
+      String? storageEmail = await storage.read(key: "sdb_email");
+      if (storageEmail != null &&
+          storageEmail != "" &&
+          storageEmail == _userEmailCtrl.text) {
+        _bodyStater.change(0);
+        _loginState.change(true);
+        initialProviderGet();
+      } else {
+        UserLogin(
+                userEmail: _userEmailCtrl.text,
+                password: _userPasswordCtrl.text)
+            .loginUser()
+            .then((token) => token["access_token"] != null
+                ? {
+                    _bodyStater.change(0),
+                    _loginState.change(true),
+                    initialProviderGet()
+                  }
+                : showToast("아이디와 비밀번호를 확인해주세요"));
+      }
+    } catch (e) {
       UserLogin(
               userEmail: _userEmailCtrl.text, password: _userPasswordCtrl.text)
           .loginUser()
@@ -354,16 +368,35 @@ class _LoginPageState extends State<LoginPage> {
 
   void _loginkakaoCheck() async {
     final storage = FlutterSecureStorage();
-    String? storageEmail = await storage.read(key: "sdb_email");
-    print(storageEmail);
-    if (storageEmail != null &&
-        storageEmail != "" &&
-        storageEmail == _userEmailCtrl.text) {
+    try {
+      String? storageEmail = await storage.read(key: "sdb_email");
       print(storageEmail);
-      _bodyStater.change(0);
-      _loginState.change(true);
-      initialProviderGet();
-    } else {
+      if (storageEmail != null &&
+          storageEmail != "" &&
+          storageEmail == _userEmailCtrl.text) {
+        print(storageEmail);
+        _bodyStater.change(0);
+        _loginState.change(true);
+        initialProviderGet();
+      } else {
+        try {
+          var order = await UserLoginKakao(
+            userEmail: _userEmailCtrl.text,
+          ).loginKakaoUser().then((token) => token["access_token"] != null
+              ? {
+                  print(_userEmailCtrl.text),
+                  _bodyStater.change(0),
+                  _loginState.change(true),
+                  initialProviderGet()
+                }
+              : _loginState.changeSignup(true));
+        } catch (error) {
+          print(error);
+          _loginState.changeSignup(true);
+          showToast("회원가입 페이지로 이동할게요");
+        }
+      }
+    } catch (e) {
       try {
         var order = await UserLoginKakao(
           userEmail: _userEmailCtrl.text,
