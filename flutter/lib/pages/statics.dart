@@ -86,12 +86,13 @@ class _CalendarState extends State<Calendar> {
       _initUserdataProvider.getdata(),
       _initUserdataProvider.getUsersFriendsAll(),
       _initHistorydataProvider.getdata(),
-      _workoutdataProvider.getdata()
+      _workoutdataProvider.getdata(),
+      _initExercisesdataProvider.getdata(),
+      print("exxxxxxxxxxxxxxxxxxxercise"),
     ];
     _initHistorydataProvider.getFriendsHistorydata();
     _initUserdataProvider.getFriendsdata();
     _initUserdataProvider.getUsersFriendsAll();
-    _initExercisesdataProvider.getdata();
     _initHistorydataProvider.getHistorydataAll();
     _initHistorydataProvider.getCommentAll();
 
@@ -114,23 +115,24 @@ class _CalendarState extends State<Calendar> {
   List<SDBdata> _getEventsfromDay(DateTime date) {
     String date_calendar = DateFormat('yyyy-MM-dd').format(date);
     selectedEvents = {};
-    for (int i = 0;
-        i < _historydataProvider.historydata!.sdbdatas.length;
-        i++) {
-      if (_historydataProvider.historydata!.sdbdatas[i].date!
-              .substring(0, 10) ==
-          date_calendar) {
-        if (selectedEvents[date] != null) {
-          selectedEvents[date]!
-              .add(_historydataProvider.historydata!.sdbdatas[i]);
-        } else {
-          selectedEvents[date] = [
-            _historydataProvider.historydata!.sdbdatas[i]
-          ];
+    if (_historydataProvider.historydata != null) {
+      for (int i = 0;
+          i < _historydataProvider.historydata!.sdbdatas.length;
+          i++) {
+        if (_historydataProvider.historydata!.sdbdatas[i].date!
+                .substring(0, 10) ==
+            date_calendar) {
+          if (selectedEvents[date] != null) {
+            selectedEvents[date]!
+                .add(_historydataProvider.historydata!.sdbdatas[i]);
+          } else {
+            selectedEvents[date] = [
+              _historydataProvider.historydata!.sdbdatas[i]
+            ];
+          }
         }
       }
-    }
-
+    } else {}
     return selectedEvents[date] ?? [];
   }
 
@@ -767,23 +769,29 @@ class _CalendarState extends State<Calendar> {
 
   List<Widget> techChips() {
     List<Widget> chips = [];
-    for (int i = 0;
-        i < _exercisesdataProvider.exercisesdata.exercises.length;
-        i++) {
-      Widget item = Padding(
-        padding: const EdgeInsets.only(left: 10, right: 5),
-        child: ChoiceChip(
-          label: Text(_exercisesdataProvider.exercisesdata!.exercises[i].name),
-          labelStyle: TextStyle(color: Colors.black),
-          selected: _chartIndex.chartIndex == i,
-          selectedColor: Colors.deepOrange,
-          onSelected: (bool value) {
-            _chartIndex.change(i);
-            _getChartSourcefromDay();
-          },
-        ),
-      );
-      chips.add(item);
+    print("exxxxxxxxxxxxxxxxxxxercise!!!!!!!!!!!!!!!nononono");
+    if (_exercisesdataProvider.exercisesdata != null) {
+      for (int i = 0;
+          i < _exercisesdataProvider.exercisesdata!.exercises.length;
+          i++) {
+        Widget item = Padding(
+          padding: const EdgeInsets.only(left: 10, right: 5),
+          child: ChoiceChip(
+            label:
+                Text(_exercisesdataProvider.exercisesdata!.exercises[i].name),
+            labelStyle: TextStyle(color: Colors.black),
+            selected: _chartIndex.chartIndex == i,
+            selectedColor: Colors.deepOrange,
+            onSelected: (bool value) {
+              _chartIndex.change(i);
+              _getChartSourcefromDay();
+            },
+          ),
+        );
+        chips.add(item);
+      }
+    } else {
+      _exercisesdataProvider.getdata();
     }
     return chips;
   }

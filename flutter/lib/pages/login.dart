@@ -355,9 +355,11 @@ class _LoginPageState extends State<LoginPage> {
   void _loginkakaoCheck() async {
     final storage = FlutterSecureStorage();
     String? storageEmail = await storage.read(key: "sdb_email");
+    print(storageEmail);
     if (storageEmail != null &&
         storageEmail != "" &&
         storageEmail == _userEmailCtrl.text) {
+      print(storageEmail);
       _bodyStater.change(0);
       _loginState.change(true);
       initialProviderGet();
@@ -367,6 +369,7 @@ class _LoginPageState extends State<LoginPage> {
           userEmail: _userEmailCtrl.text,
         ).loginKakaoUser().then((token) => token["access_token"] != null
             ? {
+                print(_userEmailCtrl.text),
                 _bodyStater.change(0),
                 _loginState.change(true),
                 initialProviderGet()
@@ -406,15 +409,13 @@ class _LoginPageState extends State<LoginPage> {
       _initUserdataProvider.getUsersFriendsAll(),
       _initHistorydataProvider.getdata(),
       _workoutdataProvider.getdata(),
-      print('하지롱'),
+      _initExercisesdataProvider.getdata(),
       _PrefsProvider.getprefs(),
-      print('했지롱')
     ];
     _initHistorydataProvider.getHistorydataAll();
     _initHistorydataProvider.getCommentAll();
     _initHistorydataProvider.getFriendsHistorydata();
     _initUserdataProvider.getFriendsdata();
-    _initExercisesdataProvider.getdata();
 
     _initUserdataProvider.userFriendsAll.userdatas
         .where((user) => user.image != "")

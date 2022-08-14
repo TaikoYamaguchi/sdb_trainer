@@ -20,6 +20,7 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
 void main() {
   KakaoSdk.init(nativeAppKey: "54b807de5757a704a372c2d0539a67da");
+  WidgetsFlutterBinding.ensureInitialized();
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (BuildContext context) => BodyStater()),
@@ -39,10 +40,8 @@ void main() {
         create: (BuildContext context) => HistorydataProvider()),
     ChangeNotifierProvider(
         create: (BuildContext context) => RoutineTimeProvider()),
-    ChangeNotifierProvider(
-        create: (BuildContext context) => PopProvider()),
-    ChangeNotifierProvider(
-        create: (BuildContext context) => PrefsProvider()),
+    ChangeNotifierProvider(create: (BuildContext context) => PopProvider()),
+    ChangeNotifierProvider(create: (BuildContext context) => PrefsProvider()),
     ChangeNotifierProvider(
         create: (BuildContext context) => RoutineMenuStater()),
   ], child: MyApp()));
