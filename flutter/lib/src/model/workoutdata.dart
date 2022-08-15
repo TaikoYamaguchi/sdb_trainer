@@ -33,7 +33,7 @@ class Routinedata {
 class Routinedatas {
   String name;
   int mode;
-  List<Exercises> exercises;
+  List exercises;
   final double? routine_time;
   Routinedatas(
       {
@@ -48,9 +48,9 @@ class Routinedatas {
     var list = parsedJson['exercises'].runtimeType == String
         ? json.decode(parsedJson['exercises']) as List
         : parsedJson['exercises'] as List;
-    List<Exercises> exerciseList = parsedJson['mode'] == 0
+    List exerciseList = parsedJson['mode'] == 0
       ? list.map((i) => Exercises.fromJson(i)).toList()
-      : list.map((i) => Exercises.fromJson(i)).toList();
+      : list.map((i) => Plans.fromJson(i)).toList();
     print('complete1');
 
 
@@ -59,6 +59,24 @@ class Routinedatas {
         mode: parsedJson['mode'],
         exercises: exerciseList,
         routine_time: parsedJson["routine_time"]);
+  }
+}
+
+class Plans {
+  int day_count;
+  List<Exercises> exercises;
+  Plans(
+      {
+        required this.day_count,
+        required this.exercises,});
+
+  Map toJson() => {"ref_name": day_count, "exercises": exercises};
+  factory Plans.fromJson(Map<String, dynamic> parsedJson) {
+    var list = parsedJson["exercises"] as List;
+    List<Exercises> exerciseList = list.map((i) => Exercises.fromJson(i)).toList();
+    return Plans(
+        day_count: parsedJson["ref_names"],
+        exercises: exerciseList,);
   }
 }
 
@@ -105,6 +123,7 @@ class Sets {
     );
   }
 }
+
 
 class Setslist {
   List<Sets> setslist = [

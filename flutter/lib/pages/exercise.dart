@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/each_exercise.dart';
+import 'package:sdb_trainer/pages/each_plan.dart';
 import 'package:sdb_trainer/pages/each_workout.dart';
 import 'package:sdb_trainer/pages/unique_exercise.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
@@ -177,7 +178,7 @@ class ExerciseState extends State<Exercise> {
                                 curve: Curves.easeInOut);
                             provider.change(1);
                           },
-                          child: Text('Famouse',
+                          child: Text('Famous',
                             style: TextStyle(
                                 //decoration: provider.menustate == 1 ? TextDecoration.underline : null,
                                 fontSize: 21,
@@ -272,11 +273,19 @@ class ExerciseState extends State<Exercise> {
                   key: Key('$index'),
                   onTap: () {
                     _PopProvider.exstackup(1);
-                    Navigator.push(
+                    routinelist[index].mode == 0
+                    ? Navigator.push(
                         context,
                         Transition(
                             child: EachWorkoutDetails(
                               exerciselist: routinelist[index].exercises,
+                              rindex: index,
+                            ),
+                            transitionEffect: TransitionEffect.RIGHT_TO_LEFT))
+                    : Navigator.push(
+                        context,
+                        Transition(
+                            child: EachPlanDetails(
                               rindex: index,
                             ),
                             transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
@@ -598,6 +607,7 @@ class ExerciseState extends State<Exercise> {
   }
 
   void _displayTextInputDialog() {
+    _RoutineMenuProvider.modereset();
     showDialog(
         context: context,
         builder: (context) {
@@ -610,7 +620,7 @@ class ExerciseState extends State<Exercise> {
             }
             return Colors.black26;
           }
-          _RoutineMenuProvider.modereset();
+
           return AlertDialog(
             title: Text('추가할 루틴이름을 입력하세요',style: TextStyle(fontWeight: FontWeight.bold),),
             content: Container(
@@ -639,6 +649,7 @@ class ExerciseState extends State<Exercise> {
                                       value: provider.ismodechecked,
                                       onChanged: (newvalue) {
                                         provider.modecheck();
+                                        print(_RoutineMenuProvider.ismodechecked);
                                       });
                                 })
 
@@ -653,6 +664,7 @@ class ExerciseState extends State<Exercise> {
               _workoutSubmitButton(context),
             ],
           );
+
         });
   }
 
@@ -667,9 +679,10 @@ class ExerciseState extends State<Exercise> {
             padding: EdgeInsets.all(8.0),
             splashColor: Colors.blueAccent,
             onPressed: () {
+              print(_RoutineMenuProvider.ismodechecked);
               _workoutdataProvider.addroutine(new Routinedatas(
                   name: _workoutNameCtrl.text,
-                  mode: _RoutineMenuProvider.ismodechecked ? 0 :0,
+                  mode: _RoutineMenuProvider.ismodechecked ? 1 :0,
                   exercises: [],
                   routine_time: 0));
 
