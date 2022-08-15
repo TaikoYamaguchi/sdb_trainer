@@ -227,7 +227,7 @@ class ExerciseState extends State<Exercise> {
           _MyWorkout(),
           Container(
             color: Colors.black,
-            child: Text('need data', style: TextStyle(color: Colors.white),),
+            child: Center(child: Text('To Be Updated', style: TextStyle(color: Colors.white, fontSize: 40),)),
           )
         ],
 
@@ -669,7 +669,7 @@ class ExerciseState extends State<Exercise> {
             onPressed: () {
               _workoutdataProvider.addroutine(new Routinedatas(
                   name: _workoutNameCtrl.text,
-                  mode: _RoutineMenuProvider.ismodechecked ? 1 :0,
+                  mode: _RoutineMenuProvider.ismodechecked ? 0 :0,
                   exercises: [],
                   routine_time: 0));
 
