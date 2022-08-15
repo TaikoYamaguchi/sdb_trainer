@@ -124,6 +124,21 @@ def delete_auth_history(db: Session, history_id: int, user:schemas.User):
             )
     return db_history
 
+def edit_image_by_history_id(db: Session,user:schemas.User,history_id:int, image_id : int) -> schemas.HistoryOut:
+    db_history = db.query(models.History).filter(models.History.id == history_id).first()
+    db_history.image.append(f"http://43.200.121.48:8000/api/images/{image_id}")
+    setattr(db_history, "image", db_history.image)
+    db.commit()
+    db.refresh(db_history)
+    return db_history
+
+def remove_image_by_history_id(db: Session,user:schemas.User,history_id:int) -> schemas.HistoryOut:
+    db_history = db.query(models.History).filter(models.History.id == history_id).first()
+    db_history.image = []
+    setattr(db_history, "image", db_history.image)
+    db.commit()
+    db.refresh(db_history)
+    return db_history
 
 
 

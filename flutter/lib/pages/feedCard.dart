@@ -20,6 +20,8 @@ import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'package:sdb_trainer/src/model/userdata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 
+import 'package:image_picker/image_picker.dart';
+
 class FeedCard extends StatefulWidget {
   hisdata.SDBdata sdbdata;
   int index;
@@ -41,6 +43,7 @@ class _FeedCardState extends State<FeedCard> {
   var _historyProvider;
   var _commentListbyId;
   var _tapPosition;
+  final ImagePicker _picker = ImagePicker();
   TextEditingController _commentInputCtrl = TextEditingController(text: "");
   late var _commentInfo = {
     "feedList": widget.feedListCtrl,
@@ -52,6 +55,20 @@ class _FeedCardState extends State<FeedCard> {
   void initState() {
     _tapPosition = Offset(0.0, 0.0);
     super.initState();
+  }
+
+  Future<void> _pickImg(SDBdata) async {
+    final XFile? selectImage =
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 10);
+    if (selectImage != null) {
+      dynamic sendData = selectImage.path;
+      HistoryImageEdit(file: sendData, history_id: SDBdata.id)
+          .patchHistoryImage()
+          .then((data) {
+        _historyProvider.getdata();
+        _historyProvider.getHistorydataAll();
+      });
+    }
   }
 
   @override
@@ -181,6 +198,50 @@ class _FeedCardState extends State<FeedCard> {
                                                                   _displayTextInputDialog(
                                                                       context,
                                                                       SDBdata));
+                                                        }),
+                                                    PopupMenuItem(
+                                                        child: ListTile(
+                                                            contentPadding:
+                                                                EdgeInsets.symmetric(
+                                                                    horizontal:
+                                                                        4.0,
+                                                                    vertical:
+                                                                        0.0),
+                                                            leading: Icon(Icons
+                                                                .add_photo_alternate),
+                                                            title:
+                                                                Text("사진추가")),
+                                                        onTap: () {
+                                                          _pickImg(SDBdata);
+                                                        }),
+                                                    PopupMenuItem(
+                                                        child: ListTile(
+                                                            contentPadding:
+                                                                EdgeInsets.symmetric(
+                                                                    horizontal:
+                                                                        4.0,
+                                                                    vertical:
+                                                                        0.0),
+                                                            leading: Icon(Icons
+                                                                .no_photography),
+                                                            title:
+                                                                Text("사진삭제")),
+                                                        onTap: () {
+                                                          if (SDBdata.image
+                                                                  .length !=
+                                                              0) {
+                                                            HistoryImageDelete(
+                                                                    history_id:
+                                                                        SDBdata
+                                                                            .id)
+                                                                .deleteHistoryIamge()
+                                                                .then((value) {
+                                                              _historyProvider
+                                                                  .getdata();
+                                                              _historyProvider
+                                                                  .getHistorydataAll();
+                                                            });
+                                                          }
                                                         }),
                                                     PopupMenuItem(
                                                         child: ListTile(
@@ -353,6 +414,26 @@ class _FeedCardState extends State<FeedCard> {
                             _feedCommentButton(SDBdata)
                           ],
                         ),
+                        _photoInfo["feedList"] == widget.feedListCtrl &&
+                                _photoInfo["feedVisible"] == true &&
+                                SDBdata.image.length != 0
+                            ? Column(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Container(
+                                    alignment: Alignment.center,
+                                    height: 1,
+                                    color: Colors.black,
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      height: 1,
+                                      color: Color(0xFF717171),
+                                    ),
+                                  ),
+                                  _imageContent(SDBdata),
+                                ],
+                              )
+                            : Container(),
                         _commentInfo["feedList"] == widget.feedListCtrl &&
                                 _commentInfo["feedVisible"] == true
                             ? Column(
@@ -379,6 +460,73 @@ class _FeedCardState extends State<FeedCard> {
           }),
         ),
       ),
+    );
+  }
+
+  Widget _imageContent(SDBdata) {
+    return Column(
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.width,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (BuildContext _context, int index) {
+                  return Padding(
+                      padding: EdgeInsets.all(4.0),
+                      child: Image.network(
+                        SDBdata.image[index],
+                        width: MediaQuery.of(context).size.width - 64.0,
+                        height: MediaQuery.of(context).size.width - 64.0,
+                      ));
+                },
+                separatorBuilder: (BuildContext _context, int index) {
+                  return Container(
+                    height: 1,
+                    alignment: Alignment.center,
+                    color: Colors.black,
+                    child: Container(
+                      height: 1,
+                      alignment: Alignment.center,
+                      color: Color(0xFF717171),
+                    ),
+                  );
+                },
+                itemCount: SDBdata.image.length),
+          ),
+        ),
+        GestureDetector(
+            child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 30.0,
+                child: Center(
+                    child: Icon(Icons.keyboard_control_key,
+                        color: Colors.grey, size: 28.0))),
+            onTap: () {
+              setState(() {
+                if (_photoInfo["feedList"] == widget.feedListCtrl) {
+                  if (_photoInfo["feedVisible"] == true) {
+                    _photoInfo = {
+                      "feedList": widget.feedListCtrl,
+                      "feedVisible": false
+                    };
+                  } else {
+                    _photoInfo = {
+                      "feedList": widget.feedListCtrl,
+                      "feedVisible": true
+                    };
+                  }
+                } else {
+                  _photoInfo = {
+                    "feedList": widget.feedListCtrl,
+                    "feedVisible": true
+                  };
+                }
+              });
+            })
+      ],
     );
   }
 

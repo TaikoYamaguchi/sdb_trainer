@@ -7,7 +7,7 @@ import typing as t
 
 from . import models, schemas
 
-def create_temporay_image(db: Session, file_name:str):
+def create_temporary_image(db: Session, file_name:str):
     print(file_name)
     db_image = models.TemporaryImage(
         image=file_name,

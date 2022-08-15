@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:sdb_trainer/localhost.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
+import 'package:dio/dio.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sdb_trainer/src/model/historydata.dart';
@@ -309,6 +310,80 @@ class HistoryDelete {
 
   Future<Map<String, dynamic>> deleteHistory() async {
     String jsonString = await _historyDeletefromServer();
+    final jsonResponse = json.decode(jsonString);
+    return (jsonResponse);
+  }
+}
+
+class HistoryImageEdit {
+  final int history_id;
+  final dynamic file;
+  HistoryImageEdit({required this.history_id, required this.file});
+  Future<Map<String, dynamic>> _patchHistoryImageFromServer() async {
+    final storage = new FlutterSecureStorage();
+    String? token = await storage.read(key: "sdb_token");
+    var formData =
+        FormData.fromMap({'file': await MultipartFile.fromFile(file)});
+    var dio = new Dio();
+    try {
+      dio.options.contentType = 'multipart/form-data';
+      dio.options.maxRedirects.isFinite;
+      dio.options.headers["Authorization"] = "Bearer " + token!;
+
+      var response = await dio.post(
+        LocalHost.getLocalHost() + '/api/temp/historyimages/${history_id}',
+        data: formData,
+      );
+      print(response);
+      return response.data;
+    } catch (e) {
+      print(e);
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<SDBdata?> patchHistoryImage() async {
+    var jsonString = await _patchHistoryImageFromServer();
+    if (jsonString == null) {
+      return null;
+    } else {
+      SDBdata user = SDBdata.fromJson(jsonString);
+      return (user);
+    }
+  }
+}
+
+class HistoryImageDelete {
+  final int history_id;
+  HistoryImageDelete({
+    required this.history_id,
+  });
+  Future<String> _historyImageDeletefromServer() async {
+    final storage = new FlutterSecureStorage();
+    String? token = await storage.read(key: "sdb_token");
+
+    var url = Uri.parse(
+        LocalHost.getLocalHost() + "/api/remove/historyimages/${history_id}");
+    var response = await http.put(
+      url,
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer ${token}',
+      },
+    );
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      String jsonString = utf8.decode(response.bodyBytes);
+      final jsonResponse = json.decode(jsonString);
+
+      return utf8.decode(response.bodyBytes);
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<Map<String, dynamic>> deleteHistoryIamge() async {
+    String jsonString = await _historyImageDeletefromServer();
     final jsonResponse = json.decode(jsonString);
     return (jsonResponse);
   }
