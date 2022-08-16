@@ -8,6 +8,7 @@ import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'package:sdb_trainer/src/model/workoutdata.dart' as wod;
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class StaticsExerciseDetails extends StatefulWidget {
   hisdata.Exercises exercise;
@@ -47,9 +48,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
   void initState() {
     _originExercise = widget.exercise;
     _exampleex = wod.Exercises(
-        name: widget.exercise.name,
-        sets: widget.exercise.sets,
-        rest: 0);
+        name: widget.exercise.name, sets: widget.exercise.sets, rest: 0);
     super.initState();
   }
 
@@ -182,133 +181,166 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                       weightController.add(new TextEditingController());
                       repsController.add(new TextEditingController());
                       return Container(
-                        padding: EdgeInsets.only(right: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              width: 80,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                          padding: EdgeInsets.only(right: 10),
+                          child: Slidable(
+                            startActionPane: ActionPane(
+                                extentRatio: 0.2,
+                                motion: const ScrollMotion(),
                                 children: [
-                                  Transform.scale(
-                                      scale: 1.2,
-                                      child: Checkbox(
-                                          checkColor: Colors.black,
-                                          fillColor:
-                                              MaterialStateProperty.resolveWith(
-                                                  getColor),
-                                          value: widget
-                                              .exercise.sets[index].ischecked,
-                                          onChanged: (newvalue) {
-                                            setState(() {
-                                              widget.exercise.sets[index]
-                                                  .ischecked = newvalue;
-                                            });
-                                          })),
-                                  Container(
-                                    width: 25,
-                                    child: Text(
-                                      "${index + 1}",
-                                      style: TextStyle(
+                                  SlidableAction(
+                                    onPressed: (_) {},
+                                    backgroundColor: Color(0xFF29B6F6),
+                                    foregroundColor: Colors.white,
+                                    icon: Icons.check,
+                                    label: 'check',
+                                  )
+                                ]),
+                            endActionPane: ActionPane(
+                                extentRatio: 0.2,
+                                motion: const ScrollMotion(),
+                                children: [
+                                  SlidableAction(
+                                    onPressed: (_) {
+                                      setState(() {
+                                        widget.exercise.sets.removeAt(index);
+                                      });
+                                      weightController.clear();
+                                      repsController.clear();
+                                    },
+                                    backgroundColor: Color(0xFFFE4A49),
+                                    foregroundColor: Colors.white,
+                                    icon: Icons.delete,
+                                    label: 'Delete',
+                                  )
+                                ]),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  width: 80,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Transform.scale(
+                                          scale: 1.2,
+                                          child: Checkbox(
+                                              checkColor: Colors.black,
+                                              fillColor: MaterialStateProperty
+                                                  .resolveWith(getColor),
+                                              value: widget.exercise.sets[index]
+                                                  .ischecked,
+                                              onChanged: (newvalue) {
+                                                setState(() {
+                                                  widget.exercise.sets[index]
+                                                      .ischecked = newvalue;
+                                                });
+                                              })),
+                                      Container(
+                                        width: 25,
+                                        child: Text(
+                                          "${index + 1}",
+                                          style: TextStyle(
+                                            fontSize: 21,
+                                            color: Colors.white,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  width: 70,
+                                  child: TextField(
+                                    controller: weightController[index],
+                                    keyboardType: TextInputType.number,
+                                    style: TextStyle(
+                                      fontSize: 21,
+                                      color: Colors.white,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    decoration: InputDecoration(
+                                      hintText:
+                                          "${widget.exercise.sets[index].weight}",
+                                      hintStyle: TextStyle(
                                         fontSize: 21,
                                         color: Colors.white,
                                       ),
-                                      textAlign: TextAlign.center,
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: 70,
-                              child: TextField(
-                                controller: weightController[index],
-                                keyboardType: TextInputType.number,
-                                style: TextStyle(
-                                  fontSize: 21,
-                                  color: Colors.white,
-                                ),
-                                textAlign: TextAlign.center,
-                                decoration: InputDecoration(
-                                  hintText:
-                                      "${widget.exercise.sets[index].weight}",
-                                  hintStyle: TextStyle(
-                                    fontSize: 21,
-                                    color: Colors.white,
+                                    onChanged: (text) {
+                                      double changeweight;
+                                      if (text == "") {
+                                        changeweight = 0.0;
+                                      } else {
+                                        changeweight = double.parse(text);
+                                      }
+                                      setState(() {
+                                        widget.exercise.sets[index].weight =
+                                            changeweight;
+                                      });
+                                    },
                                   ),
                                 ),
-                                onChanged: (text) {
-                                  double changeweight;
-                                  if (text == "") {
-                                    changeweight = 0.0;
-                                  } else {
-                                    changeweight = double.parse(text);
-                                  }
-                                  setState(() {
-                                    widget.exercise.sets[index].weight =
-                                        changeweight;
-                                  });
-                                },
-                              ),
-                            ),
-                            Container(
-                                width: 35,
-                                child: SvgPicture.asset(
-                                    "assets/svg/multiply.svg",
-                                    color: Colors.white,
-                                    height: 19)),
-                            Container(
-                              width: 40,
-                              child: TextField(
-                                controller: repsController[index],
-                                keyboardType: TextInputType.number,
-                                style: TextStyle(
-                                  fontSize: 21,
-                                  color: Colors.white,
-                                ),
-                                textAlign: TextAlign.center,
-                                decoration: InputDecoration(
-                                  hintText:
-                                      "${widget.exercise.sets[index].reps}",
-                                  hintStyle: TextStyle(
-                                    fontSize: 21,
-                                    color: Colors.white,
+                                Container(
+                                    width: 35,
+                                    child: SvgPicture.asset(
+                                        "assets/svg/multiply.svg",
+                                        color: Colors.white,
+                                        height: 19)),
+                                Container(
+                                  width: 40,
+                                  child: TextField(
+                                    controller: repsController[index],
+                                    keyboardType: TextInputType.number,
+                                    style: TextStyle(
+                                      fontSize: 21,
+                                      color: Colors.white,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    decoration: InputDecoration(
+                                      hintText:
+                                          "${widget.exercise.sets[index].reps}",
+                                      hintStyle: TextStyle(
+                                        fontSize: 21,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    onChanged: (text) {
+                                      int changereps;
+                                      if (text == "") {
+                                        changereps = 1;
+                                      } else {
+                                        changereps = int.parse(text);
+                                      }
+                                      setState(() {
+                                        widget.exercise.sets[index].reps =
+                                            changereps;
+                                      });
+                                    },
                                   ),
                                 ),
-                                onChanged: (text) {
-                                  int changereps;
-                                  if (text == "") {
-                                    changereps = 1;
-                                  } else {
-                                    changereps = int.parse(text);
-                                  }
-                                  setState(() {
-                                    widget.exercise.sets[index].reps =
-                                        changereps;
-                                  });
-                                },
-                              ),
+                                Container(
+                                    width: 70,
+                                    child:
+                                        (widget.exercise.sets[index].reps != 1)
+                                            ? Text(
+                                                "${(widget.exercise.sets[index].weight * (1 + widget.exercise.sets[index].reps / 30)).toStringAsFixed(1)}",
+                                                style: TextStyle(
+                                                    fontSize: 21,
+                                                    color: Colors.white),
+                                                textAlign: TextAlign.center,
+                                              )
+                                            : Text(
+                                                "${widget.exercise.sets[index].weight}",
+                                                style: TextStyle(
+                                                    fontSize: 21,
+                                                    color: Colors.white),
+                                                textAlign: TextAlign.center,
+                                              )),
+                              ],
                             ),
-                            Container(
-                                width: 70,
-                                child: (widget.exercise.sets[index].reps != 1)
-                                    ? Text(
-                                        "${(widget.exercise.sets[index].weight * (1 + widget.exercise.sets[index].reps / 30)).toStringAsFixed(1)}",
-                                        style: TextStyle(
-                                            fontSize: 21, color: Colors.white),
-                                        textAlign: TextAlign.center,
-                                      )
-                                    : Text(
-                                        "${widget.exercise.sets[index].weight}",
-                                        style: TextStyle(
-                                            fontSize: 21, color: Colors.white),
-                                        textAlign: TextAlign.center,
-                                      )),
-                          ],
-                        ),
-                      );
+                          ));
                     },
                     separatorBuilder: (BuildContext _context, int index) {
                       return Container(
