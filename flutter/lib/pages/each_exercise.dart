@@ -338,261 +338,250 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           )),
                     ],
                   )),
-              Expanded(
-                child: Consumer<WorkoutdataProvider>(
-                    builder: (builder, provider, child) {
-                  var _sets = provider.workoutdata.routinedatas[widget.rindex]
-                      .exercises[pindex].sets;
-                  print(_sets[0].weight);
-                  return ListView.separated(
-                      itemBuilder: (BuildContext _context, int index) {
-                        weightController[pindex].controllerlist.add(
-                            new TextEditingController(
-                                text: _sets[index].weight == 0
-                                    ? null
-                                    : (_sets[index].weight % 1) == 0
-                                        ? _sets[index].weight.toStringAsFixed(0)
-                                        : _sets[index]
-                                            .weight
-                                            .toStringAsFixed(1)));
-                        repsController[pindex].controllerlist.add(
-                            new TextEditingController(
-                                text: _sets[index].reps.toStringAsFixed(0)));
-                        return Container(
-                          padding: EdgeInsets.only(right: 10),
-                          child: Slidable(
-                            startActionPane: ActionPane(
-                                extentRatio: 0.4,
-                                motion: CustomMotion(
-                                  onOpen: () {
-                                    _routinetimeProvider.isstarted
-                                        ? [
-                                            _workoutdataProvider.boolcheck(
-                                                widget.rindex,
-                                                pindex,
-                                                index,
-                                                true),
-                                            _routinetimeProvider.resettimer(
-                                                provider
-                                                    .workoutdata
-                                                    .routinedatas[widget.rindex]
-                                                    .exercises[pindex]
-                                                    .rest),
-                                            _editWorkoutwCheck()
-                                          ]
-                                        : _displayStartAlert(
-                                            pindex, index, true);
-                                  },
-                                  onClose: () {
-                                    print("onClose!!");
-                                  },
-                                  motionWidget: StretchMotion(),
-                                ),
-                                children: [
-                                  SlidableAction(
-                                    autoClose: true,
-                                    onPressed: (_) {},
-                                    backgroundColor: Color(0xFF29B6F6),
-                                    foregroundColor: Colors.white,
-                                    icon: Icons.check,
-                                    label: 'check',
-                                  )
-                                ]),
-                            endActionPane: ActionPane(
-                                extentRatio: 0.2,
-                                motion: const ScrollMotion(),
-                                children: [
-                                  SlidableAction(
-                                    onPressed: (_) {
-                                      _workoutdataProvider.setsminusIndex(
-                                          widget.rindex, pindex, index);
-                                      weightController[pindex]
-                                          .controllerlist
-                                          .clear();
-                                      repsController[pindex]
-                                          .controllerlist
-                                          .clear();
-                                    },
-                                    backgroundColor: Color(0xFFFE4A49),
-                                    foregroundColor: Colors.white,
-                                    icon: Icons.delete,
-                                    label: 'Delete',
-                                  )
-                                ]),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  width: 80,
+              Consumer<WorkoutdataProvider>(
+                  builder: (builder, provider, child) {
+                var _sets = provider.workoutdata.routinedatas[widget.rindex]
+                    .exercises[pindex].sets;
+                return Expanded(
+                  child: Column(
+                    children: [
+                      Flexible(
+                        child: ListView.separated(
+                            shrinkWrap: true,
+                            itemBuilder: (BuildContext _context, int index) {
+                              weightController[pindex].controllerlist.add(
+                                  new TextEditingController(
+                                      text: _sets[index].weight == 0
+                                          ? null
+                                          : (_sets[index].weight % 1) == 0
+                                              ? _sets[index]
+                                                  .weight
+                                                  .toStringAsFixed(0)
+                                              : _sets[index]
+                                                  .weight
+                                                  .toStringAsFixed(1)));
+                              repsController[pindex].controllerlist.add(
+                                  new TextEditingController(
+                                      text: _sets[index]
+                                          .reps
+                                          .toStringAsFixed(0)));
+                              return Container(
+                                padding: EdgeInsets.only(right: 10),
+                                child: Slidable(
+                                  startActionPane: ActionPane(
+                                      extentRatio: 1.0,
+                                      motion: CustomMotion(
+                                        onOpen: () {
+                                          _routinetimeProvider.isstarted
+                                              ? [
+                                                  _workoutdataProvider
+                                                      .boolcheck(widget.rindex,
+                                                          pindex, index, true),
+                                                  _routinetimeProvider
+                                                      .resettimer(provider
+                                                          .workoutdata
+                                                          .routinedatas[
+                                                              widget.rindex]
+                                                          .exercises[pindex]
+                                                          .rest),
+                                                  _editWorkoutwCheck()
+                                                ]
+                                              : _displayStartAlert(
+                                                  pindex, index, true);
+                                        },
+                                        onClose: () {
+                                          print("onClose!!");
+                                        },
+                                        motionWidget: StretchMotion(),
+                                      ),
+                                      children: [
+                                        SlidableAction(
+                                          autoClose: true,
+                                          onPressed: (_) {},
+                                          backgroundColor: Color(0xFF29B6F6),
+                                          foregroundColor: Colors.white,
+                                          icon: Icons.check,
+                                          label: '밀어서 check',
+                                        )
+                                      ]),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Transform.scale(
-                                          scale: 1.2,
-                                          child: Checkbox(
-                                              checkColor: Colors.black,
-                                              fillColor: MaterialStateProperty
-                                                  .resolveWith(getColor),
-                                              value: _sets[index].ischecked,
-                                              onChanged: (newvalue) {
-                                                _routinetimeProvider.isstarted
-                                                    ? [
-                                                        _workoutdataProvider
-                                                            .boolcheck(
-                                                                widget.rindex,
-                                                                pindex,
-                                                                index,
-                                                                newvalue),
-                                                        newvalue == true
-                                                            ? _routinetimeProvider
-                                                                .resettimer(provider
-                                                                    .workoutdata
-                                                                    .routinedatas[
-                                                                        widget
-                                                                            .rindex]
-                                                                    .exercises[
-                                                                        pindex]
-                                                                    .rest)
-                                                            : null,
-                                                        _editWorkoutwCheck()
-                                                      ]
-                                                    : _displayStartAlert(pindex,
-                                                        index, newvalue);
-                                              })),
                                       Container(
-                                        width: 25,
-                                        child: Text(
-                                          "${index + 1}",
+                                        width: 80,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Transform.scale(
+                                                scale: 1.2,
+                                                child: Checkbox(
+                                                    checkColor: Colors.black,
+                                                    fillColor:
+                                                        MaterialStateProperty
+                                                            .resolveWith(
+                                                                getColor),
+                                                    value:
+                                                        _sets[index].ischecked,
+                                                    onChanged: (newvalue) {
+                                                      _routinetimeProvider
+                                                              .isstarted
+                                                          ? [
+                                                              _workoutdataProvider
+                                                                  .boolcheck(
+                                                                      widget
+                                                                          .rindex,
+                                                                      pindex,
+                                                                      index,
+                                                                      newvalue),
+                                                              newvalue == true
+                                                                  ? _routinetimeProvider.resettimer(provider
+                                                                      .workoutdata
+                                                                      .routinedatas[
+                                                                          widget
+                                                                              .rindex]
+                                                                      .exercises[
+                                                                          pindex]
+                                                                      .rest)
+                                                                  : null,
+                                                              _editWorkoutwCheck()
+                                                            ]
+                                                          : _displayStartAlert(
+                                                              pindex,
+                                                              index,
+                                                              newvalue);
+                                                    })),
+                                            Container(
+                                              width: 25,
+                                              child: Text(
+                                                "${index + 1}",
+                                                style: TextStyle(
+                                                  fontSize: 21,
+                                                  color: Colors.white,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 70,
+                                        child: TextField(
+                                          controller: weightController[pindex]
+                                              .controllerlist[index],
+                                          keyboardType: TextInputType.number,
                                           style: TextStyle(
                                             fontSize: 21,
                                             color: Colors.white,
                                           ),
                                           textAlign: TextAlign.center,
+                                          decoration: InputDecoration(
+                                            hintText: "${_sets[index].weight}",
+                                            hintStyle: TextStyle(
+                                              fontSize: 21,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          onChanged: (text) {
+                                            double changeweight;
+                                            if (text == "") {
+                                              changeweight = 0.0;
+                                            } else {
+                                              changeweight = double.parse(text);
+                                            }
+                                            _workoutdataProvider.weightcheck(
+                                                widget.rindex,
+                                                pindex,
+                                                index,
+                                                changeweight);
+                                          },
                                         ),
                                       ),
+                                      Container(
+                                          width: 35,
+                                          child: SvgPicture.asset(
+                                              "assets/svg/multiply.svg",
+                                              color: Colors.white,
+                                              height: 19)),
+                                      Container(
+                                        width: 40,
+                                        child: TextField(
+                                          controller: repsController[pindex]
+                                              .controllerlist[index],
+                                          keyboardType: TextInputType.number,
+                                          style: TextStyle(
+                                            fontSize: 21,
+                                            color: Colors.white,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                          decoration: InputDecoration(
+                                            hintText: "${_sets[index].reps}",
+                                            hintStyle: TextStyle(
+                                              fontSize: 21,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          onChanged: (text) {
+                                            int changereps;
+                                            if (text == "") {
+                                              changereps = 1;
+                                            } else {
+                                              changereps = int.parse(text);
+                                            }
+                                            _workoutdataProvider.repscheck(
+                                                widget.rindex,
+                                                pindex,
+                                                index,
+                                                changereps);
+                                          },
+                                        ),
+                                      ),
+                                      Container(
+                                          width: 70,
+                                          child: (_sets[index].reps != 1)
+                                              ? Text(
+                                                  "${(_sets[index].weight * (1 + _sets[index].reps / 30)).toStringAsFixed(1)}",
+                                                  style: TextStyle(
+                                                      fontSize: 21,
+                                                      color: Colors.white),
+                                                  textAlign: TextAlign.center,
+                                                )
+                                              : Text(
+                                                  "${_sets[index].weight}",
+                                                  style: TextStyle(
+                                                      fontSize: 21,
+                                                      color: Colors.white),
+                                                  textAlign: TextAlign.center,
+                                                )),
                                     ],
                                   ),
                                 ),
-                                Container(
-                                  width: 70,
-                                  child: TextField(
-                                    controller: weightController[pindex]
-                                        .controllerlist[index],
-                                    keyboardType: TextInputType.number,
-                                    style: TextStyle(
-                                      fontSize: 21,
-                                      color: Colors.white,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                    decoration: InputDecoration(
-                                      hintText: "${_sets[index].weight}",
-                                      hintStyle: TextStyle(
-                                        fontSize: 21,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    onChanged: (text) {
-                                      double changeweight;
-                                      if (text == "") {
-                                        changeweight = 0.0;
-                                      } else {
-                                        changeweight = double.parse(text);
-                                      }
-                                      _workoutdataProvider.weightcheck(
-                                          widget.rindex,
-                                          pindex,
-                                          index,
-                                          changeweight);
-                                    },
-                                  ),
+                              );
+                            },
+                            separatorBuilder:
+                                (BuildContext _context, int index) {
+                              return Container(
+                                alignment: Alignment.center,
+                                height: 1,
+                                color: Colors.black,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.symmetric(horizontal: 10),
+                                  height: 1,
+                                  color: Color(0xFF717171),
                                 ),
-                                Container(
-                                    width: 35,
-                                    child: SvgPicture.asset(
-                                        "assets/svg/multiply.svg",
-                                        color: Colors.white,
-                                        height: 19)),
-                                Container(
-                                  width: 40,
-                                  child: TextField(
-                                    controller: repsController[pindex]
-                                        .controllerlist[index],
-                                    keyboardType: TextInputType.number,
-                                    style: TextStyle(
-                                      fontSize: 21,
-                                      color: Colors.white,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                    decoration: InputDecoration(
-                                      hintText: "${_sets[index].reps}",
-                                      hintStyle: TextStyle(
-                                        fontSize: 21,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    onChanged: (text) {
-                                      int changereps;
-                                      if (text == "") {
-                                        changereps = 1;
-                                      } else {
-                                        changereps = int.parse(text);
-                                      }
-                                      _workoutdataProvider.repscheck(
-                                          widget.rindex,
-                                          pindex,
-                                          index,
-                                          changereps);
-                                    },
-                                  ),
-                                ),
-                                Container(
-                                    width: 70,
-                                    child: (_sets[index].reps != 1)
-                                        ? Text(
-                                            "${(_sets[index].weight * (1 + _sets[index].reps / 30)).toStringAsFixed(1)}",
-                                            style: TextStyle(
-                                                fontSize: 21,
-                                                color: Colors.white),
-                                            textAlign: TextAlign.center,
-                                          )
-                                        : Text(
-                                            "${_sets[index].weight}",
-                                            style: TextStyle(
-                                                fontSize: 21,
-                                                color: Colors.white),
-                                            textAlign: TextAlign.center,
-                                          )),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                      separatorBuilder: (BuildContext _context, int index) {
-                        return Container(
-                          alignment: Alignment.center,
-                          height: 1,
-                          color: Colors.black,
-                          child: Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.symmetric(horizontal: 10),
-                            height: 1,
-                            color: Color(0xFF717171),
-                          ),
-                        );
-                      },
-                      itemCount: _sets.length);
-                }),
-              ),
-              Container(
-                  padding: EdgeInsets.only(bottom: 10),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            child: IconButton(
+                              );
+                            },
+                            itemCount: _sets.length),
+                      ),
+                      Container(
+                        height: 60,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
                                 onPressed: () {
                                   _workoutdataProvider.setsminus(
                                       widget.rindex, pindex);
@@ -600,9 +589,35 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 icon: Icon(
                                   Icons.remove,
                                   color: Colors.white,
-                                  size: 40,
+                                  size: 24,
                                 )),
-                          ),
+                            IconButton(
+                                onPressed: () {
+                                  _workoutdataProvider.setsplus(
+                                      widget.rindex, pindex);
+                                  weightController[pindex]
+                                      .controllerlist
+                                      .clear();
+                                },
+                                icon: Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  size: 24,
+                                )),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              }),
+              Container(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
                           Container(child: Consumer<RoutineTimeProvider>(
                               builder: (context, provider, child) {
                             return Text(
@@ -618,21 +633,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                         ? Colors.red
                                         : Colors.white));
                           })),
-                          Container(
-                            child: IconButton(
-                                onPressed: () {
-                                  _workoutdataProvider.setsplus(
-                                      widget.rindex, pindex);
-                                  weightController[pindex]
-                                      .controllerlist
-                                      .clear();
-                                },
-                                icon: Icon(
-                                  Icons.add,
-                                  color: Colors.white,
-                                  size: 40,
-                                )),
-                          )
                         ],
                       ),
                       Row(

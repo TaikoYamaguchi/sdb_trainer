@@ -18,6 +18,7 @@ import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:transition/transition.dart';
 import 'package:tutorial/tutorial.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class EachWorkoutDetails extends StatefulWidget {
   int rindex;
@@ -258,7 +259,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             routinedatas: routinedatas_all)
         .editWorkout()
         .then((data) => data["user_email"] != null
-            ? showToast("done!")
+            ? showToast("수정 완료")
             : showToast("입력을 확인해주세요"));
   }
 
@@ -400,11 +401,11 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('TextField in Dialog'),
+            title: Text('루틴 이름 설정'),
             content: TextField(
               onChanged: (value) {},
               controller: _workoutNameCtrl,
-              decoration: InputDecoration(hintText: "Text Field in Dialog"),
+              decoration: InputDecoration(hintText: "루틴 이름"),
             ),
             actions: <Widget>[
               _workoutSubmitButton(context),
@@ -513,60 +514,79 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                       TransitionEffect.RIGHT_TO_LEFT))
                         ];
                 },
-                child: Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      decoration: BoxDecoration(
-                          color: Color(0xFF212121),
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(top),
-                              bottomRight: Radius.circular(bottom),
-                              topLeft: Radius.circular(top),
-                              bottomLeft: Radius.circular(bottom))),
-                      height: 52,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            exlist[index].name,
-                            style: TextStyle(fontSize: 21, color: Colors.white),
-                          ),
-                          Container(
-                            child: Row(
-                              //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Text("Rest: ${exlist[index].rest}",
-                                    style: TextStyle(
-                                        fontSize: 13,
-                                        color: Color(0xFF717171))),
-                                Expanded(child: SizedBox()),
-                                Text(
-                                    "1RM: ${exinfo[0].onerm.toStringAsFixed(1)}/${exinfo[0].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
-                                    style: TextStyle(
-                                        fontSize: 13,
-                                        color: Color(0xFF717171))),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    index == exlist.length - 1
-                        ? Container()
-                        : Container(
-                            alignment: Alignment.center,
-                            height: 1,
+                child: Slidable(
+                  endActionPane: ActionPane(
+                      extentRatio: 0.2,
+                      motion: const ScrollMotion(),
+                      children: [
+                        SlidableAction(
+                          onPressed: (_) {
+                            _workoutdataProvider.removeexAt(
+                                widget.rindex, index);
+                            _editWorkoutCheck();
+                          },
+                          backgroundColor: Color(0xFFFE4A49),
+                          foregroundColor: Colors.white,
+                          icon: Icons.delete,
+                          label: 'Delete',
+                        )
+                      ]),
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        decoration: BoxDecoration(
                             color: Color(0xFF212121),
-                            child: Container(
-                              alignment: Alignment.center,
-                              margin: EdgeInsets.symmetric(horizontal: 10),
-                              height: 1,
-                              color: Color(0xFF717171),
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(top),
+                                bottomRight: Radius.circular(bottom),
+                                topLeft: Radius.circular(top),
+                                bottomLeft: Radius.circular(bottom))),
+                        height: 52,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              exlist[index].name,
+                              style:
+                                  TextStyle(fontSize: 21, color: Colors.white),
                             ),
-                          )
-                  ],
+                            Container(
+                              child: Row(
+                                //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text("Rest: ${exlist[index].rest}",
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          color: Color(0xFF717171))),
+                                  Expanded(child: SizedBox()),
+                                  Text(
+                                      "1RM: ${exinfo[0].onerm.toStringAsFixed(1)}/${exinfo[0].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          color: Color(0xFF717171))),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      index == exlist.length - 1
+                          ? Container()
+                          : Container(
+                              alignment: Alignment.center,
+                              height: 1,
+                              color: Color(0xFF212121),
+                              child: Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                height: 1,
+                                color: Color(0xFF717171),
+                              ),
+                            )
+                    ],
+                  ),
                 ),
               );
             },
