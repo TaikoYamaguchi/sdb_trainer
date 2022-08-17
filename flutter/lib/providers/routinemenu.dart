@@ -5,9 +5,16 @@ class RoutineMenuStater extends ChangeNotifier {
   int get menustate => _menustate;
   bool _ismodechecked = false;
   bool get ismodechecked => _ismodechecked;
+  bool _plansetting = false;
+  bool get plansetting => _plansetting;
 
   change(state) {
     _menustate = state;
+    notifyListeners();
+  }
+
+  planset() {
+    _plansetting = !_plansetting;
     notifyListeners();
   }
 

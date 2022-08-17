@@ -278,7 +278,6 @@ class ExerciseState extends State<Exercise> {
                         context,
                         Transition(
                             child: EachWorkoutDetails(
-                              exerciselist: routinelist[index].exercises,
                               rindex: index,
                             ),
                             transitionEffect: TransitionEffect.RIGHT_TO_LEFT))

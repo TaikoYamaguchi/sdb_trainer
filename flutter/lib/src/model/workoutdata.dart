@@ -50,7 +50,7 @@ class Routinedatas {
         : parsedJson['exercises'] as List;
     List exerciseList = parsedJson['mode'] == 0
       ? list.map((i) => Exercises.fromJson(i)).toList()
-      : list.map((i) => Plans.fromJson(i)).toList();
+      : list.map((i) => Program.fromJson(i)).toList();
     print('complete1');
 
 
@@ -62,21 +62,59 @@ class Routinedatas {
   }
 }
 
+class Program {
+  int progress;
+  List<Plans> plans;
+  Program(
+      {
+        required this.progress,
+        required this.plans,});
+
+  Map toJson() => {"progress": progress,"plans": plans};
+  factory Program.fromJson(Map<String, dynamic> parsedJson) {
+    var list = parsedJson["plans"] as List;
+    List<Plans> planList = list.map((i) => Plans.fromJson(i)).toList();
+    return Program(
+      progress : parsedJson['progress'],
+      plans: planList,);
+  }
+}
+
 class Plans {
-  int day_count;
-  List<Exercises> exercises;
+  List<Plan_Exercises> exercises;
   Plans(
       {
-        required this.day_count,
         required this.exercises,});
 
-  Map toJson() => {"ref_name": day_count, "exercises": exercises};
+  Map toJson() => {"exercises": exercises};
   factory Plans.fromJson(Map<String, dynamic> parsedJson) {
     var list = parsedJson["exercises"] as List;
-    List<Exercises> exerciseList = list.map((i) => Exercises.fromJson(i)).toList();
+    List<Plan_Exercises> exerciseList = list.map((i) => Plan_Exercises.fromJson(i)).toList();
     return Plans(
-        day_count: parsedJson["ref_names"],
         exercises: exerciseList,);
+  }
+}
+
+class Plan_Exercises {
+  final String name;
+  final String ref_name;
+  final List<Sets> sets;
+  int rest;
+  Plan_Exercises(
+      {required this.name,
+        required this.ref_name,
+        required this.sets,
+        required this.rest});
+
+  Map toJson() => {"name": name, "ref_name": ref_name, "sets": sets, "rest": rest};
+  factory Plan_Exercises.fromJson(Map<String, dynamic> parsedJson) {
+    var list = parsedJson["sets"] as List;
+    List<Sets> setList = list.map((i) => Sets.fromJson(i)).toList();
+    return Plan_Exercises(
+        name: parsedJson["name"],
+        ref_name: parsedJson["ref_name"],
+        sets: setList,
+        rest: parsedJson["rest"]);
   }
 }
 

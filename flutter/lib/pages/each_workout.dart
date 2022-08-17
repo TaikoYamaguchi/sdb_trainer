@@ -20,10 +20,9 @@ import 'package:transition/transition.dart';
 import 'package:tutorial/tutorial.dart';
 
 class EachWorkoutDetails extends StatefulWidget {
-  List<wod.Exercises> exerciselist;
   int rindex;
   EachWorkoutDetails(
-      {Key? key, required this.exerciselist, required this.rindex})
+      {Key? key,  required this.rindex})
       : super(key: key);
 
   @override
