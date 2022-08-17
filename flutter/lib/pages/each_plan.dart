@@ -111,7 +111,10 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
         Provider.of<WorkoutdataProvider>(context, listen: false);
     return Scaffold(
         appBar: _appbarWidget(),
-        body: null
+        body: Container(
+          color: Colors.black,
+          child: Center(child: Text('Program mode\nwill be Updated',style: TextStyle(color: Colors.white, fontSize: 40)))
+        )
     );
   }
 }
