@@ -91,6 +91,11 @@ class WorkoutdataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  planaddexAt(rindex, ex) {
+    _workoutdata.routinedatas[rindex].exercises[0].plans[_workoutdata.routinedatas[rindex].exercises[0].progress].exercises.add(ex);
+    notifyListeners();
+  }
+
   namechange(rindex, newname) {
     _workoutdata.routinedatas[rindex].name = newname;
     notifyListeners();

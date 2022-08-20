@@ -1,5 +1,6 @@
 
 import 'package:expandable/expandable.dart';
+import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
@@ -25,13 +26,16 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
   var _historydataProvider;
   var _routinetimeProvider;
   var _userdataProvider;
+  var _exercisesdataProvider;
+  var _testdata0;
+  late var _testdata = _testdata0;
+  List _addexinput = [];
 
   Plans sample = new Plans(exercises: []);
   Plan_Exercises exsample = new Plan_Exercises(name: '벤치프레스', ref_name: '벤치프레스', sets: [Sets(index: 0, weight: 100, reps: 10, ischecked: false)], rest: 0);
 
-  ExpandableController Controller = ExpandableController(
-    initialExpanded: true,
-  );
+  ExpandableController Controller = ExpandableController(initialExpanded: true,);
+  List<ExpandableController> Controllerlist = [];
 
 
 
@@ -207,11 +211,12 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                         child: ListView.builder(
                           physics: new NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext _context, int index) {
+                            Controllerlist.add(ExpandableController(initialExpanded: true,));
                             return Container(
                               child: Column(
                                 children: [
                                   ExpandablePanel(
-                                    controller: Controller,
+                                    controller: Controllerlist[index],
                                       theme: const ExpandableThemeData(
                                         headerAlignment: ExpandablePanelHeaderAlignment.center,
                                         hasIcon: true,
@@ -339,8 +344,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                 padding: EdgeInsets.zero,
                                 constraints: BoxConstraints(),
                                 onPressed: () {
-                                  _workoutdataProvider.addexAt(widget.rindex,sample);
-                                  _editWorkoutCheck();
+                                  exselect();
                                 },
                                 icon: Icon(
                                   Icons.add_circle_outlined,
@@ -367,6 +371,160 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
         );
   }
 
+  void exselect() {
+    showModalBottomSheet<void>(
+      context: context,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      builder: (BuildContext context) {
+        return Container(
+          height: MediaQuery.of(context).size.height*3 / 4,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            color: Colors.amber,
+          ),
+
+          child: Center(
+            child: _exercises_searchWidget()
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _exercises_searchWidget() {
+    return Column(
+      children: [
+        Container(
+          margin: const EdgeInsets.fromLTRB(10, 16, 10, 16),
+          child: TextField(
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Color(0xFF717171),
+                ),
+                hintText: "Exercise Name",
+                hintStyle:
+                TextStyle(fontSize: 20.0, color: Color(0xFF717171)),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(width: 3, color: Color(0xFF717171)),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+              onChanged: (text) {
+                searchExercise(text.toString());
+              }),
+        ),
+        exercisesWidget(_testdata, true)
+      ],
+    );
+  }
+
+  Widget exercisesWidget(exuniq, bool shirink) {
+    double top = 0;
+    double bottom = 0;
+    return Expanded(
+      //color: Colors.black,
+      child: Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
+
+        return ListView.separated(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            itemBuilder: (BuildContext _context, int index) {
+              if (index == 0) {
+                top = 20;
+                bottom = 0;
+              } else if (index == exuniq.length - 1) {
+                top = 0;
+                bottom = 20;
+              } else {
+                top = 0;
+                bottom = 0;
+              }
+              ;
+              return GestureDetector(
+                onTap: () {
+                    _workoutdataProvider.planaddexAt(
+                      widget.rindex,
+                      new Plan_Exercises(
+                          name: exuniq[index].name,
+                          ref_name: '',
+                          sets: [],
+                          rest: 0));
+                    Navigator.pop(context);
+                },
+                child: Container(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                        color: Color(0xFF212121),
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(top),
+                            bottomRight: Radius.circular(bottom),
+                            topLeft: Radius.circular(top),
+                            bottomLeft: Radius.circular(bottom))),
+                    height: 52,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          exuniq[index].name,
+                          style: TextStyle(
+                              fontSize: 21,
+                              color: Colors.white),
+                        ),
+                        Container(
+                          child: Row(
+                            //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text("Rest: need to set",
+                                  style: TextStyle(
+                                      fontSize: 13,
+                                      color: Color(0xFF717171))),
+                              Expanded(child: SizedBox()),
+                              Text(
+                                  "1RM: ${exuniq[index].onerm}/${exuniq[index].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
+                                  style: TextStyle(
+                                      fontSize: 13,
+                                      color: Color(0xFF717171))),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+            separatorBuilder: (BuildContext _context, int index) {
+              return Container(
+                alignment: Alignment.center,
+                height: 1,
+                color: Color(0xFF212121),
+                child: Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  height: 1,
+                  color: Color(0xFF717171),
+                ),
+              );
+            },
+            scrollDirection: Axis.vertical,
+            shrinkWrap: shirink,
+            itemCount: exuniq.length);
+      }),
+    );
+  }
+
+  void searchExercise(String query) {
+    final suggestions = _testdata0.where((exercise) {
+      final exTitle = exercise.name;
+      return (exTitle.contains(query)) as bool;
+    }).toList();
+
+    setState(() => _testdata = suggestions);
+  }
+
 
 
   void _editWorkoutCheck() async {
@@ -386,6 +544,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _workoutdataProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
+    _exercisesdataProvider =
+        Provider.of<ExercisesdataProvider>(context, listen: false);
+    _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
     return Scaffold(
         appBar: _appbarWidget(),
         body: _Nday_RoutineWidget()
