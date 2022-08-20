@@ -682,7 +682,7 @@ class ExerciseState extends State<Exercise> {
               _workoutdataProvider.addroutine(new Routinedatas(
                   name: _workoutNameCtrl.text,
                   mode: _RoutineMenuProvider.ismodechecked ? 1 :0,
-                  exercises: [],
+                  exercises: _RoutineMenuProvider.ismodechecked ? [new Program(progress: 0, plans: [])] : [],
                   routine_time: 0));
 
               _editWorkoutCheck();
