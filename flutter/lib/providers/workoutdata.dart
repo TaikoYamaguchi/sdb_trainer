@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
@@ -27,6 +29,12 @@ class WorkoutdataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  planboolcheck(rindex, eindex, sindex, newvalue) {
+    _workoutdata.routinedatas[rindex].exercises[0].plans[_workoutdata.routinedatas[rindex].exercises[0].progress].exercises[eindex].sets[sindex].ischecked =
+        newvalue;
+    notifyListeners();
+  }
+
   weightcheck(rindex, eindex, sindex, newvalue) {
     _workoutdata.routinedatas[rindex].exercises[eindex].sets[sindex].weight =
         newvalue;
@@ -46,6 +54,10 @@ class WorkoutdataProvider extends ChangeNotifier {
 
   setsminus(rindex, eindex) {
     _workoutdata.routinedatas[rindex].exercises[eindex].sets.removeLast();
+    notifyListeners();
+  }
+  plansetsminus(rindex, eindex) {
+    _workoutdata.routinedatas[rindex].exercises[0].plans[_workoutdata.routinedatas[rindex].exercises[0].progress].exercises[eindex].sets.removeLast();
     notifyListeners();
   }
 
@@ -97,6 +109,16 @@ class WorkoutdataProvider extends ChangeNotifier {
     _workoutdata.routinedatas[rindex].exercises[eindex].sets.add(new Sets(
         index:
             _workoutdata.routinedatas[rindex].exercises[eindex].sets.length + 1,
+        weight: 0.0,
+        reps: 1,
+        ischecked: false));
+    notifyListeners();
+  }
+
+  plansetsplus(rindex, eindex) {
+    _workoutdata.routinedatas[rindex].exercises[0].plans[_workoutdata.routinedatas[rindex].exercises[0].progress].exercises[eindex].sets.add(new Sets(
+        index:
+        _workoutdata.routinedatas[rindex].exercises[0].plans[_workoutdata.routinedatas[rindex].exercises[0].progress].exercises[eindex].sets.length + 1,
         weight: 0.0,
         reps: 1,
         ischecked: false));

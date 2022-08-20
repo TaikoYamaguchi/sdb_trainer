@@ -200,100 +200,166 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                   thickness: 1.3,
                   color: Colors.grey,
                 ),
-                Container(
-                  child: ListView.builder(
-                    itemBuilder: (BuildContext _context, int index) {
-                      return ExpandablePanel(
-                        controller: Controller,
-                          theme: const ExpandableThemeData(
-                            headerAlignment: ExpandablePanelHeaderAlignment.center,
-                            //tapBodyToExpand: true,
-                            //tapBodyToCollapse: true,
-                            hasIcon: true,
-                            iconColor: Colors.white,
-                          ),
-                          header: Expandable(
-                            collapsed: Container(
-                                child: Text(inplandata[index].name, style: TextStyle(color: Colors.white, fontSize: 20),)), // widget header when the widget is Collapsed
-                            expanded: Container(
-                                child: Text(inplandata[index].name, style: TextStyle(color: Colors.white, fontSize: 20),)), // header when the widget is Expanded
-                          ),
-                          collapsed: Container(), // body when the widget is Collapsed, I didnt need anything here.
-                          expanded:  Container(
-                            child: ListView.builder(
-                              itemBuilder: (BuildContext _context, int setindex) {
-                                return Row(
-                                  children: [
-
-                                    Container(
-                                      child: Text(inplandata[index].sets[setindex].weight.toString(),style: TextStyle(color: Colors.white),),
-                                    ),
-                                    Container(
-                                      child: Text(inplandata[index].sets[setindex].weight.toString(),style: TextStyle(color: Colors.white),),
-                                    ),
-                                    Container(
-                                      child: Text(inplandata[index].sets[setindex].reps.toString(),style: TextStyle(color: Colors.white),),
-                                    ),
-                                  ],
-                                );
-                              },
-                              shrinkWrap: true,
-                              itemCount: inplandata[index].sets.length,
-                            ),
-                          ) // body when the widget is Expanded
-                      );
-
-                    },
-                    shrinkWrap: true,
-                    itemCount: inplandata.length,
-                  ),
-                ),
-                Divider(
-                  indent: 10,
-                  thickness: 1.3,
-                  color: Colors.grey,
-                ),
-                Container(
-                  height: 30,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                Expanded(
+                  child: ListView(
                     children: [
-                      Container(width: 10,),
+                      Container(
+                        child: ListView.builder(
+                          physics: new NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext _context, int index) {
+                            return Container(
+                              child: Column(
+                                children: [
+                                  ExpandablePanel(
+                                    controller: Controller,
+                                      theme: const ExpandableThemeData(
+                                        headerAlignment: ExpandablePanelHeaderAlignment.center,
+                                        hasIcon: true,
+                                        iconColor: Colors.white,
+                                      ),
+                                      header:Padding(
+                                        padding: EdgeInsets.only(left: 10),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(inplandata[index].name, style: TextStyle(color: Colors.white, fontSize: 20),),
+                                          ],
+                                        ),
+                                      ),
+                                      collapsed: Container(), // body when the widget is Collapsed, I didnt need anything here.
+                                      expanded:  Container(
+                                        child: ListView.builder(
+                                          physics: new NeverScrollableScrollPhysics(),
+                                          itemBuilder: (BuildContext _context, int setindex) {
+                                            return Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                setindex ==0
+                                                ? Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    Container(width: 10,),
+                                                    Container(width: 10,),
+                                                    IconButton(
+                                                        padding: EdgeInsets.zero,
+                                                        constraints: BoxConstraints(),
+                                                        onPressed: () {
+                                                          workout.plansetsminus(widget.rindex, index);
+                                                        },
+                                                        icon: Icon(
+                                                          Icons.remove_circle_outlined,
+                                                          color: Colors.white,
+                                                          size: 20,
+                                                        )),
+                                                    Container(width: 10,),
+                                                    IconButton(
+                                                        padding: EdgeInsets.zero,
+                                                        constraints: BoxConstraints(),
+                                                        onPressed: () {
+                                                          workout.plansetsplus(widget.rindex, index);
+                                                        },
+                                                        icon: Icon(
+                                                          Icons.add_circle_outlined,
+                                                          color: Colors.white,
+                                                          size: 20,
+                                                        )),
+                                                  ],
+                                                )
+                                                : Container()
+                                                ,
+
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                      child: Text(
+                                                        '${inplandata[index].sets[setindex].weight.toStringAsFixed(1)} X ${inplandata[index].sets[setindex].reps}',
+                                                        style: TextStyle(color: Colors.white, fontSize:18 ),),
+                                                    ),
+                                                    Theme(
+                                                      data: ThemeData(unselectedWidgetColor: Colors.white),
+                                                      child: Checkbox(
+                                                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                                          activeColor: Colors.white,
+                                                          checkColor: Colors.black,
+
+                                                          value: inplandata[index].sets[setindex].ischecked,
+                                                          onChanged: (newvalue) {
+                                                            workout.planboolcheck(widget.rindex, index, setindex, newvalue);
+
+                                                        }
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
 
 
-                      IconButton(
-                          padding: EdgeInsets.zero,
-                          constraints: BoxConstraints(),
-                          onPressed: () {
+                                              ],
+                                            );
+                                          },
+                                          shrinkWrap: true,
+                                          itemCount: inplandata[index].sets.length,
+                                        ),
+                                      ) // body when the widget is Expanded
+                                  ),
+                                  Divider(
+                                    indent: 10,
+                                    thickness: 1.3,
+                                    color: Colors.grey,
+                                  ),
+                                ],
+                              ),
+                            );
+
                           },
-                          icon: Icon(
-                            Icons.remove_circle_outlined,
-                            color: Colors.white,
-                            size: 20,
-                          )),
-                      Container(width: 10,),
-                      Container(width: 10,),
+                          shrinkWrap: true,
+                          itemCount: inplandata.length,
+                        ),
+                      ),
+                      Container(
+                        height: 30,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(width: 10,),
 
-                      IconButton(
-                          padding: EdgeInsets.zero,
-                          constraints: BoxConstraints(),
-                          onPressed: () {
-                            _workoutdataProvider.addexAt(widget.rindex,sample);
-                            _editWorkoutCheck();
-                          },
-                          icon: Icon(
-                            Icons.add_circle_outlined,
-                            color: Colors.white,
-                            size: 20,
-                          )),
+                            IconButton(
+                                padding: EdgeInsets.zero,
+                                constraints: BoxConstraints(),
+                                onPressed: () {
+                                },
+                                icon: Icon(
+                                  Icons.remove_circle_outlined,
+                                  color: Colors.white,
+                                  size: 20,
+                                )),
+                            Container(width: 10,),
+                            Container(width: 10,),
+
+                            IconButton(
+                                padding: EdgeInsets.zero,
+                                constraints: BoxConstraints(),
+                                onPressed: () {
+                                  _workoutdataProvider.addexAt(widget.rindex,sample);
+                                  _editWorkoutCheck();
+                                },
+                                icon: Icon(
+                                  Icons.add_circle_outlined,
+                                  color: Colors.white,
+                                  size: 20,
+                                )),
+                          ],
+                        ),
+                      ),
+                      Center(
+                        child: Container(
+                            child: Text('운동 추가 제거', style: TextStyle(color: Colors.grey, fontSize: 15), )
+                        ),
+                      )
+
                     ],
                   ),
                 ),
-                Center(
-                  child: Container(
-                    child: Text('운동 추가 제거', style: TextStyle(color: Colors.grey, fontSize: 15), )
-                  ),
-                )
+
               ],
             ),
           );

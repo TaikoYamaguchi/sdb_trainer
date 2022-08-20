@@ -648,7 +648,6 @@ class ExerciseState extends State<Exercise> {
                                       value: provider.ismodechecked,
                                       onChanged: (newvalue) {
                                         provider.modecheck();
-                                        print(_RoutineMenuProvider.ismodechecked);
                                       });
                                 })
 
