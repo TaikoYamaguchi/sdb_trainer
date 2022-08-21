@@ -152,7 +152,11 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                           padding: EdgeInsets.zero,
                           constraints: BoxConstraints(),
                           onPressed: () {
-                            _workoutdataProvider.setplanprogress(widget.rindex, plandata.progress-1);
+                            if(plandata.progress==0){
+                              _workoutdataProvider.setplanprogress(widget.rindex, plandata.plans.length-1);
+                            }else{
+                              _workoutdataProvider.setplanprogress(widget.rindex, plandata.progress-1);
+                            }
                             _editWorkoutCheck();
                           },
                           icon: Icon(
@@ -170,7 +174,11 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                           padding: EdgeInsets.zero,
                           constraints: BoxConstraints(),
                           onPressed: () {
-                            _workoutdataProvider.setplanprogress(widget.rindex, plandata.progress+1);
+                            if(plandata.progress==plandata.plans.length-1){
+                              _workoutdataProvider.setplanprogress(widget.rindex, 0);
+                            }else{
+                              _workoutdataProvider.setplanprogress(widget.rindex, plandata.progress+1);
+                            }
                             _editWorkoutCheck();
                           },
                           icon: Icon(
@@ -184,9 +192,13 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                           padding: EdgeInsets.zero,
                           constraints: BoxConstraints(),
                           onPressed: () {
-                            _workoutdataProvider.removeplanAt(widget.rindex);
-                            _workoutdataProvider.setplanprogress(widget.rindex, plandata.progress-1);
-                            _editWorkoutCheck();
+                            if(plandata.plans.length != 1){
+                              _workoutdataProvider.removeplanAt(widget.rindex);
+                              if(plandata.progress!=0){
+                                _workoutdataProvider.setplanprogress(widget.rindex, plandata.progress-1);
+                              }
+                              _editWorkoutCheck();
+                            }
                           },
                           icon: Icon(
                             Icons.remove_circle_outlined,
