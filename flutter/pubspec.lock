@@ -103,7 +103,7 @@ packages:
     dependency: "direct main"
     description:
       name: expandable
-      url: "https://pub.flutter-io.cn"
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "5.0.1"
   fake_async:
