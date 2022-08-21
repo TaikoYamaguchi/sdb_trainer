@@ -48,6 +48,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
       leading: IconButton(
         icon: Icon(Icons.arrow_back_ios_outlined),
         onPressed: () {
+          _editWorkoutCheck();
           Navigator.of(context).pop();
         },
       ),
@@ -152,6 +153,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                           constraints: BoxConstraints(),
                           onPressed: () {
                             _workoutdataProvider.setplanprogress(widget.rindex, plandata.progress-1);
+                            _editWorkoutCheck();
                           },
                           icon: Icon(
                             Icons
@@ -169,6 +171,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                           constraints: BoxConstraints(),
                           onPressed: () {
                             _workoutdataProvider.setplanprogress(widget.rindex, plandata.progress+1);
+                            _editWorkoutCheck();
                           },
                           icon: Icon(
                             Icons
@@ -183,6 +186,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                           onPressed: () {
                             _workoutdataProvider.removeplanAt(widget.rindex);
                             _workoutdataProvider.setplanprogress(widget.rindex, plandata.progress-1);
+                            _editWorkoutCheck();
                           },
                           icon: Icon(
                             Icons.remove_circle_outlined,
@@ -254,6 +258,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                 constraints: BoxConstraints(),
                                                 onPressed: () {
                                                   workout.plansetsplus(widget.rindex, index);
+                                                  _editWorkoutCheck();
                                                 },
                                                 icon: Icon(
                                                   Icons.add_circle_outlined,
@@ -285,6 +290,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                         constraints: BoxConstraints(),
                                                         onPressed: () {
                                                           workout.plansetsminus(widget.rindex, index);
+                                                          _editWorkoutCheck();
                                                         },
                                                         icon: Icon(
                                                           Icons.remove_circle_outlined,
@@ -297,6 +303,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                         constraints: BoxConstraints(),
                                                         onPressed: () {
                                                           workout.plansetsplus(widget.rindex, index);
+                                                          _editWorkoutCheck();
                                                         },
                                                         icon: Icon(
                                                           Icons.add_circle_outlined,
@@ -372,6 +379,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                 constraints: BoxConstraints(),
                                 onPressed: () {
                                   workout.planremoveexAt(widget.rindex);
+                                  _editWorkoutCheck();
                                 },
                                 icon: Icon(
                                   Icons.remove_circle_outlined,
@@ -545,6 +553,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       onPressed: (){
                         workout.plansetcheck(widget.rindex, eindex, sindex, changeweight, changereps);
                         Navigator.pop(context);
+                        _editWorkoutCheck();
                       },
                       child: Text('완료', style: TextStyle(fontWeight: FontWeight.bold),)),
                   Container(width: 10,),
@@ -645,7 +654,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                              ref_name: exuniq[index].name,
                              sets: [],
                              rest: 0));
+
                      Navigator.pop(context);
+                     _editWorkoutCheck();
                    }
                   }else if(isex){
 
