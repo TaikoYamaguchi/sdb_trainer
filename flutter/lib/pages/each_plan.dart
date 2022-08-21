@@ -147,6 +147,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                           padding: EdgeInsets.zero,
                           constraints: BoxConstraints(),
                           onPressed: () {
+                            _workoutdataProvider.setplanprogress(widget.rindex, plandata.progress-1);
                           },
                           icon: Icon(
                             Icons
@@ -163,6 +164,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                           padding: EdgeInsets.zero,
                           constraints: BoxConstraints(),
                           onPressed: () {
+                            _workoutdataProvider.setplanprogress(widget.rindex, plandata.progress+1);
                           },
                           icon: Icon(
                             Icons
@@ -175,6 +177,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                           padding: EdgeInsets.zero,
                           constraints: BoxConstraints(),
                           onPressed: () {
+                            _workoutdataProvider.removeplanAt(widget.rindex);
+                            _workoutdataProvider.setplanprogress(widget.rindex, plandata.progress-1);
                           },
                           icon: Icon(
                             Icons.remove_circle_outlined,
@@ -188,7 +192,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                           padding: EdgeInsets.zero,
                           constraints: BoxConstraints(),
                           onPressed: () {
-                            _workoutdataProvider.addexAt(widget.rindex,sample);
+                            _workoutdataProvider.addplanAt(widget.rindex,sample);
+                            _workoutdataProvider.setplanprogress(widget.rindex, plandata.progress+1);
                             _editWorkoutCheck();
                           },
                           icon: Icon(
@@ -207,7 +212,18 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                 Expanded(
                   child: ListView(
                     children: [
-                      Container(
+                      inplandata.isEmpty
+                      ? Center(child: Container(
+                          child: Column(
+                            children: [
+                              Container(height: 30,),
+                              Text('오늘은 휴식데이!', style: TextStyle(fontSize: 25, color: Colors.white, fontWeight: FontWeight.bold),),
+                              Container(height: 20,),
+                              Text('운동을 추가 하지 않으면 자동 휴식데이입니다.', style: TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.bold),),
+                              Container(height: 30,),
+                        ],
+                      )))
+                      :Container(
                         child: ListView.builder(
                           physics: new NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext _context, int index) {
