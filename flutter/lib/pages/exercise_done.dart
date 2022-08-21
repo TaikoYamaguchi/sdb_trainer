@@ -33,6 +33,7 @@ class _ExerciseDoneState extends State<ExerciseDone> {
   var _workoutdataProvider;
   var _routinetimeProvider;
   var _btnDisabled;
+  TextEditingController _exerciseCommentCtrl = TextEditingController(text: "");
   final ImagePicker _picker = ImagePicker();
   @override
   void initState() {
@@ -175,7 +176,7 @@ class _ExerciseDoneState extends State<ExerciseDone> {
         ),
       ),
       Container(
-        height: 240,
+        height: 200,
         width: MediaQuery.of(context).size.width,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -189,13 +190,14 @@ class _ExerciseDoneState extends State<ExerciseDone> {
           ),
         ),
       ),
+      _commentWidget(),
       _exercise_Done_Button()
     ]));
   }
 
   Widget _exercise_Done_Button() {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(12.0),
       child: SizedBox(
           width: MediaQuery.of(context).size.width,
           child: FlatButton(
@@ -210,6 +212,28 @@ class _ExerciseDoneState extends State<ExerciseDone> {
               },
               child: Text("운동 완료",
                   style: TextStyle(fontSize: 20.0, color: Colors.white)))),
+    );
+  }
+
+  Widget _commentWidget() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: TextFormField(
+          controller: _exerciseCommentCtrl,
+          decoration: InputDecoration(
+              prefixIcon: Icon(Icons.message, color: Colors.white),
+              labelText: "코멘트를 입력해주세요",
+              labelStyle: TextStyle(color: Colors.white),
+              border: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.white, width: 2.0),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white, width: 2.0),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              fillColor: Colors.white),
+          style: TextStyle(color: Colors.white)),
     );
   }
 
