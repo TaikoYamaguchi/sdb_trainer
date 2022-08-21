@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sdb_trainer/pages/exercise_done.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
@@ -17,6 +18,7 @@ import 'package:sdb_trainer/src/model/workoutdata.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sdb_trainer/src/utils/customMotion.dart';
+import 'package:transition/transition.dart';
 
 class EachExerciseDetails extends StatefulWidget {
   int ueindex;
@@ -711,13 +713,16 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                   recordExercise();
                                   _editHistoryCheck();
                                   _editWorkoutwoCheck();
-                                  Navigator.pop(context);
+                                  Navigator.push(
+                                      context,
+                                      Transition(
+                                          child: ExerciseDone(
+                                              exerciseList: exerciseList,
+                                              routinetime: _routinetimeProvider
+                                                  .routineTime),
+                                          transitionEffect:
+                                              TransitionEffect.RIGHT_TO_LEFT));
                                 }
-                                provider.resettimer(_workoutdataProvider
-                                    .workoutdata
-                                    .routinedatas[widget.rindex]
-                                    .exercises[pindex]
-                                    .rest);
                                 provider.routinecheck(widget.rindex);
                               },
                               child: Text(provider.routineButton),
