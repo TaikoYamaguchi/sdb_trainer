@@ -29,7 +29,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
   var _exercisesdataProvider;
   var _testdata0;
   late var _testdata = _testdata0;
-  List _addexinput = [];
+  String _addexinput = '';
 
   Plans sample = new Plans(exercises: []);
   Plan_Exercises exsample = new Plan_Exercises(name: '벤치프레스', ref_name: '벤치프레스', sets: [Sets(index: 0, weight: 100, reps: 10, ischecked: false)], rest: 0);
@@ -224,10 +224,25 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                       ),
                                       header:Padding(
                                         padding: EdgeInsets.only(left: 10),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                        child: Row(
                                           children: [
                                             Text(inplandata[index].name, style: TextStyle(color: Colors.white, fontSize: 20),),
+                                            Container(width: 10,),
+                                            inplandata[index].sets.isEmpty
+                                            ? IconButton(
+                                                padding: EdgeInsets.zero,
+                                                constraints: BoxConstraints(),
+                                                onPressed: () {
+                                                  workout.plansetsplus(widget.rindex, index);
+                                                },
+                                                icon: Icon(
+                                                  Icons.add_circle_outlined,
+                                                  color: Colors.white,
+                                                  size: 20,
+                                                ))
+                                            : Container(
+                                              child: Text('기준: ${inplandata[index].ref_name}', style: TextStyle(color: Colors.grey, fontSize: 15, fontWeight: FontWeight.bold),),
+                                            )
                                           ],
                                         ),
                                       ),
@@ -331,6 +346,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                 padding: EdgeInsets.zero,
                                 constraints: BoxConstraints(),
                                 onPressed: () {
+                                  workout.planremoveexAt(widget.rindex);
                                 },
                                 icon: Icon(
                                   Icons.remove_circle_outlined,
@@ -344,7 +360,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                 padding: EdgeInsets.zero,
                                 constraints: BoxConstraints(),
                                 onPressed: () {
-                                  exselect();
+                                  exselect(true, false);
+                                  exselect(true, true);
                                 },
                                 icon: Icon(
                                   Icons.add_circle_outlined,
@@ -371,29 +388,35 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
         );
   }
 
-  void exselect() {
+  void exselect(bool isadd, bool isex) {
     showModalBottomSheet<void>(
       context: context,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (BuildContext context) {
         return Container(
-          height: MediaQuery.of(context).size.height*3 / 4,
+          height: MediaQuery.of(context).size.height*2,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-            color: Colors.amber,
+            color: Color(0xFF717171),
           ),
 
           child: Center(
-            child: _exercises_searchWidget()
+            child: _exercises_searchWidget(isadd, isex)
           ),
         );
       },
     );
   }
 
-  Widget _exercises_searchWidget() {
+  Widget _exercises_searchWidget(bool isadd, bool isex) {
     return Column(
       children: [
+        Container(
+          height: 15,
+        ),
+        Container(
+          child: Text(isex ? '운동을 선택해주세요' : '기준 운동을 선택해주세요' , style: TextStyle(fontSize: 20.0, color: Color(0xFF212121),fontWeight: FontWeight.bold),),
+        ),
         Container(
           margin: const EdgeInsets.fromLTRB(10, 16, 10, 16),
           child: TextField(
@@ -401,26 +424,23 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
               decoration: InputDecoration(
                 prefixIcon: Icon(
                   Icons.search,
-                  color: Color(0xFF717171),
+                  color: Colors.white,
                 ),
                 hintText: "Exercise Name",
                 hintStyle:
-                TextStyle(fontSize: 20.0, color: Color(0xFF717171)),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(width: 3, color: Color(0xFF717171)),
-                  borderRadius: BorderRadius.circular(15),
-                ),
+                TextStyle(fontSize: 20.0, color: Colors.white),
+
               ),
               onChanged: (text) {
                 searchExercise(text.toString());
               }),
         ),
-        exercisesWidget(_testdata, true)
+        exercisesWidget(_testdata, true, isadd, isex)
       ],
     );
   }
 
-  Widget exercisesWidget(exuniq, bool shirink) {
+  Widget exercisesWidget(exuniq, bool shirink, bool isadd, bool isex) {
     double top = 0;
     double bottom = 0;
     return Expanded(
@@ -443,14 +463,25 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
               ;
               return GestureDetector(
                 onTap: () {
-                    _workoutdataProvider.planaddexAt(
-                      widget.rindex,
-                      new Plan_Exercises(
-                          name: exuniq[index].name,
-                          ref_name: '',
-                          sets: [],
-                          rest: 0));
-                    Navigator.pop(context);
+                  if(isadd){
+                   if(isex){
+                     _addexinput = exuniq[index].name;
+                     Navigator.pop(context);
+                   } else {
+                     _workoutdataProvider.planaddexAt(
+                         widget.rindex,
+                         new Plan_Exercises(
+                             name: _addexinput,
+                             ref_name: exuniq[index].name,
+                             sets: [],
+                             rest: 0));
+                     Navigator.pop(context);
+                   }
+                  }else if(isex){
+
+                  }else{
+
+                  };
                 },
                 child: Container(
                   child: Container(
@@ -483,7 +514,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                       color: Color(0xFF717171))),
                               Expanded(child: SizedBox()),
                               Text(
-                                  "1RM: ${exuniq[index].onerm}/${exuniq[index].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
+                                  "1RM: ${exuniq[index].onerm.toStringAsFixed(1)}/${exuniq[index].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
                                   style: TextStyle(
                                       fontSize: 13,
                                       color: Color(0xFF717171))),
