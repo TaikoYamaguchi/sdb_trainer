@@ -1,4 +1,6 @@
 
+import 'dart:ui';
+
 import 'package:expandable/expandable.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
@@ -22,6 +24,8 @@ class EachPlanDetails extends StatefulWidget {
 class _EachPlanDetailsState extends State<EachPlanDetails> {
 
   TextEditingController _workoutNameCtrl = TextEditingController(text: "");
+  TextEditingController _weightctrl = TextEditingController(text: "");
+  TextEditingController _repsctrl = TextEditingController(text: "");
   var _workoutdataProvider;
   var _historydataProvider;
   var _routinetimeProvider;
@@ -219,7 +223,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                               Container(height: 30,),
                               Text('오늘은 휴식데이!', style: TextStyle(fontSize: 25, color: Colors.white, fontWeight: FontWeight.bold),),
                               Container(height: 20,),
-                              Text('운동을 추가 하지 않으면 자동 휴식데이입니다.', style: TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.bold),),
+                              Text('운동을 추가 하지 않으면 휴식일입니다.', style: TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.bold),),
                               Container(height: 30,),
                         ],
                       )))
@@ -306,10 +310,15 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
 
                                                 Row(
                                                   children: [
-                                                    Container(
-                                                      child: Text(
-                                                        '${inplandata[index].sets[setindex].weight.toStringAsFixed(1)} X ${inplandata[index].sets[setindex].reps}',
-                                                        style: TextStyle(color: Colors.white, fontSize:18 ),),
+                                                    GestureDetector(
+                                                      child: Container(
+                                                        child: Text(
+                                                          '${inplandata[index].sets[setindex].weight.toStringAsFixed(1)} X ${inplandata[index].sets[setindex].reps}',
+                                                          style: TextStyle(color: Colors.white, fontSize:18 ),),
+                                                      ),
+                                                      onTap: (){
+                                                        setSetting(index, setindex);
+                                                      },
                                                     ),
                                                     Theme(
                                                       data: ThemeData(unselectedWidgetColor: Colors.white),
@@ -402,6 +411,151 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
           );
         }
         );
+  }
+
+  void setSetting(int eindex, int sindex) {
+    showModalBottomSheet<void>(
+      context: context,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      builder: (BuildContext context) {
+        return Container(
+          height:220,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            color: Colors.white,
+          ),
+
+          child: _setinfo(eindex, sindex)
+        );
+      },
+    );
+  }
+
+  Widget _setinfo(int eindex, int sindex) {
+    return Consumer2<WorkoutdataProvider,ExercisesdataProvider>(
+      builder: (builder, workout, exinfo, child) {
+        var plandata = workout.workoutdata.routinedatas[widget.rindex].exercises[0];
+        var inplandata = plandata.plans[plandata.progress].exercises;
+        var exdata = plandata.plans[plandata.progress].exercises[eindex];
+        var setdata = exdata.sets[sindex];
+        var uniqexinfo =  exinfo.exercisesdata.exercises[exinfo.exercisesdata.exercises.indexWhere((element) => element.name == exdata.ref_name)];
+        _weightctrl.text = setdata.weight.toString();
+        _repsctrl.text = setdata.reps.toString();
+        double changeweight = 0.0;
+        int changereps = 1;
+        return Container(
+          child: Column(
+            children: [
+              Container(height: 15,),
+              Container(
+                child: Text('기준 운동: ${uniqexinfo.name}', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+              ),
+              Container(height: 15,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width/3,
+                    child: Center(child: Text('기준 1rm', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width/3,
+                    child: Center(child: Text('중량비(%)', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width/3,
+                    child: Center(child: Text('횟수', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
+                  ),
+                ],
+              ),
+              Container(height: 15,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width/3 -10,
+                    child:Center(child: Text(uniqexinfo.onerm.toStringAsFixed(1), style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width/3 -10 ,
+                    child: Center(
+                      child: TextField(
+                        controller: _weightctrl,
+                        keyboardType: TextInputType.number,
+                        style: TextStyle(fontSize: 21, color: Colors.blue,),
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(width: 3, color: Colors.grey)
+                          ),
+                          hintText: "${setdata.weight}",
+                          hintStyle: TextStyle(fontSize: 21, color: Colors.white,),),
+                        onChanged: (text) {
+                          if (text == "") {
+                            changeweight = 0.0;
+                          } else {
+                            changeweight =
+                                double.parse(text);
+                          }
+
+                        },
+                      ),
+                    ),
+
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width/3 -10,
+                    child: Center(
+                      child: TextField(
+                        controller: _repsctrl,
+                        keyboardType: TextInputType.number,
+                        style: TextStyle(fontSize: 21, color: Colors.blue,),
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(width: 3, color: Colors.grey)
+                          ),
+                          hintText: "${setdata.weight}",
+                          hintStyle: TextStyle(fontSize: 21, color: Colors.white,),),
+                        onChanged: (text) {
+                          if (text == "") {
+                            changereps = 1;
+                          } else {
+                            changereps =
+                                int.parse(text);
+                          }
+                        },
+                      ),
+                    ),
+
+                  ),
+                ],
+              ),
+              Container(height: 10,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.grey),
+                      padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 50)),
+                    ),
+                      onPressed: (){
+                        workout.plansetcheck(widget.rindex, eindex, sindex, changeweight, changereps);
+                        Navigator.pop(context);
+                      },
+                      child: Text('완료', style: TextStyle(fontWeight: FontWeight.bold),)),
+                  Container(width: 10,),
+                ],
+              )
+            ],
+          ),
+
+        );
+      }
+    );
   }
 
   void exselect(bool isadd, bool isex) {

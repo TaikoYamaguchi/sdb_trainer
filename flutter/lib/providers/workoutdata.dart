@@ -41,6 +41,12 @@ class WorkoutdataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  plansetcheck(rindex, eindex, sindex, newweight, newreps) {
+    _workoutdata.routinedatas[rindex].exercises[0].plans[_workoutdata.routinedatas[rindex].exercises[0].progress].exercises[eindex].sets[sindex].weight = newweight;
+    _workoutdata.routinedatas[rindex].exercises[0].plans[_workoutdata.routinedatas[rindex].exercises[0].progress].exercises[eindex].sets[sindex].reps = newreps;
+    notifyListeners();
+  }
+
   repscheck(rindex, eindex, sindex, newvalue) {
     _workoutdata.routinedatas[rindex].exercises[eindex].sets[sindex].reps =
         newvalue;
