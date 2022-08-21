@@ -86,8 +86,28 @@ class WorkoutdataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  planremoveexAt(rindex) {
+    _workoutdata.routinedatas[rindex].exercises[0].plans[_workoutdata.routinedatas[rindex].exercises[0].progress].exercises.removeLast();
+    notifyListeners();
+  }
+
   addexAt(rindex, ex) {
     _workoutdata.routinedatas[rindex].exercises.add(ex);
+    notifyListeners();
+  }
+
+  addplanAt(rindex, ex) {
+    _workoutdata.routinedatas[rindex].exercises[0].plans.insert(_workoutdata.routinedatas[rindex].exercises[0].progress+1,ex);
+    notifyListeners();
+  }
+
+  removeplanAt(rindex) {
+    _workoutdata.routinedatas[rindex].exercises[0].plans.removeAt(_workoutdata.routinedatas[rindex].exercises[0].progress);
+    notifyListeners();
+  }
+
+  setplanprogress(rindex, progress) {
+    _workoutdata.routinedatas[rindex].exercises[0].progress = progress;
     notifyListeners();
   }
 
