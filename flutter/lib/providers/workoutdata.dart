@@ -122,6 +122,16 @@ class WorkoutdataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  planchangeexnameAt(rindex, eindex, change) {
+    _workoutdata.routinedatas[rindex].exercises[0].plans[_workoutdata.routinedatas[rindex].exercises[0].progress].exercises[eindex].name = change;
+    notifyListeners();
+  }
+
+  planchangeexrefnameAt(rindex, eindex, change) {
+    _workoutdata.routinedatas[rindex].exercises[0].plans[_workoutdata.routinedatas[rindex].exercises[0].progress].exercises[eindex].ref_name = change;
+    notifyListeners();
+  }
+
   namechange(rindex, newname) {
     _workoutdata.routinedatas[rindex].name = newname;
     notifyListeners();
