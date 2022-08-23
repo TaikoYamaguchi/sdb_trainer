@@ -96,8 +96,8 @@ class Plans {
 }
 
 class Plan_Exercises {
-  final String name;
-  final String ref_name;
+  String name;
+  String ref_name;
   final List<Sets> sets;
   int rest;
   Plan_Exercises(
