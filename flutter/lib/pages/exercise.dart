@@ -746,7 +746,8 @@ class ExerciseState extends State<Exercise> {
                 child: CircularProgressIndicator(),
               ),
             );
-          }));
+          }),
+        backgroundColor: Colors.black);
 
   }
 }

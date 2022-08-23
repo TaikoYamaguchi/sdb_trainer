@@ -833,7 +833,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
           appBar: _appbarWidget(),
           body: _isexsearch
               ? _exercises_searchWidget()
-              : _exercisesWidget(false));
+              : _exercisesWidget(false),
+          backgroundColor: Colors.black);
     });
   }
 }

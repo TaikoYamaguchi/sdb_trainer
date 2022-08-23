@@ -989,6 +989,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     return Scaffold(
       appBar: _appbarWidget(),
       body: _exercisedetailPage(),
+      backgroundColor: Colors.black
     );
   }
 }

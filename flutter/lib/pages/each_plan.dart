@@ -385,22 +385,6 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(width: 10,),
-
-                            IconButton(
-                                padding: EdgeInsets.zero,
-                                constraints: BoxConstraints(),
-                                onPressed: () {
-                                  workout.planremoveexAt(widget.rindex);
-                                  _editWorkoutCheck();
-                                },
-                                icon: Icon(
-                                  Icons.remove_circle_outlined,
-                                  color: Colors.white,
-                                  size: 20,
-                                )),
-                            Container(width: 10,),
-                            Container(width: 10,),
-
                             IconButton(
                                 padding: EdgeInsets.zero,
                                 constraints: BoxConstraints(),
@@ -413,6 +397,22 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                   color: Colors.white,
                                   size: 20,
                                 )),
+
+                            Container(width: 10,),
+                            Container(width: 10,),
+                            IconButton(
+                                padding: EdgeInsets.zero,
+                                constraints: BoxConstraints(),
+                                onPressed: () {
+                                  workout.planremoveexAt(widget.rindex);
+                                  _editWorkoutCheck();
+                                },
+                                icon: Icon(
+                                  Icons.remove_circle_outlined,
+                                  color: Colors.white,
+                                  size: 20,
+                                )),
+
                           ],
                         ),
                       ),
@@ -773,7 +773,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
     _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
     return Scaffold(
         appBar: _appbarWidget(),
-        body: _Nday_RoutineWidget()
+        body: _Nday_RoutineWidget(),
+        backgroundColor: Colors.black
     );
   }
 }

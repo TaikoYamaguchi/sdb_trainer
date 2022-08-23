@@ -192,6 +192,7 @@ class Home extends StatelessWidget {
           return Center(
             child: CircularProgressIndicator(),
           );
-        }));
+        }),
+        backgroundColor: Colors.black);
   }
 }
