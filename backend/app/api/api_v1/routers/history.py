@@ -10,7 +10,7 @@ from app.db.schemas import HistoryCommentEdit, HistoryCreate, HistoryExercisesEd
 
 history_router = r = APIRouter()
 
-@r.post("/historycreate", response_model=HistoryCreate, response_model_exclude_none=True)
+@r.post("/historycreate", response_model=HistoryOut, response_model_exclude_none=True)
 async def history_create(
     request: Request,
     history: HistoryCreate,

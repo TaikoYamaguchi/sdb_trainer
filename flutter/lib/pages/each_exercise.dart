@@ -712,16 +712,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 if (_routinetimeProvider.isstarted) {
                                   recordExercise();
                                   _editHistoryCheck();
+                                  showToast("운동을 등록 중입니다.");
                                   _editWorkoutwoCheck();
-                                  Navigator.push(
-                                      context,
-                                      Transition(
-                                          child: ExerciseDone(
-                                              exerciseList: exerciseList,
-                                              routinetime: _routinetimeProvider
-                                                  .routineTime),
-                                          transitionEffect:
-                                              TransitionEffect.RIGHT_TO_LEFT));
                                 }
                                 provider.routinecheck(widget.rindex);
                               },
@@ -947,6 +939,15 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
           .postHistory()
           .then((data) => data["user_email"] != null
               ? {
+                  print(data),
+                  Navigator.push(
+                      context,
+                      Transition(
+                          child: ExerciseDone(
+                              exerciseList: exerciseList,
+                              routinetime: _routinetimeProvider.routineTime,
+                              sdbdata: hisdata.SDBdata.fromJson(data)),
+                          transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
                   _historydataProvider.getdata(),
                   _historydataProvider.getHistorydataAll(),
                   exerciseList = []
@@ -987,9 +988,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
 
     return Scaffold(
-      appBar: _appbarWidget(),
-      body: _exercisedetailPage(),
-      backgroundColor: Colors.black
-    );
+        appBar: _appbarWidget(),
+        body: _exercisedetailPage(),
+        backgroundColor: Colors.black);
   }
 }
