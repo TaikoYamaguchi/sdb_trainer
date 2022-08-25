@@ -314,10 +314,22 @@ class ExerciseState extends State<Exercise> {
                                     style: TextStyle(
                                         fontSize: 21, color: Colors.white),
                                   ),
-                                  Text(
-                                      "${routinelist[index].exercises.length} Exercises",
-                                      style: TextStyle(
-                                          fontSize: 13, color: Color(0xFF717171)))
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+
+                                      routinelist[index].mode == 1
+                                      ? Text(
+                                          "Program Mode",
+                                          style: TextStyle(
+                                              fontSize: 13, color: Color(0xFF717171)))
+                                      : Text(
+                                          "${routinelist[index].exercises.length} Exercises",
+                                          style: TextStyle(
+                                              fontSize: 13, color: Color(0xFF717171))
+                                      ),
+                                    ],
+                                  )
                                 ],
                               ),
                               IconButton(
@@ -348,21 +360,7 @@ class ExerciseState extends State<Exercise> {
                   ),
                 );
               },
-              /*
-                    separatorBuilder: (BuildContext _context, int index) {
-                      return Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.symmetric(horizontal: 10),
-                        height: 1,
-                        color: Color(0xFF212121),
-                        child: Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.symmetric(horizontal: 10),
-                          height: 1,
-                          color: Color(0xFF717171),
-                        ),
-                      );
-                    },*/
+
               itemCount: routinelist.length);
         }),
       ),

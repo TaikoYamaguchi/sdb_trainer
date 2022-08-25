@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:expandable/expandable.dart';
 import 'package:sdb_trainer/pages/exercise_done.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
+import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
@@ -35,6 +36,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
   var _workoutdataProvider;
   var _historydataProvider;
   var _routinetimeProvider;
+  var _PopProvider;
   var _userdataProvider;
   var _exercisesdataProvider;
   var _testdata0;
@@ -42,6 +44,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
   String _addexinput = '';
   late List<hisdata.Exercises> exerciseList = [];
   var _exercises;
+  var btnDisabled;
 
   Plans sample = new Plans(exercises: []);
   Plan_Exercises exsample = new Plan_Exercises(name: '벤치프레스', ref_name: '벤치프레스', sets: [Sets(index: 0, weight: 100, reps: 10, ischecked: false)], rest: 0);
@@ -52,12 +55,17 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
 
 
   PreferredSizeWidget _appbarWidget() {
+    btnDisabled = false;
     return AppBar(
       leading: IconButton(
         icon: Icon(Icons.arrow_back_ios_outlined),
         onPressed: () {
           _editWorkoutCheck();
-          Navigator.of(context).pop();
+          _routinetimeProvider.isstarted
+              ? _displayFinishAlert()
+              : btnDisabled == true
+                ? null
+                : [btnDisabled = true, Navigator.of(context).pop()];
         },
       ),
       title: Row(
@@ -87,6 +95,69 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
       backgroundColor: Colors.black,
     );
   }
+
+  void _displayFinishAlert() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'Workout Finish Alert',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            content: Text('운동을 끝마치겠습니까?'),
+            actions: <Widget>[
+              _FinishConfirmButton(),
+            ],
+          );
+        });
+  }
+
+  Widget _FinishConfirmButton() {
+    return Container(
+      margin: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 25),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+              width: MediaQuery.of(context).size.width / 4,
+              child: FlatButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                  disabledTextColor: Colors.black,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () {
+                    _routinetimeProvider.routinecheck(widget.rindex);
+                    recordExercise();
+                    _editHistoryCheck();
+                    _editWorkoutCheck();
+                    Navigator.of(context, rootNavigator: true).pop();
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Confirm",
+                      style: TextStyle(fontSize: 20.0, color: Colors.white)))),
+          SizedBox(
+              width: MediaQuery.of(context).size.width / 4,
+              child: FlatButton(
+                  color: Colors.red,
+                  textColor: Colors.white,
+                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                  disabledTextColor: Colors.black,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                  child: Text("Cancel",
+                      style: TextStyle(fontSize: 20.0, color: Colors.white))))
+        ],
+      ),
+    );
+  }
+
 
 
 
@@ -472,6 +543,27 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                     ],
                   ),
                 ),
+
+                Container(
+                    child: Consumer<RoutineTimeProvider>(
+                    builder: (context, provider, child) {
+                      return Center(
+                        child: Text(
+                            provider.userest
+                                ? provider.timeron < 0
+                                ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
+                                : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
+                                : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                            style: TextStyle(
+                                fontSize: 25,
+                                color: (provider.userest &&
+                                    provider.timeron < 0)
+                                    ? Colors.red
+                                    : Colors.white)),
+                      );
+                    })
+                ),
+
                 Container(child: Consumer<RoutineTimeProvider>(
                     builder: (builder, provider, child) {
                       return ElevatedButton(
@@ -483,16 +575,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                         if (_routinetimeProvider.isstarted) {
                           recordExercise();
                           _editHistoryCheck();
+                          showToast("운동을 등록 중입니다.");
                           _editWorkoutCheck();
-                          Navigator.push(
-                              context,
-                              Transition(
-                                  child: ExerciseDone(
-                                      exerciseList: exerciseList,
-                                      routinetime: _routinetimeProvider
-                                          .routineTime),
-                                  transitionEffect:
-                                  TransitionEffect.RIGHT_TO_LEFT));
+
                         }
                         provider.routinecheck(widget.rindex);
 
@@ -500,7 +585,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                         },
                         child: Text(provider.routineButton),
                       );
-                    }))
+                    })),
+
 
               ],
             ),
@@ -870,6 +956,15 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
           .postHistory()
           .then((data) => data["user_email"] != null
           ? {
+        print(data),
+        Navigator.push(
+            context,
+            Transition(
+                child: ExerciseDone(
+                    exerciseList: exerciseList,
+                    routinetime: _routinetimeProvider.routineTime,
+                    sdbdata: hisdata.SDBdata.fromJson(data)),
+                transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
         _historydataProvider.getdata(),
         _historydataProvider.getHistorydataAll(),
         exerciseList = []
@@ -928,10 +1023,37 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
     _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
-    return Scaffold(
+    _PopProvider = Provider.of<PopProvider>(context, listen: false);
+    _PopProvider.tutorpopoff();
+    return Consumer<PopProvider>(builder: (Builder, provider, child) {
+      bool _popable = provider.isstacking;
+      _popable == false
+          ? null
+          : [
+        provider.exstackdown(),
+        provider.popoff(),
+        Future.delayed(Duration.zero, () async {
+          Navigator.of(context).pop();
+        })
+      ];
+      print('working?1');
+      bool _tutorpop = provider.tutorpop;
+      _tutorpop == false
+          ? print('working?2')
+          : [
+        print('working?'),
+        provider.exstackup(0),
+        Future.delayed(Duration.zero, () async {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          _PopProvider.tutorpopoff();
+        })
+      ];
+
+      return Scaffold(
         appBar: _appbarWidget(),
         body: _Nday_RoutineWidget(),
         backgroundColor: Colors.black
     );
+    });
   }
 }
