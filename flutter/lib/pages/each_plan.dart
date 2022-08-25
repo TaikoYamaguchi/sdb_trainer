@@ -747,22 +747,26 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
       context: context,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (BuildContext context) {
-        return Container(
-          height: MediaQuery.of(context).size.height*2,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-            color: Color(0xFF717171),
-          ),
+        return StatefulBuilder(
+          builder: (context,state) {
+            return Container(
+              height: MediaQuery.of(context).size.height*2,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                color: Color(0xFF717171),
+              ),
 
-          child: Center(
-            child: _exercises_searchWidget(isadd, isex, where)
-          ),
+              child: Center(
+                child: _exercises_searchWidget(isadd, isex, where, state)
+              ),
+            );
+          }
         );
       },
     );
   }
 
-  Widget _exercises_searchWidget(bool isadd, bool isex, int where) {
+  Widget _exercises_searchWidget(bool isadd, bool isex, int where, StateSetter state) {
     return Column(
       children: [
         Container(
@@ -786,13 +790,24 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
 
               ),
               onChanged: (text) {
-                searchExercise(text.toString());
+                searchExercise(text.toString(), state);
               }),
         ),
         exercisesWidget(_testdata, true, isadd, isex, where)
       ],
     );
   }
+
+  void searchExercise(String query, StateSetter updateState) {
+    final suggestions = _testdata0.where((exercise) {
+      final exTitle = exercise.name;
+      return (exTitle.contains(query)) as bool;
+    }).toList();
+    print(suggestions.length);
+
+    updateState(() => _testdata = suggestions);
+  }
+
 
   Widget exercisesWidget(exuniq, bool shirink, bool isadd, bool isex, int where) {
     double top = 0;
@@ -989,14 +1004,6 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
         : showToast("입력을 확인해주세요"));
   }
 
-  void searchExercise(String query) {
-    final suggestions = _testdata0.where((exercise) {
-      final exTitle = exercise.name;
-      return (exTitle.contains(query)) as bool;
-    }).toList();
-
-    setState(() => _testdata = suggestions);
-  }
 
 
 
