@@ -7,6 +7,7 @@ import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
+import 'package:sdb_trainer/repository/version_repository.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,7 @@ import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
+import 'package:sdb_trainer/supero_version.dart';
 import 'package:tutorial/tutorial.dart';
 import 'dart:math' as math;
 
@@ -47,6 +49,25 @@ class _AppState extends State<App> {
   var _loginState;
   var _userdataProvider;
   int updatecount = 0;
+  bool _updateCheck = false;
+  @override
+  void initState() {
+    var _appUpdateVersion = SuperoVersion.getSuperoVersion().toString();
+    VersionService.loadVersionData().then((data) {
+      print(data.toString());
+      print("thsisisisisis version");
+      print(_appUpdateVersion);
+      print(SuperoVersion.getSuperoVersion());
+      if (data == _appUpdateVersion) {
+        _updateCheck = true;
+        print("thsisisisisis version trueeeeeeeeeeeeeee");
+        print(_updateCheck);
+      } else {
+        print("thsisisisisis version falseeeeeeeeeeee");
+      }
+    });
+    super.initState();
+  }
 
   BottomNavigationBarItem _bottomNavigationBarItem(
       String iconName, String label) {

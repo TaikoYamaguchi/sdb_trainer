@@ -92,3 +92,7 @@ class TemporaryVideo(Base):
     id = Column(Integer, primary_key=True, index=True)
     video= Column(String, nullable=True)
     views= Column(Integer, nullable=True)
+
+class Version(Base):
+    __tablename__ = "version"
+    version_num= Column(String, primary_key=True, nullable=False)

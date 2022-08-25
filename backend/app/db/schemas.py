@@ -233,3 +233,6 @@ class FindUser(BaseModel):
 
 class FindUserCode(FindUser):
     verifyCode : str
+
+class VersionOut(BaseModel):
+    version_num:str
