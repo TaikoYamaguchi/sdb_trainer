@@ -825,7 +825,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
 
   void recordExercise() {
     var exercise_all =
-        _workoutdataProvider.routinedatas[widget.rindex].exercises[0].plans[_workoutdataProvider.routinedatas[widget.rindex].exercises[0].progress].exercises;
+        _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises[0].plans[_workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises[0].progress].exercises;
     for (int n = 0; n < exercise_all.length; n++) {
       var recordedsets = exercise_all[n].sets.where((sets) {
         return (sets.ischecked as bool && sets.weight != 0);
@@ -924,6 +924,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
         Provider.of<WorkoutdataProvider>(context, listen: false);
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
+    _exercises = _exercisesdataProvider.exercisesdata.exercises;
     _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
