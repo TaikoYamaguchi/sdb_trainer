@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/each_exercise.dart';
 import 'package:sdb_trainer/pages/each_plan.dart';
 import 'package:sdb_trainer/pages/each_workout.dart';
+import 'package:sdb_trainer/pages/routine_bank.dart';
 import 'package:sdb_trainer/pages/unique_exercise.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/routinemenu.dart';
@@ -226,10 +227,7 @@ class ExerciseState extends State<Exercise> {
         controller: controller,
         children: [
           _MyWorkout(),
-          Container(
-            color: Colors.black,
-            child: Center(child: Text('To Be Updated', style: TextStyle(color: Colors.white, fontSize: 40),)),
-          )
+          RoutineBank(),
         ],
 
       ),
