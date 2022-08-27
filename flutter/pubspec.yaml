@@ -58,6 +58,7 @@ dependencies:
   flutter_keyboard_visibility: ^5.3.0
   flutter_slidable: ^2.0.0
   expandable: ^5.0.1
+  launch_review: ^3.0.1
 
 dev_dependencies:
   flutter_test:

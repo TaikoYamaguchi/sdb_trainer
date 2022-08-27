@@ -27,6 +27,7 @@ import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'package:sdb_trainer/supero_version.dart';
 import 'package:tutorial/tutorial.dart';
 import 'dart:math' as math;
+import 'package:launch_review/launch_review.dart';
 
 import 'statics.dart';
 
@@ -63,6 +64,7 @@ class _AppState extends State<App> {
         print("thsisisisisis version trueeeeeeeeeeeeeee");
         print(_updateCheck);
       } else {
+        _showUpdateVersion();
         print("thsisisisisis version falseeeeeeeeeeee");
       }
     });
@@ -224,6 +226,32 @@ class _AppState extends State<App> {
       }
     }
     _postExerciseCheck();
+  }
+
+  Future<dynamic> _showUpdateVersion() {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return WillPopScope(
+            onWillPop: () => Future.value(false),
+            child: AlertDialog(
+              title: new Text("업데이트 안내"),
+              content: new SingleChildScrollView(
+                child: Text("앱 버젼이 다릅니다. 보다 좋은 서비스를 위해 업데이트 해주세요."),
+              ),
+              actions: <Widget>[
+                new FlatButton(
+                    child: new Text("업데이트"),
+                    onPressed: () => {
+                          LaunchReview.launch(
+                              androidAppId: "com.tk_lck.supero"),
+                          exit(0)
+                        }),
+              ],
+            ));
+      },
+    );
   }
 
   void _editHistoryCheck() async {
