@@ -236,3 +236,23 @@ class FindUserCode(FindUser):
 
 class VersionOut(BaseModel):
     version_num:str
+
+class FamousBase(BaseModel):
+    user_email: str
+    id: int
+    type: int
+    image: str = ""
+    routinedata: t.Any
+    class Config:
+        orm_mode = True
+
+class FamousCreate(FamousBase):
+    class config:
+        orm_mode = True
+
+class FamousOut(FamousBase):
+    id: int
+    type: int
+    date: datetime
+    class config:
+        orm_mode = True

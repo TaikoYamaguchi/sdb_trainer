@@ -96,3 +96,12 @@ class TemporaryVideo(Base):
 class Version(Base):
     __tablename__ = "version"
     version_num= Column(String, primary_key=True, nullable=False)
+
+class Famous(Base):
+    __tablename__ = "famous"
+    id = Column(Integer, primary_key=True, index=True)
+    type = Column(Integer, nullable=False)
+    user_email = Column(String, unique=True, index=True, nullable=False)
+    image = Column(MutableList.as_mutable(ARRAY(String)))
+    routinedata = Column(DateTime, nullable=False)
+    date = Column(DateTime, nullable=False)
