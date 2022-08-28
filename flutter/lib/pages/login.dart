@@ -225,8 +225,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   GoogleSignIn _googleSignIn = GoogleSignIn(
-    clientId:
-        "508959158364-jn18q8nm60l7ja6bild7kblan217po1o.apps.googleusercontent.com",
     scopes: [
       'email',
       'https://www.googleapis.com/auth/contacts.readonly',
