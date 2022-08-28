@@ -690,8 +690,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                     _editHistoryCheck();
                     showToast("운동을 등록 중입니다.");
                     _editWorkoutCheck();
+                  } else {
+                    provider.routinecheck(widget.rindex);
                   }
-                  provider.routinecheck(widget.rindex);
                 },
                 child: Text(provider.routineButton),
               );
@@ -1103,6 +1104,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
             onerm: monerm,
             goal: _eachex.goal,
             date: DateTime.now().toString().substring(0, 10)));
+      } else {
+        _routinetimeProvider.routinecheck(widget.rindex);
       }
 
       if (monerm > _eachex.onerm) {
@@ -1123,7 +1126,6 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
           .postHistory()
           .then((data) => data["user_email"] != null
               ? {
-                  print(data),
                   Navigator.push(
                       context,
                       Transition(
@@ -1132,6 +1134,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                               routinetime: _routinetimeProvider.routineTime,
                               sdbdata: hisdata.SDBdata.fromJson(data)),
                           transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
+                  _routinetimeProvider.routinecheck(widget.rindex),
                   _historydataProvider.getdata(),
                   _historydataProvider.getHistorydataAll(),
                   exerciseList = []

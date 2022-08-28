@@ -91,8 +91,6 @@ class _ExerciseDoneState extends State<ExerciseDone> {
   }
 
   Widget _exerciseDoneWidget() {
-    print(_workoutdataProvider.workoutdata.routinedatas[0].exercises[0].sets[0]
-        .toJson());
     var time_hour = 0;
     var time_min = 0;
     var time_sec = 0;
@@ -302,7 +300,6 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                           });
                 }
                 ;
-                print(_exerciseCommentCtrl.text);
                 if (_exerciseCommentCtrl.text != "") {
                   HistoryCommentEdit(
                           history_id: widget.sdbdata.id,

@@ -184,8 +184,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     }
 
     return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
-      print(isKeyboardVisible);
-      print("teeeeeeeeeeeeeees");
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 5),
         color: Colors.black,
@@ -714,8 +712,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                   _editHistoryCheck();
                                   showToast("운동을 등록 중입니다.");
                                   _editWorkoutwoCheck();
+                                } else {
+                                  provider.routinecheck(widget.rindex);
                                 }
-                                provider.routinecheck(widget.rindex);
                               },
                               child: Text(provider.routineButton),
                             );
@@ -919,6 +918,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             onerm: monerm,
             goal: _eachex.goal,
             date: DateTime.now().toString().substring(0, 10)));
+      } else {
+        _routinetimeProvider.routinecheck(widget.rindex);
       }
 
       if (monerm > _eachex.onerm) {
@@ -939,7 +940,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
           .postHistory()
           .then((data) => data["user_email"] != null
               ? {
-                  print(data),
                   Navigator.push(
                       context,
                       Transition(
@@ -948,6 +948,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               routinetime: _routinetimeProvider.routineTime,
                               sdbdata: hisdata.SDBdata.fromJson(data)),
                           transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
+                  _routinetimeProvider.routinecheck(widget.rindex),
                   _historydataProvider.getdata(),
                   _historydataProvider.getHistorydataAll(),
                   exerciseList = []
