@@ -36,20 +36,19 @@ class _ProfileGoalState extends State<ProfileGoal> {
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _exerciseList = _exercisesdataProvider.exercisesdata.exercises;
 
-    return Consumer<PopProvider>(
-        builder: (Builder, provider, child)
-        {
-          bool _popable = provider.isprostacking;
-          _popable == false
-              ? null
-              : [
-            provider.profilestackdown(),
-            provider.propopoff(),
-            Future.delayed(Duration.zero, () async {
-              Navigator.of(context).pop();
-            })
-          ];
-          return Scaffold(appBar: _appbarWidget(), body: _signupExerciseWidget()); });
+    return Consumer<PopProvider>(builder: (Builder, provider, child) {
+      bool _popable = provider.isprostacking;
+      _popable == false
+          ? null
+          : [
+              provider.profilestackdown(),
+              provider.propopoff(),
+              Future.delayed(Duration.zero, () async {
+                Navigator.of(context).pop();
+              })
+            ];
+      return Scaffold(appBar: _appbarWidget(), body: _signupExerciseWidget());
+    });
   }
 
   PreferredSizeWidget _appbarWidget() {
@@ -229,7 +228,7 @@ class _ProfileGoalState extends State<ProfileGoal> {
             disabledColor: Color.fromRGBO(246, 58, 64, 20),
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
-            splashColor: Colors.blueAccent,
+            splashColor: Theme.of(context).primaryColor,
             onPressed: () => _postExerciseCheck(),
             child: Text(isLoading ? 'loggin in.....' : "운동 정보 수정",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));

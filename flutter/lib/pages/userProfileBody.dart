@@ -202,7 +202,7 @@ class _ProfileBodyState extends State<ProfileBody> {
             disabledColor: Color.fromRGBO(246, 58, 64, 20),
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
-            splashColor: Colors.blueAccent,
+            splashColor: Theme.of(context).primaryColor,
             onPressed: () => _editCheck(),
             child: Text(isLoading ? 'loggin in.....' : "프로필 수정",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));

@@ -248,7 +248,7 @@ class _CalendarState extends State<Calendar> {
           calendarStyle: CalendarStyle(
             isTodayHighlighted: true,
             selectedDecoration: BoxDecoration(
-              color: Colors.blue,
+              color: Theme.of(context).primaryColor,
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(5.0),
             ),
@@ -259,8 +259,7 @@ class _CalendarState extends State<Calendar> {
             markerDecoration:
                 BoxDecoration(color: Colors.white, shape: BoxShape.circle),
             selectedTextStyle: const TextStyle(
-              color: Colors.white,
-            ),
+                color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
             defaultTextStyle: const TextStyle(color: Colors.white),
             withinRangeTextStyle: TextStyle(color: Colors.white),
             weekendTextStyle: TextStyle(color: Colors.white),
@@ -268,7 +267,7 @@ class _CalendarState extends State<Calendar> {
                 TextStyle(color: Color.fromRGBO(113, 113, 113, 100)),
             todayDecoration: BoxDecoration(
               shape: BoxShape.rectangle,
-              color: Colors.green[600],
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(5.0),
             ),
             defaultDecoration: BoxDecoration(
@@ -737,10 +736,10 @@ class _CalendarState extends State<Calendar> {
                 LineSeries<Exercises, DateTime>(
                     isVisibleInLegend: true,
                     markerSettings: MarkerSettings(
-                        isVisible: true, color: Colors.blue[600]),
+                        isVisible: true, color: Theme.of(context).primaryColor),
                     name: "1rm",
                     width: 3,
-                    color: Colors.blue[600],
+                    color: Theme.of(context).primaryColor,
                     dataLabelSettings: DataLabelSettings(
                         showZeroValue: false,
                         isVisible: true,
@@ -753,7 +752,7 @@ class _CalendarState extends State<Calendar> {
 
                 LineSeries<Exercises, DateTime>(
                     isVisibleInLegend: true,
-                    color: Colors.orange,
+                    color: Theme.of(context).cardColor,
                     name: "goal",
                     width: 2,
                     dataSource: _sdbChartData!,
@@ -779,9 +778,10 @@ class _CalendarState extends State<Calendar> {
           child: ChoiceChip(
             label:
                 Text(_exercisesdataProvider.exercisesdata!.exercises[i].name),
-            labelStyle: TextStyle(color: Colors.black),
+            labelStyle: TextStyle(color: Colors.white),
             selected: _chartIndex.chartIndex == i,
-            selectedColor: Colors.deepOrange,
+            selectedColor: Theme.of(context).primaryColor,
+            backgroundColor: Theme.of(context).cardColor,
             onSelected: (bool value) {
               _chartIndex.change(i);
               _getChartSourcefromDay();
@@ -824,7 +824,7 @@ class _CalendarState extends State<Calendar> {
             disabledColor: Color.fromRGBO(246, 58, 64, 20),
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
-            splashColor: Colors.blueAccent,
+            splashColor: Theme.of(context).primaryColor,
             onPressed: () {
               _historydataProvider.deleteHistorydata(history_id);
               HistoryDelete(history_id: history_id).deleteHistory();

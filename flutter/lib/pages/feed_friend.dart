@@ -149,7 +149,7 @@ class _FeedFriendState extends State<FeedFriend> {
         likeBuilder: (bool isLiked) {
           return Icon(
             Icons.favorite,
-            color: isLiked ? Colors.deepPurpleAccent : Colors.grey,
+            color: isLiked ? Theme.of(context).primaryColor : Colors.grey,
             size: buttonSize,
           );
         },

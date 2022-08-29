@@ -75,30 +75,47 @@ class _AppState extends State<App> {
       String iconName, String label) {
     return BottomNavigationBarItem(
       icon: SvgPicture.asset("assets/svg/${iconName}_off.svg"),
-      activeIcon: SvgPicture.asset("assets/svg/${iconName}_on.svg"),
+      activeIcon: SvgPicture.asset(
+        "assets/svg/${iconName}_on.svg",
+        color: Theme.of(context).primaryColor,
+      ),
       label: label,
     );
   }
 
   Widget _bottomNavigationBarwidget() {
-    return BottomNavigationBar(
-      backgroundColor: Color(0xFF212121),
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.white,
-      selectedFontSize: 20,
-      unselectedItemColor: Color(0xFF717171),
-      unselectedFontSize: 20,
-      onTap: (int index) {
-        _bodyStater.change(index);
-      },
-      currentIndex: _bodyStater.bodystate,
-      items: [
-        _bottomNavigationBarItem("home", "홈"),
-        _bottomNavigationBarItem("dumbel", "운동"),
-        _bottomNavigationBarItem("feed", "피드"),
-        _bottomNavigationBarItem("calendar", "기록"),
-        _bottomNavigationBarItem("profile", "프로필"),
-      ],
+    return Container(
+      decoration: BoxDecoration(
+        color: Color(0xFF212121),
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(30), topLeft: Radius.circular(30)),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30.0),
+          topRight: Radius.circular(30.0),
+        ),
+        child: BottomNavigationBar(
+          backgroundColor: Color(0xFF212121),
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: Theme.of(context).primaryColor,
+          selectedFontSize: 16,
+          unselectedItemColor: Color(0xFF717171),
+          unselectedFontSize: 16,
+          onTap: (int index) {
+            _bodyStater.change(index);
+          },
+          selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+          currentIndex: _bodyStater.bodystate,
+          items: [
+            _bottomNavigationBarItem("home", "홈"),
+            _bottomNavigationBarItem("dumbel", "운동"),
+            _bottomNavigationBarItem("feed", "피드"),
+            _bottomNavigationBarItem("calendar", "기록"),
+            _bottomNavigationBarItem("profile", "프로필"),
+          ],
+        ),
+      ),
     );
   }
 
@@ -158,12 +175,12 @@ class _AppState extends State<App> {
           SizedBox(
               width: MediaQuery.of(context).size.width / 4,
               child: FlatButton(
-                  color: Colors.blue,
+                  color: Theme.of(context).primaryColor,
                   textColor: Colors.white,
                   disabledColor: Color.fromRGBO(246, 58, 64, 20),
                   disabledTextColor: Colors.black,
                   padding: EdgeInsets.all(8.0),
-                  splashColor: Colors.blueAccent,
+                  splashColor: Theme.of(context).primaryColor,
                   onPressed: () {
                     _routinetimeProvider.routinecheck(0);
                     recordExercise();
@@ -181,7 +198,7 @@ class _AppState extends State<App> {
                   disabledColor: Color.fromRGBO(246, 58, 64, 20),
                   disabledTextColor: Colors.black,
                   padding: EdgeInsets.all(8.0),
-                  splashColor: Colors.blueAccent,
+                  splashColor: Theme.of(context).primaryColor,
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
@@ -311,7 +328,9 @@ class _AppState extends State<App> {
                     exit(0);
                   },
                   child: Text("Confirm",
-                      style: TextStyle(fontSize: 20.0, color: Colors.blue)))),
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          color: Theme.of(context).primaryColor)))),
         ],
       ),
     );
@@ -375,12 +394,12 @@ class _AppState extends State<App> {
                             width: 100,
                             height: 40,
                             child: FlatButton(
-                                color: Colors.blue,
+                                color: Theme.of(context).primaryColor,
                                 textColor: Colors.white,
                                 disabledColor: Color.fromRGBO(246, 58, 64, 20),
                                 disabledTextColor: Colors.black,
                                 padding: EdgeInsets.all(8.0),
-                                splashColor: Colors.blueAccent,
+                                splashColor: Theme.of(context).primaryColor,
                                 onPressed: () {
                                   provider.restcheck();
                                 },
@@ -404,6 +423,8 @@ class _AppState extends State<App> {
                   : null,
             );
           }),
+          extendBody: _bodyStater.bodystate == 2 ? true : false,
+          backgroundColor: Colors.transparent,
           bottomNavigationBar:
               _loginState.isLogin ? _bottomNavigationBarwidget() : null,
         ),

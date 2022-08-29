@@ -125,12 +125,12 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
           SizedBox(
               width: MediaQuery.of(context).size.width / 4,
               child: FlatButton(
-                  color: Colors.blue,
+                  color: Theme.of(context).primaryColor,
                   textColor: Colors.white,
                   disabledColor: Color.fromRGBO(246, 58, 64, 20),
                   disabledTextColor: Colors.black,
                   padding: EdgeInsets.all(8.0),
-                  splashColor: Colors.blueAccent,
+                  splashColor: Theme.of(context).primaryColor,
                   onPressed: () {
                     _routinetimeProvider.routinecheck(widget.rindex);
                     recordExercise();
@@ -149,7 +149,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                   disabledColor: Color.fromRGBO(246, 58, 64, 20),
                   disabledTextColor: Colors.black,
                   padding: EdgeInsets.all(8.0),
-                  splashColor: Colors.blueAccent,
+                  splashColor: Theme.of(context).primaryColor,
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
@@ -187,7 +187,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
             disabledColor: Color.fromRGBO(246, 58, 64, 20),
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
-            splashColor: Colors.blueAccent,
+            splashColor: Theme.of(context).primaryColor,
             onPressed: () {
               _editWorkoutNameCheck(_workoutNameCtrl.text);
               _workoutNameCtrl.clear();
@@ -801,7 +801,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       keyboardType: TextInputType.number,
                       style: TextStyle(
                         fontSize: 21,
-                        color: Colors.blue,
+                        color: Theme.of(context).primaryColor,
                       ),
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
@@ -833,7 +833,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       keyboardType: TextInputType.number,
                       style: TextStyle(
                         fontSize: 21,
-                        color: Colors.blue,
+                        color: Theme.of(context).primaryColor,
                       ),
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(

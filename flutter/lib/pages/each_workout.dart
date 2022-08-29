@@ -22,9 +22,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 class EachWorkoutDetails extends StatefulWidget {
   int rindex;
-  EachWorkoutDetails(
-      {Key? key,  required this.rindex})
-      : super(key: key);
+  EachWorkoutDetails({Key? key, required this.rindex}) : super(key: key);
 
   @override
   _EachWorkoutDetailsState createState() => _EachWorkoutDetailsState();
@@ -290,12 +288,12 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
           SizedBox(
               width: MediaQuery.of(context).size.width / 4,
               child: FlatButton(
-                  color: Colors.blue,
+                  color: Theme.of(context).primaryColor,
                   textColor: Colors.white,
                   disabledColor: Color.fromRGBO(246, 58, 64, 20),
                   disabledTextColor: Colors.black,
                   padding: EdgeInsets.all(8.0),
-                  splashColor: Colors.blueAccent,
+                  splashColor: Theme.of(context).primaryColor,
                   onPressed: () {
                     _routinetimeProvider.routinecheck(widget.rindex);
                     recordExercise();
@@ -314,7 +312,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                   disabledColor: Color.fromRGBO(246, 58, 64, 20),
                   disabledTextColor: Colors.black,
                   padding: EdgeInsets.all(8.0),
-                  splashColor: Colors.blueAccent,
+                  splashColor: Theme.of(context).primaryColor,
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
@@ -423,7 +421,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             disabledColor: Color.fromRGBO(246, 58, 64, 20),
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
-            splashColor: Colors.blueAccent,
+            splashColor: Theme.of(context).primaryColor,
             onPressed: () {
               _editWorkoutNameCheck(_workoutNameCtrl.text);
               _workoutNameCtrl.clear();
@@ -831,9 +829,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
 
       return Scaffold(
           appBar: _appbarWidget(),
-          body: _isexsearch
-              ? _exercises_searchWidget()
-              : _exercisesWidget(false),
+          body:
+              _isexsearch ? _exercises_searchWidget() : _exercisesWidget(false),
           backgroundColor: Colors.black);
     });
   }

@@ -56,6 +56,7 @@ class _FeedState extends State<Feed> {
 
     return Scaffold(
         backgroundColor: Colors.black,
+        extendBody: true,
         appBar: AppBar(
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -113,7 +114,7 @@ class _FeedState extends State<Feed> {
                     color: Colors.black,
                     child: Container(
                       alignment: Alignment.center,
-                      height: 1,
+                      height: 0.3,
                       color: Color(0xFF717171),
                     ),
                   );
@@ -135,7 +136,7 @@ class _FeedState extends State<Feed> {
             children: _feedList,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             backgroundColor: Colors.black,
-            thumbColor: Color.fromRGBO(25, 106, 223, 20),
+            thumbColor: Theme.of(context).primaryColor,
             onValueChanged: (i) {
               setState(() {
                 _feedListCtrl = i as int;

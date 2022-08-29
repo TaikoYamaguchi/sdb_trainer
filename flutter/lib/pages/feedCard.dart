@@ -95,7 +95,7 @@ class _FeedCardState extends State<FeedCard> {
       color: Colors.black,
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
           child: Consumer2<HistorydataProvider, UserdataProvider>(
               builder: (builder, provider, provider2, child) {
             return _userdataProvider.userdata.dislike.contains(user.email)
@@ -106,7 +106,9 @@ class _FeedCardState extends State<FeedCard> {
                             style:
                                 TextStyle(color: Colors.grey, fontSize: 12.0))))
                 : Card(
-                    color: Color(0xFF717171),
+                    color: Theme.of(context).cardColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0)),
                     child: Column(
                       children: [
                         Padding(
@@ -125,15 +127,17 @@ class _FeedCardState extends State<FeedCard> {
                                                 .RIGHT_TO_LEFT));
                                   },
                                   child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       user.image == ""
                                           ? Icon(
                                               Icons.account_circle,
                                               color: Colors.grey,
-                                              size: 38.0,
+                                              size: 46.0,
                                             )
                                           : CircleAvatar(
-                                              radius: 18.0,
+                                              radius: 22.0,
                                               backgroundImage:
                                                   NetworkImage(user.image),
                                               backgroundColor:
@@ -152,13 +156,14 @@ class _FeedCardState extends State<FeedCard> {
                                   ),
                                 ),
                                 Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Padding(
                                       padding:
                                           const EdgeInsets.only(right: 4.0),
                                       child: Text(SDBdata.date.substring(2, 10),
                                           style: TextStyle(
-                                              fontSize: 18,
+                                              fontSize: 14,
                                               color: Colors.grey)),
                                     ),
                                     GestureDetector(
@@ -343,24 +348,24 @@ class _FeedCardState extends State<FeedCard> {
                                   child: Text(
                                     "운동",
                                     style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
+                                      color: Colors.grey,
+                                      fontSize: 14,
                                     ),
                                   )),
                               Container(
                                   width: 50,
                                   child: Text("sets",
                                       style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
+                                        color: Colors.grey,
+                                        fontSize: 14,
                                       ),
                                       textAlign: TextAlign.center)),
                               Container(
                                   width: 70,
                                   child: Text("1rm",
                                       style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
+                                        color: Colors.grey,
+                                        fontSize: 14,
                                       ),
                                       textAlign: TextAlign.center))
                             ],
@@ -401,18 +406,21 @@ class _FeedCardState extends State<FeedCard> {
                         SDBdata.comment != ""
                             ? _feedTextField(SDBdata.comment)
                             : Container(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            SDBdata.isVisible == false
-                                ? Text("숨겨진 피드",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 14))
-                                : Container(),
-                            _feedPhotoButton(SDBdata),
-                            _feedLikeButton(SDBdata),
-                            _feedCommentButton(SDBdata)
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.only(right: 20.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              SDBdata.isVisible == false
+                                  ? Text("숨겨진 피드",
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 14))
+                                  : Container(),
+                              _feedPhotoButton(SDBdata),
+                              _feedLikeButton(SDBdata),
+                              _feedCommentButton(SDBdata)
+                            ],
+                          ),
                         ),
                         _photoInfo["feedList"] == widget.feedListCtrl &&
                                 _photoInfo["feedVisible"] == true &&
@@ -693,7 +701,7 @@ class _FeedCardState extends State<FeedCard> {
             disabledColor: Color.fromRGBO(246, 58, 64, 20),
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
-            splashColor: Colors.blueAccent,
+            splashColor: Theme.of(context).primaryColor,
             onPressed: () {
               HistoryCommentEdit(
                       history_id: SDBdata.id,
@@ -816,7 +824,7 @@ class _FeedCardState extends State<FeedCard> {
             padding: const EdgeInsets.only(right: 4.0),
             child: Icon(
               Icons.favorite,
-              color: isLiked ? Colors.deepPurpleAccent : Colors.white,
+              color: isLiked ? Theme.of(context).primaryColor : Colors.white,
               size: buttonSize,
             ),
           );
@@ -826,7 +834,7 @@ class _FeedCardState extends State<FeedCard> {
         },
         likeCount: SDBdata.like.length,
         countBuilder: (int? count, bool isLiked, String text) {
-          var color = isLiked ? Colors.deepPurpleAccent : Colors.white;
+          var color = isLiked ? Theme.of(context).primaryColor : Colors.white;
           Widget result;
           if (count == 0) {
             result = Text(
@@ -836,7 +844,8 @@ class _FeedCardState extends State<FeedCard> {
           } else
             result = Text(
               text,
-              style: TextStyle(color: color, fontSize: 18.0),
+              style: TextStyle(
+                  color: color, fontSize: 18.0, fontWeight: FontWeight.bold),
             );
           return result;
         },
@@ -906,7 +915,9 @@ class _FeedCardState extends State<FeedCard> {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
                   child: Text("Confirm",
-                      style: TextStyle(fontSize: 20.0, color: Colors.blue)))),
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          color: Theme.of(context).primaryColor)))),
         ],
       ),
     );

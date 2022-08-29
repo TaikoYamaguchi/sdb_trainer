@@ -232,12 +232,12 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                   SizedBox(
                       width: MediaQuery.of(context).size.width / 4,
                       child: FlatButton(
-                        color: Colors.blue,
+                        color: Theme.of(context).primaryColor,
                         textColor: Colors.white,
                         disabledColor: Color.fromRGBO(246, 58, 64, 20),
                         disabledTextColor: Colors.black,
                         padding: EdgeInsets.all(8.0),
-                        splashColor: Colors.blueAccent,
+                        splashColor: Theme.of(context).primaryColor,
                         onPressed: () {
                           _getImage(ImageSource.camera);
                           Navigator.pop(context);
@@ -252,12 +252,12 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                   SizedBox(
                       width: MediaQuery.of(context).size.width / 4,
                       child: FlatButton(
-                        color: Colors.blue,
+                        color: Theme.of(context).primaryColor,
                         textColor: Colors.white,
                         disabledColor: Color.fromRGBO(246, 58, 64, 20),
                         disabledTextColor: Colors.black,
                         padding: EdgeInsets.all(8.0),
-                        splashColor: Colors.blueAccent,
+                        splashColor: Theme.of(context).primaryColor,
                         onPressed: () {
                           _getImage(ImageSource.gallery);
                           Navigator.pop(context);
@@ -287,7 +287,7 @@ class _ExerciseDoneState extends State<ExerciseDone> {
               disabledColor: Color.fromRGBO(246, 58, 64, 20),
               disabledTextColor: Colors.black,
               padding: EdgeInsets.all(8.0),
-              splashColor: Colors.blueAccent,
+              splashColor: Theme.of(context).primaryColor,
               onPressed: () {
                 if (_selectImage != null) {
                   HistoryImageEdit(

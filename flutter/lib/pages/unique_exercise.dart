@@ -103,12 +103,12 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
           SizedBox(
               width: MediaQuery.of(context).size.width / 4,
               child: FlatButton(
-                  color: Colors.blue,
+                  color: Theme.of(context).primaryColor,
                   textColor: Colors.white,
                   disabledColor: Color.fromRGBO(246, 58, 64, 20),
                   disabledTextColor: Colors.black,
                   padding: EdgeInsets.all(8.0),
-                  splashColor: Colors.blueAccent,
+                  splashColor: Theme.of(context).primaryColor,
                   onPressed: () {
                     _routinetimeProvider.routinecheck(0);
                     recordExercise();
@@ -127,7 +127,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                   disabledColor: Color.fromRGBO(246, 58, 64, 20),
                   disabledTextColor: Colors.black,
                   padding: EdgeInsets.all(8.0),
-                  splashColor: Colors.blueAccent,
+                  splashColor: Theme.of(context).primaryColor,
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
@@ -149,7 +149,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
         MaterialState.pressed,
       };
       if (states.any(interactiveStates.contains)) {
-        return Colors.blue;
+        return Theme.of(context).primaryColor;
       }
       return Colors.white;
     }
@@ -611,12 +611,12 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
           SizedBox(
               width: MediaQuery.of(context).size.width / 4,
               child: FlatButton(
-                  color: Colors.blue,
+                  color: Theme.of(context).primaryColor,
                   textColor: Colors.white,
                   disabledColor: Color.fromRGBO(246, 58, 64, 20),
                   disabledTextColor: Colors.black,
                   padding: EdgeInsets.all(8.0),
-                  splashColor: Colors.blueAccent,
+                  splashColor: Theme.of(context).primaryColor,
                   onPressed: () {
                     _routinetimeProvider
                         .resettimer(_routinetimeProvider.changetime);
@@ -636,7 +636,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                   disabledColor: Color.fromRGBO(246, 58, 64, 20),
                   disabledTextColor: Colors.black,
                   padding: EdgeInsets.all(8.0),
-                  splashColor: Colors.blueAccent,
+                  splashColor: Theme.of(context).primaryColor,
                   onPressed: () {
                     newvalue = !newvalue;
                     Navigator.of(context, rootNavigator: true).pop();
@@ -680,7 +680,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
             ),
             actions: <Widget>[
               FlatButton(
-                color: Colors.blue,
+                color: Theme.of(context).primaryColor,
                 textColor: Colors.white,
                 child: Text('OK'),
                 onPressed: () {

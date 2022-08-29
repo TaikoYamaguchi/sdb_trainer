@@ -53,6 +53,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+          primaryColor: const Color(0xff7a28cb),
+          cardColor: const Color(0xff40434e),
+          fontFamily: 'Noto_Sans_KR'),
       title: 'Flutter Demo',
       home: App(),
     );

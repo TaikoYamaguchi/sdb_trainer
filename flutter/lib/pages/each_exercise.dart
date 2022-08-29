@@ -178,7 +178,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         MaterialState.pressed,
       };
       if (states.any(interactiveStates.contains)) {
-        return Colors.blue;
+        return Theme.of(context).primaryColor;
       }
       return Colors.white;
     }
@@ -820,7 +820,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             actions: <Widget>[
               TextButton(
                 style: TextButton.styleFrom(
-                  primary: Colors.blue,
+                  primary: Theme.of(context).primaryColor,
                 ),
                 child: Text('OK'),
                 onPressed: () {
@@ -885,7 +885,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
                   child: Text("Confirm",
-                      style: TextStyle(fontSize: 20.0, color: Colors.blue)))),
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          color: Theme.of(context).primaryColor)))),
         ],
       ),
     );
