@@ -392,11 +392,11 @@ class _FeedCardState extends State<FeedCard> {
                                   (BuildContext _context, int index) {
                                 return Container(
                                   alignment: Alignment.center,
-                                  height: 1,
+                                  height: 0,
                                   color: Colors.black,
                                   child: Container(
                                     alignment: Alignment.center,
-                                    height: 1,
+                                    height: 0,
                                     color: Color(0xFF717171),
                                   ),
                                 );
