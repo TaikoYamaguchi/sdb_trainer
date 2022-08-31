@@ -109,7 +109,7 @@ class _ExerciseDoneState extends State<ExerciseDone> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Card(
-              color: Color(0xFF717171),
+              color: Theme.of(context).cardColor,
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 40.0, vertical: 8.0),
@@ -198,7 +198,7 @@ class _ExerciseDoneState extends State<ExerciseDone> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Card(
-              color: Color(0xFF717171),
+              color: Theme.of(context).cardColor,
               child: Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 40.0, vertical: 8.0),
@@ -225,51 +225,72 @@ class _ExerciseDoneState extends State<ExerciseDone> {
         context: context,
         builder: (context) {
           return AlertDialog(
+            backgroundColor: Theme.of(context).cardColor,
             actions: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  SizedBox(
-                      width: MediaQuery.of(context).size.width / 4,
-                      child: FlatButton(
-                        color: Theme.of(context).primaryColor,
-                        textColor: Colors.white,
-                        disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                        disabledTextColor: Colors.black,
-                        padding: EdgeInsets.all(8.0),
-                        splashColor: Theme.of(context).primaryColor,
-                        onPressed: () {
-                          _getImage(ImageSource.camera);
-                          Navigator.pop(context);
-                        },
-                        child: Column(
-                          children: [
-                            Icon(Icons.camera_alt, size: 24),
-                            Text('촬영', style: TextStyle(fontSize: 18)),
-                          ],
-                        ),
-                      )),
-                  SizedBox(
-                      width: MediaQuery.of(context).size.width / 4,
-                      child: FlatButton(
-                        color: Theme.of(context).primaryColor,
-                        textColor: Colors.white,
-                        disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                        disabledTextColor: Colors.black,
-                        padding: EdgeInsets.all(8.0),
-                        splashColor: Theme.of(context).primaryColor,
-                        onPressed: () {
-                          _getImage(ImageSource.gallery);
-                          Navigator.pop(context);
-                        },
-                        child: Column(
-                          children: [
-                            Icon(Icons.collections, size: 24),
-                            Text('갤러리', style: TextStyle(fontSize: 18)),
-                          ],
-                        ),
-                      )),
-                ],
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+                      child: Text("사진을 올릴 방법을 고를 수 있어요",
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 16.0)),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width / 4,
+                            child: FlatButton(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              color: Theme.of(context).primaryColor,
+                              textColor: Colors.white,
+                              disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                              disabledTextColor: Colors.black,
+                              padding: EdgeInsets.all(8.0),
+                              splashColor: Theme.of(context).primaryColor,
+                              onPressed: () {
+                                _getImage(ImageSource.camera);
+                                Navigator.pop(context);
+                              },
+                              child: Column(
+                                children: [
+                                  Icon(Icons.camera_alt, size: 24),
+                                  Text('촬영', style: TextStyle(fontSize: 16)),
+                                ],
+                              ),
+                            )),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width / 4,
+                            child: FlatButton(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              color: Theme.of(context).primaryColor,
+                              textColor: Colors.white,
+                              disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                              disabledTextColor: Colors.black,
+                              padding: EdgeInsets.all(8.0),
+                              splashColor: Theme.of(context).primaryColor,
+                              onPressed: () {
+                                _getImage(ImageSource.gallery);
+                                Navigator.pop(context);
+                              },
+                              child: Column(
+                                children: [
+                                  Icon(Icons.collections, size: 24),
+                                  Text('갤러리', style: TextStyle(fontSize: 16)),
+                                ],
+                              ),
+                            )),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           );
@@ -282,7 +303,10 @@ class _ExerciseDoneState extends State<ExerciseDone> {
       child: SizedBox(
           width: MediaQuery.of(context).size.width,
           child: FlatButton(
-              color: Color.fromRGBO(246, 58, 64, 20),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              color: Theme.of(context).primaryColor,
               textColor: Colors.white,
               disabledColor: Color.fromRGBO(246, 58, 64, 20),
               disabledTextColor: Colors.black,

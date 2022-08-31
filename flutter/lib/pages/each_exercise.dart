@@ -374,36 +374,43 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                       width: 60,
                                       child: Transform.scale(
                                           scale: 1.2,
-                                          child: Checkbox(
-                                              checkColor: Colors.black,
-                                              fillColor: MaterialStateProperty
-                                                  .resolveWith(getColor),
-                                              value: _sets[index].ischecked,
-                                              onChanged: (newvalue) {
-                                                _routinetimeProvider.isstarted
-                                                    ? [
-                                                        _workoutdataProvider
-                                                            .boolcheck(
-                                                                widget.rindex,
-                                                                pindex,
-                                                                index,
-                                                                newvalue),
-                                                        newvalue == true
-                                                            ? _routinetimeProvider
-                                                                .resettimer(provider
-                                                                    .workoutdata
-                                                                    .routinedatas[
-                                                                        widget
-                                                                            .rindex]
-                                                                    .exercises[
-                                                                        pindex]
-                                                                    .rest)
-                                                            : null,
-                                                        _editWorkoutwCheck()
-                                                      ]
-                                                    : _displayStartAlert(pindex,
-                                                        index, newvalue);
-                                              })),
+                                          child: Theme(
+                                            data: ThemeData(
+                                                unselectedWidgetColor:
+                                                    Colors.white),
+                                            child: Checkbox(
+                                                checkColor: Colors.white,
+                                                activeColor: Theme.of(context)
+                                                    .primaryColor,
+                                                value: _sets[index].ischecked,
+                                                onChanged: (newvalue) {
+                                                  _routinetimeProvider.isstarted
+                                                      ? [
+                                                          _workoutdataProvider
+                                                              .boolcheck(
+                                                                  widget.rindex,
+                                                                  pindex,
+                                                                  index,
+                                                                  newvalue),
+                                                          newvalue == true
+                                                              ? _routinetimeProvider
+                                                                  .resettimer(provider
+                                                                      .workoutdata
+                                                                      .routinedatas[
+                                                                          widget
+                                                                              .rindex]
+                                                                      .exercises[
+                                                                          pindex]
+                                                                      .rest)
+                                                              : null,
+                                                          _editWorkoutwCheck()
+                                                        ]
+                                                      : _displayStartAlert(
+                                                          pindex,
+                                                          index,
+                                                          newvalue);
+                                                }),
+                                          )),
                                     ),
                                     Expanded(
                                       child: Slidable(
@@ -792,44 +799,78 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text(
-              'Set Rest Time',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            buttonPadding: EdgeInsets.all(12.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
             ),
-            content: TextField(
-              controller: _resttimectrl,
-              keyboardType: TextInputType.number,
-              style: TextStyle(
-                fontSize: 21,
-                color: Colors.black,
-              ),
+            backgroundColor: Theme.of(context).cardColor,
+            contentPadding: EdgeInsets.all(12.0),
+            title: Text(
+              '휴식 시간을 설정 해볼게요',
               textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                hintText: "Type Resting time",
-                hintStyle: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('세트당 휴식 시간을 입력해주세요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                SizedBox(height: 20),
+                TextField(
+                  controller: _resttimectrl,
+                  keyboardType: TextInputType.number,
+                  style: TextStyle(
+                    fontSize: 21,
+                    color: Colors.black,
+                  ),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                      filled: true,
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      hintText: "휴식 시간 입력(초)",
+                      hintStyle:
+                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                  onChanged: (text) {
+                    int changetime;
+                    changetime = int.parse(text);
+                    _routinetimeProvider.resttimecheck(changetime);
+                  },
                 ),
-              ),
-              onChanged: (text) {
-                int changetime;
-                changetime = int.parse(text);
-                _routinetimeProvider.resttimecheck(changetime);
-              },
+              ],
             ),
             actions: <Widget>[
-              TextButton(
-                style: TextButton.styleFrom(
-                  primary: Theme.of(context).primaryColor,
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: FlatButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  color: Theme.of(context).primaryColor,
+                  textColor: Colors.white,
+                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                  disabledTextColor: Colors.black,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Theme.of(context).primaryColor,
+                  child: Text('휴식 시간 설정하기',
+                      style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                  onPressed: () {
+                    _workoutdataProvider.resttimecheck(
+                        widget.rindex, pindex, _routinetimeProvider.changetime);
+                    _editWorkoutwCheck();
+                    _resttimectrl.clear();
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
                 ),
-                child: Text('OK'),
-                onPressed: () {
-                  _workoutdataProvider.resttimecheck(
-                      widget.rindex, pindex, _routinetimeProvider.changetime);
-                  _editWorkoutwCheck();
-                  _resttimectrl.clear();
-                  Navigator.of(context, rootNavigator: true).pop();
-                },
               ),
             ],
           );
@@ -841,11 +882,28 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text(
-              'Workout Start Alert',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            buttonPadding: EdgeInsets.all(12.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
             ),
-            content: Text('운동을 시작하시겠습니까?'),
+            backgroundColor: Theme.of(context).cardColor,
+            contentPadding: EdgeInsets.all(12.0),
+            title: Text(
+              '운동을 시작 할 수 있어요',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('운동을 시작 할까요?',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                Text('외부를 터치하면 취소 할 수 있어요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+              ],
+            ),
             actions: <Widget>[
               _StartConfirmButton(pindex, sindex, newvalue),
             ],
@@ -854,43 +912,27 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   }
 
   Widget _StartConfirmButton(pindex, sindex, newvalue) {
-    return Container(
-      margin: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width / 25),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SizedBox(
-              width: MediaQuery.of(context).size.width / 4,
-              child: TextButton(
-                  onPressed: () {
-                    newvalue = !newvalue;
-                    Navigator.of(context, rootNavigator: true).pop();
-                  },
-                  child: Text("Cancel",
-                      style: TextStyle(fontSize: 20.0, color: Colors.red)))),
-          SizedBox(
-              width: MediaQuery.of(context).size.width / 4,
-              child: TextButton(
-                  onPressed: () {
-                    _routinetimeProvider.resettimer(_workoutdataProvider
-                        .workoutdata
-                        .routinedatas[widget.rindex]
-                        .exercises[pindex]
-                        .rest);
-                    _routinetimeProvider.routinecheck(widget.rindex);
-                    _workoutdataProvider.boolcheck(
-                        widget.rindex, pindex, sindex, newvalue);
-                    _editWorkoutwCheck();
-                    Navigator.of(context, rootNavigator: true).pop();
-                  },
-                  child: Text("Confirm",
-                      style: TextStyle(
-                          fontSize: 20.0,
-                          color: Theme.of(context).primaryColor)))),
-        ],
-      ),
-    );
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: Theme.of(context).primaryColor,
+            textColor: Colors.white,
+            onPressed: () {
+              _routinetimeProvider.resettimer(_workoutdataProvider.workoutdata
+                  .routinedatas[widget.rindex].exercises[pindex].rest);
+              _routinetimeProvider.routinecheck(widget.rindex);
+              _workoutdataProvider.boolcheck(
+                  widget.rindex, pindex, sindex, newvalue);
+              _editWorkoutwCheck();
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            padding: EdgeInsets.all(12.0),
+            splashColor: Theme.of(context).primaryColor,
+            child: Text("운동 시작 하기",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
   void recordExercise() {

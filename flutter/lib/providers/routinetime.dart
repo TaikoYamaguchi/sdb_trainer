@@ -25,7 +25,7 @@ class RoutineTimeProvider extends ChangeNotifier {
   Color get restbuttoncolor => _restbuttoncolor;
   String _routineButton = 'Start Workout';
   String get routineButton => _routineButton;
-  Color _buttoncolor = Color(0xFF2196F3);
+  Color _buttoncolor = const Color(0xff7a28cb);
   Color get buttoncolor => _buttoncolor;
   DateTime _starttime = DateTime(2022, 08, 06, 10, 30);
   DateTime _timerstarttime = DateTime(2022, 08, 06, 10, 30);
@@ -85,8 +85,8 @@ class RoutineTimeProvider extends ChangeNotifier {
           _routineTime = 0;
         }
       });
-      _routineButton = 'Finish Workout';
-      _buttoncolor = Color(0xFF9C27B0);
+      _routineButton = '운동 종료 하기';
+      _buttoncolor = Color(0xFffc60a8);
       _isstarted = !_isstarted;
       _nowonrindex = rindex;
       notifyListeners();
@@ -94,8 +94,8 @@ class RoutineTimeProvider extends ChangeNotifier {
       timer1!.cancel();
       _routineTime = 0;
       _timeron = 0;
-      _routineButton = 'Start Workout';
-      _buttoncolor = Color(0xFF2196F3);
+      _routineButton = '운동 시작 하기';
+      _buttoncolor = const Color(0xff7a28cb);
       _isstarted = !_isstarted;
       notifyListeners();
     }

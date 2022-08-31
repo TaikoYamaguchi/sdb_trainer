@@ -190,7 +190,8 @@ class _CalendarState extends State<Calendar> {
             children: <Widget>[
               IconButton(
                 icon: _isChartWidget.isChartWidget
-                    ? SvgPicture.asset("assets/svg/chart_statics_on.svg")
+                    ? SvgPicture.asset("assets/svg/chart_statics_on.svg",
+                        color: Theme.of(context).primaryColor)
                     : SvgPicture.asset("assets/svg/chart_statics_off.svg"),
                 onPressed: () {
                   _chartIndex.changePageController(0);
@@ -201,7 +202,8 @@ class _CalendarState extends State<Calendar> {
               IconButton(
                 icon: _isChartWidget.isChartWidget
                     ? SvgPicture.asset("assets/svg/calendar_statics_off.svg")
-                    : SvgPicture.asset("assets/svg/calendar_statics_on.svg"),
+                    : SvgPicture.asset("assets/svg/calendar_statics_on.svg",
+                        color: Theme.of(context).primaryColor),
                 onPressed: () {
                   _chartIndex.changePageController(1);
                   _isChartWidget.change(false);
@@ -368,7 +370,7 @@ class _CalendarState extends State<Calendar> {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
-                  color: Color(0xFF212121),
+                  color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.only(
                       topRight: Radius.circular(top),
                       bottomRight: Radius.circular(bottom),
@@ -448,8 +450,10 @@ class _CalendarState extends State<Calendar> {
                               child: ListTile(
                                   contentPadding: EdgeInsets.symmetric(
                                       horizontal: 4.0, vertical: 0.0),
-                                  leading: Icon(Icons.delete),
-                                  title: Text("삭제"))),
+                                  leading:
+                                      Icon(Icons.delete, color: Colors.white),
+                                  title: Text("삭제",
+                                      style: TextStyle(color: Colors.white)))),
                         ]);
                   },
                 ),
@@ -484,7 +488,7 @@ class _CalendarState extends State<Calendar> {
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     decoration: BoxDecoration(
-                        color: Color(0xFF212121),
+                        color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.only(
                             topRight: Radius.circular(top),
                             bottomRight: Radius.circular(bottom),
@@ -561,7 +565,7 @@ class _CalendarState extends State<Calendar> {
                             "Set",
                             style: TextStyle(
                               fontSize: 14,
-                              color: Colors.white,
+                              color: Colors.grey,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.center,
@@ -575,7 +579,7 @@ class _CalendarState extends State<Calendar> {
                       child: Text(
                         "Weight(${_userdataProvider.userdata.weight_unit})",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.grey,
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
@@ -587,7 +591,7 @@ class _CalendarState extends State<Calendar> {
                       child: Text(
                         "Reps",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.grey,
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
@@ -598,7 +602,7 @@ class _CalendarState extends State<Calendar> {
                       child: Text(
                         "1RM",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.grey,
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
@@ -805,8 +809,24 @@ class _CalendarState extends State<Calendar> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('운동을 지우시겠습니까?'),
-            content: Text('정말로 운동을 지우시나요?'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            backgroundColor: Theme.of(context).cardColor,
+            title: Text('운동을 삭제 할 수 있어요',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 24)),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('정말로 운동을 지우시나요?',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                Text('외부를 터치하면 취소 할 수 있어요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+              ],
+            ),
             actions: <Widget>[
               _deleteConfirmButton(history_id),
             ],
@@ -819,7 +839,10 @@ class _CalendarState extends State<Calendar> {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
-            color: Color.fromRGBO(246, 58, 64, 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: Theme.of(context).primaryColor,
             textColor: Colors.white,
             disabledColor: Color.fromRGBO(246, 58, 64, 20),
             disabledTextColor: Colors.black,
@@ -830,7 +853,7 @@ class _CalendarState extends State<Calendar> {
               HistoryDelete(history_id: history_id).deleteHistory();
               Navigator.of(context, rootNavigator: true).pop();
             },
-            child: Text("Confirm",
+            child: Text("삭제",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 

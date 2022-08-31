@@ -78,9 +78,9 @@ class _ProfileGoalState extends State<ProfileGoal> {
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 32,
-                            fontWeight: FontWeight.w800)),
+                            fontWeight: FontWeight.w600)),
                     Text("목표치와 1rm을 설정해보세요",
-                        style: TextStyle(color: Colors.white, fontSize: 13)),
+                        style: TextStyle(color: Colors.white, fontSize: 16)),
                     SizedBox(
                       height: 40,
                     ),
@@ -223,7 +223,10 @@ class _ProfileGoalState extends State<ProfileGoal> {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
-            color: Color.fromRGBO(246, 58, 64, 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: Theme.of(context).primaryColor,
             textColor: Colors.white,
             disabledColor: Color.fromRGBO(246, 58, 64, 20),
             disabledTextColor: Colors.black,

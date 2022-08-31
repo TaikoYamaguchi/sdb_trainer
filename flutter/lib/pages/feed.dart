@@ -110,11 +110,11 @@ class _FeedState extends State<Feed> {
                 separatorBuilder: (BuildContext _context, int index) {
                   return Container(
                     alignment: Alignment.center,
-                    height: 1,
+                    height: 0,
                     color: Colors.black,
                     child: Container(
                       alignment: Alignment.center,
-                      height: 0.3,
+                      height: 0,
                       color: Color(0xFF717171),
                     ),
                   );

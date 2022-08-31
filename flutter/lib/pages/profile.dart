@@ -36,19 +36,23 @@ class Profile extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           title: Text("설정", style: TextStyle(color: Colors.white)),
-          actions: [Container(alignment: Alignment.center,
-              child:
-              ElevatedButton(
-                  onPressed: (){
-                    _PopProvider.tutorpopon();
+          actions: [
+            Container(
+                alignment: Alignment.center,
+                child: ElevatedButton(
+                    onPressed: () {
+                      _PopProvider.tutorpopon();
 
-                    Future.delayed(Duration(milliseconds: 400)).then((value) {
-                      _bodyStater.change(1);
-                    });
-                    _PrefsProvider.tutorstart();
+                      Future.delayed(Duration(milliseconds: 400)).then((value) {
+                        _bodyStater.change(1);
+                      });
+                      _PrefsProvider.tutorstart();
                     },
-                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
-                  child: Text('튜토리얼',style: TextStyle(color: Colors.white))))],
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            Theme.of(context).cardColor)),
+                    child: Text('튜토리얼', style: TextStyle(color: Colors.white))))
+          ],
           backgroundColor: Colors.black),
       body: _userdataProvider.userdata != null
           ? _profile(context)
@@ -83,7 +87,7 @@ class Profile extends StatelessWidget {
               },
               style: ButtonStyle(
                   backgroundColor:
-                      MaterialStateProperty.all(Color(0xFF212121))),
+                      MaterialStateProperty.all(Theme.of(context).cardColor)),
               child: Consumer<UserdataProvider>(
                   builder: (builder, rpovider, child) {
                 return SizedBox(
@@ -108,7 +112,7 @@ class Profile extends StatelessWidget {
               },
               style: ButtonStyle(
                   backgroundColor:
-                      MaterialStateProperty.all(Color(0xFF212121))),
+                      MaterialStateProperty.all(Theme.of(context).cardColor)),
               child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: 50,
@@ -122,7 +126,7 @@ class Profile extends StatelessWidget {
               onPressed: () => _userLogOut(),
               style: ButtonStyle(
                   backgroundColor:
-                      MaterialStateProperty.all(Color(0xFF212121))),
+                      MaterialStateProperty.all(Theme.of(context).cardColor)),
               child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: 50,

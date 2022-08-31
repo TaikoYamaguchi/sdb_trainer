@@ -9,7 +9,7 @@ void showToast(String message) {
   Fluttertoast.showToast(
       fontSize: 13,
       msg: ' $message',
-      backgroundColor: Colors.blue,
+      backgroundColor: const Color(0xff7a28cb),
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM);
 }

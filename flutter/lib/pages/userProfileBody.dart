@@ -93,9 +93,14 @@ class _ProfileBodyState extends State<ProfileBody> {
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 32,
-                            fontWeight: FontWeight.w800)),
+                            fontWeight: FontWeight.w600)),
+                    Text("체형을 입력 할 수 있어요",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        )),
                     SizedBox(
-                      height: 12,
+                      height: 24,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -147,6 +152,10 @@ class _ProfileBodyState extends State<ProfileBody> {
           borderSide: BorderSide(color: Colors.white, width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white, width: 2.0),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
       ),
     );
   }
@@ -167,6 +176,10 @@ class _ProfileBodyState extends State<ProfileBody> {
           borderSide: BorderSide(color: Colors.white, width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white, width: 2.0),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
       ),
     );
   }
@@ -176,7 +189,7 @@ class _ProfileBodyState extends State<ProfileBody> {
         groupValue: _userWeightUnitCtrl,
         children: _weightUnitList,
         backgroundColor: Colors.black,
-        thumbColor: Color.fromRGBO(25, 106, 223, 20),
+        thumbColor: Theme.of(context).primaryColor,
         onValueChanged: (i) {
           _userWeightUnitCtrl = i as String;
         });
@@ -187,7 +200,7 @@ class _ProfileBodyState extends State<ProfileBody> {
         groupValue: _userHeightUnitCtrl,
         children: _heightUnitList,
         backgroundColor: Colors.black,
-        thumbColor: Color.fromRGBO(25, 106, 223, 20),
+        thumbColor: Theme.of(context).primaryColor,
         onValueChanged: (i) {
           _userHeightUnitCtrl = i as String;
         });
@@ -197,7 +210,10 @@ class _ProfileBodyState extends State<ProfileBody> {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
-            color: Color.fromRGBO(246, 58, 64, 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: Theme.of(context).primaryColor,
             textColor: Colors.white,
             disabledColor: Color.fromRGBO(246, 58, 64, 20),
             disabledTextColor: Colors.black,

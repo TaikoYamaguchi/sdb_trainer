@@ -81,11 +81,28 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text(
-              'Workout Finish Alert',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            buttonPadding: EdgeInsets.all(12.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
             ),
-            content: Text('운동을 끝마치겠습니까?'),
+            backgroundColor: Theme.of(context).cardColor,
+            contentPadding: EdgeInsets.all(12.0),
+            title: Text(
+              '운동을 종료 할 수 있어요',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('운동을 종료 하시겠나요?',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                Text('외부를 터치하면 취소 할 수 있어요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+              ],
+            ),
             actions: <Widget>[
               _FinishConfirmButton(),
             ],
@@ -94,48 +111,27 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
   }
 
   Widget _FinishConfirmButton() {
-    return Container(
-      margin: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width / 25),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SizedBox(
-              width: MediaQuery.of(context).size.width / 4,
-              child: FlatButton(
-                  color: Theme.of(context).primaryColor,
-                  textColor: Colors.white,
-                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                  disabledTextColor: Colors.black,
-                  padding: EdgeInsets.all(8.0),
-                  splashColor: Theme.of(context).primaryColor,
-                  onPressed: () {
-                    _routinetimeProvider.routinecheck(0);
-                    recordExercise();
-                    _editHistoryCheck();
-                    _routinetimeProvider.resttimecheck(0);
-                    Navigator.of(context, rootNavigator: true).pop();
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("Confirm",
-                      style: TextStyle(fontSize: 20.0, color: Colors.white)))),
-          SizedBox(
-              width: MediaQuery.of(context).size.width / 4,
-              child: FlatButton(
-                  color: Colors.red,
-                  textColor: Colors.white,
-                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                  disabledTextColor: Colors.black,
-                  padding: EdgeInsets.all(8.0),
-                  splashColor: Theme.of(context).primaryColor,
-                  onPressed: () {
-                    Navigator.of(context, rootNavigator: true).pop();
-                  },
-                  child: Text("Cancel",
-                      style: TextStyle(fontSize: 20.0, color: Colors.white))))
-        ],
-      ),
-    );
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: Theme.of(context).primaryColor,
+            textColor: Colors.white,
+            disabledColor: Color.fromRGBO(246, 58, 64, 20),
+            disabledTextColor: Colors.black,
+            onPressed: () {
+              _routinetimeProvider.routinecheck(0);
+              recordExercise();
+              _editHistoryCheck();
+              Navigator.of(context, rootNavigator: true).pop();
+              Navigator.of(context).pop();
+            },
+            padding: EdgeInsets.all(12.0),
+            splashColor: Theme.of(context).primaryColor,
+            child: Text("운동 종료 하기",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
   Widget _exercisedetailWidget() {
@@ -589,11 +585,28 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text(
-              'Workout Start Alert',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            buttonPadding: EdgeInsets.all(12.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
             ),
-            content: Text('운동을 시작하시겠습니까?'),
+            backgroundColor: Theme.of(context).cardColor,
+            contentPadding: EdgeInsets.all(12.0),
+            title: Text(
+              '운동을 시작 할 수 있어요',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('운동을 시작 할까요?',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                Text('외부를 터치하면 취소 할 수 있어요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+              ],
+            ),
             actions: <Widget>[
               _StartConfirmButton(sindex, newvalue),
             ],
@@ -602,50 +615,26 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
   }
 
   Widget _StartConfirmButton(sindex, newvalue) {
-    return Container(
-      margin: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width / 25),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SizedBox(
-              width: MediaQuery.of(context).size.width / 4,
-              child: FlatButton(
-                  color: Theme.of(context).primaryColor,
-                  textColor: Colors.white,
-                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                  disabledTextColor: Colors.black,
-                  padding: EdgeInsets.all(8.0),
-                  splashColor: Theme.of(context).primaryColor,
-                  onPressed: () {
-                    _routinetimeProvider
-                        .resettimer(_routinetimeProvider.changetime);
-                    _routinetimeProvider.routinecheck(0);
-                    setState(() {
-                      _sets[sindex].ischecked = newvalue;
-                    });
-                    Navigator.of(context, rootNavigator: true).pop();
-                  },
-                  child: Text("Confirm",
-                      style: TextStyle(fontSize: 20.0, color: Colors.white)))),
-          SizedBox(
-              width: MediaQuery.of(context).size.width / 4,
-              child: FlatButton(
-                  color: Colors.red,
-                  textColor: Colors.white,
-                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                  disabledTextColor: Colors.black,
-                  padding: EdgeInsets.all(8.0),
-                  splashColor: Theme.of(context).primaryColor,
-                  onPressed: () {
-                    newvalue = !newvalue;
-                    Navigator.of(context, rootNavigator: true).pop();
-                  },
-                  child: Text("Cancel",
-                      style: TextStyle(fontSize: 20.0, color: Colors.white))))
-        ],
-      ),
-    );
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: Theme.of(context).primaryColor,
+            textColor: Colors.white,
+            onPressed: () {
+              _routinetimeProvider.resettimer(_routinetimeProvider.changetime);
+              _routinetimeProvider.routinecheck(0);
+              setState(() {
+                _sets[sindex].ischecked = newvalue;
+              });
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            padding: EdgeInsets.all(12.0),
+            splashColor: Theme.of(context).primaryColor,
+            child: Text("운동 시작 하기",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
   void _displaySetRestAlert() {
@@ -653,40 +642,75 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text(
-              'Set Rest Time',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            buttonPadding: EdgeInsets.all(12.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
             ),
-            content: TextField(
-              controller: _resttimectrl,
-              keyboardType: TextInputType.number,
-              style: TextStyle(
-                fontSize: 21,
-                color: Colors.black,
-              ),
+            backgroundColor: Theme.of(context).cardColor,
+            contentPadding: EdgeInsets.all(12.0),
+            title: Text(
+              '휴식 시간을 설정 해볼게요',
               textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                hintText: "Type Resting time",
-                hintStyle: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('세트당 휴식 시간을 입력해주세요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                SizedBox(height: 20),
+                TextField(
+                  controller: _resttimectrl,
+                  keyboardType: TextInputType.number,
+                  style: TextStyle(
+                    fontSize: 21,
+                    color: Colors.black,
+                  ),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                      filled: true,
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      hintText: "휴식 시간 입력(초)",
+                      hintStyle:
+                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                  onChanged: (text) {
+                    int changetime;
+                    changetime = int.parse(text);
+                    _routinetimeProvider.resttimecheck(changetime);
+                  },
                 ),
-              ),
-              onChanged: (text) {
-                int changetime;
-                changetime = int.parse(text);
-                _routinetimeProvider.resttimecheck(changetime);
-              },
+              ],
             ),
             actions: <Widget>[
-              FlatButton(
-                color: Theme.of(context).primaryColor,
-                textColor: Colors.white,
-                child: Text('OK'),
-                onPressed: () {
-                  _resttimectrl.clear();
-                  Navigator.of(context, rootNavigator: true).pop();
-                },
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: FlatButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  color: Theme.of(context).primaryColor,
+                  textColor: Colors.white,
+                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                  disabledTextColor: Colors.black,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Theme.of(context).primaryColor,
+                  child: Text('휴식 시간 설정하기',
+                      style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                  onPressed: () {
+                    _resttimectrl.clear();
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                ),
               ),
             ],
           );

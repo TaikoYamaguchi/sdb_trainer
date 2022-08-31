@@ -75,10 +75,8 @@ class _AppState extends State<App> {
       String iconName, String label) {
     return BottomNavigationBarItem(
       icon: SvgPicture.asset("assets/svg/${iconName}_off.svg"),
-      activeIcon: SvgPicture.asset(
-        "assets/svg/${iconName}_on.svg",
-        color: Theme.of(context).primaryColor,
-      ),
+      activeIcon: SvgPicture.asset("assets/svg/${iconName}_on.svg",
+          color: Theme.of(context).primaryColor),
       label: label,
     );
   }
@@ -143,70 +141,67 @@ class _AppState extends State<App> {
             routinedatas: routinedatas_all)
         .editWorkout()
         .then((data) => data["user_email"] != null
-            ? showToast("done!")
+            ? showToast("완료")
             : showToast("입력을 확인해주세요"));
   }
 
   void _displayFinishAlert() {
-    _exercises = _exercisesdataProvider.exercisesdata.exercises;
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text(
-              'Workout Finish Alert',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            buttonPadding: EdgeInsets.all(12.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
             ),
-            content: Text('운동을 끝마치겠습니까?'),
+            backgroundColor: Theme.of(context).cardColor,
+            contentPadding: EdgeInsets.all(12.0),
+            title: Text(
+              '운동을 종료 할 수 있어요',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('운동을 종료 하시겠나요?',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                Text('외부를 터치하면 취소 할 수 있어요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+              ],
+            ),
             actions: <Widget>[
-              _StartConfirmButton(),
+              _FinishConfirmButton(),
             ],
           );
         });
   }
 
-  Widget _StartConfirmButton() {
-    return Container(
-      margin: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width / 25),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SizedBox(
-              width: MediaQuery.of(context).size.width / 4,
-              child: FlatButton(
-                  color: Theme.of(context).primaryColor,
-                  textColor: Colors.white,
-                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                  disabledTextColor: Colors.black,
-                  padding: EdgeInsets.all(8.0),
-                  splashColor: Theme.of(context).primaryColor,
-                  onPressed: () {
-                    _routinetimeProvider.routinecheck(0);
-                    recordExercise();
-                    _editHistoryCheck();
-                    _editWorkoutwoCheck();
-                    Navigator.of(context, rootNavigator: true).pop();
-                  },
-                  child: Text("Confirm",
-                      style: TextStyle(fontSize: 20.0, color: Colors.white)))),
-          SizedBox(
-              width: MediaQuery.of(context).size.width / 4,
-              child: FlatButton(
-                  color: Colors.red,
-                  textColor: Colors.white,
-                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                  disabledTextColor: Colors.black,
-                  padding: EdgeInsets.all(8.0),
-                  splashColor: Theme.of(context).primaryColor,
-                  onPressed: () {
-                    Navigator.of(context, rootNavigator: true).pop();
-                  },
-                  child: Text("Cancel",
-                      style: TextStyle(fontSize: 20.0, color: Colors.white))))
-        ],
-      ),
-    );
+  Widget _FinishConfirmButton() {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: Theme.of(context).primaryColor,
+            textColor: Colors.white,
+            disabledColor: Color.fromRGBO(246, 58, 64, 20),
+            disabledTextColor: Colors.black,
+            onPressed: () {
+              _routinetimeProvider.routinecheck(0);
+              recordExercise();
+              _editHistoryCheck();
+              _editWorkoutwoCheck();
+              Navigator.of(context, rootNavigator: true).pop();
+              Navigator.of(context).pop();
+            },
+            padding: EdgeInsets.all(12.0),
+            splashColor: Theme.of(context).primaryColor,
+            child: Text("운동 종료 하기",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
   void recordExercise() {
@@ -253,18 +248,45 @@ class _AppState extends State<App> {
         return WillPopScope(
             onWillPop: () => Future.value(false),
             child: AlertDialog(
-              title: new Text("업데이트 안내"),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              backgroundColor: Theme.of(context).cardColor,
+              title: new Text("앱이 업데이트 되었어요",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white, fontSize: 24)),
               content: new SingleChildScrollView(
-                child: Text("앱 버젼이 다릅니다. 보다 좋은 서비스를 위해 업데이트 해주세요."),
+                child: Column(
+                  children: [
+                    Text("더 좋은 서비스를 제공해 드리기 위해",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 16)),
+                    Text("앱을 업데이트 해주세요",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 16)),
+                  ],
+                ),
               ),
               actions: <Widget>[
-                new FlatButton(
-                    child: new Text("업데이트"),
-                    onPressed: () => {
-                          LaunchReview.launch(
-                              androidAppId: "com.tk_lck.supero"),
-                          exit(0)
-                        }),
+                new SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: FlatButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        color: Theme.of(context).primaryColor,
+                        textColor: Colors.white,
+                        disabledColor: Color.fromRGBO(246, 58, 64, 20),
+                        disabledTextColor: Colors.black,
+                        padding: EdgeInsets.all(8.0),
+                        child: new Text("업데이트 하러가기",
+                            style:
+                                TextStyle(fontSize: 20.0, color: Colors.white)),
+                        onPressed: () => {
+                              LaunchReview.launch(
+                                  androidAppId: "com.tk_lck.supero"),
+                              exit(0),
+                            })),
               ],
             ));
       },
@@ -566,6 +588,7 @@ class _ExpandableFabState extends State<ExpandableFab>
               print('open');
               _toggle();
             },
+            backgroundColor: Theme.of(context).primaryColor,
             child: Consumer<RoutineTimeProvider>(
                 builder: (builder, provider, child) {
               return Text(
@@ -647,13 +670,13 @@ class ActionButton extends StatelessWidget {
         child: Material(
           shape: const CircleBorder(),
           clipBehavior: Clip.antiAlias,
-          color: theme.colorScheme.secondary,
+          color: Theme.of(context).primaryColor,
           elevation: 4.0,
           child: IconButton(
             iconSize: 20,
             onPressed: onPressed,
             icon: icon,
-            color: theme.colorScheme.onSecondary,
+            color: Colors.white,
           ),
         ),
       ),

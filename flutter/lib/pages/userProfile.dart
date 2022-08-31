@@ -62,7 +62,8 @@ class _UserProfileState extends State<UserProfile> {
                     transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
           },
           style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
+              backgroundColor:
+                  MaterialStateProperty.all(Theme.of(context).cardColor)),
           child:
               Consumer<UserdataProvider>(builder: (builder, rpovider, child) {
             return SizedBox(
@@ -87,7 +88,8 @@ class _UserProfileState extends State<UserProfile> {
                     transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
           },
           style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
+              backgroundColor:
+                  MaterialStateProperty.all(Theme.of(context).cardColor)),
           child: SizedBox(
               width: MediaQuery.of(context).size.width,
               height: 50,
@@ -107,7 +109,8 @@ class _UserProfileState extends State<UserProfile> {
         ElevatedButton(
           onPressed: () {},
           style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Color(0xFF212121))),
+              backgroundColor:
+                  MaterialStateProperty.all(Theme.of(context).cardColor)),
           child: SizedBox(
               width: MediaQuery.of(context).size.width,
               height: 50,
@@ -152,19 +155,17 @@ class _UserProfileState extends State<UserProfile> {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
     print("this is profileeeeeeeeee");
-    return Consumer<PopProvider>(
-        builder: (Builder, provider, child)
-    {
+    return Consumer<PopProvider>(builder: (Builder, provider, child) {
       bool _popable = provider.isprostacking;
       _popable == false
           ? null
           : [
-        provider.profilestackdown(),
-        provider.propopoff(),
-        Future.delayed(Duration.zero, () async {
-          Navigator.of(context).pop();
-        })
-      ];
+              provider.profilestackdown(),
+              provider.propopoff(),
+              Future.delayed(Duration.zero, () async {
+                Navigator.of(context).pop();
+              })
+            ];
       return Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: _appbarWidget(),

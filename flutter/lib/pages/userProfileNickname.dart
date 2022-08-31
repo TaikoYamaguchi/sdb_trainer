@@ -58,9 +58,14 @@ class _ProfileNicknameState extends State<ProfileNickname> {
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 32,
-                            fontWeight: FontWeight.w800)),
+                            fontWeight: FontWeight.w600)),
+                    Text("닉네임을 수정 할 수 있어요",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        )),
                     SizedBox(
-                      height: 8,
+                      height: 24,
                     ),
                     _nicknameWidget(),
                     Expanded(
@@ -126,7 +131,10 @@ class _ProfileNicknameState extends State<ProfileNickname> {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
-            color: Color.fromRGBO(246, 58, 64, 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: Theme.of(context).primaryColor,
             textColor: Colors.white,
             disabledColor: Color.fromRGBO(246, 58, 64, 20),
             disabledTextColor: Colors.black,
