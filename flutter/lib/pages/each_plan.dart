@@ -103,11 +103,28 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text(
-              'Workout Finish Alert',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            buttonPadding: EdgeInsets.all(12.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
             ),
-            content: Text('운동을 끝마치겠습니까?'),
+            backgroundColor: Theme.of(context).cardColor,
+            contentPadding: EdgeInsets.all(12.0),
+            title: Text(
+              '운동을 종료 할 수 있어요',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('운동을 종료 하시겠나요?',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                Text('외부를 터치하면 취소 할 수 있어요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+              ],
+            ),
             actions: <Widget>[
               _FinishConfirmButton(),
             ],
@@ -115,85 +132,111 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
         });
   }
 
-  Widget _FinishConfirmButton() {
-    return Container(
-      margin: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width / 25),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SizedBox(
-              width: MediaQuery.of(context).size.width / 4,
-              child: FlatButton(
-                  color: Colors.blue,
-                  textColor: Colors.white,
-                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                  disabledTextColor: Colors.black,
-                  padding: EdgeInsets.all(8.0),
-                  splashColor: Colors.blueAccent,
-                  onPressed: () {
-                    _routinetimeProvider.routinecheck(widget.rindex);
-                    recordExercise();
-                    _editHistoryCheck();
-                    _editWorkoutCheck();
-                    Navigator.of(context, rootNavigator: true).pop();
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("Confirm",
-                      style: TextStyle(fontSize: 20.0, color: Colors.white)))),
-          SizedBox(
-              width: MediaQuery.of(context).size.width / 4,
-              child: FlatButton(
-                  color: Colors.red,
-                  textColor: Colors.white,
-                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                  disabledTextColor: Colors.black,
-                  padding: EdgeInsets.all(8.0),
-                  splashColor: Colors.blueAccent,
-                  onPressed: () {
-                    Navigator.of(context, rootNavigator: true).pop();
-                  },
-                  child: Text("Cancel",
-                      style: TextStyle(fontSize: 20.0, color: Colors.white))))
-        ],
-      ),
-    );
-  }
-
   void _displayTextInputDialog() {
     showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            title: Text('TextField in Dialog'),
-            content: TextField(
-              onChanged: (value) {},
-              controller: _workoutNameCtrl,
-              decoration: InputDecoration(hintText: "Text Field in Dialog"),
-            ),
-            actions: <Widget>[
-              _workoutSubmitButton(context),
-            ],
-          );
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              buttonPadding: EdgeInsets.all(12.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              backgroundColor: Theme.of(context).cardColor,
+              contentPadding: EdgeInsets.all(12.0),
+              title: Text(
+                '루틴 이름을 수정 해보세요',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+              content: Column(mainAxisSize: MainAxisSize.min, children: [
+                Text('운동 루틴의 이름을 입력해 주세요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                Text('외부를 터치하면 취소 할 수 있어요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+                SizedBox(height: 20),
+                TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      null;
+                    });
+                  },
+                  style: TextStyle(fontSize: 24.0, color: Colors.white),
+                  textAlign: TextAlign.center,
+                  controller: _workoutNameCtrl,
+                  decoration: InputDecoration(
+                      filled: true,
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      hintText: "운동 루틴 이름",
+                      hintStyle:
+                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                ),
+              ]),
+              actions: <Widget>[
+                _workoutSubmitButton(context),
+              ],
+            );
+          });
         });
+  }
+
+  Widget _FinishConfirmButton() {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: Theme.of(context).primaryColor,
+            textColor: Colors.white,
+            disabledColor: Color.fromRGBO(246, 58, 64, 20),
+            disabledTextColor: Colors.black,
+            onPressed: () {
+              _routinetimeProvider.routinecheck(widget.rindex);
+              recordExercise();
+              _editHistoryCheck();
+              _editWorkoutCheck();
+              Navigator.of(context, rootNavigator: true).pop();
+              Navigator.of(context).pop();
+            },
+            padding: EdgeInsets.all(12.0),
+            splashColor: Theme.of(context).primaryColor,
+            child: Text("운동 종료 하기",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
   Widget _workoutSubmitButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
-            color: Color.fromRGBO(246, 58, 64, 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: _workoutNameCtrl.text == ""
+                ? Color(0xFF212121)
+                : Theme.of(context).primaryColor,
             textColor: Colors.white,
-            disabledColor: Color.fromRGBO(246, 58, 64, 20),
-            disabledTextColor: Colors.black,
-            padding: EdgeInsets.all(8.0),
-            splashColor: Colors.blueAccent,
+            disabledColor: Color(0xFF212121),
+            disabledTextColor: Colors.white,
+            padding: EdgeInsets.all(12.0),
+            splashColor: Theme.of(context).primaryColor,
             onPressed: () {
               _editWorkoutNameCheck(_workoutNameCtrl.text);
               _workoutNameCtrl.clear();
               Navigator.of(context, rootNavigator: true).pop();
             },
-            child: Text("workout 이름 제출",
+            child: Text("루틴 이름 수정",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
@@ -224,7 +267,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              height: 30,
+              height: 36,
               child: Row(
                 children: [
                   Container(
@@ -254,7 +297,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                   Container(
                     child: Text(
                       '${plandata.progress + 1}/${plandata.plans.length}day',
-                      style: TextStyle(color: Colors.white, fontSize: 25),
+                      style: TextStyle(color: Colors.white, fontSize: 24),
                     ),
                   ),
                   Container(
@@ -557,10 +600,11 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                             materialTapTargetSize:
                                                                 MaterialTapTargetSize
                                                                     .shrinkWrap,
-                                                            activeColor:
-                                                                Colors.white,
+                                                            activeColor: Theme
+                                                                    .of(context)
+                                                                .primaryColor,
                                                             checkColor:
-                                                                Colors.black,
+                                                                Colors.white,
                                                             value: inplandata[
                                                                     index]
                                                                 .sets[setindex]
@@ -801,7 +845,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       keyboardType: TextInputType.number,
                       style: TextStyle(
                         fontSize: 21,
-                        color: Colors.blue,
+                        color: Theme.of(context).primaryColor,
                       ),
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
@@ -833,7 +877,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       keyboardType: TextInputType.number,
                       style: TextStyle(
                         fontSize: 21,
-                        color: Colors.blue,
+                        color: Theme.of(context).primaryColor,
                       ),
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
@@ -1016,7 +1060,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     decoration: BoxDecoration(
-                        color: Color(0xFF212121),
+                        color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.only(
                             topRight: Radius.circular(top),
                             bottomRight: Radius.circular(bottom),

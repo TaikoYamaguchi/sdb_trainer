@@ -46,8 +46,6 @@ class ExerciseState extends State<Exercise> {
   int swap = 1;
   String _title = "Workout List";
 
-
-
   var keyPlus = GlobalKey();
   var keyContainer = GlobalKey();
   var keyCheck = GlobalKey();
@@ -81,11 +79,9 @@ class ExerciseState extends State<Exercise> {
             ),
           ),
           shapeFocus: ShapeFocus.oval),
-
     });
 
     ///FUNÇÃO QUE EXIBE O TUTORIAL.
-
 
     super.initState();
   }
@@ -116,20 +112,19 @@ class ExerciseState extends State<Exercise> {
       ),
       actions: swap == 1
           ? [
-              Consumer<RoutineMenuStater>(
-                builder: (builder, provider, child) {
-                  if (provider.menustate == 0 ){
-                    return IconButton(
-                      key:keyPlus,
-                      icon: SvgPicture.asset("assets/svg/add_white.svg"),
-                      onPressed: () {
-                        _displayTextInputDialog();
-                      },
-                    );
-                  } else {return SizedBox();}
-
+              Consumer<RoutineMenuStater>(builder: (builder, provider, child) {
+                if (provider.menustate == 0) {
+                  return IconButton(
+                    key: keyPlus,
+                    icon: SvgPicture.asset("assets/svg/add_white.svg"),
+                    onPressed: () {
+                      _displayTextInputDialog();
+                    },
+                  );
+                } else {
+                  return SizedBox();
                 }
-              )
+              })
             ]
           : null,
       backgroundColor: Colors.black,
@@ -146,60 +141,54 @@ class ExerciseState extends State<Exercise> {
             color: Colors.black,
             child: Center(
               child: Consumer<RoutineMenuStater>(
-                builder: (builder, provider, child) {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children:  [
-                      GestureDetector(
-                          onTap: (){
-                            controller!.animateToPage(
-                                0,
-                                duration: const Duration(
-                                    milliseconds: 200),
-                                curve: Curves.easeInOut);
-                            provider.change(1);
-                            provider.change(0);
-                          },
-                          child: Text('My',
-                            style: TextStyle(
-                                //decoration: provider.menustate == 0 ? TextDecoration.underline : null,
-                                fontWeight: FontWeight. bold,
-                                fontSize: 21,
-                                color: provider.menustate == 0 ? Colors.white : Color(0xFF717171)
-                            ),
-                          )
-                      ),
-                      GestureDetector(
-                          onTap: (){
-                            controller!.animateToPage(
-                                1,
-                                duration: const Duration(
-                                    milliseconds: 200),
-                                curve: Curves.easeInOut);
-                            provider.change(1);
-                          },
-                          child: Text('Famous',
-                            style: TextStyle(
-                                //decoration: provider.menustate == 1 ? TextDecoration.underline : null,
-                                fontSize: 21,
-                                fontWeight: FontWeight. bold,
-                                color: provider.menustate == 1 ? Colors.white : Color(0xFF717171)
-                            ),
-                          )
-                      )
-                    ],
-                  );
-                }
-              ),
+                  builder: (builder, provider, child) {
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    GestureDetector(
+                        onTap: () {
+                          controller!.animateToPage(0,
+                              duration: const Duration(milliseconds: 200),
+                              curve: Curves.easeInOut);
+                          provider.change(1);
+                          provider.change(0);
+                        },
+                        child: Text(
+                          'My',
+                          style: TextStyle(
+                              //decoration: provider.menustate == 0 ? TextDecoration.underline : null,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 21,
+                              color: provider.menustate == 0
+                                  ? Theme.of(context).primaryColor
+                                  : Color(0xFF717171)),
+                        )),
+                    GestureDetector(
+                        onTap: () {
+                          controller!.animateToPage(1,
+                              duration: const Duration(milliseconds: 200),
+                              curve: Curves.easeInOut);
+                          provider.change(1);
+                        },
+                        child: Text(
+                          'Famous',
+                          style: TextStyle(
+                              //decoration: provider.menustate == 1 ? TextDecoration.underline : null,
+                              fontSize: 21,
+                              fontWeight: FontWeight.bold,
+                              color: provider.menustate == 1
+                                  ? Theme.of(context).primaryColor
+                                  : Color(0xFF717171)),
+                        ))
+                  ],
+                );
+              }),
             ),
           ),
-
-          Consumer<RoutineMenuStater>(
-            builder: (builder, provider, child) {
-              return _routinemenuPage(provider.menustate);
-            }
-          ),
+          Consumer<RoutineMenuStater>(builder: (builder, provider, child) {
+            return _routinemenuPage(provider.menustate);
+          }),
         ],
       ),
     );
@@ -210,9 +199,16 @@ class ExerciseState extends State<Exercise> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Delete Alert',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            content: Text('이 루틴을 지우시겠습니까?'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            backgroundColor: Theme.of(context).cardColor,
+            title: Text('루틴을 지울 수 있어요',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 24)),
+            content: Text('정말로 루틴을 지우시나요?',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 16)),
             actions: <Widget>[
               _DeleteConfirmButton(rindex),
             ],
@@ -229,7 +225,6 @@ class ExerciseState extends State<Exercise> {
           _MyWorkout(),
           RoutineBank(),
         ],
-
       ),
     );
   }
@@ -238,7 +233,8 @@ class ExerciseState extends State<Exercise> {
     return Container(
       child: Container(
         color: Colors.black,
-        child: Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
+        child:
+            Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
           List routinelist = provider.workoutdata.routinedatas;
           return ReorderableListView.builder(
               onReorder: (int oldIndex, int newIndex) {
@@ -272,20 +268,22 @@ class ExerciseState extends State<Exercise> {
                   onTap: () {
                     _PopProvider.exstackup(1);
                     routinelist[index].mode == 0
-                    ? Navigator.push(
-                        context,
-                        Transition(
-                            child: EachWorkoutDetails(
-                              rindex: index,
-                            ),
-                            transitionEffect: TransitionEffect.RIGHT_TO_LEFT))
-                    : Navigator.push(
-                        context,
-                        Transition(
-                            child: EachPlanDetails(
-                              rindex: index,
-                            ),
-                            transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+                        ? Navigator.push(
+                            context,
+                            Transition(
+                                child: EachWorkoutDetails(
+                                  rindex: index,
+                                ),
+                                transitionEffect:
+                                    TransitionEffect.RIGHT_TO_LEFT))
+                        : Navigator.push(
+                            context,
+                            Transition(
+                                child: EachPlanDetails(
+                                  rindex: index,
+                                ),
+                                transitionEffect:
+                                    TransitionEffect.RIGHT_TO_LEFT));
                   },
                   child: Container(
                     child: Column(
@@ -293,7 +291,7 @@ class ExerciseState extends State<Exercise> {
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 20),
                           decoration: BoxDecoration(
-                              color: Color(0xFF212121),
+                              color: Theme.of(context).cardColor,
                               borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(top),
                                   bottomRight: Radius.circular(bottom),
@@ -313,19 +311,19 @@ class ExerciseState extends State<Exercise> {
                                         fontSize: 21, color: Colors.white),
                                   ),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-
                                       routinelist[index].mode == 1
-                                      ? Text(
-                                          "Program Mode",
-                                          style: TextStyle(
-                                              fontSize: 13, color: Color(0xFF717171)))
-                                      : Text(
-                                          "${routinelist[index].exercises.length} Exercises",
-                                          style: TextStyle(
-                                              fontSize: 13, color: Color(0xFF717171))
-                                      ),
+                                          ? Text("Program Mode",
+                                              style: TextStyle(
+                                                  fontSize: 13,
+                                                  color: Color(0xFF717171)))
+                                          : Text(
+                                              "${routinelist[index].exercises.length} Exercises",
+                                              style: TextStyle(
+                                                  fontSize: 13,
+                                                  color: Color(0xFF717171))),
                                     ],
                                   )
                                 ],
@@ -343,22 +341,21 @@ class ExerciseState extends State<Exercise> {
                         index == routinelist.length - 1
                             ? Container()
                             : Container(
-                          alignment: Alignment.center,
-                          height: 1,
-                          color: Color(0xFF212121),
-                          child: Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.symmetric(horizontal: 10),
-                            height: 1,
-                            color: Color(0xFF717171),
-                          ),
-                        )
+                                alignment: Alignment.center,
+                                height: 1,
+                                color: Color(0xFF212121),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.symmetric(horizontal: 10),
+                                  height: 1,
+                                  color: Color(0xFF717171),
+                                ),
+                              )
                       ],
                     ),
                   ),
                 );
               },
-
               itemCount: routinelist.length);
         }),
       ),
@@ -369,18 +366,21 @@ class ExerciseState extends State<Exercise> {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
-            color: Color.fromRGBO(246, 58, 64, 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: Theme.of(context).primaryColor,
             textColor: Colors.white,
             disabledColor: Color.fromRGBO(246, 58, 64, 20),
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
-            splashColor: Colors.blueAccent,
+            splashColor: Theme.of(context).primaryColor,
             onPressed: () {
               _workoutdataProvider.removeroutineAt(rindex);
               _editWorkoutCheck();
               Navigator.of(context, rootNavigator: true).pop();
             },
-            child: Text("Confirm",
+            child: Text("삭제",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
@@ -413,7 +413,7 @@ class ExerciseState extends State<Exercise> {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
-                    color: Color(0xFF212121),
+                    color: Theme.of(_context).cardColor,
                     borderRadius: BorderRadius.only(
                         topRight: Radius.circular(top),
                         bottomRight: Radius.circular(bottom),
@@ -454,7 +454,7 @@ class ExerciseState extends State<Exercise> {
             return Container(
               alignment: Alignment.center,
               height: 1,
-              color: Color(0xFF212121),
+              color: Theme.of(_context).cardColor,
               child: Container(
                 alignment: Alignment.center,
                 margin: EdgeInsets.symmetric(horizontal: 10),
@@ -529,7 +529,7 @@ class ExerciseState extends State<Exercise> {
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 20),
                       decoration: BoxDecoration(
-                          color: Color(0xFF212121),
+                          color: Theme.of(_context).cardColor,
                           borderRadius: BorderRadius.only(
                               topRight: Radius.circular(top),
                               bottomRight: Radius.circular(bottom),
@@ -611,54 +611,93 @@ class ExerciseState extends State<Exercise> {
               MaterialState.pressed,
             };
             if (states.any(interactiveStates.contains)) {
-              return Colors.blue;
+              return Theme.of(context).primaryColor;
             }
             return Colors.black26;
           }
 
-          return AlertDialog(
-            title: Text('추가할 루틴이름을 입력하세요',style: TextStyle(fontWeight: FontWeight.bold),),
-            content: Container(
-              height: 120,
-              child: Column(
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              buttonPadding: EdgeInsets.all(12.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              backgroundColor: Theme.of(context).cardColor,
+              contentPadding: EdgeInsets.all(12.0),
+              title: Text(
+                '운동 루틴을 추가 해볼게요',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
+                  Text('운동 루틴의 이름을 입력해 주세요',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 16)),
+                  Text('외부를 터치하면 취소 할 수 있어요',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.grey, fontSize: 12)),
+                  SizedBox(height: 20),
                   TextField(
-                    onChanged: (value) {},
+                    onChanged: (value) {
+                      setState(() {
+                        null;
+                      });
+                    },
+                    style: TextStyle(fontSize: 24.0, color: Colors.white),
+                    textAlign: TextAlign.center,
                     controller: _workoutNameCtrl,
-                    decoration: InputDecoration(hintText: "Type Routine Name"),
+                    decoration: InputDecoration(
+                        filled: true,
+                        enabledBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).primaryColor, width: 3),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).primaryColor, width: 3),
+                        ),
+                        hintText: "운동 루틴 이름",
+                        hintStyle:
+                            TextStyle(fontSize: 24.0, color: Colors.white)),
                   ),
                   Container(
-                    height: 60,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-
-                        Text('운동 Program 모드', style: TextStyle(fontWeight: FontWeight.bold),),
+                        Text(
+                          'Program 모드',
+                          style: TextStyle(fontSize: 12.0, color: Colors.white),
+                        ),
                         Transform.scale(
                             scale: 1,
                             child: Consumer<RoutineMenuStater>(
                                 builder: (builder, provider, child) {
-                                  return Checkbox(
+                              return Theme(
+                                  data: ThemeData(
+                                      unselectedWidgetColor: Colors.white),
+                                  child: Checkbox(
                                       checkColor: Colors.white,
-                                      activeColor: Colors.grey,
+                                      activeColor:
+                                          Theme.of(context).primaryColor,
                                       value: provider.ismodechecked,
                                       onChanged: (newvalue) {
                                         provider.modecheck();
-                                      });
-                                })
-
-                        ),
+                                      }));
+                            })),
                       ],
                     ),
                   ),
                 ],
               ),
-            ),
-            actions: <Widget>[
-              _workoutSubmitButton(context),
-            ],
-          );
-
+              actions: <Widget>[
+                _workoutSubmitButton(context),
+              ],
+            );
+          });
         });
   }
 
@@ -666,25 +705,34 @@ class ExerciseState extends State<Exercise> {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
-            color: Color.fromRGBO(246, 58, 64, 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: _workoutNameCtrl.text == ""
+                ? Color(0xFF212121)
+                : Theme.of(context).primaryColor,
             textColor: Colors.white,
-            disabledColor: Color.fromRGBO(246, 58, 64, 20),
-            disabledTextColor: Colors.black,
-            padding: EdgeInsets.all(8.0),
-            splashColor: Colors.blueAccent,
+            disabledColor: Color(0xFF212121),
+            disabledTextColor: Colors.white,
+            padding: EdgeInsets.all(12.0),
+            splashColor: Theme.of(context).primaryColor,
             onPressed: () {
-              print(_RoutineMenuProvider.ismodechecked);
               _workoutdataProvider.addroutine(new Routinedatas(
                   name: _workoutNameCtrl.text,
-                  mode: _RoutineMenuProvider.ismodechecked ? 1 :0,
-                  exercises: _RoutineMenuProvider.ismodechecked ? [new Program(progress: 0, plans: [new Plans(exercises: [])])] : [],
+                  mode: _RoutineMenuProvider.ismodechecked ? 1 : 0,
+                  exercises: _RoutineMenuProvider.ismodechecked
+                      ? [
+                          new Program(
+                              progress: 0, plans: [new Plans(exercises: [])])
+                        ]
+                      : [],
                   routine_time: 0));
 
               _editWorkoutCheck();
               _workoutNameCtrl.clear();
               Navigator.of(context, rootNavigator: true).pop();
             },
-            child: Text("workout 이름 제출",
+            child: Text("운동 루틴 저장",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
@@ -717,33 +765,34 @@ class ExerciseState extends State<Exercise> {
     _workoutdataProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
-    _RoutineMenuProvider = Provider.of<RoutineMenuStater>(context, listen: false);
-    _PrefsProvider =
-        Provider.of<PrefsProvider>(context, listen: false);
+    _RoutineMenuProvider =
+        Provider.of<RoutineMenuStater>(context, listen: false);
+    _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
     _PrefsProvider.eachworkouttutor
         ? _PrefsProvider.stepone
-        ? [Future.delayed(Duration(milliseconds: 0)).then((value) {
-      Tutorial.showTutorial(context, itens);
-      _PrefsProvider.steponedone();
-    }),]
-        : null
+            ? [
+                Future.delayed(Duration(milliseconds: 0)).then((value) {
+                  Tutorial.showTutorial(context, itens);
+                  _PrefsProvider.steponedone();
+                }),
+              ]
+            : null
         : null;
 
     return Scaffold(
-          appBar: _appbarWidget(),
-          body: Consumer2<ExercisesdataProvider, WorkoutdataProvider>(
-              builder: (context, provider1, provider2, widget) {
-            if (provider2.workoutdata != null) {
-              return _bodyWidget();
-            }
-            return Container(
-              color: Colors.black,
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }),
+        appBar: _appbarWidget(),
+        body: Consumer2<ExercisesdataProvider, WorkoutdataProvider>(
+            builder: (context, provider1, provider2, widget) {
+          if (provider2.workoutdata != null) {
+            return _bodyWidget();
+          }
+          return Container(
+            color: Colors.black,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }),
         backgroundColor: Colors.black);
-
   }
 }

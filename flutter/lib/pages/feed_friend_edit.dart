@@ -178,7 +178,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
               ? Container()
               : Icon(
                   Icons.favorite,
-                  color: isLiked ? Colors.deepPurpleAccent : Colors.grey,
+                  color: isLiked ? Theme.of(context).primaryColor : Colors.grey,
                   size: buttonSize,
                 );
         },

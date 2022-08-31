@@ -85,7 +85,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
         MaterialState.pressed,
       };
       if (states.any(interactiveStates.contains)) {
-        return Colors.blue;
+        return Theme.of(context).primaryColor;
       }
       return Colors.white;
     }

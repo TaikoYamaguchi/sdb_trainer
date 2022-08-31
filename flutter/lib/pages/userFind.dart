@@ -173,7 +173,7 @@ class _UserFindPageState extends State<UserFindPage> {
             disabledColor: Color.fromRGBO(246, 58, 64, 20),
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
-            splashColor: Colors.blueAccent,
+            splashColor: Theme.of(context).primaryColor,
             onPressed: () => _isVerification == false
                 ? _phoneNumberCheck()
                 : _verficationCodeCheck(),

@@ -95,7 +95,7 @@ class _FeedCardState extends State<FeedCard> {
       color: Colors.black,
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
           child: Consumer2<HistorydataProvider, UserdataProvider>(
               builder: (builder, provider, provider2, child) {
             return _userdataProvider.userdata.dislike.contains(user.email)
@@ -106,7 +106,9 @@ class _FeedCardState extends State<FeedCard> {
                             style:
                                 TextStyle(color: Colors.grey, fontSize: 12.0))))
                 : Card(
-                    color: Color(0xFF717171),
+                    color: Theme.of(context).cardColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0)),
                     child: Column(
                       children: [
                         Padding(
@@ -125,15 +127,17 @@ class _FeedCardState extends State<FeedCard> {
                                                 .RIGHT_TO_LEFT));
                                   },
                                   child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       user.image == ""
                                           ? Icon(
                                               Icons.account_circle,
                                               color: Colors.grey,
-                                              size: 38.0,
+                                              size: 46.0,
                                             )
                                           : CircleAvatar(
-                                              radius: 18.0,
+                                              radius: 22.0,
                                               backgroundImage:
                                                   NetworkImage(user.image),
                                               backgroundColor:
@@ -152,13 +156,14 @@ class _FeedCardState extends State<FeedCard> {
                                   ),
                                 ),
                                 Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Padding(
                                       padding:
                                           const EdgeInsets.only(right: 4.0),
                                       child: Text(SDBdata.date.substring(2, 10),
                                           style: TextStyle(
-                                              fontSize: 18,
+                                              fontSize: 14,
                                               color: Colors.grey)),
                                     ),
                                     GestureDetector(
@@ -184,9 +189,14 @@ class _FeedCardState extends State<FeedCard> {
                                                                         4.0,
                                                                     vertical:
                                                                         0.0),
-                                                            leading: Icon(Icons
-                                                                .mode_edit),
-                                                            title: Text("코멘트")),
+                                                            leading: Icon(
+                                                                Icons.mode_edit,
+                                                                color: Colors
+                                                                    .white),
+                                                            title: Text("코멘트",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white))),
                                                         onTap: () {
                                                           _historyCommentCtrl =
                                                               TextEditingController(
@@ -207,10 +217,15 @@ class _FeedCardState extends State<FeedCard> {
                                                                         4.0,
                                                                     vertical:
                                                                         0.0),
-                                                            leading: Icon(Icons
-                                                                .add_photo_alternate),
-                                                            title:
-                                                                Text("사진추가")),
+                                                            leading: Icon(
+                                                                Icons
+                                                                    .add_photo_alternate,
+                                                                color: Colors
+                                                                    .white),
+                                                            title: Text("사진추가",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white))),
                                                         onTap: () {
                                                           _pickImg(SDBdata);
                                                         }),
@@ -222,10 +237,15 @@ class _FeedCardState extends State<FeedCard> {
                                                                         4.0,
                                                                     vertical:
                                                                         0.0),
-                                                            leading: Icon(Icons
-                                                                .no_photography),
-                                                            title:
-                                                                Text("사진삭제")),
+                                                            leading: Icon(
+                                                                Icons
+                                                                    .no_photography,
+                                                                color: Colors
+                                                                    .white),
+                                                            title: Text("사진삭제",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white))),
                                                         onTap: () {
                                                           if (SDBdata.image
                                                                   .length !=
@@ -245,22 +265,25 @@ class _FeedCardState extends State<FeedCard> {
                                                         }),
                                                     PopupMenuItem(
                                                         child: ListTile(
-                                                            contentPadding:
-                                                                EdgeInsets.symmetric(
-                                                                    horizontal:
-                                                                        4.0,
-                                                                    vertical:
-                                                                        0.0),
+                                                            contentPadding: EdgeInsets.symmetric(
+                                                                horizontal: 4.0,
+                                                                vertical: 0.0),
                                                             leading: SDBdata
                                                                     .isVisible
-                                                                ? Icon(Icons
-                                                                    .filter_list_off)
-                                                                : Icon(Icons
-                                                                    .filter_list),
-                                                            title: SDBdata
-                                                                    .isVisible
-                                                                ? Text("숨김")
-                                                                : Text("보임")),
+                                                                ? Icon(Icons.filter_list_off,
+                                                                    color: Colors
+                                                                        .white)
+                                                                : Icon(Icons.filter_list,
+                                                                    color: Colors
+                                                                        .white),
+                                                            title: SDBdata.isVisible
+                                                                ? Text("숨김",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white))
+                                                                : Text("보임",
+                                                                    style: TextStyle(
+                                                                        color: Colors.white))),
                                                         onTap: () {
                                                           if (SDBdata
                                                               .isVisible) {
@@ -308,9 +331,15 @@ class _FeedCardState extends State<FeedCard> {
                                                                         4.0,
                                                                     vertical:
                                                                         0.0),
-                                                            leading: Icon(Icons
-                                                                .remove_circle_outlined),
-                                                            title: Text("신고")),
+                                                            leading: Icon(
+                                                                Icons
+                                                                    .remove_circle_outlined,
+                                                                color: Colors
+                                                                    .white),
+                                                            title: Text("신고",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white))),
                                                         onTap: () {
                                                           _historyCommentCtrl =
                                                               TextEditingController(
@@ -331,6 +360,9 @@ class _FeedCardState extends State<FeedCard> {
                                 ),
                               ],
                             )),
+                        SDBdata.comment != ""
+                            ? _feedTextField(SDBdata.comment)
+                            : Container(),
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 0),
@@ -343,24 +375,24 @@ class _FeedCardState extends State<FeedCard> {
                                   child: Text(
                                     "운동",
                                     style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
+                                      color: Colors.grey,
+                                      fontSize: 14,
                                     ),
                                   )),
                               Container(
                                   width: 50,
                                   child: Text("sets",
                                       style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
+                                        color: Colors.grey,
+                                        fontSize: 14,
                                       ),
                                       textAlign: TextAlign.center)),
                               Container(
                                   width: 70,
                                   child: Text("1rm",
                                       style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
+                                        color: Colors.grey,
+                                        fontSize: 14,
                                       ),
                                       textAlign: TextAlign.center))
                             ],
@@ -387,32 +419,33 @@ class _FeedCardState extends State<FeedCard> {
                                   (BuildContext _context, int index) {
                                 return Container(
                                   alignment: Alignment.center,
-                                  height: 1,
+                                  height: 0,
                                   color: Colors.black,
                                   child: Container(
                                     alignment: Alignment.center,
-                                    height: 1,
+                                    height: 0,
                                     color: Color(0xFF717171),
                                   ),
                                 );
                               },
                               itemCount: SDBdata.exercises.length),
                         ),
-                        SDBdata.comment != ""
-                            ? _feedTextField(SDBdata.comment)
-                            : Container(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            SDBdata.isVisible == false
-                                ? Text("숨겨진 피드",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 14))
-                                : Container(),
-                            _feedPhotoButton(SDBdata),
-                            _feedLikeButton(SDBdata),
-                            _feedCommentButton(SDBdata)
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              right: 20.0, top: 15.0, bottom: 10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              SDBdata.isVisible == false
+                                  ? Text("숨겨진 피드",
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 14))
+                                  : Container(),
+                              _feedPhotoButton(SDBdata),
+                              _feedLikeButton(SDBdata),
+                              _feedCommentButton(SDBdata)
+                            ],
+                          ),
                         ),
                         _photoInfo["feedList"] == widget.feedListCtrl &&
                                 _photoInfo["feedVisible"] == true &&
@@ -636,8 +669,11 @@ class _FeedCardState extends State<FeedCard> {
                                   child: ListTile(
                                       contentPadding: EdgeInsets.symmetric(
                                           horizontal: 4.0, vertical: 0.0),
-                                      leading: Icon(Icons.delete),
-                                      title: Text("삭제"))),
+                                      leading: Icon(Icons.delete,
+                                          color: Colors.white),
+                                      title: Text("삭제",
+                                          style:
+                                              TextStyle(color: Colors.white)))),
                             ])
                       : showMenu(
                           context: context,
@@ -656,9 +692,12 @@ class _FeedCardState extends State<FeedCard> {
                                   child: ListTile(
                                       contentPadding: EdgeInsets.symmetric(
                                           horizontal: 4.0, vertical: 0.0),
-                                      leading:
-                                          Icon(Icons.remove_circle_outlined),
-                                      title: Text("신고"))),
+                                      leading: Icon(
+                                          Icons.remove_circle_outlined,
+                                          color: Colors.white),
+                                      title: Text("신고",
+                                          style:
+                                              TextStyle(color: Colors.white)))),
                             ]);
                 },
               )
@@ -670,17 +709,56 @@ class _FeedCardState extends State<FeedCard> {
     return showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            title: Text('코멘트를 입력해주세요'),
-            content: TextField(
-              onChanged: null,
-              controller: _historyCommentCtrl,
-              decoration: InputDecoration(hintText: "Text Field in Dialog"),
-            ),
-            actions: <Widget>[
-              _historyCommentSubmitButton(context, SDBdata),
-            ],
-          );
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              buttonPadding: EdgeInsets.all(12.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              backgroundColor: Theme.of(context).cardColor,
+              contentPadding: EdgeInsets.all(12.0),
+              title: Text('운동에 글을 남겨 보세요',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white, fontSize: 24)),
+              content: Column(mainAxisSize: MainAxisSize.min, children: [
+                Text('코멘트를 입력해 주세요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                Text('외부를 터치하면 취소 할 수 있어요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+                SizedBox(height: 20),
+                TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      null;
+                    });
+                  },
+                  style: TextStyle(fontSize: 16.0, color: Colors.white),
+                  textAlign: TextAlign.center,
+                  controller: _historyCommentCtrl,
+                  decoration: InputDecoration(
+                      filled: true,
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      hintText: "운동 글 남기기",
+                      hintStyle:
+                          TextStyle(fontSize: 16.0, color: Colors.white)),
+                ),
+              ]),
+              actions: <Widget>[
+                _historyCommentSubmitButton(context, SDBdata),
+              ],
+            );
+          });
         });
   }
 
@@ -688,25 +766,32 @@ class _FeedCardState extends State<FeedCard> {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
-            color: Color.fromRGBO(246, 58, 64, 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: _historyCommentCtrl.text == ""
+                ? Color(0xFF212121)
+                : Theme.of(context).primaryColor,
             textColor: Colors.white,
-            disabledColor: Color.fromRGBO(246, 58, 64, 20),
-            disabledTextColor: Colors.black,
-            padding: EdgeInsets.all(8.0),
-            splashColor: Colors.blueAccent,
+            disabledColor: Color(0xFF212121),
+            disabledTextColor: Colors.white,
+            padding: EdgeInsets.all(12.0),
+            splashColor: Theme.of(context).primaryColor,
             onPressed: () {
-              HistoryCommentEdit(
-                      history_id: SDBdata.id,
-                      user_email: _userdataProvider.userdata.email,
-                      comment: _historyCommentCtrl.text)
-                  .patchHistoryComment();
+              _historyCommentCtrl.text == ""
+                  ? null
+                  : HistoryCommentEdit(
+                          history_id: SDBdata.id,
+                          user_email: _userdataProvider.userdata.email,
+                          comment: _historyCommentCtrl.text)
+                      .patchHistoryComment();
               _historyProvider.patchHistoryCommentdata(
                   SDBdata, _historyCommentCtrl.text);
 
               _historyCommentCtrl.clear();
               Navigator.of(context, rootNavigator: true).pop();
             },
-            child: Text("comment 입력",
+            child: Text("글 남기기",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
@@ -718,7 +803,7 @@ class _FeedCardState extends State<FeedCard> {
           flex: 10,
           child: Padding(
             padding:
-                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             child: Text(text,
                 style: TextStyle(color: Colors.white, fontSize: 14.0)),
           ),
@@ -730,76 +815,82 @@ class _FeedCardState extends State<FeedCard> {
   Widget _feedCommentButton(SDBdata) {
     return Padding(
         padding: const EdgeInsets.all(4.0),
-        child: Row(
-          children: [
-            IconButton(
-                onPressed: () {
-                  setState(() {
-                    if (_commentInfo["feedList"] == widget.feedListCtrl) {
-                      if (_commentInfo["feedVisible"] == true) {
-                        _commentInfo = {
-                          "feedList": widget.feedListCtrl,
-                          "feedVisible": false
-                        };
-                      } else {
-                        _commentInfo = {
-                          "feedList": widget.feedListCtrl,
-                          "feedVisible": true
-                        };
-                      }
-                    } else {
-                      _commentInfo = {
-                        "feedList": widget.feedListCtrl,
-                        "feedVisible": true
-                      };
-                    }
-                  });
-                },
-                icon: Icon(Icons.message, color: Colors.white, size: 28.0)),
-            Text(_commentListbyId.length.toString(),
-                style: TextStyle(color: Colors.white, fontSize: 18.0))
-          ],
-        ));
+        child: GestureDetector(
+            onTap: () {
+              setState(() {
+                if (_commentInfo["feedList"] == widget.feedListCtrl) {
+                  if (_commentInfo["feedVisible"] == true) {
+                    _commentInfo = {
+                      "feedList": widget.feedListCtrl,
+                      "feedVisible": false
+                    };
+                  } else {
+                    _commentInfo = {
+                      "feedList": widget.feedListCtrl,
+                      "feedVisible": true
+                    };
+                  }
+                } else {
+                  _commentInfo = {
+                    "feedList": widget.feedListCtrl,
+                    "feedVisible": true
+                  };
+                }
+              });
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                    padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+                    child:
+                        Icon(Icons.message, color: Colors.white, size: 24.0)),
+                Text(_commentListbyId.length.toString(),
+                    style: TextStyle(color: Colors.white, fontSize: 16.0))
+              ],
+            )));
   }
 
   Widget _feedPhotoButton(SDBdata) {
     return Padding(
         padding: const EdgeInsets.fromLTRB(4.0, 4.0, 12.0, 4.0),
-        child: Row(
-          children: [
-            IconButton(
-                onPressed: () {
-                  setState(() {
-                    if (_photoInfo["feedList"] == widget.feedListCtrl) {
-                      if (_photoInfo["feedVisible"] == true) {
-                        _photoInfo = {
-                          "feedList": widget.feedListCtrl,
-                          "feedVisible": false
-                        };
-                      } else {
-                        _photoInfo = {
-                          "feedList": widget.feedListCtrl,
-                          "feedVisible": true
-                        };
-                      }
-                    } else {
-                      _photoInfo = {
-                        "feedList": widget.feedListCtrl,
-                        "feedVisible": true
-                      };
-                    }
-                  });
-                },
-                icon: Icon(Icons.camera_alt_rounded,
-                    color: Colors.white, size: 28.0)),
-            Text(SDBdata.image.length.toString(),
-                style: TextStyle(color: Colors.white, fontSize: 18.0))
-          ],
-        ));
+        child: GestureDetector(
+            onTap: () {
+              setState(() {
+                if (_photoInfo["feedList"] == widget.feedListCtrl) {
+                  if (_photoInfo["feedVisible"] == true) {
+                    _photoInfo = {
+                      "feedList": widget.feedListCtrl,
+                      "feedVisible": false
+                    };
+                  } else {
+                    _photoInfo = {
+                      "feedList": widget.feedListCtrl,
+                      "feedVisible": true
+                    };
+                  }
+                } else {
+                  _photoInfo = {
+                    "feedList": widget.feedListCtrl,
+                    "feedVisible": true
+                  };
+                }
+              });
+            },
+            child: Row(
+              children: [
+                Padding(
+                    padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+                    child: Icon(Icons.camera_alt_rounded,
+                        color: Colors.white, size: 24.0)),
+                Text(SDBdata.image.length.toString(),
+                    style: TextStyle(color: Colors.white, fontSize: 16.0))
+              ],
+            )));
   }
 
   Widget _feedLikeButton(SDBdata) {
-    var buttonSize = 28.0;
+    var buttonSize = 24.0;
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: LikeButton(
@@ -816,7 +907,7 @@ class _FeedCardState extends State<FeedCard> {
             padding: const EdgeInsets.only(right: 4.0),
             child: Icon(
               Icons.favorite,
-              color: isLiked ? Colors.deepPurpleAccent : Colors.white,
+              color: isLiked ? Theme.of(context).primaryColor : Colors.white,
               size: buttonSize,
             ),
           );
@@ -826,17 +917,18 @@ class _FeedCardState extends State<FeedCard> {
         },
         likeCount: SDBdata.like.length,
         countBuilder: (int? count, bool isLiked, String text) {
-          var color = isLiked ? Colors.deepPurpleAccent : Colors.white;
+          var color = isLiked ? Theme.of(context).primaryColor : Colors.white;
           Widget result;
           if (count == 0) {
             result = Text(
               text,
-              style: TextStyle(color: color, fontSize: 18.0),
+              style: TextStyle(color: color, fontSize: 16.0),
             );
           } else
             result = Text(
               text,
-              style: TextStyle(color: color, fontSize: 18.0),
+              style: TextStyle(
+                  color: color, fontSize: 16.0, fontWeight: FontWeight.bold),
             );
           return result;
         },
@@ -877,39 +969,31 @@ class _FeedCardState extends State<FeedCard> {
   }
 
   Widget _onDisLikeButtonTapped(email) {
-    return Container(
-      margin: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width / 25),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SizedBox(
-              width: MediaQuery.of(context).size.width / 4,
-              child: TextButton(
-                  onPressed: () {
-                    Navigator.of(context, rootNavigator: true).pop();
-                  },
-                  child: Text("Cancel",
-                      style: TextStyle(fontSize: 20.0, color: Colors.red)))),
-          SizedBox(
-              width: MediaQuery.of(context).size.width / 4,
-              child: TextButton(
-                  onPressed: () {
-                    var user = UserLike(
-                            liked_email: email,
-                            user_email: _userdataProvider.userdata.email,
-                            status: "append",
-                            disorlike: "dislike")
-                        .patchUserLike();
-                    _userdataProvider.patchUserDislikedata(email, "append");
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: Theme.of(context).primaryColor,
+            textColor: Colors.white,
+            disabledColor: Color.fromRGBO(246, 58, 64, 20),
+            disabledTextColor: Colors.black,
+            padding: EdgeInsets.all(8.0),
+            splashColor: Theme.of(context).primaryColor,
+            onPressed: () {
+              var user = UserLike(
+                      liked_email: email,
+                      user_email: _userdataProvider.userdata.email,
+                      status: "append",
+                      disorlike: "dislike")
+                  .patchUserLike();
+              _userdataProvider.patchUserDislikedata(email, "append");
 
-                    Navigator.of(context, rootNavigator: true).pop();
-                  },
-                  child: Text("Confirm",
-                      style: TextStyle(fontSize: 20.0, color: Colors.blue)))),
-        ],
-      ),
-    );
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            child: Text("차단하기",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
   void _displayDislikeAlert(email) {
@@ -917,20 +1001,23 @@ class _FeedCardState extends State<FeedCard> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text(
-              '친구 차단',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
             ),
+            backgroundColor: Theme.of(context).cardColor,
+            title: Text('사용자를 차단 할 수 있어요',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 24)),
             content: Container(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(height: 30, child: Text('피드와 댓글을 모두 차단하실 수 있어요')),
-                  SizedBox(
-                    height: 20,
-                    child: Text('친구 관리에서 다시 차단 해제 할 수 있어요',
-                        style: TextStyle(color: Colors.grey, fontSize: 12)),
+                  Text('피드와 댓글을 모두 차단 할 수 있어요',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 16)),
+                  Text(
+                    '친구 관리에서 다시 차단 해제 할 수 있어요',
+                    style: TextStyle(color: Colors.grey, fontSize: 12),
                   )
                 ],
               ),

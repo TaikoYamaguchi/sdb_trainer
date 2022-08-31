@@ -25,10 +25,10 @@ class RoutineTimeProvider extends ChangeNotifier {
   Color get restbuttoncolor => _restbuttoncolor;
   String _routineButton = 'Start Workout';
   String get routineButton => _routineButton;
-  Color _buttoncolor = Color(0xFF2196F3);
+  Color _buttoncolor = const Color(0xff7a28cb);
   Color get buttoncolor => _buttoncolor;
-  DateTime _starttime = DateTime(2022,08,06,10,30);
-  DateTime _timerstarttime = DateTime(2022,08,06,10,30);
+  DateTime _starttime = DateTime(2022, 08, 06, 10, 30);
+  DateTime _timerstarttime = DateTime(2022, 08, 06, 10, 30);
 
   getinfo() {
     notifyListeners();
@@ -36,8 +36,16 @@ class RoutineTimeProvider extends ChangeNotifier {
 
   restcheck() {
     _userest
-    ? [_userest = !_userest, restbutton = 'Rest Timer off',_restbuttoncolor = Color(0xFF717171)]
-    : [_userest = !_userest, restbutton = 'Rest Timer on',_restbuttoncolor = Colors.white];
+        ? [
+            _userest = !_userest,
+            restbutton = 'Rest Timer off',
+            _restbuttoncolor = Color(0xFF717171)
+          ]
+        : [
+            _userest = !_userest,
+            restbutton = 'Rest Timer on',
+            _restbuttoncolor = Colors.white
+          ];
 
     notifyListeners();
   }
@@ -45,33 +53,28 @@ class RoutineTimeProvider extends ChangeNotifier {
   resttimecheck(resttime) {
     _changetime = resttime;
     notifyListeners();
-
   }
-
 
   resettimer(resttime) {
     _timeron = resttime;
     _timetosubstract = resttime;
     _timerstarttime = DateTime.now();
     notifyListeners();
-
   }
 
   getstarttime() {
     _starttime = DateTime.now();
-
   }
 
-
-  void routinecheck(rindex){
+  void routinecheck(rindex) {
     getstarttime();
-    if(_isstarted==false)
-    {
+    if (_isstarted == false) {
       int counter = 10001;
-      timer1  = Timer.periodic(Duration(seconds: 1), (timer){
-        _routineTime=DateTime.now().difference(_starttime).inSeconds;
-        _timeron=_timetosubstract-DateTime.now().difference(_timerstarttime).inSeconds;
-        if(_timeron == 0 && _userest) {
+      timer1 = Timer.periodic(Duration(seconds: 1), (timer) {
+        _routineTime = DateTime.now().difference(_starttime).inSeconds;
+        _timeron = _timetosubstract -
+            DateTime.now().difference(_timerstarttime).inSeconds;
+        if (_timeron == 0 && _userest) {
           Vibration.vibrate(duration: 1000);
         }
         counter--;
@@ -79,25 +82,22 @@ class RoutineTimeProvider extends ChangeNotifier {
         if (counter == 0) {
           print('cancel timer');
           timer.cancel();
-          _routineTime=0;
+          _routineTime = 0;
         }
       });
-      _routineButton = 'Finish Workout';
-      _buttoncolor = Color(0xFF9C27B0);
+      _routineButton = '운동 종료 하기';
+      _buttoncolor = Color(0xFffc60a8);
       _isstarted = !_isstarted;
       _nowonrindex = rindex;
       notifyListeners();
-    }
-    else{
+    } else {
       timer1!.cancel();
-      _routineTime=0;
+      _routineTime = 0;
       _timeron = 0;
-      _routineButton = 'Start Workout';
-      _buttoncolor = Color(0xFF2196F3);
+      _routineButton = '운동 시작 하기';
+      _buttoncolor = const Color(0xff7a28cb);
       _isstarted = !_isstarted;
       notifyListeners();
     }
   }
-
-
 }

@@ -190,7 +190,8 @@ class _CalendarState extends State<Calendar> {
             children: <Widget>[
               IconButton(
                 icon: _isChartWidget.isChartWidget
-                    ? SvgPicture.asset("assets/svg/chart_statics_on.svg")
+                    ? SvgPicture.asset("assets/svg/chart_statics_on.svg",
+                        color: Theme.of(context).primaryColor)
                     : SvgPicture.asset("assets/svg/chart_statics_off.svg"),
                 onPressed: () {
                   _chartIndex.changePageController(0);
@@ -201,7 +202,8 @@ class _CalendarState extends State<Calendar> {
               IconButton(
                 icon: _isChartWidget.isChartWidget
                     ? SvgPicture.asset("assets/svg/calendar_statics_off.svg")
-                    : SvgPicture.asset("assets/svg/calendar_statics_on.svg"),
+                    : SvgPicture.asset("assets/svg/calendar_statics_on.svg",
+                        color: Theme.of(context).primaryColor),
                 onPressed: () {
                   _chartIndex.changePageController(1);
                   _isChartWidget.change(false);
@@ -248,7 +250,7 @@ class _CalendarState extends State<Calendar> {
           calendarStyle: CalendarStyle(
             isTodayHighlighted: true,
             selectedDecoration: BoxDecoration(
-              color: Colors.blue,
+              color: Theme.of(context).primaryColor,
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(5.0),
             ),
@@ -259,8 +261,7 @@ class _CalendarState extends State<Calendar> {
             markerDecoration:
                 BoxDecoration(color: Colors.white, shape: BoxShape.circle),
             selectedTextStyle: const TextStyle(
-              color: Colors.white,
-            ),
+                color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
             defaultTextStyle: const TextStyle(color: Colors.white),
             withinRangeTextStyle: TextStyle(color: Colors.white),
             weekendTextStyle: TextStyle(color: Colors.white),
@@ -268,7 +269,7 @@ class _CalendarState extends State<Calendar> {
                 TextStyle(color: Color.fromRGBO(113, 113, 113, 100)),
             todayDecoration: BoxDecoration(
               shape: BoxShape.rectangle,
-              color: Colors.green[600],
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(5.0),
             ),
             defaultDecoration: BoxDecoration(
@@ -369,7 +370,7 @@ class _CalendarState extends State<Calendar> {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
-                  color: Color(0xFF212121),
+                  color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.only(
                       topRight: Radius.circular(top),
                       bottomRight: Radius.circular(bottom),
@@ -449,8 +450,10 @@ class _CalendarState extends State<Calendar> {
                               child: ListTile(
                                   contentPadding: EdgeInsets.symmetric(
                                       horizontal: 4.0, vertical: 0.0),
-                                  leading: Icon(Icons.delete),
-                                  title: Text("삭제"))),
+                                  leading:
+                                      Icon(Icons.delete, color: Colors.white),
+                                  title: Text("삭제",
+                                      style: TextStyle(color: Colors.white)))),
                         ]);
                   },
                 ),
@@ -485,7 +488,7 @@ class _CalendarState extends State<Calendar> {
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     decoration: BoxDecoration(
-                        color: Color(0xFF212121),
+                        color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.only(
                             topRight: Radius.circular(top),
                             bottomRight: Radius.circular(bottom),
@@ -562,7 +565,7 @@ class _CalendarState extends State<Calendar> {
                             "Set",
                             style: TextStyle(
                               fontSize: 14,
-                              color: Colors.white,
+                              color: Colors.grey,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.center,
@@ -576,7 +579,7 @@ class _CalendarState extends State<Calendar> {
                       child: Text(
                         "Weight(${_userdataProvider.userdata.weight_unit})",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.grey,
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
@@ -588,7 +591,7 @@ class _CalendarState extends State<Calendar> {
                       child: Text(
                         "Reps",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.grey,
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
@@ -599,7 +602,7 @@ class _CalendarState extends State<Calendar> {
                       child: Text(
                         "1RM",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.grey,
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
@@ -737,10 +740,10 @@ class _CalendarState extends State<Calendar> {
                 LineSeries<Exercises, DateTime>(
                     isVisibleInLegend: true,
                     markerSettings: MarkerSettings(
-                        isVisible: true, color: Colors.blue[600]),
+                        isVisible: true, color: Theme.of(context).primaryColor),
                     name: "1rm",
                     width: 3,
-                    color: Colors.blue[600],
+                    color: Theme.of(context).primaryColor,
                     dataLabelSettings: DataLabelSettings(
                         showZeroValue: false,
                         isVisible: true,
@@ -753,7 +756,7 @@ class _CalendarState extends State<Calendar> {
 
                 LineSeries<Exercises, DateTime>(
                     isVisibleInLegend: true,
-                    color: Colors.orange,
+                    color: Theme.of(context).cardColor,
                     name: "goal",
                     width: 2,
                     dataSource: _sdbChartData!,
@@ -779,9 +782,10 @@ class _CalendarState extends State<Calendar> {
           child: ChoiceChip(
             label:
                 Text(_exercisesdataProvider.exercisesdata!.exercises[i].name),
-            labelStyle: TextStyle(color: Colors.black),
+            labelStyle: TextStyle(color: Colors.white),
             selected: _chartIndex.chartIndex == i,
-            selectedColor: Colors.deepOrange,
+            selectedColor: Theme.of(context).primaryColor,
+            backgroundColor: Theme.of(context).cardColor,
             onSelected: (bool value) {
               _chartIndex.change(i);
               _getChartSourcefromDay();
@@ -805,8 +809,24 @@ class _CalendarState extends State<Calendar> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('운동을 지우시겠습니까?'),
-            content: Text('정말로 운동을 지우시나요?'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            backgroundColor: Theme.of(context).cardColor,
+            title: Text('운동을 삭제 할 수 있어요',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 24)),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('정말로 운동을 지우시나요?',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                Text('외부를 터치하면 취소 할 수 있어요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+              ],
+            ),
             actions: <Widget>[
               _deleteConfirmButton(history_id),
             ],
@@ -819,18 +839,21 @@ class _CalendarState extends State<Calendar> {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
-            color: Color.fromRGBO(246, 58, 64, 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: Theme.of(context).primaryColor,
             textColor: Colors.white,
             disabledColor: Color.fromRGBO(246, 58, 64, 20),
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
-            splashColor: Colors.blueAccent,
+            splashColor: Theme.of(context).primaryColor,
             onPressed: () {
               _historydataProvider.deleteHistorydata(history_id);
               HistoryDelete(history_id: history_id).deleteHistory();
               Navigator.of(context, rootNavigator: true).pop();
             },
-            child: Text("Confirm",
+            child: Text("삭제",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
