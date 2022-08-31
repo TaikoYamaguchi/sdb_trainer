@@ -11,7 +11,7 @@ from . import models, schemas
 
 def create_famous(db: Session, famous: schemas.FamousCreate):
     db_famous = models.Famous(
-        type=famous.type
+        type=famous.type,
         user_email=famous.user_email,
         image=famous.image,
         routinedata = famous.routinedata,
