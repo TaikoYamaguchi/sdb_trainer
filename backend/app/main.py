@@ -13,6 +13,7 @@ from app.api.api_v1.routers.comment import comment_router
 from app.api.api_v1.routers.videos import videos_router
 from app.api.api_v1.routers.images import images_router
 from app.api.api_v1.routers.version import version_router
+from app.api.api_v1.routers.famous import famous_router
 from app.core import config
 from app.db.session import SessionLocal
 from app.core.auth import get_current_active_user
@@ -61,7 +62,7 @@ app.include_router(comment_router, prefix="/api", tags=["comment"])
 app.include_router(videos_router, prefix="/api", tags=["videos"])
 app.include_router(images_router, prefix="/api", tags=["images"])
 app.include_router(version_router, prefix="/api", tags=["version"])
-app.include_router(version_router, prefix="/api", tags=["famous"])
+app.include_router(famous_router, prefix="/api", tags=["famous"])
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", reload=True, port=8888)
