@@ -187,7 +187,7 @@ class ExerciseState extends State<Exercise> {
             ),
           ),
           Consumer<RoutineMenuStater>(builder: (builder, provider, child) {
-            return _routinemenuPage(provider.menustate);
+            return _routinemenuPage();
           }),
         ],
       ),
@@ -216,10 +216,14 @@ class ExerciseState extends State<Exercise> {
         });
   }
 
-  Widget _routinemenuPage(menu) {
+  Widget _routinemenuPage() {
+
     controller = PageController(initialPage: 0);
     return Expanded(
       child: PageView(
+        onPageChanged: (value){
+          _RoutineMenuProvider.change(value);
+        },
         controller: controller,
         children: [
           _MyWorkout(),
@@ -778,6 +782,7 @@ class ExerciseState extends State<Exercise> {
               ]
             : null
         : null;
+
 
     return Scaffold(
         appBar: _appbarWidget(),
