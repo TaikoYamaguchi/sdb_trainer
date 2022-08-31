@@ -238,9 +238,9 @@ class VersionOut(BaseModel):
     version_num:str
 
 class FamousBase(BaseModel):
-    user_email: str
     id: int
     type: int
+    user_email: str
     image: str = ""
     routinedata: t.Any
     class Config:

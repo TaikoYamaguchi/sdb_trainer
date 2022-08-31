@@ -14,7 +14,6 @@ def create_famous(db: Session, famous: schemas.FamousCreate):
         type=famous.type
         user_email=famous.user_email,
         image=famous.image,
-        name=famous.name,
         routinedata = famous.routinedata,
         date = datetime.datetime.utcnow()+datetime.timedelta(hours=9),
     )
