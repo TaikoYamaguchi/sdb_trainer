@@ -7,16 +7,16 @@ import 'package:sdb_trainer/localhost.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class RoutineRepository {
-  static Future<String> _loadRoutinedataFromLocation() async {
+class FamousRepository {
+  static Future<String> _loadFamousdataFromLocation() async {
     return await rootBundle.loadString('assets/json/workout.json');
   }
 
-  static Future<String> _loadRoutinedataFromServer() async {
+  static Future<String> _loadFamousdataFromServer() async {
     final storage = new FlutterSecureStorage();
     String? user_email = await storage.read(key: "sdb_email");
     var url =
-        Uri.parse(LocalHost.getLocalHost() + "/api/workout/" + user_email!);
+    Uri.parse(LocalHost.getLocalHost() + "/api/workout/" + user_email!);
     var response = await http.get(url);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
@@ -27,28 +27,27 @@ class RoutineRepository {
     }
   }
 
-  static Future<Routinedata> loadRoutinedata() async {
-    String jsonString = await _loadRoutinedataFromServer();
+  static Future<Program> loadFamousdata() async {
+    String jsonString = await _loadFamousdataFromServer();
     final jsonResponse = json.decode(jsonString);
-    Routinedata routinedata = Routinedata.fromJson(jsonResponse);
-    return (routinedata);
+    Program famousdata = Program.fromJson(jsonResponse);
+    return (famousdata);
   }
 }
 
-class WorkoutPost {
+class ProgramPost {
   final String user_email;
-  final List<Routinedatas> routinedatas;
-  WorkoutPost({
+  final Program program;
+  ProgramPost({
     required this.user_email,
-    required this.routinedatas,
+    required this.program,
   });
-  Future<String> _workoutPostFromServer() async {
+  Future<String> _programPostFromServer() async {
     var formData = new Map<String, dynamic>();
     formData["user_email"] = user_email;
-    formData["id"] = 0;
-    formData["routinedatas"] = jsonEncode(routinedatas);
+    formData["program"] = jsonEncode(program);
 
-    var url = Uri.parse(LocalHost.getLocalHost() + "/api/workoutcreate");
+    var url = Uri.parse(LocalHost.getLocalHost() + "/api/famouscreate");
     var response = await http.post(url, body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
@@ -63,7 +62,7 @@ class WorkoutPost {
   }
 
   Future<Map<String, dynamic>> postWorkout() async {
-    String jsonString = await _workoutPostFromServer();
+    String jsonString = await _programPostFromServer();
     final jsonResponse = json.decode(jsonString);
     return (jsonResponse);
   }
@@ -72,17 +71,17 @@ class WorkoutPost {
 class WorkoutEdit {
   final String user_email;
   final int id;
-  final List<Routinedatas> routinedatas;
+  final List<Routinedatas> famousdatas;
   WorkoutEdit({
     required this.user_email,
     required this.id,
-    required this.routinedatas,
+    required this.famousdatas,
   });
   Future<String> _workoutEditFromServer() async {
     var formData = new Map<String, dynamic>();
     formData["user_email"] = user_email;
     formData["id"] = id;
-    formData["routinedatas"] = jsonEncode(routinedatas);
+    formData["famousdatas"] = jsonEncode(famousdatas);
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/workout");
     var response = await http.put(url, body: json.encode(formData));
@@ -112,7 +111,7 @@ class WorkoutDelete {
   });
   Future<String> _workoutDeleteFromServer() async {
     var url =
-        Uri.parse(LocalHost.getLocalHost() + "/api/workout/" + id.toString());
+    Uri.parse(LocalHost.getLocalHost() + "/api/workout/" + id.toString());
     var response = await http.delete(url);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
