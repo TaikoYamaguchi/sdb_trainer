@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:sdb_trainer/localhost.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:dio/dio.dart';
 
 class FamousRepository {
   static Future<String> _loadFamousdataFromLocation() async {
@@ -27,25 +28,31 @@ class FamousRepository {
     }
   }
 
-  static Future<Program> loadFamousdata() async {
+  static Future<ProgramList> loadFamousdata() async {
     String jsonString = await _loadFamousdataFromServer();
     final jsonResponse = json.decode(jsonString);
-    Program famousdata = Program.fromJson(jsonResponse);
+    ProgramList famousdata = ProgramList.fromJson(jsonResponse);
     return (famousdata);
   }
 }
 
 class ProgramPost {
   final String user_email;
-  final Program program;
+  final int type;
+  final String image;
+  final Routinedatas routinedatas;
   ProgramPost({
     required this.user_email,
-    required this.program,
+    required this.type,
+    required this.image,
+    required this.routinedatas,
   });
   Future<String> _programPostFromServer() async {
     var formData = new Map<String, dynamic>();
     formData["user_email"] = user_email;
-    formData["program"] = jsonEncode(program);
+    formData["type"] = type;
+    formData["image"] = image;
+    formData["routinedatas"] = jsonEncode(routinedatas);
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/famouscreate");
     var response = await http.post(url, body: json.encode(formData));
@@ -61,7 +68,7 @@ class ProgramPost {
     }
   }
 
-  Future<Map<String, dynamic>> postWorkout() async {
+  Future<Map<String, dynamic>> postProgram() async {
     String jsonString = await _programPostFromServer();
     final jsonResponse = json.decode(jsonString);
     return (jsonResponse);
@@ -131,3 +138,42 @@ class WorkoutDelete {
     return (jsonResponse);
   }
 }
+
+class FamousImageEdit {
+  final int famous_id;
+  final dynamic file;
+  FamousImageEdit({required this.famous_id, required this.file});
+  Future<Map<String, dynamic>> _patchFamousImageFromServer() async {
+    final storage = new FlutterSecureStorage();
+    String? token = await storage.read(key: "sdb_token");
+    var formData =
+    FormData.fromMap({'file': await MultipartFile.fromFile(file)});
+    var dio = new Dio();
+    try {
+      dio.options.contentType = 'multipart/form-data';
+      dio.options.maxRedirects.isFinite;
+      dio.options.headers["Authorization"] = "Bearer " + token!;
+
+      var response = await dio.post(
+        LocalHost.getLocalHost() + '/api/temp/famousimages/${famous_id}',
+        data: formData,
+      );
+      print(response);
+      return response.data;
+    } catch (e) {
+      print(e);
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<Routinedatas?> patchFamousImage() async {
+    var jsonString = await _patchFamousImageFromServer();
+    if (jsonString == null) {
+      return null;
+    } else {
+      Routinedatas user = Routinedatas.fromJson(jsonString);
+      return (user);
+    }
+  }
+}
+

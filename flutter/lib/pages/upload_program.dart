@@ -3,9 +3,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/repository/famous_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
+import 'package:sdb_trainer/src/model/workoutdata.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/userProfileNickname.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
@@ -18,14 +20,10 @@ import 'dart:io';
 import 'dart:async';
 
 class ProgramUpload extends StatefulWidget {
-  List<hisdata.Exercises> exerciseList = [];
-  final int routinetime;
-  final hisdata.SDBdata sdbdata;
+  Routinedatas program;
   ProgramUpload(
       {Key? key,
-        required this.exerciseList,
-        required this.routinetime,
-        required this.sdbdata})
+        required this.program,})
       : super(key: key);
 
   @override
@@ -38,7 +36,8 @@ class _ProgramUploadState extends State<ProgramUpload> {
   var _workoutdataProvider;
   var _routinetimeProvider;
   var _btnDisabled;
-  TextEditingController _exerciseCommentCtrl = TextEditingController(text: "");
+  TextEditingController _famousimageCtrl = TextEditingController(text: "");
+  TextEditingController _programtitleCtrl = TextEditingController(text: "");
   File? _image;
   final ImagePicker _picker = ImagePicker();
   var _selectImage;
@@ -78,32 +77,32 @@ class _ProgramUploadState extends State<ProgramUpload> {
               ? null
               : [
             _btnDisabled = true,
-            Navigator.of(context).popUntil((route) => route.isFirst)
+            Navigator.of(context).pop(),
           ];
         },
       ),
       title: Text(
-        "운동 기록",
-        style: TextStyle(color: Colors.white, fontSize: 30),
+        "나의 Program 공유",
+        style: TextStyle(color: Colors.white, fontSize: 30, ),
       ),
       backgroundColor: Colors.black,
     );
   }
 
   Widget _exerciseDoneWidget() {
-    var time_hour = 0;
-    var time_min = 0;
-    var time_sec = 0;
-    if (widget.routinetime ~/ 3600 > 0) {
-      time_hour = widget.routinetime ~/ 3600;
-    } else if (widget.routinetime ~/ 60 > 0) {
-      time_min = widget.routinetime ~/ 60;
-    } else if (widget.routinetime > 0) {
-      time_sec = widget.routinetime % 60;
-    }
     return Container(
         child: SingleChildScrollView(
           child: Column(children: [
+            Container(
+              padding: const EdgeInsets.all(12.0),
+              alignment: Alignment.centerLeft,
+              child: Text("Program 이름",
+                  style: TextStyle(fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold)),
+            ),
+            _commentWidget(),
+            Container(
+              height: 10,
+            ),
             Container(
               height: 150,
               child: Padding(
@@ -120,19 +119,14 @@ class _ProgramUploadState extends State<ProgramUpload> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(
-                              width: 60,
+                              width: 120,
                               child: Center(
                                   child: Icon(Icons.fitness_center,
                                       color: Colors.white, size: 40)),
                             ),
+
                             SizedBox(
-                              width: 120,
-                              child: Center(
-                                  child: Icon(Icons.access_time,
-                                      color: Colors.white, size: 40)),
-                            ),
-                            SizedBox(
-                                width: 60,
+                                width: 120,
                                 child: Center(
                                     child: Icon(Icons.celebration,
                                         color: Colors.white, size: 40))),
@@ -142,19 +136,14 @@ class _ProgramUploadState extends State<ProgramUpload> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(
-                                width: 60,
-                                child: Center(
-                                  child: Text("운동 갯수",
-                                      style: TextStyle(color: Colors.white)),
-                                )),
-                            SizedBox(
                                 width: 120,
                                 child: Center(
-                                  child: Text("운동 시간",
+                                  child: Text("Program 기간",
                                       style: TextStyle(color: Colors.white)),
                                 )),
+
                             SizedBox(
-                                width: 60,
+                                width: 120,
                                 child: Center(
                                   child: Text("신기록",
                                       style: TextStyle(color: Colors.white)),
@@ -165,22 +154,15 @@ class _ProgramUploadState extends State<ProgramUpload> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(
-                              width: 60,
-                              child: Center(
-                                child: Text(widget.exerciseList.length.toString(),
-                                    style: TextStyle(color: Colors.white)),
-                              ),
-                            ),
-                            SizedBox(
                               width: 120,
                               child: Center(
-                                child: Text(
-                                    "${time_hour}시 ${time_min}분 ${time_sec}초",
+                                child: Text('${widget.program.exercises[0].plans.length.toString()}days',
                                     style: TextStyle(color: Colors.white)),
                               ),
                             ),
+
                             SizedBox(
-                                width: 60,
+                                width: 120,
                                 child: Center(
                                     child: Text("0",
                                         style: TextStyle(color: Colors.white)))),
@@ -214,7 +196,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
                 ),
               ),
             ),
-            _commentWidget(),
+
             _exercise_Done_Button()
           ]),
         ));
@@ -313,27 +295,17 @@ class _ProgramUploadState extends State<ProgramUpload> {
               padding: EdgeInsets.all(8.0),
               splashColor: Theme.of(context).primaryColor,
               onPressed: () {
-                if (_selectImage != null) {
-                  HistoryImageEdit(
-                      history_id: widget.sdbdata.id,
-                      file: _selectImage.path)
-                      .patchHistoryImage()
-                      .then((data) => {
-                    _historydataProvider.getdata(),
-                    _historydataProvider.getHistorydataAll()
-                  });
-                }
-                ;
-                if (_exerciseCommentCtrl.text != "") {
-                  HistoryCommentEdit(
-                      history_id: widget.sdbdata.id,
-                      user_email: _userdataProvider.userdata.email,
-                      comment: _exerciseCommentCtrl.text)
-                      .patchHistoryComment();
-                  _historydataProvider.patchHistoryCommentdata(
-                      widget.sdbdata, _exerciseCommentCtrl.text);
-                }
-                ;
+
+
+                ProgramPost(
+                  image: _famousimageCtrl.text,
+                  routinedatas: widget.program,
+                  type: 0,
+                  user_email: _userdataProvider.userdata.email,)
+                      .postProgram();
+
+
+
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
               child: Text("운동 완료",
@@ -342,13 +314,14 @@ class _ProgramUploadState extends State<ProgramUpload> {
   }
 
   Widget _commentWidget() {
+    _programtitleCtrl.text = widget.program.name;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: TextFormField(
-          controller: _exerciseCommentCtrl,
+          controller: _programtitleCtrl,
           decoration: InputDecoration(
-              prefixIcon: Icon(Icons.message, color: Colors.white),
-              labelText: "운동에 대해 입력 할 수 있어요",
+              prefixIcon: Icon(Icons.edit, color: Colors.white),
+              labelText: 'Program 이름을 바꿀 수 있어요',
               labelStyle: TextStyle(color: Colors.white),
               border: OutlineInputBorder(
                 borderSide: const BorderSide(color: Colors.white, width: 2.0),

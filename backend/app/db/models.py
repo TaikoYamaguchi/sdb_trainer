@@ -102,6 +102,6 @@ class Famous(Base):
     id = Column(Integer, primary_key=True, index=True)
     type = Column(Integer, nullable=False)
     user_email = Column(String, unique=True, index=True, nullable=False)
-    image = Column(MutableList.as_mutable(ARRAY(String)))
+    image = Column(String, nullable=True)
     routinedata = Column(DateTime, nullable=False)
     date = Column(DateTime, nullable=False)

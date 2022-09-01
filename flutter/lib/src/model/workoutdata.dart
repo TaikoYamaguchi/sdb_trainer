@@ -30,6 +30,21 @@ class Routinedata {
   }
 }
 
+class ProgramList {
+  final List<Routinedatas> programs;
+
+  ProgramList({
+    required this.programs,
+  });
+
+  factory ProgramList.fromJson(List<dynamic> parsedJson) {
+    List<Routinedatas> programs = <Routinedatas>[];
+    programs = parsedJson.map((i) => Routinedatas.fromJson(i)).toList();
+
+    return new ProgramList(programs: programs);
+  }
+}
+
 class Routinedatas {
   String name;
   int mode;

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:expandable/expandable.dart';
 import 'package:sdb_trainer/pages/exercise_done.dart';
+import 'package:sdb_trainer/pages/upload_program.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
@@ -89,9 +90,18 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
       ),
       actions: [
         IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  Transition(
+                      child: ProgramUpload(
+                          program: _workoutdataProvider.workoutdata.routinedatas[widget.rindex],
+                      ),
+                      transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+
+            },
             icon: Icon(
-              Icons.settings,
+              Icons.cloud_upload_rounded,
             ))
       ],
       backgroundColor: Colors.black,
