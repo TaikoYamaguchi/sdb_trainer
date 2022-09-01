@@ -71,12 +71,11 @@ class _FriendHistoryState extends State<FriendHistory> {
         separatorBuilder: (BuildContext _context, int index) {
           return Container(
             alignment: Alignment.center,
-            height: 1,
+            height: 0,
             color: Color(0xFF212121),
             child: Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.symmetric(horizontal: 10),
-              height: 1,
+              height: 0,
               color: Color(0xFF717171),
             ),
           );
@@ -90,60 +89,60 @@ class _FriendHistoryState extends State<FriendHistory> {
       exuniq, history_id, userdata, bool shirink, index) {
     double top = 0;
     double bottom = 0;
-    return Container(
-      color: Colors.black,
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(exuniq.name,
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold)),
-              ),
-            ],
-          ),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              decoration: BoxDecoration(
-                  color: Color(0xFF212121),
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(top),
-                      bottomRight: Radius.circular(bottom),
-                      topLeft: Radius.circular(top),
-                      bottomLeft: Radius.circular(bottom))),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _chartExerciseSetsWidget(exuniq.sets),
-                  Container(
-                    child: Row(
-                      //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text("",
-                            style: TextStyle(
-                                fontSize: 13, color: Color(0xFF717171))),
-                        Expanded(child: SizedBox()),
-                        Text(
-                            "1RM: " +
-                                exuniq.onerm.toStringAsFixed(1) +
-                                "/${exuniq.goal.toStringAsFixed(1)}${userdata.weight_unit}",
-                            style: TextStyle(
-                                fontSize: 13, color: Color(0xFF717171))),
-                      ],
-                    ),
-                  )
-                ],
-              ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        color: Colors.black,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(exuniq.name,
+                      style: TextStyle(fontSize: 16, color: Colors.white)),
+                ),
+              ],
             ),
-          )
-        ],
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(15.0),
+                        bottomRight: Radius.circular(15.0),
+                        topLeft: Radius.circular(15.0),
+                        bottomLeft: Radius.circular(15.0))),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _chartExerciseSetsWidget(exuniq.sets),
+                    Container(
+                      child: Row(
+                        //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text("",
+                              style: TextStyle(
+                                  fontSize: 13, color: Color(0xFF717171))),
+                          Expanded(child: SizedBox()),
+                          Text(
+                              "1RM: " +
+                                  exuniq.onerm.toStringAsFixed(1) +
+                                  "/${exuniq.goal.toStringAsFixed(1)}${userdata.weight_unit}",
+                              style: TextStyle(
+                                  fontSize: 13, color: Color(0xFF717171))),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -169,9 +168,8 @@ class _FriendHistoryState extends State<FriendHistory> {
                           child: Text(
                             "Set",
                             style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              color: Colors.grey,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -184,9 +182,8 @@ class _FriendHistoryState extends State<FriendHistory> {
                       child: Text(
                         "Weight(${_userdataProvider.userdata.weight_unit})",
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                          fontSize: 12,
                         ),
                         textAlign: TextAlign.center,
                       )),
@@ -196,9 +193,8 @@ class _FriendHistoryState extends State<FriendHistory> {
                       child: Text(
                         "Reps",
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                          fontSize: 12,
                         ),
                         textAlign: TextAlign.center,
                       )),
@@ -207,9 +203,8 @@ class _FriendHistoryState extends State<FriendHistory> {
                       child: Text(
                         "1RM",
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                          fontSize: 12,
                         ),
                         textAlign: TextAlign.center,
                       )),
@@ -219,7 +214,8 @@ class _FriendHistoryState extends State<FriendHistory> {
             child: ListView.separated(
                 itemBuilder: (BuildContext _context, int index) {
                   return Container(
-                    padding: EdgeInsets.all(5.0),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -291,12 +287,11 @@ class _FriendHistoryState extends State<FriendHistory> {
                 separatorBuilder: (BuildContext _context, int index) {
                   return Container(
                     alignment: Alignment.center,
-                    height: 1,
+                    height: 0,
                     color: Colors.black,
                     child: Container(
                       alignment: Alignment.center,
-                      margin: EdgeInsets.symmetric(horizontal: 10),
-                      height: 1,
+                      height: 0,
                       color: Color(0xFF717171),
                     ),
                   );

@@ -381,7 +381,7 @@ class _FeedCardState extends State<FeedCard> {
                                   )),
                               Container(
                                   width: 50,
-                                  child: Text("sets",
+                                  child: Text("세트",
                                       style: TextStyle(
                                         color: Colors.grey,
                                         fontSize: 14,

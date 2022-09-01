@@ -81,7 +81,7 @@ class _FriendProfileState extends State<FriendProfile> {
                     Text(
                       widget.user.liked.length.toString(),
                       style: TextStyle(
-                        color: Colors.deepPurpleAccent,
+                        color: Theme.of(context).primaryColor,
                         fontSize: 24,
                       ),
                     ),
@@ -98,7 +98,7 @@ class _FriendProfileState extends State<FriendProfile> {
                     Text(
                       widget.user.like.length.toString(),
                       style: TextStyle(
-                        color: Colors.deepPurpleAccent,
+                        color: Theme.of(context).primaryColor,
                         fontSize: 24,
                       ),
                     ),
@@ -115,7 +115,7 @@ class _FriendProfileState extends State<FriendProfile> {
                     Text(
                       widget.user.history_cnt.toString(),
                       style: TextStyle(
-                        color: Colors.deepPurpleAccent,
+                        color: Theme.of(context).primaryColor,
                         fontSize: 24,
                       ),
                     ),
