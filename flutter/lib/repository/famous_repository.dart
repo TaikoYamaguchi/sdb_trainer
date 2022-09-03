@@ -14,8 +14,6 @@ class FamousRepository {
   }
 
   static Future<String> _loadFamousdataFromServer() async {
-    final storage = new FlutterSecureStorage();
-    String? user_email = await storage.read(key: "sdb_email");
     var url =
     Uri.parse(LocalHost.getLocalHost() + "/api/workout/" + user_email!);
     var response = await http.get(url);

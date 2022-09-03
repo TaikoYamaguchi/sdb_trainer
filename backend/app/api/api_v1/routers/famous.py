@@ -43,7 +43,7 @@ async def famouss_list(
     db=Depends(get_db),
 ):
 
-    famouss = get_famouss_by_type(db, type)
+    famouss = get_famouss(db)
     print(famouss)
     # This is necessary for react-admin to work
     return famouss

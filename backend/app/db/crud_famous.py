@@ -33,9 +33,9 @@ def get_famouss(db: Session) -> t.List[schemas.FamousOut]:
 
 
 def get_famouss_by_id(db: Session, input_id: int) -> schemas.FamousOut:
-    famouss_id = db.query(models.Famous).get(input_id)
-    print(famouss_id)
-    return famouss_id
+    famous = db.query(models.Famous).filter(models.History.id == history.id).first()
+    print(famous)
+    return famous
 
 def edit_famous(db: Session, famous: schemas.FamousCreate):
 
