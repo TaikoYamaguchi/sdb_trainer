@@ -207,9 +207,17 @@ class ExerciseState extends State<Exercise> {
             title: Text('루틴을 지울 수 있어요',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white, fontSize: 24)),
-            content: Text('정말로 루틴을 지우시나요?',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 16)),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('정말로 루틴을 지우시나요?',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                Text('루틴을 지우면 복구 할 수 없어요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+              ],
+            ),
             actions: <Widget>[
               _DeleteConfirmButton(rindex),
             ],

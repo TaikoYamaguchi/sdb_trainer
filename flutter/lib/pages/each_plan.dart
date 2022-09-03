@@ -95,10 +95,10 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                   context,
                   Transition(
                       child: ProgramUpload(
-                          program: _workoutdataProvider.workoutdata.routinedatas[widget.rindex],
+                        program: _workoutdataProvider
+                            .workoutdata.routinedatas[widget.rindex],
                       ),
                       transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-
             },
             icon: Icon(
               Icons.cloud_upload_rounded,
@@ -140,6 +140,29 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
             ],
           );
         });
+  }
+
+  Widget _FinishConfirmButton() {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: Theme.of(context).primaryColor,
+            textColor: Colors.white,
+            disabledColor: Color.fromRGBO(246, 58, 64, 20),
+            disabledTextColor: Colors.black,
+            onPressed: () {
+              recordExercise();
+              _editHistoryCheck();
+              _editWorkoutCheck();
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            padding: EdgeInsets.all(12.0),
+            splashColor: Theme.of(context).primaryColor,
+            child: Text("운동 종료 하기",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
   void _displayTextInputDialog() {
@@ -199,31 +222,6 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
             );
           });
         });
-  }
-
-  Widget _FinishConfirmButton() {
-    return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            color: Theme.of(context).primaryColor,
-            textColor: Colors.white,
-            disabledColor: Color.fromRGBO(246, 58, 64, 20),
-            disabledTextColor: Colors.black,
-            onPressed: () {
-              _routinetimeProvider.routinecheck(widget.rindex);
-              recordExercise();
-              _editHistoryCheck();
-              _editWorkoutCheck();
-              Navigator.of(context, rootNavigator: true).pop();
-              Navigator.of(context).pop();
-            },
-            padding: EdgeInsets.all(12.0),
-            splashColor: Theme.of(context).primaryColor,
-            child: Text("운동 종료 하기",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
   Widget _workoutSubmitButton(context) {
@@ -1195,6 +1193,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                 }
               : showToast("입력을 확인해주세요"));
     } else {
+      _routinetimeProvider.routinecheck(widget.rindex);
       print("no exercises");
     }
   }

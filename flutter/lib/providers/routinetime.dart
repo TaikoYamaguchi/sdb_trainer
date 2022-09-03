@@ -23,7 +23,7 @@ class RoutineTimeProvider extends ChangeNotifier {
   String restbutton = 'Rest Timer off';
   Color _restbuttoncolor = Color(0xFF717171);
   Color get restbuttoncolor => _restbuttoncolor;
-  String _routineButton = 'Start Workout';
+  String _routineButton = '운동 시작 하기';
   String get routineButton => _routineButton;
   Color _buttoncolor = const Color(0xff7a28cb);
   Color get buttoncolor => _buttoncolor;

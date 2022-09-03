@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/each_exercise.dart';
+import 'package:sdb_trainer/pages/exercise_done.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
@@ -307,12 +308,10 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             disabledColor: Color.fromRGBO(246, 58, 64, 20),
             disabledTextColor: Colors.black,
             onPressed: () {
-              _routinetimeProvider.routinecheck(widget.rindex);
               recordExercise();
               _editHistoryCheck();
               _editWorkoutwoCheck();
               Navigator.of(context, rootNavigator: true).pop();
-              Navigator.of(context).pop();
             },
             padding: EdgeInsets.all(12.0),
             splashColor: Theme.of(context).primaryColor,
@@ -367,12 +366,22 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
           .postHistory()
           .then((data) => data["user_email"] != null
               ? {
+                  Navigator.push(
+                      context,
+                      Transition(
+                          child: ExerciseDone(
+                              exerciseList: exerciseList,
+                              routinetime: _routinetimeProvider.routineTime,
+                              sdbdata: hisdata.SDBdata.fromJson(data)),
+                          transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
+                  _routinetimeProvider.routinecheck(widget.rindex),
                   _historydataProvider.getdata(),
                   _historydataProvider.getHistorydataAll(),
                   exerciseList = []
                 }
               : showToast("입력을 확인해주세요"));
     } else {
+      _routinetimeProvider.routinecheck(widget.rindex);
       print("no exercises");
     }
   }

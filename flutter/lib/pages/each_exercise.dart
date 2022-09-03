@@ -715,10 +715,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                   textStyle: const TextStyle(fontSize: 20)),
                               onPressed: () {
                                 if (_routinetimeProvider.isstarted) {
-                                  recordExercise();
-                                  _editHistoryCheck();
-                                  showToast("운동을 등록 중입니다.");
-                                  _editWorkoutwoCheck();
+                                  _displayFinishAlert();
                                 } else {
                                   provider.routinecheck(widget.rindex);
                                 }
@@ -794,6 +791,63 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     });
   }
 
+  void _displayFinishAlert() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            buttonPadding: EdgeInsets.all(12.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            backgroundColor: Theme.of(context).cardColor,
+            contentPadding: EdgeInsets.all(12.0),
+            title: Text(
+              '운동을 종료 할 수 있어요',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('운동을 종료 하시겠나요?',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                Text('외부를 터치하면 취소 할 수 있어요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+              ],
+            ),
+            actions: <Widget>[
+              _FinishConfirmButton(),
+            ],
+          );
+        });
+  }
+
+  Widget _FinishConfirmButton() {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: Theme.of(context).primaryColor,
+            textColor: Colors.white,
+            disabledColor: Color.fromRGBO(246, 58, 64, 20),
+            disabledTextColor: Colors.black,
+            onPressed: () {
+              recordExercise();
+              _editHistoryCheck();
+              _editWorkoutwoCheck();
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            padding: EdgeInsets.all(12.0),
+            splashColor: Theme.of(context).primaryColor,
+            child: Text("운동 종료 하기",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+  }
+
   void _displaySetRestAlert(pindex) {
     showDialog(
         context: context,
@@ -822,7 +876,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   keyboardType: TextInputType.number,
                   style: TextStyle(
                     fontSize: 21,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
@@ -962,8 +1016,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             onerm: monerm,
             goal: _eachex.goal,
             date: DateTime.now().toString().substring(0, 10)));
-      } else {
-        _routinetimeProvider.routinecheck(widget.rindex);
       }
 
       if (monerm > _eachex.onerm) {
@@ -984,6 +1036,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
           .postHistory()
           .then((data) => data["user_email"] != null
               ? {
+                  print("yessssssssssss"),
                   Navigator.push(
                       context,
                       Transition(
@@ -992,6 +1045,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               routinetime: _routinetimeProvider.routineTime,
                               sdbdata: hisdata.SDBdata.fromJson(data)),
                           transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
+                  print("routine time"),
                   _routinetimeProvider.routinecheck(widget.rindex),
                   _historydataProvider.getdata(),
                   _historydataProvider.getHistorydataAll(),
@@ -999,6 +1053,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                 }
               : showToast("입력을 확인해주세요"));
     } else {
+      _routinetimeProvider.routinecheck(widget.rindex);
       print("no exercises");
     }
   }
