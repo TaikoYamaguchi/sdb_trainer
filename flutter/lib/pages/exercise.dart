@@ -21,6 +21,7 @@ import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:tutorial/tutorial.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class Exercise extends StatefulWidget {
   final onPush;
@@ -217,11 +218,10 @@ class ExerciseState extends State<Exercise> {
   }
 
   Widget _routinemenuPage() {
-
     controller = PageController(initialPage: 0);
     return Expanded(
       child: PageView(
-        onPageChanged: (value){
+        onPageChanged: (value) {
           _RoutineMenuProvider.change(value);
         },
         controller: controller,
@@ -235,134 +235,205 @@ class ExerciseState extends State<Exercise> {
 
   Widget _MyWorkout() {
     return Container(
-      child: Container(
-        color: Colors.black,
-        child:
-            Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
-          List routinelist = provider.workoutdata.routinedatas;
-          return ReorderableListView.builder(
-              onReorder: (int oldIndex, int newIndex) {
-                setState(() {
-                  if (oldIndex < newIndex) {
-                    newIndex -= 1;
-                  }
-                  final item = routinelist.removeAt(oldIndex);
-                  routinelist.insert(newIndex, item);
-                  _editWorkoutCheck();
-                });
-              },
-              padding: EdgeInsets.symmetric(horizontal: 5),
-              itemBuilder: (BuildContext _context, int index) {
-                if (routinelist.length == 1) {
-                  top = 20;
-                  bottom = 20;
-                } else if (index == 0) {
-                  top = 20;
-                  bottom = 0;
-                } else if (index == routinelist.length - 1) {
-                  top = 0;
-                  bottom = 20;
-                } else {
-                  top = 0;
-                  bottom = 0;
-                }
-                ;
-                return GestureDetector(
-                  key: Key('$index'),
-                  onTap: () {
-                    _PopProvider.exstackup(1);
-                    routinelist[index].mode == 0
-                        ? Navigator.push(
-                            context,
-                            Transition(
-                                child: EachWorkoutDetails(
-                                  rindex: index,
-                                ),
-                                transitionEffect:
-                                    TransitionEffect.RIGHT_TO_LEFT))
-                        : Navigator.push(
-                            context,
-                            Transition(
-                                child: EachPlanDetails(
-                                  rindex: index,
-                                ),
-                                transitionEffect:
-                                    TransitionEffect.RIGHT_TO_LEFT));
-                  },
-                  child: Container(
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).cardColor,
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(top),
-                                  bottomRight: Radius.circular(bottom),
-                                  topLeft: Radius.circular(top),
-                                  bottomLeft: Radius.circular(bottom))),
-                          height: 52,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      color: Colors.black,
+      child: Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
+        List routinelist = provider.workoutdata.routinedatas;
+        return routinelist.isEmpty
+            ? GestureDetector(
+                onTap: () {
+                  _displayTextInputDialog();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).cardColor,
+                          borderRadius: BorderRadius.circular(15.0)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    routinelist[index].name,
-                                    style: TextStyle(
-                                        fontSize: 21, color: Colors.white),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      routinelist[index].mode == 1
-                                          ? Text("Program Mode",
-                                              style: TextStyle(
-                                                  fontSize: 13,
-                                                  color: Color(0xFF717171)))
-                                          : Text(
-                                              "${routinelist[index].exercises.length} Exercises",
-                                              style: TextStyle(
-                                                  fontSize: 13,
-                                                  color: Color(0xFF717171))),
-                                    ],
-                                  )
-                                ],
+                              Container(
+                                width: 48,
+                                height: 48,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Theme.of(context).primaryColor),
+                                child: Icon(
+                                  Icons.add,
+                                  size: 28.0,
+                                  color: Colors.white,
+                                ),
                               ),
-                              IconButton(
-                                onPressed: () {
-                                  _displayDeleteAlert(index);
-                                },
-                                icon: Icon(Icons.delete),
-                                color: Colors.white,
-                              ),
-                            ],
-                          ),
-                        ),
-                        index == routinelist.length - 1
-                            ? Container()
-                            : Container(
-                                alignment: Alignment.center,
-                                height: 1,
-                                color: Color(0xFF212121),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  margin: EdgeInsets.symmetric(horizontal: 10),
-                                  height: 1,
-                                  color: Color(0xFF717171),
+                              Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("운동 루틴을 만들어 보세요",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 18)),
+                                    Text("오른쪽 위를 클릭해도 만들 수 있어요",
+                                        style: TextStyle(
+                                            color: Colors.grey, fontSize: 14)),
+                                  ],
                                 ),
                               )
-                      ],
+                            ]),
+                      ),
                     ),
                   ),
-                );
-              },
-              itemCount: routinelist.length);
-        }),
-      ),
+                ))
+            : ReorderableListView.builder(
+                onReorder: (int oldIndex, int newIndex) {
+                  setState(() {
+                    if (oldIndex < newIndex) {
+                      newIndex -= 1;
+                    }
+                    final item = routinelist.removeAt(oldIndex);
+                    routinelist.insert(newIndex, item);
+                    _editWorkoutCheck();
+                  });
+                },
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                itemBuilder: (BuildContext _context, int index) {
+                  if (routinelist.length == 1) {
+                    top = 20;
+                    bottom = 20;
+                  } else if (index == 0) {
+                    top = 20;
+                    bottom = 0;
+                  } else if (index == routinelist.length - 1) {
+                    top = 0;
+                    bottom = 20;
+                  } else {
+                    top = 0;
+                    bottom = 0;
+                  }
+                  ;
+                  return GestureDetector(
+                    key: Key('$index'),
+                    onTap: () {
+                      _PopProvider.exstackup(1);
+                      routinelist[index].mode == 0
+                          ? Navigator.push(
+                              context,
+                              Transition(
+                                  child: EachWorkoutDetails(
+                                    rindex: index,
+                                  ),
+                                  transitionEffect:
+                                      TransitionEffect.RIGHT_TO_LEFT))
+                          : Navigator.push(
+                              context,
+                              Transition(
+                                  child: EachPlanDetails(
+                                    rindex: index,
+                                  ),
+                                  transitionEffect:
+                                      TransitionEffect.RIGHT_TO_LEFT));
+                    },
+                    child: Container(
+                      child: Column(
+                        children: [
+                          Slidable(
+                            endActionPane: ActionPane(
+                                extentRatio: 0.4,
+                                motion: const DrawerMotion(),
+                                children: [
+                                  SlidableAction(
+                                    onPressed: (_) {
+                                      _displayRoutineNameEditDialog(index);
+                                    },
+                                    backgroundColor:
+                                        Theme.of(context).primaryColor,
+                                    foregroundColor: Colors.white,
+                                    icon: Icons.edit,
+                                    label: '수정',
+                                  ),
+                                  SlidableAction(
+                                    onPressed: (_) {
+                                      _displayDeleteAlert(index);
+                                    },
+                                    backgroundColor: Color(0xFFFE4A49),
+                                    foregroundColor: Colors.white,
+                                    icon: Icons.delete,
+                                    label: '삭제',
+                                  )
+                                ]),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context).cardColor,
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(top),
+                                      bottomRight: Radius.circular(bottom),
+                                      topLeft: Radius.circular(top),
+                                      bottomLeft: Radius.circular(bottom))),
+                              height: 52,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        routinelist[index].name,
+                                        style: TextStyle(
+                                            fontSize: 21, color: Colors.white),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          routinelist[index].mode == 1
+                                              ? Text("Program Mode",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      color: Color(0xFF717171)))
+                                              : Text(
+                                                  "${routinelist[index].exercises.length} Exercises",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      color:
+                                                          Color(0xFF717171))),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          index == routinelist.length - 1
+                              ? Container()
+                              : Container(
+                                  alignment: Alignment.center,
+                                  height: 1,
+                                  color: Color(0xFF212121),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    height: 1,
+                                    color: Color(0xFF717171),
+                                  ),
+                                )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+                itemCount: routinelist.length);
+      }),
     );
   }
 
@@ -761,6 +832,102 @@ class ExerciseState extends State<Exercise> {
             : showToast("입력을 확인해주세요"));
   }
 
+  void _displayRoutineNameEditDialog(index) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              buttonPadding: EdgeInsets.all(12.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              backgroundColor: Theme.of(context).cardColor,
+              contentPadding: EdgeInsets.all(12.0),
+              title: Text(
+                '루틴 이름을 수정 해보세요',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+              content: Column(mainAxisSize: MainAxisSize.min, children: [
+                Text('운동 루틴의 이름을 입력해 주세요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                Text('외부를 터치하면 취소 할 수 있어요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+                SizedBox(height: 20),
+                TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      null;
+                    });
+                  },
+                  style: TextStyle(fontSize: 24.0, color: Colors.white),
+                  textAlign: TextAlign.center,
+                  controller: _workoutNameCtrl,
+                  decoration: InputDecoration(
+                      filled: true,
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      hintText: "운동 루틴 이름",
+                      hintStyle:
+                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                ),
+              ]),
+              actions: <Widget>[
+                _routineNameEditSubmitButton(context, index),
+              ],
+            );
+          });
+        });
+  }
+
+  Widget _routineNameEditSubmitButton(context, index) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: _workoutNameCtrl.text == ""
+                ? Color(0xFF212121)
+                : Theme.of(context).primaryColor,
+            textColor: Colors.white,
+            disabledColor: Color(0xFF212121),
+            disabledTextColor: Colors.white,
+            padding: EdgeInsets.all(12.0),
+            splashColor: Theme.of(context).primaryColor,
+            onPressed: () {
+              _editWorkoutNameCheck(_workoutNameCtrl.text, index);
+              _workoutNameCtrl.clear();
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            child: Text("루틴 이름 수정",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+  }
+
+  void _editWorkoutNameCheck(newname, index) async {
+    _workoutdataProvider.namechange(index, newname);
+
+    WorkoutEdit(
+            user_email: _userdataProvider.userdata.email,
+            id: _workoutdataProvider.workoutdata.id,
+            routinedatas: _workoutdataProvider.workoutdata.routinedatas)
+        .editWorkout()
+        .then((data) => data["user_email"] != null
+            ? {showToast("done!"), _workoutdataProvider.getdata()}
+            : showToast("입력을 확인해주세요"));
+  }
+
   @override
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
@@ -782,7 +949,6 @@ class ExerciseState extends State<Exercise> {
               ]
             : null
         : null;
-
 
     return Scaffold(
         appBar: _appbarWidget(),
