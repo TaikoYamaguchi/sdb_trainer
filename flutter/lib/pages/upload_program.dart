@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +33,7 @@ class ProgramUpload extends StatefulWidget {
 
 class _ProgramUploadState extends State<ProgramUpload> {
   var _userdataProvider;
-  var _historydataProvider;
+  var _famousdataProvider;
   var _workoutdataProvider;
   var _routinetimeProvider;
   var _btnDisabled;
@@ -41,6 +42,8 @@ class _ProgramUploadState extends State<ProgramUpload> {
   File? _image;
   final ImagePicker _picker = ImagePicker();
   var _selectImage;
+  var _for_submit;
+
   @override
   void initState() {
     super.initState();
@@ -297,18 +300,27 @@ class _ProgramUploadState extends State<ProgramUpload> {
               onPressed: () {
 
 
+
                 ProgramPost(
                   image: _famousimageCtrl.text,
-                  routinedata: widget.program,
+                  routinedata: new Routinedatas(name: _programtitleCtrl.text, mode: widget.program.mode, exercises: widget.program.exercises, routine_time: widget.program.routine_time),
                   type: 0,
                   user_email: _userdataProvider.userdata.email,)
-                      .postProgram();
+                      .postProgram().then((data) => {
+                    if (_selectImage != null) {
+                      print(data["id"]),
+                        FamousImageEdit(
+                        famous_id: data["id"],
+                        file: _selectImage.path).patchFamousImage()
+                        } ,
+                  _famousdataProvider.getdata(),
+                });
 
 
 
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
-              child: Text("운동 완료",
+              child: Text("운동 등록",
                   style: TextStyle(fontSize: 20.0, color: Colors.white)))),
     );
   }
@@ -332,6 +344,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
                 borderRadius: BorderRadius.circular(5.0),
               ),
               fillColor: Colors.white),
+
           style: TextStyle(color: Colors.white)),
     );
   }
@@ -339,8 +352,8 @@ class _ProgramUploadState extends State<ProgramUpload> {
   @override
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _historydataProvider =
-        Provider.of<HistorydataProvider>(context, listen: false);
+    _famousdataProvider =
+        Provider.of<FamousdataProvider>(context, listen: false);
     _workoutdataProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
     _routinetimeProvider =

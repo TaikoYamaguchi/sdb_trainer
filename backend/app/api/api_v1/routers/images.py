@@ -106,7 +106,7 @@ async def create_history_image(history_id:int, db=Depends(get_db),
 
     return db_history
 
-@r.post("/temp/famousimages", response_model=FamousOut, response_model_exclude_none=True)
+@r.post("/temp/famousimages/{famous_id}", response_model=FamousOut, response_model_exclude_none=True)
 async def create_famous_image(famous_id:int, db=Depends(get_db),
 
     user=Depends(get_current_user),

@@ -30,18 +30,47 @@ class Routinedata {
   }
 }
 
-class ProgramList {
-  final List<Routinedatas> programs;
+class FamousList {
+  final List<Famous> famouss;
 
-  ProgramList({
-    required this.programs,
+  FamousList({
+    required this.famouss,
   });
 
-  factory ProgramList.fromJson(List<dynamic> parsedJson) {
-    List<Routinedatas> programs = <Routinedatas>[];
-    programs = parsedJson.map((i) => Routinedatas.fromJson(i)).toList();
+  factory FamousList.fromJson(List<dynamic> parsedJson) {
+    List<Famous> famouss = <Famous>[];
+    famouss = parsedJson.map((i) => Famous.fromJson(i)).toList();
 
-    return new ProgramList(programs: programs);
+    return new FamousList(famouss: famouss);
+  }
+}
+
+class Famous {
+  final int id;
+  final int type;
+  final String user_email;
+  final String image;
+  final Routinedatas routinedata;
+  final String? date;
+
+  Famous({
+    required this.id,
+    required this.type,
+    required this.user_email,
+    required this.image,
+    required this.routinedata,
+    required this.date,
+  });
+
+  factory Famous.fromJson(Map<String, dynamic> parsedJson) {
+    return new Famous(
+      id: parsedJson["id"],
+      type: parsedJson["type"],
+      user_email: parsedJson["user_email"],
+      image: parsedJson['image'],
+      routinedata: Routinedatas.fromJson(parsedJson['routinedata']),
+      date: parsedJson["date"],
+    );
   }
 }
 

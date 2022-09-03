@@ -35,19 +35,19 @@ class _RoutineBankState extends State<RoutineBank> {
         ),
         Consumer<FamousdataProvider>(
           builder: (builder, provider, child) {
-            print(provider.famousdata);
+            print(provider.famousdata.famouss);
             return Container(
               height: MediaQuery.of(context).size.height/4,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: 3,
+                itemCount: provider.famousdata.famouss.length,
                 itemBuilder: (BuildContext _context, int index) {
                   return Container(
                     width: MediaQuery.of(context).size.width/2,
                     child: Card(
                       color: Colors.grey,
                       child: Center(
-                        child: Text('거인화 프로그램', style: TextStyle(color: Colors.white),),
+                        child: Text(provider.famousdata.famouss[index].routinedata.name, style: TextStyle(color: Colors.white),),
                       ),
                     ),
                   );

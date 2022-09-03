@@ -26,10 +26,11 @@ class FamousRepository {
     }
   }
 
-  static Future<ProgramList> loadFamousdata() async {
+  static Future<FamousList> loadFamousdata() async {
     String jsonString = await _loadFamousdataFromServer();
     final jsonResponse = json.decode(jsonString);
-    ProgramList famousdata = ProgramList.fromJson(jsonResponse);
+    FamousList famousdata = FamousList.fromJson(jsonResponse);
+    print(famousdata);
     return (famousdata);
   }
 }
@@ -168,13 +169,13 @@ class FamousImageEdit {
     }
   }
 
-  Future<Routinedatas?> patchFamousImage() async {
+  Future<Famous?> patchFamousImage() async {
     var jsonString = await _patchFamousImageFromServer();
     if (jsonString == null) {
       return null;
     } else {
-      Routinedatas user = Routinedatas.fromJson(jsonString);
-      return (user);
+      Famous famousdata = Famous.fromJson(jsonString);
+      return (famousdata);
     }
   }
 }
