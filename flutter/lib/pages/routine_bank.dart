@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
+import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
@@ -32,22 +33,27 @@ class _RoutineBankState extends State<RoutineBank> {
             ),
           ],
         ),
-        Container(
-          height: MediaQuery.of(context).size.height/4,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount:3,
-            itemBuilder: (BuildContext _context, int index) {
-              return Container(
-                width: MediaQuery.of(context).size.width/2,
-                child: Card(
-                  color: Colors.grey,
-                  child: Center(
-                    child: Text('거인화 프로그램', style: TextStyle(color: Colors.white),),
-                  ),
-                ),
-              );
-            }),
+        Consumer<FamousdataProvider>(
+          builder: (builder, provider, child) {
+            print(provider.famousdata);
+            return Container(
+              height: MediaQuery.of(context).size.height/4,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 3,
+                itemBuilder: (BuildContext _context, int index) {
+                  return Container(
+                    width: MediaQuery.of(context).size.width/2,
+                    child: Card(
+                      color: Colors.grey,
+                      child: Center(
+                        child: Text('거인화 프로그램', style: TextStyle(color: Colors.white),),
+                      ),
+                    ),
+                  );
+                }),
+            );
+          }
         ),
       ],
     );
