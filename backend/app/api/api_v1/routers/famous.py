@@ -32,6 +32,22 @@ async def famouss_list(
     # This is necessary for react-admin to work
     return famouss
 
+@r.get(
+    "/famous",
+    response_model=FamousOut,
+    response_model_exclude_none=True,
+)
+async def famouss_list(
+    response: Response,
+    email:str,
+    db=Depends(get_db),
+):
+
+    famouss = get_famouss_by_type(db, type)
+    print(famouss)
+    # This is necessary for react-admin to work
+    return famouss
+
 @r.put("/famous", response_model=FamousCreate, response_model_exclude_none=True)
 async def famous_edit(
     request: Request,

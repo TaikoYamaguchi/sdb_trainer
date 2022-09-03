@@ -23,8 +23,12 @@ def create_famous(db: Session, famous: schemas.FamousCreate):
     db.refresh(db_famous)
     return db_famous
 
-def get_famouss_by_type(db: Session, type: int) -> schemas.FamousOut:
+def get_famouss_by_type(db: Session, type: int) -> t.List[schemas.FamousOut]:
     famouss = db.query(models.Famous).filter(models.Famous.type == type).all()
+    return famouss
+
+def get_famouss(db: Session) -> t.List[schemas.FamousOut]:
+    famouss = db.query(models.Famous).order_by(models.History.id.desc()).all()
     return famouss
 
 
