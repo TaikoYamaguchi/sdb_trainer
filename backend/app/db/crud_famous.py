@@ -28,12 +28,12 @@ def get_famouss_by_type(db: Session, type: int) -> t.List[schemas.FamousOut]:
     return famouss
 
 def get_famouss(db: Session) -> t.List[schemas.FamousOut]:
-    famouss = db.query(models.Famous).order_by(models.History.id.desc()).all()
+    famouss = db.query(models.Famous).order_by(models.Famous.id.desc()).all()
     return famouss
 
 
 def get_famouss_by_id(db: Session, input_id: int) -> schemas.FamousOut:
-    famous = db.query(models.Famous).filter(models.History.id == history.id).first()
+    famous = db.query(models.Famous).filter(models.Famous.id == famous.id).first()
     print(famous)
     return famous
 
