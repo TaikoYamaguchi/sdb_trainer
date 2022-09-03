@@ -329,7 +329,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
                         file: _selectImage.path).patchFamousImage().then((data) => {
                         _famousdataProvider.getdata(),
                         })
-                    } ,
+                    } else{_famousdataProvider.getdata(),} ,
 
                 });
 

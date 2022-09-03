@@ -1,19 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
-import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:provider/provider.dart';
-import 'package:sdb_trainer/repository/famous_repository.dart';
-import 'package:sdb_trainer/repository/history_repository.dart';
-import 'package:sdb_trainer/repository/user_repository.dart';
-import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
-import 'package:transition/transition.dart';
-import 'package:sdb_trainer/pages/userProfileNickname.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
-import 'package:sdb_trainer/pages/userProfileBody.dart';
-import 'package:sdb_trainer/pages/userProfileGoal.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
@@ -35,13 +26,18 @@ class _ProgramDownloadState extends State<ProgramDownload> {
   var _userdataProvider;
   var _famousdataProvider;
   var _workoutdataProvider;
+  var _exercisesdataProvider;
   var _routinetimeProvider;
   var _btnDisabled;
+  List<TextEditingController> _onermController = [];
   TextEditingController _famousimageCtrl = TextEditingController(text: "");
   TextEditingController _programtitleCtrl = TextEditingController(text: "");
   TextEditingController _programcommentCtrl = TextEditingController(text: "");
+  TextEditingController _workoutNameCtrl = TextEditingController(text: "");
 
   var _selectImage;
+  List ref_exercise =[];
+  List ref_exercise_index =[];
 
   @override
   void initState() {
@@ -199,7 +195,20 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               padding: EdgeInsets.all(8.0),
               splashColor: Theme.of(context).primaryColor,
               onPressed: () {
+                for (int p = 0; p < widget.program.routinedata.exercises[0].plans.length; p++) {
 
+                  for (int e = 0; e < widget.program.routinedata.exercises[0].plans[p].exercises.length; e++) {
+                    ref_exercise.add(widget.program.routinedata.exercises[0].plans[p].exercises[e].ref_name);
+
+                  }
+                }
+                ref_exercise= ref_exercise.toSet().toList();
+                for (int i = 0; i < ref_exercise.length; i++) {
+                  ref_exercise_index.add(_exercisesdataProvider.exercisesdata.exercises.indexWhere((element) => element.name == ref_exercise[i])) ;
+                }
+                ref_exercise_index= ref_exercise_index.toSet().toList();
+
+                _displayStartAlert();
               },
               child: Text("시작하기",
                   style: TextStyle(fontSize: 20.0, color: Colors.white)))),
@@ -255,6 +264,242 @@ class _ProgramDownloadState extends State<ProgramDownload> {
     );
   }
 
+  void _displayStartAlert() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            buttonPadding: EdgeInsets.all(12.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            backgroundColor: Theme.of(context).cardColor,
+            contentPadding: EdgeInsets.all(12.0),
+            title: Text(
+              '운동을 시작 할 수 있어요',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('운동을 시작 할까요?',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                Text('외부를 터치하면 취소 할 수 있어요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+              ],
+            ),
+            actions: <Widget>[
+              _StartConfirmButton(),
+            ],
+          );
+        });
+  }
+
+  Widget _StartConfirmButton() {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: Theme.of(context).primaryColor,
+            textColor: Colors.white,
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop();
+              setSetting();
+
+
+            },
+            padding: EdgeInsets.all(12.0),
+            splashColor: Theme.of(context).primaryColor,
+            child: Text("운동 시작 하기",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+  }
+
+  void setSetting() {
+    showModalBottomSheet<void>(
+      context: context,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      builder: (BuildContext context) {
+        return Container(
+          padding: EdgeInsets.all(12.0),
+          height: MediaQuery.of(context).size.height * 2,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            color: Theme.of(context).cardColor,
+          ),
+          child: Column(
+            children: [
+              Container(
+                child: Text(
+                  '본인의 1rm이 맞나요? ',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white, fontSize: 24),
+                ),
+              ),
+              Container(
+                child: Text('아니라면 값을 수정 해주세요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 16)),
+              ),
+              Container(
+                child: Text('외부를 터치하면 취소 할 수 있어요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+              ),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                        width: MediaQuery.of(context).size.width*2/4,
+                        child: Center(
+                          child: Text(
+                            "운동",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        )),
+                    Container(
+                        padding: EdgeInsets.symmetric(vertical: 5),
+                        width: MediaQuery.of(context).size.width*1/4,
+                        child: Center(
+                          child: Text("1rm",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18, fontWeight: FontWeight.bold
+                              ),
+                              textAlign: TextAlign.center),
+                        )),
+                  ],
+                ),
+              ),
+              _neededlist(),
+              _1rmConfirmButton()
+
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+
+
+
+  Widget _neededlist(){
+    return Expanded(
+      child: ListView.builder(
+        itemBuilder: (BuildContext _context, int index) {
+          return Center(
+              child: _exerciseWidget(_exercisesdataProvider.exercisesdata.exercises[ref_exercise_index[index]], index));
+        },
+
+        itemCount: ref_exercise_index.length,
+        shrinkWrap: true,
+      ),
+    );
+  }
+
+  Widget _exerciseWidget(Exercises, index) {
+    _onermController.add(new TextEditingController(text: Exercises.onerm.toStringAsFixed(1)));
+    return Center(
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width*2/4,
+                child: Center(
+                  child: Text(
+                    Exercises.name,
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width*1/4,
+                child: Center(
+                  child: TextFormField(
+                      controller: _onermController[index],
+                      keyboardType: TextInputType.number,
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                      textAlign: TextAlign.center,
+
+                      decoration: InputDecoration(
+                          filled: true,
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).primaryColor, width: 3),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).primaryColor, width: 3),
+                          ),
+                          hintText: Exercises.onerm.toStringAsFixed(1),
+                          hintStyle: TextStyle(fontSize: 18, color: Colors.white)),
+                      onChanged: (text) {
+                        double changeweight;
+                        if (text == "") {
+                          changeweight = 0.0;
+                        } else {
+                          changeweight = double.parse(text);
+                        }
+                        setState(() {
+                          _exercisesdataProvider.exercisesdata.exercises[ref_exercise_index[index]].onerm = changeweight;
+                        });
+                      }),
+                ),
+              ),
+
+            ],
+          ),
+          Container(
+            alignment: Alignment.center,
+            height: 1,
+            color: Colors.black,
+            child: Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              height: 1,
+              color: Color(0xFF717171),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _1rmConfirmButton() {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: Theme.of(context).primaryColor,
+            textColor: Colors.white,
+            onPressed: () {
+
+            },
+            padding: EdgeInsets.all(12.0),
+            splashColor: Theme.of(context).primaryColor,
+            child: Text("1rm 확인",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
@@ -262,6 +507,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
         Provider.of<FamousdataProvider>(context, listen: false);
     _workoutdataProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
+    _exercisesdataProvider =
+        Provider.of<ExercisesdataProvider>(context, listen: false);
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
     return Scaffold(

@@ -544,6 +544,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                                         widget
                                                                             .rindex,
                                                                         index);
+                                                                    _editWorkoutCheck();
                                                                   },
                                                                   icon: Icon(
                                                                     Icons
@@ -571,6 +572,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                                         widget
                                                                             .rindex,
                                                                         index);
+                                                                    _editWorkoutCheck();
                                                                   },
                                                                   icon: Icon(
                                                                     Icons
