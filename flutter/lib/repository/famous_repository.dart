@@ -78,11 +78,11 @@ class ProgramPost {
   }
 }
 
-class WorkoutEdit {
+class FamousEdit {
   final String user_email;
   final int id;
   final List<Routinedatas> famousdatas;
-  WorkoutEdit({
+  FamousEdit({
     required this.user_email,
     required this.id,
     required this.famousdatas,

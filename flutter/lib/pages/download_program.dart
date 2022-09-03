@@ -3,9 +3,12 @@ import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/repository/famous_repository.dart';
+import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
+import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'dart:io';
@@ -490,12 +493,26 @@ class _ProgramDownloadState extends State<ProgramDownload> {
             color: Theme.of(context).primaryColor,
             textColor: Colors.white,
             onPressed: () {
+              _workoutdataProvider.addroutine(widget.program.routinedata);
+              _editWorkoutCheck();
+              Navigator.of(context).popUntil((route) => route.isFirst);
 
             },
             padding: EdgeInsets.all(12.0),
             splashColor: Theme.of(context).primaryColor,
             child: Text("1rm 확인",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
+  }
+
+  void _editWorkoutCheck() async {
+    WorkoutEdit(
+        user_email: _userdataProvider.userdata.email,
+        id: _workoutdataProvider.workoutdata.id,
+        routinedatas: _workoutdataProvider.workoutdata.routinedatas)
+        .editWorkout()
+        .then((data) => data["user_email"] != null
+        ? [showToast("done!"), _workoutdataProvider.getdata()]
+        : showToast("입력을 확인해주세요"));
   }
 
 
