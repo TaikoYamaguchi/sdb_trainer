@@ -20,18 +20,18 @@ import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'dart:io';
 import 'dart:async';
 
-class ProgramUpload extends StatefulWidget {
-  Routinedatas program;
-  ProgramUpload(
+class ProgramDownload extends StatefulWidget {
+  Famous program;
+  ProgramDownload(
       {Key? key,
         required this.program,})
       : super(key: key);
 
   @override
-  _ProgramUploadState createState() => _ProgramUploadState();
+  _ProgramDownloadState createState() => _ProgramDownloadState();
 }
 
-class _ProgramUploadState extends State<ProgramUpload> {
+class _ProgramDownloadState extends State<ProgramDownload> {
   var _userdataProvider;
   var _famousdataProvider;
   var _workoutdataProvider;
@@ -40,36 +40,14 @@ class _ProgramUploadState extends State<ProgramUpload> {
   TextEditingController _famousimageCtrl = TextEditingController(text: "");
   TextEditingController _programtitleCtrl = TextEditingController(text: "");
   TextEditingController _programcommentCtrl = TextEditingController(text: "");
-  File? _image;
-  final ImagePicker _picker = ImagePicker();
+
   var _selectImage;
-  String name = "";
 
   @override
   void initState() {
     super.initState();
   }
 
-  Future _getImage(ImageSource imageSource) async {
-    _selectImage =
-    await _picker.pickImage(source: imageSource, imageQuality: 30);
-
-    setState(() {
-      _image = File(_selectImage!.path); // 가져온 이미지를 _image에 저장
-    });
-  }
-
-  Future<void> _pickImg() async {
-    final XFile? selectImage =
-    await _picker.pickImage(source: ImageSource.gallery, imageQuality: 10);
-    if (selectImage != null) {
-      _image = File(selectImage.path);
-      // dynamic sendData = selectImage.path;
-      // UserImageEdit(file: sendData).patchUserImage().then((data) {
-      //    _userdataProvider.setUserdata(data);
-      // });
-    }
-  }
 
   PreferredSizeWidget _appbarWidget() {
     _btnDisabled = false;
@@ -93,7 +71,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
     );
   }
 
-  Widget _exerciseDoneWidget() {
+  Widget _programDownloadWidget() {
     return Column(
       children: [
         Container(
@@ -102,23 +80,27 @@ class _ProgramUploadState extends State<ProgramUpload> {
                 child: Column(children: [
                   Container(
                     padding: const EdgeInsets.all(12.0),
-                    alignment: Alignment.centerLeft,
-                    child: Text("Program 이름",
-                        style: TextStyle(fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold)),
+                    child: Row(
+                      children: [
+                        widget.program.image != ""
+                        ? CircleAvatar(
+                          radius: 48,
+                          backgroundImage: NetworkImage(widget.program.image),
+                          backgroundColor: Colors.transparent)
+                        : Icon(
+                          Icons.account_circle,
+                          color: Colors.grey,
+                          size: 100.0,
+                          ),
+                        Text(widget.program.routinedata.name,
+                            style: TextStyle(fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold)),
+
+                      ],
+                    ),
                   ),
-                  _titleWidget(),
+
                   Container(
-                    padding: const EdgeInsets.all(12.0),
-                    alignment: Alignment.centerLeft,
-                    child: Text("Program 설명",
-                        style: TextStyle(fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold)),
-                  ),
-                  _commentWidget(),
-                  Container(
-                    height: 10,
-                  ),
-                  Container(
-                    height: 150,
+                    height: 100,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Card(
@@ -129,23 +111,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SizedBox(
-                                    width: 120,
-                                    child: Center(
-                                        child: Icon(Icons.fitness_center,
-                                            color: Colors.white, size: 40)),
-                                  ),
 
-                                  SizedBox(
-                                      width: 120,
-                                      child: Center(
-                                          child: Icon(Icons.celebration,
-                                              color: Colors.white, size: 40))),
-                                ],
-                              ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -170,7 +136,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
                                   SizedBox(
                                     width: 120,
                                     child: Center(
-                                      child: Text('${widget.program.exercises[0].plans.length.toString()}days',
+                                      child: Text('${widget.program.routinedata.exercises[0].plans.length.toString()}days',
                                           style: TextStyle(color: Colors.white)),
                                     ),
                                   ),
@@ -188,27 +154,22 @@ class _ProgramUploadState extends State<ProgramUpload> {
                       ),
                     ),
                   ),
+
                   Container(
-                    height: 200,
-                    width: MediaQuery.of(context).size.width,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Card(
-                        color: Theme.of(context).cardColor,
-                        child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 40.0, vertical: 8.0),
-                            child: GestureDetector(
-                              child: _image == null
-                                  ? Icon(Icons.add_photo_alternate,
-                                  color: Colors.white, size: 120)
-                                  : Image.file(File(_image!.path)),
-                              onTap: () {
-                                _displayPhotoAlert();
-                              },
-                            )),
-                      ),
-                    ),
+                    padding: const EdgeInsets.all(12.0),
+                    alignment: Alignment.centerLeft,
+                    child: Text("Program 설명",
+                        style: TextStyle(fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold)),
+                  ),
+
+                  Container(
+                    padding: const EdgeInsets.all(12.0),
+                    alignment: Alignment.centerLeft,
+                    child: Text(widget.program.routinedata.routine_time,
+                        style: TextStyle(fontSize: 20.0, color: Colors.white, fontWeight: FontWeight.bold)),
+                  ),
+                  Container(
+                    height: 10,
                   ),
 
 
@@ -221,82 +182,6 @@ class _ProgramUploadState extends State<ProgramUpload> {
     );
   }
 
-  void _displayPhotoAlert() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            backgroundColor: Theme.of(context).cardColor,
-            actions: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding:
-                      const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
-                      child: Text("사진을 올릴 방법을 고를 수 있어요",
-                          style:
-                          TextStyle(color: Colors.white, fontSize: 16.0)),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        SizedBox(
-                            width: MediaQuery.of(context).size.width / 4,
-                            child: FlatButton(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              color: Theme.of(context).primaryColor,
-                              textColor: Colors.white,
-                              disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                              disabledTextColor: Colors.black,
-                              padding: EdgeInsets.all(8.0),
-                              splashColor: Theme.of(context).primaryColor,
-                              onPressed: () {
-                                _getImage(ImageSource.camera);
-                                Navigator.pop(context);
-                              },
-                              child: Column(
-                                children: [
-                                  Icon(Icons.camera_alt, size: 24),
-                                  Text('촬영', style: TextStyle(fontSize: 16)),
-                                ],
-                              ),
-                            )),
-                        SizedBox(
-                            width: MediaQuery.of(context).size.width / 4,
-                            child: FlatButton(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              color: Theme.of(context).primaryColor,
-                              textColor: Colors.white,
-                              disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                              disabledTextColor: Colors.black,
-                              padding: EdgeInsets.all(8.0),
-                              splashColor: Theme.of(context).primaryColor,
-                              onPressed: () {
-                                _getImage(ImageSource.gallery);
-                                Navigator.pop(context);
-                              },
-                              child: Column(
-                                children: [
-                                  Icon(Icons.collections, size: 24),
-                                  Text('갤러리', style: TextStyle(fontSize: 16)),
-                                ],
-                              ),
-                            )),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          );
-        });
-  }
 
   Widget _exercise_Done_Button() {
     return Padding(
@@ -315,38 +200,13 @@ class _ProgramUploadState extends State<ProgramUpload> {
               splashColor: Theme.of(context).primaryColor,
               onPressed: () {
 
-
-
-                ProgramPost(
-                  image: _famousimageCtrl.text,
-                  routinedata: new Routinedatas(name: _programtitleCtrl.text, mode: widget.program.mode, exercises: widget.program.exercises, routine_time: _programcommentCtrl.text),
-                  type: 0,
-                  user_email: _userdataProvider.userdata.email,)
-                      .postProgram().then((data) => {
-                    if (_selectImage != null) {
-                        FamousImageEdit(
-                        famous_id: data["id"],
-                        file: _selectImage.path).patchFamousImage().then((data) => {
-                        _famousdataProvider.getdata(),
-                        })
-                    } ,
-
-                });
-
-
-
-                Navigator.of(context).popUntil((route) => route.isFirst);
               },
-              child: Text("운동 등록",
+              child: Text("시작하기",
                   style: TextStyle(fontSize: 20.0, color: Colors.white)))),
     );
   }
 
   Widget _titleWidget() {
-    _programtitleCtrl.text == ""
-    ? _programtitleCtrl.text = widget.program.name
-    : null;
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: TextFormField(
@@ -407,7 +267,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: _appbarWidget(),
-        body: _exerciseDoneWidget(),
+        body: _programDownloadWidget(),
         backgroundColor: Colors.black);
   }
 }

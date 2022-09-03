@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/pages/download_program.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
@@ -7,6 +8,7 @@ import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'package:transition/transition.dart';
 
 class RoutineBank extends StatefulWidget {
   const RoutineBank({Key? key}) : super(key: key);
@@ -46,7 +48,13 @@ class _RoutineBankState extends State<RoutineBank> {
                 itemBuilder: (BuildContext _context, int index) {
                   return GestureDetector(
                     onTap: (){
-
+                      Navigator.push(
+                          context,
+                          Transition(
+                              child: ProgramDownload(
+                                program: provider.famousdata.famouss[index],
+                              ),
+                              transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
                     },
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width/2,
