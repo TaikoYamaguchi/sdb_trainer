@@ -78,7 +78,7 @@ class Routinedatas {
   String name;
   int mode;
   List exercises;
-  final double? routine_time;
+  var routine_time;
   Routinedatas(
       {
         required this.name,

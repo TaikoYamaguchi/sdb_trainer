@@ -39,6 +39,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
   var _btnDisabled;
   TextEditingController _famousimageCtrl = TextEditingController(text: "");
   TextEditingController _programtitleCtrl = TextEditingController(text: "");
+  TextEditingController _programcommentCtrl = TextEditingController(text: "");
   File? _image;
   final ImagePicker _picker = ImagePicker();
   var _selectImage;
@@ -93,116 +94,131 @@ class _ProgramUploadState extends State<ProgramUpload> {
   }
 
   Widget _exerciseDoneWidget() {
-    return Container(
-        child: SingleChildScrollView(
-          child: Column(children: [
-            Container(
-              padding: const EdgeInsets.all(12.0),
-              alignment: Alignment.centerLeft,
-              child: Text("Program 이름",
-                  style: TextStyle(fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold)),
-            ),
-            _commentWidget(),
-            Container(
-              height: 10,
-            ),
-            Container(
-              height: 150,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  color: Theme.of(context).cardColor,
-                  child: Padding(
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 40.0, vertical: 8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: 120,
-                              child: Center(
-                                  child: Icon(Icons.fitness_center,
-                                      color: Colors.white, size: 40)),
-                            ),
+    return Column(
+      children: [
+        Container(
+            child: Expanded(
+              child: SingleChildScrollView(
+                child: Column(children: [
+                  Container(
+                    padding: const EdgeInsets.all(12.0),
+                    alignment: Alignment.centerLeft,
+                    child: Text("Program 이름",
+                        style: TextStyle(fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold)),
+                  ),
+                  _titleWidget(),
+                  Container(
+                    padding: const EdgeInsets.all(12.0),
+                    alignment: Alignment.centerLeft,
+                    child: Text("Program 설명",
+                        style: TextStyle(fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold)),
+                  ),
+                  _commentWidget(),
+                  Container(
+                    height: 10,
+                  ),
+                  Container(
+                    height: 150,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        color: Theme.of(context).cardColor,
+                        child: Padding(
+                          padding:
+                          const EdgeInsets.symmetric(horizontal: 40.0, vertical: 8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    width: 120,
+                                    child: Center(
+                                        child: Icon(Icons.fitness_center,
+                                            color: Colors.white, size: 40)),
+                                  ),
 
-                            SizedBox(
-                                width: 120,
-                                child: Center(
-                                    child: Icon(Icons.celebration,
-                                        color: Colors.white, size: 40))),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                                width: 120,
-                                child: Center(
-                                  child: Text("Program 기간",
-                                      style: TextStyle(color: Colors.white)),
-                                )),
-
-                            SizedBox(
-                                width: 120,
-                                child: Center(
-                                  child: Text("신기록",
-                                      style: TextStyle(color: Colors.white)),
-                                ))
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: 120,
-                              child: Center(
-                                child: Text('${widget.program.exercises[0].plans.length.toString()}days',
-                                    style: TextStyle(color: Colors.white)),
+                                  SizedBox(
+                                      width: 120,
+                                      child: Center(
+                                          child: Icon(Icons.celebration,
+                                              color: Colors.white, size: 40))),
+                                ],
                               ),
-                            ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                      width: 120,
+                                      child: Center(
+                                        child: Text("Program 기간",
+                                            style: TextStyle(color: Colors.white)),
+                                      )),
 
-                            SizedBox(
-                                width: 120,
-                                child: Center(
-                                    child: Text("0",
-                                        style: TextStyle(color: Colors.white)))),
-                          ],
+                                  SizedBox(
+                                      width: 120,
+                                      child: Center(
+                                        child: Text("신기록",
+                                            style: TextStyle(color: Colors.white)),
+                                      ))
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    width: 120,
+                                    child: Center(
+                                      child: Text('${widget.program.exercises[0].plans.length.toString()}days',
+                                          style: TextStyle(color: Colors.white)),
+                                    ),
+                                  ),
+
+                                  SizedBox(
+                                      width: 120,
+                                      child: Center(
+                                          child: Text("0",
+                                              style: TextStyle(color: Colors.white)))),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ),
-            Container(
-              height: 200,
-              width: MediaQuery.of(context).size.width,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  color: Theme.of(context).cardColor,
-                  child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 40.0, vertical: 8.0),
-                      child: GestureDetector(
-                        child: _image == null
-                            ? Icon(Icons.add_photo_alternate,
-                            color: Colors.white, size: 120)
-                            : Image.file(File(_image!.path)),
-                        onTap: () {
-                          _displayPhotoAlert();
-                        },
-                      )),
-                ),
-              ),
-            ),
+                  Container(
+                    height: 200,
+                    width: MediaQuery.of(context).size.width,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        color: Theme.of(context).cardColor,
+                        child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 40.0, vertical: 8.0),
+                            child: GestureDetector(
+                              child: _image == null
+                                  ? Icon(Icons.add_photo_alternate,
+                                  color: Colors.white, size: 120)
+                                  : Image.file(File(_image!.path)),
+                              onTap: () {
+                                _displayPhotoAlert();
+                              },
+                            )),
+                      ),
+                    ),
+                  ),
 
-            _exercise_Done_Button()
-          ]),
-        ));
+
+                ]),
+              ),
+            )
+        ),
+        _exercise_Done_Button()
+      ],
+    );
   }
 
   void _displayPhotoAlert() {
@@ -303,7 +319,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
 
                 ProgramPost(
                   image: _famousimageCtrl.text,
-                  routinedata: new Routinedatas(name: _programtitleCtrl.text, mode: widget.program.mode, exercises: widget.program.exercises, routine_time: widget.program.routine_time),
+                  routinedata: new Routinedatas(name: _programtitleCtrl.text, mode: widget.program.mode, exercises: widget.program.exercises, routine_time: _programcommentCtrl.text),
                   type: 0,
                   user_email: _userdataProvider.userdata.email,)
                       .postProgram().then((data) => {
@@ -325,7 +341,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
     );
   }
 
-  Widget _commentWidget() {
+  Widget _titleWidget() {
     _programtitleCtrl.text = widget.program.name;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -334,6 +350,32 @@ class _ProgramUploadState extends State<ProgramUpload> {
           decoration: InputDecoration(
               prefixIcon: Icon(Icons.edit, color: Colors.white),
               labelText: 'Program 이름을 바꿀 수 있어요',
+              labelStyle: TextStyle(color: Colors.white),
+              border: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.white, width: 2.0),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white, width: 2.0),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              fillColor: Colors.white),
+
+          style: TextStyle(color: Colors.white)),
+    );
+  }
+
+  Widget _commentWidget() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: TextFormField(
+          controller: _programcommentCtrl,
+          keyboardType: TextInputType.multiline,
+          //expands: true,
+          maxLines: null,
+          decoration: InputDecoration(
+              prefixIcon: Icon(Icons.edit, color: Colors.white),
+              labelText: 'Program을 설명해주세요',
               labelStyle: TextStyle(color: Colors.white),
               border: OutlineInputBorder(
                 borderSide: const BorderSide(color: Colors.white, width: 2.0),
