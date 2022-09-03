@@ -40,22 +40,26 @@ class ProgramPost {
   final String user_email;
   final int type;
   final String image;
-  final Routinedatas routinedatas;
+  final Routinedatas routinedata;
   ProgramPost({
     required this.user_email,
     required this.type,
     required this.image,
-    required this.routinedatas,
+    required this.routinedata,
   });
   Future<String> _programPostFromServer() async {
     var formData = new Map<String, dynamic>();
     formData["user_email"] = user_email;
     formData["type"] = type;
+    formData["id"] = 0;
     formData["image"] = image;
-    formData["routinedatas"] = jsonEncode(routinedatas);
+    formData["routinedata"] = jsonEncode(routinedata);
+
+    print(formData["image"]);
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/famouscreate");
     var response = await http.post(url, body: json.encode(formData));
+    print(json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       String jsonString = utf8.decode(response.bodyBytes);

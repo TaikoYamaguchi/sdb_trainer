@@ -299,7 +299,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
 
                 ProgramPost(
                   image: _famousimageCtrl.text,
-                  routinedatas: widget.program,
+                  routinedata: widget.program,
                   type: 0,
                   user_email: _userdataProvider.userdata.email,)
                       .postProgram();
