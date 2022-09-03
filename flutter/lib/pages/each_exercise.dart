@@ -443,14 +443,15 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               onClose: () {
                                                 print("onClose!!");
                                               },
-                                              motionWidget: DrawerMotion(),
+                                              motionWidget: StretchMotion(),
                                             ),
                                             children: [
                                               SlidableAction(
                                                 autoClose: true,
                                                 onPressed: (_) {},
                                                 backgroundColor:
-                                                    Color(0xFF29B6F6),
+                                                    Theme.of(context)
+                                                        .primaryColor,
                                                 foregroundColor: Colors.white,
                                                 icon: Icons.check,
                                                 label: '밀어서 check',
