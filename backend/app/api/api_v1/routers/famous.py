@@ -18,12 +18,12 @@ async def famous_create(
 
 @r.get(
     "/famous/{type}",
-    response_model=FamousOut,
+    response_model=t.List[FamousOut],
     response_model_exclude_none=True,
 )
 async def famouss_list(
     response: Response,
-    email:str,
+    type:int,
     db=Depends(get_db),
 ):
 
@@ -34,12 +34,11 @@ async def famouss_list(
 
 @r.get(
     "/famous",
-    response_model=FamousOut,
+    response_model=t.List[FamousOut],
     response_model_exclude_none=True,
 )
 async def famouss_list(
     response: Response,
-    email:str,
     db=Depends(get_db),
 ):
 
