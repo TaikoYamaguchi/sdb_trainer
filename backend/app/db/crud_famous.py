@@ -33,7 +33,7 @@ def get_famouss(db: Session) -> t.List[schemas.FamousOut]:
 
 
 def get_famouss_by_id(db: Session, input_id: int) -> schemas.FamousOut:
-    famous = db.query(models.Famous).filter(models.Famous.id == famous.id).first()
+    famous = db.query(models.Famous).filter(models.Famous.id == input_id).first()
     print(famous)
     return famous
 
@@ -53,7 +53,7 @@ def edit_famous(db: Session, famous: schemas.FamousCreate):
     return db_famous
 
 def edit_image_by_famous_id(db: Session,user:schemas.User,famous_id:int, image_id : int) -> schemas.FamousOut:
-    db_famous = get_famouss_by_id(db, famous.id)
+    db_famous = get_famouss_by_id(db, famous_id)
     setattr(db_famous, "image", f"http://43.200.121.48:8000/api/images/{image_id}")
     db.commit()
     db.refresh(db_famous)
