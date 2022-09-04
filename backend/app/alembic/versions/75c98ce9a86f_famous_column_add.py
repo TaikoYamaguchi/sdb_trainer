@@ -37,9 +37,9 @@ def upgrade():
     if not table_has_column("famous", "dislike"):
             op.add_column("famous", sa.Column("dislike", sa.ARRAY(sa.String), server_default='{}'))
     if not table_has_column("famous", "level"):
-            op.add_column("famous", sa.Column("level", sa.Integer, nullable=False))
+            op.add_column("famous", sa.Column("level", sa.Integer, nullable=True))
     if not table_has_column("famous", "subscribe"):
-            op.add_column("famous", sa.Column("subscribe", sa.Integer, nullable=False))
+            op.add_column("famous", sa.Column("subscribe", sa.Integer, nullable=True))
 
     pass
 
