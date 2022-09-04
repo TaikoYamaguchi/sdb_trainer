@@ -257,6 +257,6 @@ class FamousCreate(FamousBase):
 class FamousOut(FamousBase):
     id: int
     type: int
-    date: datetime
+    subscribe: int
     class config:
         orm_mode = True
