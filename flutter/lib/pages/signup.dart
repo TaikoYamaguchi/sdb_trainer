@@ -427,7 +427,9 @@ class _LoginPageState extends State<SignUpPage> {
             TextStyle(color: _isEmailused == false ? Colors.white : Colors.red),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-              color: _isEmailused == false ? Colors.blue : Colors.red,
+              color: _isEmailused == false
+                  ? Theme.of(context).primaryColor
+                  : Colors.red,
               width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
@@ -549,7 +551,9 @@ class _LoginPageState extends State<SignUpPage> {
             color: _isNickNameused == false ? Colors.white : Colors.red),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-              color: _isNickNameused == false ? Colors.white : Colors.red,
+              color: _isNickNameused == false
+                  ? Theme.of(context).primaryColor
+                  : Colors.red,
               width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
@@ -573,8 +577,9 @@ class _LoginPageState extends State<SignUpPage> {
       decoration: InputDecoration(
         labelText: "키",
         labelStyle: TextStyle(color: Colors.white),
-        border: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.white, width: 2.0),
+        focusedBorder: OutlineInputBorder(
+          borderSide:
+              BorderSide(color: Theme.of(context).primaryColor, width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
         enabledBorder: OutlineInputBorder(
@@ -593,8 +598,9 @@ class _LoginPageState extends State<SignUpPage> {
       decoration: InputDecoration(
         labelText: "몸무게",
         labelStyle: TextStyle(color: Colors.white),
-        border: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.white, width: 2.0),
+        focusedBorder: OutlineInputBorder(
+          borderSide:
+              BorderSide(color: Theme.of(context).primaryColor, width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
         enabledBorder: OutlineInputBorder(
@@ -661,7 +667,9 @@ class _LoginPageState extends State<SignUpPage> {
             color: _isPhoneNumberused == false ? Colors.white : Colors.red),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-              color: _isPhoneNumberused == false ? Colors.white : Colors.red,
+              color: _isPhoneNumberused == false
+                  ? Theme.of(context).primaryColor
+                  : Colors.red,
               width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
@@ -697,6 +705,11 @@ class _LoginPageState extends State<SignUpPage> {
       decoration: InputDecoration(
         labelText: "비밀번호",
         labelStyle: TextStyle(color: Colors.white),
+        focusedBorder: OutlineInputBorder(
+          borderSide:
+              BorderSide(color: Theme.of(context).primaryColor, width: 2.0),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
         border: OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.white, width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
@@ -713,12 +726,15 @@ class _LoginPageState extends State<SignUpPage> {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
-            color: Color.fromRGBO(246, 58, 64, 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: Theme.of(context).primaryColor,
             textColor: Colors.white,
             disabledColor: Color.fromRGBO(246, 58, 64, 20),
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
-            splashColor: Colors.blueAccent,
+            splashColor: Theme.of(context).primaryColor,
             onPressed: () => _isSignupIndex == 0
                 ? setState(() {
                     _signUpProfileCheck().then((value) {
@@ -738,12 +754,15 @@ class _LoginPageState extends State<SignUpPage> {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
-            color: Color.fromRGBO(246, 58, 64, 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: Theme.of(context).primaryColor,
             textColor: Colors.white,
-            disabledColor: Color.fromRGBO(246, 58, 64, 20),
+            disabledColor: Theme.of(context).primaryColor,
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
-            splashColor: Colors.blueAccent,
+            splashColor: Theme.of(context).primaryColor,
             onPressed: () => _postExerciseCheck(),
             child: Text(isLoading ? 'loggin in.....' : "운동 정보 제출",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
@@ -753,12 +772,15 @@ class _LoginPageState extends State<SignUpPage> {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
-            color: Color.fromRGBO(246, 58, 64, 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: Theme.of(context).primaryColor,
             textColor: Colors.white,
-            disabledColor: Color.fromRGBO(246, 58, 64, 20),
+            disabledColor: Theme.of(context).primaryColor,
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
-            splashColor: Colors.blueAccent,
+            splashColor: Theme.of(context).primaryColor,
             onPressed: () => setState(() {
                   _signUpGenderCheck() ? _isSignupIndex = 2 : null;
                 }),
@@ -893,7 +915,7 @@ class _LoginPageState extends State<SignUpPage> {
             disabledColor: Colors.black,
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
-            splashColor: Colors.blueAccent,
+            splashColor: Theme.of(context).primaryColor,
             onPressed: () => isLoading ? null : _loginState.changeSignup(false),
             child: Text(isLoading ? 'loggin in.....' : "이미 계정이 있으신가요?",
                 style: TextStyle(fontSize: 14.0, color: Colors.white))));

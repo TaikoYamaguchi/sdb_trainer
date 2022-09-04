@@ -14,4 +14,10 @@ class ExercisesdataProvider extends ChangeNotifier {
       notifyListeners();
     });
   }
+
+  addExdata(Exercises) {
+    _exercisesdata.exercises.add(Exercises);
+    print(_exercisesdata.exercises.last.name);
+    notifyListeners();
+  }
 }
