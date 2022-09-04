@@ -18,7 +18,7 @@ def create_famous(db: Session, famous: schemas.FamousCreate):
         date = datetime.datetime.utcnow()+datetime.timedelta(hours=9),
         like=[],
         dislike=[],
-        level=famous.level
+        level=famous.level,
         subscribe=0
     )
     print(famous.user_email)
