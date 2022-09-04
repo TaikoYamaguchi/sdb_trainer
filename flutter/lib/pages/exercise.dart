@@ -152,7 +152,6 @@ class ExerciseState extends State<Exercise> {
                           controller!.animateToPage(0,
                               duration: const Duration(milliseconds: 200),
                               curve: Curves.easeInOut);
-                          provider.change(1);
                           provider.change(0);
                         },
                         child: Text(
@@ -226,7 +225,7 @@ class ExerciseState extends State<Exercise> {
   }
 
   Widget _routinemenuPage() {
-    controller = PageController(initialPage: 0);
+    controller = PageController(initialPage: _RoutineMenuProvider.menustate);
     return Expanded(
       child: PageView(
         onPageChanged: (value) {

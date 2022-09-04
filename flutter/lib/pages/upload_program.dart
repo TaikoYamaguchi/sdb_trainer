@@ -319,7 +319,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
 
                 ProgramPost(
                   image: _famousimageCtrl.text,
-                  routinedata: new Routinedatas(name: _programtitleCtrl.text, mode: widget.program.mode, exercises: widget.program.exercises, routine_time: _programcommentCtrl.text),
+                  routinedata: new Routinedatas(name: _programtitleCtrl.text, mode: widget.program.mode, exercises: [new Program(progress: 0, plans: widget.program.exercises[0].plans)], routine_time: _programcommentCtrl.text),
                   type: 0,
                   user_email: _userdataProvider.userdata.email,)
                       .postProgram().then((data) => {
