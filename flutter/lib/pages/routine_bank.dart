@@ -86,8 +86,8 @@ class _RoutineBankState extends State<RoutineBank> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Container(
-                                        child: Text(provider.famousdata.famouss[index].routinedata.name, style: TextStyle(color: Colors.white, fontSize: 16,fontWeight: FontWeight.bold),),
+                                      Expanded(
+                                        child: Text(provider.famousdata.famouss[index].routinedata.name,overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white, fontSize: 16,fontWeight: FontWeight.bold),),
                                       ),
                                     ],
                                   ),

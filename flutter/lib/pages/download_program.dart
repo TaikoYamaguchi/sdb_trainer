@@ -91,8 +91,10 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                           color: Colors.grey,
                           size: 100.0,
                           ),
-                        Text(widget.program.routinedata.name,
-                            style: TextStyle(fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold)),
+                        Expanded(
+                          child: Text(widget.program.routinedata.name,
+                              style: TextStyle(fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold)),
+                        ),
 
                       ],
                     ),
