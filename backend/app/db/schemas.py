@@ -243,6 +243,10 @@ class FamousBase(BaseModel):
     user_email: str
     image: str = ""
     routinedata: t.Any
+    like:list
+    dislike:list
+    level: int
+    subscribe: int = 0
     class Config:
         orm_mode = True
 
