@@ -106,5 +106,5 @@ class Famous(Base):
     routinedata = Column(DateTime, nullable=False)
     like = Column(MutableList.as_mutable(ARRAY(String)))
     dislike = Column(MutableList.as_mutable(ARRAY(String)))
-    level = Column(Integer, nullable=False)
-    subscribe = Column(Integer, nullable=False)
+    level = Column(Integer, nullable=True)
+    subscribe = Column(Integer, nullable=True)
