@@ -19,7 +19,7 @@ def create_famous(db: Session, famous: schemas.FamousCreate):
         like=[],
         dislike=[],
         level=famous.level,
-        subscribe=0
+        subscribe=0,
         category=famous.category
     )
     print(famous.user_email)
