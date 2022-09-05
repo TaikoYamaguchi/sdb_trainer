@@ -19,7 +19,8 @@ def create_famous(db: Session, famous: schemas.FamousCreate):
         like=[],
         dislike=[],
         level=famous.level,
-        subscribe=0
+        subscribe=famous.subscribe,
+        category=famous.category
     )
     print(famous.user_email)
     db.add(db_famous)

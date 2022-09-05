@@ -40,11 +40,15 @@ class ProgramPost {
   final int type;
   final String image;
   final Routinedatas routinedata;
+  final int level;
+  final int category;
   ProgramPost({
     required this.user_email,
     required this.type,
     required this.image,
     required this.routinedata,
+    required this.level,
+    required this.category,
   });
   Future<String> _programPostFromServer() async {
     var formData = new Map<String, dynamic>();
@@ -53,6 +57,10 @@ class ProgramPost {
     formData["id"] = 0;
     formData["image"] = image;
     formData["routinedata"] = jsonEncode(routinedata);
+    formData["like"] = [];
+    formData["level"] = level;
+    formData["subscribe"] = 0;
+    formData["category"] = category;
 
     print(formData["image"]);
 

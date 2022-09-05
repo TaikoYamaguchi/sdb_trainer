@@ -247,6 +247,7 @@ class FamousBase(BaseModel):
     dislike:list
     level: int
     subscribe: int = 0
+    category: int = 0
     class Config:
         orm_mode = True
 
@@ -258,5 +259,6 @@ class FamousOut(FamousBase):
     id: int
     type: int
     subscribe: int
+    category: int
     class config:
         orm_mode = True

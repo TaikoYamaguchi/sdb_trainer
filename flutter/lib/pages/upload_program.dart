@@ -44,6 +44,9 @@ class _ProgramUploadState extends State<ProgramUpload> {
   final ImagePicker _picker = ImagePicker();
   var _selectImage;
   String name = "";
+  List<String> items = ['뉴비', '초급','중급','상급', '엘리트'];
+  var selectedItem = '뉴비';
+  Map item_map = {"뉴비":0,"초급":1,'중급':2,'상급':3, '엘리트':4};
 
   @override
   void initState() {
@@ -107,6 +110,49 @@ class _ProgramUploadState extends State<ProgramUpload> {
                         style: TextStyle(fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold)),
                   ),
                   _titleWidget(),
+                  Container(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          child: Text("Program 난이도",
+                              style: TextStyle(fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold)),
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width*2/5,
+                          child: DropdownButtonFormField(
+                            isExpanded: true,
+                            dropdownColor: Colors.black,
+                            decoration: InputDecoration(
+                                labelText: '난이도',
+                                labelStyle: TextStyle(color: Colors.white),
+                                border: OutlineInputBorder(
+                                  borderSide: const BorderSide(color: Colors.white, width: 2.0),
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white, width: 2.0),
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                                fillColor: Colors.white),
+                            hint: Align(
+                                alignment: Alignment.center,
+                                child: Text('난이도', style: TextStyle(color: Colors.white),)),
+                            items: items.map((item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Align(
+                                    alignment: Alignment.center, 
+                                    child: Text(item, style: TextStyle(color: Colors.white),))
+                            )).toList(),
+                            onChanged: (item) => setState(() => selectedItem = item as String),
+                          )
+                        ),
+
+                      ],
+                    ),
+                  ),
+
                   Container(
                     padding: const EdgeInsets.all(12.0),
                     alignment: Alignment.centerLeft,
@@ -319,9 +365,12 @@ class _ProgramUploadState extends State<ProgramUpload> {
 
                 ProgramPost(
                   image: _famousimageCtrl.text,
-                  routinedata: new Routinedatas(name: _programtitleCtrl.text, mode: widget.program.mode, exercises: [new Program(progress: 0, plans: widget.program.exercises[0].plans)], routine_time: _programcommentCtrl.text),
+                  routinedata: new Routinedatas(name: _programtitleCtrl.text, mode: widget.program.mode, exercises: [new Program(progress: 0, plans: widget.program.exercises[0].plans)], routine_time: _programcommentCtrl.text,),
                   type: 0,
-                  user_email: _userdataProvider.userdata.email,)
+                  user_email: _userdataProvider.userdata.email,
+                  level: item_map[selectedItem],
+                  category: 0,
+                )
                       .postProgram().then((data) => {
                     if (_selectImage != null) {
                         FamousImageEdit(
