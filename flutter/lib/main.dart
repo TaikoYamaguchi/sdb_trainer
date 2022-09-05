@@ -59,6 +59,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primaryColor: const Color(0xff7a28cb),
           cardColor: const Color(0xff40434e),
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: const Color(0xff7a28cb),
+            selectionColor: const Color(0xff7a28cb),
+            selectionHandleColor: const Color(0xff7a28cb),
+          ),
+          colorScheme: ThemeData().colorScheme.copyWith(
+                primary: const Color(0xff7a28cb),
+              ),
           fontFamily: 'Noto_Sans_KR'),
       title: 'Flutter Demo',
       home: App(),

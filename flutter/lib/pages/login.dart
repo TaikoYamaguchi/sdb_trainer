@@ -30,6 +30,7 @@ class _LoginPageState extends State<LoginPage> {
   var _signUpState;
   var _userProvider;
   bool isLoading = false;
+  bool _isEmailLogin = false;
   TextEditingController _userEmailCtrl = TextEditingController(text: "");
   TextEditingController _userPasswordCtrl = TextEditingController(text: "");
 
@@ -48,45 +49,55 @@ class _LoginPageState extends State<LoginPage> {
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
 
     return Scaffold(
-        body: Container(
-      color: Colors.black,
-      child: Center(
-          child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: SingleChildScrollView(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("SUPERO",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 54,
-                              fontWeight: FontWeight.w800)),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      _emailWidget(),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      _passwordWidget(),
-                      SizedBox(
-                        height: 14,
-                      ),
-                      _loginButton(context),
-                      SizedBox(
-                        height: 14,
-                      ),
-                      _signUpButton(context),
-                      SizedBox(
-                        height: 6,
-                      ),
-                      _loginWithKakao(context),
-                      _loginWithGoogle(context),
-                      _findUser(context),
-                    ]),
-              ))),
-    ));
+      body: Container(
+          color: Colors.black,
+          child: Center(
+              child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                    flex: 3,
+                    child: SizedBox(
+                      height: 6,
+                    ),
+                  ),
+                  Text("SUPERO",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 54,
+                          fontWeight: FontWeight.w800)),
+                  _isEmailLogin ? _emailWidget() : Container(),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  _isEmailLogin ? _passwordWidget() : Container(),
+                  SizedBox(
+                    height: 14,
+                  ),
+                  _isEmailLogin ? _loginButton(context) : Container(),
+                  SizedBox(
+                    height: 14,
+                  ),
+                  _isEmailLogin ? _signUpButton(context) : Container(),
+                  _isEmailLogin
+                      ? SizedBox(
+                          height: 6,
+                        )
+                      : Expanded(
+                          flex: 3,
+                          child: SizedBox(
+                            height: 6,
+                          ),
+                        ),
+                  _loginWithKakao(context),
+                  _loginWithGoogle(context),
+                  _emailLoginButton(context),
+                  _isEmailLogin ? _findUser(context) : Container(),
+                ]),
+          ))),
+    );
   }
 
   Widget _findUser(context) {
@@ -107,7 +118,26 @@ class _LoginPageState extends State<LoginPage> {
                         child: UserFindPage(),
                         transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
             child: Text(isLoading ? 'loading in.....' : "계정을 잊어버리셨나요?",
-                style: TextStyle(fontSize: 14.0, color: Colors.white))));
+                style: TextStyle(fontSize: 14.0, color: Colors.grey))));
+  }
+
+  Widget _emailLoginButton(context) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+            color: Colors.black,
+            textColor: Colors.grey,
+            disabledColor: Colors.black,
+            disabledTextColor: Colors.black,
+            padding: EdgeInsets.all(4.0),
+            splashColor: Colors.blueAccent,
+            onPressed: () => isLoading
+                ? null
+                : setState(() {
+                    _isEmailLogin = !_isEmailLogin;
+                  }),
+            child: Text(_isEmailLogin ? '홈으로 돌아가기' : "이메일로 로그인 하기",
+                style: TextStyle(fontSize: 14.0, color: Colors.grey))));
   }
 
   Widget _emailWidget() {

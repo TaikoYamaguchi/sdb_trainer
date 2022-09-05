@@ -184,11 +184,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               child: GestureDetector(
                 child: Icon(Icons.arrow_back_ios_outlined),
                 onTap: () {
-                  _routinetimeProvider.isstarted
-                      ? _displayFinishAlert()
-                      : btnDisabled == true
-                          ? null
-                          : [btnDisabled = true, Navigator.of(context).pop()];
+                  btnDisabled == true
+                      ? null
+                      : [btnDisabled = true, Navigator.of(context).pop()];
                 },
               ),
             ),

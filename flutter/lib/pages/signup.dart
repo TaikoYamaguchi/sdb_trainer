@@ -13,6 +13,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
+import 'package:step_progress_indicator/step_progress_indicator.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -152,7 +154,35 @@ class _LoginPageState extends State<SignUpPage> {
       _userGenderCtrl = _userProvider.userKakaoGender;
     }
 
-    return Scaffold(body: _signupWidget());
+    return Scaffold(
+        body: Container(
+      color: Colors.black,
+      child: Column(
+        children: [
+          KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
+            return Container(
+              width: MediaQuery.of(context).size.width / 3,
+              height: 40,
+              child:
+                  Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+                StepProgressIndicator(
+                  totalSteps: 4,
+                  size: 10,
+                  roundedEdges: Radius.circular(10),
+                  currentStep: _isSignupIndex + 1,
+                  selectedColor: Theme.of(context).primaryColor,
+                  unselectedColor: Theme.of(context).cardColor,
+                  customColor: (index) => index == _isSignupIndex
+                      ? Theme.of(context).primaryColor
+                      : Theme.of(context).cardColor,
+                ),
+              ]),
+            );
+          }),
+          Expanded(child: _signupWidget()),
+        ],
+      ),
+    ));
   }
 
   void add_extra_ex() {
@@ -185,11 +215,10 @@ class _LoginPageState extends State<SignUpPage> {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text("회원가입",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 32,
-                              fontWeight: FontWeight.w800)),
+                      Text("회원가입을 시작할게요",
+                          style: TextStyle(color: Colors.white, fontSize: 32)),
+                      Text("회원가입 후 운동을 시작 할 수 있어요",
+                          style: TextStyle(color: Colors.grey, fontSize: 16)),
                       SizedBox(
                         height: 16,
                       ),
@@ -207,7 +236,7 @@ class _LoginPageState extends State<SignUpPage> {
                       ),
                       _phoneNumberWidget(),
                       SizedBox(
-                        height: 12,
+                        height: 36,
                       ),
                       _signUpButton(context),
                       _loginButton(context),
@@ -229,13 +258,12 @@ class _LoginPageState extends State<SignUpPage> {
                       flex: 3,
                       child: SizedBox(),
                     ),
-                    Text("성별 입력",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 32,
-                            fontWeight: FontWeight.w800)),
+                    Text("성별을 선택해주세요",
+                        style: TextStyle(color: Colors.white, fontSize: 32)),
+                    Text("성별에 따라 추천 무게가 달라져요",
+                        style: TextStyle(color: Colors.grey, fontSize: 16)),
                     SizedBox(
-                      height: 8,
+                      height: 34,
                     ),
                     _genderWidget(),
                     SizedBox(
@@ -264,13 +292,12 @@ class _LoginPageState extends State<SignUpPage> {
                       flex: 3,
                       child: SizedBox(),
                     ),
-                    Text("키, 몸무게 입력",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 32,
-                            fontWeight: FontWeight.w800)),
+                    Text("키, 몸무게를 입력해주세요",
+                        style: TextStyle(color: Colors.white, fontSize: 32)),
+                    Text("신체에 따라 추천 프로그램이 달라져요",
+                        style: TextStyle(color: Colors.grey, fontSize: 16)),
                     SizedBox(
-                      height: 12,
+                      height: 34,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -319,12 +346,9 @@ class _LoginPageState extends State<SignUpPage> {
                       child: SizedBox(),
                     ),
                     Text("회원가입 완료!",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 32,
-                            fontWeight: FontWeight.w800)),
-                    Text("목표치와 1rm을 설정해보세요",
-                        style: TextStyle(color: Colors.white, fontSize: 13)),
+                        style: TextStyle(color: Colors.white, fontSize: 32)),
+                    Text("1rm과 목표치를 설정해보세요",
+                        style: TextStyle(color: Colors.grey, fontSize: 16)),
                     SizedBox(
                       height: 40,
                     ),
@@ -616,7 +640,7 @@ class _LoginPageState extends State<SignUpPage> {
         groupValue: _userWeightUnitCtrl,
         children: _weightUnitList,
         backgroundColor: Colors.black,
-        thumbColor: Color.fromRGBO(25, 106, 223, 20),
+        thumbColor: Theme.of(context).primaryColor,
         onValueChanged: (i) {
           setState(() {
             _userWeightUnitCtrl = i as String;
@@ -629,7 +653,7 @@ class _LoginPageState extends State<SignUpPage> {
         groupValue: _userHeightUnitCtrl,
         children: _heightUnitList,
         backgroundColor: Colors.black,
-        thumbColor: Color.fromRGBO(25, 106, 223, 20),
+        thumbColor: Theme.of(context).primaryColor,
         onValueChanged: (i) {
           setState(() {
             _userHeightUnitCtrl = i as String;
@@ -643,7 +667,7 @@ class _LoginPageState extends State<SignUpPage> {
         children: _genderList,
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         backgroundColor: Colors.black,
-        thumbColor: Color.fromRGBO(25, 106, 223, 20),
+        thumbColor: Theme.of(context).primaryColor,
         onValueChanged: (i) {
           setState(() {
             _userGenderCtrl = i as bool;
@@ -745,7 +769,28 @@ class _LoginPageState extends State<SignUpPage> {
                       }
                     });
                   })
-                : {_signUpCheck(), showToast("회원가입 중이니 기다려주세요.")},
+                : _isSignupIndex == 1
+                    ? setState(() {
+                        _signUpProfileCheck().then((value) {
+                          if (value) {
+                            setState(() {
+                              _isSignupIndex = 2;
+                            });
+                          }
+                        });
+                      })
+                    : {
+                        setState(() {
+                          _signUpProfileCheck().then((value) {
+                            if (value) {
+                              setState(() {
+                                _signUpCheck();
+                                showToast("회원가입 중이니 기다려주세요.");
+                              });
+                            }
+                          });
+                        })
+                      },
             child: Text(isLoading ? 'loggin in.....' : "회원가입",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
@@ -846,7 +891,7 @@ class _LoginPageState extends State<SignUpPage> {
           _userPasswordCtrl.text != "" &&
           _userPhoneNumberCtrl.text != "") {
         if (_isEmailused == true || _isNickNameused == true) {
-          showToast("이메일 및 닉네임 확인해주세요.");
+          showToast("이메일 및 닉네임 확인해주세요");
           return false;
         } else {
           showToast("회원정보 확인 후 이동해드릴게요");
@@ -864,6 +909,7 @@ class _LoginPageState extends State<SignUpPage> {
           }
         }
       } else {
+        showToast("빈칸을 입력해주세요");
         return false;
       }
     } else if (_isSignupIndex == 1) {
@@ -918,6 +964,6 @@ class _LoginPageState extends State<SignUpPage> {
             splashColor: Theme.of(context).primaryColor,
             onPressed: () => isLoading ? null : _loginState.changeSignup(false),
             child: Text(isLoading ? 'loggin in.....' : "이미 계정이 있으신가요?",
-                style: TextStyle(fontSize: 14.0, color: Colors.white))));
+                style: TextStyle(fontSize: 14.0, color: Colors.grey))));
   }
 }

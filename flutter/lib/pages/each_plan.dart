@@ -63,11 +63,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
         icon: Icon(Icons.arrow_back_ios_outlined),
         onPressed: () {
           _editWorkoutCheck();
-          _routinetimeProvider.isstarted
-              ? _displayFinishAlert()
-              : btnDisabled == true
-                  ? null
-                  : [btnDisabled = true, Navigator.of(context).pop()];
+          btnDisabled == true
+              ? null
+              : [btnDisabled = true, Navigator.of(context).pop()];
         },
       ),
       title: Row(

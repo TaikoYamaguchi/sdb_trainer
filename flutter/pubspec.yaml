@@ -17,7 +17,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
 
-version: 1.0.0+19
+version: 1.0.0+20
 
 
 environment:
@@ -62,6 +62,7 @@ dependencies:
   flutter_slidable: ^2.0.0
   expandable: ^5.0.1
   launch_review: ^3.0.1
+  step_progress_indicator: ^1.0.2
 
 dev_dependencies:
   flutter_test:
