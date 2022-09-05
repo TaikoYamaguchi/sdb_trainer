@@ -34,6 +34,22 @@ async def famouss_list(
     return famouss
 
 @r.get(
+    "/famoussubscribe/{famous_id}",
+    response_model=FamousOut,
+    response_model_exclude_none=True,
+)
+async def famous_subscribe(
+    response: Response,
+    famous_id:int,
+    db=Depends(get_db),
+):
+
+    famouss = subscribe_famous(db, famous_id)
+    print(famouss)
+    # This is necessary for react-admin to work
+    return famouss
+
+@r.get(
     "/famous",
     response_model=t.List[FamousOut],
     response_model_exclude_none=True,

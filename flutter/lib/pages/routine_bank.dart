@@ -130,6 +130,15 @@ class _RoutineBankState extends State<RoutineBank> {
                                                       .thumb_up_off_alt_rounded,
                                                   color: Colors.white,
                                                   size: 18),
+                                              Text(
+                                                ' ${provider.famousdata.famouss[index]
+                                                    .like.length.toString()}',
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold),
+                                              ),
                                             ],
                                           ),
                                         ),
@@ -146,6 +155,15 @@ class _RoutineBankState extends State<RoutineBank> {
                                                       .supervised_user_circle_sharp,
                                                   color: Colors.white,
                                                   size: 18),
+                                              Text(
+                                                ' ${provider.famousdata.famouss[index]
+                                                    .subscribe.toString()}',
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold),
+                                              ),
                                             ],
                                           ),
                                         ),
