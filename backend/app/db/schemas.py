@@ -247,7 +247,7 @@ class FamousBase(BaseModel):
     dislike:list
     level: int
     subscribe: int = 0
-    category: int
+    category: int = 0
     class Config:
         orm_mode = True
 
