@@ -76,14 +76,17 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
             onTap: () {
               _displayTextInputDialog();
             },
-            child: Container(
-              child: Consumer<WorkoutdataProvider>(
-                  builder: (builder, provider, child) {
-                return Text(
-                  provider.workoutdata.routinedatas[widget.rindex].name,
-                  style: TextStyle(color: Colors.white, fontSize: 30),
-                );
-              }),
+            child: Expanded(
+              child: Container(
+                width: MediaQuery.of(context).size.width*5/8,
+                child: Consumer<WorkoutdataProvider>(
+                    builder: (builder, provider, child) {
+                  return Text(
+                    provider.workoutdata.routinedatas[widget.rindex].name,
+                    style: TextStyle(color: Colors.white, overflow: TextOverflow.ellipsis, fontSize: 30),
+                  );
+                }),
+              ),
             ),
           ),
         ],

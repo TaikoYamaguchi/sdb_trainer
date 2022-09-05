@@ -52,6 +52,10 @@ class Famous {
   final String image;
   final Routinedatas routinedata;
   final String? date;
+  final List<dynamic> like;
+  final int level;
+  final int subscribe;
+  final int category;
 
   Famous({
     required this.id,
@@ -60,6 +64,10 @@ class Famous {
     required this.image,
     required this.routinedata,
     required this.date,
+    required this.like,
+    required this.level,
+    required this.subscribe,
+    required this.category,
   });
 
   factory Famous.fromJson(Map<String, dynamic> parsedJson) {
@@ -70,6 +78,10 @@ class Famous {
       image: parsedJson['image'],
       routinedata: Routinedatas.fromJson(parsedJson['routinedata']),
       date: parsedJson["date"],
+      like: parsedJson["like"],
+      level: parsedJson["level"],
+      subscribe: parsedJson["subscribe"],
+      category: parsedJson["category"],
     );
   }
 }

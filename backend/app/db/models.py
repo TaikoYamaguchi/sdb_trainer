@@ -104,6 +104,7 @@ class Famous(Base):
     user_email = Column(String, unique=True, index=True, nullable=False)
     image = Column(String, nullable=True)
     routinedata = Column(DateTime, nullable=False)
+    date = Column(DateTime, nullable=False)
     like = Column(MutableList.as_mutable(ARRAY(String)))
     dislike = Column(MutableList.as_mutable(ARRAY(String)))
     level = Column(Integer, nullable=True)
