@@ -56,8 +56,9 @@ class ProgramPost {
     formData["type"] = type;
     formData["id"] = 0;
     formData["image"] = image;
-    formData["routinedata"] = jsonEncode(routinedata);
+    formData["routinedata"] = routinedata;
     formData["like"] = [];
+    formData["dislike"] = [];
     formData["level"] = level;
     formData["subscribe"] = 0;
     formData["category"] = category;

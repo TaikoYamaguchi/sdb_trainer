@@ -53,6 +53,7 @@ class Famous {
   final Routinedatas routinedata;
   final String? date;
   final List<dynamic> like;
+  final List<dynamic> dislike;
   final int level;
   final int subscribe;
   final int category;
@@ -65,6 +66,7 @@ class Famous {
     required this.routinedata,
     required this.date,
     required this.like,
+    required this.dislike,
     required this.level,
     required this.subscribe,
     required this.category,
@@ -79,6 +81,7 @@ class Famous {
       routinedata: Routinedatas.fromJson(parsedJson['routinedata']),
       date: parsedJson["date"],
       like: parsedJson["like"],
+      dislike: parsedJson["dislike"],
       level: parsedJson["level"],
       subscribe: parsedJson["subscribe"],
       category: parsedJson["category"],
