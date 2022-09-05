@@ -101,6 +101,7 @@ class _RoutineBankState extends State<RoutineBank> {
                                           child: Row(
                                             children: [
                                               Icon(Icons.thumb_up_off_alt_rounded, color: Colors.white,size: 18),
+
                                             ],
                                           ),
                                         ),
