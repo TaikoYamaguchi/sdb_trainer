@@ -10,6 +10,7 @@ from . import models, schemas
 
 
 def create_famous(db: Session, famous: schemas.FamousCreate):
+    print(famous.user_email)
     db_famous = models.Famous(
         type=famous.type,
         user_email=famous.user_email,

@@ -16,6 +16,7 @@ async def famous_create(
 ):
     return create_famous(db, famous)
 
+
 @r.get(
     "/famous/{type}",
     response_model=t.List[FamousOut],
