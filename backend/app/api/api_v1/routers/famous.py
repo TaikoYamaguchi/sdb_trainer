@@ -1,4 +1,4 @@
-from app.db.crud_famous import create_famous, get_famouss_by_type, get_famouss, edit_famous, delete_famous, subscribe_famous
+from app.db.crud_famous import create_famous, get_famouss_by_type, get_famouss, edit_famous, delete_famous, subscribe_famous, manage_like_by_famous_id
 from fastapi import APIRouter, Request, Depends, Response, encoders
 import typing as t
 
@@ -53,7 +53,7 @@ async def famous_subscribe(
     response_model=FamousOut,
     response_model_exclude_none=True,
 )
-async def history_likes(
+async def famous_likes(
     response: Response,
     likeContent:ManageLikeFamous,
     db=Depends(get_db),
