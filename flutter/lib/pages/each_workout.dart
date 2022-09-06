@@ -1116,8 +1116,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
     return Expanded(
         key: keySelect,
         //color: Colors.black,
-        child:
-            Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
+        child: Consumer2<WorkoutdataProvider, ExercisesdataProvider>(
+            builder: (builder, provider, provider2, child) {
           List exlist =
               provider.workoutdata.routinedatas[widget.rindex].exercises;
           List existlist = [];
