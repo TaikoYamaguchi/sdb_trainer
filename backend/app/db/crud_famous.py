@@ -67,7 +67,7 @@ def subscribe_famous(db: Session, famous_id: int):
     db.refresh(db_famous)
     return db_famous
 
-def manage_like_by_famous_id(db: Session,likeContent:schemas.ManageLikefamous) -> schemas.famousOut:
+def manage_like_by_famous_id(db: Session,likeContent:schemas.ManageLikeFamous) -> schemas.FamousOut:
     db_famous = db.query(models.famous).filter(models.famous.id == likeContent.famous_id).first()
     if likeContent.disorlike == "like":
         if likeContent.status == "append":
