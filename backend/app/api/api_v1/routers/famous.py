@@ -48,6 +48,20 @@ async def famous_subscribe(
     # This is necessary for react-admin to work
     return famouss
 
+@r.patch(
+    "/famous/likes/{famous_id}",
+    response_model=FamousOut,
+    response_model_exclude_none=True,
+)
+async def history_likes(
+    response: Response,
+    likeContent:ManageLikeFamous,
+    db=Depends(get_db),
+):
+    famous = manage_like_by_famous_id(db, likeContent)
+    # This is necessary for react-admin to work
+    return famous
+
 @r.get(
     "/famous",
     response_model=t.List[FamousOut],

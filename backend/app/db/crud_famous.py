@@ -67,6 +67,23 @@ def subscribe_famous(db: Session, famous_id: int):
     db.refresh(db_famous)
     return db_famous
 
+def manage_like_by_famous_id(db: Session,likeContent:schemas.ManageLikefamous) -> schemas.famousOut:
+    db_famous = db.query(models.famous).filter(models.famous.id == likeContent.famous_id).first()
+    if likeContent.disorlike == "like":
+        if likeContent.status == "append":
+            db_famous.like.append(likeContent.email)
+        if likeContent.status == "remove":
+            db_famous.like.remove(likeContent.email)
+        setattr(db_famous, "like", db_famous.like)
+    if likeContent.disorlike == "dislike":
+        if likeContent.status == "append":
+            db_famous.dislike.append(likeContent.email)
+        if likeContent.status == "remove":
+            db_famous.dislike.remove(likeContent.email)
+        setattr(db_famous, "dislike", db_famous.dislike)
+    db.commit()
+    db.refresh(db_famous)
+    return db_famous
 
 
 

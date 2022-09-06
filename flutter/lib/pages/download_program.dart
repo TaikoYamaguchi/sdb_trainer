@@ -63,7 +63,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
         },
       ),
       title: Text(
-        "나의 Program 공유",
+        "",
         style: TextStyle(color: Colors.white, fontSize: 30, ),
       ),
       backgroundColor: Colors.black,
@@ -108,34 +108,51 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                         color: Theme.of(context).cardColor,
                         child: Padding(
                           padding:
-                          const EdgeInsets.symmetric(horizontal: 40.0, vertical: 8.0),
+                          const EdgeInsets.symmetric(horizontal: 10, vertical: 8.0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
 
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
                                   SizedBox(
-                                      width: 120,
+                                      width: 100,
                                       child: Center(
                                         child: Text("Program 기간",
-                                            style: TextStyle(color: Colors.white)),
+                                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                                       )),
 
                                   SizedBox(
-                                      width: 120,
+                                      width: 80,
                                       child: Center(
-                                        child: Text("신기록",
-                                            style: TextStyle(color: Colors.white)),
+                                        child: GestureDetector(
+                                          onTap: (){
+
+                                          },
+                                          child: Icon(
+                                              Icons
+                                                  .thumb_up_off_alt_rounded,
+                                              color: Colors.white,
+                                              size: 18),
+                                        ),
+                                      )),
+                                  SizedBox(
+                                      width: 80,
+                                      child: Center(
+                                        child: Icon(
+                                            Icons
+                                                .supervised_user_circle_sharp,
+                                            color: Colors.white,
+                                            size: 18),
                                       ))
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
                                   SizedBox(
-                                    width: 120,
+                                    width: 100,
                                     child: Center(
                                       child: Text('${widget.program.routinedata.exercises[0].plans.length.toString()}days',
                                           style: TextStyle(color: Colors.white)),
@@ -143,9 +160,14 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                   ),
 
                                   SizedBox(
-                                      width: 120,
+                                      width: 80,
                                       child: Center(
-                                          child: Text("0",
+                                          child: Text("${widget.program.like.length.toString()}",
+                                              style: TextStyle(color: Colors.white)))),
+                                  SizedBox(
+                                      width: 80,
+                                      child: Center(
+                                          child: Text("${widget.program.subscribe.toString()}",
                                               style: TextStyle(color: Colors.white)))),
                                 ],
                               ),
