@@ -58,7 +58,7 @@ def edit_famous(db: Session, famous: schemas.FamousCreate):
     db.refresh(db_famous)
     return db_famous
 
-def subscribe_famous(db: Session, famous_id: int):
+def famous_subscribe(db: Session, famous_id: int):
 
     db_famous = get_famouss_by_id(db, famous_id)
     setattr(db_famous, "subscribe", db_famous.subscribe+1)

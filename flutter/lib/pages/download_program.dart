@@ -498,6 +498,10 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               _workoutdataProvider.addroutine(widget.program.routinedata);
               _editWorkoutCheck();
               Navigator.of(context).popUntil((route) => route.isFirst);
+              ProgramSubscribe(id: widget.program.id).subscribeProgram()
+                  .then((data) => data["user_email"] != null
+                  ? [showToast("done!"), _famousdataProvider.getdata()]
+                  : showToast("입력을 확인해주세요"));
 
             },
             padding: EdgeInsets.all(12.0),

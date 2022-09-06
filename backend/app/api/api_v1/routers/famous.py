@@ -1,4 +1,4 @@
-from app.db.crud_famous import create_famous, get_famouss_by_type, get_famouss, edit_famous, delete_famous
+from app.db.crud_famous import create_famous, get_famouss_by_type, get_famouss, edit_famous, delete_famous, famous_subscribe
 from fastapi import APIRouter, Request, Depends, Response, encoders
 import typing as t
 
