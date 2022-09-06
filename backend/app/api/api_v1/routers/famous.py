@@ -1,4 +1,4 @@
-from app.db.crud_famous import create_famous, get_famouss_by_type, get_famouss, edit_famous, delete_famous, famous_subscribe
+from app.db.crud_famous import create_famous, get_famouss_by_type, get_famouss, edit_famous, delete_famous, subscribe_famous
 from fastapi import APIRouter, Request, Depends, Response, encoders
 import typing as t
 
@@ -43,7 +43,6 @@ async def famous_subscribe(
     famous_id:int,
     db=Depends(get_db),
 ):
-
     famouss = subscribe_famous(db, famous_id)
     print(famouss)
     # This is necessary for react-admin to work

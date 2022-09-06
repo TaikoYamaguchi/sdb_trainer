@@ -46,8 +46,7 @@ class ProgramSubscribe {
     formData["id"] = id;
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/famoussubscribe/${id}");
-    var response = await http.post(url, body: json.encode(formData));
-    print(json.encode(formData));
+    var response = await http.get(url);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       String jsonString = utf8.decode(response.bodyBytes);
