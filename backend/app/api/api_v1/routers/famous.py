@@ -3,7 +3,7 @@ from fastapi import APIRouter, Request, Depends, Response, encoders
 import typing as t
 
 from app.db.session import get_db
-from app.db.schemas import FamousCreate, FamousOut
+from app.db.schemas import FamousCreate, FamousOut, ManageLikeFamous
 
 
 famous_router = r = APIRouter()
