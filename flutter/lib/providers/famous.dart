@@ -15,4 +15,28 @@ class FamousdataProvider extends ChangeNotifier {
     });
   }
 
+  patchFamousLikedata(Fdata, email, status) {
+    if (status == "remove") {
+      _famousdata.famouss.indexWhere((fdata) {
+        if (fdata.id == Fdata.id) {
+          fdata.like.remove(email);
+          return true;
+        } else {
+          return false;
+        }
+      });
+      notifyListeners();
+    } else if (status == "append") {
+      _famousdata.famouss.indexWhere((fdata) {
+        if (fdata.id == Fdata.id) {
+          fdata.like.add(email);
+          return true;
+        } else {
+          return false;
+        }
+      });
+      notifyListeners();
+    }
+  }
+
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:like_button/like_button.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
@@ -130,11 +131,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                           onTap: (){
 
                                           },
-                                          child: Icon(
-                                              Icons
-                                                  .thumb_up_off_alt_rounded,
-                                              color: Colors.white,
-                                              size: 18),
+                                          child: _famousLikeButton(),
                                         ),
                                       )),
                                   SizedBox(
@@ -203,6 +200,85 @@ class _ProgramDownloadState extends State<ProgramDownload> {
         _exercise_Done_Button()
       ],
     );
+  }
+
+  Widget _famousLikeButton() {
+    var buttonSize = 20.0;
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: LikeButton(
+        size: buttonSize,
+        isLiked: onIsLikedCheck(),
+        circleColor:
+        CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+        bubblesColor: BubblesColor(
+          dotPrimaryColor: Color(0xff33b5e5),
+          dotSecondaryColor: Color(0xff0099cc),
+        ),
+        likeBuilder: (bool isLiked) {
+          return Padding(
+            padding: const EdgeInsets.only(right: 4.0),
+            child: Icon(
+              Icons.thumb_up_off_alt_rounded,
+              color: isLiked ? Theme.of(context).primaryColor : Colors.white,
+              size: buttonSize,
+            ),
+          );
+        },
+        onTap: (bool isLiked) async {
+          return onLikeButtonTapped(isLiked);
+        },
+        likeCount: widget.program.like.length,
+        countBuilder: (int? count, bool isLiked, String text) {
+          var color = isLiked ? Theme.of(context).primaryColor : Colors.white;
+          Widget result;
+          if (count == 0) {
+            result = Text(
+              text,
+              style: TextStyle(color: color, fontSize: 16.0),
+            );
+          } else
+            result = Text(
+              text,
+              style: TextStyle(
+                  color: color, fontSize: 16.0, fontWeight: FontWeight.bold),
+            );
+          return result;
+        },
+      ),
+    );
+  }
+
+  bool onIsLikedCheck() {
+    if (widget.program.like.contains(_userdataProvider.userdata.email)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool onLikeButtonTapped(bool isLiked, ) {
+    if (isLiked == true) {
+      FamousLike(
+          famous_id: widget.program.id,
+          user_email: _userdataProvider.userdata.email,
+          status: "remove",
+          disorlike: "like")
+          .patchFamousLike();
+      _famousdataProvider.patchFamousLikedata(
+          widget.program, _userdataProvider.userdata.email, "remove");
+      return false;
+    } else {
+      FamousLike(
+          famous_id: widget.program.id,
+          user_email: _userdataProvider.userdata.email,
+          status: "append",
+          disorlike: "like")
+          .patchFamousLike();
+      _famousdataProvider.patchFamousLikedata(
+          widget.program, _userdataProvider.userdata.email, "append");
+      return !isLiked;
+    }
   }
 
 
