@@ -263,7 +263,7 @@ class FamousOut(FamousBase):
     class config:
         orm_mode = True
 
-class ManageLikeFamous(BaseModel):
+class ManageLikefamous(BaseModel):
     history_id:int
     email:str
     status:str
