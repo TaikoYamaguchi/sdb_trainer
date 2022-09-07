@@ -334,6 +334,7 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                       widget.sdbdata, _exerciseCommentCtrl.text);
                 }
                 ;
+                Navigator.of(context).pop();
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
               child: Text("운동 완료",

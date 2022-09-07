@@ -28,6 +28,8 @@ import 'package:sdb_trainer/supero_version.dart';
 import 'package:tutorial/tutorial.dart';
 import 'dart:math' as math;
 import 'package:launch_review/launch_review.dart';
+import 'package:transition/transition.dart';
+import 'package:sdb_trainer/pages/exercise_done.dart';
 
 import 'statics.dart';
 
@@ -55,17 +57,10 @@ class _AppState extends State<App> {
   void initState() {
     var _appUpdateVersion = SuperoVersion.getSuperoVersion().toString();
     VersionService.loadVersionData().then((data) {
-      print(data.toString());
-      print("thsisisisisis version");
-      print(_appUpdateVersion);
-      print(SuperoVersion.getSuperoVersion());
       if (data == _appUpdateVersion) {
         _updateCheck = true;
-        print("thsisisisisis version trueeeeeeeeeeeeeee");
-        print(_updateCheck);
       } else {
         _showUpdateVersion();
-        print("thsisisisisis version falseeeeeeeeeeee");
       }
     });
     super.initState();
@@ -191,12 +186,10 @@ class _AppState extends State<App> {
             disabledColor: Color.fromRGBO(246, 58, 64, 20),
             disabledTextColor: Colors.black,
             onPressed: () {
-              _routinetimeProvider.routinecheck(0);
               recordExercise();
               _editHistoryCheck();
               _editWorkoutwoCheck();
               Navigator.of(context, rootNavigator: true).pop();
-              Navigator.of(context).pop();
             },
             padding: EdgeInsets.all(12.0),
             splashColor: Theme.of(context).primaryColor,
@@ -222,8 +215,9 @@ class _AppState extends State<App> {
           monerm = recordedsets[i].weight;
         }
       }
-      var _eachex = _exercises[_exercises
-          .indexWhere((element) => element.name == exercise_all[n].name)];
+      var _eachex = _exercisesdataProvider.exercisesdata.exercises[
+          _exercisesdataProvider.exercisesdata.exercises
+              .indexWhere((element) => element.name == exercise_all[n].name)];
       if (!recordedsets.isEmpty) {
         exerciseList.add(hisdata.Exercises(
             name: exercise_all[n].name,
@@ -304,6 +298,16 @@ class _AppState extends State<App> {
           .postHistory()
           .then((data) => data["user_email"] != null
               ? {
+                  Navigator.push(
+                      context,
+                      Transition(
+                          child: ExerciseDone(
+                              exerciseList: exerciseList,
+                              routinetime: _routinetimeProvider.routineTime,
+                              sdbdata: hisdata.SDBdata.fromJson(data)),
+                          transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
+                  print("routine time"),
+                  _routinetimeProvider.routinecheck(0),
                   _historydataProvider.getdata(),
                   _historydataProvider.getHistorydataAll(),
                   exerciseList = []
@@ -315,13 +319,17 @@ class _AppState extends State<App> {
   }
 
   void modifyExercise(double newonerm, exname) {
-    _exercises[_exercises.indexWhere((element) => element.name == exname)]
+    _exercisesdataProvider
+        .exercisesdata
+        .exercises[_exercisesdataProvider.exercisesdata.exercises
+            .indexWhere((element) => element.name == exname)]
         .onerm = newonerm;
   }
 
   void _postExerciseCheck() async {
     ExerciseEdit(
-            user_email: _userdataProvider.userdata.email, exercises: _exercises)
+            user_email: _userdataProvider.userdata.email,
+            exercises: _exercisesdataProvider.exercisesdata.exercises)
         .editExercise()
         .then((data) => data["user_email"] != null
             ? {showToast("수정 완료"), _exercisesdataProvider.getdata()}
@@ -436,10 +444,23 @@ class _AppState extends State<App> {
                                                 provider.timeron < 0)
                                             ? Colors.red
                                             : Colors.white)))),
-                        ActionButton(
-                          onPressed: _displayFinishAlert,
-                          icon: Icon(Icons.stop),
-                        )
+                        Row(
+                          children: [
+                            ActionButton(
+                              onPressed: () {
+                                _bodyStater.change(1);
+                              },
+                              icon: Icon(Icons.play_arrow),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            ActionButton(
+                              onPressed: _displayFinishAlert,
+                              icon: Icon(Icons.stop),
+                            ),
+                          ],
+                        ),
                       ],
                     )
                   : null,
