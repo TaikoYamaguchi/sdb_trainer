@@ -32,6 +32,7 @@ class User(Base):
     selfIntroduce = Column(String, nullable=True)
     history_cnt = Column(Integer, nullable=False)
     comment_cnt = Column(Integer, nullable=False)
+    fcm_token= Column(String, nullable=True)
     
     
 class Workout(Base):
