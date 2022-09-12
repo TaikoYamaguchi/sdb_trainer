@@ -7,6 +7,7 @@ Create Date: 2022-08-28 07:19:12.540089-07:00
 """
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.engine.reflection import Inspector
 
 

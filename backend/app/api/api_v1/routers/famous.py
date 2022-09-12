@@ -43,6 +43,7 @@ async def famous_subscribe(
     famous_id:int,
     db=Depends(get_db),
 ):
+    print('here')
     famouss = subscribe_famous(db, famous_id)
     print(famouss)
     # This is necessary for react-admin to work

@@ -264,7 +264,7 @@ class FamousOut(FamousBase):
         orm_mode = True
 
 class ManageLikeFamous(BaseModel):
-    history_id:int
+    famous_id:int
     email:str
     status:str
     disorlike:str
