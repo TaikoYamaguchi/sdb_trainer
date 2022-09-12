@@ -28,9 +28,7 @@ class _RoutineBankState extends State<RoutineBank> {
   var _userdataProvider;
   var _exercisesdataProvider;
   
-  
-
-  Widget famous_body() {
+  Widget famous_pg(){
     return Column(
       children: [
         Row(
@@ -49,24 +47,26 @@ class _RoutineBankState extends State<RoutineBank> {
           ],
         ),
         Consumer<FamousdataProvider>(builder: (builder, provider, child) {
-          print(provider.famousdata.famouss);
+          var user_famous =provider.famousdata.famouss.where((famouss){
+            return (famouss.type == 1);
+          }).toList();
           return Container(
             height: MediaQuery.of(context).size.width / 2 + 80,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: provider.famousdata.famouss.length,
+                itemCount: user_famous.length,
                 itemBuilder: (BuildContext _context, int index) {
-                  var program=provider.famousdata.famouss[index];
+                  var program=user_famous[index];
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
                           context,
                           Transition(
                               child: ProgramDownload(
-                                program: provider.famousdata.famouss[index],
+                                program: user_famous[index],
                               ),
                               transitionEffect:
-                                  TransitionEffect.RIGHT_TO_LEFT));
+                              TransitionEffect.RIGHT_TO_LEFT));
                     },
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width / 2,
@@ -77,24 +77,24 @@ class _RoutineBankState extends State<RoutineBank> {
                           children: [
                             Padding(
                               padding: EdgeInsets.all(4.0),
-                              child: provider.famousdata.famouss[index].image !=
-                                      ""
+                              child: user_famous[index].image !=
+                                  ""
                                   ? Image.network(
-                                      provider.famousdata.famouss[index].image,
-                                      width:
-                                          MediaQuery.of(context).size.width / 2,
-                                      height:
-                                          MediaQuery.of(context).size.width / 2,
-                                    )
+                                user_famous[index].image,
+                                width:
+                                MediaQuery.of(context).size.width / 2,
+                                height:
+                                MediaQuery.of(context).size.width / 2,
+                              )
                                   : Container(
-                                      width:
-                                          MediaQuery.of(context).size.width / 2,
-                                      height:
-                                          MediaQuery.of(context).size.width / 2,
-                                      child: Icon(
-                                        Icons.image_not_supported,
-                                        size: 70,
-                                      )),
+                                  width:
+                                  MediaQuery.of(context).size.width / 2,
+                                  height:
+                                  MediaQuery.of(context).size.width / 2,
+                                  child: Icon(
+                                    Icons.image_not_supported,
+                                    size: 70,
+                                  )),
                             ),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
@@ -105,7 +105,7 @@ class _RoutineBankState extends State<RoutineBank> {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          provider.famousdata.famouss[index]
+                                          user_famous[index]
                                               .routinedata.name,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
@@ -118,17 +118,17 @@ class _RoutineBankState extends State<RoutineBank> {
                                   ),
                                   Padding(
                                     padding:
-                                        const EdgeInsets.symmetric(vertical: 0),
+                                    const EdgeInsets.symmetric(vertical: 0),
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      MainAxisAlignment.start,
                                       children: [
                                         Container(
                                           alignment: Alignment.centerLeft,
                                           width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  4 -
+                                              .size
+                                              .width /
+                                              4 -
                                               20,
                                           child: Row(
                                             children: [
@@ -138,9 +138,9 @@ class _RoutineBankState extends State<RoutineBank> {
                                         ),
                                         Container(
                                           width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  4 -
+                                              .size
+                                              .width /
+                                              4 -
                                               20,
                                           child: Row(
                                             children: [
@@ -150,7 +150,7 @@ class _RoutineBankState extends State<RoutineBank> {
                                                   color: Colors.white,
                                                   size: 18),
                                               Text(
-                                                ' ${provider.famousdata.famouss[index]
+                                                ' ${user_famous[index]
                                                     .subscribe.toString()}',
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
@@ -175,6 +175,166 @@ class _RoutineBankState extends State<RoutineBank> {
                 }),
           );
         }),
+      ],
+    );
+  }
+
+  Widget user_pg(){
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                '유저가 만든 Programs',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 23,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+        Consumer<FamousdataProvider>(builder: (builder, provider, child) {
+          var user_famous =provider.famousdata.famouss.where((famouss){
+            return (famouss.type == 0);
+          }).toList();
+          return Container(
+            height: MediaQuery.of(context).size.width / 2 + 80,
+            child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: user_famous.length,
+                itemBuilder: (BuildContext _context, int index) {
+                  var program=user_famous[index];
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          Transition(
+                              child: ProgramDownload(
+                                program: user_famous[index],
+                              ),
+                              transitionEffect:
+                              TransitionEffect.RIGHT_TO_LEFT));
+                    },
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width / 2,
+                      child: Card(
+                        color: Theme.of(context).cardColor,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(4.0),
+                              child: user_famous[index].image !=
+                                  ""
+                                  ? Image.network(
+                                user_famous[index].image,
+                                width:
+                                MediaQuery.of(context).size.width / 2,
+                                height:
+                                MediaQuery.of(context).size.width / 2,
+                              )
+                                  : Container(
+                                  width:
+                                  MediaQuery.of(context).size.width / 2,
+                                  height:
+                                  MediaQuery.of(context).size.width / 2,
+                                  child: Icon(
+                                    Icons.image_not_supported,
+                                    size: 70,
+                                  )),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          user_famous[index]
+                                              .routinedata.name,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding:
+                                    const EdgeInsets.symmetric(vertical: 0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          width: MediaQuery.of(context)
+                                              .size
+                                              .width /
+                                              4 -
+                                              20,
+                                          child: Row(
+                                            children: [
+                                              _famousLikeButton(program),
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                              .size
+                                              .width /
+                                              4 -
+                                              20,
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                  Icons
+                                                      .supervised_user_circle_sharp,
+                                                  color: Colors.white,
+                                                  size: 18),
+                                              Text(
+                                                ' ${user_famous[index]
+                                                    .subscribe.toString()}',
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+          );
+        }),
+      ],
+    );
+  }
+
+  Widget famous_body() {
+    return ListView(
+      children: [
+        famous_pg(),
+        user_pg()
       ],
     );
   }
