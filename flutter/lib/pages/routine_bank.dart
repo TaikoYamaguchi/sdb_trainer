@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/download_program.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
@@ -7,6 +8,7 @@ import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sdb_trainer/repository/famous_repository.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:transition/transition.dart';
 
@@ -18,12 +20,15 @@ class RoutineBank extends StatefulWidget {
 }
 
 class _RoutineBankState extends State<RoutineBank> {
+  var _famousdataProvider;
   var _workoutdataProvider;
   var _historydataProvider;
   var _routinetimeProvider;
   var _PopProvider;
   var _userdataProvider;
   var _exercisesdataProvider;
+  
+  
 
   Widget famous_body() {
     return Column(
@@ -51,6 +56,7 @@ class _RoutineBankState extends State<RoutineBank> {
                 scrollDirection: Axis.horizontal,
                 itemCount: provider.famousdata.famouss.length,
                 itemBuilder: (BuildContext _context, int index) {
+                  var program=provider.famousdata.famouss[index];
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -112,12 +118,13 @@ class _RoutineBankState extends State<RoutineBank> {
                                   ),
                                   Padding(
                                     padding:
-                                        const EdgeInsets.symmetric(vertical: 3),
+                                        const EdgeInsets.symmetric(vertical: 0),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
                                         Container(
+                                          alignment: Alignment.centerLeft,
                                           width: MediaQuery.of(context)
                                                       .size
                                                       .width /
@@ -125,20 +132,7 @@ class _RoutineBankState extends State<RoutineBank> {
                                               20,
                                           child: Row(
                                             children: [
-                                              Icon(
-                                                  Icons
-                                                      .thumb_up_off_alt_rounded,
-                                                  color: Colors.white,
-                                                  size: 18),
-                                              Text(
-                                                ' ${provider.famousdata.famouss[index]
-                                                    .like.length.toString()}',
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.bold),
-                                              ),
+                                              _famousLikeButton(program),
                                             ],
                                           ),
                                         ),
@@ -185,9 +179,91 @@ class _RoutineBankState extends State<RoutineBank> {
     );
   }
 
+  Widget _famousLikeButton(program) {
+    var buttonSize = 18.0;
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: LikeButton(
+        size: buttonSize,
+        isLiked: onIsLikedCheck(program),
+        circleColor:
+        CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+        bubblesColor: BubblesColor(
+          dotPrimaryColor: Color(0xff33b5e5),
+          dotSecondaryColor: Color(0xff0099cc),
+        ),
+        likeBuilder: (bool isLiked) {
+          return Padding(
+            padding: const EdgeInsets.only(right: 4.0),
+            child: Icon(
+              Icons.thumb_up_off_alt_rounded,
+              color: isLiked ? Theme.of(context).primaryColor : Colors.white,
+              size: buttonSize,
+            ),
+          );
+        },
+        onTap: (bool isLiked) async {
+          return onLikeButtonTapped(isLiked, program);
+        },
+        likeCount: program.like.length,
+        countBuilder: (int? count, bool isLiked, String text) {
+          var color = isLiked ? Theme.of(context).primaryColor : Colors.white;
+          Widget result;
+          if (count == 0) {
+            result = Text(
+              text,
+              style: TextStyle(color: color, fontSize: 14.0),
+            );
+          } else
+            result = Text(
+              text,
+              style: TextStyle(
+                  color: color, fontSize: 14.0, fontWeight: FontWeight.bold),
+            );
+          return result;
+        },
+      ),
+    );
+  }
+
+
+  bool onIsLikedCheck(program) {
+    if (program.like.contains(_userdataProvider.userdata.email)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool onLikeButtonTapped(bool isLiked, program) {
+    if (isLiked == true) {
+      FamousLike(
+          famous_id: program.id,
+          user_email: _userdataProvider.userdata.email,
+          status: "remove",
+          disorlike: "like")
+          .patchFamousLike();
+      _famousdataProvider.patchFamousLikedata(
+          program, _userdataProvider.userdata.email, "remove");
+      return false;
+    } else {
+      FamousLike(
+          famous_id: program.id,
+          user_email: _userdataProvider.userdata.email,
+          status: "append",
+          disorlike: "like")
+          .patchFamousLike();
+      _famousdataProvider.patchFamousLikedata(
+          program, _userdataProvider.userdata.email, "append");
+      return !isLiked;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _famousdataProvider =
+        Provider.of<FamousdataProvider>(context, listen: false);
     _workoutdataProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
     _exercisesdataProvider =

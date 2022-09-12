@@ -9,6 +9,7 @@ import 'package:sdb_trainer/pages/each_workout.dart';
 import 'package:sdb_trainer/pages/routine_bank.dart';
 import 'package:sdb_trainer/pages/unique_exercise.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
+import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/routinemenu.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
@@ -36,6 +37,7 @@ class ExerciseState extends State<Exercise> {
   var _userdataProvider;
   var _exercisesdataProvider;
   var _workoutdataProvider;
+  var _famousdataProvider;
   var _RoutineMenuProvider;
   var _PopProvider;
   var _PrefsProvider;
@@ -123,13 +125,24 @@ class ExerciseState extends State<Exercise> {
                     },
                   );
                 } else {
-                  return SizedBox();
+                  return IconButton(
+                    iconSize: 30,
+                    icon: Icon(Icons.refresh_rounded),
+                    onPressed: () {
+                      _onRefresh();
+                    },
+                  );
                 }
               })
             ]
           : null,
       backgroundColor: Colors.black,
     );
+  }
+
+  Future<void> _onRefresh() {
+    _famousdataProvider.getdata();
+    return Future<void>.value();
   }
 
   Widget _workoutWidget() {
@@ -942,7 +955,9 @@ class ExerciseState extends State<Exercise> {
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _workoutdataProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
+
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
+    _famousdataProvider = Provider.of<FamousdataProvider>(context, listen: false);
     _RoutineMenuProvider =
         Provider.of<RoutineMenuStater>(context, listen: false);
     _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);

@@ -110,12 +110,13 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                         child: Padding(
                           padding:
                           const EdgeInsets.symmetric(horizontal: 10, vertical: 8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+
                             children: [
 
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   SizedBox(
                                       width: 100,
@@ -123,31 +124,6 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                         child: Text("Program 기간",
                                             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                                       )),
-
-                                  SizedBox(
-                                      width: 80,
-                                      child: Center(
-                                        child: GestureDetector(
-                                          onTap: (){
-
-                                          },
-                                          child: _famousLikeButton(),
-                                        ),
-                                      )),
-                                  SizedBox(
-                                      width: 80,
-                                      child: Center(
-                                        child: Icon(
-                                            Icons
-                                                .supervised_user_circle_sharp,
-                                            color: Colors.white,
-                                            size: 18),
-                                      ))
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
                                   SizedBox(
                                     width: 100,
                                     child: Center(
@@ -156,18 +132,40 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                     ),
                                   ),
 
-                                  SizedBox(
-                                      width: 80,
-                                      child: Center(
-                                          child: Text("${widget.program.like.length.toString()}",
-                                              style: TextStyle(color: Colors.white)))),
-                                  SizedBox(
-                                      width: 80,
-                                      child: Center(
-                                          child: Text("${widget.program.subscribe.toString()}",
-                                              style: TextStyle(color: Colors.white)))),
+
                                 ],
                               ),
+                              SizedBox(
+                                  width: 80,
+                                  child: Center(
+                                    child: GestureDetector(
+                                      onTap: (){
+
+                                      },
+                                      child: _famousLikeButton(),
+                                    ),
+                                  )),
+                              SizedBox(
+                                width: 80,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                        child: Center(
+                                          child: Icon(
+                                              Icons
+                                                  .supervised_user_circle_sharp,
+                                              color: Colors.white,
+                                              size: 20),
+                                        )),
+                                    SizedBox(
+                                        child: Center(
+                                            child: Text(" ${widget.program.subscribe.toString()}",
+                                                style: TextStyle(fontSize: 16,color: Colors.white)))),
+                                  ],
+                                ),
+                              )
+
                             ],
                           ),
                         ),
@@ -248,6 +246,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
       ),
     );
   }
+
 
   bool onIsLikedCheck() {
     if (widget.program.like.contains(_userdataProvider.userdata.email)) {

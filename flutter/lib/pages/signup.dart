@@ -415,7 +415,7 @@ class _LoginPageState extends State<SignUpPage> {
                       child: SizedBox(),
                     ),
                     _weightSubmitButton(context),
-                    _loginButton(context),
+                    //_loginButton(context),
                   ]))),
     );
   }

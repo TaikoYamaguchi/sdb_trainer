@@ -21,7 +21,6 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.4'
 }
 
-id 
 
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
