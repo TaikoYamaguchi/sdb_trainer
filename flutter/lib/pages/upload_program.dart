@@ -48,6 +48,10 @@ class _ProgramUploadState extends State<ProgramUpload> {
   var selectedItem = '뉴비';
   Map item_map = {"뉴비":0,"초급":1,'중급':2,'상급':3, '엘리트':4};
 
+  List<String> items2 = ['기타', '근비대','근력','근지구력', '바디빌딩', '파워리프팅', '역도'];
+  var selectedItem2 = '기타';
+  Map item_map2 = {"기타":0,"근비대":1,'근력':2,'근지구력':3, '바디빌딩':4,'파워리프팅':5,'역도':6};
+
   @override
   void initState() {
     super.initState();
@@ -106,7 +110,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
                   Container(
                     padding: const EdgeInsets.all(12.0),
                     alignment: Alignment.centerLeft,
-                    child: Text("Program 이름",
+                    child: Text("Program 이름:",
                         style: TextStyle(fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold)),
                   ),
                   _titleWidget(),
@@ -116,7 +120,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          child: Text("Program 난이도",
+                          child: Text("Program 난이도:",
                               style: TextStyle(fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold)),
                         ),
                         SizedBox(
@@ -125,17 +129,18 @@ class _ProgramUploadState extends State<ProgramUpload> {
                             isExpanded: true,
                             dropdownColor: Colors.black,
                             decoration: InputDecoration(
-                                labelText: '난이도',
-                                labelStyle: TextStyle(color: Colors.white),
-                                border: OutlineInputBorder(
-                                  borderSide: const BorderSide(color: Colors.white, width: 2.0),
-                                  borderRadius: BorderRadius.circular(5.0),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white, width: 2.0),
-                                  borderRadius: BorderRadius.circular(5.0),
-                                ),
-                                fillColor: Colors.white),
+                              filled: true,
+                              enabledBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide: BorderSide(
+                                    color: Colors.white, width: 3),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor, width: 3),
+                              ),
+                            ),
                             hint: Align(
                                 alignment: Alignment.center,
                                 child: Text('난이도', style: TextStyle(color: Colors.white),)),
@@ -155,9 +160,53 @@ class _ProgramUploadState extends State<ProgramUpload> {
 
                   Container(
                     padding: const EdgeInsets.all(12.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          child: Text("Program 목적:",
+                              style: TextStyle(fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold)),
+                        ),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width*2/5,
+                            child: DropdownButtonFormField(
+                              isExpanded: true,
+                              dropdownColor: Colors.black,
+                              decoration: InputDecoration(
+                                  filled: true,
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    borderSide: BorderSide(
+                                        color: Colors.white, width: 3),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    borderSide: BorderSide(
+                                        color: Theme.of(context).primaryColor, width: 3),
+                                  ),
+                                  ),
+                              hint: Align(
+                                  alignment: Alignment.center,
+                                  child: Text('목적', style: TextStyle(color: Colors.white),)),
+                              items: items2.map((item) => DropdownMenuItem<String>(
+                                  value: item,
+                                  child: Align(
+                                      alignment: Alignment.center,
+                                      child: Text(item, style: TextStyle(color: Colors.white),))
+                              )).toList(),
+                              onChanged: (item) => setState(() => selectedItem2 = item as String),
+                            )
+                        ),
+
+                      ],
+                    ),
+                  ),
+
+                  Container(
+                    padding: const EdgeInsets.all(12.0),
                     alignment: Alignment.centerLeft,
-                    child: Text("Program 설명",
-                        style: TextStyle(fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold)),
+                    child: Text("Program 설명:",
+                        style: TextStyle(fontSize: 20.0, color: Colors.white, fontWeight: FontWeight.bold)),
                   ),
                   _commentWidget(),
                   Container(
@@ -369,7 +418,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
                   type: 0,
                   user_email: _userdataProvider.userdata.email,
                   level: item_map[selectedItem],
-                  category: 0,
+                  category: item_map2[selectedItem2],
                 )
                       .postProgram().then((data) => {
                     if (_selectImage != null) {

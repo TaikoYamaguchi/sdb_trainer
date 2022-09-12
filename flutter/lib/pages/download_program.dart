@@ -4,9 +4,11 @@ import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/famous_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
+import 'package:sdb_trainer/src/model/exercisesdata.dart' as uex;
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
@@ -38,6 +40,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
   TextEditingController _programtitleCtrl = TextEditingController(text: "");
   TextEditingController _programcommentCtrl = TextEditingController(text: "");
   TextEditingController _workoutNameCtrl = TextEditingController(text: "");
+  Map item_map = {0:"뉴비",1:"초급",2:'중급',3:'상급', 4:'엘리트'};
+  Map item_map2 = {0:"기타",1:"근비대",2:'근력',3:'근지구력', 4:'바디빌딩',5:'파워리프팅',6:'역도'};
 
   var _selectImage;
   List ref_exercise =[];
@@ -93,8 +97,19 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                           size: 100.0,
                           ),
                         Expanded(
-                          child: Text(widget.program.routinedata.name,
-                              style: TextStyle(fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold)),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(item_map2[widget.program.category],
+                                    style: TextStyle(fontSize: 15.0, color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold)),
+                                Text(widget.program.routinedata.name,
+                                    style: TextStyle(fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ),
                         ),
 
                       ],
@@ -119,9 +134,9 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   SizedBox(
-                                      width: 100,
+                                      width: MediaQuery.of(context).size.width/5,
                                       child: Center(
-                                        child: Text("Program 기간",
+                                        child: Text("기간",
                                             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                                       )),
                                   SizedBox(
@@ -135,8 +150,28 @@ class _ProgramDownloadState extends State<ProgramDownload> {
 
                                 ],
                               ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                      width: MediaQuery.of(context).size.width/5,
+                                      child: Center(
+                                        child: Text("난이도",
+                                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                                      )),
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width/5,
+                                    child: Center(
+                                      child: Text('${item_map[widget.program.level]}',
+                                          style: TextStyle(color: Colors.white)),
+                                    ),
+                                  ),
+
+
+                                ],
+                              ),
                               SizedBox(
-                                  width: 80,
+                                  width: MediaQuery.of(context).size.width/5,
                                   child: Center(
                                     child: GestureDetector(
                                       onTap: (){
@@ -146,7 +181,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                     ),
                                   )),
                               SizedBox(
-                                width: 80,
+                                width: MediaQuery.of(context).size.width/5,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -306,8 +341,14 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                 }
                 ref_exercise= ref_exercise.toSet().toList();
                 for (int i = 0; i < ref_exercise.length; i++) {
+                  _exercisesdataProvider.exercisesdata.exercises.contains(ref_exercise[i])
+                  ? null
+                  : [
+                    _exercisesdataProvider.addExdata(uex.Exercises(name: ref_exercise[i], onerm: 0, goal: 0)),
+                  ];
                   ref_exercise_index.add(_exercisesdataProvider.exercisesdata.exercises.indexWhere((element) => element.name == ref_exercise[i])) ;
                 }
+                _postExerciseCheck();
                 ref_exercise_index= ref_exercise_index.toSet().toList();
 
                 _displayStartAlert();
@@ -317,54 +358,15 @@ class _ProgramDownloadState extends State<ProgramDownload> {
     );
   }
 
-  Widget _titleWidget() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      child: TextFormField(
-          controller: _programtitleCtrl,
-          decoration: InputDecoration(
-              prefixIcon: Icon(Icons.edit, color: Colors.white),
-              labelText: 'Program 이름을 바꿀 수 있어요',
-              labelStyle: TextStyle(color: Colors.white),
-              border: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.white, width: 2.0),
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white, width: 2.0),
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              fillColor: Colors.white),
-
-          style: TextStyle(color: Colors.white)),
-    );
+  void _postExerciseCheck() async {
+    ExerciseEdit(
+        user_email: _userdataProvider.userdata.email, exercises: _exercisesdataProvider.exercisesdata.exercises)
+        .editExercise()
+        .then((data) => data["user_email"] != null
+        ? {showToast("수정 완료"), _exercisesdataProvider.getdata()}
+        : showToast("입력을 확인해주세요"));
   }
 
-  Widget _commentWidget() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      child: TextFormField(
-          controller: _programcommentCtrl,
-          keyboardType: TextInputType.multiline,
-          //expands: true,
-          maxLines: null,
-          decoration: InputDecoration(
-              prefixIcon: Icon(Icons.edit, color: Colors.white),
-              labelText: 'Program을 설명해주세요',
-              labelStyle: TextStyle(color: Colors.white),
-              border: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.white, width: 2.0),
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white, width: 2.0),
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              fillColor: Colors.white),
-
-          style: TextStyle(color: Colors.white)),
-    );
-  }
 
   void _displayStartAlert() {
     showDialog(
