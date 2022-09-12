@@ -45,6 +45,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
 
   var _selectImage;
   List ref_exercise =[];
+  List do_exercise =[];
   List ref_exercise_index =[];
 
   @override
@@ -336,10 +337,18 @@ class _ProgramDownloadState extends State<ProgramDownload> {
 
                   for (int e = 0; e < widget.program.routinedata.exercises[0].plans[p].exercises.length; e++) {
                     ref_exercise.add(widget.program.routinedata.exercises[0].plans[p].exercises[e].ref_name);
-
+                    do_exercise.add(widget.program.routinedata.exercises[0].plans[p].exercises[e].name);
                   }
                 }
                 ref_exercise= ref_exercise.toSet().toList();
+                do_exercise= do_exercise.toSet().toList();
+                for (int i = 0; i < do_exercise.length; i++) {
+                  _exercisesdataProvider.exercisesdata.exercises.contains(do_exercise[i])
+                      ? null
+                      : [
+                    _exercisesdataProvider.addExdata(uex.Exercises(name: do_exercise[i], onerm: 0, goal: 0)),
+                  ];
+                }
                 for (int i = 0; i < ref_exercise.length; i++) {
                   _exercisesdataProvider.exercisesdata.exercises.contains(ref_exercise[i])
                   ? null

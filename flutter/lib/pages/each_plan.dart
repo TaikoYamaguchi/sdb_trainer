@@ -516,74 +516,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  setindex == 0
-                                                      ? Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Container(
-                                                              width: 10,
-                                                            ),
-                                                            Container(
-                                                              width: 10,
-                                                            ),
-                                                            Transform.scale(
-                                                              scale: 1.2,
-                                                              child: IconButton(
-                                                                  padding:
-                                                                      EdgeInsets
-                                                                          .all(
-                                                                              5),
-                                                                  constraints:
-                                                                      BoxConstraints(),
-                                                                  onPressed:
-                                                                      () {
-                                                                    workout.plansetsminus(
-                                                                        widget
-                                                                            .rindex,
-                                                                        index);
-                                                                    _editWorkoutCheck();
-                                                                  },
-                                                                  icon: Icon(
-                                                                    Icons
-                                                                        .remove_circle_outlined,
-                                                                    color: Colors
-                                                                        .white,
-                                                                    size: 20,
-                                                                  )),
-                                                            ),
-                                                            Container(
-                                                              width: 10,
-                                                            ),
-                                                            Transform.scale(
-                                                              scale: 1.2,
-                                                              child: IconButton(
-                                                                  padding:
-                                                                      EdgeInsets
-                                                                          .all(
-                                                                              5),
-                                                                  constraints:
-                                                                      BoxConstraints(),
-                                                                  onPressed:
-                                                                      () {
-                                                                    workout.plansetsplus(
-                                                                        widget
-                                                                            .rindex,
-                                                                        index);
-                                                                    _editWorkoutCheck();
-                                                                  },
-                                                                  icon: Icon(
-                                                                    Icons
-                                                                        .add_circle_outlined,
-                                                                    color: Colors
-                                                                        .white,
-                                                                    size: 20,
-                                                                  )),
-                                                            ),
-                                                          ],
-                                                        )
-                                                      : Container(),
+                                                  Container(),
                                                   Row(
                                                     children: [
                                                       GestureDetector(
@@ -640,6 +573,70 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                           ),
                                         ) // body when the widget is Expanded
                                         ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Container(
+                                          width: 10,
+                                        ),
+                                        Container(
+                                          width: 10,
+                                        ),
+                                        Transform.scale(
+                                          scale: 1.2,
+                                          child: IconButton(
+                                              padding:
+                                              EdgeInsets
+                                                  .all(
+                                                  5),
+                                              constraints:
+                                              BoxConstraints(),
+                                              onPressed:
+                                                  () {
+                                                workout.plansetsminus(
+                                                    widget
+                                                        .rindex,
+                                                    index);
+                                                _editWorkoutCheck();
+                                              },
+                                              icon: Icon(
+                                                Icons
+                                                    .remove_circle_outlined,
+                                                color: Colors
+                                                    .white,
+                                                size: 20,
+                                              )),
+                                        ),
+                                        Container(
+                                          width: 10,
+                                        ),
+                                        Transform.scale(
+                                          scale: 1.2,
+                                          child: IconButton(
+                                              padding:
+                                              EdgeInsets
+                                                  .all(
+                                                  5),
+                                              constraints:
+                                              BoxConstraints(),
+                                              onPressed:
+                                                  () {
+                                                workout.plansetsplus(
+                                                    widget
+                                                        .rindex,
+                                                    index);
+                                                _editWorkoutCheck();
+                                              },
+                                              icon: Icon(
+                                                Icons
+                                                    .add_circle_outlined,
+                                                color: Colors
+                                                    .white,
+                                                size: 20,
+                                              )),
+                                        ),
+                                      ],
+                                    ),
                                     Divider(
                                       indent: 10,
                                       thickness: 1.3,
@@ -1043,7 +1040,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                           new Plan_Exercises(
                               name: _addexinput,
                               ref_name: exuniq[index].name,
-                              sets: [],
+                              sets: [Sets(index: 1, weight:0.0, reps: 1, ischecked: false)],
                               rest: 0));
 
                       Navigator.pop(context);

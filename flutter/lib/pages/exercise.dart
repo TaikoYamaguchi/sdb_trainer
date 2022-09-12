@@ -255,6 +255,7 @@ class ExerciseState extends State<Exercise> {
 
   Widget _MyWorkout() {
     return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       color: Colors.black,
       child: Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
         List routinelist = provider.workoutdata.routinedatas;
