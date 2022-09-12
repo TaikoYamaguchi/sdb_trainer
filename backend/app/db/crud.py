@@ -154,6 +154,13 @@ def edit_comment_nickname_by_user_edit(db: Session, email:str, user : schemas.Us
     for i in range(len(db_comment)):
         setattr(db_comment[i], "writer_nickname", user.nickname)
 
+def edit_fcm_token(db: Session, fcm_token:schemas.UserFCMTokenIn, user:schemas.UserBase):
+    print("333333333333333")
+    db_user = db.query(models.User).filter(models.User.email == user.email).first()
+    print("444444444444")
+    setattr(db_user, "fcm_token", fcm_token.fcm_token)
+    db.commit()
+    db.refresh(db_user)
 
 
 

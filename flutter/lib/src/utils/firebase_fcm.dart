@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -69,11 +71,29 @@ void fcmSetting() async {
     print("fiffffffffffffffffbse token");
     print(firebaseToken);
 
-    // 서버로 firebase token 갱신
+    final storage = new FlutterSecureStorage();
+
+    await storage.delete(key: "sdb_fcm_token");
     if (firebaseToken != null) {
-      var dio = Dio();
-      final firebaseTokenUpdateResponse =
-          await dio.put('/token', data: {'token': firebaseToken});
+      try {
+        print("1111111111111");
+        String? stored_fcm_token = await storage.read(key: "sdb_fcm_token");
+        if (stored_fcm_token == firebaseToken) {
+          print("22222222222222");
+          null;
+        } else {
+          print("333333333333yy");
+          UserFCMTokenEdit(fcmToken: firebaseToken).patchUserFCMToken();
+          await storage.write(key: "sdb_fcm_token", value: firebaseToken);
+        }
+      } catch (e) {
+        print("444444444444");
+        UserFCMTokenEdit(fcmToken: firebaseToken).patchUserFCMToken();
+        await storage.write(key: "sdb_fcm_token", value: firebaseToken);
+      }
+
+      // 서버로 firebase token 갱신
+
     }
   }
 }

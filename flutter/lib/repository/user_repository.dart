@@ -505,6 +505,42 @@ class UserImageEdit {
   }
 }
 
+class UserFCMTokenEdit {
+  final String fcmToken;
+  UserFCMTokenEdit({required this.fcmToken});
+  Future<String> _patchUserFCMTokenFromServer() async {
+    var formData = new Map<String, dynamic>();
+    formData["fcm_token"] = fcmToken;
+    final storage = new FlutterSecureStorage();
+    String? token = await storage.read(key: "sdb_token");
+    var url = Uri.parse(LocalHost.getLocalHost() + "/api/v1/user/fcm_token");
+    var response = await http.patch(
+      url,
+      body: json.encode(formData),
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer ${token}',
+      },
+    );
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      String jsonString = utf8.decode(response.bodyBytes);
+      final jsonResponse = json.decode(jsonString);
+
+      return utf8.decode(response.bodyBytes);
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<User?> patchUserFCMToken() async {
+    String jsonString = await _patchUserFCMTokenFromServer();
+
+    final jsonResponse = json.decode(jsonString);
+    return (jsonResponse);
+  }
+}
+
 class UserFind {
   final String phone_number;
   UserFind({required this.phone_number});

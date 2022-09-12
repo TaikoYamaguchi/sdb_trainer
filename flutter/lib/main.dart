@@ -24,8 +24,6 @@ import 'package:sdb_trainer/src/utils/firebase_fcm.dart';
 void main() {
   KakaoSdk.init(nativeAppKey: "54b807de5757a704a372c2d0539a67da");
   WidgetsFlutterBinding.ensureInitialized();
-  fcmSetting();
-
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (BuildContext context) => BodyStater()),
     ChangeNotifierProvider(

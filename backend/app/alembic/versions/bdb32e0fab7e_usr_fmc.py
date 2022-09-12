@@ -32,7 +32,7 @@ def upgrade():
     tables = inspector.get_table_names()
 
     if not table_has_column("user", "fcm_token"):
-        op.add_column("user", sa.Column("fcm_token", sa.String(50), server_default='', nullable=True))
+        op.add_column("user", sa.Column("fcm_token", sa.String(200), server_default='', nullable=True))
     pass
 
 

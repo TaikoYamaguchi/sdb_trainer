@@ -268,3 +268,8 @@ class ManageLikeFamous(BaseModel):
     email:str
     status:str
     disorlike:str
+
+class UserFCMTokenIn(BaseModel):
+    fcm_token:str
+
+
