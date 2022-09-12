@@ -19,9 +19,12 @@ import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
+import 'package:sdb_trainer/src/utils/firebase_fcm.dart';
+
 void main() {
   KakaoSdk.init(nativeAppKey: "54b807de5757a704a372c2d0539a67da");
   WidgetsFlutterBinding.ensureInitialized();
+  fcmSetting();
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (BuildContext context) => BodyStater()),

@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "508959158364",
-    "project_id": "peak-academy-350108",
-    "storage_bucket": "peak-academy-350108.appspot.com"
+    "project_number": "988603910922",
+    "project_id": "superofcm",
+    "storage_bucket": "superofcm.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:508959158364:android:ca97244b9931874fe73699",
+        "mobilesdk_app_id": "1:988603910922:android:f7285613c8012d405388f3",
         "android_client_info": {
           "package_name": "com.tk_lck.supero"
         }
       },
       "oauth_client": [
         {
-          "client_id": "508959158364-i68ful4qdmvpcovhlq9b0peldloblmqb.apps.googleusercontent.com",
+          "client_id": "988603910922-ppmqu262nqj3j90hn4gjmhejagghusgh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tk_lck.supero",
+            "certificate_hash": "bb047f6ab6eb2f48a7ddf1c401ddde48cbee87f0"
+          }
+        },
+        {
+          "client_id": "988603910922-r792ok1fl6p2gti794r9a9qqb7malbjd.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCsAhT3gB3DMfobsdN5MK5ke3_82tMd25A"
+          "current_key": "AIzaSyCdg6eonc8ZcLuLfE4LR5ZFREDGZSmDI4E"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "508959158364-i68ful4qdmvpcovhlq9b0peldloblmqb.apps.googleusercontent.com",
+              "client_id": "988603910922-r792ok1fl6p2gti794r9a9qqb7malbjd.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

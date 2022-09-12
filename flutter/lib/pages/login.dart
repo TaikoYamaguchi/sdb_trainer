@@ -18,6 +18,7 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
+import 'package:sdb_trainer/src/utils/firebase_fcm.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -368,6 +369,7 @@ class _LoginPageState extends State<LoginPage> {
           storageEmail == _userEmailCtrl.text) {
         _bodyStater.change(0);
         _loginState.change(true);
+        fcmSetting();
         initialProviderGet();
       } else {
         UserLogin(
@@ -378,6 +380,7 @@ class _LoginPageState extends State<LoginPage> {
                 ? {
                     _bodyStater.change(0),
                     _loginState.change(true),
+                    fcmSetting(),
                     initialProviderGet()
                   }
                 : showToast("아이디와 비밀번호를 확인해주세요"));
@@ -390,6 +393,7 @@ class _LoginPageState extends State<LoginPage> {
               ? {
                   _bodyStater.change(0),
                   _loginState.change(true),
+                  fcmSetting(),
                   initialProviderGet()
                 }
               : showToast("아이디와 비밀번호를 확인해주세요"));
@@ -407,6 +411,8 @@ class _LoginPageState extends State<LoginPage> {
         print(storageEmail);
         _bodyStater.change(0);
         _loginState.change(true);
+
+        fcmSetting();
         initialProviderGet();
       } else {
         try {
@@ -417,6 +423,7 @@ class _LoginPageState extends State<LoginPage> {
                   print(_userEmailCtrl.text),
                   _bodyStater.change(0),
                   _loginState.change(true),
+                  fcmSetting(),
                   initialProviderGet()
                 }
               : _loginState.changeSignup(true));
@@ -435,6 +442,7 @@ class _LoginPageState extends State<LoginPage> {
                 print(_userEmailCtrl.text),
                 _bodyStater.change(0),
                 _loginState.change(true),
+                fcmSetting(),
                 initialProviderGet()
               }
             : _loginState.changeSignup(true));
@@ -452,6 +460,8 @@ class _LoginPageState extends State<LoginPage> {
     if (storageEmail != null && storageEmail != "") {
       _bodyStater.change(0);
       _loginState.change(true);
+
+      fcmSetting();
       initialProviderGet();
     }
   }
