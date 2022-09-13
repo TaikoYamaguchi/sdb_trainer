@@ -8,6 +8,7 @@ import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/staticPageState.dart';
 import 'package:sdb_trainer/providers/chartIndexState.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
+import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 
 class Home extends StatelessWidget {
   Home({Key? key}) : super(key: key);
@@ -49,71 +50,157 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget _homeWidget(_exunique) {
+  Widget _homeWidget(_exunique, context) {
     return Container(
       color: Colors.black,
-      child: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Text("Total SDB",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 54,
-                      fontWeight: FontWeight.w800)),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.baseline,
-                  textBaseline: TextBaseline.alphabetic,
-                  children: <Widget>[
-                    Text(
-                        (_exunique.exercises[0].onerm +
-                                _exunique.exercises[1].onerm +
-                                _exunique.exercises[2].onerm)
-                            .floor()
-                            .toString(),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 54,
-                            fontWeight: FontWeight.w800)),
-                    Text(
-                        "/" +
-                            (_exunique.exercises[0].goal +
-                                    _exunique.exercises[1].goal +
-                                    _exunique.exercises[2].goal)
-                                .floor()
-                                .toString() +
-                            "kg",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w600)),
-                  ]),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Text('''"Shut up & Squat!"''',
-                    style: TextStyle(color: Colors.white, fontSize: 24)),
-              ),
-              Text('''Lifting Stats''',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w800)),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: <
-                  Widget>[
-                _homeGaugeChart(_exunique, 0, Color.fromRGBO(66, 0, 255, 100)),
-                _homeGaugeChart(_exunique, 1, Color.fromRGBO(0, 255, 25, 100)),
-              ]),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: <
-                  Widget>[
-                _homeGaugeChart(_exunique, 2, Color.fromRGBO(235, 0, 255, 100)),
-                _homeGaugeChart(_exunique, 3, Color.fromRGBO(0, 255, 240, 100))
-              ])
-            ],
-          ),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
+                children: <Widget>[
+                  Text("SDB ",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 54,
+                          fontWeight: FontWeight.w600)),
+                  Text(
+                      (_exunique.exercises[0].onerm +
+                              _exunique.exercises[1].onerm +
+                              _exunique.exercises[2].onerm)
+                          .floor()
+                          .toString(),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 46,
+                          fontWeight: FontWeight.w800)),
+                  Text(
+                      "/" +
+                          (_exunique.exercises[0].goal +
+                                  _exunique.exercises[1].goal +
+                                  _exunique.exercises[2].goal)
+                              .floor()
+                              .toString() +
+                          "kg",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600)),
+                ]),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: _liftingStatWidget(_exunique, context),
+            )
+          ],
         ),
       ),
     );
+  }
+
+  Widget _liftingStatWidget(_exunique, context) {
+    return Card(
+        color: Theme.of(context).cardColor,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(children: [
+            Text('''Lifting Stats''',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600)),
+            SizedBox(height: 8.0),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                _homeProgressiveBarChart(_exunique, 0, context),
+                _homeProgressiveBarChart(_exunique, 1, context),
+                _homeProgressiveBarChart(_exunique, 2, context),
+                _homeProgressiveBarChart(_exunique, 3, context),
+              ],
+            )
+          ]),
+        ));
+  }
+
+  Widget _homeProgressiveBarChart(_exunique, index, context) {
+    return _exunique.exercises.length > index
+        ? Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: GestureDetector(
+              onTap: () => {
+                _chartIndex.change(index),
+                _chartIndex.changePageController(0),
+                _staticPageState.change(true),
+                _bodyStater.change(3),
+              },
+              child: Container(
+                height: 35,
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  children: [
+                    Container(
+                        width: MediaQuery.of(context).size.width / 2 - 40,
+                        child: Text(_exunique.exercises[index].name,
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center)),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 2,
+                      child: LiquidLinearProgressIndicator(
+                        value: _exunique.exercises[index].onerm /
+                            _exunique.exercises[index].goal, // Defaults to 0.5.
+                        borderColor: Theme.of(context).primaryColor,
+                        valueColor: AlwaysStoppedAnimation(
+                            Theme.of(context).primaryColor),
+                        backgroundColor: Colors.grey,
+                        borderWidth: 0.0,
+                        borderRadius: 15.0,
+                        direction: Axis
+                            .horizontal, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
+                        center: Center(
+                          child: Text(
+                              _exunique.exercises[index].onerm
+                                      .floor()
+                                      .toString() +
+                                  "/" +
+                                  _exunique.exercises[index].goal
+                                      .floor()
+                                      .toString(),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+        : Container();
+  }
+
+  Path _buildBoatPath() {
+    return Path()
+      ..moveTo(15, 120)
+      ..lineTo(0, 85)
+      ..lineTo(50, 85)
+      ..lineTo(50, 0)
+      ..lineTo(105, 80)
+      ..lineTo(60, 80)
+      ..lineTo(60, 85)
+      ..lineTo(120, 85)
+      ..lineTo(105, 120)
+      ..close();
   }
 
   Widget _homeGaugeChart(_exunique, index, color) {
@@ -187,7 +274,7 @@ class Home extends StatelessWidget {
         body: Consumer<ExercisesdataProvider>(
             builder: (context, provider, widget) {
           if (provider.exercisesdata != null) {
-            return _homeWidget(provider.exercisesdata);
+            return _homeWidget(provider.exercisesdata, context);
           }
           return Center(
             child: CircularProgressIndicator(),

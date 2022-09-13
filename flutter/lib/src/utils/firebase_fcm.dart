@@ -73,21 +73,17 @@ void fcmSetting() async {
 
     final storage = new FlutterSecureStorage();
 
-    await storage.delete(key: "sdb_fcm_token");
     if (firebaseToken != null) {
       try {
-        print("1111111111111");
         String? stored_fcm_token = await storage.read(key: "sdb_fcm_token");
         if (stored_fcm_token == firebaseToken) {
-          print("22222222222222");
+          print("fcm_token 일치");
           null;
         } else {
-          print("333333333333yy");
           UserFCMTokenEdit(fcmToken: firebaseToken).patchUserFCMToken();
           await storage.write(key: "sdb_fcm_token", value: firebaseToken);
         }
       } catch (e) {
-        print("444444444444");
         UserFCMTokenEdit(fcmToken: firebaseToken).patchUserFCMToken();
         await storage.write(key: "sdb_fcm_token", value: firebaseToken);
       }
