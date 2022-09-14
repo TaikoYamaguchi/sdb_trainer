@@ -48,6 +48,7 @@ class ExerciseState extends State<Exercise> {
   double bottom = 0;
   int swap = 1;
   String _title = "Workout List";
+  var _customExUsed = false;
 
   var keyPlus = GlobalKey();
   var keyContainer = GlobalKey();
@@ -737,8 +738,21 @@ class ExerciseState extends State<Exercise> {
                   SizedBox(height: 20),
                   TextField(
                     onChanged: (value) {
-                      setState(() {
-                        null;
+                      _workoutdataProvider.workoutdata.routinedatas
+                          .indexWhere((routine) {
+                        if (routine.name == _workoutNameCtrl.text) {
+                          setState(() {
+                            print("useddddddd");
+                            _customExUsed = true;
+                          });
+                          return true;
+                        } else {
+                          setState(() {
+                            print("nullllllllll");
+                            _customExUsed = false;
+                          });
+                          return false;
+                        }
                       });
                     },
                     style: TextStyle(fontSize: 24.0, color: Colors.white),
@@ -804,7 +818,7 @@ class ExerciseState extends State<Exercise> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
-            color: _workoutNameCtrl.text == ""
+            color: _workoutNameCtrl.text == "" || _customExUsed == true
                 ? Color(0xFF212121)
                 : Theme.of(context).primaryColor,
             textColor: Colors.white,
@@ -813,22 +827,24 @@ class ExerciseState extends State<Exercise> {
             padding: EdgeInsets.all(12.0),
             splashColor: Theme.of(context).primaryColor,
             onPressed: () {
-              _workoutdataProvider.addroutine(new Routinedatas(
-                  name: _workoutNameCtrl.text,
-                  mode: _RoutineMenuProvider.ismodechecked ? 1 : 0,
-                  exercises: _RoutineMenuProvider.ismodechecked
-                      ? [
-                          new Program(
-                              progress: 0, plans: [new Plans(exercises: [])])
-                        ]
-                      : [],
-                  routine_time: 0));
+              if(!_customExUsed){
+                _workoutdataProvider.addroutine(new Routinedatas(
+                    name: _workoutNameCtrl.text,
+                    mode: _RoutineMenuProvider.ismodechecked ? 1 : 0,
+                    exercises: _RoutineMenuProvider.ismodechecked
+                        ? [
+                      new Program(
+                          progress: 0, plans: [new Plans(exercises: [])])
+                    ]
+                        : [],
+                    routine_time: 0));
+                _editWorkoutCheck();
+                _workoutNameCtrl.clear();
+                Navigator.of(context, rootNavigator: true).pop();
+              };
 
-              _editWorkoutCheck();
-              _workoutNameCtrl.clear();
-              Navigator.of(context, rootNavigator: true).pop();
             },
-            child: Text("운동 루틴 저장",
+            child: Text(_customExUsed == true ? "존재하는 루틴" : "새 루틴 추가",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
