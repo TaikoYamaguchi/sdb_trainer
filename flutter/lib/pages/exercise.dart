@@ -11,6 +11,7 @@ import 'package:sdb_trainer/pages/unique_exercise.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/routinemenu.dart';
+import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
@@ -38,6 +39,7 @@ class ExerciseState extends State<Exercise> {
   var _exercisesdataProvider;
   var _workoutdataProvider;
   var _famousdataProvider;
+  var _routinetimeProvider;
   var _RoutineMenuProvider;
   var _PopProvider;
   var _PrefsProvider;
@@ -975,6 +977,7 @@ class ExerciseState extends State<Exercise> {
 
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
     _famousdataProvider = Provider.of<FamousdataProvider>(context, listen: false);
+    _routinetimeProvider = Provider.of<RoutineTimeProvider>(context, listen: false);
     _RoutineMenuProvider =
         Provider.of<RoutineMenuStater>(context, listen: false);
     _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
@@ -989,20 +992,55 @@ class ExerciseState extends State<Exercise> {
             : null
         : null;
 
-    return Scaffold(
-        appBar: _appbarWidget(),
-        body: Consumer2<ExercisesdataProvider, WorkoutdataProvider>(
-            builder: (context, provider1, provider2, widget) {
-          if (provider2.workoutdata != null) {
-            return _bodyWidget();
-          }
-          return Container(
-            color: Colors.black,
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }),
-        backgroundColor: Colors.black);
+    return Consumer<PopProvider>(builder: (Builder, provider, child) {
+        bool _goto = provider.goto;
+        _goto == false
+            ? print('working?2')
+            : [
+          print('working?'),
+          provider.exstackup(0),
+          Future.delayed(Duration.zero, () async {
+            Navigator.of(context).popUntil((route) => route.isFirst);
+            Navigator.push(
+                context,
+                Transition(
+                    child: EachWorkoutDetails(
+                      rindex: _routinetimeProvider.nowonrindex,
+                    ),
+                    transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+            Navigator.push(
+                context,
+                Transition(
+                    child: EachExerciseDetails(
+                      ueindex: _exercisesdataProvider.exercisesdata.exercises.indexWhere(
+                              (element) =>
+                          element.name ==
+                              _workoutdataProvider.workoutdata.routinedatas[_routinetimeProvider.nowonrindex].exercises[_routinetimeProvider.nowoneindex].name),
+                      eindex: _routinetimeProvider.nowoneindex,
+                      rindex: _routinetimeProvider.nowonrindex,
+                    ),
+                    transitionEffect:
+                    TransitionEffect.RIGHT_TO_LEFT));
+            provider.gotooff();
+            provider.exstackup(2);
+          }),
+        ];
+        return Scaffold(
+            appBar: _appbarWidget(),
+            body: Consumer2<ExercisesdataProvider, WorkoutdataProvider>(
+                builder: (context, provider1, provider2, widget) {
+              if (provider2.workoutdata != null) {
+                return _bodyWidget();
+              }
+              return Container(
+                color: Colors.black,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }),
+            backgroundColor: Colors.black);
+      }
+    );
   }
 }

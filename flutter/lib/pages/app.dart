@@ -448,6 +448,7 @@ class _AppState extends State<App> {
                           children: [
                             ActionButton(
                               onPressed: () {
+                                _PopProvider.gotoon();
                                 _bodyStater.change(1);
                               },
                               icon: Icon(Icons.play_arrow),

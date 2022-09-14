@@ -1278,6 +1278,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               })
             ];
 
+
+
       return Scaffold(
           appBar: _appbarWidget(),
           body:

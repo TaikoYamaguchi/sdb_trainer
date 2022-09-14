@@ -2,7 +2,8 @@
 import 'package:flutter/material.dart';
 
 class PopProvider extends ChangeNotifier {
-
+  bool _goto = false;
+  bool get goto => _goto;
   int _exstack = 0;
   int get exstack => _exstack;
   int _profilestack = 0;
@@ -13,6 +14,16 @@ class PopProvider extends ChangeNotifier {
   bool get isprostacking => _isprostacking;
   bool _tutorpop = false;
   bool get tutorpop => _tutorpop;
+
+  gotoon() {
+    _goto = true;
+    notifyListeners();
+  }
+
+  gotooff() {
+    _goto = false;
+    notifyListeners();
+  }
 
   tutorpopon() {
     _tutorpop = true;

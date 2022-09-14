@@ -14,6 +14,8 @@ class RoutineTimeProvider extends ChangeNotifier {
   int get timeron => _timeron;
   int _nowonrindex = 0;
   int get nowonrindex => _nowonrindex;
+  int _nowoneindex = 0;
+  int get nowoneindex => _nowoneindex;
 
   Timer? timer1;
   bool _isstarted = false;
@@ -29,6 +31,10 @@ class RoutineTimeProvider extends ChangeNotifier {
   Color get buttoncolor => _buttoncolor;
   DateTime _starttime = DateTime(2022, 08, 06, 10, 30);
   DateTime _timerstarttime = DateTime(2022, 08, 06, 10, 30);
+
+  nowoneindexupdate(value) {
+    _nowoneindex = value;
+  }
 
   getinfo() {
     notifyListeners();
@@ -54,6 +60,8 @@ class RoutineTimeProvider extends ChangeNotifier {
     _changetime = resttime;
     notifyListeners();
   }
+
+
 
   resettimer(resttime) {
     _timeron = resttime;

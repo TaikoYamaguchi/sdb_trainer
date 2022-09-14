@@ -152,6 +152,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
 
   Widget _exercisedetailPage() {
     controller = PageController(initialPage: widget.eindex);
+    if( _routinetimeProvider.nowonrindex==widget.rindex){
+      _routinetimeProvider.nowoneindexupdate(widget.eindex);
+    }
     int numEx = _workoutdataProvider
         .workoutdata.routinedatas[widget.rindex].exercises.length;
     for (int i = 0; i < numEx; i++) {
@@ -159,6 +162,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
       repsController.add(new Controllerlist());
     }
     return PageView.builder(
+      onPageChanged: (value){
+        if( _routinetimeProvider.nowonrindex==widget.rindex){
+          _routinetimeProvider.nowoneindexupdate(value);
+        }
+      },
       controller: controller,
       itemBuilder: (context, pindex) {
         return _exercisedetailWidget(pindex, context);
