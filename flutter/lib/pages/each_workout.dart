@@ -56,6 +56,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   bool _isexsearch = false;
   var btnDisabled;
   var _customExUsed = false;
+  var _customRuUsed = false;
 
   var keyPlus = GlobalKey();
   var keyContainer = GlobalKey();
@@ -525,8 +526,21 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 SizedBox(height: 20),
                 TextField(
                   onChanged: (value) {
-                    setState(() {
-                      null;
+                    _workoutdataProvider.workoutdata.routinedatas
+                        .indexWhere((routine) {
+                      if (routine.name == _workoutNameCtrl.text) {
+                        setState(() {
+                          print("useddddddd");
+                          _customRuUsed = true;
+                        });
+                        return true;
+                      } else {
+                        setState(() {
+                          print("nullllllllll");
+                          _customRuUsed = false;
+                        });
+                        return false;
+                      }
                     });
                   },
                   style: TextStyle(fontSize: 24.0, color: Colors.white),
@@ -564,7 +578,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
-            color: _workoutNameCtrl.text == ""
+            color: _workoutNameCtrl.text == "" || _customRuUsed == true
                 ? Color(0xFF212121)
                 : Theme.of(context).primaryColor,
             textColor: Colors.white,
@@ -573,13 +587,15 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             padding: EdgeInsets.all(12.0),
             splashColor: Theme.of(context).primaryColor,
             onPressed: () {
-              _editWorkoutNameCheck(_workoutNameCtrl.text);
-              _workoutNameCtrl.clear();
-              _exSearchCtrl.clear();
-              searchExercise(_exSearchCtrl.text);
-              Navigator.of(context, rootNavigator: true).pop();
+              if(!_customRuUsed){
+                _editWorkoutNameCheck(_workoutNameCtrl.text);
+                _workoutNameCtrl.clear();
+                _exSearchCtrl.clear();
+                searchExercise(_exSearchCtrl.text);
+                Navigator.of(context, rootNavigator: true).pop();
+              }
             },
-            child: Text("루틴 이름 수정",
+            child: Text(_customRuUsed == true ? "존재하는 루틴 이름" : "루틴 이름 수정",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 

@@ -712,16 +712,24 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               builder: (builder, provider, child) {
                             return ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                  primary: provider.buttoncolor,
+                                  primary: (provider.nowonrindex != widget.rindex) && _routinetimeProvider.isstarted
+                                      ? Color(0xFF212121)
+                                      : provider.buttoncolor,
                                   textStyle: const TextStyle(fontSize: 20)),
                               onPressed: () {
-                                if (_routinetimeProvider.isstarted) {
-                                  _displayFinishAlert();
-                                } else {
-                                  provider.routinecheck(widget.rindex);
-                                }
+                                (provider.nowonrindex != widget.rindex) && _routinetimeProvider.isstarted
+                                  ? null
+                                  : [if (_routinetimeProvider.isstarted) {
+                                      _displayFinishAlert()
+                                      } else {
+                                      provider.routinecheck(widget.rindex)
+                                      }
+                                  ];
                               },
-                              child: Text(provider.routineButton),
+                              child: Text((provider.nowonrindex != widget.rindex) && _routinetimeProvider.isstarted 
+                                  ? '다른 루틴 수행중'
+                                  : provider.routineButton
+                              ),
                             );
                           })),
                           Container(
