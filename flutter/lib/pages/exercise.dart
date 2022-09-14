@@ -1009,6 +1009,8 @@ class ExerciseState extends State<Exercise> {
                         rindex: _routinetimeProvider.nowonrindex,
                       ),
                       transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+              provider.gotooff();
+              provider.exstackup(1);
             } else{
               Navigator.push(
                   context,
