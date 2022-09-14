@@ -7,6 +7,7 @@ class ChartIndexProvider extends ChangeNotifier {
   int get chartIndex => _chartIndex;
 
   PageController get isPageController => _isPageController;
+
   change(state) {
     _chartIndex = state;
     notifyListeners();

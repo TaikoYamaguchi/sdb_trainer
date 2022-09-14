@@ -1,3 +1,4 @@
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
@@ -42,7 +43,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
   TextEditingController _workoutNameCtrl = TextEditingController(text: "");
   Map item_map = {0:"뉴비",1:"초급",2:'중급',3:'상급', 4:'엘리트'};
   Map item_map2 = {0:"기타",1:"근비대",2:'근력',3:'근지구력', 4:'바디빌딩',5:'파워리프팅',6:'역도'};
-
+  List<ExpandableController> Controllerlist = [];
   var _selectImage;
   List ref_exercise =[];
   List do_exercise =[];
@@ -225,6 +226,26 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                   Container(
                     height: 10,
                   ),
+                  Container(
+                    padding: const EdgeInsets.all(12.0),
+                    alignment: Alignment.centerLeft,
+                    child: Text("세부사항",
+                        style: TextStyle(fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold)),
+                  ),
+                  Consumer<FamousdataProvider>(
+                    builder: (builder, provider, child) {
+                      return Column(
+                        children: [
+                          Container(
+                              height: 40,
+                              child: ListView(
+                                  scrollDirection: Axis.horizontal, children: techChips())
+                          ),
+                          _Nday_RoutineWidget(),
+                        ],
+                      );
+                    }
+                  ),
 
 
                 ]),
@@ -235,6 +256,270 @@ class _ProgramDownloadState extends State<ProgramDownload> {
       ],
     );
   }
+
+  Widget _Nday_RoutineWidget() {
+    return Consumer2<FamousdataProvider, ExercisesdataProvider>(
+        builder: (builder, famous, exinfo, child) {
+          var plandata = famous.download.routinedata.exercises[0];
+          int num_week = (plandata.plans.length/7).ceil();
+          var inplandata = plandata.plans[plandata.progress].exercises;
+          var uniqexinfo = exinfo.exercisesdata.exercises;
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            color: Colors.black,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  height: 36,
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 10,
+                      ),
+                      IconButton(
+                          padding: EdgeInsets.all(3),
+                          constraints: BoxConstraints(),
+                          onPressed: () {
+                            if (plandata.progress%7 > 0) {
+                              _famousdataProvider.progresschange(plandata.progress - 1);
+                            }
+                          },
+                          icon: Icon(
+                            Icons.arrow_back_ios_outlined,
+                            color: Colors.white,
+                            size: 20,
+                          )),
+                      Container(
+                        width: 10,
+                      ),
+                      Container(
+                        child: Text(
+                          'Day ${plandata.progress%7 + 1}',
+                          style: TextStyle(color: Colors.white, fontSize: 24),
+                        ),
+                      ),
+                      Container(
+                        width: 10,
+                      ),
+                      IconButton(
+                          padding: EdgeInsets.all(3),
+                          constraints: BoxConstraints(),
+                          onPressed: () {
+                            if (plandata.progress%7 < 6) {
+                              _famousdataProvider.progresschange(plandata.progress + 1);
+                            }
+                          },
+                          icon: Icon(
+                            Icons.arrow_forward_ios_outlined,
+                            color: Colors.white,
+                            size: 20,
+                          )),
+                      Container(
+                        width: 10,
+                      ),
+                    ],
+                  ),
+                ),
+                Divider(
+                  indent: 10,
+                  thickness: 1.3,
+                  color: Colors.grey,
+                ),
+                ListView(
+                  shrinkWrap: true,
+                  physics: new NeverScrollableScrollPhysics(),
+                  children: [
+                    inplandata.isEmpty
+                        ? Center(
+                        child: Container(
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 30,
+                                ),
+                                Text(
+                                  '오늘은 휴식데이!',
+                                  style: TextStyle(
+                                      fontSize: 25,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Container(
+                                  height: 20,
+                                ),
+                                Text(
+                                  '운동을 추가 하지 않으면 휴식일입니다.',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Container(
+                                  height: 30,
+                                ),
+                              ],
+                            )))
+                        : Container(
+                      child: ListView.builder(
+                        physics: new NeverScrollableScrollPhysics(),
+                        itemBuilder: (BuildContext _context, int index) {
+                          Controllerlist.add(ExpandableController(
+                            initialExpanded: true,
+                          ));
+                          return Container(
+                            child: Column(
+                              children: [
+                                ExpandablePanel(
+                                    controller: Controllerlist[index],
+                                    theme: const ExpandableThemeData(
+                                      headerAlignment:
+                                      ExpandablePanelHeaderAlignment
+                                          .center,
+                                      hasIcon: true,
+                                      iconColor: Colors.white,
+                                    ),
+                                    header: Padding(
+                                      padding: EdgeInsets.only(left: 10),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            inplandata[index].name,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20),
+                                          ),
+                                          Container(
+                                            width: 10,
+                                          ),
+                                          Container(
+                                            child: Text(
+                                              '기준: ${inplandata[index].ref_name}',
+                                              style: TextStyle(
+                                                  color:
+                                                  Colors.grey,
+                                                  fontSize: 15,
+                                                  fontWeight:
+                                                  FontWeight
+                                                      .bold),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    collapsed:
+                                    Container(), // body when the widget is Collapsed, I didnt need anything here.
+                                    expanded: Container(
+                                      child: ListView.builder(
+                                        physics:
+                                        new NeverScrollableScrollPhysics(),
+                                        itemBuilder: (BuildContext _context,
+                                            int setindex) {
+                                          var refinfo = uniqexinfo[
+                                          uniqexinfo.indexWhere(
+                                                  (element) =>
+                                              element.name ==
+                                                  inplandata[index]
+                                                      .ref_name)];
+                                          return Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment
+                                                .spaceBetween,
+                                            children: [
+                                              Container(),
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                    child: Text(
+                                                      '${(inplandata[index].sets[setindex].weight * refinfo.onerm / 100).toStringAsFixed(1)}kg  X  ${inplandata[index].sets[setindex].reps}',
+                                                      style: TextStyle(
+                                                          color: Colors
+                                                              .white,
+                                                          fontSize: 20),
+                                                    ),
+                                                  ),
+
+                                                ],
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                        shrinkWrap: true,
+                                        itemCount:
+                                        inplandata[index].sets.length,
+                                      ),
+                                    ) // body when the widget is Expanded
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Container(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                      width: 10,
+                                    ),
+
+                                    Container(
+                                      width: 10,
+                                    ),
+
+                                  ],
+                                ),
+                                Divider(
+                                  indent: 10,
+                                  thickness: 1.3,
+                                  color: Colors.grey,
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        shrinkWrap: true,
+                        itemCount: inplandata.length,
+                      ),
+                    ),
+                    Container(
+                      height: 10,
+                    ),
+
+
+                  ],
+                ),
+
+              ],
+            ),
+          );
+        });
+  }
+
+
+
+
+  List<Widget> techChips() {
+    List<Widget> chips = [];
+    int num_week = (widget.program.routinedata.exercises[0].plans.length/7).ceil();
+    for (int i = 0; i < num_week; i++) {
+      Widget item = Padding(
+        padding: const EdgeInsets.only(left: 10, right: 5),
+        child: ChoiceChip(
+          label:
+          Text('week${i+1}'),
+          labelStyle: TextStyle(color: Colors.white),
+          selected: _famousdataProvider.week == i,
+          selectedColor: Theme.of(context).primaryColor,
+          backgroundColor: Theme.of(context).cardColor,
+          onSelected: (bool value) {
+            _famousdataProvider.weekchange(i);
+          },
+        ),
+      );
+      chips.add(item);
+    }
+    return chips;
+  }
+
+
 
   Widget _famousLikeButton() {
     var buttonSize = 20.0;

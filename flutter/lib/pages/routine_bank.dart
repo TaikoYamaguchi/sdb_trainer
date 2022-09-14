@@ -59,6 +59,7 @@ class _RoutineBankState extends State<RoutineBank> {
                   var program=user_famous[index];
                   return GestureDetector(
                     onTap: () {
+                      _famousdataProvider.downloadset(user_famous[index]);
                       Navigator.push(
                           context,
                           Transition(
@@ -210,6 +211,7 @@ class _RoutineBankState extends State<RoutineBank> {
                   var program=user_famous[index];
                   return GestureDetector(
                     onTap: () {
+                      _famousdataProvider.downloadset(user_famous[index]);
                       Navigator.push(
                           context,
                           Transition(

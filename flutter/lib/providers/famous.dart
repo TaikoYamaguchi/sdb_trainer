@@ -6,7 +6,28 @@ import 'package:sdb_trainer/repository/comment_repository.dart';
 class FamousdataProvider extends ChangeNotifier {
   var _famousdata;
   get famousdata => _famousdata;
+  var _download;
+  get download => _download;
+  var _week=0;
+  get week => _week;
 
+  weekchange(index) {
+    _week = index;
+    _download.routinedata.exercises[0].progress = index*7;
+    notifyListeners();
+  }
+
+  downloadset(program) {
+    _download = program;
+    print(download);
+    notifyListeners();
+  }
+
+  progresschange(progress) {
+    _download.routinedata.exercises[0].progress = progress;
+
+    notifyListeners();
+  }
 
   getdata() {
     FamousRepository.loadFamousdata().then((value) {

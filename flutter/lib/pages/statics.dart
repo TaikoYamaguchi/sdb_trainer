@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sdb_trainer/pages/static_exercise.dart';
+import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
@@ -76,6 +77,8 @@ class _CalendarState extends State<Calendar> {
         Provider.of<UserdataProvider>(context, listen: false);
     final _initHistorydataProvider =
         Provider.of<HistorydataProvider>(context, listen: false);
+    final _famousdataProvider =
+        Provider.of<FamousdataProvider>(context, listen: false);
 
     final _initExercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
@@ -86,6 +89,7 @@ class _CalendarState extends State<Calendar> {
       _initUserdataProvider.getdata(),
       _initUserdataProvider.getUsersFriendsAll(),
       _initHistorydataProvider.getdata(),
+      _famousdataProvider.getdata(),
       _workoutdataProvider.getdata(),
       _initExercisesdataProvider.getdata(),
       print("exxxxxxxxxxxxxxxxxxxercise"),
