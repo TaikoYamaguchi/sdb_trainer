@@ -844,7 +844,7 @@ class ExerciseState extends State<Exercise> {
               };
 
             },
-            child: Text(_customExUsed == true ? "존재하는 루틴" : "새 루틴 추가",
+            child: Text(_customExUsed == true ? "존재하는 루틴 이름" : "새 루틴 추가",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
