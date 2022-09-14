@@ -19,6 +19,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/src/utils/firebase_fcm.dart';
+import 'dart:convert';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -30,6 +31,7 @@ class _LoginPageState extends State<LoginPage> {
   var _loginState;
   var _signUpState;
   var _userProvider;
+  var _exercisesdataProvider;
   bool isLoading = false;
   bool _isEmailLogin = false;
   TextEditingController _userEmailCtrl = TextEditingController(text: "");
@@ -48,6 +50,9 @@ class _LoginPageState extends State<LoginPage> {
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
     _loginState = Provider.of<LoginPageProvider>(context, listen: false);
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+
+    _exercisesdataProvider =
+        Provider.of<ExercisesdataProvider>(context, listen: false);
 
     return Scaffold(
       body: Container(
@@ -466,7 +471,31 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  void _storageInitialExerciseCheck() async {
+    final storage = FlutterSecureStorage();
+    try {
+      String? storageExerciseList = await storage.read(key: "sdb_HomeExList");
+      if (storageExerciseList != null && storageExerciseList != "") {
+        _exercisesdataProvider.putHomeExList(jsonDecode(storageExerciseList));
+        print(_exercisesdataProvider.homeExList);
+      } else {
+        print("스쿼트트트");
+        List<String> listViewerBuilderString = ['스쿼트', '데드리프트', '벤치프레스'];
+        await storage.write(
+            key: 'sdb_HomeExList', value: jsonEncode(listViewerBuilderString));
+        _exercisesdataProvider.putHomeExList(listViewerBuilderString);
+      }
+    } catch (e) {
+      print("스쿼트트트");
+      List<String> listViewerBuilderString = ['스쿼트', '데드리프트', '벤치프레스'];
+      _exercisesdataProvider.putHomeExList(listViewerBuilderString);
+      await storage.write(
+          key: 'sdb_HomeExList', value: jsonEncode(listViewerBuilderString));
+    }
+  }
+
   void initialProviderGet() async {
+    _storageInitialExerciseCheck();
     final _initUserdataProvider =
         Provider.of<UserdataProvider>(context, listen: false);
     final _initHistorydataProvider =

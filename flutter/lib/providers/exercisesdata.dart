@@ -5,7 +5,9 @@ import 'package:sdb_trainer/src/model/exercisesdata.dart';
 
 class ExercisesdataProvider extends ChangeNotifier {
   var _exercisesdata;
+  var _homeExList;
   get exercisesdata => _exercisesdata;
+  get homeExList => _homeExList;
   getdata() async {
     print("!!!!!!!!!!!!!!!nononono");
     await ExercisesRepository.loadExercisesdata().then((value) {
@@ -17,7 +19,26 @@ class ExercisesdataProvider extends ChangeNotifier {
 
   addExdata(Exercises) {
     _exercisesdata.exercises.add(Exercises);
-    print(_exercisesdata.exercises.last.name);
+    notifyListeners();
+  }
+
+  putHomeExList(exList) async {
+    _homeExList = exList;
+    notifyListeners();
+  }
+
+  removeHomeExList(index) async {
+    _homeExList.removeAt(index);
+    notifyListeners();
+  }
+
+  insertHomeExList(index, item) async {
+    _homeExList.insert(index, item);
+    notifyListeners();
+  }
+
+  addHomeExList(item) async {
+    _homeExList.add(item);
     notifyListeners();
   }
 }
