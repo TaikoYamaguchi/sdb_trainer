@@ -49,8 +49,10 @@ class _ProgramDownloadState extends State<ProgramDownload> {
   List do_exercise =[];
   List ref_exercise_index =[];
 
+
   @override
   void initState() {
+
     super.initState();
   }
 
@@ -78,6 +80,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
   }
 
   Widget _programDownloadWidget() {
+    _famousdataProvider.weekchangepre(0);
     return Column(
       children: [
         Container(
@@ -306,9 +309,17 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                           padding: EdgeInsets.all(3),
                           constraints: BoxConstraints(),
                           onPressed: () {
-                            if (plandata.progress%7 < 6) {
-                              _famousdataProvider.progresschange(plandata.progress + 1);
+                            print(_famousdataProvider.week+1);
+                            if(_famousdataProvider.week+1 != num_week){
+                              if (plandata.progress%7 < 6) {
+                                _famousdataProvider.progresschange(plandata.progress + 1);
+                              }
+                            } else{
+                              if (plandata.progress%7 < plandata.plans.length%7-1) {
+                                _famousdataProvider.progresschange(plandata.progress + 1);
+                              }
                             }
+
                           },
                           icon: Icon(
                             Icons.arrow_forward_ios_outlined,
@@ -888,6 +899,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
             color: Theme.of(context).primaryColor,
             textColor: Colors.white,
             onPressed: () {
+              _famousdataProvider.weekchange(0);
               _workoutdataProvider.addroutine(widget.program.routinedata);
               _editWorkoutCheck();
               Navigator.of(context).popUntil((route) => route.isFirst);

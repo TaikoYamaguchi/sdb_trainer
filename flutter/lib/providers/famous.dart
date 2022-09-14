@@ -11,6 +11,11 @@ class FamousdataProvider extends ChangeNotifier {
   var _week=0;
   get week => _week;
 
+  weekchangepre(index) {
+    _week = index;
+    _download.routinedata.exercises[0].progress = index*7;
+  }
+
   weekchange(index) {
     _week = index;
     _download.routinedata.exercises[0].progress = index*7;
