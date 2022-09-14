@@ -1001,28 +1001,39 @@ class ExerciseState extends State<Exercise> {
           provider.exstackup(0),
           Future.delayed(Duration.zero, () async {
             Navigator.of(context).popUntil((route) => route.isFirst);
-            Navigator.push(
-                context,
-                Transition(
-                    child: EachWorkoutDetails(
-                      rindex: _routinetimeProvider.nowonrindex,
-                    ),
-                    transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-            Navigator.push(
-                context,
-                Transition(
-                    child: EachExerciseDetails(
-                      ueindex: _exercisesdataProvider.exercisesdata.exercises.indexWhere(
-                              (element) =>
-                          element.name ==
-                              _workoutdataProvider.workoutdata.routinedatas[_routinetimeProvider.nowonrindex].exercises[_routinetimeProvider.nowoneindex].name),
-                      eindex: _routinetimeProvider.nowoneindex,
-                      rindex: _routinetimeProvider.nowonrindex,
-                    ),
-                    transitionEffect:
-                    TransitionEffect.RIGHT_TO_LEFT));
-            provider.gotooff();
-            provider.exstackup(2);
+            if(_workoutdataProvider.workoutdata.routinedatas[_routinetimeProvider.nowonrindex].mode==1){
+              Navigator.push(
+                  context,
+                  Transition(
+                      child: EachPlanDetails(
+                        rindex: _routinetimeProvider.nowonrindex,
+                      ),
+                      transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+            } else{
+              Navigator.push(
+                  context,
+                  Transition(
+                      child: EachWorkoutDetails(
+                        rindex: _routinetimeProvider.nowonrindex,
+                      ),
+                      transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+              Navigator.push(
+                  context,
+                  Transition(
+                      child: EachExerciseDetails(
+                        ueindex: _exercisesdataProvider.exercisesdata.exercises.indexWhere(
+                                (element) =>
+                            element.name ==
+                                _workoutdataProvider.workoutdata.routinedatas[_routinetimeProvider.nowonrindex].exercises[_routinetimeProvider.nowoneindex].name),
+                        eindex: _routinetimeProvider.nowoneindex,
+                        rindex: _routinetimeProvider.nowonrindex,
+                      ),
+                      transitionEffect:
+                      TransitionEffect.RIGHT_TO_LEFT));
+              provider.gotooff();
+              provider.exstackup(2);
+            }
+
           }),
         ];
         return Scaffold(
