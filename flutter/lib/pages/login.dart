@@ -21,6 +21,7 @@ import 'package:transition/transition.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/src/utils/firebase_fcm.dart';
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -536,7 +537,7 @@ class _LoginPageState extends State<LoginPage> {
       if (context != null) {
         for (var user in usertestList) {
           print(user.image);
-          precacheImage(Image.network(user.image).image, context);
+          precacheImage(CachedNetworkImageProvider(user.image), context);
         }
       }
     });
