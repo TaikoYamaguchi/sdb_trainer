@@ -14,8 +14,7 @@ class FamousRepository {
   }
 
   static Future<String> _loadFamousdataFromServer() async {
-    var url =
-    Uri.parse(LocalHost.getLocalHost() + "/api/famous");
+    var url = Uri.parse(LocalHost.getLocalHost() + "/api/famous");
     var response = await http.get(url);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
@@ -30,7 +29,6 @@ class FamousRepository {
     String jsonString = await _loadFamousdataFromServer();
     final jsonResponse = json.decode(jsonString);
     FamousList famousdata = FamousList.fromJson(jsonResponse);
-    print(famousdata);
     return (famousdata);
   }
 }
@@ -42,9 +40,9 @@ class FamousLike {
   final String disorlike;
   FamousLike(
       {required this.famous_id,
-        required this.user_email,
-        required this.status,
-        required this.disorlike});
+      required this.user_email,
+      required this.status,
+      required this.disorlike});
   Future<String> _famousLikeFromServer() async {
     var formData = new Map<String, dynamic>();
     formData["famous_id"] = famous_id;
@@ -52,10 +50,9 @@ class FamousLike {
     formData["status"] = status;
     formData["disorlike"] = disorlike;
 
-    var url = Uri.parse(
-        LocalHost.getLocalHost() + "/api/famous/likes/${famous_id}");
+    var url =
+        Uri.parse(LocalHost.getLocalHost() + "/api/famous/likes/${famous_id}");
     var response = await http.patch(url, body: json.encode(formData));
-    print(json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       String jsonString = utf8.decode(response.bodyBytes);
@@ -79,13 +76,13 @@ class ProgramSubscribe {
   final int id;
   ProgramSubscribe({
     required this.id,
-
   });
   Future<String> _programSubscribeFromServer() async {
     var formData = new Map<String, dynamic>();
     formData["id"] = id;
 
-    var url = Uri.parse(LocalHost.getLocalHost() + "/api/famoussubscribe/${id}");
+    var url =
+        Uri.parse(LocalHost.getLocalHost() + "/api/famoussubscribe/${id}");
     var response = await http.get(url);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
@@ -105,8 +102,6 @@ class ProgramSubscribe {
     return (jsonResponse);
   }
 }
-
-
 
 class ProgramPost {
   final String user_email;
@@ -136,11 +131,8 @@ class ProgramPost {
     formData["subscribe"] = 0;
     formData["category"] = category;
 
-    print(formData["image"]);
-
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/famouscreate");
     var response = await http.post(url, body: json.encode(formData));
-    print(json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       String jsonString = utf8.decode(response.bodyBytes);
@@ -203,7 +195,7 @@ class WorkoutDelete {
   });
   Future<String> _workoutDeleteFromServer() async {
     var url =
-    Uri.parse(LocalHost.getLocalHost() + "/api/workout/" + id.toString());
+        Uri.parse(LocalHost.getLocalHost() + "/api/workout/" + id.toString());
     var response = await http.delete(url);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
@@ -232,7 +224,7 @@ class FamousImageEdit {
     final storage = new FlutterSecureStorage();
     String? token = await storage.read(key: "sdb_token");
     var formData =
-    FormData.fromMap({'file': await MultipartFile.fromFile(file)});
+        FormData.fromMap({'file': await MultipartFile.fromFile(file)});
     var dio = new Dio();
     try {
       dio.options.contentType = 'multipart/form-data';
@@ -243,7 +235,6 @@ class FamousImageEdit {
         LocalHost.getLocalHost() + '/api/temp/famousimages/${famous_id}',
         data: formData,
       );
-      print(response);
       return response.data;
     } catch (e) {
       print(e);
@@ -261,4 +252,3 @@ class FamousImageEdit {
     }
   }
 }
-

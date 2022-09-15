@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PrefsProvider extends ChangeNotifier {
-
   bool? _eachworkouttutor = false;
   bool? get eachworkouttutor => _eachworkouttutor;
   bool? _stepone = false;
@@ -13,51 +12,52 @@ class PrefsProvider extends ChangeNotifier {
   bool? get stepthree => _stepthree;
   var _prefs;
 
-  getprefs() async{
+  getprefs() async {
     _prefs = await SharedPreferences.getInstance();
     _prefs.getBool('eachworkouttutor') == null
-        ? [print('눌눌눌'),
-          await _prefs.setBool('eachworkouttutor', true),
-          _eachworkouttutor = _prefs.getBool('eachworkouttutor'),
-          _stepone = _eachworkouttutor,
-          _steptwo = _eachworkouttutor,
-          _stepthree = _eachworkouttutor
+        ? [
+            await _prefs.setBool('eachworkouttutor', true),
+            _eachworkouttutor = _prefs.getBool('eachworkouttutor'),
+            _stepone = _eachworkouttutor,
+            _steptwo = _eachworkouttutor,
+            _stepthree = _eachworkouttutor
           ]
-        : [_eachworkouttutor = _prefs.getBool('eachworkouttutor'),
-          _stepone = _eachworkouttutor,
-          _steptwo = _eachworkouttutor,
-          _stepthree = _eachworkouttutor
+        : [
+            _eachworkouttutor = _prefs.getBool('eachworkouttutor'),
+            _stepone = _eachworkouttutor,
+            _steptwo = _eachworkouttutor,
+            _stepthree = _eachworkouttutor
           ];
 
     notifyListeners();
   }
 
-  steponedone() async{
+  steponedone() async {
     _stepone = false;
 
     notifyListeners();
   }
 
-  steptwodone() async{
+  steptwodone() async {
     _steptwo = false;
 
     notifyListeners();
   }
 
-  stepthreedone() async{
+  stepthreedone() async {
     _stepthree = false;
 
     notifyListeners();
   }
 
-  tutordone() async{
+  tutordone() async {
     await _prefs.setBool('eachworkouttutor', false);
     _eachworkouttutor = _prefs.getBool('eachworkouttutor');
 
     notifyListeners();
   }
 
-  tutorstart() async{
+  tutorstart() async {
     await _prefs.setBool('eachworkouttutor', true);
     _eachworkouttutor = _prefs.getBool('eachworkouttutor');
     _stepone = _eachworkouttutor;

@@ -61,8 +61,6 @@ class RoutineTimeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
-
   resettimer(resttime) {
     _timeron = resttime;
     _timetosubstract = resttime;
@@ -88,7 +86,6 @@ class RoutineTimeProvider extends ChangeNotifier {
         counter--;
         notifyListeners();
         if (counter == 0) {
-          print('cancel timer');
           timer.cancel();
           _routineTime = 0;
         }

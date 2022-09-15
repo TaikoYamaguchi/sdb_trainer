@@ -306,16 +306,13 @@ class _AppState extends State<App> {
                               routinetime: _routinetimeProvider.routineTime,
                               sdbdata: hisdata.SDBdata.fromJson(data)),
                           transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
-                  print("routine time"),
                   _routinetimeProvider.routinecheck(0),
                   _historydataProvider.getdata(),
                   _historydataProvider.getHistorydataAll(),
                   exerciseList = []
                 }
               : showToast("입력을 확인해주세요"));
-    } else {
-      print("no exercises");
-    }
+    } else {}
   }
 
   void modifyExercise(double newonerm, exname) {
@@ -381,7 +378,6 @@ class _AppState extends State<App> {
     _historydataProvider =
         Provider.of<HistorydataProvider>(context, listen: false);
     _userdataProvider.getUsersFriendsAll();
-    print("오잉 ");
 
     return Consumer2<BodyStater, LoginPageProvider>(
         builder: (builder, provider1, provider2, child) {
@@ -607,7 +603,6 @@ class _ExpandableFabState extends State<ExpandableFab>
           duration: const Duration(milliseconds: 250),
           child: FloatingActionButton(
             onPressed: () {
-              print('open');
               _toggle();
             },
             backgroundColor: Theme.of(context).primaryColor,

@@ -264,7 +264,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                   setState(() {
                     _isexsearch = !_isexsearch;
                   });
-                  print(_PrefsProvider.eachworkouttutor);
                   _PrefsProvider.eachworkouttutor
                       ? [
                           Future.delayed(Duration(milliseconds: 100))
@@ -481,7 +480,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               : showToast("입력을 확인해주세요"));
     } else {
       _routinetimeProvider.routinecheck(widget.rindex);
-      print("no exercises");
     }
   }
 
@@ -530,13 +528,11 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                         .indexWhere((routine) {
                       if (routine.name == _workoutNameCtrl.text) {
                         setState(() {
-                          print("useddddddd");
                           _customRuUsed = true;
                         });
                         return true;
                       } else {
                         setState(() {
-                          print("nullllllllll");
                           _customRuUsed = false;
                         });
                         return false;
@@ -587,7 +583,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             padding: EdgeInsets.all(12.0),
             splashColor: Theme.of(context).primaryColor,
             onPressed: () {
-              if(!_customRuUsed){
+              if (!_customRuUsed) {
                 _editWorkoutNameCheck(_workoutNameCtrl.text);
                 _workoutNameCtrl.clear();
                 _exSearchCtrl.clear();
@@ -630,13 +626,11 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                         .indexWhere((exercise) {
                       if (exercise.name == _customExNameCtrl.text) {
                         setState(() {
-                          print("useddddddd");
                           _customExUsed = true;
                         });
                         return true;
                       } else {
                         setState(() {
-                          print("nullllllllll");
                           _customExUsed = false;
                         });
                         return false;
@@ -1241,7 +1235,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
         Provider.of<RoutineTimeProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
     _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
-    print("띠용");
     _PopProvider.tutorpopoff();
     _PrefsProvider.eachworkouttutor
         ? _PrefsProvider.steptwo
@@ -1265,20 +1258,16 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 Navigator.of(context).pop();
               })
             ];
-      print('working?1');
       bool _tutorpop = provider.tutorpop;
       _tutorpop == false
-          ? print('working?2')
+          ? null
           : [
-              print('working?'),
               provider.exstackup(0),
               Future.delayed(Duration.zero, () async {
                 Navigator.of(context).popUntil((route) => route.isFirst);
                 _PopProvider.tutorpopoff();
               })
             ];
-
-
 
       return Scaffold(
           appBar: _appbarWidget(),

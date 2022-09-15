@@ -75,12 +75,15 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
               _displayTextInputDialog();
             },
             child: Container(
-              width: MediaQuery.of(context).size.width*5/8,
+              width: MediaQuery.of(context).size.width * 5 / 8,
               child: Consumer<WorkoutdataProvider>(
                   builder: (builder, provider, child) {
                 return Text(
                   provider.workoutdata.routinedatas[widget.rindex].name,
-                  style: TextStyle(color: Colors.white, overflow: TextOverflow.ellipsis, fontSize: 30),
+                  style: TextStyle(
+                      color: Colors.white,
+                      overflow: TextOverflow.ellipsis,
+                      fontSize: 30),
                 );
               }),
             ),
@@ -585,25 +588,16 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                         Transform.scale(
                                           scale: 1.2,
                                           child: IconButton(
-                                              padding:
-                                              EdgeInsets
-                                                  .all(
-                                                  5),
-                                              constraints:
-                                              BoxConstraints(),
-                                              onPressed:
-                                                  () {
+                                              padding: EdgeInsets.all(5),
+                                              constraints: BoxConstraints(),
+                                              onPressed: () {
                                                 workout.plansetsminus(
-                                                    widget
-                                                        .rindex,
-                                                    index);
+                                                    widget.rindex, index);
                                                 _editWorkoutCheck();
                                               },
                                               icon: Icon(
-                                                Icons
-                                                    .remove_circle_outlined,
-                                                color: Colors
-                                                    .white,
+                                                Icons.remove_circle_outlined,
+                                                color: Colors.white,
                                                 size: 20,
                                               )),
                                         ),
@@ -613,25 +607,16 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                         Transform.scale(
                                           scale: 1.2,
                                           child: IconButton(
-                                              padding:
-                                              EdgeInsets
-                                                  .all(
-                                                  5),
-                                              constraints:
-                                              BoxConstraints(),
-                                              onPressed:
-                                                  () {
+                                              padding: EdgeInsets.all(5),
+                                              constraints: BoxConstraints(),
+                                              onPressed: () {
                                                 workout.plansetsplus(
-                                                    widget
-                                                        .rindex,
-                                                    index);
+                                                    widget.rindex, index);
                                                 _editWorkoutCheck();
                                               },
                                               icon: Icon(
-                                                Icons
-                                                    .add_circle_outlined,
-                                                color: Colors
-                                                    .white,
+                                                Icons.add_circle_outlined,
+                                                color: Colors.white,
                                                 size: 20,
                                               )),
                                         ),
@@ -1002,7 +987,6 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
       final exTitle = exercise.name;
       return (exTitle.contains(query)) as bool;
     }).toList();
-    print(suggestions.length);
 
     updateState(() => _testdata = suggestions);
   }
@@ -1040,7 +1024,13 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                           new Plan_Exercises(
                               name: _addexinput,
                               ref_name: exuniq[index].name,
-                              sets: [Sets(index: 1, weight:0.0, reps: 1, ischecked: false)],
+                              sets: [
+                                Sets(
+                                    index: 1,
+                                    weight: 0.0,
+                                    reps: 1,
+                                    ischecked: false)
+                              ],
                               rest: 0));
 
                       Navigator.pop(context);
@@ -1186,7 +1176,6 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
               : showToast("입력을 확인해주세요"));
     } else {
       _routinetimeProvider.routinecheck(widget.rindex);
-      print("no exercises");
     }
   }
 
@@ -1239,12 +1228,10 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                 Navigator.of(context).pop();
               })
             ];
-      print('working?1');
       bool _tutorpop = provider.tutorpop;
       _tutorpop == false
-          ? print('working?2')
+          ? null
           : [
-              print('working?'),
               provider.exstackup(0),
               Future.delayed(Duration.zero, () async {
                 Navigator.of(context).popUntil((route) => route.isFirst);

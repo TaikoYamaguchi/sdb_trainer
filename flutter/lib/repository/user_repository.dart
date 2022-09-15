@@ -486,7 +486,6 @@ class UserImageEdit {
         LocalHost.getLocalHost() + '/api/temp/images',
         data: formData,
       );
-      print(response);
       return response.data;
     } catch (e) {
       print(e);

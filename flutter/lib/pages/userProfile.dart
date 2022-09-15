@@ -154,7 +154,6 @@ class _UserProfileState extends State<UserProfile> {
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
-    print("this is profileeeeeeeeee");
     return Consumer<PopProvider>(builder: (Builder, provider, child) {
       bool _popable = provider.isprostacking;
       _popable == false

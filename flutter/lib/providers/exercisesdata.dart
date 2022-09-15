@@ -9,9 +9,7 @@ class ExercisesdataProvider extends ChangeNotifier {
   get exercisesdata => _exercisesdata;
   get homeExList => _homeExList;
   getdata() async {
-    print("!!!!!!!!!!!!!!!nononono");
     await ExercisesRepository.loadExercisesdata().then((value) {
-      print("nononono");
       _exercisesdata = value;
       notifyListeners();
     });

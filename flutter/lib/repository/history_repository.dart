@@ -334,7 +334,6 @@ class HistoryImageEdit {
         LocalHost.getLocalHost() + '/api/temp/historyimages/${history_id}',
         data: formData,
       );
-      print(response);
       return response.data;
     } catch (e) {
       print(e);

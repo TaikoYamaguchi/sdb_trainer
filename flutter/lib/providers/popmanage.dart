@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class PopProvider extends ChangeNotifier {
@@ -27,7 +26,6 @@ class PopProvider extends ChangeNotifier {
 
   tutorpopon() {
     _tutorpop = true;
-    print(_tutorpop);
     notifyListeners();
   }
 
@@ -36,8 +34,7 @@ class PopProvider extends ChangeNotifier {
   }
 
   popon() {
-    _exstack == 0
-        ? null : _isstacking = true;
+    _exstack == 0 ? null : _isstacking = true;
     notifyListeners();
   }
 
@@ -46,12 +43,11 @@ class PopProvider extends ChangeNotifier {
   }
 
   exstackup(order) {
-    _exstack= order;
+    _exstack = order;
   }
 
   exstackdown() {
     _exstack--;
-
   }
 
   profilestackup() {
@@ -60,17 +56,14 @@ class PopProvider extends ChangeNotifier {
 
   profilestackdown() {
     _profilestack--;
-
   }
 
   propopon() {
-    _profilestack == 0
-        ? null : _isprostacking = true;
+    _profilestack == 0 ? null : _isprostacking = true;
     notifyListeners();
   }
 
   propopoff() {
     _isprostacking = false;
   }
-
 }

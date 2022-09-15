@@ -157,8 +157,6 @@ class _HomeState extends State<Home> {
                     storage.write(
                         key: 'sdb_HomeExList',
                         value: jsonEncode((_exercisesdataProvider.homeExList)));
-
-                    print(_exercisesdataProvider.homeExList);
                   },
                   itemBuilder: (BuildContext _context, int index) {
                     return Slidable(
@@ -255,7 +253,6 @@ class _HomeState extends State<Home> {
       final exTitle = exercise.name;
       return (exTitle.contains(query)) as bool;
     }).toList();
-    print(suggestions.length);
 
     updateState(() => _testdata = suggestions);
   }

@@ -63,7 +63,6 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
         color: Colors.black,
         child: Column(children: [
           Consumer<UserdataProvider>(builder: (builder, provider, child) {
-            print(_userdataProvider.userdata.dislike);
             return Expanded(
               child: _userdataProvider.userdata.dislike.isEmpty
                   ? Container(
