@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
+import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
@@ -26,6 +27,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   var _exercisesdataProvider;
+  var _PopProvider;
   var _userdataProvider;
   var _bodyStater;
   var _staticPageState;
@@ -221,20 +223,27 @@ class _HomeState extends State<Home> {
               ],
             ),
             Consumer<PrefsProvider>(builder: (builder, provider, child) {
-              final storage = FlutterSecureStorage();
-              return Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
+              return GestureDetector(
+                onTap: (){
+                  provider.prefs.getString('lastroutine') == null
+                  ? null
+                  : [_PopProvider.gotoonlast(),
+                    _bodyStater.change(1)];
+                },
+                child: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
 
-                    Text(provider.prefs.getString('lastroutine') == null ? '아직 한번도 루틴을 수행하지 않았습니다.' : '${provider.prefs.getString('lastroutine')}',
-                        style: TextStyle(
-                            color: Color(0xFffc60a8),
-                            fontSize: 24,
-                            fontWeight: FontWeight.w600)),
+                      Text(provider.prefs.getString('lastroutine') == null ? '아직 한번도 루틴을 수행하지 않았습니다.' : '${provider.prefs.getString('lastroutine')}',
+                          style: TextStyle(
+                              color: Color(0xFffc60a8),
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600)),
 
-                  ],
+                    ],
+                  ),
                 ),
               );
             }),
@@ -709,6 +718,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     _historydataAll = Provider.of<HistorydataProvider>(context, listen: false);
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _PopProvider = Provider.of<PopProvider>(context, listen: false);
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _bodyStater = Provider.of<BodyStater>(context, listen: false);

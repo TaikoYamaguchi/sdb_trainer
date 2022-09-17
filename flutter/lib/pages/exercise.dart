@@ -993,6 +993,7 @@ class ExerciseState extends State<Exercise> {
         : null;
 
     return Consumer<PopProvider>(builder: (Builder, provider, child) {
+      int grindex = _workoutdataProvider.workoutdata.routinedatas.indexWhere((routine)=> routine.name == _PrefsProvider.prefs.getString('lastroutine'));
       bool _goto = provider.goto;
       _goto == false
           ? null
@@ -1044,6 +1045,37 @@ class ExerciseState extends State<Exercise> {
                 }
               }),
             ];
+      provider.gotolast == false
+          ? null
+          : [
+        provider.exstackup(0),
+        Future.delayed(Duration.zero, () async {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          if (_workoutdataProvider.workoutdata
+              .routinedatas[grindex].mode ==
+              1) {
+            Navigator.push(
+                context,
+                Transition(
+                    child: EachPlanDetails(
+                      rindex: grindex,
+                    ),
+                    transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+            provider.gotooff();
+            provider.exstackup(1);
+          } else {
+            Navigator.push(
+                context,
+                Transition(
+                    child: EachWorkoutDetails(
+                      rindex: grindex,
+                    ),
+                    transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+            provider.gotooff();
+            provider.exstackup(1);
+          }
+        }),
+      ];
       return Scaffold(
           appBar: _appbarWidget(),
           body: Consumer2<ExercisesdataProvider, WorkoutdataProvider>(
