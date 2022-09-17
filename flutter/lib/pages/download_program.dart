@@ -53,9 +53,12 @@ class _ProgramDownloadState extends State<ProgramDownload> {
   };
   List<ExpandableController> Controllerlist = [];
   var _selectImage;
-  List ref_exercise = [];
-  List do_exercise = [];
-  List ref_exercise_index = [];
+  List ref_exercise =[];
+  List do_exercise =[];
+  List exercise_names =[];
+  List ref_exercise_index =[];
+
+
 
   @override
   void initState() {
@@ -643,33 +646,29 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                         .plans[p].exercises[e].name);
                   }
                 }
-                ref_exercise = ref_exercise.toSet().toList();
-                do_exercise = do_exercise.toSet().toList();
+                for(int s = 0; s <  _exercisesdataProvider.exercisesdata.exercises.length; s++){
+                  exercise_names.add(_exercisesdataProvider.exercisesdata.exercises[s].name);
+                }
+                ref_exercise= ref_exercise.toSet().toList();
+                do_exercise= do_exercise.toSet().toList();
                 for (int i = 0; i < do_exercise.length; i++) {
-                  _exercisesdataProvider.exercisesdata.exercises
-                          .contains(do_exercise[i])
+                  exercise_names.contains(do_exercise[i])
                       ? null
-                      : [
-                          _exercisesdataProvider.addExdata(uex.Exercises(
-                              name: do_exercise[i], onerm: 0, goal: 0)),
-                        ];
+                      : _exercisesdataProvider.addExdata(uex.Exercises(name: do_exercise[i], onerm: 0, goal: 0));
                 }
                 for (int i = 0; i < ref_exercise.length; i++) {
-                  _exercisesdataProvider.exercisesdata.exercises
-                          .contains(ref_exercise[i])
+
+                  exercise_names.contains(ref_exercise[i])
                       ? null
-                      : [
-                          _exercisesdataProvider.addExdata(uex.Exercises(
-                              name: ref_exercise[i], onerm: 0, goal: 0)),
-                        ];
-                  ref_exercise_index.add(
-                      _exercisesdataProvider.exercisesdata.exercises.indexWhere(
-                          (element) => element.name == ref_exercise[i]));
+                      : _exercisesdataProvider.addExdata(uex.Exercises(name: ref_exercise[i], onerm: 0, goal: 0));
+                  ref_exercise_index.add(_exercisesdataProvider.exercisesdata.exercises.indexWhere((element) => element.name == ref_exercise[i])) ;
                 }
                 _postExerciseCheck();
                 ref_exercise_index = ref_exercise_index.toSet().toList();
 
                 _displayStartAlert();
+
+
               },
               child: Text("시작하기",
                   style: TextStyle(fontSize: 20.0, color: Colors.white)))),
