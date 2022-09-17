@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:sdb_trainer/main.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
@@ -20,6 +21,7 @@ import 'package:transition/transition.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/src/utils/firebase_fcm.dart';
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -36,13 +38,16 @@ class _LoginPageState extends State<LoginPage> {
   bool _isEmailLogin = false;
   TextEditingController _userEmailCtrl = TextEditingController(text: "");
   TextEditingController _userPasswordCtrl = TextEditingController(text: "");
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
 
   @override
   void initState() {
     super.initState();
     _userEmailCtrl = TextEditingController(text: "");
     _userPasswordCtrl = TextEditingController(text: "");
-    _storageLoginCheck();
+    Future.delayed(Duration.zero, () {
+      _storageLoginCheck(context);
+    });
   }
 
   @override
@@ -55,6 +60,7 @@ class _LoginPageState extends State<LoginPage> {
         Provider.of<ExercisesdataProvider>(context, listen: false);
 
     return Scaffold(
+      key: _scaffoldKey,
       body: Container(
           color: Colors.black,
           child: Center(
@@ -170,7 +176,6 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _loginButtonPressed() async {
     if (await AuthApi.instance.hasToken()) {
-      print("yeeeeeeeeeeeeeeeeeeeeeeeeees");
       try {
         AccessTokenInfo tokenInfo = await UserApi.instance.accessTokenInfo();
         print('토큰 유효성 체크 성공 ${tokenInfo.id} ${tokenInfo.expiresIn}');
@@ -210,7 +215,6 @@ class _LoginPageState extends State<LoginPage> {
         }
       }
     } else {
-      print("yeeeeeeeeeeeeeeeeeeeeeeeeees");
       print('발급된 토큰 없음');
       try {
         OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
@@ -331,7 +335,7 @@ class _LoginPageState extends State<LoginPage> {
               disabledTextColor: Colors.black,
               padding: EdgeInsets.all(8.0),
               splashColor: Colors.blueAccent,
-              onPressed: () => isLoading ? null : _loginCheck(),
+              onPressed: () => isLoading ? null : _loginCheck(context),
               child: Text(isLoading ? 'loggin in.....' : "로그인",
                   style: TextStyle(
                       fontSize: 20.0,
@@ -365,17 +369,17 @@ class _LoginPageState extends State<LoginPage> {
         ));
   }
 
-  void _loginCheck() async {
+  void _loginCheck(context) async {
     final storage = FlutterSecureStorage();
     try {
       String? storageEmail = await storage.read(key: "sdb_email");
       if (storageEmail != null &&
           storageEmail != "" &&
           storageEmail == _userEmailCtrl.text) {
+        initialProviderGet(context);
         _bodyStater.change(0);
         _loginState.change(true);
         fcmSetting();
-        initialProviderGet();
       } else {
         UserLogin(
                 userEmail: _userEmailCtrl.text,
@@ -383,10 +387,10 @@ class _LoginPageState extends State<LoginPage> {
             .loginUser()
             .then((token) => token["access_token"] != null
                 ? {
+                    initialProviderGet(context),
                     _bodyStater.change(0),
                     _loginState.change(true),
                     fcmSetting(),
-                    initialProviderGet()
                   }
                 : showToast("아이디와 비밀번호를 확인해주세요"));
       }
@@ -396,10 +400,10 @@ class _LoginPageState extends State<LoginPage> {
           .loginUser()
           .then((token) => token["access_token"] != null
               ? {
+                  initialProviderGet(context),
                   _bodyStater.change(0),
                   _loginState.change(true),
                   fcmSetting(),
-                  initialProviderGet()
                 }
               : showToast("아이디와 비밀번호를 확인해주세요"));
     }
@@ -409,27 +413,24 @@ class _LoginPageState extends State<LoginPage> {
     final storage = FlutterSecureStorage();
     try {
       String? storageEmail = await storage.read(key: "sdb_email");
-      print(storageEmail);
       if (storageEmail != null &&
           storageEmail != "" &&
           storageEmail == _userEmailCtrl.text) {
-        print(storageEmail);
+        initialProviderGet(context);
         _bodyStater.change(0);
         _loginState.change(true);
 
         fcmSetting();
-        initialProviderGet();
       } else {
         try {
           var order = await UserLoginKakao(
             userEmail: _userEmailCtrl.text,
           ).loginKakaoUser().then((token) => token["access_token"] != null
               ? {
-                  print(_userEmailCtrl.text),
+                  initialProviderGet(context),
                   _bodyStater.change(0),
                   _loginState.change(true),
                   fcmSetting(),
-                  initialProviderGet()
                 }
               : _loginState.changeSignup(true));
         } catch (error) {
@@ -444,11 +445,10 @@ class _LoginPageState extends State<LoginPage> {
           userEmail: _userEmailCtrl.text,
         ).loginKakaoUser().then((token) => token["access_token"] != null
             ? {
-                print(_userEmailCtrl.text),
+                initialProviderGet(context),
                 _bodyStater.change(0),
                 _loginState.change(true),
                 fcmSetting(),
-                initialProviderGet()
               }
             : _loginState.changeSignup(true));
       } catch (error) {
@@ -459,15 +459,15 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void _storageLoginCheck() async {
+  void _storageLoginCheck(context) async {
     final storage = FlutterSecureStorage();
     String? storageEmail = await storage.read(key: "sdb_email");
     if (storageEmail != null && storageEmail != "") {
+      initialProviderGet(context);
       _bodyStater.change(0);
       _loginState.change(true);
 
       fcmSetting();
-      initialProviderGet();
     }
   }
 
@@ -477,16 +477,13 @@ class _LoginPageState extends State<LoginPage> {
       String? storageExerciseList = await storage.read(key: "sdb_HomeExList");
       if (storageExerciseList != null && storageExerciseList != "") {
         _exercisesdataProvider.putHomeExList(jsonDecode(storageExerciseList));
-        print(_exercisesdataProvider.homeExList);
       } else {
-        print("스쿼트트트");
         List<String> listViewerBuilderString = ['스쿼트', '데드리프트', '벤치프레스'];
         await storage.write(
             key: 'sdb_HomeExList', value: jsonEncode(listViewerBuilderString));
         _exercisesdataProvider.putHomeExList(listViewerBuilderString);
       }
     } catch (e) {
-      print("스쿼트트트");
       List<String> listViewerBuilderString = ['스쿼트', '데드리프트', '벤치프레스'];
       _exercisesdataProvider.putHomeExList(listViewerBuilderString);
       await storage.write(
@@ -494,7 +491,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void initialProviderGet() async {
+  void initialProviderGet(context) async {
     _storageInitialExerciseCheck();
     final _initUserdataProvider =
         Provider.of<UserdataProvider>(context, listen: false);
@@ -508,6 +505,7 @@ class _LoginPageState extends State<LoginPage> {
     final _famousdataProvider =
         Provider.of<FamousdataProvider>(context, listen: false);
     final _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
+    var usertestList;
     await [
       _initUserdataProvider.getdata(),
       _initUserdataProvider.getUsersFriendsAll(),
@@ -516,19 +514,15 @@ class _LoginPageState extends State<LoginPage> {
       _famousdataProvider.getdata(),
       _initExercisesdataProvider.getdata(),
       _PrefsProvider.getprefs(),
+      await UserAll().getUsers().then((userlist) {
+        usertestList =
+            userlist!.userdatas.where((user) => user.image != "").toList();
+      }),
     ];
     _initHistorydataProvider.getHistorydataAll();
     _initHistorydataProvider.getCommentAll();
     _initHistorydataProvider.getFriendsHistorydata();
     _initUserdataProvider.getFriendsdata();
-
-    _initUserdataProvider.userFriendsAll.userdatas
-        .where((user) => user.image != "")
-        .toList()
-        .map((user) {
-      print(user.image);
-      precacheImage(Image.network(user.image).image, context);
-    });
 
     _initUserdataProvider.userdata != null
         ? [
@@ -536,10 +530,28 @@ class _LoginPageState extends State<LoginPage> {
             _initHistorydataProvider.getFriendsHistorydata()
           ]
         : null;
+    final binding = WidgetsFlutterBinding.ensureInitialized();
+
+    binding.addPostFrameCallback((_) async {
+      BuildContext context = binding.renderViewElement!;
+      if (context != null) {
+        for (var user in usertestList) {
+          print(user.image);
+          precacheImage(CachedNetworkImageProvider(user.image), context);
+        }
+      }
+    });
   }
 
   @override
   void dispose() {
+    print('dispose');
     super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
   }
 }

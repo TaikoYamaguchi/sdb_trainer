@@ -33,7 +33,6 @@ class _CustomMotionState extends State<CustomMotion> {
         isClosed) {
       isClosed = false;
       widget.onOpen();
-      print("dismissss");
       controller.close(duration: const Duration(milliseconds: 3));
     }
   }

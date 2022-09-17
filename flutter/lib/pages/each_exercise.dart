@@ -152,7 +152,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
 
   Widget _exercisedetailPage() {
     controller = PageController(initialPage: widget.eindex);
-    if( _routinetimeProvider.nowonrindex==widget.rindex){
+    if (_routinetimeProvider.nowonrindex == widget.rindex) {
       _routinetimeProvider.nowoneindexupdate(widget.eindex);
     }
     int numEx = _workoutdataProvider
@@ -162,8 +162,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
       repsController.add(new Controllerlist());
     }
     return PageView.builder(
-      onPageChanged: (value){
-        if( _routinetimeProvider.nowonrindex==widget.rindex){
+      onPageChanged: (value) {
+        if (_routinetimeProvider.nowonrindex == widget.rindex) {
           _routinetimeProvider.nowoneindexupdate(value);
         }
       },
@@ -448,9 +448,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                     : _displayStartAlert(
                                                         pindex, index, true);
                                               },
-                                              onClose: () {
-                                                print("onClose!!");
-                                              },
+                                              onClose: () {},
                                               motionWidget: StretchMotion(),
                                             ),
                                             children: [
@@ -720,24 +718,28 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               builder: (builder, provider, child) {
                             return ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                  primary: (provider.nowonrindex != widget.rindex) && _routinetimeProvider.isstarted
-                                      ? Color(0xFF212121)
-                                      : provider.buttoncolor,
+                                  primary:
+                                      (provider.nowonrindex != widget.rindex) &&
+                                              _routinetimeProvider.isstarted
+                                          ? Color(0xFF212121)
+                                          : provider.buttoncolor,
                                   textStyle: const TextStyle(fontSize: 20)),
                               onPressed: () {
-                                (provider.nowonrindex != widget.rindex) && _routinetimeProvider.isstarted
-                                  ? null
-                                  : [if (_routinetimeProvider.isstarted) {
-                                      _displayFinishAlert()
-                                      } else {
-                                      provider.routinecheck(widget.rindex)
-                                      }
-                                  ];
+                                (provider.nowonrindex != widget.rindex) &&
+                                        _routinetimeProvider.isstarted
+                                    ? null
+                                    : [
+                                        if (_routinetimeProvider.isstarted)
+                                          {_displayFinishAlert()}
+                                        else
+                                          {provider.routinecheck(widget.rindex)}
+                                      ];
                               },
-                              child: Text((provider.nowonrindex != widget.rindex) && _routinetimeProvider.isstarted 
-                                  ? '다른 루틴 수행중'
-                                  : provider.routineButton
-                              ),
+                              child: Text(
+                                  (provider.nowonrindex != widget.rindex) &&
+                                          _routinetimeProvider.isstarted
+                                      ? '다른 루틴 수행중'
+                                      : provider.routineButton),
                             );
                           })),
                           Container(
@@ -1053,7 +1055,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
           .postHistory()
           .then((data) => data["user_email"] != null
               ? {
-                  print("yessssssssssss"),
                   Navigator.push(
                       context,
                       Transition(
@@ -1062,7 +1063,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               routinetime: _routinetimeProvider.routineTime,
                               sdbdata: hisdata.SDBdata.fromJson(data)),
                           transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
-                  print("routine time"),
                   _routinetimeProvider.routinecheck(widget.rindex),
                   _historydataProvider.getdata(),
                   _historydataProvider.getHistorydataAll(),
@@ -1071,7 +1071,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
               : showToast("입력을 확인해주세요"));
     } else {
       _routinetimeProvider.routinecheck(widget.rindex);
-      print("no exercises");
     }
   }
 

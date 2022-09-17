@@ -4,9 +4,7 @@ import 'package:sdb_trainer/pages/exercise.dart';
 class TabNavigatorRoutes {
   static const String root = '/';
   static const String detail = '/detail';
-
 }
-
 
 class TabNavigator extends StatefulWidget {
   const TabNavigator({Key? key}) : super(key: key);
@@ -14,7 +12,6 @@ class TabNavigator extends StatefulWidget {
   @override
   State<TabNavigator> createState() => TabNavigatorState();
 }
-
 
 class TabNavigatorState extends State<TabNavigator> {
   GlobalKey<NavigatorState> exKey = GlobalKey<NavigatorState>();
@@ -37,21 +34,18 @@ class TabNavigatorState extends State<TabNavigator> {
 
   @override
   Widget build(BuildContext context) {
-    print(exKey.currentState);
     var routeBuilders = _routeBuilders(context);
     return WillPopScope(
-      onWillPop: () async{
+      onWillPop: () async {
         return true;
       },
       child: Navigator(
-
-        initialRoute: TabNavigatorRoutes.root,
-        onGenerateRoute: (routeSettings) {
-          return MaterialPageRoute(
-            builder: (context) =>
-              routeBuilders[routeSettings.name]!(context));
-        }),
+          initialRoute: TabNavigatorRoutes.root,
+          onGenerateRoute: (routeSettings) {
+            return MaterialPageRoute(
+                builder: (context) =>
+                    routeBuilders[routeSettings.name]!(context));
+          }),
     );
   }
 }
-

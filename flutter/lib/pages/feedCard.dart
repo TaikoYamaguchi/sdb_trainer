@@ -19,6 +19,7 @@ import 'package:like_button/like_button.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'package:sdb_trainer/src/model/userdata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:image_picker/image_picker.dart';
 
@@ -82,7 +83,6 @@ class _FeedCardState extends State<FeedCard> {
     User user = _userdataProvider.userFriendsAll.userdatas
         .where((user) => user.email == SDBdata.user_email)
         .toList()[0];
-    print(user.nickname);
     if (_historyProvider.commentAll != null) {
       _commentListbyId = _historyProvider.commentAll.comments
           .where((comment) => comment.history_id == SDBdata.id)
@@ -136,12 +136,24 @@ class _FeedCardState extends State<FeedCard> {
                                               color: Colors.grey,
                                               size: 46.0,
                                             )
-                                          : CircleAvatar(
-                                              radius: 22.0,
-                                              backgroundImage:
-                                                  NetworkImage(user.image),
-                                              backgroundColor:
-                                                  Colors.transparent),
+                                          : CachedNetworkImage(
+                                              imageUrl: user.image,
+                                              imageBuilder:
+                                                  (context, imageProivder) =>
+                                                      Container(
+                                                height: 46,
+                                                width: 46,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                50)),
+                                                    image: DecorationImage(
+                                                      image: imageProivder,
+                                                      fit: BoxFit.cover,
+                                                    )),
+                                              ),
+                                            ),
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(left: 5.0),
@@ -617,10 +629,21 @@ class _FeedCardState extends State<FeedCard> {
                               color: Colors.grey,
                               size: 38.0,
                             )
-                          : CircleAvatar(
-                              radius: 18.0,
-                              backgroundImage: NetworkImage(user.image),
-                              backgroundColor: Colors.transparent),
+                          : CachedNetworkImage(
+                              imageUrl: user.image,
+                              imageBuilder: (context, imageProivder) =>
+                                  Container(
+                                height: 38,
+                                width: 38,
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(50)),
+                                    image: DecorationImage(
+                                      image: imageProivder,
+                                      fit: BoxFit.cover,
+                                    )),
+                              ),
+                            ),
                       Flexible(
                         child: Padding(
                           padding: const EdgeInsets.only(left: 4.0),

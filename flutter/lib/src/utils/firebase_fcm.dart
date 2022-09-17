@@ -68,7 +68,6 @@ void fcmSetting() async {
   if (isFCMEnabled == null || isFCMEnabled) {
     // firebase token 발급
     String? firebaseToken = await FirebaseMessaging.instance.getToken();
-    print("fiffffffffffffffffbse token");
     print(firebaseToken);
 
     final storage = new FlutterSecureStorage();

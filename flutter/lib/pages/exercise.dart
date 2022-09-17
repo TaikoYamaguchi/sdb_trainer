@@ -744,13 +744,11 @@ class ExerciseState extends State<Exercise> {
                           .indexWhere((routine) {
                         if (routine.name == _workoutNameCtrl.text) {
                           setState(() {
-                            print("useddddddd");
                             _customExUsed = true;
                           });
                           return true;
                         } else {
                           setState(() {
-                            print("nullllllllll");
                             _customExUsed = false;
                           });
                           return false;
@@ -829,22 +827,22 @@ class ExerciseState extends State<Exercise> {
             padding: EdgeInsets.all(12.0),
             splashColor: Theme.of(context).primaryColor,
             onPressed: () {
-              if(!_customExUsed){
+              if (!_customExUsed) {
                 _workoutdataProvider.addroutine(new Routinedatas(
                     name: _workoutNameCtrl.text,
                     mode: _RoutineMenuProvider.ismodechecked ? 1 : 0,
                     exercises: _RoutineMenuProvider.ismodechecked
                         ? [
-                      new Program(
-                          progress: 0, plans: [new Plans(exercises: [])])
-                    ]
+                            new Program(
+                                progress: 0, plans: [new Plans(exercises: [])])
+                          ]
                         : [],
                     routine_time: 0));
                 _editWorkoutCheck();
                 _workoutNameCtrl.clear();
                 Navigator.of(context, rootNavigator: true).pop();
-              };
-
+              }
+              ;
             },
             child: Text(_customExUsed == true ? "존재하는 루틴 이름" : "새 루틴 추가",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
@@ -976,8 +974,10 @@ class ExerciseState extends State<Exercise> {
         Provider.of<WorkoutdataProvider>(context, listen: false);
 
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
-    _famousdataProvider = Provider.of<FamousdataProvider>(context, listen: false);
-    _routinetimeProvider = Provider.of<RoutineTimeProvider>(context, listen: false);
+    _famousdataProvider =
+        Provider.of<FamousdataProvider>(context, listen: false);
+    _routinetimeProvider =
+        Provider.of<RoutineTimeProvider>(context, listen: false);
     _RoutineMenuProvider =
         Provider.of<RoutineMenuStater>(context, listen: false);
     _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
@@ -993,67 +993,72 @@ class ExerciseState extends State<Exercise> {
         : null;
 
     return Consumer<PopProvider>(builder: (Builder, provider, child) {
-        bool _goto = provider.goto;
-        _goto == false
-            ? print('working?2')
-            : [
-          print('working?'),
-          provider.exstackup(0),
-          Future.delayed(Duration.zero, () async {
-            Navigator.of(context).popUntil((route) => route.isFirst);
-            if(_workoutdataProvider.workoutdata.routinedatas[_routinetimeProvider.nowonrindex].mode==1){
-              Navigator.push(
-                  context,
-                  Transition(
-                      child: EachPlanDetails(
-                        rindex: _routinetimeProvider.nowonrindex,
-                      ),
-                      transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-              provider.gotooff();
-              provider.exstackup(1);
-            } else{
-              Navigator.push(
-                  context,
-                  Transition(
-                      child: EachWorkoutDetails(
-                        rindex: _routinetimeProvider.nowonrindex,
-                      ),
-                      transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-              Navigator.push(
-                  context,
-                  Transition(
-                      child: EachExerciseDetails(
-                        ueindex: _exercisesdataProvider.exercisesdata.exercises.indexWhere(
-                                (element) =>
-                            element.name ==
-                                _workoutdataProvider.workoutdata.routinedatas[_routinetimeProvider.nowonrindex].exercises[_routinetimeProvider.nowoneindex].name),
-                        eindex: _routinetimeProvider.nowoneindex,
-                        rindex: _routinetimeProvider.nowonrindex,
-                      ),
-                      transitionEffect:
-                      TransitionEffect.RIGHT_TO_LEFT));
-              provider.gotooff();
-              provider.exstackup(2);
+      bool _goto = provider.goto;
+      _goto == false
+          ? null
+          : [
+              provider.exstackup(0),
+              Future.delayed(Duration.zero, () async {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+                if (_workoutdataProvider.workoutdata
+                        .routinedatas[_routinetimeProvider.nowonrindex].mode ==
+                    1) {
+                  Navigator.push(
+                      context,
+                      Transition(
+                          child: EachPlanDetails(
+                            rindex: _routinetimeProvider.nowonrindex,
+                          ),
+                          transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+                  provider.gotooff();
+                  provider.exstackup(1);
+                } else {
+                  Navigator.push(
+                      context,
+                      Transition(
+                          child: EachWorkoutDetails(
+                            rindex: _routinetimeProvider.nowonrindex,
+                          ),
+                          transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+                  Navigator.push(
+                      context,
+                      Transition(
+                          child: EachExerciseDetails(
+                            ueindex: _exercisesdataProvider
+                                .exercisesdata.exercises
+                                .indexWhere((element) =>
+                                    element.name ==
+                                    _workoutdataProvider
+                                        .workoutdata
+                                        .routinedatas[
+                                            _routinetimeProvider.nowonrindex]
+                                        .exercises[
+                                            _routinetimeProvider.nowoneindex]
+                                        .name),
+                            eindex: _routinetimeProvider.nowoneindex,
+                            rindex: _routinetimeProvider.nowonrindex,
+                          ),
+                          transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+                  provider.gotooff();
+                  provider.exstackup(2);
+                }
+              }),
+            ];
+      return Scaffold(
+          appBar: _appbarWidget(),
+          body: Consumer2<ExercisesdataProvider, WorkoutdataProvider>(
+              builder: (context, provider1, provider2, widget) {
+            if (provider2.workoutdata != null) {
+              return _bodyWidget();
             }
-
+            return Container(
+              color: Colors.black,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
           }),
-        ];
-        return Scaffold(
-            appBar: _appbarWidget(),
-            body: Consumer2<ExercisesdataProvider, WorkoutdataProvider>(
-                builder: (context, provider1, provider2, widget) {
-              if (provider2.workoutdata != null) {
-                return _bodyWidget();
-              }
-              return Container(
-                color: Colors.black,
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            }),
-            backgroundColor: Colors.black);
-      }
-    );
+          backgroundColor: Colors.black);
+    });
   }
 }

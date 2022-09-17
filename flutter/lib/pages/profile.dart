@@ -32,7 +32,6 @@ class Profile extends StatelessWidget {
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
     _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
-    print("this is profileeeeeeeeee");
     return Scaffold(
       appBar: AppBar(
           title: Text("설정", style: TextStyle(color: Colors.white)),

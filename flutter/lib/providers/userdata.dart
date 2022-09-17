@@ -44,8 +44,8 @@ class UserdataProvider extends ChangeNotifier {
       _userFriendsAll = value;
 
       notifyListeners();
-      return _userFriendsAll;
     });
+    return _userFriendsAll;
   }
 
   getUserdata(email) {

@@ -561,9 +561,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                   exerciseList = []
                 }
               : showToast("입력을 확인해주세요"));
-    } else {
-      print("no exercises");
-    }
+    } else {}
   }
 
   void modifyExercise(double newonerm, exname) {

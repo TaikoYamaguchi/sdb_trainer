@@ -92,21 +92,12 @@ class _CalendarState extends State<Calendar> {
       _famousdataProvider.getdata(),
       _workoutdataProvider.getdata(),
       _initExercisesdataProvider.getdata(),
-      print("exxxxxxxxxxxxxxxxxxxercise"),
     ];
     _initHistorydataProvider.getFriendsHistorydata();
     _initUserdataProvider.getFriendsdata();
     _initUserdataProvider.getUsersFriendsAll();
     _initHistorydataProvider.getHistorydataAll();
     _initHistorydataProvider.getCommentAll();
-
-    _initUserdataProvider.userFriendsAll.userdatas
-        .where((user) => user.image != "")
-        .toList()
-        .map((user) {
-      print(user.image);
-      precacheImage(Image.network(user.image).image, context);
-    });
 
     _initUserdataProvider.userdata != null
         ? [
@@ -415,7 +406,6 @@ class _CalendarState extends State<Calendar> {
       exuniq, history_id, userdata, bool shirink, index) {
     double top = 0;
     double bottom = 0;
-    print(history_id);
     return Container(
       color: Colors.black,
       child: Column(
@@ -776,7 +766,6 @@ class _CalendarState extends State<Calendar> {
 
   List<Widget> techChips() {
     List<Widget> chips = [];
-    print("exxxxxxxxxxxxxxxxxxxercise!!!!!!!!!!!!!!!nononono");
     if (_exercisesdataProvider.exercisesdata != null) {
       for (int i = 0;
           i < _exercisesdataProvider.exercisesdata!.exercises.length;
@@ -839,7 +828,6 @@ class _CalendarState extends State<Calendar> {
   }
 
   Widget _deleteConfirmButton(history_id) {
-    print(history_id);
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
@@ -872,7 +860,6 @@ class _CalendarState extends State<Calendar> {
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _getChartSourcefromDay();
-    print("this is sttttttttatics");
     return Scaffold(
         appBar: _appbarWidget(),
         backgroundColor: Colors.black,

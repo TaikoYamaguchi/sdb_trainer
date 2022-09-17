@@ -8,23 +8,22 @@ class FamousdataProvider extends ChangeNotifier {
   get famousdata => _famousdata;
   var _download;
   get download => _download;
-  var _week=0;
+  var _week = 0;
   get week => _week;
 
   weekchangepre(index) {
     _week = index;
-    _download.routinedata.exercises[0].progress = index*7;
+    _download.routinedata.exercises[0].progress = index * 7;
   }
 
   weekchange(index) {
     _week = index;
-    _download.routinedata.exercises[0].progress = index*7;
+    _download.routinedata.exercises[0].progress = index * 7;
     notifyListeners();
   }
 
   downloadset(program) {
     _download = program;
-    print(download);
     notifyListeners();
   }
 
@@ -64,5 +63,4 @@ class FamousdataProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-
 }

@@ -4,15 +4,11 @@ import 'package:tutorial/tutorial.dart';
 class app_tutorial extends StatefulWidget {
   const app_tutorial({Key? key}) : super(key: key);
 
-
-
   @override
   State<app_tutorial> createState() => _app_tutorialState();
 }
 
-
 class _app_tutorialState extends State<app_tutorial> {
-
   final keyMenu = GlobalKey();
   final keyContainer = GlobalKey();
   final keyChat = GlobalKey();
@@ -102,6 +98,3 @@ class _app_tutorialState extends State<app_tutorial> {
     return Container();
   }
 }
-
-
-
