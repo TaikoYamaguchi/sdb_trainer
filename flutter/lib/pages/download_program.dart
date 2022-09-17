@@ -57,6 +57,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
   List do_exercise =[];
   List exercise_names =[];
   List ref_exercise_index =[];
+  var _customRuUsed = false;
 
 
 
@@ -654,7 +655,9 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                 for (int i = 0; i < do_exercise.length; i++) {
                   exercise_names.contains(do_exercise[i])
                       ? null
-                      : _exercisesdataProvider.addExdata(uex.Exercises(name: do_exercise[i], onerm: 0, goal: 0));
+                      : [_exercisesdataProvider.addExdata(uex.Exercises(name: do_exercise[i], onerm: 0, goal: 0)),
+                          exercise_names.add(do_exercise[i])
+                        ];
                 }
                 for (int i = 0; i < ref_exercise.length; i++) {
 
@@ -809,6 +812,113 @@ class _ProgramDownloadState extends State<ProgramDownload> {
     );
   }
 
+  void titleSetting() {
+    _workoutNameCtrl.text = widget.program.routinedata.name;
+    showModalBottomSheet<void>(
+      context: context,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      builder: (BuildContext context) {
+        return StatefulBuilder(builder: (context, state) {
+            return Container(
+              padding: EdgeInsets.all(12.0),
+              height: 240,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                color: Theme.of(context).cardColor,
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    child: Text(
+                      '프로그램 이름을 정해주세요',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 24),
+                    ),
+                  ),
+                  Container(
+                    child: Text('외부를 터치하면 취소 할 수 있어요',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.grey, fontSize: 12)),
+                  ),
+                  SizedBox(height: 20),
+                  TextField(
+                    onChanged: (value) {
+                      _workoutdataProvider.workoutdata.routinedatas
+                          .indexWhere((routine) {
+                        if (routine.name == _workoutNameCtrl.text) {
+                          state(() {
+                            _customRuUsed = true;
+                          });
+                          return true;
+                        } else {
+                          state(() {
+                            _customRuUsed = false;
+                          });
+                          return false;
+                        }
+                      });
+                    },
+                    style: TextStyle(fontSize: 24.0, color: Colors.white),
+                    textAlign: TextAlign.center,
+                    controller: _workoutNameCtrl,
+                    decoration: InputDecoration(
+                        filled: true,
+                        enabledBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).primaryColor, width: 3),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).primaryColor, width: 3),
+                        ),
+                        hintText: "운동 루틴 이름",
+                        hintStyle:
+                        TextStyle(fontSize: 24.0, color: Colors.white)),
+                  ),
+                  SizedBox(height: 20),
+                  _finalConfirmButton(state)
+                ],
+              ),
+            );
+          }
+        );
+      },
+    );
+  }
+
+  Widget _finalConfirmButton(state) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: _workoutNameCtrl.text == "" || _customRuUsed == true
+                ? Color(0xFF212121)
+                : Theme.of(context).primaryColor,
+            textColor: Colors.white,
+            onPressed: () {
+              if(_customRuUsed == false || _workoutNameCtrl.text == ""){
+                _famousdataProvider.weekchange(0);
+                _workoutdataProvider.addroutine(new Routinedatas(name: _workoutNameCtrl.text, mode: widget.program.routinedata.mode, exercises: widget.program.routinedata.exercises, routine_time: widget.program.routinedata.routine_time));
+                _editWorkoutCheck();
+                Navigator.of(context).popUntil((route) => route.isFirst);
+                ProgramSubscribe(id: widget.program.id).subscribeProgram().then(
+                        (data) => data["user_email"] != null
+                        ? [showToast("done!"), _famousdataProvider.getdata()]
+                        : showToast("입력을 확인해주세요"));
+                _workoutNameCtrl.clear();
+              }
+            },
+            padding: EdgeInsets.all(12.0),
+            splashColor: Theme.of(context).primaryColor,
+            child: Text(_customRuUsed == true ? "존재하는 이름" : "이 이름으로 저장",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+  }
+
   Widget _neededlist() {
     return Expanded(
       child: ListView.builder(
@@ -912,14 +1022,16 @@ class _ProgramDownloadState extends State<ProgramDownload> {
             color: Theme.of(context).primaryColor,
             textColor: Colors.white,
             onPressed: () {
-              _famousdataProvider.weekchange(0);
-              _workoutdataProvider.addroutine(widget.program.routinedata);
-              _editWorkoutCheck();
-              Navigator.of(context).popUntil((route) => route.isFirst);
-              ProgramSubscribe(id: widget.program.id).subscribeProgram().then(
-                  (data) => data["user_email"] != null
-                      ? [showToast("done!"), _famousdataProvider.getdata()]
-                      : showToast("입력을 확인해주세요"));
+              List rname = [];
+              for(int i = 0; i <  _workoutdataProvider.workoutdata.routinedatas.length; i++){
+                rname.add(_workoutdataProvider.workoutdata.routinedatas[i].name);
+              }
+              if (rname.contains(widget.program.routinedata.name)) {
+                _customRuUsed= true;
+              }
+              Navigator.pop(context);
+              titleSetting();
+
             },
             padding: EdgeInsets.all(12.0),
             splashColor: Theme.of(context).primaryColor,

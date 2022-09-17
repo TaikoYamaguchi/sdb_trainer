@@ -1,7 +1,9 @@
 import 'dart:async';
-
+import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sdb_trainer/providers/workoutdata.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
 
 class RoutineTimeProvider extends ChangeNotifier {
@@ -31,6 +33,9 @@ class RoutineTimeProvider extends ChangeNotifier {
   Color get buttoncolor => _buttoncolor;
   DateTime _starttime = DateTime(2022, 08, 06, 10, 30);
   DateTime _timerstarttime = DateTime(2022, 08, 06, 10, 30);
+  var _workoutdataProvider;
+
+  var _prefs;
 
   nowoneindexupdate(value) {
     _nowoneindex = value;
@@ -70,6 +75,12 @@ class RoutineTimeProvider extends ChangeNotifier {
 
   getstarttime() {
     _starttime = DateTime.now();
+  }
+
+  getprefs(value) async {
+    _prefs = await SharedPreferences.getInstance();
+    await _prefs.setString('lastroutine', value);
+
   }
 
   void routinecheck(rindex) {

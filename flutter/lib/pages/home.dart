@@ -3,7 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
+import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/staticPageState.dart';
@@ -30,8 +32,12 @@ class _HomeState extends State<Home> {
   var _chartIndex;
   var _historydataAll;
   var _testdata0;
+  var allEntries;
+
+  var _prefs;
   String _addexinput = '';
   late var _testdata = _testdata0.exercises;
+
 
   PreferredSizeWidget _appbarWidget() {
     //if (_userdataProvider.userdata != null) {
@@ -172,16 +178,68 @@ class _HomeState extends State<Home> {
                 ]),
             Padding(
               padding: const EdgeInsets.all(8.0),
+              child: _lastRoutineWidget(),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: _liftingStatWidget(_exunique, context),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: _countHistoryWidget(context),
-            )
+            ),
+
           ],
         ),
       ),
     );
+  }
+
+  Widget _lastRoutineWidget() {
+    double deviceWidth = MediaQuery.of(context).size.width;
+    return Card(
+        color: Theme.of(context).cardColor,
+        shape:
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text('''최근 수행한 루틴은''',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600)),
+                ),
+                GestureDetector(
+                    onTap: () {},
+                    child: Icon(Icons.settings, color: Colors.grey, size: 18.0))
+              ],
+            ),
+            Consumer<PrefsProvider>(builder: (builder, provider, child) {
+              final storage = FlutterSecureStorage();
+              return Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+
+                    Text(provider.prefs.getString('lastroutine') == null ? '아직 한번도 루틴을 수행하지 않았습니다.' : '${provider.prefs.getString('lastroutine')}',
+                        style: TextStyle(
+                            color: Color(0xFffc60a8),
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600)),
+
+                  ],
+                ),
+              );
+            }),
+          ]),
+        ));
   }
 
   Widget _countHistoryWidget(context) {

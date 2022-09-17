@@ -11,6 +11,7 @@ class PrefsProvider extends ChangeNotifier {
   bool? _stepthree = false;
   bool? get stepthree => _stepthree;
   var _prefs;
+  SharedPreferences get prefs => _prefs;
 
   getprefs() async {
     _prefs = await SharedPreferences.getInstance();

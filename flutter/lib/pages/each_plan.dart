@@ -1169,6 +1169,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                               sdbdata: hisdata.SDBdata.fromJson(data)),
                           transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
                   _routinetimeProvider.routinecheck(widget.rindex),
+                  _routinetimeProvider.getprefs(_workoutdataProvider.workoutdata.routinedatas[widget.rindex].name),
                   _historydataProvider.getdata(),
                   _historydataProvider.getHistorydataAll(),
                   exerciseList = []

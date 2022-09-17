@@ -112,6 +112,17 @@ class _AppState extends State<App> {
     );
   }
 
+  void _editWorkoutCheck() async {
+    WorkoutEdit(
+        user_email: _userdataProvider.userdata.email,
+        id: _workoutdataProvider.workoutdata.id,
+        routinedatas: _workoutdataProvider.workoutdata.routinedatas)
+        .editWorkout()
+        .then((data) => data["user_email"] != null
+        ? [showToast("done!"), _workoutdataProvider.getdata()]
+        : showToast("입력을 확인해주세요"));
+  }
+
   void _editWorkoutwoCheck() async {
     var routinedatas_all = _workoutdataProvider.workoutdata.routinedatas;
     for (int n = 0;
@@ -186,15 +197,62 @@ class _AppState extends State<App> {
             disabledColor: Color.fromRGBO(246, 58, 64, 20),
             disabledTextColor: Colors.black,
             onPressed: () {
-              recordExercise();
-              _editHistoryCheck();
-              _editWorkoutwoCheck();
+              if(_workoutdataProvider.workoutdata.routinedatas[_routinetimeProvider.nowonrindex].mode == 1){
+                recordExercise_plan();
+                _editHistoryCheck();
+                _editWorkoutCheck();
+              } else {
+                recordExercise();
+                _editHistoryCheck();
+                _editWorkoutwoCheck();
+              }
               Navigator.of(context, rootNavigator: true).pop();
             },
             padding: EdgeInsets.all(12.0),
             splashColor: Theme.of(context).primaryColor,
             child: Text("운동 종료 하기",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
+  }
+
+  void recordExercise_plan() {
+    var exercise_all = _workoutdataProvider
+        .workoutdata
+        .routinedatas[_routinetimeProvider.nowonrindex]
+        .exercises[0]
+        .plans[_workoutdataProvider
+        .workoutdata.routinedatas[_routinetimeProvider.nowonrindex].exercises[0].progress]
+        .exercises;
+    for (int n = 0; n < exercise_all.length; n++) {
+      var recordedsets = exercise_all[n].sets.where((sets) {
+        return (sets.ischecked as bool && sets.weight != 0);
+      }).toList();
+      double monerm = 0;
+      for (int i = 0; i < recordedsets.length; i++) {
+        if (recordedsets[i].reps != 1) {
+          if (monerm <
+              recordedsets[i].weight * (1 + recordedsets[i].reps / 30)) {
+            monerm = recordedsets[i].weight * (1 + recordedsets[i].reps / 30);
+          }
+        } else if (monerm < recordedsets[i].weight) {
+          monerm = recordedsets[i].weight;
+        }
+      }
+      var _eachex = _exercisesdataProvider.exercisesdata.exercises[
+      _exercisesdataProvider.exercisesdata.exercises
+          .indexWhere((element) => element.name == exercise_all[n].name)];
+      if (!recordedsets.isEmpty) {
+        exerciseList.add(hisdata.Exercises(
+            name: exercise_all[n].name,
+            sets: recordedsets,
+            onerm: monerm,
+            goal: _eachex.goal,
+            date: DateTime.now().toString().substring(0, 10)));
+      }
+      if (monerm > _eachex.onerm) {
+        modifyExercise(monerm, exercise_all[n].name);
+      }
+    }
+    _postExerciseCheck();
   }
 
   void recordExercise() {
@@ -307,12 +365,15 @@ class _AppState extends State<App> {
                               sdbdata: hisdata.SDBdata.fromJson(data)),
                           transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
                   _routinetimeProvider.routinecheck(0),
+                  _routinetimeProvider.getprefs(_workoutdataProvider.workoutdata.routinedatas[_routinetimeProvider.nowonrindex].name),
                   _historydataProvider.getdata(),
                   _historydataProvider.getHistorydataAll(),
                   exerciseList = []
                 }
               : showToast("입력을 확인해주세요"));
-    } else {}
+    } else {
+      _routinetimeProvider.routinecheck(0);
+    }
   }
 
   void modifyExercise(double newonerm, exname) {
