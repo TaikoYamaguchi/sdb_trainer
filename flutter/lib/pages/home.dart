@@ -82,9 +82,42 @@ class _HomeState extends State<Home> {
                           fontSize: 54,
                           fontWeight: FontWeight.w600)),
                   Text(
-                      (_exunique.exercises[0].onerm +
-                              _exunique.exercises[1].onerm +
-                              _exunique.exercises[2].onerm)
+                      (_exercisesdataProvider
+                                  .exercisesdata
+                                  .exercises[(_exercisesdataProvider
+                                      .exercisesdata.exercises
+                                      .indexWhere((exercise) {
+                                if (exercise.name == "스쿼트") {
+                                  return true;
+                                } else {
+                                  return false;
+                                }
+                              }))]
+                                  .onerm +
+                              _exercisesdataProvider
+                                  .exercisesdata
+                                  .exercises[(_exercisesdataProvider
+                                      .exercisesdata.exercises
+                                      .indexWhere((exercise) {
+                                if (exercise.name == "데드리프트") {
+                                  return true;
+                                } else {
+                                  return false;
+                                }
+                              }))]
+                                  .onerm +
+                              _exercisesdataProvider
+                                  .exercisesdata
+                                  .exercises[(_exercisesdataProvider
+                                      .exercisesdata.exercises
+                                      .indexWhere((exercise) {
+                                if (exercise.name == "벤치프레스") {
+                                  return true;
+                                } else {
+                                  return false;
+                                }
+                              }))]
+                                  .onerm)
                           .floor()
                           .toString(),
                       style: TextStyle(
@@ -93,9 +126,42 @@ class _HomeState extends State<Home> {
                           fontWeight: FontWeight.w800)),
                   Text(
                       "/" +
-                          (_exunique.exercises[0].goal +
-                                  _exunique.exercises[1].goal +
-                                  _exunique.exercises[2].goal)
+                          (_exercisesdataProvider
+                                      .exercisesdata
+                                      .exercises[(_exercisesdataProvider
+                                          .exercisesdata.exercises
+                                          .indexWhere((exercise) {
+                                    if (exercise.name == "스쿼트") {
+                                      return true;
+                                    } else {
+                                      return false;
+                                    }
+                                  }))]
+                                      .goal +
+                                  _exercisesdataProvider
+                                      .exercisesdata
+                                      .exercises[(_exercisesdataProvider
+                                          .exercisesdata.exercises
+                                          .indexWhere((exercise) {
+                                    if (exercise.name == "데드리프트") {
+                                      return true;
+                                    } else {
+                                      return false;
+                                    }
+                                  }))]
+                                      .goal +
+                                  _exercisesdataProvider
+                                      .exercisesdata
+                                      .exercises[(_exercisesdataProvider
+                                          .exercisesdata.exercises
+                                          .indexWhere((exercise) {
+                                    if (exercise.name == "벤치프레스") {
+                                      return true;
+                                    } else {
+                                      return false;
+                                    }
+                                  }))]
+                                      .goal)
                               .floor()
                               .toString() +
                           "kg",
@@ -107,11 +173,73 @@ class _HomeState extends State<Home> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: _liftingStatWidget(_exunique, context),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: _countHistoryWidget(context),
             )
           ],
         ),
       ),
     );
+  }
+
+  Widget _countHistoryWidget(context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
+    return Card(
+        color: Theme.of(context).cardColor,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(right: deviceWidth / 2),
+                      child: Text('''1년 동안''',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600)),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                    onTap: () {},
+                    child: Icon(Icons.settings, color: Colors.grey, size: 18.0))
+              ],
+            ),
+            Consumer<HistorydataProvider>(builder: (builder, provider, child) {
+              final storage = FlutterSecureStorage();
+              return Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text('''38''',
+                        style: TextStyle(
+                            color: Color(0xFffc60a8),
+                            fontSize: 54,
+                            fontWeight: FontWeight.w600)),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Text('''일 운동했어요!''',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600)),
+                    ),
+                  ],
+                ),
+              );
+            }),
+          ]),
+        ));
   }
 
   Widget _liftingStatWidget(_exunique, context) {
@@ -125,18 +253,25 @@ class _HomeState extends State<Home> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('''Lifting Stats''',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600)),
+                Expanded(
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: Text('''Lifting Stats''',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600)),
+                    ),
+                  ),
+                ),
                 GestureDetector(
                     onTap: () {
                       _testdata = _testdata0.exercises;
                       setState(() {});
                       exselect(true, true, context);
                     },
-                    child: Icon(Icons.settings, color: Colors.grey, size: 18.0))
+                    child: Icon(Icons.settings, color: Colors.grey, size: 24.0))
               ],
             ),
             SizedBox(height: 8.0),
