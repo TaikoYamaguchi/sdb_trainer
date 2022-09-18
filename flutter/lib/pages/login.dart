@@ -25,10 +25,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 class LoginPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  LoginPageState createState() => LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPageState extends State<LoginPage> {
   var _bodyStater;
   var _loginState;
   var _signUpState;
@@ -471,28 +471,32 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void _storageInitialExerciseCheck() async {
+  void _storageInitialExerciseCheck(_initExercisesdataProvider) async {
     final storage = FlutterSecureStorage();
+    print("storage check for initial exercise");
     try {
       String? storageExerciseList = await storage.read(key: "sdb_HomeExList");
-      if (storageExerciseList != null && storageExerciseList != "") {
-        _exercisesdataProvider.putHomeExList(jsonDecode(storageExerciseList));
-      } else {
+      print(storageExerciseList);
+      if (storageExerciseList == null || storageExerciseList == "") {
+        print("storage nooooooooooooo");
         List<String> listViewerBuilderString = ['스쿼트', '데드리프트', '벤치프레스'];
         await storage.write(
             key: 'sdb_HomeExList', value: jsonEncode(listViewerBuilderString));
-        _exercisesdataProvider.putHomeExList(listViewerBuilderString);
+        _initExercisesdataProvider.putHomeExList(listViewerBuilderString);
+      } else {
+        print("storage yessssssssss");
+        _initExercisesdataProvider
+            .putHomeExList(jsonDecode(storageExerciseList));
       }
     } catch (e) {
       List<String> listViewerBuilderString = ['스쿼트', '데드리프트', '벤치프레스'];
-      _exercisesdataProvider.putHomeExList(listViewerBuilderString);
+      _initExercisesdataProvider.putHomeExList(listViewerBuilderString);
       await storage.write(
           key: 'sdb_HomeExList', value: jsonEncode(listViewerBuilderString));
     }
   }
 
   void initialProviderGet(context) async {
-    _storageInitialExerciseCheck();
     final _initUserdataProvider =
         Provider.of<UserdataProvider>(context, listen: false);
     final _initHistorydataProvider =
@@ -505,6 +509,8 @@ class _LoginPageState extends State<LoginPage> {
     final _famousdataProvider =
         Provider.of<FamousdataProvider>(context, listen: false);
     final _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
+
+    _storageInitialExerciseCheck(_initExercisesdataProvider);
     var usertestList;
     await [
       _initUserdataProvider.getdata(),

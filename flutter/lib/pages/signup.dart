@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:sdb_trainer/pages/login.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
@@ -20,10 +21,10 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<SignUpPage> {
+class _SignUpPageState extends State<SignUpPage> {
   var _bodyStater;
   var _loginState;
   var _userProvider;
@@ -802,8 +803,6 @@ class _LoginPageState extends State<SignUpPage> {
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
-
-
   Widget _weightSubmitButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -817,7 +816,7 @@ class _LoginPageState extends State<SignUpPage> {
             disabledTextColor: Colors.black,
             padding: EdgeInsets.all(8.0),
             splashColor: Theme.of(context).primaryColor,
-            onPressed: () => _postExerciseCheck(),
+            onPressed: () => _postExerciseCheck(context),
             child: Text(isLoading ? 'loggin in.....' : "운동 정보 제출",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
@@ -876,13 +875,16 @@ class _LoginPageState extends State<SignUpPage> {
             : showToast("회원가입을 할 수 없습니다"));
   }
 
-  void _postExerciseCheck() async {
-
+  void _postExerciseCheck(context) async {
     add_extra_ex();
     ExercisePost(user_email: _userEmailCtrl.text, exercises: exerciseList)
         .postExercise()
         .then((data) => data["user_email"] != null
-            ? {_bodyStater.change(0), _loginState.change(true)}
+            ? {
+                _bodyStater.change(0),
+                _loginState.change(true),
+                LoginPageState().initialProviderGet(context)
+              }
             : showToast("입력을 확인해주세요"));
   }
 
