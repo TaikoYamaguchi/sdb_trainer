@@ -29,7 +29,11 @@ class PrefsProvider extends ChangeNotifier {
             _steptwo = _eachworkouttutor,
             _stepthree = _eachworkouttutor
           ];
-
+    _prefs.getString('lastroutine') == null
+        ? await _prefs.setString('lastroutine', '')
+        : null;
+    print(_prefs.getString('lastroutine'));
+    print('여기');
     notifyListeners();
   }
 

@@ -350,7 +350,7 @@ class _HomeState extends State<Home> {
                     child: Padding(
                       padding: EdgeInsets.only(right: deviceWidth / 2 - 40),
                       child: Text(
-                          provider.prefs.getString('lastroutine') == null
+                          provider.prefs.getString('lastroutine') == ''
                               ? "최근 루틴이 없어요"
                               : '''최근 수행한 루틴은''',
                           textAlign: TextAlign.center,
@@ -381,18 +381,18 @@ class _HomeState extends State<Home> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                          provider.prefs.getString('lastroutine') == null
+                          provider.prefs.getString('lastroutine') == ''
                               ? '눌러서 루틴을 수행 해보세요!'
                               : '${provider.prefs.getString('lastroutine')}',
                           style: TextStyle(
                               color: Color(0xFffc60a8),
                               fontSize:
                                   provider.prefs.getString('lastroutine') ==
-                                          null
+                                          ''
                                       ? 18
                                       : 28,
                               fontWeight: FontWeight.w600)),
-                      provider.prefs.getString('lastroutine') == null
+                      provider.prefs.getString('lastroutine') == ''
                           ? Container()
                           : Text('에요',
                               style: TextStyle(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:sdb_trainer/pages/home.dart';
@@ -13,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
@@ -25,6 +27,7 @@ class _LoginPageState extends State<SignUpPage> {
   var _bodyStater;
   var _loginState;
   var _userProvider;
+  var _PrefProvider;
   var _isSignupIndex = 0;
   bool isLoading = false;
   bool _isEmailused = false;
@@ -137,6 +140,7 @@ class _LoginPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
     _loginState = Provider.of<LoginPageProvider>(context, listen: false);
+    _PrefProvider = Provider.of<PrefsProvider>(context, listen: false);
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     if (_userProvider.userKakaoEmail != null) {
       _userEmailCtrl.text = _userProvider.userKakaoEmail;
@@ -761,6 +765,7 @@ class _LoginPageState extends State<SignUpPage> {
             splashColor: Theme.of(context).primaryColor,
             onPressed: () => _isSignupIndex == 0
                 ? setState(() {
+                    _PrefProvider.getprefs();
                     _signUpProfileCheck().then((value) {
                       if (value) {
                         setState(() {
@@ -771,6 +776,7 @@ class _LoginPageState extends State<SignUpPage> {
                   })
                 : _isSignupIndex == 1
                     ? setState(() {
+                        _PrefProvider.getprefs();
                         _signUpProfileCheck().then((value) {
                           if (value) {
                             setState(() {
@@ -781,6 +787,7 @@ class _LoginPageState extends State<SignUpPage> {
                       })
                     : {
                         setState(() {
+                          _PrefProvider.getprefs();
                           _signUpProfileCheck().then((value) {
                             if (value) {
                               setState(() {
@@ -794,6 +801,8 @@ class _LoginPageState extends State<SignUpPage> {
             child: Text(isLoading ? 'loggin in.....' : "회원가입",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
+
+
 
   Widget _weightSubmitButton(context) {
     return SizedBox(
@@ -868,6 +877,7 @@ class _LoginPageState extends State<SignUpPage> {
   }
 
   void _postExerciseCheck() async {
+
     add_extra_ex();
     ExercisePost(user_email: _userEmailCtrl.text, exercises: exerciseList)
         .postExercise()
