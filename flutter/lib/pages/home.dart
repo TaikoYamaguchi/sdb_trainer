@@ -6,6 +6,7 @@ import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
+import 'package:sdb_trainer/src/model/historydata.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
@@ -13,10 +14,14 @@ import 'package:sdb_trainer/providers/staticPageState.dart';
 import 'package:sdb_trainer/providers/chartIndexState.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
+import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:transition/transition.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'dart:async';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -32,14 +37,32 @@ class _HomeState extends State<Home> {
   var _bodyStater;
   var _staticPageState;
   var _chartIndex;
-  var _historydataAll;
+  var _historydataProvider;
   var _testdata0;
   var allEntries;
-
+  var _historydata;
+  int _historyCardIndexCtrl = 4242;
+  var _dateCtrl = 1;
+  final _historyCardcontroller =
+      PageController(viewportFraction: 0.9, initialPage: 4242, keepPage: true);
   var _prefs;
   String _addexinput = '';
   late var _testdata = _testdata0.exercises;
+  var _timer;
 
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(Duration(seconds: 10), (Timer timer) {
+      _historyCardIndexCtrl++;
+
+      _historyCardcontroller.animateToPage(
+        _historyCardIndexCtrl,
+        duration: Duration(milliseconds: 350),
+        curve: Curves.easeIn,
+      );
+    });
+  }
 
   PreferredSizeWidget _appbarWidget() {
     //if (_userdataProvider.userdata != null) {
@@ -72,68 +95,135 @@ class _HomeState extends State<Home> {
     );
   }
 
+  Widget _dateControllerWidget() {
+    return SizedBox(
+      width: double.infinity,
+      child: Container(
+        color: Colors.black,
+        child: CupertinoSlidingSegmentedControl(
+            groupValue: _dateCtrl,
+            children: <int, Widget>{
+              1: Padding(
+                child: Text("1주",
+                    style: TextStyle(
+                        color: _dateCtrl == 1 ? Colors.white : Colors.grey,
+                        fontSize: 14)),
+                padding: const EdgeInsets.all(4.0),
+              ),
+              2: Padding(
+                  child: Text("1달",
+                      style: TextStyle(
+                          color: _dateCtrl == 2 ? Colors.white : Colors.grey,
+                          fontSize: 14)),
+                  padding: const EdgeInsets.all(4.0)),
+              3: Padding(
+                  child: Text("3달",
+                      style: TextStyle(
+                          color: _dateCtrl == 3 ? Colors.white : Colors.grey,
+                          fontSize: 14)),
+                  padding: const EdgeInsets.all(4.0)),
+              4: Padding(
+                  child: Text("6달",
+                      style: TextStyle(
+                          color: _dateCtrl == 4 ? Colors.white : Colors.grey,
+                          fontSize: 14)),
+                  padding: const EdgeInsets.all(4.0)),
+              5: Padding(
+                  child: Text("1년",
+                      style: TextStyle(
+                          color: _dateCtrl == 5 ? Colors.white : Colors.grey,
+                          fontSize: 14)),
+                  padding: const EdgeInsets.all(4.0)),
+              6: Padding(
+                  child: Text("모두",
+                      style: TextStyle(
+                          color: _dateCtrl == 6 ? Colors.white : Colors.grey,
+                          fontSize: 14)),
+                  padding: const EdgeInsets.all(4.0))
+            },
+            padding: EdgeInsets.symmetric(horizontal: 6),
+            backgroundColor: Colors.black,
+            thumbColor: Theme.of(context).primaryColor,
+            onValueChanged: (i) {
+              setState(() {
+                _dateCtrl = i as int;
+                _dateController(_dateCtrl);
+              });
+            }),
+      ),
+    );
+  }
+
+  void _dateController(_dateCtrl) {
+    DateTime _toDay = DateTime.now();
+    if (_dateCtrl == 1) {
+      _historydata = _historydataProvider.historydata.sdbdatas.where((sdbdata) {
+        if (_toDay.difference(DateTime.parse(sdbdata.date)).inDays <= 7) {
+          return true;
+        } else {
+          return false;
+        }
+      }).toList();
+    } else if (_dateCtrl == 2) {
+      _historydata = _historydataProvider.historydata.sdbdatas.where((sdbdata) {
+        if (_toDay.difference(DateTime.parse(sdbdata.date)).inDays <= 30) {
+          return true;
+        } else {
+          return false;
+        }
+      }).toList();
+    } else if (_dateCtrl == 3) {
+      _historydata = _historydataProvider.historydata.sdbdatas.where((sdbdata) {
+        if (_toDay.difference(DateTime.parse(sdbdata.date)).inDays <= 90) {
+          return true;
+        } else {
+          return false;
+        }
+      }).toList();
+    } else if (_dateCtrl == 4) {
+      _historydata = _historydataProvider.historydata.sdbdatas.where((sdbdata) {
+        if (_toDay.difference(DateTime.parse(sdbdata.date)).inDays <= 180) {
+          return true;
+        } else {
+          return false;
+        }
+      }).toList();
+    } else if (_dateCtrl == 5) {
+      _historydata = _historydataProvider.historydata.sdbdatas.where((sdbdata) {
+        if (_toDay.difference(DateTime.parse(sdbdata.date)).inDays <= 365) {
+          return true;
+        } else {
+          return false;
+        }
+      }).toList();
+    } else if (_dateCtrl == 6) {
+      _historydata = _historydataProvider.historydata.sdbdatas;
+    }
+  }
+
   Widget _homeWidget(_exunique, context) {
     return Container(
       color: Colors.black,
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.baseline,
-                textBaseline: TextBaseline.alphabetic,
-                children: <Widget>[
-                  Text("SDB ",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 54,
-                          fontWeight: FontWeight.w600)),
-                  Text(
-                      (_exercisesdataProvider
-                                  .exercisesdata
-                                  .exercises[(_exercisesdataProvider
-                                      .exercisesdata.exercises
-                                      .indexWhere((exercise) {
-                                if (exercise.name == "스쿼트") {
-                                  return true;
-                                } else {
-                                  return false;
-                                }
-                              }))]
-                                  .onerm +
-                              _exercisesdataProvider
-                                  .exercisesdata
-                                  .exercises[(_exercisesdataProvider
-                                      .exercisesdata.exercises
-                                      .indexWhere((exercise) {
-                                if (exercise.name == "데드리프트") {
-                                  return true;
-                                } else {
-                                  return false;
-                                }
-                              }))]
-                                  .onerm +
-                              _exercisesdataProvider
-                                  .exercisesdata
-                                  .exercises[(_exercisesdataProvider
-                                      .exercisesdata.exercises
-                                      .indexWhere((exercise) {
-                                if (exercise.name == "벤치프레스") {
-                                  return true;
-                                } else {
-                                  return false;
-                                }
-                              }))]
-                                  .onerm)
-                          .floor()
-                          .toString(),
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 46,
-                          fontWeight: FontWeight.w800)),
-                  Text(
-                      "/" +
+      child: NotificationListener<OverscrollIndicatorNotification>(
+          onNotification: (overscroll) {
+            overscroll.disallowIndicator();
+            return true;
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: <Widget>[
+                      Text("SDB ",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 54,
+                              fontWeight: FontWeight.w600)),
+                      Text(
                           (_exercisesdataProvider
                                       .exercisesdata
                                       .exercises[(_exercisesdataProvider
@@ -145,7 +235,7 @@ class _HomeState extends State<Home> {
                                       return false;
                                     }
                                   }))]
-                                      .goal +
+                                      .onerm +
                                   _exercisesdataProvider
                                       .exercisesdata
                                       .exercises[(_exercisesdataProvider
@@ -157,7 +247,7 @@ class _HomeState extends State<Home> {
                                       return false;
                                     }
                                   }))]
-                                      .goal +
+                                      .onerm +
                                   _exercisesdataProvider
                                       .exercisesdata
                                       .exercises[(_exercisesdataProvider
@@ -169,31 +259,84 @@ class _HomeState extends State<Home> {
                                       return false;
                                     }
                                   }))]
-                                      .goal)
+                                      .onerm)
                               .floor()
-                              .toString() +
-                          "kg",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600)),
-                ]),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: _lastRoutineWidget(),
+                              .toString(),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 46,
+                              fontWeight: FontWeight.w800)),
+                      Text(
+                          "/" +
+                              (_exercisesdataProvider
+                                          .exercisesdata
+                                          .exercises[(_exercisesdataProvider
+                                              .exercisesdata.exercises
+                                              .indexWhere((exercise) {
+                                        if (exercise.name == "스쿼트") {
+                                          return true;
+                                        } else {
+                                          return false;
+                                        }
+                                      }))]
+                                          .goal +
+                                      _exercisesdataProvider
+                                          .exercisesdata
+                                          .exercises[(_exercisesdataProvider
+                                              .exercisesdata.exercises
+                                              .indexWhere((exercise) {
+                                        if (exercise.name == "데드리프트") {
+                                          return true;
+                                        } else {
+                                          return false;
+                                        }
+                                      }))]
+                                          .goal +
+                                      _exercisesdataProvider
+                                          .exercisesdata
+                                          .exercises[(_exercisesdataProvider
+                                              .exercisesdata.exercises
+                                              .indexWhere((exercise) {
+                                        if (exercise.name == "벤치프레스") {
+                                          return true;
+                                        } else {
+                                          return false;
+                                        }
+                                      }))]
+                                          .goal)
+                                  .floor()
+                                  .toString() +
+                              "kg",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600)),
+                    ]),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 4.0, vertical: 1.0),
+                  child: _lastRoutineWidget(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 4.0, vertical: 1.0),
+                  child: _liftingStatWidget(_exunique, context),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 4.0, vertical: 1.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      _dateControllerWidget(),
+                      SizedBox(height: 2.0),
+                      _historyCard(context),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: _liftingStatWidget(_exunique, context),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: _countHistoryWidget(context),
-            ),
-
-          ],
-        ),
-      ),
+          )),
     );
   }
 
@@ -202,48 +345,201 @@ class _HomeState extends State<Home> {
     return Card(
         color: Theme.of(context).cardColor,
         shape:
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text('''최근 수행한 루틴은''',
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600)),
-                ),
-                GestureDetector(
-                    onTap: () {},
-                    child: Icon(Icons.settings, color: Colors.grey, size: 18.0))
-              ],
-            ),
-            Consumer<PrefsProvider>(builder: (builder, provider, child) {
-              return GestureDetector(
-                onTap: (){
+          child: Consumer<PrefsProvider>(builder: (builder, provider, child) {
+            return Column(children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(right: deviceWidth / 2 - 40),
+                      child: Text(
+                          provider.prefs.getString('lastroutine') == null
+                              ? "최근 루틴이 없어요"
+                              : '''최근 수행한 루틴은''',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: provider.prefs.getString('lastroutine') ==
+                                      null
+                                  ? Colors.grey
+                                  : Colors.white,
+                              fontSize:
+                                  provider.prefs.getString('lastroutine') ==
+                                          null
+                                      ? 18
+                                      : 20,
+                              fontWeight: FontWeight.w600)),
+                    ),
+                  ),
+                ],
+              ),
+              GestureDetector(
+                onTap: () {
                   provider.prefs.getString('lastroutine') == null
-                  ? null
-                  : [_PopProvider.gotoonlast(),
-                    _bodyStater.change(1)];
+                      ? _bodyStater.change(1)
+                      : [_PopProvider.gotoonlast(), _bodyStater.change(1)];
                 },
                 child: Container(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-
-                      Text(provider.prefs.getString('lastroutine') == null ? '아직 한번도 루틴을 수행하지 않았습니다.' : '${provider.prefs.getString('lastroutine')}',
+                      Text(
+                          provider.prefs.getString('lastroutine') == null
+                              ? '눌러서 루틴을 수행 해보세요!'
+                              : '${provider.prefs.getString('lastroutine')}',
                           style: TextStyle(
                               color: Color(0xFffc60a8),
-                              fontSize: 24,
+                              fontSize:
+                                  provider.prefs.getString('lastroutine') ==
+                                          null
+                                      ? 18
+                                      : 36,
                               fontWeight: FontWeight.w600)),
-
+                      provider.prefs.getString('lastroutine') == null
+                          ? Container()
+                          : Text('에요',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600))
                     ],
                   ),
+                ),
+              ),
+            ]);
+          }),
+        ));
+  }
+
+  Widget _historyCard(context) {
+    var _page = 2;
+    return Column(
+      children: [
+        SizedBox(
+          height: 140,
+          child: PageView.builder(
+            controller: _historyCardcontroller,
+            onPageChanged: (int index) =>
+                setState(() => _historyCardIndexCtrl = index),
+            itemBuilder: (_, i) {
+              return Transform.scale(
+                scale: i == _historyCardIndexCtrl ? 1.03 : 0.97,
+                child: _historyCardCase(_historyCardIndexCtrl, _page, context),
+              );
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: SmoothPageIndicator(
+              controller: _historyCardcontroller,
+              count: _page,
+              effect: ScrollingDotsEffect(
+                activeStrokeWidth: 2.6,
+                activeDotScale: 1.3,
+                maxVisibleDots: 5,
+                radius: 6,
+                spacing: 10,
+                dotHeight: 10,
+                dotWidth: 10,
+                dotColor: Colors.grey,
+                activeDotColor: Theme.of(context).primaryColor,
+              )
+              // strokeWidth: 5,
+              ),
+        ),
+      ],
+    );
+  }
+
+  Widget _historyCardCase(_historyCardIndexCtrl, length, context) {
+    var _realIndex = _historyCardIndexCtrl % length;
+    switch (_realIndex) {
+      case 0:
+        return _countHistoryWidget(context);
+      case 1:
+        return _countHistoryDateWidget(context);
+      default:
+        return _countHistoryWidget(context);
+    }
+  }
+
+  String _dateStringCase(_dateCtrl) {
+    switch (_dateCtrl) {
+      case 1:
+        return "1주일 동안";
+      case 2:
+        return "1개월 동안";
+      case 3:
+        return "3개월 동안";
+      case 4:
+        return "6개월 동안";
+      case 5:
+        return "1년 동안";
+      default:
+        return "우리 함께 총";
+    }
+  }
+
+  Widget _countHistoryWidget(context) {
+    var _historyDate = [];
+    _dateController(_dateCtrl);
+    double deviceWidth = MediaQuery.of(context).size.width;
+    for (var sdbdata in _historydata) {
+      _historyDate.add(sdbdata);
+    }
+
+    return Card(
+        color: Theme.of(context).cardColor,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(right: deviceWidth / 2 - 40),
+                      child: Text(_dateStringCase(_dateCtrl),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Consumer<HistorydataProvider>(builder: (builder, provider, child) {
+              _dateController(_dateCtrl);
+              final storage = FlutterSecureStorage();
+              return Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(_historyDate.length.toString(),
+                        style: TextStyle(
+                            color: Color(0xFffc60a8),
+                            fontSize: 48,
+                            fontWeight: FontWeight.w600)),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Text('''회 운동했어요!''',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600)),
+                    ),
+                  ],
                 ),
               );
             }),
@@ -251,54 +547,58 @@ class _HomeState extends State<Home> {
         ));
   }
 
-  Widget _countHistoryWidget(context) {
+  Widget _countHistoryDateWidget(context) {
+    var _historyDate = <DuplicateHistoryDate>{};
+    _dateController(_dateCtrl);
     double deviceWidth = MediaQuery.of(context).size.width;
+    for (var sdbdata in _historydata) {
+      _historyDate.add(DuplicateHistoryDate(sdbdata));
+    }
+
     return Card(
         color: Theme.of(context).cardColor,
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(children: [
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
                   child: Center(
                     child: Padding(
-                      padding: EdgeInsets.only(right: deviceWidth / 2),
-                      child: Text('''1년 동안''',
+                      padding: EdgeInsets.only(right: deviceWidth / 2 - 40),
+                      child: Text(_dateStringCase(_dateCtrl),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 24,
+                              fontSize: 20,
                               fontWeight: FontWeight.w600)),
                     ),
                   ),
                 ),
-                GestureDetector(
-                    onTap: () {},
-                    child: Icon(Icons.settings, color: Colors.grey, size: 18.0))
               ],
             ),
             Consumer<HistorydataProvider>(builder: (builder, provider, child) {
+              _dateController(_dateCtrl);
               final storage = FlutterSecureStorage();
               return Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text('''38''',
+                    Text(_historyDate.length.toString(),
                         style: TextStyle(
                             color: Color(0xFffc60a8),
-                            fontSize: 54,
+                            fontSize: 48,
                             fontWeight: FontWeight.w600)),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 10),
                       child: Text('''일 운동했어요!''',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 24,
+                              fontSize: 20,
                               fontWeight: FontWeight.w600)),
                     ),
                   ],
@@ -338,7 +638,7 @@ class _HomeState extends State<Home> {
                       setState(() {});
                       exselect(true, true, context);
                     },
-                    child: Icon(Icons.settings, color: Colors.grey, size: 24.0))
+                    child: Icon(Icons.settings, color: Colors.grey, size: 18.0))
               ],
             ),
             SizedBox(height: 8.0),
@@ -716,7 +1016,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    _historydataAll = Provider.of<HistorydataProvider>(context, listen: false);
+    _historydataProvider =
+        Provider.of<HistorydataProvider>(context, listen: false);
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
     _exercisesdataProvider =
@@ -738,5 +1039,11 @@ class _HomeState extends State<Home> {
           );
         }),
         backgroundColor: Colors.black);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _timer?.cancel();
   }
 }

@@ -150,3 +150,20 @@ List<Sets> setslist_his = [
   Sets(index: 1, weight: 0.0, reps: 1, ischecked: true),
   Sets(index: 2, weight: 0.0, reps: 1, ischecked: true)
 ];
+
+class DuplicateHistoryDate {
+  SDBdata sdbdata;
+  DuplicateHistoryDate(this.sdbdata);
+
+  @override
+  int get hashCode => sdbdata.date!.substring(0, 11).hashCode;
+
+  @override
+  bool operator ==(other) {
+    if (other is! DuplicateHistoryDate) {
+      return false;
+    }
+    return sdbdata.date!.substring(0, 11) ==
+        other.sdbdata.date!.substring(0, 11);
+  }
+}
