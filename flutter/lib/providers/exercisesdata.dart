@@ -5,12 +5,22 @@ import 'package:sdb_trainer/src/model/exercisesdata.dart';
 
 class ExercisesdataProvider extends ChangeNotifier {
   var _exercisesdata;
-  var _homeExList;
   get exercisesdata => _exercisesdata;
+  var _exercisesdatas;
+  get exercisesdatas => _exercisesdatas;
+  var _homeExList;
+
   get homeExList => _homeExList;
   getdata() async {
     await ExercisesRepository.loadExercisesdata().then((value) {
       _exercisesdata = value;
+      notifyListeners();
+    });
+  }
+
+  getdata_all() async {
+    await ExercisesRepository.loadExercisesdataAll().then((value) {
+      _exercisesdatas = value;
       notifyListeners();
     });
   }

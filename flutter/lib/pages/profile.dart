@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
+import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
+import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 
 import 'package:sdb_trainer/pages/userProfile.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
+import 'package:sdb_trainer/src/model/exercisesdata.dart';
 
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/userProfileGoal.dart';
@@ -154,6 +157,34 @@ class Profile extends StatelessWidget {
                               NetworkImage(_userdataProvider.userdata.image),
                           backgroundColor: Colors.transparent);
                     })),
+          /*
+          Consumer<ExercisesdataProvider>(
+            builder: (builder, provider, child) {
+              return ElevatedButton(
+                  onPressed: () {
+                    provider.getdata_all().then((value){print(provider.exercisesdatas.exercisedatas[1].exercises[0].custom);});
+
+                  },
+                  onLongPress: (){
+                    ExerciseEditAll(exercisedatas: provider.exercisesdatas.exercisedatas).editExercise();
+                  },
+                  style: ButtonStyle(
+                      backgroundColor:
+                      MaterialStateProperty.all(Theme.of(context).cardColor)),
+                  child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 50,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("exercise_change", style: TextStyle(color: Colors.white)),
+                            Icon(Icons.chevron_right, color: Colors.white),
+                          ])));
+
+            }
+          ),
+          */
+
         ]),
       ),
     );

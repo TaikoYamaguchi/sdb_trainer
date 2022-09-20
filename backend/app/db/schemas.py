@@ -133,6 +133,10 @@ class ExercisesOut(ExercisesBase):
     class config:
         orm_mode = True
 
+class ExercisesAll(BaseModel):
+    exercisedatas: str
+
+
 class ManageVisibleHistory(BaseModel):
     history_id:int
     status:str

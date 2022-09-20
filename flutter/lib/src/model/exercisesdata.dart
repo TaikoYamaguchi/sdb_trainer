@@ -1,5 +1,21 @@
 import 'dart:convert';
 
+class ExercisesdataList {
+  final List<Exercisesdata> exercisedatas;
+
+  ExercisesdataList({
+    required this.exercisedatas,
+  });
+  Map toJson() => {'exercisedatas' :exercisedatas};
+
+  factory ExercisesdataList.fromJson(List<dynamic> parsedJson) {
+    List<Exercisesdata> exercisedatas = <Exercisesdata>[];
+    exercisedatas = parsedJson.map((i) => Exercisesdata.fromJson(i)).toList();
+
+    return new ExercisesdataList(exercisedatas: exercisedatas);
+  }
+}
+
 class Exercisesdata {
   late int? id;
   late String user_email;
@@ -13,6 +29,7 @@ class Exercisesdata {
     this.date,
     this.modified_number,
   });
+  Map toJson() => {"id": id, "user_email": user_email, "exercises": exercises, "date": date, "modified_number": modified_number};
 
   factory Exercisesdata.fromJson(Map<String, dynamic> parsedJson) {
     var list = parsedJson['exercises'].runtimeType == String
@@ -34,13 +51,24 @@ class Exercises {
   late String name;
   late double onerm;
   late double goal;
-  Exercises({required this.name, required this.onerm, required this.goal});
-  Map toJson() => {"goal": goal, "name": name, "onerm": onerm};
+  late bool? custom;
+
+  Exercises({
+    required this.name,
+    required this.onerm,
+    required this.goal,
+    this.custom
+  });
+  Map toJson() => {"goal": goal, "name": name, "onerm": onerm, "custom": custom};
 
   factory Exercises.fromJson(Map<String, dynamic> parsedJson) {
+
     return Exercises(
         name: parsedJson["name"],
         onerm: parsedJson["onerm"],
-        goal: parsedJson["goal"]);
+        goal: parsedJson["goal"],
+        custom: parsedJson["custom"] == null ? false :parsedJson["custom"]
+    );
   }
 }
+
