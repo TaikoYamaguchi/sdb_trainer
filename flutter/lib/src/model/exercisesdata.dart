@@ -170,13 +170,9 @@ class Exercises {
         name: parsedJson["name"],
         onerm: parsedJson["onerm"],
         goal: parsedJson["goal"],
-        custom: parsedJson["custom"] == null ? false :parsedJson["custom"],
-        target: parsedJson["target"] == null
-            ? extg[parsedJson["name"]] == null ? ['custom'] : extg[parsedJson["name"]]
-            : parsedJson["target"],
-        category: parsedJson["category"] == null
-            ? excate[parsedJson["name"]] == null ? 'custom' : excate[parsedJson["name"]]
-            : parsedJson["category"],
+        custom: parsedJson["custom"],
+        target: parsedJson["target"],
+        category: parsedJson["category"],
         image: parsedJson["image"]
     );
   }
