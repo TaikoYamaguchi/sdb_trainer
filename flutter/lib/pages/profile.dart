@@ -158,6 +158,7 @@ class Profile extends StatelessWidget {
                           backgroundColor: Colors.transparent);
                     })),
           /*
+          ex back end 바꾸는 코드임 절대 지우지 말것
 
           Consumer<ExercisesdataProvider>(
             builder: (builder, provider, child) {
