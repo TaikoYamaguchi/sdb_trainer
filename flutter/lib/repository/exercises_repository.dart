@@ -149,7 +149,7 @@ class ExerciseEditAll {
     }
   }
 
-  Future<Map<String, dynamic>> editExercise() async {
+  Future<List<dynamic>> editExercise() async {
     String jsonString = await _exerciseEditFromServer();
     final jsonResponse = json.decode(jsonString);
     return (jsonResponse);

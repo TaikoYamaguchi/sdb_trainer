@@ -158,11 +158,12 @@ class Profile extends StatelessWidget {
                           backgroundColor: Colors.transparent);
                     })),
           /*
+
           Consumer<ExercisesdataProvider>(
             builder: (builder, provider, child) {
               return ElevatedButton(
                   onPressed: () {
-                    provider.getdata_all().then((value){print(provider.exercisesdatas.exercisedatas[1].exercises[0].custom);});
+                    provider.getdata_all().then((value){print(provider.exercisesdatas.exercisedatas[10].exercises[1].target[0]);});
 
                   },
                   onLongPress: (){
@@ -183,7 +184,9 @@ class Profile extends StatelessWidget {
 
             }
           ),
-          */
+
+           */
+
 
         ]),
       ),
