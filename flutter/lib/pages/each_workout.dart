@@ -595,7 +595,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
-  void _displayCustomExInputDialog() {
+  void _displayCustomExInputDialog(provider) {
     showDialog(
         context: context,
         builder: (context) {
@@ -658,14 +658,14 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 ),
               ]),
               actions: <Widget>[
-                _customExSubmitButton(context),
+                _customExSubmitButton(context, provider),
               ],
             );
           });
         });
   }
 
-  Widget _customExSubmitButton(context) {
+  Widget _customExSubmitButton(context, provider) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
@@ -682,11 +682,23 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             splashColor: Theme.of(context).primaryColor,
             onPressed: () {
               if (_customExUsed == false) {
-                _exercisesdataProvider.addExdata(
-                    Exercises(name: _customExNameCtrl.text, onerm: 0, goal: 0, image: null, category: 'custom', target: ['custom'], custom: true));
+                _exercisesdataProvider.addExdata(Exercises(
+                    name: _customExNameCtrl.text,
+                    onerm: 0,
+                    goal: 0,
+                    image: null,
+                    category: 'custom',
+                    target: ['custom'],
+                    custom: true));
                 _postExerciseCheck();
+                print("nulllllllllllll");
+                _customExNameCtrl.clear();
+
+                _testdata = provider.exercisesdata.exercises;
+                setState(() {});
+
+                Navigator.of(context).pop();
               }
-              Navigator.of(context).pop();
             },
             child: Text(_customExUsed == true ? "존재하는 운동" : "커스텀 운동 추가",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
@@ -1036,83 +1048,87 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                       color: Theme.of(context).primaryColor,
                       thickness: 2,
                       width: 2),
-                  Container(
-                    width: MediaQuery.of(context).size.width / 2 - 1,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 4.0, right: 1.0),
-                      child: Column(
-                        children: [
-                          exercisesWidget(_testdata, true),
-                          GestureDetector(
-                              onTap: () {
-                                _displayCustomExInputDialog();
-                              },
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 2, right: 2),
-                                child: Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Container(
-                                    height: 100,
-                                    width: MediaQuery.of(context).size.width,
-                                    decoration: BoxDecoration(
-                                        color: Theme.of(context).cardColor,
-                                        borderRadius:
-                                            BorderRadius.circular(15.0)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Container(
-                                                  width: 48,
-                                                  height: 48,
-                                                  decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: Theme.of(context)
-                                                          .primaryColor),
-                                                  child: Icon(
-                                                    Icons.add,
-                                                    size: 28.0,
+                  Consumer<ExercisesdataProvider>(
+                      builder: (builder, provider, child) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width / 2 - 1,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 4.0, right: 1.0),
+                        child: Column(
+                          children: [
+                            exercisesWidget(_testdata, true),
+                            GestureDetector(
+                                onTap: () {
+                                  _displayCustomExInputDialog(provider);
+                                },
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 2, right: 2),
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Container(
+                                      height: 100,
+                                      width: MediaQuery.of(context).size.width,
+                                      decoration: BoxDecoration(
+                                          color: Theme.of(context).cardColor,
+                                          borderRadius:
+                                              BorderRadius.circular(15.0)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: 48,
+                                                    height: 48,
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color: Theme.of(context)
+                                                            .primaryColor),
+                                                    child: Icon(
+                                                      Icons.add,
+                                                      size: 28.0,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            16.0),
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text("커스텀 운동",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 18)),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ]),
+                                            Text("개인 운동을 추가 할 수 있어요",
+                                                style: TextStyle(
                                                     color: Colors.white,
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      16.0),
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text("커스텀 운동",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 18)),
-                                                    ],
-                                                  ),
-                                                )
-                                              ]),
-                                          Text("개인 운동을 추가 할 수 있어요",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 12)),
-                                        ],
+                                                    fontSize: 12)),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ))
-                        ],
+                                ))
+                          ],
+                        ),
                       ),
-                    ),
-                  )
+                    );
+                  })
                 ]),
           ),
         ],
