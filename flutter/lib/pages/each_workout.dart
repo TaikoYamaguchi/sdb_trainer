@@ -683,7 +683,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             onPressed: () {
               if (_customExUsed == false) {
                 _exercisesdataProvider.addExdata(
-                    Exercises(name: _customExNameCtrl.text, onerm: 0, goal: 0));
+                    Exercises(name: _customExNameCtrl.text, onerm: 0, goal: 0, image: null, category: 'custom', target: ['custom'], custom: true));
                 _postExerciseCheck();
               }
               Navigator.of(context).pop();

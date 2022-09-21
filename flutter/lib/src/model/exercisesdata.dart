@@ -156,10 +156,10 @@ class Exercises {
     required this.name,
     required this.onerm,
     required this.goal,
-    this.custom,
-    this.target,
-    this.category,
-    this.image,
+    required this.custom,
+    required this.target,
+    required this.category,
+    required this.image,
   });
   Map toJson() => {"goal": goal, "name": name, "onerm": onerm, "custom": custom, "target": target, "category": category, "image": image};
 
