@@ -157,8 +157,9 @@ class Profile extends StatelessWidget {
                               NetworkImage(_userdataProvider.userdata.image),
                           backgroundColor: Colors.transparent);
                     })),
+
+          //ex back end 바꾸는 코드임 절대 지우지 말것
           /*
-          ex back end 바꾸는 코드임 절대 지우지 말것
 
           Consumer<ExercisesdataProvider>(
             builder: (builder, provider, child) {
@@ -187,6 +188,8 @@ class Profile extends StatelessWidget {
           ),
 
            */
+
+
 
 
         ]),

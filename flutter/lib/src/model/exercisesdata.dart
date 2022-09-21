@@ -145,8 +145,8 @@ Map excate = {
 
 class Exercises {
   late String name;
-  late double onerm;
-  late double goal;
+  late double? onerm;
+  late double? goal;
   late bool? custom;
   late List? target;
   late String? category;
@@ -168,8 +168,8 @@ class Exercises {
 
     return Exercises(
         name: parsedJson["name"],
-        onerm: parsedJson["onerm"],
-        goal: parsedJson["goal"],
+        onerm: parsedJson["onerm"].toDouble(),
+        goal: parsedJson["goal"].toDouble(),
         custom: parsedJson["custom"],
         target: parsedJson["target"],
         category: parsedJson["category"],
