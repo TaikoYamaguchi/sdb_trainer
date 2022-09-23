@@ -521,10 +521,19 @@ class _FeedCardState extends State<FeedCard> {
                 itemBuilder: (BuildContext _context, int index) {
                   return Padding(
                       padding: EdgeInsets.all(4.0),
-                      child: Image.network(
-                        SDBdata.image[index],
-                        width: MediaQuery.of(context).size.width - 64.0,
-                        height: MediaQuery.of(context).size.width - 64.0,
+                      child: CachedNetworkImage(
+                        imageUrl: SDBdata.image[index],
+                        imageBuilder: (context, imageProivder) => Container(
+                          height: MediaQuery.of(context).size.width - 64.0,
+                          width: MediaQuery.of(context).size.width - 64.0,
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(50)),
+                              image: DecorationImage(
+                                image: imageProivder,
+                                fit: BoxFit.cover,
+                              )),
+                        ),
                       ));
                 },
                 separatorBuilder: (BuildContext _context, int index) {
