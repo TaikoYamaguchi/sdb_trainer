@@ -711,7 +711,8 @@ class _CalendarState extends State<Calendar> {
           child: Container(
               child: SfCartesianChart(
                   title: ChartTitle(
-                      text: "SBD Chart",
+                      text: _exercisesdataProvider.exercisesdata!
+                          .exercises[_chartIndex.chartIndex].name,
                       textStyle: TextStyle(color: Colors.white)),
                   primaryXAxis: DateTimeAxis(),
                   primaryYAxis: NumericAxis(
