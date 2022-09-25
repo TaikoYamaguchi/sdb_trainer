@@ -530,7 +530,7 @@ class LoginPageState extends State<LoginPage> {
         Provider.of<RoutineTimeProvider>(context, listen: false);
 
     _storageInitialExerciseCheck(_initExercisesdataProvider);
-    _routinetimeProvider.routineInitialCheck(0);
+    _routinetimeProvider.routineInitialCheck();
     var usertestList;
     await [
       _initUserdataProvider.getdata(),

@@ -92,7 +92,7 @@ class RoutineTimeProvider extends ChangeNotifier {
       print(_starttime.toString());
       await storage.write(key: "sdb_startTime", value: _starttime.toString());
       await storage.write(key: "sdb_initialEx", value: "");
-      await storage.write(key: "sdb_initialRindex", value: "");
+      await storage.write(key: "sdb_initialRindex", value: rindex.toString());
       int counter = 10001;
       timer1 = Timer.periodic(Duration(seconds: 1), (timer) {
         _routineTime = DateTime.now().difference(_starttime).inSeconds;
@@ -124,7 +124,7 @@ class RoutineTimeProvider extends ChangeNotifier {
     }
   }
 
-  void routineInitialCheck(rindex) async {
+  void routineInitialCheck() async {
     var _initialTime;
     var _isInitialStart;
     var _initialEx;
@@ -158,7 +158,7 @@ class RoutineTimeProvider extends ChangeNotifier {
         _routineButton = '운동 종료 하기';
         _buttoncolor = Color(0xFffc60a8);
         _isstarted = !_isstarted;
-        _nowonrindex = rindex;
+        _nowonrindex = int.parse(_initialRindex!);
         notifyListeners();
       }
     } catch (e) {
