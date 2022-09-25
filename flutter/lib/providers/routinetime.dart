@@ -114,6 +114,10 @@ class RoutineTimeProvider extends ChangeNotifier {
       _nowonrindex = rindex;
       notifyListeners();
     } else {
+      await storage.write(key: "sdb_isStart", value: "false");
+      await storage.write(key: "sdb_startTime", value: "");
+      await storage.write(key: "sdb_initialEx", value: "");
+      await storage.write(key: "sdb_initialRindex", value: "");
       timer1!.cancel();
       _routineTime = 0;
       _timeron = 0;
