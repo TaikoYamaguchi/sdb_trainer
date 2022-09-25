@@ -525,7 +525,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                       GestureDetector(
                                                         child: Container(
                                                           child: Text(
-                                                            '${(inplandata[index].sets[setindex].weight * refinfo.onerm / 100).toStringAsFixed(1)}kg  X  ${inplandata[index].sets[setindex].reps}',
+                                                            '${((inplandata[index].sets[setindex].weight * refinfo.onerm / 100 /2.5).floor()*2.5).toStringAsFixed(1)}kg  X  ${inplandata[index].sets[setindex].reps}',
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .white,

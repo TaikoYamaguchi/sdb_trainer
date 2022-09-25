@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:just_the_tooltip/just_the_tooltip.dart';
 
 class Routinedata {
   final int id;
@@ -230,4 +231,8 @@ class Setslist {
 
 class Controllerlist {
   List<TextEditingController> controllerlist = [];
+}
+
+class FamousControllerlist {
+  List<JustTheController> controllerlist = [];
 }

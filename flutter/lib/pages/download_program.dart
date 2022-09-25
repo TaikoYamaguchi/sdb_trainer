@@ -1,5 +1,6 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:like_button/like_button.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
@@ -36,6 +37,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
   var _exercisesdataProvider;
   var _routinetimeProvider;
   var _btnDisabled;
+  List<JustTheController> tooltipController = [];
   List<TextEditingController> _onermController = [];
   TextEditingController _famousimageCtrl = TextEditingController(text: "");
   TextEditingController _programtitleCtrl = TextEditingController(text: "");
@@ -272,7 +274,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
             ]),
           ),
         )),
-        _exercise_Done_Button()
+        _Start_Program_Button()
       ],
     );
   }
@@ -284,6 +286,9 @@ class _ProgramDownloadState extends State<ProgramDownload> {
       int num_week = (plandata.plans.length / 7).ceil();
       var inplandata = plandata.plans[plandata.progress].exercises;
       var uniqexinfo = exinfo.exercisesdata.exercises;
+      for (int s = 0; s < 40; s++) {
+        tooltipController.add(new JustTheController());
+      };
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 5),
         color: Colors.black,
@@ -378,13 +383,6 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                           Container(
                             height: 20,
                           ),
-                          Text(
-                            '운동을 추가 하지 않으면 휴식일입니다.',
-                            style: TextStyle(
-                                fontSize: 15,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
                           Container(
                             height: 30,
                           ),
@@ -394,6 +392,11 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                         child: ListView.builder(
                           physics: new NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext _context, int index) {
+                            var refinfo = uniqexinfo[uniqexinfo
+                                .indexWhere((element) =>
+                            element.name ==
+                                inplandata[index]
+                                    .ref_name)];
                             Controllerlist.add(ExpandableController(
                               initialExpanded: true,
                             ));
@@ -431,6 +434,28 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: (){
+                                                tooltipController[index].showTooltip();
+                                              },
+                                              child: JustTheTooltip(
+                                                controller: tooltipController[index],
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(8.0),
+                                                  child: Icon(
+                                                    Icons.info_outline_rounded,
+                                                    color: Theme.of(context).primaryColor,
+                                                  ),
+                                                ),
+                                                content: Padding(
+                                                  padding: EdgeInsets.all(8.0),
+                                                  child: Text(
+                                                    '각자의 기준 운동 1rm X 무게비(%)로 운동 중량이 설정됩니다. 내 ${inplandata[index].ref_name} 1rm: ${refinfo.onerm}',
+                                                    style: TextStyle(color: Colors.white),
+                                                  ),
+                                                ),
+                                              ),
                                             )
                                           ],
                                         ),
@@ -443,11 +468,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                               new NeverScrollableScrollPhysics(),
                                           itemBuilder: (BuildContext _context,
                                               int setindex) {
-                                            var refinfo = uniqexinfo[uniqexinfo
-                                                .indexWhere((element) =>
-                                                    element.name ==
-                                                    inplandata[index]
-                                                        .ref_name)];
+
                                             return Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -458,7 +479,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                                   children: [
                                                     Container(
                                                       child: Text(
-                                                        '${(inplandata[index].sets[setindex].weight * refinfo.onerm / 100).toStringAsFixed(1)}kg  X  ${inplandata[index].sets[setindex].reps}',
+                                                        '기준 1rm   X   ${(inplandata[index].sets[setindex].weight * refinfo.onerm / 100).toStringAsFixed(0)}%    X    ${inplandata[index].sets[setindex].reps}reps',
                                                         style: TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 20),
@@ -617,7 +638,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
     }
   }
 
-  Widget _exercise_Done_Button() {
+  Widget _Start_Program_Button() {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: SizedBox(
