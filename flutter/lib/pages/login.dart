@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sdb_trainer/main.dart';
 import 'package:sdb_trainer/providers/famous.dart';
+import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:sdb_trainer/pages/home.dart';
@@ -525,7 +526,11 @@ class LoginPageState extends State<LoginPage> {
         Provider.of<FamousdataProvider>(context, listen: false);
     final _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
 
+    final _routinetimeProvider =
+        Provider.of<RoutineTimeProvider>(context, listen: false);
+
     _storageInitialExerciseCheck(_initExercisesdataProvider);
+    _routinetimeProvider.routineInitialCheck(0);
     var usertestList;
     await [
       _initUserdataProvider.getdata(),

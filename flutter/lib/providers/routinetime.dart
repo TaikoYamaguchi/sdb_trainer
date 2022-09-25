@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class RoutineTimeProvider extends ChangeNotifier {
   int _routineTime = 0;
@@ -80,12 +81,18 @@ class RoutineTimeProvider extends ChangeNotifier {
   getprefs(value) async {
     _prefs = await SharedPreferences.getInstance();
     await _prefs.setString('lastroutine', value);
-
   }
 
-  void routinecheck(rindex) {
+  void routinecheck(rindex) async {
+    final storage = FlutterSecureStorage();
     getstarttime();
     if (_isstarted == false) {
+      await storage.write(key: "sdb_isStart", value: "true");
+      print(_starttime);
+      print(_starttime.toString());
+      await storage.write(key: "sdb_startTime", value: _starttime.toString());
+      await storage.write(key: "sdb_initialEx", value: "");
+      await storage.write(key: "sdb_initialRindex", value: "");
       int counter = 10001;
       timer1 = Timer.periodic(Duration(seconds: 1), (timer) {
         _routineTime = DateTime.now().difference(_starttime).inSeconds;
@@ -114,6 +121,53 @@ class RoutineTimeProvider extends ChangeNotifier {
       _buttoncolor = const Color(0xff7a28cb);
       _isstarted = !_isstarted;
       notifyListeners();
+    }
+  }
+
+  void routineInitialCheck(rindex) async {
+    var _initialTime;
+    var _isInitialStart;
+    var _initialEx;
+    var _initialRindex;
+    final storage = FlutterSecureStorage();
+    try {
+      String? _isInitialStart = await storage.read(key: "sdb_isStart");
+      String? _isInitialTime = await storage.read(key: "sdb_startTime");
+      String? _initialEx = await storage.read(key: "sdb_initialEx");
+      String? _initialRindex = await storage.read(key: "sdb_initialRindex");
+
+      if (_isInitialStart == "true") {
+        getstarttime();
+        _starttime = DateTime.parse(_isInitialTime!);
+        print(_starttime);
+        int counter = 10001;
+        timer1 = Timer.periodic(Duration(seconds: 1), (timer) {
+          _routineTime = DateTime.now().difference(_starttime).inSeconds;
+          _timeron = _timetosubstract -
+              DateTime.now().difference(_timerstarttime).inSeconds;
+          if (_timeron == 0 && _userest) {
+            Vibration.vibrate(duration: 1000);
+          }
+          counter--;
+          notifyListeners();
+          if (counter == 0) {
+            timer.cancel();
+            _routineTime = 0;
+          }
+        });
+        _routineButton = '운동 종료 하기';
+        _buttoncolor = Color(0xFffc60a8);
+        _isstarted = !_isstarted;
+        _nowonrindex = rindex;
+        notifyListeners();
+      }
+    } catch (e) {
+      await storage.write(key: "sdb_isStart", value: "false");
+      await storage.write(key: "sdb_startTime", value: "");
+      await storage.write(key: "sdb_initialEx", value: "");
+      await storage.write(key: "sdb_initialRindex", value: "");
+
+      null;
     }
   }
 }
