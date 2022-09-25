@@ -12,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:like_button/like_button.dart';
 import 'dart:io';
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class FriendProfile extends StatefulWidget {
   User user;
@@ -65,10 +66,19 @@ class _FriendProfileState extends State<FriendProfile> {
                       color: Colors.grey,
                       size: 160.0,
                     )
-                  : CircleAvatar(
-                      radius: 80.0,
-                      backgroundImage: NetworkImage(widget.user.image),
-                      backgroundColor: Colors.transparent)),
+                  : CachedNetworkImage(
+                      imageUrl: widget.user.image,
+                      imageBuilder: (context, imageProivder) => Container(
+                        height: 160.0,
+                        width: 160.0,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(50)),
+                            image: DecorationImage(
+                              image: imageProivder,
+                              fit: BoxFit.cover,
+                            )),
+                      ),
+                    )),
           SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

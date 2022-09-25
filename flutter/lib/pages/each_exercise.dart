@@ -19,6 +19,9 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sdb_trainer/src/utils/customMotion.dart';
 import 'package:transition/transition.dart';
+import 'package:sdb_trainer/providers/chartIndexState.dart';
+import 'package:sdb_trainer/providers/staticPageState.dart';
+import 'package:sdb_trainer/providers/bodystate.dart';
 
 class EachExerciseDetails extends StatefulWidget {
   int ueindex;
@@ -43,7 +46,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   var _routinetimeProvider;
   var _PopProvider;
   var _exercise;
+  var _bodyStater;
   var _exercises;
+  var _chartIndex;
+  var _staticPageState;
+  var _currentExindex;
   double top = 0;
   double bottom = 0;
   double? weight;
@@ -83,6 +90,29 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         "",
         style: TextStyle(color: Colors.white, fontSize: 30),
       ),
+      actions: [
+        GestureDetector(
+          child: Padding(
+            padding: const EdgeInsets.only(right: 4.0),
+            child: Icon(Icons.equalizer, size: 32),
+          ),
+          onTap: () {
+            _chartIndex.change(_exercisesdataProvider.exercisesdata.exercises
+                .indexWhere((exercise) {
+              if (exercise.name ==
+                  _workoutdataProvider.workoutdata.routinedatas[widget.rindex]
+                      .exercises[_currentExindex].name) {
+                return true;
+              } else {
+                return false;
+              }
+            }));
+            _chartIndex.changePageController(0);
+            _staticPageState.change(true);
+            _bodyStater.change(3);
+          },
+        )
+      ],
       backgroundColor: Colors.black,
     );
   }
@@ -94,9 +124,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
               user_email: _userdataProvider.userdata.email,
               routinedatas: _workoutdataProvider.workoutdata.routinedatas)
           .editWorkout()
-          .then((data) => data["user_email"] != null
-              ? showToast("done!")
-              : showToast("입력을 확인해주세요"));
+          .then((data) =>
+              data["user_email"] != null ? null : showToast("입력을 확인해주세요"));
     } else {
       var routinedatas_all = _workoutdataProvider.workoutdata.routinedatas;
       for (int n = 0;
@@ -114,9 +143,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
               user_email: _userdataProvider.userdata.email,
               routinedatas: routinedatas_all)
           .editWorkout()
-          .then((data) => data["user_email"] != null
-              ? showToast("done!")
-              : showToast("입력을 확인해주세요"));
+          .then((data) =>
+              data["user_email"] != null ? null : showToast("입력을 확인해주세요"));
     }
   }
 
@@ -126,9 +154,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             user_email: _userdataProvider.userdata.email,
             routinedatas: _workoutdataProvider.workoutdata.routinedatas)
         .editWorkout()
-        .then((data) => data["user_email"] != null
-            ? showToast("done!")
-            : showToast("입력을 확인해주세요"));
+        .then((data) =>
+            data["user_email"] != null ? null : showToast("입력을 확인해주세요"));
   }
 
   void _editWorkoutwoCheck() async {
@@ -145,9 +172,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             user_email: _userdataProvider.userdata.email,
             routinedatas: routinedatas_all)
         .editWorkout()
-        .then((data) => data["user_email"] != null
-            ? showToast("done!")
-            : showToast("입력을 확인해주세요"));
+        .then((data) =>
+            data["user_email"] != null ? null : showToast("입력을 확인해주세요"));
   }
 
   Widget _exercisedetailPage() {
@@ -169,6 +195,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
       },
       controller: controller,
       itemBuilder: (context, pindex) {
+        _currentExindex = pindex;
         return _exercisedetailWidget(pindex, context);
       },
       itemCount: numEx,
@@ -401,15 +428,30 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                   index,
                                                                   newvalue),
                                                           newvalue == true
-                                                              ? _routinetimeProvider
-                                                                  .resettimer(provider
+                                                              ? [
+                                                                  _routinetimeProvider.resettimer(provider
                                                                       .workoutdata
                                                                       .routinedatas[
                                                                           widget
                                                                               .rindex]
                                                                       .exercises[
                                                                           pindex]
-                                                                      .rest)
+                                                                      .rest),
+                                                                  index ==
+                                                                          _sets.length -
+                                                                              1
+                                                                      ? [
+                                                                          _workoutdataProvider.setsplus(
+                                                                              widget.rindex,
+                                                                              pindex),
+                                                                          weightController[pindex]
+                                                                              .controllerlist
+                                                                              .clear(),
+                                                                          showToast(
+                                                                              "세트를 추가했어요 필요없으면 다음으로 넘어가보세요")
+                                                                        ]
+                                                                      : null,
+                                                                ]
                                                               : null,
                                                           _editWorkoutwCheck()
                                                         ]
@@ -443,6 +485,22 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                 .exercises[
                                                                     pindex]
                                                                 .rest),
+                                                        index ==
+                                                                _sets.length - 1
+                                                            ? [
+                                                                _workoutdataProvider
+                                                                    .setsplus(
+                                                                        widget
+                                                                            .rindex,
+                                                                        pindex),
+                                                                weightController[
+                                                                        pindex]
+                                                                    .controllerlist
+                                                                    .clear(),
+                                                                showToast(
+                                                                    "세트를 추가했어요! 다음으로 넘어갈 수도 있어요")
+                                                              ]
+                                                            : null,
                                                         _editWorkoutwCheck()
                                                       ]
                                                     : _displayStartAlert(
@@ -1064,7 +1122,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               sdbdata: hisdata.SDBdata.fromJson(data)),
                           transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
                   _routinetimeProvider.routinecheck(widget.rindex),
-                  _routinetimeProvider.getprefs(_workoutdataProvider.workoutdata.routinedatas[widget.rindex].name),
+                  _routinetimeProvider.getprefs(_workoutdataProvider
+                      .workoutdata.routinedatas[widget.rindex].name),
                   _historydataProvider.getdata(),
                   _historydataProvider.getHistorydataAll(),
                   exerciseList = []
@@ -1099,10 +1158,14 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
 
+    _chartIndex = Provider.of<ChartIndexProvider>(context, listen: false);
+
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _exercises = _exercisesdataProvider.exercisesdata.exercises;
+    _staticPageState = Provider.of<StaticPageProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
+    _bodyStater = Provider.of<BodyStater>(context, listen: false);
 
     return Scaffold(
         appBar: _appbarWidget(),

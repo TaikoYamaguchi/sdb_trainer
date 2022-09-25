@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sdb_trainer/repository/famous_repository.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:transition/transition.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class RoutineBank extends StatefulWidget {
   const RoutineBank({Key? key}) : super(key: key);
@@ -79,12 +80,22 @@ class _RoutineBankState extends State<RoutineBank> {
                             Padding(
                               padding: EdgeInsets.all(4.0),
                               child: user_famous[index].image != ""
-                                  ? Image.network(
-                                      user_famous[index].image,
+                                  ? CachedNetworkImage(
+                                      imageUrl: user_famous[index].image,
                                       width:
                                           MediaQuery.of(context).size.width / 2,
                                       height:
                                           MediaQuery.of(context).size.width / 2,
+                                      imageBuilder: (context, imageProivder) =>
+                                          Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(50)),
+                                            image: DecorationImage(
+                                              image: imageProivder,
+                                              fit: BoxFit.cover,
+                                            )),
+                                      ),
                                     )
                                   : Container(
                                       width:
@@ -229,12 +240,22 @@ class _RoutineBankState extends State<RoutineBank> {
                             Padding(
                               padding: EdgeInsets.all(4.0),
                               child: user_famous[index].image != ""
-                                  ? Image.network(
-                                      user_famous[index].image,
+                                  ? CachedNetworkImage(
+                                      imageUrl: user_famous[index].image,
                                       width:
                                           MediaQuery.of(context).size.width / 2,
                                       height:
                                           MediaQuery.of(context).size.width / 2,
+                                      imageBuilder: (context, imageProivder) =>
+                                          Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(50)),
+                                            image: DecorationImage(
+                                              image: imageProivder,
+                                              fit: BoxFit.cover,
+                                            )),
+                                      ),
                                     )
                                   : Container(
                                       width:

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sdb_trainer/main.dart';
 import 'package:sdb_trainer/providers/famous.dart';
+import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:sdb_trainer/pages/home.dart';
@@ -207,7 +208,7 @@ class LoginPageState extends State<LoginPage> {
 
         try {
           // 카카오 계정으로 로그인
-          OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
+          OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
           print('로그인 성공 ${token.accessToken}');
           _loginkakaoCheck();
         } catch (error) {
@@ -216,8 +217,10 @@ class LoginPageState extends State<LoginPage> {
       }
     } else {
       print('발급된 토큰 없음');
+      print('카카오톡으로 로그인');
       try {
-        OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
+        print('카카오톡으로 로그인');
+        OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
 
         User user = await UserApi.instance.me();
 
@@ -231,6 +234,19 @@ class LoginPageState extends State<LoginPage> {
         _loginkakaoCheck();
       } catch (error) {
         print('로그인 실패 $error');
+        print('카카오계정으로 로그인');
+        OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
+
+        User user = await UserApi.instance.me();
+
+        _userEmailCtrl.text = user.kakaoAccount!.email!;
+        _userProvider.setUserKakaoEmail(user.kakaoAccount!.email!);
+        _userProvider.setUserKakaoImageUrl(user.properties?["profile_image"]);
+        _userProvider.setUserKakaoName(user.kakaoAccount?.name);
+        _userProvider.setUserKakaoGender(user.kakaoAccount?.gender);
+        _userPasswordCtrl.text = user.kakaoAccount!.email!;
+        print('로그인 성공 ${token.accessToken}');
+        _loginkakaoCheck();
       }
     }
   }
@@ -510,7 +526,11 @@ class LoginPageState extends State<LoginPage> {
         Provider.of<FamousdataProvider>(context, listen: false);
     final _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
 
+    final _routinetimeProvider =
+        Provider.of<RoutineTimeProvider>(context, listen: false);
+
     _storageInitialExerciseCheck(_initExercisesdataProvider);
+    _routinetimeProvider.routineInitialCheck();
     var usertestList;
     await [
       _initUserdataProvider.getdata(),

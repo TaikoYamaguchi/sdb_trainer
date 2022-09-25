@@ -17,6 +17,7 @@ import 'package:sdb_trainer/pages/userProfileGoal.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Profile extends StatelessWidget {
   Profile({Key? key}) : super(key: key);
@@ -151,11 +152,20 @@ class Profile extends StatelessWidget {
                     )
                   : Consumer<UserdataProvider>(
                       builder: (builder, rpovider, child) {
-                      return CircleAvatar(
-                          radius: 100.0,
-                          backgroundImage:
-                              NetworkImage(_userdataProvider.userdata.image),
-                          backgroundColor: Colors.transparent);
+                      return CachedNetworkImage(
+                        imageUrl: _userdataProvider.userdata.image,
+                        imageBuilder: (context, imageProivder) => Container(
+                          height: 100,
+                          width: 100,
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(50)),
+                              image: DecorationImage(
+                                image: imageProivder,
+                                fit: BoxFit.cover,
+                              )),
+                        ),
+                      );
                     })),
 
           //ex back end 바꾸는 코드임 절대 지우지 말것
@@ -188,10 +198,6 @@ class Profile extends StatelessWidget {
           ),
 
            */
-
-
-
-
         ]),
       ),
     );

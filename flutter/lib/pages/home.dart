@@ -387,8 +387,7 @@ class _HomeState extends State<Home> {
                           style: TextStyle(
                               color: Color(0xFffc60a8),
                               fontSize:
-                                  provider.prefs.getString('lastroutine') ==
-                                          ''
+                                  provider.prefs.getString('lastroutine') == ''
                                       ? 18
                                       : 28,
                               fontWeight: FontWeight.w600)),
@@ -887,7 +886,16 @@ class _HomeState extends State<Home> {
             padding: const EdgeInsets.only(bottom: 8.0),
             child: GestureDetector(
               onTap: () => {
-                _chartIndex.change(index),
+                _chartIndex.change(_exercisesdataProvider
+                    .exercisesdata.exercises
+                    .indexWhere((exercise) {
+                  if (exercise.name ==
+                      _exercisesdataProvider.homeExList[index]) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                })),
                 _chartIndex.changePageController(0),
                 _staticPageState.change(true),
                 _bodyStater.change(3),
