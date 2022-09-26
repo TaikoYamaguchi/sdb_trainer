@@ -117,6 +117,7 @@ class UserSignUp {
   final String userWeightUnit;
   final String userPhonenumber;
   final String userImage;
+  final bool userGender;
   final String password;
   UserSignUp(
       {required this.userEmail,
@@ -128,6 +129,7 @@ class UserSignUp {
       required this.userWeightUnit,
       required this.userPhonenumber,
       required this.userImage,
+      required this.userGender,
       required this.password});
   Future<String> _userSignUpFromServer() async {
     var formData = new Map<String, dynamic>();
@@ -142,6 +144,7 @@ class UserSignUp {
     formData["password"] = password;
     formData["phone_number"] = userPhonenumber;
     formData["email"] = userEmail;
+    formData["isMan"] = userGender;
     formData["like"] = [];
     formData["dislike"] = [];
     formData["favor_exercise"] = [];

@@ -81,36 +81,24 @@ class _SignUpPageState extends State<SignUpPage> {
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "다리"
-        ],
-        category: "바벨"
-    ),
+        target: ["다리"],
+        category: "바벨"),
     Exercises(
         goal: 0.0,
         name: "데드리프트",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "다리",
-          "등",
-          "허리"
-        ],
-        category: "바벨"
-    ),
+        target: ["다리", "등", "허리"],
+        category: "바벨"),
     Exercises(
         goal: 0.0,
         name: "벤치프레스",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "가슴",
-          "삼두"
-        ],
-        category: "바벨"
-    ),
+        target: ["가슴", "삼두"],
+        category: "바벨"),
   ];
 
   List<Exercises> extra_Ex = [
@@ -120,483 +108,336 @@ class _SignUpPageState extends State<SignUpPage> {
         image: null,
         onerm: 48,
         custom: false,
-        target: [
-          "어깨",
-          "삼두"
-        ],
-        category: "바벨"
-    ),
+        target: ["어깨", "삼두"],
+        category: "바벨"),
     Exercises(
         goal: 0.0,
         name: "체스트프레스",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "가슴",
-          "삼두"
-        ],
-        category: "머신"
-    ),
+        target: ["가슴", "삼두"],
+        category: "머신"),
     Exercises(
         goal: 0.0,
         name: "오버헤드프레스",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "어깨",
-          "삼두"
-        ],
-        category: "바벨"
-    ),
+        target: ["어깨", "삼두"],
+        category: "바벨"),
     Exercises(
         goal: 0.0,
         name: "벤트오버바벨로우",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "등",
-          "이두"
-        ],
-        category: "바벨"
-    ),
+        target: ["등", "이두"],
+        category: "바벨"),
     Exercises(
         goal: 0.0,
         name: "풀업",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "등",
-          "이두"
-        ],
-        category: "맨몸"
-    ),
+        target: ["등", "이두"],
+        category: "맨몸"),
     Exercises(
         goal: 0.0,
         name: "바벨컬",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "이두"
-        ],
-        category: "바벨"
-    ),
+        target: ["이두"],
+        category: "바벨"),
     Exercises(
         goal: 0.0,
         name: "덤벨컬",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "이두"
-        ],
-        category: "덤벨"
-    ),
+        target: ["이두"],
+        category: "덤벨"),
     Exercises(
         goal: 0.0,
         name: "카프레이즈",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "다리"
-        ],
-        category: "맨몸"
-    ),
+        target: ["다리"],
+        category: "맨몸"),
     Exercises(
         goal: 0.0,
         name: "치닝",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "등",
-          "이두"
-        ],
-        category: "맨몸"
-    ),
+        target: ["등", "이두"],
+        category: "맨몸"),
     Exercises(
         goal: 0.0,
         name: "딥스",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "가슴",
-          "삼두"
-        ],
-        category: "맨몸"
-    ),
+        target: ["가슴", "삼두"],
+        category: "맨몸"),
     Exercises(
         goal: 0.0,
         name: "디클라인벤치프레스",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "가슴",
-          "삼두"
-        ],
-        category: "바벨"
-    ),
+        target: ["가슴", "삼두"],
+        category: "바벨"),
     Exercises(
         goal: 0.0,
         name: "인클라인벤치프레스",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "가슴",
-          "삼두"
-        ],
-        category: "바벨"
-    ),
+        target: ["가슴", "삼두"],
+        category: "바벨"),
     Exercises(
         goal: 0.0,
         name: "랫풀다운",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "등",
-          "이두"
-        ],
-        category: "머신"
-    ),
+        target: ["등", "이두"],
+        category: "머신"),
     Exercises(
         goal: 0.0,
         name: "레그프레스",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "다리"
-        ],
-        category: "머신"
-    ),
+        target: ["다리"],
+        category: "머신"),
     Exercises(
         goal: 0.0,
         name: "파워레그프레스",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "다리"
-        ],
-        category: "머신"
-    ),
+        target: ["다리"],
+        category: "머신"),
     Exercises(
         goal: 0.0,
         name: "레그컬",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "다리"
-        ],
-        category: "머신"
-    ),
+        target: ["다리"],
+        category: "머신"),
     Exercises(
         goal: 0.0,
         name: "레그익스텐션",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "다리"
-        ],
-        category: "머신"
-    ),
+        target: ["다리"],
+        category: "머신"),
     Exercises(
         goal: 0.0,
         name: "행잉레그레이즈",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "복근"
-        ],
-        category: "맨몸"
-    ),
+        target: ["복근"],
+        category: "맨몸"),
     Exercises(
         goal: 0.0,
         name: "덤벨로우",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "등",
-          "이두"
-        ],
-        category: "덤벨"
-    ),
+        target: ["등", "이두"],
+        category: "덤벨"),
     Exercises(
         goal: 0.0,
         name: "사이드래터럴레이즈",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "어깨"
-        ],
-        category: "덤벨"
-    ),
+        target: ["어깨"],
+        category: "덤벨"),
     Exercises(
         goal: 0.0,
         name: "프론트래터럴레이즈",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "어깨"
-        ],
-        category: "덤벨"
-    ),
+        target: ["어깨"],
+        category: "덤벨"),
     Exercises(
         goal: 0.0,
         name: "리어델토이드플라이",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "어깨"
-        ],
-        category: "머신"
-    ),
+        target: ["어깨"],
+        category: "머신"),
     Exercises(
         goal: 0.0,
         name: "체스트플라이",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "가슴"
-        ],
-        category: "머신"
-    ),
+        target: ["가슴"],
+        category: "머신"),
     Exercises(
         goal: 0.0,
         name: "뎀벨플라이",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "가슴"
-        ],
-        category: "덤벨"
-    ),
+        target: ["가슴"],
+        category: "덤벨"),
     Exercises(
         goal: 0.0,
         name: "프론트스쿼트",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "다리"
-        ],
-        category: "바벨"
-    ),
+        target: ["다리"],
+        category: "바벨"),
     Exercises(
         goal: 0.0,
         name: "숄더프레스",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "어깨",
-          "삼두"
-        ],
-        category: "머신"
-    ),
+        target: ["어깨", "삼두"],
+        category: "머신"),
     Exercises(
         goal: 0.0,
         name: "케이블플라이",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "가슴"
-        ],
-        category: "머신"
-    ),
+        target: ["가슴"],
+        category: "머신"),
     Exercises(
         goal: 0.0,
         name: "케이블풀다운",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "등"
-        ],
-        category: "머신"
-    ),
+        target: ["등"],
+        category: "머신"),
     Exercises(
         goal: 0.0,
         name: "케이블바이셉스컬",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "이두"
-        ],
-        category: "머신"
-    ),
+        target: ["이두"],
+        category: "머신"),
     Exercises(
         goal: 0.0,
         name: "케이블푸시다운",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "삼두"
-        ],
-        category: "머신"
-    ),
+        target: ["삼두"],
+        category: "머신"),
     Exercises(
         goal: 0.0,
         name: "케이블로우",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "등",
-          "이두"
-        ],
-        category: "머신"
-    ),
+        target: ["등", "이두"],
+        category: "머신"),
     Exercises(
         goal: 0.0,
         name: "백익스텐션",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "허리"
-        ],
-        category: "맨몸"
-    ),
+        target: ["허리"],
+        category: "맨몸"),
     Exercises(
         goal: 0.0,
         name: "머슬업",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "등",
-          "이두"
-        ],
-        category: "맨몸"
-    ),
+        target: ["등", "이두"],
+        category: "맨몸"),
     Exercises(
         goal: 0.0,
         name: "티바로우",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "등",
-          "이두"
-        ],
-        category: "머신"
-    ),
+        target: ["등", "이두"],
+        category: "머신"),
     Exercises(
         goal: 0.0,
         name: "펜들레이로우",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "등",
-          "이두"
-        ],
-        category: "바벨"
-    ),
+        target: ["등", "이두"],
+        category: "바벨"),
     Exercises(
         goal: 0.0,
         name: "덤벨프레스",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "가슴",
-          "삼두"
-        ],
-        category: "덤벨"
-    ),
+        target: ["가슴", "삼두"],
+        category: "덤벨"),
     Exercises(
         goal: 0.0,
         name: "인클라인덤벨프레스",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "가슴",
-          "삼두"
-        ],
-        category: "덤벨"
-    ),
+        target: ["가슴", "삼두"],
+        category: "덤벨"),
     Exercises(
         goal: 0.0,
         name: "런지",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "다리"
-        ],
-        category: "맨몸"
-    ),
+        target: ["다리"],
+        category: "맨몸"),
     Exercises(
         goal: 0.0,
         name: "디클라인덤벨프레스",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "가슴",
-          "삼두"
-        ],
-        category: "덤벨"
-    ),
+        target: ["가슴", "삼두"],
+        category: "덤벨"),
     Exercises(
         goal: 0.0,
         name: "인클라인체스트프레스",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "가슴",
-          "삼두"
-        ],
-        category: "머신"
-    ),
+        target: ["가슴", "삼두"],
+        category: "머신"),
     Exercises(
         goal: 0.0,
         name: "디클라인체스트프레스",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "가슴",
-          "삼두"
-        ],
-        category: "머신"
-    ),
+        target: ["가슴", "삼두"],
+        category: "머신"),
     Exercises(
         goal: 0.0,
         name: "덤벨킥백",
         image: null,
         onerm: 0.0,
         custom: false,
-        target: [
-          "삼두"
-        ],
-        category: "덤벨"
-    ),
+        target: ["삼두"],
+        category: "덤벨"),
   ];
 
   List<TextEditingController> _onermController = [];
@@ -1325,6 +1166,7 @@ class _SignUpPageState extends State<SignUpPage> {
             userWeightUnit: _userWeightUnitCtrl,
             userPhonenumber: _userPhoneNumberCtrl.text,
             userImage: _userImageCtrl.text,
+            userGender: _userGenderCtrl,
             password: _userPasswordCtrl.text)
         .signUpUser()
         .then((data) => data["username"] != null

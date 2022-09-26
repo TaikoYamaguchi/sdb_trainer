@@ -13,7 +13,7 @@ class UserBase(BaseModel):
     weight:float
     height_unit:str
     weight_unit:str
-    isMan:bool=True
+    isMan:bool
     favor_exercise:list
 
 
