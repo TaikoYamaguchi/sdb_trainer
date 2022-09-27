@@ -6,6 +6,7 @@ import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class RoutineTimeProvider extends ChangeNotifier {
   int _routineTime = 0;
@@ -112,6 +113,7 @@ class RoutineTimeProvider extends ChangeNotifier {
       _buttoncolor = Color(0xFffc60a8);
       _isstarted = !_isstarted;
       _nowonrindex = rindex;
+      _showNotificationWithChronometer();
       notifyListeners();
     } else {
       await storage.write(key: "sdb_isStart", value: "false");
@@ -159,6 +161,7 @@ class RoutineTimeProvider extends ChangeNotifier {
             _routineTime = 0;
           }
         });
+        _showNotificationWithChronometer();
         _routineButton = '운동 종료 하기';
         _buttoncolor = Color(0xFffc60a8);
         _isstarted = !_isstarted;
@@ -173,5 +176,25 @@ class RoutineTimeProvider extends ChangeNotifier {
 
       null;
     }
+  }
+
+  Future<void> _showNotificationWithChronometer() async {
+    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
+    final AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'your channel id',
+      'your channel name',
+      channelDescription: 'your channel description',
+      importance: Importance.max,
+      priority: Priority.high,
+      when: DateTime.now().millisecondsSinceEpoch - 120 * 1000,
+      usesChronometer: true,
+    );
+    final NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+        0, 'plain title', 'plain body', platformChannelSpecifics,
+        payload: 'item x');
   }
 }

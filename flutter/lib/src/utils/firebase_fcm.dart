@@ -36,10 +36,9 @@ void fcmSetting() async {
       ?.createNotificationChannel(channel);
 
   await flutterLocalNotificationsPlugin.initialize(
-      InitializationSettings(
-          android: AndroidInitializationSettings('@mipmap/ic_launcher'),
-          iOS: IOSInitializationSettings()),
-      onSelectNotification: (String? payload) async {});
+    InitializationSettings(
+        android: AndroidInitializationSettings('@mipmap/ic_launcher')),
+  );
 
   // foreground 푸시 알림 핸들링
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {

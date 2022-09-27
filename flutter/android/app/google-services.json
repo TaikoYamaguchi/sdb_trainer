@@ -1,5 +1,5 @@
 {
-  "project_info": {
+ "project_info": {
     "project_number": "508959158364",
     "project_id": "peak-academy-350108",
     "storage_bucket": "peak-academy-350108.appspot.com"
@@ -7,20 +7,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:508959158364:android:ca97244b9931874fe73699",
+        "mobilesdk_app_id": "1:508959158364:android:c1c19ff4d1324375e73699",
         "android_client_info": {
           "package_name": "com.tk_lck.supero"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "508959158364-1sh9bb60117hjt3qm32rlnkkp1958g0d.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.tk_lck.supero",
-            "certificate_hash": "f95b45ba0ceb3727b356a90b02fc3e865055b467"
-          }
-        },
         {
           "client_id": "508959158364-d5r6ksbfrl1umnttfq79sp38vlqmrdjk.apps.googleusercontent.com",
           "client_type": 1,
@@ -40,7 +32,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBZYUmPLa5QrAlQk7DDuIfGCzu-wwZN_Ro"
+          "current_key": "AIzaSyAPuwDjs6BY601RZaoV7VE4_w97tm_E1bk"
         }
       ],
       "services": {
@@ -51,4 +43,4 @@
     }
   ],
   "configuration_version": "1"
-}
+} 
