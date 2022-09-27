@@ -113,7 +113,7 @@ class RoutineTimeProvider extends ChangeNotifier {
       _buttoncolor = Color(0xFffc60a8);
       _isstarted = !_isstarted;
       _nowonrindex = rindex;
-      _showNotificationWithChronometer();
+      _showNotificationWithChronometer(_starttime);
       notifyListeners();
     } else {
       await storage.write(key: "sdb_isStart", value: "false");
@@ -161,7 +161,7 @@ class RoutineTimeProvider extends ChangeNotifier {
             _routineTime = 0;
           }
         });
-        _showNotificationWithChronometer();
+        _showNotificationWithChronometer(_starttime);
         _routineButton = '운동 종료 하기';
         _buttoncolor = Color(0xFffc60a8);
         _isstarted = !_isstarted;
@@ -178,23 +178,28 @@ class RoutineTimeProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> _showNotificationWithChronometer() async {
+  Future<void> _showNotificationWithChronometer(DateTime _starttime) async {
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
+    print(DateTime.now());
+    print(DateTime.now().millisecondsSinceEpoch / 1000);
+    print(_starttime);
+    print(_starttime.millisecondsSinceEpoch / 1000);
     final AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-      'your channel id',
-      'your channel name',
-      channelDescription: 'your channel description',
+      'Supero',
+      'Supero',
+      channelDescription: 'Supero에서는 운동을 지원합니다',
       importance: Importance.max,
       priority: Priority.high,
-      when: DateTime.now().millisecondsSinceEpoch - 120 * 1000,
+      when: DateTime.now().millisecondsSinceEpoch * 1000 -
+          _starttime.millisecondsSinceEpoch * 1000,
       usesChronometer: true,
     );
     final NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
-        0, 'plain title', 'plain body', platformChannelSpecifics,
+        0, '운동을 시작할게요', '운동 시작', platformChannelSpecifics,
         payload: 'item x');
   }
 }

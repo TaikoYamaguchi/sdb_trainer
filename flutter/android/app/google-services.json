@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "508959158364-enhvthqmlp5ll3vcl7q9753pj7pdu25s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tk_lck.supero",
+            "certificate_hash": "896d971c595743582e5fda27ebc4312f8ab89288"
+          }
+        },
+        {
           "client_id": "508959158364-rfknib1jc1b22o5a0prddl26la57h08g.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
