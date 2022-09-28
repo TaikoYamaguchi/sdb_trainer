@@ -62,7 +62,7 @@ class _FeedState extends State<Feed> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("피드", style: TextStyle(color: Colors.white)),
-                FlatButton(
+                TextButton(
                     onPressed: () {
                       Navigator.push(
                           context,

@@ -149,7 +149,7 @@ class _FriendProfileState extends State<FriendProfile> {
     bool isLiked = onIsLikedCheck(provider, User);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32.0),
-      child: FlatButton(
+      child: TextButton(
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: 40.0,

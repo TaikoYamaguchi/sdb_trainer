@@ -464,16 +464,16 @@ class ExerciseState extends State<Exercise> {
   Widget _DeleteConfirmButton(rindex) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),),
+              backgroundColor: Theme.of(context).primaryColor,
+              foregroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(color: Colors.white,),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
             ),
-            color: Theme.of(context).primaryColor,
-            textColor: Colors.white,
-            disabledColor: Color.fromRGBO(246, 58, 64, 20),
-            disabledTextColor: Colors.black,
-            padding: EdgeInsets.all(8.0),
-            splashColor: Theme.of(context).primaryColor,
             onPressed: () {
               _workoutdataProvider.removeroutineAt(rindex);
               _editWorkoutCheck();
@@ -814,18 +814,18 @@ class ExerciseState extends State<Exercise> {
   Widget _workoutSubmitButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: _workoutNameCtrl.text == "" || _customExUsed == true
+                  ? Color(0xFF212121)
+                  : Theme.of(context).primaryColor,
+              textStyle: TextStyle(color: Colors.white,),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
             ),
-            color: _workoutNameCtrl.text == "" || _customExUsed == true
-                ? Color(0xFF212121)
-                : Theme.of(context).primaryColor,
-            textColor: Colors.white,
-            disabledColor: Color(0xFF212121),
-            disabledTextColor: Colors.white,
-            padding: EdgeInsets.all(12.0),
-            splashColor: Theme.of(context).primaryColor,
             onPressed: () {
               if (!_customExUsed) {
                 _workoutdataProvider.addroutine(new Routinedatas(
@@ -931,18 +931,18 @@ class ExerciseState extends State<Exercise> {
   Widget _routineNameEditSubmitButton(context, index) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: _workoutNameCtrl.text == ""
+                  ? Color(0xFF212121)
+                  : Theme.of(context).primaryColor,
+              textStyle: TextStyle(color: Colors.white,),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
             ),
-            color: _workoutNameCtrl.text == ""
-                ? Color(0xFF212121)
-                : Theme.of(context).primaryColor,
-            textColor: Colors.white,
-            disabledColor: Color(0xFF212121),
-            disabledTextColor: Colors.white,
-            padding: EdgeInsets.all(12.0),
-            splashColor: Theme.of(context).primaryColor,
             onPressed: () {
               _editWorkoutNameCheck(_workoutNameCtrl.text, index);
               _workoutNameCtrl.clear();

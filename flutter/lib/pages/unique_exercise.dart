@@ -113,14 +113,16 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
   Widget _FinishConfirmButton() {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(color: Colors.white,),
+              disabledForegroundColor: Colors.black,
+              padding: EdgeInsets.all(12.0),
             ),
-            color: Theme.of(context).primaryColor,
-            textColor: Colors.white,
-            disabledColor: Color.fromRGBO(246, 58, 64, 20),
-            disabledTextColor: Colors.black,
             onPressed: () {
               _routinetimeProvider.routinecheck(0);
               recordExercise();
@@ -128,8 +130,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
               Navigator.of(context, rootNavigator: true).pop();
               Navigator.of(context).pop();
             },
-            padding: EdgeInsets.all(12.0),
-            splashColor: Theme.of(context).primaryColor,
+
             child: Text("운동 종료 하기",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
@@ -615,12 +616,16 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
   Widget _StartConfirmButton(sindex, newvalue) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(color: Colors.white,),
+              disabledForegroundColor: Colors.black,
+              padding: EdgeInsets.all(12.0),
             ),
-            color: Theme.of(context).primaryColor,
-            textColor: Colors.white,
             onPressed: () {
               _routinetimeProvider.resettimer(_routinetimeProvider.changetime);
               _routinetimeProvider.routinecheck(0);
@@ -629,8 +634,6 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
               });
               Navigator.of(context, rootNavigator: true).pop();
             },
-            padding: EdgeInsets.all(12.0),
-            splashColor: Theme.of(context).primaryColor,
             child: Text("운동 시작 하기",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
@@ -692,16 +695,16 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
             actions: <Widget>[
               SizedBox(
                 width: MediaQuery.of(context).size.width,
-                child: FlatButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),),
+                    foregroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).primaryColor,
+                    textStyle: TextStyle(color: Colors.white,),
+                    disabledForegroundColor: Colors.black,
+                    padding: EdgeInsets.all(8.0),
                   ),
-                  color: Theme.of(context).primaryColor,
-                  textColor: Colors.white,
-                  disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                  disabledTextColor: Colors.black,
-                  padding: EdgeInsets.all(8.0),
-                  splashColor: Theme.of(context).primaryColor,
                   child: Text('휴식 시간 설정하기',
                       style: TextStyle(fontSize: 20.0, color: Colors.white)),
                   onPressed: () {

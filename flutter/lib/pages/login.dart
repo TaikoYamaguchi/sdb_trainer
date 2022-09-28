@@ -116,13 +116,14 @@ class LoginPageState extends State<LoginPage> {
   Widget _findUser(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            color: Colors.black,
-            textColor: Colors.white,
-            disabledColor: Colors.black,
-            disabledTextColor: Colors.black,
-            padding: EdgeInsets.all(8.0),
-            splashColor: Colors.blueAccent,
+        child: TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.blueAccent,
+              backgroundColor: Colors.black,
+              textStyle: TextStyle(color: Colors.white,),
+              disabledForegroundColor: Colors.black,
+              padding:EdgeInsets.all(8.0),
+            ),
             onPressed: () => isLoading
                 ? null
                 : Navigator.push(
@@ -137,13 +138,14 @@ class LoginPageState extends State<LoginPage> {
   Widget _emailLoginButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            color: Colors.black,
-            textColor: Colors.grey,
-            disabledColor: Colors.black,
-            disabledTextColor: Colors.black,
-            padding: EdgeInsets.all(4.0),
-            splashColor: Colors.blueAccent,
+        child: TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.blueAccent,
+              backgroundColor: Colors.black,
+              textStyle: TextStyle(color: Colors.grey,),
+              disabledForegroundColor: Colors.black,
+              padding:EdgeInsets.all(4.0),
+            ),
             onPressed: () => isLoading
                 ? null
                 : setState(() {
@@ -342,15 +344,14 @@ class LoginPageState extends State<LoginPage> {
         height: 53,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
-          child: FlatButton(
-              color: Color.fromRGBO(25, 106, 223, 20),
-              textColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8)),
-              disabledColor: Color.fromRGBO(25, 106, 223, 20),
-              disabledTextColor: Colors.black,
-              padding: EdgeInsets.all(8.0),
-              splashColor: Colors.blueAccent,
+          child: TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Color.fromRGBO(25, 106, 223, 20),
+                backgroundColor: Color.fromRGBO(25, 106, 223, 20),
+                textStyle: TextStyle(color: Colors.white,),
+                disabledForegroundColor: Color.fromRGBO(25, 106, 223, 20),
+                padding:EdgeInsets.all(8.0),
+              ),
               onPressed: () => isLoading ? null : _loginCheck(context),
               child: Text(isLoading ? 'loggin in.....' : "로그인",
                   style: TextStyle(
@@ -366,15 +367,14 @@ class LoginPageState extends State<LoginPage> {
         height: 53,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
-          child: FlatButton(
-              color: Color.fromRGBO(246, 58, 64, 20),
-              textColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8)),
-              disabledColor: Color.fromRGBO(246, 58, 64, 20),
-              disabledTextColor: Colors.black,
-              padding: EdgeInsets.all(8.0),
-              splashColor: Colors.blueAccent,
+          child: TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Color.fromRGBO(246, 58, 64, 20),
+                backgroundColor: Color.fromRGBO(246, 58, 64, 20),
+                textStyle: TextStyle(color: Colors.white,),
+                disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+                padding:EdgeInsets.all(8.0),
+              ),
               onPressed: () =>
                   isLoading ? null : _loginState.changeSignup(true),
               child: Text(isLoading ? 'loggin in.....' : "회원가입",

@@ -243,16 +243,16 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                       children: [
                         SizedBox(
                             width: MediaQuery.of(context).size.width / 4,
-                            child: FlatButton(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),),
+                                foregroundColor: Theme.of(context).primaryColor,
+                                backgroundColor: Theme.of(context).primaryColor,
+                                textStyle: TextStyle(color: Colors.white,),
+                                disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+                                padding: EdgeInsets.all(12.0),
                               ),
-                              color: Theme.of(context).primaryColor,
-                              textColor: Colors.white,
-                              disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                              disabledTextColor: Colors.black,
-                              padding: EdgeInsets.all(8.0),
-                              splashColor: Theme.of(context).primaryColor,
                               onPressed: () {
                                 _getImage(ImageSource.camera);
                                 Navigator.pop(context);
@@ -266,16 +266,16 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                             )),
                         SizedBox(
                             width: MediaQuery.of(context).size.width / 4,
-                            child: FlatButton(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),),
+                                foregroundColor: Theme.of(context).primaryColor,
+                                backgroundColor: Theme.of(context).primaryColor,
+                                textStyle: TextStyle(color: Colors.white,),
+                                disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+                                padding: EdgeInsets.all(12.0),
                               ),
-                              color: Theme.of(context).primaryColor,
-                              textColor: Colors.white,
-                              disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                              disabledTextColor: Colors.black,
-                              padding: EdgeInsets.all(8.0),
-                              splashColor: Theme.of(context).primaryColor,
                               onPressed: () {
                                 _getImage(ImageSource.gallery);
                                 Navigator.pop(context);
@@ -302,16 +302,16 @@ class _ExerciseDoneState extends State<ExerciseDone> {
       padding: const EdgeInsets.all(12.0),
       child: SizedBox(
           width: MediaQuery.of(context).size.width,
-          child: FlatButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
+          child: TextButton(
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),),
+                foregroundColor: Theme.of(context).primaryColor,
+                backgroundColor: Theme.of(context).primaryColor,
+                textStyle: TextStyle(color: Colors.white,),
+                disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+                padding: EdgeInsets.all(12.0),
               ),
-              color: Theme.of(context).primaryColor,
-              textColor: Colors.white,
-              disabledColor: Color.fromRGBO(246, 58, 64, 20),
-              disabledTextColor: Colors.black,
-              padding: EdgeInsets.all(8.0),
-              splashColor: Theme.of(context).primaryColor,
               onPressed: () {
                 if (_selectImage != null) {
                   HistoryImageEdit(

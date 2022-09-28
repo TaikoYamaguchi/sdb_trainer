@@ -147,22 +147,22 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
   Widget _FinishConfirmButton() {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(color: Colors.white,),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
             ),
-            color: Theme.of(context).primaryColor,
-            textColor: Colors.white,
-            disabledColor: Color.fromRGBO(246, 58, 64, 20),
-            disabledTextColor: Colors.black,
             onPressed: () {
               recordExercise();
               _editHistoryCheck();
               _editWorkoutCheck();
               Navigator.of(context, rootNavigator: true).pop();
             },
-            padding: EdgeInsets.all(12.0),
-            splashColor: Theme.of(context).primaryColor,
             child: Text("운동 종료 하기",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
@@ -229,18 +229,18 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
   Widget _workoutSubmitButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),),
+              backgroundColor: _workoutNameCtrl.text == ""
+                  ? Color(0xFF212121)
+                  : Theme.of(context).primaryColor,
+              foregroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(color: Colors.white,),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
             ),
-            color: _workoutNameCtrl.text == ""
-                ? Color(0xFF212121)
-                : Theme.of(context).primaryColor,
-            textColor: Colors.white,
-            disabledColor: Color(0xFF212121),
-            disabledTextColor: Colors.white,
-            padding: EdgeInsets.all(12.0),
-            splashColor: Theme.of(context).primaryColor,
             onPressed: () {
               _editWorkoutNameCheck(_workoutNameCtrl.text);
               _workoutNameCtrl.clear();

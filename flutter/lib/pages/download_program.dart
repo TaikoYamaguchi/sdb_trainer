@@ -643,16 +643,17 @@ class _ProgramDownloadState extends State<ProgramDownload> {
       padding: const EdgeInsets.all(12.0),
       child: SizedBox(
           width: MediaQuery.of(context).size.width,
-          child: FlatButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
+          child: TextButton(
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),),
+                foregroundColor: Theme.of(context).primaryColor,
+                backgroundColor: Theme.of(context).primaryColor,
+                textStyle: TextStyle(color: Colors.white,),
+                disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+                padding: EdgeInsets.all(12.0),
+
               ),
-              color: Theme.of(context).primaryColor,
-              textColor: Colors.white,
-              disabledColor: Color.fromRGBO(246, 58, 64, 20),
-              disabledTextColor: Colors.black,
-              padding: EdgeInsets.all(8.0),
-              splashColor: Theme.of(context).primaryColor,
               onPressed: () {
                 for (int p = 0;
                     p < widget.program.routinedata.exercises[0].plans.length;
@@ -746,18 +747,21 @@ class _ProgramDownloadState extends State<ProgramDownload> {
   Widget _StartConfirmButton() {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(color: Colors.white,),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
+
             ),
-            color: Theme.of(context).primaryColor,
-            textColor: Colors.white,
             onPressed: () {
               Navigator.of(context, rootNavigator: true).pop();
               setSetting();
             },
-            padding: EdgeInsets.all(12.0),
-            splashColor: Theme.of(context).primaryColor,
             child: Text("운동 시작 하기",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
@@ -913,14 +917,18 @@ class _ProgramDownloadState extends State<ProgramDownload> {
   Widget _finalConfirmButton(state) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),),
+              backgroundColor: _workoutNameCtrl.text == "" || _customRuUsed == true
+                  ? Color(0xFF212121)
+                  : Theme.of(context).primaryColor,
+              foregroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(color: Colors.white,),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
             ),
-            color: _workoutNameCtrl.text == "" || _customRuUsed == true
-                ? Color(0xFF212121)
-                : Theme.of(context).primaryColor,
-            textColor: Colors.white,
             onPressed: () {
               if(_customRuUsed == false || _workoutNameCtrl.text == ""){
                 _famousdataProvider.weekchange(0);
@@ -934,8 +942,6 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                 _workoutNameCtrl.clear();
               }
             },
-            padding: EdgeInsets.all(12.0),
-            splashColor: Theme.of(context).primaryColor,
             child: Text(_customRuUsed == true ? "존재하는 이름" : "이 이름으로 저장",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
@@ -1036,12 +1042,16 @@ class _ProgramDownloadState extends State<ProgramDownload> {
   Widget _1rmConfirmButton() {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(color: Colors.white,),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
             ),
-            color: Theme.of(context).primaryColor,
-            textColor: Colors.white,
             onPressed: () {
               List rname = [];
               for(int i = 0; i <  _workoutdataProvider.workoutdata.routinedatas.length; i++){
@@ -1054,8 +1064,6 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               titleSetting();
 
             },
-            padding: EdgeInsets.all(12.0),
-            splashColor: Theme.of(context).primaryColor,
             child: Text("1rm 확인",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }

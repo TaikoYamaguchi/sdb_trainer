@@ -1067,16 +1067,16 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget _signUpButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(color: Colors.white,),
+              disabledForegroundColor: Colors.black,
+              padding: EdgeInsets.all(8.0),
             ),
-            color: Theme.of(context).primaryColor,
-            textColor: Colors.white,
-            disabledColor: Color.fromRGBO(246, 58, 64, 20),
-            disabledTextColor: Colors.black,
-            padding: EdgeInsets.all(8.0),
-            splashColor: Theme.of(context).primaryColor,
             onPressed: () => _isSignupIndex == 0
                 ? setState(() {
                     _PrefProvider.getprefs();
@@ -1119,16 +1119,16 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget _weightSubmitButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(color: Colors.white,),
+              disabledForegroundColor: Colors.black,
+              padding: EdgeInsets.all(8.0),
             ),
-            color: Theme.of(context).primaryColor,
-            textColor: Colors.white,
-            disabledColor: Theme.of(context).primaryColor,
-            disabledTextColor: Colors.black,
-            padding: EdgeInsets.all(8.0),
-            splashColor: Theme.of(context).primaryColor,
             onPressed: () => _postExerciseCheck(context),
             child: Text(isLoading ? 'loggin in.....' : "운동 정보 제출",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
@@ -1137,16 +1137,16 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget _signUpGenderButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(color: Colors.white,),
+              disabledForegroundColor: Colors.black,
+              padding: EdgeInsets.all(8.0),
             ),
-            color: Theme.of(context).primaryColor,
-            textColor: Colors.white,
-            disabledColor: Theme.of(context).primaryColor,
-            disabledTextColor: Colors.black,
-            padding: EdgeInsets.all(8.0),
-            splashColor: Theme.of(context).primaryColor,
             onPressed: () => setState(() {
                   _signUpGenderCheck() ? _isSignupIndex = 2 : null;
                 }),
@@ -1281,13 +1281,16 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget _loginButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            color: Colors.black,
-            textColor: Colors.white,
-            disabledColor: Colors.black,
-            disabledTextColor: Colors.black,
-            padding: EdgeInsets.all(8.0),
-            splashColor: Theme.of(context).primaryColor,
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),),
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.black,
+              textStyle: TextStyle(color: Colors.white,),
+              disabledForegroundColor: Colors.black,
+              padding: EdgeInsets.all(8.0),
+            ),
             onPressed: () => isLoading ? null : _loginState.changeSignup(false),
             child: Text(isLoading ? 'loggin in.....' : "이미 계정이 있으신가요?",
                 style: TextStyle(fontSize: 14.0, color: Colors.grey))));

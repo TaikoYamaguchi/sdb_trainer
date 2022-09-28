@@ -167,13 +167,14 @@ class _UserFindPageState extends State<UserFindPage> {
   Widget _editButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            color: Color.fromRGBO(246, 58, 64, 20),
-            textColor: Colors.white,
-            disabledColor: Color.fromRGBO(246, 58, 64, 20),
-            disabledTextColor: Colors.black,
-            padding: EdgeInsets.all(8.0),
-            splashColor: Theme.of(context).primaryColor,
+        child: TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: Color.fromRGBO(246, 58, 64, 20),
+              backgroundColor: Color.fromRGBO(246, 58, 64, 20),
+              textStyle: TextStyle(color: Colors.white,),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(8.0),
+            ),
             onPressed: () => _isVerification == false
                 ? _phoneNumberCheck()
                 : _verficationCodeCheck(),

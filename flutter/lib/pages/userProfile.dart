@@ -150,7 +150,7 @@ class _UserProfileState extends State<UserProfile> {
                       ),
                     );
                   })),
-        FlatButton(
+        TextButton(
             onPressed: () {
               _pickImg();
             },

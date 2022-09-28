@@ -188,14 +188,17 @@ class _AppState extends State<App> {
   Widget _FinishConfirmButton() {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
+        child: TextButton(
+          style: TextButton.styleFrom(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            color: Theme.of(context).primaryColor,
-            textColor: Colors.white,
-            disabledColor: Color.fromRGBO(246, 58, 64, 20),
-            disabledTextColor: Colors.black,
+              borderRadius: BorderRadius.circular(8.0),),
+            foregroundColor: Theme.of(context).primaryColor,
+            backgroundColor: Theme.of(context).primaryColor,
+            textStyle: TextStyle(color: Colors.white,),
+            disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+            padding: EdgeInsets.all(12.0),
+
+          ),
             onPressed: () {
               if(_workoutdataProvider.workoutdata.routinedatas[_routinetimeProvider.nowonrindex].mode == 1){
                 recordExercise_plan();
@@ -208,8 +211,6 @@ class _AppState extends State<App> {
               }
               Navigator.of(context, rootNavigator: true).pop();
             },
-            padding: EdgeInsets.all(12.0),
-            splashColor: Theme.of(context).primaryColor,
             child: Text("운동 종료 하기",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
@@ -322,15 +323,17 @@ class _AppState extends State<App> {
               actions: <Widget>[
                 new SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    child: FlatButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
+                    child: TextButton(
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),),
+                          foregroundColor: Theme.of(context).primaryColor,
+                          backgroundColor: Theme.of(context).primaryColor,
+                          textStyle: TextStyle(color: Colors.white,),
+                          disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+                          padding: EdgeInsets.all(12.0),
+
                         ),
-                        color: Theme.of(context).primaryColor,
-                        textColor: Colors.white,
-                        disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                        disabledTextColor: Colors.black,
-                        padding: EdgeInsets.all(8.0),
                         child: new Text("업데이트 하러가기",
                             style:
                                 TextStyle(fontSize: 20.0, color: Colors.white)),
@@ -480,13 +483,17 @@ class _AppState extends State<App> {
                         SizedBox(
                             width: 100,
                             height: 40,
-                            child: FlatButton(
-                                color: Theme.of(context).primaryColor,
-                                textColor: Colors.white,
-                                disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                                disabledTextColor: Colors.black,
-                                padding: EdgeInsets.all(8.0),
-                                splashColor: Theme.of(context).primaryColor,
+                            child: TextButton(
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),),
+                                  foregroundColor: Theme.of(context).primaryColor,
+                                  backgroundColor: Theme.of(context).primaryColor,
+                                  textStyle: TextStyle(color: Colors.white,),
+                                  disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+                                  padding: EdgeInsets.all(12.0),
+
+                                ),
                                 onPressed: () {
                                   provider.restcheck();
                                 },

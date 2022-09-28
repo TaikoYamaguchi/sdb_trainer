@@ -831,16 +831,16 @@ class _CalendarState extends State<Calendar> {
   Widget _deleteConfirmButton(history_id) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(color: Colors.white,),
+              disabledForegroundColor: Colors.black,
+              padding: EdgeInsets.all(8.0),
             ),
-            color: Theme.of(context).primaryColor,
-            textColor: Colors.white,
-            disabledColor: Color.fromRGBO(246, 58, 64, 20),
-            disabledTextColor: Colors.black,
-            padding: EdgeInsets.all(8.0),
-            splashColor: Theme.of(context).primaryColor,
             onPressed: () {
               _historydataProvider.deleteHistorydata(history_id);
               HistoryDelete(history_id: history_id).deleteHistory();

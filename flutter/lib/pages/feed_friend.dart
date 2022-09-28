@@ -56,7 +56,7 @@ class _FeedFriendState extends State<FeedFriend> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text("친구관리", style: TextStyle(color: Colors.white)),
-          FlatButton(
+          TextButton(
               onPressed: () {
                 Navigator.push(
                     context,

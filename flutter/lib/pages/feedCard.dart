@@ -797,18 +797,18 @@ class _FeedCardState extends State<FeedCard> {
   Widget _historyCommentSubmitButton(context, SDBdata) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),),
+              backgroundColor: _historyCommentCtrl.text == ""
+                  ? Color(0xFF212121)
+                  : Theme.of(context).primaryColor,
+              foregroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(color: Colors.white,),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
             ),
-            color: _historyCommentCtrl.text == ""
-                ? Color(0xFF212121)
-                : Theme.of(context).primaryColor,
-            textColor: Colors.white,
-            disabledColor: Color(0xFF212121),
-            disabledTextColor: Colors.white,
-            padding: EdgeInsets.all(12.0),
-            splashColor: Theme.of(context).primaryColor,
             onPressed: () {
               _historyCommentCtrl.text == ""
                   ? null
@@ -1003,16 +1003,16 @@ class _FeedCardState extends State<FeedCard> {
   Widget _onDisLikeButtonTapped(email) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(color: Colors.white,),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
             ),
-            color: Theme.of(context).primaryColor,
-            textColor: Colors.white,
-            disabledColor: Color.fromRGBO(246, 58, 64, 20),
-            disabledTextColor: Colors.black,
-            padding: EdgeInsets.all(8.0),
-            splashColor: Theme.of(context).primaryColor,
             onPressed: () {
               var user = UserLike(
                       liked_email: email,

@@ -55,7 +55,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text("친구 찾기", style: TextStyle(color: Colors.white)),
-          FlatButton(
+          TextButton(
               onPressed: () {
                 Navigator.push(
                     context,

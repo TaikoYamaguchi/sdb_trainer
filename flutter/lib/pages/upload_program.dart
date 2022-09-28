@@ -370,16 +370,16 @@ class _ProgramUploadState extends State<ProgramUpload> {
                       children: [
                         SizedBox(
                             width: MediaQuery.of(context).size.width / 4,
-                            child: FlatButton(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),),
+                                foregroundColor: Theme.of(context).primaryColor,
+                                backgroundColor: Theme.of(context).primaryColor,
+                                textStyle: TextStyle(color: Colors.white,),
+                                disabledForegroundColor: Colors.black,
+                                padding: EdgeInsets.all(8.0),
                               ),
-                              color: Theme.of(context).primaryColor,
-                              textColor: Colors.white,
-                              disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                              disabledTextColor: Colors.black,
-                              padding: EdgeInsets.all(8.0),
-                              splashColor: Theme.of(context).primaryColor,
                               onPressed: () {
                                 _getImage(ImageSource.camera);
                                 Navigator.pop(context);
@@ -393,16 +393,16 @@ class _ProgramUploadState extends State<ProgramUpload> {
                             )),
                         SizedBox(
                             width: MediaQuery.of(context).size.width / 4,
-                            child: FlatButton(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),),
+                                foregroundColor: Theme.of(context).primaryColor,
+                                backgroundColor: Theme.of(context).primaryColor,
+                                textStyle: TextStyle(color: Colors.white,),
+                                disabledForegroundColor: Colors.black,
+                                padding: EdgeInsets.all(8.0),
                               ),
-                              color: Theme.of(context).primaryColor,
-                              textColor: Colors.white,
-                              disabledColor: Color.fromRGBO(246, 58, 64, 20),
-                              disabledTextColor: Colors.black,
-                              padding: EdgeInsets.all(8.0),
-                              splashColor: Theme.of(context).primaryColor,
                               onPressed: () {
                                 _getImage(ImageSource.gallery);
                                 Navigator.pop(context);
@@ -429,16 +429,16 @@ class _ProgramUploadState extends State<ProgramUpload> {
       padding: const EdgeInsets.all(12.0),
       child: SizedBox(
           width: MediaQuery.of(context).size.width,
-          child: FlatButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
+          child: TextButton(
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),),
+                foregroundColor: Theme.of(context).primaryColor,
+                backgroundColor: Theme.of(context).primaryColor,
+                textStyle: TextStyle(color: Colors.white,),
+                disabledForegroundColor: Colors.black,
+                padding: EdgeInsets.all(8.0),
               ),
-              color: Theme.of(context).primaryColor,
-              textColor: Colors.white,
-              disabledColor: Color.fromRGBO(246, 58, 64, 20),
-              disabledTextColor: Colors.black,
-              padding: EdgeInsets.all(8.0),
-              splashColor: Theme.of(context).primaryColor,
               onPressed: () {
                 ProgramPost(
                   image: _famousimageCtrl.text,
