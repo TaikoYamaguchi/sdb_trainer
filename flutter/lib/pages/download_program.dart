@@ -932,7 +932,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
             onPressed: () {
               if(_customRuUsed == false || _workoutNameCtrl.text == ""){
                 _famousdataProvider.weekchange(0);
-                _workoutdataProvider.addroutine(new Routinedatas(name: _workoutNameCtrl.text, mode: widget.program.routinedata.mode, exercises: widget.program.routinedata.exercises, routine_time: widget.program.routinedata.routine_time));
+                _workoutdataProvider.addroutine(new Routinedatas(name: _workoutNameCtrl.text, mode: 3, exercises: widget.program.routinedata.exercises, routine_time: widget.program.routinedata.routine_time));
                 _editWorkoutCheck();
                 Navigator.of(context).popUntil((route) => route.isFirst);
                 ProgramSubscribe(id: widget.program.id).subscribeProgram().then(
