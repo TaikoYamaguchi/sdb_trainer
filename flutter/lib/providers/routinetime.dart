@@ -75,8 +75,9 @@ class RoutineTimeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  getstarttime() {
-    _starttime = DateTime.now();
+  getstarttime() async {
+    _starttime = await DateTime.now();
+    return _starttime;
   }
 
   getprefs(value) async {
@@ -86,7 +87,7 @@ class RoutineTimeProvider extends ChangeNotifier {
 
   void routinecheck(rindex) async {
     final storage = FlutterSecureStorage();
-    getstarttime();
+    _starttime = await getstarttime();
     if (_isstarted == false) {
       await storage.write(key: "sdb_isStart", value: "true");
       print(_starttime);
@@ -126,6 +127,7 @@ class RoutineTimeProvider extends ChangeNotifier {
       _routineButton = '운동 시작 하기';
       _buttoncolor = const Color(0xff7a28cb);
       _isstarted = !_isstarted;
+      _cancelNotificationWithChronometer();
       notifyListeners();
     }
   }
@@ -143,7 +145,7 @@ class RoutineTimeProvider extends ChangeNotifier {
       String? _initialRindex = await storage.read(key: "sdb_initialRindex");
 
       if (_isInitialStart == "true") {
-        getstarttime();
+        _starttime = await getstarttime();
         _starttime = DateTime.parse(_isInitialTime!);
         print(_starttime);
         int counter = 10001;
@@ -174,6 +176,7 @@ class RoutineTimeProvider extends ChangeNotifier {
       await storage.write(key: "sdb_initialEx", value: "");
       await storage.write(key: "sdb_initialRindex", value: "");
 
+      _cancelNotificationWithChronometer();
       null;
     }
   }
@@ -186,20 +189,24 @@ class RoutineTimeProvider extends ChangeNotifier {
     print(_starttime);
     print(_starttime.millisecondsSinceEpoch / 1000);
     final AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      'Supero',
-      'Supero',
-      channelDescription: 'Supero에서는 운동을 지원합니다',
-      importance: Importance.max,
-      priority: Priority.high,
-      when: DateTime.now().millisecondsSinceEpoch * 1000 -
-          _starttime.millisecondsSinceEpoch * 1000,
-      usesChronometer: true,
-    );
+        AndroidNotificationDetails('Supero', 'Supero',
+            channelDescription: 'Supero에서는 운동을 지원합니다',
+            importance: Importance.max,
+            priority: Priority.high,
+            when: _starttime.millisecondsSinceEpoch,
+            usesChronometer: true,
+            ongoing: true,
+            autoCancel: false);
     final NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
-        0, '운동을 시작할게요', '운동 시작', platformChannelSpecifics,
+        0, '운동을 하고 있어요', "누른 후 운동으로 돌아가보세요", platformChannelSpecifics,
         payload: 'item x');
+  }
+
+  Future<void> _cancelNotificationWithChronometer() async {
+    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
+    await flutterLocalNotificationsPlugin.cancel(0);
   }
 }
