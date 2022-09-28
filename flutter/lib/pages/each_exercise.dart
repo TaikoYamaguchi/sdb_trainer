@@ -447,9 +447,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                           _workoutdataProvider.setsplus(
                                                                               widget.rindex,
                                                                               pindex),
-                                                                          weightController[pindex]
-                                                                              .controllerlist
-                                                                              .clear(),
+                                                                          weightController[pindex].controllerlist.add(new TextEditingController(text: null)),
+                                                                          repsController[pindex].controllerlist.add(new TextEditingController(text: null)),
                                                                           showToast(
                                                                               "세트를 추가했어요 필요없으면 다음으로 넘어가보세요")
                                                                         ]
@@ -496,10 +495,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                         widget
                                                                             .rindex,
                                                                         pindex),
-                                                                weightController[
-                                                                        pindex]
-                                                                    .controllerlist
-                                                                    .clear(),
+                                                                        weightController[pindex].controllerlist.add(new TextEditingController(text: null)),
+                                                                        repsController[pindex].controllerlist.add(new TextEditingController(text: null)),
                                                                 showToast(
                                                                     "세트를 추가했어요! 다음으로 넘어갈 수도 있어요")
                                                               ]
