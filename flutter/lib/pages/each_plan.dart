@@ -38,6 +38,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
   var _userdataProvider;
   var _exercisesdataProvider;
   var _testdata0;
+  var _customRuUsed = false;
   late var _testdata = _testdata0;
   String _addexinput = '';
   late List<hisdata.Exercises> exerciseList = [];
@@ -93,14 +94,16 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
       actions: [
         IconButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  Transition(
-                      child: ProgramUpload(
-                        program: _workoutdataProvider
-                            .workoutdata.routinedatas[widget.rindex],
-                      ),
-                      transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+              _workoutdataProvider.workoutdata.routinedatas[widget.rindex].mode == 3 
+                  ? showToast("다운받은 루틴은 업로드 할 수 없어요")
+                  : Navigator.push(
+                    context,
+                    Transition(
+                        child: ProgramUpload(
+                          program: _workoutdataProvider
+                              .workoutdata.routinedatas[widget.rindex],
+                        ),
+                        transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
             },
             icon: Icon(
               Icons.cloud_upload_rounded,
@@ -194,8 +197,19 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                 SizedBox(height: 20),
                 TextField(
                   onChanged: (value) {
-                    setState(() {
-                      null;
+                    _workoutdataProvider.workoutdata.routinedatas
+                        .indexWhere((routine) {
+                      if (routine.name == _workoutNameCtrl.text) {
+                        setState(() {
+                          _customRuUsed = true;
+                        });
+                        return true;
+                      } else {
+                        setState(() {
+                          _customRuUsed = false;
+                        });
+                        return false;
+                      }
                     });
                   },
                   style: TextStyle(fontSize: 24.0, color: Colors.white),
@@ -233,7 +247,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),),
-              backgroundColor: _workoutNameCtrl.text == ""
+              backgroundColor: _workoutNameCtrl.text == "" || _customRuUsed == true
                   ? Color(0xFF212121)
                   : Theme.of(context).primaryColor,
               foregroundColor: Theme.of(context).primaryColor,
@@ -242,11 +256,13 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
               padding: EdgeInsets.all(12.0),
             ),
             onPressed: () {
-              _editWorkoutNameCheck(_workoutNameCtrl.text);
-              _workoutNameCtrl.clear();
-              Navigator.of(context, rootNavigator: true).pop();
+              if (!_customRuUsed && _workoutNameCtrl.text != "") {
+                _editWorkoutNameCheck(_workoutNameCtrl.text);
+                _workoutNameCtrl.clear();
+                Navigator.of(context, rootNavigator: true).pop();
+              }
             },
-            child: Text("루틴 이름 수정",
+            child: Text(_customRuUsed == true ? "존재하는 루틴 이름" : "루틴 이름 수정",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 

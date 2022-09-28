@@ -418,17 +418,15 @@ class ExerciseState extends State<Exercise> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          routinelist[index].mode == 1
-                                              ? Text("Program Mode",
-                                                  style: TextStyle(
-                                                      fontSize: 13,
-                                                      color: Color(0xFF717171)))
-                                              : Text(
-                                                  "${routinelist[index].exercises.length} Exercises",
-                                                  style: TextStyle(
-                                                      fontSize: 13,
-                                                      color:
-                                                          Color(0xFF717171))),
+                                          routinelist[index].mode == 0
+                                              ? Text("${routinelist[index].exercises.length} Exercises",
+                                              style: TextStyle(
+                                                fontSize: 13,
+                                                color: Color(0xFF717171)))
+                                              : Text("Program Mode",
+                                              style: TextStyle(
+                                                  fontSize: 13,
+                                                  color: Color(0xFF717171))),
                                         ],
                                       )
                                     ],
@@ -827,7 +825,7 @@ class ExerciseState extends State<Exercise> {
               padding: EdgeInsets.all(12.0),
             ),
             onPressed: () {
-              if (!_customExUsed) {
+              if (!_customExUsed && _workoutNameCtrl.text != "") {
                 _workoutdataProvider.addroutine(new Routinedatas(
                     name: _workoutNameCtrl.text,
                     mode: _RoutineMenuProvider.ismodechecked ? 1 : 0,
@@ -841,8 +839,8 @@ class ExerciseState extends State<Exercise> {
                 _editWorkoutCheck();
                 _workoutNameCtrl.clear();
                 Navigator.of(context, rootNavigator: true).pop();
-              }
-              ;
+              };
+
             },
             child: Text(_customExUsed == true ? "존재하는 루틴 이름" : "새 루틴 추가",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
@@ -896,8 +894,19 @@ class ExerciseState extends State<Exercise> {
                 SizedBox(height: 20),
                 TextField(
                   onChanged: (value) {
-                    setState(() {
-                      null;
+                    _workoutdataProvider.workoutdata.routinedatas
+                        .indexWhere((routine) {
+                      if (routine.name == _workoutNameCtrl.text) {
+                        setState(() {
+                          _customExUsed = true;
+                        });
+                        return true;
+                      } else {
+                        setState(() {
+                          _customExUsed = false;
+                        });
+                        return false;
+                      }
                     });
                   },
                   style: TextStyle(fontSize: 24.0, color: Colors.white),
@@ -936,7 +945,7 @@ class ExerciseState extends State<Exercise> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),),
               foregroundColor: Theme.of(context).primaryColor,
-              backgroundColor: _workoutNameCtrl.text == ""
+              backgroundColor: _workoutNameCtrl.text == "" || _customExUsed == true
                   ? Color(0xFF212121)
                   : Theme.of(context).primaryColor,
               textStyle: TextStyle(color: Colors.white,),
@@ -944,11 +953,13 @@ class ExerciseState extends State<Exercise> {
               padding: EdgeInsets.all(12.0),
             ),
             onPressed: () {
-              _editWorkoutNameCheck(_workoutNameCtrl.text, index);
-              _workoutNameCtrl.clear();
-              Navigator.of(context, rootNavigator: true).pop();
+              !_customExUsed && _workoutNameCtrl.text != ""
+              ? [_editWorkoutNameCheck(_workoutNameCtrl.text, index),
+              _workoutNameCtrl.clear(),
+              Navigator.of(context, rootNavigator: true).pop()]
+              : null;
             },
-            child: Text("루틴 이름 수정",
+            child: Text(_customExUsed == true ? "존재하는 루틴 이름" : "루틴 이름 수정",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
@@ -1005,17 +1016,7 @@ class ExerciseState extends State<Exercise> {
                 Navigator.of(context).popUntil((route) => route.isFirst);
                 if (_workoutdataProvider.workoutdata
                         .routinedatas[_routinetimeProvider.nowonrindex].mode ==
-                    1) {
-                  Navigator.push(
-                      context,
-                      Transition(
-                          child: EachPlanDetails(
-                            rindex: _routinetimeProvider.nowonrindex,
-                          ),
-                          transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-                  provider.gotooff();
-                  provider.exstackup(1);
-                } else {
+                    0) {
                   Navigator.push(
                       context,
                       Transition(
@@ -1030,20 +1031,30 @@ class ExerciseState extends State<Exercise> {
                             ueindex: _exercisesdataProvider
                                 .exercisesdata.exercises
                                 .indexWhere((element) =>
-                                    element.name ==
-                                    _workoutdataProvider
-                                        .workoutdata
-                                        .routinedatas[
-                                            _routinetimeProvider.nowonrindex]
-                                        .exercises[
-                                            _routinetimeProvider.nowoneindex]
-                                        .name),
+                            element.name ==
+                                _workoutdataProvider
+                                    .workoutdata
+                                    .routinedatas[
+                                _routinetimeProvider.nowonrindex]
+                                    .exercises[
+                                _routinetimeProvider.nowoneindex]
+                                    .name),
                             eindex: _routinetimeProvider.nowoneindex,
                             rindex: _routinetimeProvider.nowonrindex,
                           ),
                           transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
                   provider.gotooff();
                   provider.exstackup(2);
+                } else {
+                  Navigator.push(
+                      context,
+                      Transition(
+                          child: EachPlanDetails(
+                            rindex: _routinetimeProvider.nowonrindex,
+                          ),
+                          transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+                  provider.gotooff();
+                  provider.exstackup(1);
                 }
               }),
             ];

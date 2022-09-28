@@ -582,7 +582,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               padding: EdgeInsets.all(12.0),
             ),
             onPressed: () {
-              if (!_customRuUsed) {
+              if (!_customRuUsed && _workoutNameCtrl.text != "") {
                 _editWorkoutNameCheck(_workoutNameCtrl.text);
                 _workoutNameCtrl.clear();
                 _exSearchCtrl.clear();

@@ -183,9 +183,28 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     }
     int numEx = _workoutdataProvider
         .workoutdata.routinedatas[widget.rindex].exercises.length;
+    var _routine = _workoutdataProvider.workoutdata.routinedatas[widget.rindex];
     for (int i = 0; i < numEx; i++) {
       weightController.add(new Controllerlist());
       repsController.add(new Controllerlist());
+      for (int s = 0; s < _routine.exercises[i].sets.length; s++) {
+        weightController[i].controllerlist.add(new TextEditingController(
+            text: _routine.exercises[i].sets[s].weight == 0
+                ? null
+                : (_routine.exercises[i].sets[s].weight % 1) == 0
+                ? _routine.exercises[i].sets[s]
+                .weight
+                .toStringAsFixed(0)
+                : _routine.exercises[i].sets[s]
+                .weight
+                .toStringAsFixed(1)));
+        repsController[i].controllerlist.add(
+            new TextEditingController(
+                text: _routine.exercises[i].sets[s].reps == 1
+                    ? null
+                    : _routine.exercises[i].sets[s].reps.toStringAsFixed(0)));
+
+      }
     }
     return PageView.builder(
       onPageChanged: (value) {
@@ -384,22 +403,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                         child: ListView.separated(
                             shrinkWrap: true,
                             itemBuilder: (BuildContext _context, int index) {
-                              weightController[pindex].controllerlist.add(
-                                  new TextEditingController(
-                                      text: _sets[index].weight == 0
-                                          ? null
-                                          : (_sets[index].weight % 1) == 0
-                                              ? _sets[index]
-                                                  .weight
-                                                  .toStringAsFixed(0)
-                                              : _sets[index]
-                                                  .weight
-                                                  .toStringAsFixed(1)));
-                              repsController[pindex].controllerlist.add(
-                                  new TextEditingController(
-                                      text: _sets[index]
-                                          .reps
-                                          .toStringAsFixed(0)));
                               return Container(
                                 padding: EdgeInsets.only(right: 10),
                                 child: Row(
@@ -444,9 +447,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                           _workoutdataProvider.setsplus(
                                                                               widget.rindex,
                                                                               pindex),
-                                                                          weightController[pindex]
-                                                                              .controllerlist
-                                                                              .clear(),
+                                                                          weightController[pindex].controllerlist.add(new TextEditingController(text: null)),
+                                                                          repsController[pindex].controllerlist.add(new TextEditingController(text: null)),
                                                                           showToast(
                                                                               "세트를 추가했어요 필요없으면 다음으로 넘어가보세요")
                                                                         ]
@@ -493,10 +495,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                         widget
                                                                             .rindex,
                                                                         pindex),
-                                                                weightController[
-                                                                        pindex]
-                                                                    .controllerlist
-                                                                    .clear(),
+                                                                        weightController[pindex].controllerlist.add(new TextEditingController(text: null)),
+                                                                        repsController[pindex].controllerlist.add(new TextEditingController(text: null)),
                                                                 showToast(
                                                                     "세트를 추가했어요! 다음으로 넘어갈 수도 있어요")
                                                               ]
@@ -672,6 +672,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 onPressed: () {
                                   _workoutdataProvider.setsminus(
                                       widget.rindex, pindex);
+                                  weightController[pindex].controllerlist.removeLast();
+                                  repsController[pindex].controllerlist.removeLast();
+
                                 },
                                 icon: Icon(
                                   Icons.remove,
@@ -682,9 +685,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 onPressed: () {
                                   _workoutdataProvider.setsplus(
                                       widget.rindex, pindex);
-                                  weightController[pindex]
-                                      .controllerlist
-                                      .clear();
+                                  weightController[pindex].controllerlist.add(new TextEditingController(text: null));
+                                  repsController[pindex].controllerlist.add(new TextEditingController(text: null));
                                 },
                                 icon: Icon(
                                   Icons.add,
