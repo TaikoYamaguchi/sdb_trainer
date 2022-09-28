@@ -44,9 +44,42 @@ class _FeedState extends State<Feed> {
   var _historydata;
   var _userdataProvider;
   var _historyCommentCtrl;
+  final _pageController = ScrollController();
+  var _final_history_id;
+  var _hasMore = true;
   @override
   void initState() {
     super.initState();
+    _pageController.addListener(() {
+      print(_final_history_id);
+      if (_pageController.position.maxScrollExtent == _pageController.offset) {
+        _fetchHistoryPage();
+      }
+    });
+  }
+
+  Future _fetchHistoryPage() async {
+    try {
+      var nextPage =
+          await HistorydataPagination(final_history_id: _final_history_id)
+              .loadSDBdataPagination()
+              .then((data) => {
+                    if (data.sdbdatas.isEmpty != true)
+                      {_historydataAll.addHistorydataPage(data)}
+                    else
+                      {
+                        setState(() {
+                          _hasMore = false;
+                        })
+                      }
+                  });
+      print("kkkkkkkkkkkkk");
+      print(nextPage);
+    } catch (e) {
+      setState(() {
+        _hasMore = false;
+      });
+    }
   }
 
   @override
@@ -100,12 +133,25 @@ class _FeedState extends State<Feed> {
               builder: (builder, provider, child) {
             _feedController(_feedListCtrl);
             return ListView.separated(
+                controller: _pageController,
                 itemBuilder: (BuildContext _context, int index) {
-                  return Center(
-                      child: FeedCard(
-                          sdbdata: _historydata[index],
-                          index: index,
-                          feedListCtrl: _feedListCtrl));
+                  if (index < _historydata.length) {
+                    return Center(
+                        child: FeedCard(
+                            sdbdata: _historydata[index],
+                            index: index,
+                            feedListCtrl: _feedListCtrl));
+                  } else {
+                    _final_history_id = _historydata[index - 1].id;
+                    return Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      child: Center(
+                          child: _hasMore
+                              ? CircularProgressIndicator()
+                              : Text("데이터 없음",
+                                  style: TextStyle(color: Colors.white))),
+                    );
+                  }
                 },
                 separatorBuilder: (BuildContext _context, int index) {
                   return Container(
@@ -119,7 +165,7 @@ class _FeedState extends State<Feed> {
                     ),
                   );
                 },
-                itemCount: _historydata.length);
+                itemCount: _historydata.length + 1);
           }),
         ),
       ],
@@ -173,6 +219,7 @@ class _FeedState extends State<Feed> {
   @override
   void dispose() {
     print('dispose');
+    _pageController.dispose();
     super.dispose();
   }
 

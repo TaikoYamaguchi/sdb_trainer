@@ -28,6 +28,11 @@ class HistorydataProvider extends ChangeNotifier {
     });
   }
 
+  addHistorydataPage(SDBdataList) {
+    _historydataAll.sdbdatas.addAll(SDBdataList.sdbdatas);
+    notifyListeners();
+  }
+
   getCommentAll() {
     CommentsAll.getCommentsAll().then((value) {
       _commentAll = value;

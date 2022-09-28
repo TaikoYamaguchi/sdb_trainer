@@ -51,7 +51,7 @@ class _FeedCardState extends State<FeedCard> {
     "feedVisible": false
   };
 
-  late var _photoInfo = {"feedList": widget.feedListCtrl, "feedVisible": false};
+  late var _photoInfo = {"feedList": widget.feedListCtrl, "feedVisible": true};
   @override
   void initState() {
     _tapPosition = Offset(0.0, 0.0);
@@ -800,12 +800,15 @@ class _FeedCardState extends State<FeedCard> {
         child: TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
               backgroundColor: _historyCommentCtrl.text == ""
                   ? Color(0xFF212121)
                   : Theme.of(context).primaryColor,
               foregroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(color: Colors.white,),
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
             ),
@@ -1006,10 +1009,13 @@ class _FeedCardState extends State<FeedCard> {
         child: TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(color: Colors.white,),
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
             ),
