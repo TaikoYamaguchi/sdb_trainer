@@ -14,6 +14,7 @@ import 'package:sdb_trainer/pages/feedCard.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:like_button/like_button.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Feed extends StatefulWidget {
   Feed({Key? key}) : super(key: key);
@@ -47,25 +48,50 @@ class _FeedState extends State<Feed> {
   final _pageController = ScrollController();
   var _final_history_id;
   var _hasMore = true;
+
+  final binding = WidgetsFlutterBinding.ensureInitialized();
   @override
   void initState() {
     super.initState();
-    _pageController.addListener(() {
-      print(_final_history_id);
-      if (_pageController.position.maxScrollExtent == _pageController.offset) {
-        _fetchHistoryPage();
-      }
+    binding.addPostFrameCallback((_) async {
+      BuildContext context = binding.renderViewElement!;
+      _pageController.addListener(() {
+        if (_pageController.position.maxScrollExtent ==
+            _pageController.offset) {
+          _fetchHistoryPage(context);
+        }
+      });
     });
   }
 
-  Future _fetchHistoryPage() async {
+  Future _fetchHistoryPage(context) async {
     try {
+      print(context);
+      print("111111111");
       var nextPage =
           await HistorydataPagination(final_history_id: _final_history_id)
               .loadSDBdataPagination()
               .then((data) => {
+                    print(data.sdbdatas),
                     if (data.sdbdatas.isEmpty != true)
-                      {_historydataAll.addHistorydataPage(data)}
+                      {
+                        _historydataAll.addHistorydataPage(data),
+                        if (context != null)
+                          {
+                            for (var history in data.sdbdatas)
+                              {
+                                if (history.image!.isEmpty != true)
+                                  {
+                                    for (var image in history.image!)
+                                      {
+                                        precacheImage(
+                                            CachedNetworkImageProvider(image),
+                                            context)
+                                      }
+                                  }
+                              }
+                          }
+                      }
                     else
                       {
                         setState(() {

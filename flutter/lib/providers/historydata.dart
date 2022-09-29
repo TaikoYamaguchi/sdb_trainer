@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/repository/comment_repository.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class HistorydataProvider extends ChangeNotifier {
   var _historydata;
@@ -22,8 +23,21 @@ class HistorydataProvider extends ChangeNotifier {
   }
 
   getHistorydataAll() {
+    final binding = WidgetsFlutterBinding.ensureInitialized();
     HistorydataAll.loadSDBdataAll().then((value) {
       _historydataAll = value;
+      binding.addPostFrameCallback((_) async {
+        BuildContext context = binding.renderViewElement!;
+        if (context != null) {
+          for (var history in value.sdbdatas) {
+            if (history.image!.isEmpty != true) {
+              for (var image in history.image!) {
+                precacheImage(CachedNetworkImageProvider(image), context);
+              }
+            }
+          }
+        }
+      });
       notifyListeners();
     });
   }
