@@ -16,6 +16,7 @@ import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'package:sdb_trainer/src/model/workoutdata.dart' as wod;
+import 'package:sdb_trainer/src/utils/my_flexible_space_bar.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:transition/transition.dart';
@@ -727,7 +728,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             : showToast("입력을 확인해주세요"));
   }
 
-  Widget _exercisesWidget(bool shirink) {
+  Widget _exercisesWidget(bool scrollable,bool shirink) {
     return Container(
       color: Colors.black,
       child: Consumer2<WorkoutdataProvider, ExercisesdataProvider>(
@@ -850,6 +851,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                       ),
                     ))
             : ReorderableListView.builder(
+                physics: scrollable? new NeverScrollableScrollPhysics() : null,
                 onReorder: (int oldIndex, int newIndex) {
                   setState(() {
                     if (oldIndex < newIndex) {
@@ -1040,7 +1042,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                     width: MediaQuery.of(context).size.width / 2 - 1,
                     child: Padding(
                       padding: const EdgeInsets.only(top: 4.0, left: 1.0),
-                      child: _exercisesWidget(true),
+                      child: _exercisesWidget(false, true),
                     ),
                   ),
                   VerticalDivider(
@@ -1285,9 +1287,142 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             ];
 
       return Scaffold(
-          appBar: _appbarWidget(),
+          appBar: _isexsearch ? _appbarWidget() : null,
           body:
-              _isexsearch ? _exercises_searchWidget() : _exercisesWidget(false),
+              _isexsearch ? _exercises_searchWidget() : CustomScrollView(
+                slivers: [
+                  SliverAppBar(
+
+                    floating: false,
+                    pinned: true,
+                    actions: [
+                      IconButton(
+                      key: keyPlus,
+                      icon: SvgPicture.asset("assets/svg/add_white.svg"),
+                      onPressed: () {
+                        _workoutdataProvider.dataBU(widget.rindex);
+
+                        setState(() {
+                          _isexsearch = !_isexsearch;
+                        });
+                        _PrefsProvider.eachworkouttutor
+                            ? [
+                          Future.delayed(Duration(milliseconds: 100))
+                              .then((value) {
+                            Tutorial.showTutorial(context, itens);
+                          }),
+                          _PrefsProvider.tutordone()
+                        ]
+                            : null;
+                      },
+                    )
+                    ],
+
+                    leading: Center(
+                      child: GestureDetector(
+                        child: Icon(Icons.arrow_back_ios_outlined),
+                        onTap: () {
+                          btnDisabled == true
+                              ? null
+                              : [btnDisabled = true, Navigator.of(context).pop()];
+                        },
+                      ),
+                    ),
+                    expandedHeight: _appbarWidget().preferredSize.height*2,
+                    collapsedHeight: _appbarWidget().preferredSize.height,
+                    backgroundColor: Colors.black,
+
+                    flexibleSpace: myFlexibleSpaceBar(
+                      expandedTitleScale: 1.2,
+                      titlePaddingTween: EdgeInsetsTween(begin: EdgeInsets.only(left: 12.0, bottom: 8), end: EdgeInsets.only(left: 60.0, bottom: 8)),
+                      title: GestureDetector(
+                        onTap: () {
+                          _displayTextInputDialog();
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              child: Consumer<WorkoutdataProvider>(
+                                  builder: (builder, provider, child) {
+                                    return Text(
+                                      provider.workoutdata.routinedatas[widget.rindex].name,
+                                      style: TextStyle(color: Colors.white, fontSize: 30),
+                                    );
+                                  }),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate((context, _index) {
+                      return Container(
+                        child: _exercisesWidget(true,true)
+                      );
+                    },
+                    childCount: 1,
+                    ),
+                  )
+                ]
+              ),
+              /*
+              NestedScrollView(
+                  physics: BouncingScrollPhysics(),
+                  headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                    return [
+                      SliverAppBar(
+
+                        floating: true,
+                        pinned: true,
+
+                        leading: Center(
+                          child: GestureDetector(
+                            child: Icon(Icons.arrow_back_ios_outlined),
+                            onTap: () {
+                              btnDisabled == true
+                                  ? null
+                                  : [btnDisabled = true, Navigator.of(context).pop()];
+                            },
+                          ),
+                        ),
+                        expandedHeight: _appbarWidget().preferredSize.height*2,
+                        collapsedHeight: _appbarWidget().preferredSize.height,
+                        backgroundColor: Colors.black,
+                        forceElevated: innerBoxIsScrolled,
+
+                        flexibleSpace: myFlexibleSpaceBar(
+                          expandedTitleScale: 1.2,
+                          titlePaddingTween: EdgeInsetsTween(begin: EdgeInsets.only(left: 12.0, bottom: 8), end: EdgeInsets.only(left: 60.0, bottom: 8)),
+                          title: GestureDetector(
+                            onTap: () {
+                              _displayTextInputDialog();
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  child: Consumer<WorkoutdataProvider>(
+                                      builder: (builder, provider, child) {
+                                        return Text(
+                                          provider.workoutdata.routinedatas[widget.rindex].name,
+                                          style: TextStyle(color: Colors.white, fontSize: 30),
+                                        );
+                                      }),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ];
+
+                  },
+                  body: _exercisesWidget(false)
+              ),
+
+               */
           backgroundColor: Colors.black);
     });
   }
