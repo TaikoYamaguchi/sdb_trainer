@@ -14,6 +14,7 @@ import 'package:sdb_trainer/pages/feedCard.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:like_button/like_button.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Feed extends StatefulWidget {
   Feed({Key? key}) : super(key: key);
@@ -44,9 +45,67 @@ class _FeedState extends State<Feed> {
   var _historydata;
   var _userdataProvider;
   var _historyCommentCtrl;
+  final _pageController = ScrollController();
+  var _final_history_id;
+  var _hasMore = true;
+
+  final binding = WidgetsFlutterBinding.ensureInitialized();
   @override
   void initState() {
     super.initState();
+    binding.addPostFrameCallback((_) async {
+      BuildContext context = binding.renderViewElement!;
+      _pageController.addListener(() {
+        if (_pageController.position.maxScrollExtent ==
+            _pageController.offset) {
+          _fetchHistoryPage(context);
+        }
+      });
+    });
+  }
+
+  Future _fetchHistoryPage(context) async {
+    try {
+      print(context);
+      print("111111111");
+      var nextPage =
+          await HistorydataPagination(final_history_id: _final_history_id)
+              .loadSDBdataPagination()
+              .then((data) => {
+                    print(data.sdbdatas),
+                    if (data.sdbdatas.isEmpty != true)
+                      {
+                        _historydataAll.addHistorydataPage(data),
+                        if (context != null)
+                          {
+                            for (var history in data.sdbdatas)
+                              {
+                                if (history.image!.isEmpty != true)
+                                  {
+                                    for (var image in history.image!)
+                                      {
+                                        precacheImage(
+                                            CachedNetworkImageProvider(image),
+                                            context)
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                    else
+                      {
+                        setState(() {
+                          _hasMore = false;
+                        })
+                      }
+                  });
+      print("kkkkkkkkkkkkk");
+      print(nextPage);
+    } catch (e) {
+      setState(() {
+        _hasMore = false;
+      });
+    }
   }
 
   @override
@@ -100,12 +159,25 @@ class _FeedState extends State<Feed> {
               builder: (builder, provider, child) {
             _feedController(_feedListCtrl);
             return ListView.separated(
+                controller: _pageController,
                 itemBuilder: (BuildContext _context, int index) {
-                  return Center(
-                      child: FeedCard(
-                          sdbdata: _historydata[index],
-                          index: index,
-                          feedListCtrl: _feedListCtrl));
+                  if (index < _historydata.length) {
+                    return Center(
+                        child: FeedCard(
+                            sdbdata: _historydata[index],
+                            index: index,
+                            feedListCtrl: _feedListCtrl));
+                  } else {
+                    _final_history_id = _historydata[index - 1].id;
+                    return Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      child: Center(
+                          child: _hasMore
+                              ? CircularProgressIndicator()
+                              : Text("데이터 없음",
+                                  style: TextStyle(color: Colors.white))),
+                    );
+                  }
                 },
                 separatorBuilder: (BuildContext _context, int index) {
                   return Container(
@@ -119,7 +191,7 @@ class _FeedState extends State<Feed> {
                     ),
                   );
                 },
-                itemCount: _historydata.length);
+                itemCount: _historydata.length + 1);
           }),
         ),
       ],
@@ -173,6 +245,7 @@ class _FeedState extends State<Feed> {
   @override
   void dispose() {
     print('dispose');
+    _pageController.dispose();
     super.dispose();
   }
 

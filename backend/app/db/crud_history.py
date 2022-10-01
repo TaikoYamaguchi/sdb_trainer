@@ -4,6 +4,7 @@ from pytz import timezone
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 import typing as t
+from sqlakeyset import get_page
 
 from sqlalchemy.sql import func
 
@@ -39,12 +40,19 @@ def create_history(db: Session, history: schemas.HistoryCreate, ip:str):
     return db_history
 
 def get_histories_by_email(db: Session, email: str) -> t.List[schemas.HistoryOut]:
+    
     histories = db.query(models.History).filter(models.History.user_email == email).order_by(models.History.id.desc()).all()
     return histories
 
-def get_histories(db: Session) -> t.List[schemas.HistoryOut]:
-    histories = db.query(models.History).order_by(models.History.id.desc()).all()
+def get_histories(db: Session, skip, limit) -> t.List[schemas.HistoryOut]:
+    histories = db.query(models.History).order_by(models.History.id.desc()).offset(skip).limit(limit).all()
     return histories
+
+def get_histories_by_page(db: Session, page, id) -> t.List[schemas.HistoryOut]:
+    histories = db.query(models.History).order_by(models.History.id.desc())
+    print(histories)
+    page2 = get_page(histories, per_page=page, page=((id,), False))
+    return page2
 
 def get_friends_histories(db: Session, email:str) -> t.List[schemas.HistoryOut]:
     user = db.query(models.User).filter(models.User.email==email).first()

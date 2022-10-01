@@ -23,6 +23,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'dart:async';
+import 'package:fl_chart/fl_chart.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
