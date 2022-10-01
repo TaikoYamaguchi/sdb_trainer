@@ -1292,8 +1292,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               _isexsearch ? _exercises_searchWidget() : CustomScrollView(
                 slivers: [
                   SliverAppBar(
-
-                    floating: false,
+                    snap: true,
+                    floating: true,
                     pinned: true,
                     actions: [
                       IconButton(
@@ -1367,62 +1367,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                   )
                 ]
               ),
-              /*
-              NestedScrollView(
-                  physics: BouncingScrollPhysics(),
-                  headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                    return [
-                      SliverAppBar(
 
-                        floating: true,
-                        pinned: true,
-
-                        leading: Center(
-                          child: GestureDetector(
-                            child: Icon(Icons.arrow_back_ios_outlined),
-                            onTap: () {
-                              btnDisabled == true
-                                  ? null
-                                  : [btnDisabled = true, Navigator.of(context).pop()];
-                            },
-                          ),
-                        ),
-                        expandedHeight: _appbarWidget().preferredSize.height*2,
-                        collapsedHeight: _appbarWidget().preferredSize.height,
-                        backgroundColor: Colors.black,
-                        forceElevated: innerBoxIsScrolled,
-
-                        flexibleSpace: myFlexibleSpaceBar(
-                          expandedTitleScale: 1.2,
-                          titlePaddingTween: EdgeInsetsTween(begin: EdgeInsets.only(left: 12.0, bottom: 8), end: EdgeInsets.only(left: 60.0, bottom: 8)),
-                          title: GestureDetector(
-                            onTap: () {
-                              _displayTextInputDialog();
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  child: Consumer<WorkoutdataProvider>(
-                                      builder: (builder, provider, child) {
-                                        return Text(
-                                          provider.workoutdata.routinedatas[widget.rindex].name,
-                                          style: TextStyle(color: Colors.white, fontSize: 30),
-                                        );
-                                      }),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ];
-
-                  },
-                  body: _exercisesWidget(false)
-              ),
-
-               */
           backgroundColor: Colors.black);
     });
   }

@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/each_exercise.dart';
 import 'package:sdb_trainer/pages/each_plan.dart';
 import 'package:sdb_trainer/pages/each_workout.dart';
+import 'package:sdb_trainer/pages/exercise_filter.dart';
 import 'package:sdb_trainer/pages/routine_bank.dart';
 import 'package:sdb_trainer/pages/unique_exercise.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
@@ -17,6 +18,7 @@ import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
+import 'package:sdb_trainer/src/model/exercisesdata.dart';
 import 'package:sdb_trainer/src/model/userdata.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
@@ -687,13 +689,69 @@ class ExerciseState extends State<Exercise> {
     );
   }
 
+  Widget group_by_target() {
+    return Container(
+      child: GridView.builder(
+        itemCount: 12,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          childAspectRatio: 5/6,
+
+        ),
+        itemBuilder: (BuildContext context, int index) {
+          var key_list =ExImage().body_part_image.keys.toList();
+          return GestureDetector(
+            onTap: (){
+              Navigator.push(
+                  context,
+                  Transition(
+                      child: ExerciseFilter(),
+                      transitionEffect: TransitionEffect.BOTTOM_TO_TOP));
+            },
+            child: Card(
+              child: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(1.0),
+                      child: ExImage().body_part_image[key_list[index]] != ''
+                          ? null
+                          : Container(
+                          color: Colors.white,
+                          child: Icon(
+                            Icons.image_not_supported,
+                            size: 100,
+                          )),
+                    ),
+                    Container(
+                      alignment: Alignment.bottomCenter,
+                      child: Text(
+                        '${key_list[index]}',
+                        style: TextStyle(
+                            fontSize: 15, color: Colors.white
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+
+      ),
+    );
+  }
+
   Widget _bodyWidget() {
     switch (swap) {
       case 1:
         return _workoutWidget();
 
       case -1:
-        return exercisesWidget2(false);
+        return group_by_target();
+          //exercisesWidget2(false);
     }
     return Container();
   }
