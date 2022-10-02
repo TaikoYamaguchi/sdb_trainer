@@ -51,6 +51,7 @@ class _HomeState extends State<Home> {
   String _addexinput = '';
   late var _testdata = _testdata0.exercises;
   var _timer;
+  late List<BarChartGroupData> _cardCoreBarChartGroupData;
 
   @override
   void initState() {
@@ -148,10 +149,11 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void _dateController(_dateCtrl) {
+  void _dateController(_dateCtrl) async {
     DateTime _toDay = DateTime.now();
     if (_dateCtrl == 1) {
-      _historydata = _historydataProvider.historydata.sdbdatas.where((sdbdata) {
+      _historydata =
+          await _historydataProvider.historydata.sdbdatas.where((sdbdata) {
         if (_toDay.difference(DateTime.parse(sdbdata.date)).inDays <= 7) {
           return true;
         } else {
@@ -484,10 +486,20 @@ class _HomeState extends State<Home> {
 
   Widget _countHistoryNoWidget(context) {
     var _historyDate = [];
+    var _barChartGroupData = [];
     _dateController(_dateCtrl);
     double deviceWidth = MediaQuery.of(context).size.width;
     for (var sdbdata in _historydata) {
       _historyDate.add(sdbdata);
+      // _barChartGroupData
+      //     .add(BarChartGroupData(x: _historydata.indexOf(sdbdata), barRods: [
+      //   BarChartRodData(
+      //       toY: 1,
+      //       width: 12,
+      //       color: Theme.of(context).primaryColor,
+      //       borderRadius: BorderRadius.only(
+      //           topLeft: Radius.circular(6), topRight: Radius.circular(6)))
+      // ]));
     }
 
     return _countHistoryCardCore(context, _dateStringCase(_dateCtrl),
@@ -587,8 +599,14 @@ class _HomeState extends State<Home> {
         0);
   }
 
-  Widget _countHistoryCardCore(context, _historyDateCore, _historyTextCore,
-      _histroySideText, int _devicePaddingWidth, int _devicePaddingWidthAdd) {
+  Widget _countHistoryCardCore(
+    context,
+    _historyDateCore,
+    _historyTextCore,
+    _histroySideText,
+    int _devicePaddingWidth,
+    int _devicePaddingWidthAdd,
+  ) {
     double deviceWidth = MediaQuery.of(context).size.width;
     return Card(
         color: Theme.of(context).cardColor,
