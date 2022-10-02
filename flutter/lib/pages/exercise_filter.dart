@@ -103,12 +103,41 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
 
 
   void searchExercise(String query) {
-    final suggestions = _testdata0.where((exercise) {
+    final suggestions = _exercisesdataProvider.exercisesdata.exercises.where((exercise) {
       final exTitle = exercise.name;
       return (exTitle.contains(query)) as bool;
     }).toList();
+    _exercisesdataProvider.settestdata_s(suggestions);
 
-    setState(() => _testdata = suggestions);
+  }
+
+  void filterExercise(List query) {
+    final suggestions = _exercisesdataProvider.exercisesdata.exercises.where((exercise) {
+      if (query[0]=='All'){
+        print('imall');
+        return true;
+      } else {
+        final extarget = Set.from(exercise.target);
+        final query_s = Set.from(query);
+        return (query_s.intersection(extarget).isNotEmpty) as bool;
+      }
+    }).toList();
+    print(suggestions.length);
+    _exercisesdataProvider.settestdata_f1(suggestions);
+  }
+
+  void filterExercise2(List query) {
+    final suggestions = _exercisesdataProvider.exercisesdata.exercises.where((exercise) {
+      if (query[0]=='All'){
+        print('imall');
+        return true;
+      } else {
+        final excate = exercise.category;
+        return (query.contains(excate)) as bool;
+      }
+    }).toList();
+    print(suggestions.length);
+    _exercisesdataProvider.settestdata_f2(suggestions);
   }
 
   Widget _exercises_searchWidget() {
@@ -123,7 +152,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                 child: ListView(
                   shrinkWrap: true,
                   children: [
-                    exercisesWidget(_testdata, true),
+                    exercisesWidget(provider.testdata, true),
                     GestureDetector(
                         onTap: () {
                           //_displayCustomExInputDialog(provider);
@@ -187,11 +216,12 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
     );
   }
 
-  Widget exercisesWidget(exuniq, bool shirink) {
+  Widget exercisesWidget(aaa, bool shirink) {
     double top = 0;
     double bottom = 0;
     return Consumer2<WorkoutdataProvider, ExercisesdataProvider>(
         builder: (builder, provider, provider2, child) {
+          var exuniq = provider2.testdata;
           return ListView.separated(
             physics: NeverScrollableScrollPhysics(),
               padding: EdgeInsets.symmetric(horizontal: 2),
@@ -273,27 +303,33 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
     return Container(
       width: MediaQuery.of(context).size.width,
       color: Colors.black,
-      child: ChipsChoice<String>.multiple(
-        value: tags,
-        onChanged: (val) => setState((){
-          tags = val;
-          print(tags.length);
-        } ),
-        choiceItems: C2Choice.listFrom<String, String>(
-          source: options,
-          value: (i, v) => v,
-          label: (i, v) => v,
-          tooltip: (i, v) => v,
-        ),
-        wrapped: true,
-        choiceStyle: const C2ChoiceStyle(
-          color: Color(0xff40434e),
-          appearance: C2ChipType.elevated,
-        ),
-        choiceActiveStyle: const C2ChoiceStyle(
-          color: Color(0xff7a28cb),
-          appearance: C2ChipType.elevated,
-        ),
+      child: Consumer<ExercisesdataProvider>(
+          builder: (context, provider, child) {
+          return ChipsChoice<String>.multiple(
+            value: provider.tags,
+            onChanged: (val) {
+              val.indexOf('All') == val.length-1
+                  ? provider.settags(['All'])
+                  : [val.remove('All'),provider.settags(val),];
+              filterExercise(provider.tags);
+            },
+            choiceItems: C2Choice.listFrom<String, String>(
+              source: provider.options,
+              value: (i, v) => v,
+              label: (i, v) => v,
+              tooltip: (i, v) => v,
+            ),
+            wrapped: true,
+            choiceStyle: const C2ChoiceStyle(
+              color: Color(0xff40434e),
+              appearance: C2ChipType.elevated,
+            ),
+            choiceActiveStyle: const C2ChoiceStyle(
+              color: Color(0xff7a28cb),
+              appearance: C2ChipType.elevated,
+            ),
+          );
+        }
       ),
     );
   }
@@ -302,28 +338,33 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
     return Container(
       width: MediaQuery.of(context).size.width,
       color: Colors.black,
-      child: ChipsChoice<String>.multiple(
-        value: tags2,
-        onChanged: (val) => setState((){
-          tags2 = val;
-          print(val);
-          print(tags2.length);
-        } ),
-        choiceItems: C2Choice.listFrom<String, String>(
-          source: options2,
-          value: (i, v) => v,
-          label: (i, v) => v,
-          tooltip: (i, v) => v,
-        ),
-        wrapped: true,
-        choiceStyle: const C2ChoiceStyle(
-          color: Color(0xff40434e),
-          appearance: C2ChipType.elevated,
-        ),
-        choiceActiveStyle: const C2ChoiceStyle(
-          color: Color(0xff7a28cb),
-          appearance: C2ChipType.elevated,
-        ),
+      child: Consumer<ExercisesdataProvider>(
+        builder: (context, provider, child) {
+          return ChipsChoice<String>.multiple(
+            value: provider.tags2,
+            onChanged: (val) {
+              val.indexOf('All') == val.length-1
+                  ? provider.settags2(['All'])
+                  : [val.remove('All'),provider.settags2(val),];
+              filterExercise2(provider.tags2);
+            },
+            choiceItems: C2Choice.listFrom<String, String>(
+              source: provider.options2,
+              value: (i, v) => v,
+              label: (i, v) => v,
+              tooltip: (i, v) => v,
+            ),
+            wrapped: true,
+            choiceStyle: const C2ChoiceStyle(
+              color: Color(0xff40434e),
+              appearance: C2ChipType.elevated,
+            ),
+            choiceActiveStyle: const C2ChoiceStyle(
+              color: Color(0xff7a28cb),
+              appearance: C2ChipType.elevated,
+            ),
+          );
+        }
       ),
     );
   }
@@ -339,72 +380,73 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _workoutdataProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
-    _exercises = _exercisesdataProvider.exercisesdata.exercises;
-    _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
     return Scaffold(
       appBar: _appbarWidget(),
       body: Column(
         children: [
-          Container(
-            child: ExpandablePanel(
-                controller: _menucontroller,
-                theme: const ExpandableThemeData(
-                  headerAlignment:
-                  ExpandablePanelHeaderAlignment
-                      .center,
-                  hasIcon: false,
-                  iconColor: Colors.white,
-                ),
-                header: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: (){
-                        setState(() {
-                          _menu = 1;
-                          _menucontroller.expanded = true;
-                        });
-                      },
-                      child: Card(
-                        color: Theme.of(context).primaryColor,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width/2-10,
-                          height: _appbarWidget().preferredSize.height*2/3,
-                          child: Center(
-                            child: Text("운동부위",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18)),
-                          ),
-                        ),
+          Padding(
+            padding: const EdgeInsets.only(top: 4.0),
+            child: Container(
+              child: Consumer<ExercisesdataProvider>(
+                builder: (context, provider, child) {
+                  return ExpandablePanel(
+                      controller: _menucontroller,
+                      theme: const ExpandableThemeData(
+                        headerAlignment:
+                        ExpandablePanelHeaderAlignment
+                            .center,
+                        hasIcon: false,
+                        iconColor: Colors.white,
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: (){
-                        setState(() {
-                          _menu = 2;
-                          _menucontroller.expanded = true;
-                        });
-                      },
-                      child: Card(
-                        color: Theme.of(context).primaryColor,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width/2-10,
-                          height: _appbarWidget().preferredSize.height*2/3,
-                          child: Center(
-                            child: Text("운동유형",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18)),
+                      header: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: (){
+                                provider.setfiltmenu(1);
+                                _menucontroller.expanded = true;
+                            },
+                            child: Card(
+                              color: Theme.of(context).primaryColor,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width/2-10,
+                                height: _appbarWidget().preferredSize.height*2/3,
+                                child: Center(
+                                  child: Text("운동부위",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18)),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
+                          GestureDetector(
+                            onTap: (){
+                                provider.setfiltmenu(2);
+                                _menucontroller.expanded = true;
+                            },
+                            child: Card(
+                              color: Theme.of(context).primaryColor,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width/2-10,
+                                height: _appbarWidget().preferredSize.height*2/3,
+                                child: Center(
+                                  child: Text("운동유형",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18)),
+                                ),
+                              ),
+                            ),
+                          ),
 
-                  ],
-                ),
-                collapsed: Container(),
-                expanded: _menu == 1 ? exp1() : _menu == 2 ? exp2() : Container(),
+                        ],
+                      ),
+                      collapsed: Container(),
+                      expanded: provider.filtmenu == 1 ? exp1() : provider.filtmenu == 2 ? exp2() : Container(),
+                  );
+                }
+              ),
             ),
           ),
           Expanded(child: NotificationListener<ScrollNotification>(

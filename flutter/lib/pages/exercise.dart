@@ -702,6 +702,7 @@ class ExerciseState extends State<Exercise> {
           var key_list =ExImage().body_part_image.keys.toList();
           return GestureDetector(
             onTap: (){
+              _exercisesdataProvider.inittestdata();
               Navigator.push(
                   context,
                   Transition(
