@@ -35,14 +35,15 @@ class ExercisesdataProvider extends ChangeNotifier {
     'All',
     '가슴',
     '삼두',
-    '이두',
     '등',
-    '다리',
+    '이두',
     '어깨',
+    '다리',
     '복근',
-    '전완근',
     '유산소',
+    '전완근',
     '둔근',
+    '기타',
   ];
 
 

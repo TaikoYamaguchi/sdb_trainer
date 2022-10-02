@@ -181,18 +181,18 @@ class Exercises {
 
 class ExImage {
   Map body_part_image = {
-    '가슴': '',
-    '삼두': '',
-    '등': '',
-    '이두': '',
-    '어깨': '',
-    '다리': '',
-    '복근': '',
-    '유산소': '',
-    '전완근': '',
-    '둔근': '',
-    '기타': '',
-    '전체': '',
+    '가슴': 'assets/png/chest.png',
+    '삼두': 'assets/png/triceps.png',
+    '등': 'assets/png/back.png',
+    '이두': 'assets/png/biceps.png',
+    '어깨': 'assets/png/shoulder.png',
+    '다리': 'assets/png/leg.png',
+    '복근': 'assets/png/core.png',
+    '전완근': 'assets/png/forearm.png',
+    '둔근': 'assets/png/glute.png',
+    '유산소': 'assets/png/cardio.png',
+    '기타': 'assets/png/etc.png',
+    'All': 'assets/png/all.png',
   };
 }
 

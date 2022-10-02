@@ -27,29 +27,8 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
   late var _testdata = _testdata0;
   var btnDisabled;
   ExpandableController _menucontroller = ExpandableController(initialExpanded: true);
-  List<String> tags = [];
-  List<String> options = [
-    '가슴',
-    '삼두',
-    '이두',
-    '등',
-    '다리',
-    'All',
-    '어깨',
-    '복근',
-    '전완근',
-    '유산소',
-    '둔근',
-  ];
 
-  int _menu = 1;
 
-  List<String> tags2 = [];
-  List<String> options2 = [
-    '바벨',
-    '덤벨',
-    '머신',
-  ];
 
   PreferredSizeWidget _appbarWidget() {
     btnDisabled = false;

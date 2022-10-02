@@ -689,13 +689,27 @@ class ExerciseState extends State<Exercise> {
     );
   }
 
+  void filterExercise(List query) {
+    final suggestions = _exercisesdataProvider.exercisesdata.exercises.where((exercise) {
+      if (query[0]=='All'){
+        return true;
+      } else {
+        final extarget = Set.from(exercise.target);
+        final query_s = Set.from(query);
+        return (query_s.intersection(extarget).isNotEmpty) as bool;
+      }
+    }).toList();
+    _exercisesdataProvider.settestdata_f1(suggestions);
+  }
+
   Widget group_by_target() {
     return Container(
       child: GridView.builder(
         itemCount: 12,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
-          childAspectRatio: 5/6,
+          childAspectRatio: 7/8,
+          mainAxisSpacing: 10,
 
         ),
         itemBuilder: (BuildContext context, int index) {
@@ -703,6 +717,8 @@ class ExerciseState extends State<Exercise> {
           return GestureDetector(
             onTap: (){
               _exercisesdataProvider.inittestdata();
+              _exercisesdataProvider.settags([key_list[index].toString()]);
+              filterExercise(_exercisesdataProvider.tags);
               Navigator.push(
                   context,
                   Transition(
@@ -710,6 +726,7 @@ class ExerciseState extends State<Exercise> {
                       transitionEffect: TransitionEffect.BOTTOM_TO_TOP));
             },
             child: Card(
+              color: Colors.black,
               child: Container(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -717,7 +734,16 @@ class ExerciseState extends State<Exercise> {
                     Padding(
                       padding: EdgeInsets.all(1.0),
                       child: ExImage().body_part_image[key_list[index]] != ''
-                          ? null
+                          ? Container(
+                              height: MediaQuery.of(context).size.width/4,
+                              width: MediaQuery.of(context).size.width/4,
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(50)),
+                                  image: DecorationImage(
+                                    image: new AssetImage(ExImage().body_part_image[key_list[index]]),
+                                    fit: BoxFit.cover,
+                                  )))
                           : Container(
                           color: Colors.white,
                           child: Icon(
@@ -726,11 +752,11 @@ class ExerciseState extends State<Exercise> {
                           )),
                     ),
                     Container(
-                      alignment: Alignment.bottomCenter,
+                      alignment: Alignment.center,
                       child: Text(
                         '${key_list[index]}',
                         style: TextStyle(
-                            fontSize: 15, color: Colors.white
+                            fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold
                         ),
                       ),
                     ),
