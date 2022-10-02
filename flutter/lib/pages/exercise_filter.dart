@@ -306,6 +306,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
         value: tags2,
         onChanged: (val) => setState((){
           tags2 = val;
+          print(val);
           print(tags2.length);
         } ),
         choiceItems: C2Choice.listFrom<String, String>(
@@ -365,11 +366,12 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                         });
                       },
                       child: Card(
+                        color: Theme.of(context).primaryColor,
                         child: Container(
-                          width: MediaQuery.of(context).size.width/3-10,
-                          color: Colors.blue,
+                          width: MediaQuery.of(context).size.width/2-10,
+                          height: _appbarWidget().preferredSize.height*2/3,
                           child: Center(
-                            child: Text("exp",
+                            child: Text("운동부위",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 18)),
@@ -385,11 +387,12 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                         });
                       },
                       child: Card(
+                        color: Theme.of(context).primaryColor,
                         child: Container(
-                          width: MediaQuery.of(context).size.width/3-10,
-                          color: Colors.blue,
+                          width: MediaQuery.of(context).size.width/2-10,
+                          height: _appbarWidget().preferredSize.height*2/3,
                           child: Center(
-                            child: Text("exp2",
+                            child: Text("운동유형",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 18)),
@@ -397,18 +400,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                         ),
                       ),
                     ),
-                    Card(
-                      child: Container(
-                        width: MediaQuery.of(context).size.width/3-10,
-                        color: Colors.blue,
-                        child: Center(
-                          child: Text("exp3",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18)),
-                        ),
-                      ),
-                    ),
+
                   ],
                 ),
                 collapsed: Container(),
