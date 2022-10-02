@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
+import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/src/utils/my_flexible_space_bar.dart';
+import 'package:sdb_trainer/src/utils/util.dart';
 
 class ExerciseGuide extends StatefulWidget {
-  var exinfo;
-  ExerciseGuide({Key? key, required this.exinfo}) : super(key: key);
+  int eindex;
+  ExerciseGuide({Key? key, required this.eindex}) : super(key: key);
 
   @override
   State<ExerciseGuide> createState() => _ExerciseGuideState();
@@ -16,7 +19,10 @@ class ExerciseGuide extends StatefulWidget {
 class _ExerciseGuideState extends State<ExerciseGuide> {
   var btnDisabled;
   var _userdataProvider;
-  TextEditingController _exercisenoteCtrl = TextEditingController(text: "");
+  var _exercisesdataProvider;
+  TextEditingController _exercisenoteCtrl = TextEditingController(text: '');
+  bool editing = false;
+  var _exercises;
 
   PreferredSizeWidget _appbarWidget() {
     btnDisabled = false;
@@ -49,53 +55,57 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
           child: Padding(
             padding: const EdgeInsets.symmetric(
                 horizontal: 10, vertical: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+            child: Consumer<ExercisesdataProvider>(
+                builder: (context, provier, child) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width / 5,
-                        child: Center(
-                          child: Text("1rm",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold)),
-                        )),
-                    SizedBox(
-                      width: 100,
-                      child: Center(
-                        child: Text(
-                            '${widget.exinfo.onerm.toStringAsFixed(0)}${_userdataProvider.userdata.weight_unit}',
-                            style: TextStyle(color: Colors.white)),
-                      ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width / 5,
+                            child: Center(
+                              child: Text("1rm",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                            )),
+                        SizedBox(
+                          width: 100,
+                          child: Center(
+                            child: Text(
+                                '${provier.exercisesdata.exercises[widget.eindex].onerm.toStringAsFixed(0)}${_userdataProvider.userdata.weight_unit}',
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width / 5,
-                        child: Center(
-                          child: Text("Goal",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold)),
-                        )),
-                    SizedBox(
-                      width: 100,
-                      child: Center(
-                        child: Text(
-                            '${widget.exinfo.goal.toStringAsFixed(0)}${_userdataProvider.userdata.weight_unit}',
-                            style: TextStyle(color: Colors.white)),
-                      ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width / 5,
+                            child: Center(
+                              child: Text("Goal",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                            )),
+                        SizedBox(
+                          width: 100,
+                          child: Center(
+                            child: Text(
+                                '${provier.exercisesdata.exercises[widget.eindex].goal.toStringAsFixed(0)}${_userdataProvider.userdata.weight_unit}',
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
 
-              ],
+                  ],
+                );
+              }
             ),
           ),
         ),
@@ -119,31 +129,65 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                         color: Colors.white,
                         fontWeight: FontWeight.bold)),
               ),
-              Container(
-                child: IconButton(
-                  onPressed: (){
-                    
-                  },
-                  icon: Icon(Icons.edit, size: 25, color: Colors.white,),
-                ),
-              )
+              editing
+                  ? Container(
+                    child: IconButton(
+                      onPressed: (){
+                        _exercisesdataProvider.exercisesdata.exercises[widget.eindex].note = _exercisenoteCtrl.text;
+                        _postExerciseCheck();
+                        setState(() {
+                          editing = !editing;
+
+
+                        });
+                      },
+                      icon: Icon(Icons.check, size: 30, color: Theme.of(context).primaryColor,),
+                    ),
+                  )
+
+                  : Container(
+                    child: IconButton(
+                      onPressed: (){
+                        setState(() {
+                          editing = !editing;
+                        });
+                      },
+                      icon: Icon(Icons.edit, size: 25, color: Colors.white,),
+                    ),
+                  )
             ],
           ),
-          Container(
-            padding: const EdgeInsets.all(12.0),
-            alignment: Alignment.centerLeft,
-            child: Text('exercise tips',
-                style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold)),
-          ),
+          editing
+              ? _commentWidget()
+              : Container(
+                padding: const EdgeInsets.all(12.0),
+                alignment: Alignment.centerLeft,
+                child: Consumer<ExercisesdataProvider>(
+                  builder: (context, provier, child) {
+                    return Text(provier.exercisesdata.exercises[widget.eindex].note,
+                        style: TextStyle(
+                            fontSize: 20.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold));
+                  }
+                ),
+              ),
         ],
       ),
     );
   }
 
+  void _postExerciseCheck() async {
+    ExerciseEdit(
+        user_email: _userdataProvider.userdata.email, exercises: _exercisesdataProvider.exercisesdata.exercises)
+        .editExercise()
+        .then((data) => data["user_email"] != null
+        ? {showToast("수정 완료"), _exercisesdataProvider.getdata()}
+        : showToast("입력을 확인해주세요"));
+  }
+
   Widget _commentWidget() {
+    _exercisenoteCtrl.text= _exercisesdataProvider.exercisesdata.exercises[widget.eindex].note;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: TextFormField(
@@ -153,7 +197,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
           maxLines: null,
           decoration: InputDecoration(
               prefixIcon: Icon(Icons.edit, color: Colors.white),
-              labelText: 'Program을 설명해주세요',
+              labelText: '운동에 대한 노트를 적어주세요',
               labelStyle: TextStyle(color: Colors.white),
               border: OutlineInputBorder(
                 borderSide: const BorderSide(color: Colors.white, width: 2.0),
@@ -172,6 +216,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
   @override
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _exercisesdataProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     return Scaffold(
       body: CustomScrollView(
           slivers: [
@@ -203,7 +248,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                   children: [
                     Container(
                       child: Text(
-                        widget.exinfo.name,
+                        _exercisesdataProvider.exercisesdata.exercises[widget.eindex].name,
                         style: TextStyle(color: Colors.white, fontSize: 30),
                       )
                     ),

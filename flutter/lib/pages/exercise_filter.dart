@@ -385,7 +385,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
 
   void _postExerciseCheck() async {
     ExerciseEdit(
-        user_email: _userdataProvider.userdata.email, exercises: _exercises)
+        user_email: _userdataProvider.userdata.email, exercises: _exercisesdataProvider.exercisesdata.exercises)
         .editExercise()
         .then((data) => data["user_email"] != null
         ? {showToast("수정 완료"), _exercisesdataProvider.getdata()}
@@ -458,7 +458,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                     Navigator.push(
                         context,
                         Transition(
-                            child: ExerciseGuide(exinfo: exuniq[index]),
+                            child: ExerciseGuide(eindex: _exercisesdataProvider.exercisesdata.exercises.indexWhere((ex) => ex.name == exuniq[index].name)),
                             transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
                   },
                   child: Container(
