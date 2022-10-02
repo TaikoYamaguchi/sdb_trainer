@@ -415,7 +415,7 @@ class _HomeState extends State<Home> {
     return Column(
       children: [
         SizedBox(
-          height: 140,
+          height: 320,
           child: PageView.builder(
             controller: _historyCardcontroller,
             onPageChanged: (int index) =>
@@ -484,42 +484,113 @@ class _HomeState extends State<Home> {
     }
   }
 
+  SideTitles _bottomTitles() {
+    DateTime _toDay = DateTime.now();
+    return SideTitles(
+      showTitles: true,
+      getTitlesWidget: (value, meta) {
+        String text = '';
+        switch (value.toInt()) {
+          case 0:
+            text = DateFormat('MM/dd')
+                .format(_toDay.subtract(Duration(days: value.toInt())));
+            break;
+          case 1:
+            text = DateFormat('MM/dds')
+                .format(_toDay.subtract(Duration(days: value.toInt())));
+            break;
+          case 2:
+            text = DateFormat('MM/dd')
+                .format(_toDay.subtract(Duration(days: value.toInt())));
+            break;
+          case 3:
+            text = DateFormat('MM/dd')
+                .format(_toDay.subtract(Duration(days: value.toInt())));
+            break;
+          case 4:
+            text = DateFormat('MM/dd')
+                .format(_toDay.subtract(Duration(days: value.toInt())));
+            break;
+          case 5:
+            text = DateFormat('MM/dd')
+                .format(_toDay.subtract(Duration(days: value.toInt())));
+            break;
+          case 6:
+            text = DateFormat('MM/dd')
+                .format(_toDay.subtract(Duration(days: value.toInt())));
+            break;
+        }
+
+        return Text(text, style: TextStyle(fontSize: 8, color: Colors.white));
+      },
+    );
+  }
+
   Widget _countHistoryNoWidget(context) {
     var _historyDate = [];
-    var _barChartGroupData = [];
+    List<BarChartGroupData> _barChartGroupData = [];
     _dateController(_dateCtrl);
     double deviceWidth = MediaQuery.of(context).size.width;
     for (var sdbdata in _historydata) {
       _historyDate.add(sdbdata);
-      // _barChartGroupData
-      //     .add(BarChartGroupData(x: _historydata.indexOf(sdbdata), barRods: [
-      //   BarChartRodData(
-      //       toY: 1,
-      //       width: 12,
-      //       color: Theme.of(context).primaryColor,
-      //       borderRadius: BorderRadius.only(
-      //           topLeft: Radius.circular(6), topRight: Radius.circular(6)))
-      // ]));
+      print(_barChartGroupData);
+    }
+    final _barsGradient = const LinearGradient(
+      colors: [
+        Colors.lightBlueAccent,
+        Colors.greenAccent,
+      ],
+      begin: Alignment.bottomCenter,
+      end: Alignment.topCenter,
+    );
+
+    for (int i = 0; i < 7; i++) {
+      _barChartGroupData.add(BarChartGroupData(
+        x: i,
+        barRods: [
+          BarChartRodData(
+              toY: 1,
+              width: 12,
+              gradient: _barsGradient,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(6), topRight: Radius.circular(6)))
+        ],
+        showingTooltipIndicators: [0],
+      ));
     }
 
-    return _countHistoryCardCore(context, _dateStringCase(_dateCtrl),
-        _historyDate.length.toString() + "회", " 운동했어요!", 2, 40);
+    return _countHistoryCardCore(
+        context,
+        _dateStringCase(_dateCtrl),
+        _historyDate.length.toString() + "회",
+        " 운동했어요!",
+        2,
+        40,
+        _barChartGroupData);
   }
 
   Widget _countHistoryDateWidget(context) {
     var _historyDate = <DuplicateHistoryDate>{};
+    List<BarChartGroupData> _barChartGroupData = [];
     _dateController(_dateCtrl);
     double deviceWidth = MediaQuery.of(context).size.width;
     for (var sdbdata in _historydata) {
       _historyDate.add(DuplicateHistoryDate(sdbdata));
     }
 
-    return _countHistoryCardCore(context, _dateStringCase(_dateCtrl),
-        _historyDate.length.toString() + "일", " 운동했어요!", 2, 40);
+    return _countHistoryCardCore(
+        context,
+        _dateStringCase(_dateCtrl),
+        _historyDate.length.toString() + "일",
+        " 운동했어요!",
+        2,
+        40,
+        _barChartGroupData);
   }
 
   Widget _countHistorySetWidget(context) {
     var _historySet = 0;
+    List<BarChartGroupData> _barChartGroupData = [];
     _dateController(_dateCtrl);
     double deviceWidth = MediaQuery.of(context).size.width;
     for (SDBdata sdbdata in _historydata) {
@@ -531,11 +602,12 @@ class _HomeState extends State<Home> {
     }
 
     return _countHistoryCardCore(context, _dateStringCase(_dateCtrl),
-        _historySet.toString() + "세트", " 수행했어요!", 2, 40);
+        _historySet.toString() + "세트", " 수행했어요!", 2, 40, _barChartGroupData);
   }
 
   Widget _countHistoryWeightWidget(context) {
     var _historyWeight = 0;
+    List<BarChartGroupData> _barChartGroupData = [];
     _dateController(_dateCtrl);
     double deviceWidth = MediaQuery.of(context).size.width;
     for (SDBdata sdbdata in _historydata) {
@@ -552,11 +624,13 @@ class _HomeState extends State<Home> {
         _historyWeight.toString() + _userdataProvider.userdata.weight_unit,
         " 들었어요!",
         2,
-        40);
+        40,
+        _barChartGroupData);
   }
 
   Widget _countHistoryTimeWidget(context) {
     var _historyTime = 0;
+    List<BarChartGroupData> _barChartGroupData = [];
     _dateController(_dateCtrl);
     double deviceWidth = MediaQuery.of(context).size.width;
     for (SDBdata sdbdata in _historydata) {
@@ -564,11 +638,13 @@ class _HomeState extends State<Home> {
     }
 
     return _countHistoryCardCore(context, _dateStringCase(_dateCtrl),
-        _historyTime.toString() + "분", "운동했어요!", 2, 40);
+        _historyTime.toString() + "분", "운동했어요!", 2, 40, _barChartGroupData);
   }
 
   Widget _countHistoryBestWidget(context) {
     Map<String, int> _exerciseCountMap = {};
+    List<BarChartGroupData> _barChartGroupData = [];
+
     _dateController(_dateCtrl);
     double deviceWidth = MediaQuery.of(context).size.width;
     for (SDBdata sdbdata in _historydata) {
@@ -596,17 +672,40 @@ class _HomeState extends State<Home> {
         thekey.toString() + "!",
         "",
         9999,
-        0);
+        0,
+        _barChartGroupData);
   }
 
+  BarTouchData get barTouchData => BarTouchData(
+        enabled: false,
+        touchTooltipData: BarTouchTooltipData(
+          tooltipBgColor: Colors.transparent,
+          tooltipPadding: const EdgeInsets.all(0),
+          tooltipMargin: 8,
+          getTooltipItem: (
+            BarChartGroupData group,
+            int groupIndex,
+            BarChartRodData rod,
+            int rodIndex,
+          ) {
+            return BarTooltipItem(
+              rod.toY.round().toString(),
+              const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            );
+          },
+        ),
+      );
   Widget _countHistoryCardCore(
-    context,
-    _historyDateCore,
-    _historyTextCore,
-    _histroySideText,
-    int _devicePaddingWidth,
-    int _devicePaddingWidthAdd,
-  ) {
+      context,
+      _historyDateCore,
+      _historyTextCore,
+      _histroySideText,
+      int _devicePaddingWidth,
+      int _devicePaddingWidthAdd,
+      List<BarChartGroupData> _barChartGroupData) {
     double deviceWidth = MediaQuery.of(context).size.width;
     return Card(
         color: Theme.of(context).cardColor,
@@ -659,6 +758,26 @@ class _HomeState extends State<Home> {
                 ),
               );
             }),
+            SizedBox(height: 50),
+            AspectRatio(
+                aspectRatio: 3,
+                child: BarChart(BarChartData(
+                  barGroups: _barChartGroupData,
+                  barTouchData: barTouchData,
+                  titlesData: FlTitlesData(
+                      leftTitles: AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      topTitles: AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      rightTitles: AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      bottomTitles: AxisTitles(sideTitles: _bottomTitles())),
+                  alignment: BarChartAlignment.spaceAround,
+                  borderData: FlBorderData(show: false),
+                )))
           ]),
         ));
   }
