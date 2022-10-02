@@ -58,6 +58,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   var btnDisabled;
   var _customExUsed = false;
   var _customRuUsed = false;
+  var selectedItem = '기타';
+  var selectedItem2 = '기타';
 
   var keyPlus = GlobalKey();
   var keyContainer = GlobalKey();
@@ -596,23 +598,29 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   }
 
   void _displayCustomExInputDialog(provider) {
-    showDialog(
+    showModalBottomSheet<void>(
         context: context,
-        builder: (context) {
-          return StatefulBuilder(builder: (context, setState) {
-            return AlertDialog(
-              buttonPadding: EdgeInsets.all(12.0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              backgroundColor: Theme.of(context).cardColor,
-              contentPadding: EdgeInsets.all(12.0),
-              title: Text(
-                '커스텀 운동을 만들어보세요',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 24),
-              ),
-              content: Column(mainAxisSize: MainAxisSize.min, children: [
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+        builder: (BuildContext context) {
+          List<String> options = _exercisesdataProvider.options;
+          options.remove('All');
+          List<String> options2 = _exercisesdataProvider.options2;
+          options2.remove('All');
+          return Container(
+            padding: EdgeInsets.all(12.0),
+            height: 390,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              color: Theme.of(context).cardColor,
+            ),
+            child:  Column(
+              children: [
+                Text(
+                    '커스텀 운동을 만들어보세요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 24),
+                  ),
                 Text('운동의 이름을 입력해 주세요',
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white, fontSize: 16)),
@@ -654,14 +662,117 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                       ),
                       hintText: "커스텀 운동 이름",
                       hintStyle:
-                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                      TextStyle(fontSize: 24.0, color: Colors.white)),
                 ),
-              ]),
-              actions: <Widget>[
-                _customExSubmitButton(context, provider),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: Text(
+                        '운동부위:',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 24),
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                    Container(
+                      child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 2 / 5,
+                          child: DropdownButtonFormField(
+                            isExpanded: true,
+                            dropdownColor: Colors.black,
+                            decoration: InputDecoration(
+                              filled: true,
+                              enabledBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide:
+                                BorderSide(color: Colors.white, width: 3),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 3),
+                              ),
+                            ),
+                            hint: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  '기타',
+                                  style: TextStyle(color: Colors.white),
+                                )),
+                            items: options.map((item) => DropdownMenuItem<String>(
+                                value: item.toString(),
+                                child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(item,
+                                      style: TextStyle(color: Colors.white),)
+                                ))).toList(),
+                            onChanged: (item) =>
+                                setState(() => selectedItem = item as String),
+                          )
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: Text(
+                        '카테고리:',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 24),
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                    Container(
+                      child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 2 / 5,
+                          child: DropdownButtonFormField(
+                            isExpanded: true,
+                            dropdownColor: Colors.black,
+                            decoration: InputDecoration(
+                              filled: true,
+                              enabledBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide:
+                                BorderSide(color: Colors.white, width: 3),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 3),
+                              ),
+                            ),
+                            hint: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  '기타',
+                                  style: TextStyle(color: Colors.white),
+                                )),
+                            items: options2.map((item) => DropdownMenuItem<String>(
+                                value: item.toString(),
+                                child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(item,
+                                      style: TextStyle(color: Colors.white),)
+                                ))).toList(),
+                            onChanged: (item) =>
+                                setState(() => selectedItem2 = item as String),
+                          )
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                _customExSubmitButton(context, provider)
               ],
-            );
-          });
+            ),
+          );
         });
   }
 
@@ -673,7 +784,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),),
               foregroundColor: Theme.of(context).primaryColor,
-              backgroundColor: _workoutNameCtrl.text == "" || _customExUsed == true
+              backgroundColor: _customExNameCtrl.text == "" || _customExUsed == true
                 ? Color(0xFF212121)
                 : Theme.of(context).primaryColor,
               textStyle: TextStyle(color: Colors.white,),
@@ -681,21 +792,20 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               padding: EdgeInsets.all(12.0),
             ),
             onPressed: () {
-              if (_customExUsed == false) {
+              if (_customExUsed == false && _customExNameCtrl.text != "") {
                 _exercisesdataProvider.addExdata(Exercises(
                     name: _customExNameCtrl.text,
                     onerm: 0,
                     goal: 0,
                     image: null,
-                    category: 'custom',
-                    target: ['custom'],
+                    category: selectedItem2,
+                    target: [selectedItem],
                     custom: true));
                 _postExerciseCheck();
                 print("nulllllllllllll");
                 _customExNameCtrl.clear();
 
                 _testdata = provider.exercisesdata.exercises;
-                setState(() {});
 
                 Navigator.of(context).pop();
               }

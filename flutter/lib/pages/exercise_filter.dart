@@ -3,11 +3,15 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/pages/exercise_guide.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
+import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
 import 'package:dio/dio.dart';
+import 'package:transition/transition.dart';
+import 'package:sdb_trainer/src/utils/util.dart';
 
 
 class ExerciseFilter extends StatefulWidget {
@@ -23,10 +27,15 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
   var _userdataProvider;
   var _exercises;
   TextEditingController _exSearchCtrl = TextEditingController(text: "");
+  TextEditingController _customExNameCtrl = TextEditingController(text: "");
   var _testdata0;
   late var _testdata = _testdata0;
   var btnDisabled;
+  var _customExUsed = false;
+  var selectedItem = '기타';
+  var selectedItem2 = '기타';
   ExpandableController _menucontroller = ExpandableController(initialExpanded: true);
+
 
 
 
@@ -134,7 +143,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                     exercisesWidget(provider.testdata, true),
                     GestureDetector(
                         onTap: () {
-                          //_displayCustomExInputDialog(provider);
+                          _displayCustomExInputDialog(provider);
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(2.0),
@@ -195,6 +204,232 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
     );
   }
 
+  void _displayCustomExInputDialog(provider) {
+    showModalBottomSheet<void>(
+        context: context,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+        builder: (BuildContext context) {
+          List<String> options = _exercisesdataProvider.options;
+          options.remove('All');
+          List<String> options2 = _exercisesdataProvider.options2;
+          options2.remove('All');
+          return Container(
+            padding: EdgeInsets.all(12.0),
+            height: 390,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              color: Theme.of(context).cardColor,
+            ),
+            child:  Column(
+              children: [
+                Text(
+                  '커스텀 운동을 만들어보세요',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white, fontSize: 24),
+                ),
+                Text('운동의 이름을 입력해 주세요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                Text('외부를 터치하면 취소 할 수 있어요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+                SizedBox(height: 20),
+                TextField(
+                  onChanged: (value) {
+                    _exercisesdataProvider.exercisesdata.exercises
+                        .indexWhere((exercise) {
+                      if (exercise.name == _customExNameCtrl.text) {
+                        setState(() {
+                          _customExUsed = true;
+                        });
+                        return true;
+                      } else {
+                        setState(() {
+                          _customExUsed = false;
+                        });
+                        return false;
+                      }
+                    });
+                  },
+                  style: TextStyle(fontSize: 24.0, color: Colors.white),
+                  textAlign: TextAlign.center,
+                  controller: _customExNameCtrl,
+                  decoration: InputDecoration(
+                      filled: true,
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      hintText: "커스텀 운동 이름",
+                      hintStyle:
+                      TextStyle(fontSize: 24.0, color: Colors.white)),
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: Text(
+                        '운동부위:',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 24),
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                    Container(
+                      child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 2 / 5,
+                          child: DropdownButtonFormField(
+                            isExpanded: true,
+                            dropdownColor: Colors.black,
+                            decoration: InputDecoration(
+                              filled: true,
+                              enabledBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide:
+                                BorderSide(color: Colors.white, width: 3),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 3),
+                              ),
+                            ),
+                            hint: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  '기타',
+                                  style: TextStyle(color: Colors.white),
+                                )),
+                            items: options.map((item) => DropdownMenuItem<String>(
+                                value: item.toString(),
+                                child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(item,
+                                      style: TextStyle(color: Colors.white),)
+                                ))).toList(),
+                            onChanged: (item) =>
+                                setState(() => selectedItem = item as String),
+                          )
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: Text(
+                        '카테고리:',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 24),
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                    Container(
+                      child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 2 / 5,
+                          child: DropdownButtonFormField(
+                            isExpanded: true,
+                            dropdownColor: Colors.black,
+                            decoration: InputDecoration(
+                              filled: true,
+                              enabledBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide:
+                                BorderSide(color: Colors.white, width: 3),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 3),
+                              ),
+                            ),
+                            hint: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  '기타',
+                                  style: TextStyle(color: Colors.white),
+                                )),
+                            items: options2.map((item) => DropdownMenuItem<String>(
+                                value: item.toString(),
+                                child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(item,
+                                      style: TextStyle(color: Colors.white),)
+                                ))).toList(),
+                            onChanged: (item) =>
+                                setState(() => selectedItem2 = item as String),
+                          )
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                _customExSubmitButton(context, provider)
+              ],
+            ),
+          );
+        });
+  }
+
+  void _postExerciseCheck() async {
+    ExerciseEdit(
+        user_email: _userdataProvider.userdata.email, exercises: _exercises)
+        .editExercise()
+        .then((data) => data["user_email"] != null
+        ? {showToast("수정 완료"), _exercisesdataProvider.getdata()}
+        : showToast("입력을 확인해주세요"));
+  }
+
+  Widget _customExSubmitButton(context, provider) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: _customExNameCtrl.text == "" || _customExUsed == true
+                  ? Color(0xFF212121)
+                  : Theme.of(context).primaryColor,
+              textStyle: TextStyle(color: Colors.white,),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
+            ),
+            onPressed: () {
+              if (_customExUsed == false && _customExNameCtrl.text != "") {
+                _exercisesdataProvider.addExdata(Exercises(
+                    name: _customExNameCtrl.text,
+                    onerm: 0,
+                    goal: 0,
+                    image: null,
+                    category: selectedItem2,
+                    target: [selectedItem],
+                    custom: true));
+                _postExerciseCheck();
+                print("nulllllllllllll");
+                _customExNameCtrl.clear();
+
+                _testdata = provider.exercisesdata.exercises;
+
+                Navigator.of(context).pop();
+              }
+            },
+            child: Text(_customExUsed == true ? "존재하는 운동" : "커스텀 운동 추가",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+  }
+
   Widget exercisesWidget(aaa, bool shirink) {
     double top = 0;
     double bottom = 0;
@@ -219,7 +454,11 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                 ;
                 return GestureDetector(
                   onTap: () {
-
+                    Navigator.push(
+                        context,
+                        Transition(
+                            child: ExerciseGuide(exinfo: exuniq[index]),
+                            transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
                   },
                   child: Container(
                     child: Container(
@@ -446,69 +685,6 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
 
         ],
       ),
-      /*
-      CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              snap: true,
-              floating: true,
-              pinned: false,
-              expandedHeight: _appbarWidget().preferredSize.height*5,
-              collapsedHeight: _appbarWidget().preferredSize.height,
-              backgroundColor: Colors.black,
-
-              leading: null,
-
-              flexibleSpace: FlexibleSpaceBar(
-                background: Column(
-                  children: [
-                    Container(height: _appbarWidget().preferredSize.height,),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      color: Colors.black,
-                      child: ChipsChoice<String>.multiple(
-                        value: tags,
-                        onChanged: (val) => setState((){
-                          tags = val;
-                          print(tags.length);
-                        } ),
-                        choiceItems: C2Choice.listFrom<String, String>(
-                          source: options,
-                          value: (i, v) => v,
-                          label: (i, v) => v,
-                          tooltip: (i, v) => v,
-                        ),
-                        wrapped: true,
-                        choiceStyle: const C2ChoiceStyle(
-                          color: Color(0xff40434e),
-                          appearance: C2ChipType.elevated,
-                        ),
-                        choiceActiveStyle: const C2ChoiceStyle(
-                          color: Color(0xff7a28cb),
-                          appearance: C2ChipType.elevated,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ),
-
-            SliverList(
-              delegate: SliverChildBuilderDelegate((context, _index) {
-                return Container(
-                    child: _exercises_searchWidget(),
-                );
-              },
-                childCount: 1,
-              ),
-            )
-
-
-          ]
-      ),
-
-       */
 
       backgroundColor: Colors.black,
     );
