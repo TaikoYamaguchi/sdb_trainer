@@ -171,6 +171,7 @@ class Profile extends StatelessWidget {
           //ex back end 바꾸는 코드임 절대 지우지 말것
           /*
 
+
           Consumer<ExercisesdataProvider>(
             builder: (builder, provider, child) {
               return ElevatedButton(
@@ -198,6 +199,8 @@ class Profile extends StatelessWidget {
           ),
 
            */
+
+
         ]),
       ),
     );

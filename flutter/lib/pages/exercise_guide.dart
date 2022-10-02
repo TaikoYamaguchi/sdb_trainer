@@ -16,6 +16,7 @@ class ExerciseGuide extends StatefulWidget {
 class _ExerciseGuideState extends State<ExerciseGuide> {
   var btnDisabled;
   var _userdataProvider;
+  TextEditingController _exercisenoteCtrl = TextEditingController(text: "");
 
   PreferredSizeWidget _appbarWidget() {
     btnDisabled = false;
@@ -106,14 +107,27 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
     return Container(
       child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(12.0),
-            alignment: Alignment.centerLeft,
-            child: Text("Program 설명",
-                style: TextStyle(
-                    fontSize: 25.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12.0),
+                alignment: Alignment.centerLeft,
+                child: Text("나만의 운동 Note",
+                    style: TextStyle(
+                        fontSize: 25.0,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold)),
+              ),
+              Container(
+                child: IconButton(
+                  onPressed: (){
+                    
+                  },
+                  icon: Icon(Icons.edit, size: 25, color: Colors.white,),
+                ),
+              )
+            ],
           ),
           Container(
             padding: const EdgeInsets.all(12.0),
@@ -126,6 +140,31 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _commentWidget() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: TextFormField(
+          controller: _exercisenoteCtrl,
+          keyboardType: TextInputType.multiline,
+          //expands: true,
+          maxLines: null,
+          decoration: InputDecoration(
+              prefixIcon: Icon(Icons.edit, color: Colors.white),
+              labelText: 'Program을 설명해주세요',
+              labelStyle: TextStyle(color: Colors.white),
+              border: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.white, width: 2.0),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white, width: 2.0),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              fillColor: Colors.white),
+          style: TextStyle(color: Colors.white)),
     );
   }
 

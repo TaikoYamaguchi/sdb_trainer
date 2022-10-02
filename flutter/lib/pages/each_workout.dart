@@ -800,7 +800,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                     image: null,
                     category: selectedItem2,
                     target: [selectedItem],
-                    custom: true));
+                    custom: true,
+                    note: ''));
                 _postExerciseCheck();
                 print("nulllllllllllll");
                 _customExNameCtrl.clear();

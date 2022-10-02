@@ -416,7 +416,8 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                     image: null,
                     category: selectedItem2,
                     target: [selectedItem],
-                    custom: true));
+                    custom: true,
+                    note: ''));
                 _postExerciseCheck();
                 print("nulllllllllllll");
                 _customExNameCtrl.clear();

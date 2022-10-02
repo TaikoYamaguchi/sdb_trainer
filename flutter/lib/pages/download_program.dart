@@ -677,7 +677,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                 for (int i = 0; i < do_exercise.length; i++) {
                   exercise_names.contains(do_exercise[i])
                       ? null
-                      : [_exercisesdataProvider.addExdata(uex.Exercises(name: do_exercise[i], onerm: 0, goal: 0, image: null, category: 'custom', target: ['custom'], custom: true)),
+                      : [_exercisesdataProvider.addExdata(uex.Exercises(name: do_exercise[i], onerm: 0, goal: 0, image: null, category: 'custom', target: ['custom'], custom: true, note: '')),
                           exercise_names.add(do_exercise[i])
                         ];
                 }
@@ -685,7 +685,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
 
                   exercise_names.contains(ref_exercise[i])
                       ? null
-                      : _exercisesdataProvider.addExdata(uex.Exercises(name: ref_exercise[i], onerm: 0, goal: 0, image: null, category: 'custom', target: ['custom'], custom: true));
+                      : _exercisesdataProvider.addExdata(uex.Exercises(name: ref_exercise[i], onerm: 0, goal: 0, image: null, category: 'custom', target: ['custom'], custom: true, note: ''));
                   ref_exercise_index.add(_exercisesdataProvider.exercisesdata.exercises.indexWhere((element) => element.name == ref_exercise[i])) ;
                 }
                 _postExerciseCheck();

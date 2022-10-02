@@ -151,6 +151,7 @@ class Exercises {
   late List? target;
   late String? category;
   late String? image;
+  late String? note;
 
   Exercises({
     required this.name,
@@ -160,8 +161,9 @@ class Exercises {
     required this.target,
     required this.category,
     required this.image,
+    required this.note,
   });
-  Map toJson() => {"goal": goal, "name": name, "onerm": onerm, "custom": custom, "target": target, "category": category, "image": image};
+  Map toJson() => {"goal": goal, "name": name, "onerm": onerm, "custom": custom, "target": target, "category": category, "image": image, "note": note};
 
 
   factory Exercises.fromJson(Map<String, dynamic> parsedJson) {
@@ -173,7 +175,8 @@ class Exercises {
         custom: parsedJson["custom"],
         target: parsedJson["target"],
         category: parsedJson["category"],
-        image: parsedJson["image"]
+        image: parsedJson["image"],
+        note: parsedJson["note"],
     );
   }
 
