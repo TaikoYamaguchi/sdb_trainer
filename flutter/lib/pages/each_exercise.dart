@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sdb_trainer/pages/exercise_done.dart';
+import 'package:sdb_trainer/pages/exercise_guide.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
@@ -302,28 +303,33 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Consumer<WorkoutdataProvider>(
-                          builder: (builder, provider, child) {
-                        var _exercise = provider.workoutdata
-                            .routinedatas[widget.rindex].exercises[pindex];
-                        return isKeyboardVisible
-                            ? Text(
-                                _exercise.name,
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 24),
-                              )
-                            : _exercise.name.length < 8
-                                ? Text(
-                                    _exercise.name,
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 48),
-                                  )
-                                : Text(
-                                    _exercise.name,
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 40),
-                                  );
-                      }),
+                      GestureDetector(
+                        onTap: (){
+                          exguide(widget.ueindex);
+                        },
+                        child: Consumer<WorkoutdataProvider>(
+                            builder: (builder, provider, child) {
+                          var _exercise = provider.workoutdata
+                              .routinedatas[widget.rindex].exercises[pindex];
+                          return isKeyboardVisible
+                              ? Text(
+                                  _exercise.name,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 24),
+                                )
+                              : _exercise.name.length < 8
+                                  ? Text(
+                                      _exercise.name,
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 48),
+                                    )
+                                  : Text(
+                                      _exercise.name,
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 40),
+                                    );
+                        }),
+                      ),
                       Consumer<ExercisesdataProvider>(
                           builder: (builder, provider, child) {
                         var _info = provider.exercisesdata.exercises[ueindex];
@@ -868,6 +874,23 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         ),
       );
     });
+  }
+
+  void exguide(int eindex) {
+    showModalBottomSheet<void>(
+      context: context,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      builder: (BuildContext context) {
+        return Container(
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              color: Colors.white,
+            ),
+            child: ExerciseGuide(eindex: eindex,));
+      },
+    );
   }
 
   void _displayFinishAlert() {
