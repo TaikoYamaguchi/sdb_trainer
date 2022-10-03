@@ -45,6 +45,7 @@ class _HomeState extends State<Home> {
   var _historydata;
   int _historyCardIndexCtrl = 4242;
   var _dateCtrl = 1;
+  var _barsGradient;
   final _historyCardcontroller =
       PageController(viewportFraction: 0.9, initialPage: 4242, keepPage: true);
   var _prefs;
@@ -52,6 +53,8 @@ class _HomeState extends State<Home> {
   late var _testdata = _testdata0.exercises;
   var _timer;
   late List<BarChartGroupData> _cardCoreBarChartGroupData;
+
+  DateTime _toDay = DateTime.now();
 
   @override
   void initState() {
@@ -112,27 +115,21 @@ class _HomeState extends State<Home> {
                           fontSize: 14)),
                   padding: const EdgeInsets.all(4.0)),
               3: Padding(
-                  child: Text("3달",
+                  child: Text("6달",
                       style: TextStyle(
                           color: _dateCtrl == 3 ? Colors.white : Colors.grey,
                           fontSize: 14)),
                   padding: const EdgeInsets.all(4.0)),
               4: Padding(
-                  child: Text("6달",
+                  child: Text("1년",
                       style: TextStyle(
                           color: _dateCtrl == 4 ? Colors.white : Colors.grey,
                           fontSize: 14)),
                   padding: const EdgeInsets.all(4.0)),
               5: Padding(
-                  child: Text("1년",
-                      style: TextStyle(
-                          color: _dateCtrl == 5 ? Colors.white : Colors.grey,
-                          fontSize: 14)),
-                  padding: const EdgeInsets.all(4.0)),
-              6: Padding(
                   child: Text("모두",
                       style: TextStyle(
-                          color: _dateCtrl == 6 ? Colors.white : Colors.grey,
+                          color: _dateCtrl == 5 ? Colors.white : Colors.grey,
                           fontSize: 14)),
                   padding: const EdgeInsets.all(4.0))
             },
@@ -149,51 +146,138 @@ class _HomeState extends State<Home> {
     );
   }
 
+  int _toDayKrInt() {
+    String _toDayKr = DateFormat.E('ko_KR').format(_toDay);
+    int _toDayKrInt = 0;
+    switch (_toDayKr) {
+      case "월":
+        _toDayKrInt = 0;
+        break;
+      case "화":
+        _toDayKrInt = 1;
+        break;
+      case "수":
+        _toDayKrInt = 2;
+        break;
+      case "목":
+        _toDayKrInt = 3;
+        break;
+      case "금":
+        _toDayKrInt = 4;
+        break;
+      case "토":
+        _toDayKrInt = 5;
+        break;
+      case "일":
+        _toDayKrInt = 6;
+        break;
+    }
+    return _toDayKrInt;
+  }
+
+  int _toMonthInt() {
+    String _toDayKr = DateFormat.E('ko_KR').format(_toDay);
+    int _toDayKrInt = 0;
+    switch (_toDayKr) {
+      case "월":
+        _toDayKrInt = 0;
+        break;
+      case "화":
+        _toDayKrInt = 1;
+        break;
+      case "수":
+        _toDayKrInt = 2;
+        break;
+      case "목":
+        _toDayKrInt = 3;
+        break;
+      case "금":
+        _toDayKrInt = 4;
+        break;
+      case "토":
+        _toDayKrInt = 5;
+        break;
+      case "일":
+        _toDayKrInt = 6;
+        break;
+    }
+    return _toDayKrInt;
+  }
+
+  static int calculateMonthSize(DateTime dateTime) {
+    return dateTime.year * 12 + dateTime.month;
+  }
+
+  static int getMonthSizeBetweenDates(DateTime initialDate, DateTime endDate) {
+    return calculateMonthSize(endDate) - calculateMonthSize(initialDate) + 1;
+  }
+
+  static String _getQuarter(DateTime date) {
+    return date.year.toString().substring(2, 4) +
+        "'" +
+        ((date.month + 2) / 3).toInt().toString() +
+        "Q";
+  }
+
+  static String _getYear(DateTime date) {
+    return date.year.toString() + "년";
+  }
+
   void _dateController(_dateCtrl) async {
-    DateTime _toDay = DateTime.now();
-    if (_dateCtrl == 1) {
-      _historydata =
-          await _historydataProvider.historydata.sdbdatas.where((sdbdata) {
-        if (_toDay.difference(DateTime.parse(sdbdata.date)).inDays <= 7) {
-          return true;
-        } else {
-          return false;
-        }
-      }).toList();
-    } else if (_dateCtrl == 2) {
-      _historydata = _historydataProvider.historydata.sdbdatas.where((sdbdata) {
-        if (_toDay.difference(DateTime.parse(sdbdata.date)).inDays <= 30) {
-          return true;
-        } else {
-          return false;
-        }
-      }).toList();
-    } else if (_dateCtrl == 3) {
-      _historydata = _historydataProvider.historydata.sdbdatas.where((sdbdata) {
-        if (_toDay.difference(DateTime.parse(sdbdata.date)).inDays <= 90) {
-          return true;
-        } else {
-          return false;
-        }
-      }).toList();
-    } else if (_dateCtrl == 4) {
-      _historydata = _historydataProvider.historydata.sdbdatas.where((sdbdata) {
-        if (_toDay.difference(DateTime.parse(sdbdata.date)).inDays <= 180) {
-          return true;
-        } else {
-          return false;
-        }
-      }).toList();
-    } else if (_dateCtrl == 5) {
-      _historydata = _historydataProvider.historydata.sdbdatas.where((sdbdata) {
-        if (_toDay.difference(DateTime.parse(sdbdata.date)).inDays <= 365) {
-          return true;
-        } else {
-          return false;
-        }
-      }).toList();
-    } else if (_dateCtrl == 6) {
-      _historydata = _historydataProvider.historydata.sdbdatas;
+    DateTime _fourWeekDay = DateTime(
+        _toDay.year, _toDay.month, _toDay.day - (21 + 1 + _toDayKrInt()));
+
+    if (_historydataProvider.historydata != null) {
+      if (_dateCtrl == 1) {
+        _historydata =
+            await _historydataProvider.historydata.sdbdatas.where((sdbdata) {
+          if (_toDay
+                  .difference(DateTime.parse(sdbdata.date.substring(0, 10)))
+                  .inDays <=
+              _toDayKrInt()) {
+            return true;
+          } else {
+            return false;
+          }
+        }).toList();
+      } else if (_dateCtrl == 2) {
+        _historydata =
+            await _historydataProvider.historydata.sdbdatas.where((sdbdata) {
+          if (_toDay
+                  .difference(DateTime.parse(sdbdata.date.substring(0, 10)))
+                  .inDays <=
+              (21 + 1 + _toDayKrInt())) {
+            return true;
+          } else {
+            return false;
+          }
+        }).toList();
+      } else if (_dateCtrl == 3) {
+        _historydata =
+            await _historydataProvider.historydata.sdbdatas.where((sdbdata) {
+          if (getMonthSizeBetweenDates(
+                  DateTime.parse(sdbdata.date.substring(0, 10)), _toDay) <=
+              6) {
+            return true;
+          } else {
+            return false;
+          }
+        }).toList();
+      } else if (_dateCtrl == 4) {
+        _historydata =
+            await _historydataProvider.historydata.sdbdatas.where((sdbdata) {
+          if (_toDay
+                  .difference(DateTime.parse(sdbdata.date.substring(0, 10)))
+                  .inDays <=
+              365) {
+            return true;
+          } else {
+            return false;
+          }
+        }).toList();
+      } else if (_dateCtrl == 5) {
+        _historydata = await _historydataProvider.historydata.sdbdatas;
+      }
     }
   }
 
@@ -415,7 +499,7 @@ class _HomeState extends State<Home> {
     return Column(
       children: [
         SizedBox(
-          height: 320,
+          height: 270,
           child: PageView.builder(
             controller: _historyCardcontroller,
             onPageChanged: (int index) =>
@@ -470,14 +554,12 @@ class _HomeState extends State<Home> {
   String _dateStringCase(_dateCtrl) {
     switch (_dateCtrl) {
       case 1:
-        return "1주일 동안";
+        return "이번주 동안";
       case 2:
         return "1개월 동안";
       case 3:
-        return "3개월 동안";
-      case 4:
         return "6개월 동안";
-      case 5:
+      case 4:
         return "1년 동안";
       default:
         return "우리 함께 총";
@@ -485,43 +567,153 @@ class _HomeState extends State<Home> {
   }
 
   SideTitles _bottomTitles() {
-    DateTime _toDay = DateTime.now();
     return SideTitles(
       showTitles: true,
       getTitlesWidget: (value, meta) {
         String text = '';
-        switch (value.toInt()) {
-          case 0:
-            text = DateFormat('MM/dd')
-                .format(_toDay.subtract(Duration(days: value.toInt())));
-            break;
+        switch (_dateCtrl) {
           case 1:
-            text = DateFormat('MM/dds')
-                .format(_toDay.subtract(Duration(days: value.toInt())));
-            break;
+            switch (value.toInt()) {
+              case 0:
+                text = "월";
+                break;
+              case 1:
+                text = "화";
+                break;
+              case 2:
+                text = "수";
+                break;
+              case 3:
+                text = "목";
+                break;
+              case 4:
+                text = "금";
+                break;
+              case 5:
+                text = "토";
+                break;
+              case 6:
+                text = "일";
+                break;
+            }
+            return Text(text,
+                style: TextStyle(fontSize: 12, color: Colors.white));
           case 2:
-            text = DateFormat('MM/dd')
-                .format(_toDay.subtract(Duration(days: value.toInt())));
-            break;
+            switch (value.toInt()) {
+              case 0:
+                text = "3주전";
+                break;
+              case 1:
+                text = "2주전";
+                break;
+              case 2:
+                text = "지난주";
+                break;
+              case 3:
+                text = "이번주";
+                break;
+            }
+            return Text(text,
+                style: TextStyle(fontSize: 12, color: Colors.white));
           case 3:
-            text = DateFormat('MM/dd')
-                .format(_toDay.subtract(Duration(days: value.toInt())));
-            break;
+            switch (value.toInt()) {
+              case 0:
+                text = _toDay.month - 5 > 0
+                    ? (_toDay.month - 5).toString() + "월"
+                    : (_toDay.month - 5 + 12).toString() + "월";
+                break;
+              case 1:
+                text = _toDay.month - 4 > 0
+                    ? (_toDay.month - 4).toString() + "월"
+                    : (_toDay.month - 4 + 12).toString() + "월";
+                break;
+              case 2:
+                text = _toDay.month - 3 > 0
+                    ? (_toDay.month - 3).toString() + "월"
+                    : (_toDay.month - 3 + 12).toString() + "월";
+                break;
+              case 3:
+                text = _toDay.month - 2 > 0
+                    ? (_toDay.month - 2).toString() + "월"
+                    : (_toDay.month - 2 + 12).toString() + "월";
+                break;
+              case 4:
+                text = _toDay.month - 1 > 0
+                    ? (_toDay.month - 1).toString() + "월"
+                    : (_toDay.month - 1 + 12).toString() + "월";
+                break;
+              case 5:
+                text = _toDay.month.toString() + "월";
+                break;
+            }
+            return Text(text,
+                style: TextStyle(fontSize: 12, color: Colors.white));
           case 4:
-            text = DateFormat('MM/dd')
-                .format(_toDay.subtract(Duration(days: value.toInt())));
-            break;
+            switch (value.toInt()) {
+              case 0:
+                text = _getQuarter(
+                    DateTime(_toDay.year, _toDay.month - 9, _toDay.day));
+                break;
+              case 1:
+                text = _getQuarter(
+                    DateTime(_toDay.year, _toDay.month - 6, _toDay.day));
+                break;
+              case 2:
+                text = _getQuarter(
+                    DateTime(_toDay.year, _toDay.month - 3, _toDay.day));
+                break;
+              case 3:
+                text = _getQuarter(
+                    DateTime(_toDay.year, _toDay.month, _toDay.day));
+                break;
+            }
+            return Text(text,
+                style: TextStyle(fontSize: 12, color: Colors.white));
           case 5:
-            text = DateFormat('MM/dd')
-                .format(_toDay.subtract(Duration(days: value.toInt())));
-            break;
-          case 6:
-            text = DateFormat('MM/dd')
-                .format(_toDay.subtract(Duration(days: value.toInt())));
-            break;
-        }
+            switch (value.toInt()) {
+              case 0:
+                text = DateFormat('yyyy').format(
+                        DateTime(_toDay.year, _toDay.month, _toDay.day)) +
+                    "년";
+                break;
+            }
+            return Text(text,
+                style: TextStyle(fontSize: 12, color: Colors.white));
 
-        return Text(text, style: TextStyle(fontSize: 8, color: Colors.white));
+          default:
+            switch (value.toInt()) {
+              case 0:
+                text = DateFormat('MM/dd')
+                    .format(_toDay.subtract(Duration(days: value.toInt())));
+                break;
+              case 1:
+                text = DateFormat('MM/dd')
+                    .format(_toDay.subtract(Duration(days: value.toInt())));
+                break;
+              case 2:
+                text = DateFormat('MM/dd')
+                    .format(_toDay.subtract(Duration(days: value.toInt())));
+                break;
+              case 3:
+                text = DateFormat('MM/dd')
+                    .format(_toDay.subtract(Duration(days: value.toInt())));
+                break;
+              case 4:
+                text = DateFormat('MM/dd')
+                    .format(_toDay.subtract(Duration(days: value.toInt())));
+                break;
+              case 5:
+                text = DateFormat('MM/dd')
+                    .format(_toDay.subtract(Duration(days: value.toInt())));
+                break;
+              case 6:
+                text = DateFormat('MM/dd')
+                    .format(_toDay.subtract(Duration(days: value.toInt())));
+                break;
+            }
+            return Text(text,
+                style: TextStyle(fontSize: 12, color: Colors.white));
+        }
       },
     );
   }
@@ -529,34 +721,153 @@ class _HomeState extends State<Home> {
   Widget _countHistoryNoWidget(context) {
     var _historyDate = [];
     List<BarChartGroupData> _barChartGroupData = [];
-    _dateController(_dateCtrl);
-    double deviceWidth = MediaQuery.of(context).size.width;
-    for (var sdbdata in _historydata) {
-      _historyDate.add(sdbdata);
-      print(_barChartGroupData);
-    }
-    final _barsGradient = const LinearGradient(
-      colors: [
-        Colors.lightBlueAccent,
-        Colors.greenAccent,
-      ],
-      begin: Alignment.bottomCenter,
-      end: Alignment.topCenter,
-    );
 
-    for (int i = 0; i < 7; i++) {
-      _barChartGroupData.add(BarChartGroupData(
-        x: i,
-        barRods: [
-          BarChartRodData(
-              toY: 1,
-              width: 12,
-              gradient: _barsGradient,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(6), topRight: Radius.circular(6)))
-        ],
-        showingTooltipIndicators: [0],
-      ));
+    _dateController(_dateCtrl);
+    if (_historydata != null) {
+      double deviceWidth = MediaQuery.of(context).size.width;
+      for (var sdbdata in _historydata) {
+        _historyDate.add(sdbdata);
+      }
+    }
+
+    switch (_dateCtrl) {
+      case 1:
+        for (int i = 0; i < 7; i++) {
+          int _value = 0;
+          for (var sdbdata in _historyDate) {
+            if (sdbdata.date.substring(0, 10) ==
+                DateFormat('yyyy-MM-dd').format(
+                    _toDay.subtract(Duration(days: _toDayKrInt() - i)))) {
+              _value++;
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _value.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _value != 0 ? [0] : [],
+          ));
+        }
+        break;
+      case 2:
+        for (int i = 0; i < 4; i++) {
+          int _value = 0;
+          for (var sdbdata in _historyDate) {
+            if (DateTime(_toDay.year, _toDay.month,
+                            _toDay.day - (i).toInt() * 7 - _toDayKrInt())
+                        .difference(
+                            DateTime.parse(sdbdata.date.substring(0, 10)))
+                        .inDays >
+                    -7 &&
+                DateTime(_toDay.year, _toDay.month,
+                            _toDay.day - (i).toInt() * 7 - _toDayKrInt())
+                        .difference(
+                            DateTime.parse(sdbdata.date.substring(0, 10)))
+                        .inDays <=
+                    0) {
+              _value++;
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _value.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _value != 0 ? [0] : [],
+          ));
+        }
+        break;
+      case 3:
+        for (int i = 0; i < 6; i++) {
+          int _value = 0;
+          for (var sdbdata in _historyDate) {
+            if ((getMonthSizeBetweenDates(
+                        DateTime.parse(sdbdata.date.substring(0, 10)),
+                        _toDay) <=
+                    6 - i) &&
+                (getMonthSizeBetweenDates(
+                        DateTime.parse(sdbdata.date.substring(0, 10)), _toDay) >
+                    (5 - i))) {
+              _value++;
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _value.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _value != 0 ? [0] : [],
+          ));
+        }
+        break;
+      case 4:
+        for (int i = 0; i < 4; i++) {
+          int _value = 0;
+          for (var sdbdata in _historyDate) {
+            if (_getQuarter(DateTime(
+                    _toDay.year, _toDay.month - (3) * (3 - i), _toDay.day)) ==
+                _getQuarter(DateTime.parse(sdbdata.date.substring(0, 10)))) {
+              _value++;
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _value.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _value != 0 ? [0] : [],
+          ));
+        }
+        break;
+      case 5:
+        for (int i = 0; i < 1; i++) {
+          int _value = 0;
+          for (var sdbdata in _historyDate) {
+            if (_getYear(DateTime(_toDay.year, _toDay.month, _toDay.day)) ==
+                _getYear(DateTime.parse(sdbdata.date.substring(0, 10)))) {
+              _value++;
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _value.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _value != 0 ? [0] : [],
+          ));
+        }
+        break;
     }
 
     return _countHistoryCardCore(
@@ -574,8 +885,153 @@ class _HomeState extends State<Home> {
     List<BarChartGroupData> _barChartGroupData = [];
     _dateController(_dateCtrl);
     double deviceWidth = MediaQuery.of(context).size.width;
-    for (var sdbdata in _historydata) {
-      _historyDate.add(DuplicateHistoryDate(sdbdata));
+    if (_historydata != null) {
+      for (var sdbdata in _historydata) {
+        _historyDate.add(DuplicateHistoryDate(sdbdata));
+      }
+    }
+
+    switch (_dateCtrl) {
+      case 1:
+        for (int i = 0; i < 7; i++) {
+          int _value = 0;
+          for (var sdbdata in _historyDate) {
+            if (sdbdata.sdbdata.date!.substring(0, 10) ==
+                DateFormat('yyyy-MM-dd').format(
+                    _toDay.subtract(Duration(days: _toDayKrInt() - i)))) {
+              _value++;
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _value.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _value != 0 ? [0] : [],
+          ));
+        }
+        break;
+      case 2:
+        for (int i = 0; i < 4; i++) {
+          int _value = 0;
+          for (var sdbdata in _historyDate) {
+            if (DateTime(_toDay.year, _toDay.month,
+                            _toDay.day - (i).toInt() * 7 - _toDayKrInt())
+                        .difference(DateTime.parse(
+                            sdbdata.sdbdata.date!.substring(0, 10)))
+                        .inDays >
+                    -7 &&
+                DateTime(_toDay.year, _toDay.month,
+                            _toDay.day - (i).toInt() * 7 - _toDayKrInt())
+                        .difference(DateTime.parse(
+                            sdbdata.sdbdata.date!.substring(0, 10)))
+                        .inDays <=
+                    0) {
+              _value++;
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _value.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _value != 0 ? [0] : [],
+          ));
+        }
+        break;
+      case 3:
+        for (int i = 0; i < 6; i++) {
+          int _value = 0;
+          for (var sdbdata in _historyDate) {
+            if ((getMonthSizeBetweenDates(
+                        DateTime.parse(sdbdata.sdbdata.date!.substring(0, 10)),
+                        _toDay) <=
+                    6 - i) &&
+                (getMonthSizeBetweenDates(
+                        DateTime.parse(sdbdata.sdbdata.date!.substring(0, 10)),
+                        _toDay) >
+                    (5 - i))) {
+              _value++;
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _value.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _value != 0 ? [0] : [],
+          ));
+        }
+        break;
+      case 4:
+        for (int i = 0; i < 4; i++) {
+          int _value = 0;
+          for (var sdbdata in _historyDate) {
+            if (_getQuarter(DateTime(
+                    _toDay.year, _toDay.month - (3) * (3 - i), _toDay.day)) ==
+                _getQuarter(
+                    DateTime.parse(sdbdata.sdbdata.date!.substring(0, 10)))) {
+              _value++;
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _value.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _value != 0 ? [0] : [],
+          ));
+        }
+        break;
+      case 5:
+        for (int i = 0; i < 1; i++) {
+          int _value = 0;
+          for (var sdbdata in _historyDate) {
+            if (_getYear(DateTime(_toDay.year, _toDay.month, _toDay.day)) ==
+                _getYear(
+                    DateTime.parse(sdbdata.sdbdata.date!.substring(0, 10)))) {
+              _value++;
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _value.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _value != 0 ? [0] : [],
+          ));
+        }
+        break;
     }
 
     return _countHistoryCardCore(
@@ -589,16 +1045,178 @@ class _HomeState extends State<Home> {
   }
 
   Widget _countHistorySetWidget(context) {
-    var _historySet = 0;
     List<BarChartGroupData> _barChartGroupData = [];
     _dateController(_dateCtrl);
+    var _historySet = 0;
     double deviceWidth = MediaQuery.of(context).size.width;
-    for (SDBdata sdbdata in _historydata) {
-      for (Exercises exercises in sdbdata.exercises) {
-        for (workoutModel.Sets sets in exercises.sets) {
-          _historySet++;
+    if (_historydata != null) {
+      for (SDBdata sdbdata in _historydata) {
+        for (Exercises exercises in sdbdata.exercises) {
+          for (workoutModel.Sets sets in exercises.sets) {
+            _historySet++;
+          }
         }
       }
+    }
+    switch (_dateCtrl) {
+      case 1:
+        for (int i = 0; i < 7; i++) {
+          var _historySet = 0;
+          for (SDBdata sdbdata in _historydata) {
+            if (sdbdata.date!.substring(0, 10) ==
+                DateFormat('yyyy-MM-dd').format(
+                    _toDay.subtract(Duration(days: _toDayKrInt() - i)))) {
+              for (Exercises exercises in sdbdata.exercises) {
+                for (workoutModel.Sets sets in exercises.sets) {
+                  _historySet++;
+                }
+              }
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _historySet.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _historySet != 0 ? [0] : [],
+          ));
+        }
+        break;
+      case 2:
+        for (int i = 0; i < 4; i++) {
+          var _historySet = 0;
+          for (SDBdata sdbdata in _historydata) {
+            if (DateTime(_toDay.year, _toDay.month,
+                            _toDay.day - (i).toInt() * 7 - _toDayKrInt())
+                        .difference(
+                            DateTime.parse(sdbdata.date!.substring(0, 10)))
+                        .inDays >
+                    -7 &&
+                DateTime(_toDay.year, _toDay.month,
+                            _toDay.day - (i).toInt() * 7 - _toDayKrInt())
+                        .difference(
+                            DateTime.parse(sdbdata.date!.substring(0, 10)))
+                        .inDays <=
+                    0) {
+              for (Exercises exercises in sdbdata.exercises) {
+                for (workoutModel.Sets sets in exercises.sets) {
+                  _historySet++;
+                }
+              }
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _historySet.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _historySet != 0 ? [0] : [],
+          ));
+        }
+        break;
+      case 3:
+        for (int i = 0; i < 6; i++) {
+          var _historySet = 0;
+          for (var sdbdata in _historydata) {
+            if ((getMonthSizeBetweenDates(
+                        DateTime.parse(sdbdata.date!.substring(0, 10)),
+                        _toDay) <=
+                    6 - i) &&
+                (getMonthSizeBetweenDates(
+                        DateTime.parse(sdbdata.date!.substring(0, 10)),
+                        _toDay) >
+                    (5 - i))) {
+              for (Exercises exercises in sdbdata.exercises) {
+                for (workoutModel.Sets sets in exercises.sets) {
+                  _historySet++;
+                }
+              }
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _historySet.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _historySet != 0 ? [0] : [],
+          ));
+        }
+        break;
+      case 4:
+        for (int i = 0; i < 4; i++) {
+          var _historySet = 0;
+          for (var sdbdata in _historydata) {
+            if (_getQuarter(DateTime(
+                    _toDay.year, _toDay.month - (3) * (3 - i), _toDay.day)) ==
+                _getQuarter(DateTime.parse(sdbdata.date!.substring(0, 10)))) {
+              for (Exercises exercises in sdbdata.exercises) {
+                for (workoutModel.Sets sets in exercises.sets) {
+                  _historySet++;
+                }
+              }
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _historySet.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _historySet != 0 ? [0] : [],
+          ));
+        }
+        break;
+      case 5:
+        for (int i = 0; i < 1; i++) {
+          var _historySet = 0;
+          for (var sdbdata in _historydata) {
+            if (_getYear(DateTime(_toDay.year, _toDay.month, _toDay.day)) ==
+                _getYear(DateTime.parse(sdbdata.date!.substring(0, 10)))) {
+              for (Exercises exercises in sdbdata.exercises) {
+                for (workoutModel.Sets sets in exercises.sets) {
+                  _historySet++;
+                }
+              }
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _historySet.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _historySet != 0 ? [0] : [],
+          ));
+        }
+        break;
     }
 
     return _countHistoryCardCore(context, _dateStringCase(_dateCtrl),
@@ -610,12 +1228,179 @@ class _HomeState extends State<Home> {
     List<BarChartGroupData> _barChartGroupData = [];
     _dateController(_dateCtrl);
     double deviceWidth = MediaQuery.of(context).size.width;
-    for (SDBdata sdbdata in _historydata) {
-      for (Exercises exercise in sdbdata.exercises) {
-        for (workoutModel.Sets sets in exercise.sets) {
-          _historyWeight = _historyWeight + (sets.weight * sets.reps).toInt();
+    if (_historydata != null) {
+      for (SDBdata sdbdata in _historydata) {
+        for (Exercises exercise in sdbdata.exercises) {
+          for (workoutModel.Sets sets in exercise.sets) {
+            _historyWeight = _historyWeight + (sets.weight * sets.reps).toInt();
+          }
         }
       }
+    }
+    switch (_dateCtrl) {
+      case 1:
+        for (int i = 0; i < 7; i++) {
+          var _historyWeight = 0;
+          for (SDBdata sdbdata in _historydata) {
+            if (sdbdata.date!.substring(0, 10) ==
+                DateFormat('yyyy-MM-dd').format(
+                    _toDay.subtract(Duration(days: _toDayKrInt() - i)))) {
+              for (Exercises exercises in sdbdata.exercises) {
+                for (workoutModel.Sets sets in exercises.sets) {
+                  _historyWeight =
+                      _historyWeight + (sets.weight * sets.reps).toInt();
+                }
+              }
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _historyWeight.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _historyWeight != 0 ? [0] : [],
+          ));
+        }
+        break;
+      case 2:
+        for (int i = 0; i < 4; i++) {
+          var _historyWeight = 0;
+          for (SDBdata sdbdata in _historydata) {
+            if (DateTime(_toDay.year, _toDay.month,
+                            _toDay.day - (i).toInt() * 7 - _toDayKrInt())
+                        .difference(
+                            DateTime.parse(sdbdata.date!.substring(0, 10)))
+                        .inDays >
+                    -7 &&
+                DateTime(_toDay.year, _toDay.month,
+                            _toDay.day - (i).toInt() * 7 - _toDayKrInt())
+                        .difference(
+                            DateTime.parse(sdbdata.date!.substring(0, 10)))
+                        .inDays <=
+                    0) {
+              for (Exercises exercises in sdbdata.exercises) {
+                for (workoutModel.Sets sets in exercises.sets) {
+                  _historyWeight =
+                      _historyWeight + (sets.weight * sets.reps).toInt();
+                }
+              }
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _historyWeight.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _historyWeight != 0 ? [0] : [],
+          ));
+        }
+        break;
+      case 3:
+        for (int i = 0; i < 6; i++) {
+          var _historyWeight = 0;
+          for (var sdbdata in _historydata) {
+            if ((getMonthSizeBetweenDates(
+                        DateTime.parse(sdbdata.date!.substring(0, 10)),
+                        _toDay) <=
+                    6 - i) &&
+                (getMonthSizeBetweenDates(
+                        DateTime.parse(sdbdata.date!.substring(0, 10)),
+                        _toDay) >
+                    (5 - i))) {
+              for (Exercises exercises in sdbdata.exercises) {
+                for (workoutModel.Sets sets in exercises.sets) {
+                  _historyWeight =
+                      _historyWeight + (sets.weight * sets.reps).toInt();
+                }
+              }
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _historyWeight.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _historyWeight != 0 ? [0] : [],
+          ));
+        }
+        break;
+      case 4:
+        for (int i = 0; i < 4; i++) {
+          var _historyWeight = 0;
+          for (var sdbdata in _historydata) {
+            if (_getQuarter(DateTime(
+                    _toDay.year, _toDay.month - (3) * (3 - i), _toDay.day)) ==
+                _getQuarter(DateTime.parse(sdbdata.date!.substring(0, 10)))) {
+              for (Exercises exercises in sdbdata.exercises) {
+                for (workoutModel.Sets sets in exercises.sets) {
+                  _historyWeight =
+                      _historyWeight + (sets.weight * sets.reps).toInt();
+                }
+              }
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _historyWeight.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _historyWeight != 0 ? [0] : [],
+          ));
+        }
+        break;
+      case 5:
+        for (int i = 0; i < 1; i++) {
+          var _historyWeight = 0;
+          for (var sdbdata in _historydata) {
+            if (_getYear(DateTime(_toDay.year, _toDay.month, _toDay.day)) ==
+                _getYear(DateTime.parse(sdbdata.date!.substring(0, 10)))) {
+              for (Exercises exercises in sdbdata.exercises) {
+                for (workoutModel.Sets sets in exercises.sets) {
+                  _historyWeight =
+                      _historyWeight + (sets.weight * sets.reps).toInt();
+                }
+              }
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _historyWeight.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _historyWeight != 0 ? [0] : [],
+          ));
+        }
+        break;
     }
 
     return _countHistoryCardCore(
@@ -633,8 +1418,150 @@ class _HomeState extends State<Home> {
     List<BarChartGroupData> _barChartGroupData = [];
     _dateController(_dateCtrl);
     double deviceWidth = MediaQuery.of(context).size.width;
-    for (SDBdata sdbdata in _historydata) {
-      _historyTime = _historyTime + (sdbdata.workout_time / 60).toInt();
+    if (_historydata != null) {
+      for (SDBdata sdbdata in _historydata) {
+        _historyTime = _historyTime + (sdbdata.workout_time / 60).toInt();
+      }
+    }
+    switch (_dateCtrl) {
+      case 1:
+        for (int i = 0; i < 7; i++) {
+          var _value = 0;
+          for (SDBdata sdbdata in _historydata) {
+            if (sdbdata.date!.substring(0, 10) ==
+                DateFormat('yyyy-MM-dd').format(
+                    _toDay.subtract(Duration(days: _toDayKrInt() - i)))) {
+              _value = _value + (sdbdata.workout_time / 60).toInt();
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _value.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _value != 0 ? [0] : [],
+          ));
+        }
+        break;
+      case 2:
+        for (int i = 0; i < 4; i++) {
+          int _value = 0;
+          for (SDBdata sdbdata in _historydata) {
+            if (DateTime(_toDay.year, _toDay.month,
+                            _toDay.day - (i).toInt() * 7 - _toDayKrInt())
+                        .difference(
+                            DateTime.parse(sdbdata.date!.substring(0, 10)))
+                        .inDays >
+                    -7 &&
+                DateTime(_toDay.year, _toDay.month,
+                            _toDay.day - (i).toInt() * 7 - _toDayKrInt())
+                        .difference(
+                            DateTime.parse(sdbdata.date!.substring(0, 10)))
+                        .inDays <=
+                    0) {
+              _value = _value + (sdbdata.workout_time / 60).toInt();
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _value.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _value != 0 ? [0] : [],
+          ));
+        }
+        break;
+      case 3:
+        for (int i = 0; i < 6; i++) {
+          int _value = 0;
+          for (SDBdata sdbdata in _historydata) {
+            if ((getMonthSizeBetweenDates(
+                        DateTime.parse(sdbdata.date!.substring(0, 10)),
+                        _toDay) <=
+                    6 - i) &&
+                (getMonthSizeBetweenDates(
+                        DateTime.parse(sdbdata.date!.substring(0, 10)),
+                        _toDay) >
+                    (5 - i))) {
+              _value = _value + (sdbdata.workout_time / 60).toInt();
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _value.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _value != 0 ? [0] : [],
+          ));
+        }
+        break;
+      case 4:
+        for (int i = 0; i < 4; i++) {
+          int _value = 0;
+          for (SDBdata sdbdata in _historydata) {
+            if (_getQuarter(DateTime(
+                    _toDay.year, _toDay.month - (3) * (3 - i), _toDay.day)) ==
+                _getQuarter(DateTime.parse(sdbdata.date!.substring(0, 10)))) {
+              _value = _value + (sdbdata.workout_time / 60).toInt();
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _value.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _value != 0 ? [0] : [],
+          ));
+        }
+        break;
+      case 5:
+        for (int i = 0; i < 1; i++) {
+          int _value = 0;
+          for (SDBdata sdbdata in _historydata) {
+            if (_getYear(DateTime(_toDay.year, _toDay.month, _toDay.day)) ==
+                _getYear(DateTime.parse(sdbdata.date!.substring(0, 10)))) {
+              _value = _value + (sdbdata.workout_time / 60).toInt();
+            }
+          }
+          _barChartGroupData.add(BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                  toY: _value.toDouble(),
+                  width: 12,
+                  gradient: _barsGradient,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6)))
+            ],
+            showingTooltipIndicators: _value != 0 ? [0] : [],
+          ));
+        }
+        break;
     }
 
     return _countHistoryCardCore(context, _dateStringCase(_dateCtrl),
@@ -647,13 +1574,15 @@ class _HomeState extends State<Home> {
 
     _dateController(_dateCtrl);
     double deviceWidth = MediaQuery.of(context).size.width;
-    for (SDBdata sdbdata in _historydata) {
-      for (Exercises exercise in sdbdata.exercises) {
-        if (_exerciseCountMap.containsKey(exercise.name)) {
-          _exerciseCountMap[exercise.name] =
-              _exerciseCountMap[exercise.name]! + 1;
-        } else {
-          _exerciseCountMap[exercise.name] = 1;
+    if (_historydata != null) {
+      for (SDBdata sdbdata in _historydata) {
+        for (Exercises exercise in sdbdata.exercises) {
+          if (_exerciseCountMap.containsKey(exercise.name)) {
+            _exerciseCountMap[exercise.name] =
+                _exerciseCountMap[exercise.name]! + 1;
+          } else {
+            _exerciseCountMap[exercise.name] = 1;
+          }
         }
       }
     }
@@ -698,6 +1627,7 @@ class _HomeState extends State<Home> {
           },
         ),
       );
+
   Widget _countHistoryCardCore(
       context,
       _historyDateCore,
@@ -759,25 +1689,29 @@ class _HomeState extends State<Home> {
               );
             }),
             SizedBox(height: 50),
-            AspectRatio(
-                aspectRatio: 3,
-                child: BarChart(BarChartData(
-                  barGroups: _barChartGroupData,
-                  barTouchData: barTouchData,
-                  titlesData: FlTitlesData(
-                      leftTitles: AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
-                      ),
-                      topTitles: AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
-                      ),
-                      rightTitles: AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
-                      ),
-                      bottomTitles: AxisTitles(sideTitles: _bottomTitles())),
-                  alignment: BarChartAlignment.spaceAround,
-                  borderData: FlBorderData(show: false),
-                )))
+            _barChartGroupData != null
+                ? AspectRatio(
+                    aspectRatio: 3,
+                    child: BarChart(BarChartData(
+                      barGroups: _barChartGroupData,
+                      barTouchData: barTouchData,
+                      titlesData: FlTitlesData(
+                          leftTitles: AxisTitles(
+                            sideTitles: SideTitles(showTitles: false),
+                          ),
+                          topTitles: AxisTitles(
+                            sideTitles: SideTitles(showTitles: false),
+                          ),
+                          rightTitles: AxisTitles(
+                            sideTitles: SideTitles(showTitles: false),
+                          ),
+                          bottomTitles:
+                              AxisTitles(sideTitles: _bottomTitles())),
+                      alignment: BarChartAlignment.spaceAround,
+                      borderData: FlBorderData(show: false),
+                      gridData: FlGridData(show: false),
+                    )))
+                : Container()
           ]),
         ));
   }
@@ -1209,6 +2143,15 @@ class _HomeState extends State<Home> {
     _chartIndex = Provider.of<ChartIndexProvider>(context, listen: false);
     _testdata0 = Provider.of<ExercisesdataProvider>(context, listen: false)
         .exercisesdata;
+    _barsGradient = LinearGradient(
+      colors: [
+        Color(0xFffc60a8),
+        Theme.of(context).primaryColor,
+      ],
+      begin: Alignment.bottomCenter,
+      end: Alignment.topCenter,
+    );
+
     return Scaffold(
         appBar: _appbarWidget(),
         body: Consumer<ExercisesdataProvider>(
