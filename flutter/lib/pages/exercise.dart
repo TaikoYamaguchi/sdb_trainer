@@ -317,7 +317,9 @@ class ExerciseState extends State<Exercise> {
                 ))
             : ReorderableListView.builder(
                 onReorder: (int oldIndex, int newIndex) {
-                  setState(() {
+                  _routinetimeProvider.isstarted
+                  ? showToast("운동중엔 순서변경이 불가능 해요")
+                  : setState(() {
                     if (oldIndex < newIndex) {
                       newIndex -= 1;
                     }
@@ -384,7 +386,9 @@ class ExerciseState extends State<Exercise> {
                                   ),
                                   SlidableAction(
                                     onPressed: (_) {
-                                      _displayDeleteAlert(index);
+                                      _routinetimeProvider.isstarted
+                                      ? showToast("운동중엔 루틴제거는 불가능 해요")
+                                      : _displayDeleteAlert(index);
                                     },
                                     backgroundColor: Color(0xFFFE4A49),
                                     foregroundColor: Colors.white,

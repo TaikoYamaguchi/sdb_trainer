@@ -164,7 +164,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                 alignment: Alignment.centerLeft,
                 child: Consumer<ExercisesdataProvider>(
                   builder: (context, provier, child) {
-                    return Text(provier.exercisesdata.exercises[widget.eindex].note,
+                    return Text(provier.exercisesdata.exercises[widget.eindex].note ?? '나만의 운동노트를 적어주세요',
                         style: TextStyle(
                             fontSize: 20.0,
                             color: Colors.white,
@@ -187,7 +187,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
   }
 
   Widget _commentWidget() {
-    _exercisenoteCtrl.text= _exercisesdataProvider.exercisesdata.exercises[widget.eindex].note;
+    _exercisenoteCtrl.text= _exercisesdataProvider.exercisesdata.exercises[widget.eindex].note ?? '';
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: TextFormField(
