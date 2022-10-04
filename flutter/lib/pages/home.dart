@@ -59,8 +59,8 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 10)).then((value) {
-      _timer = Timer.periodic(Duration(seconds: 10), (Timer timer) {
+    Future.delayed(Duration(seconds: 30)).then((value) {
+      _timer = Timer.periodic(Duration(seconds: 30), (Timer timer) {
         _historyCardIndexCtrl++;
 
         _historyCardcontroller.animateToPage(
@@ -501,16 +501,15 @@ class _HomeState extends State<Home> {
         SizedBox(
           height: 270,
           child: PageView.builder(
-            controller: _historyCardcontroller,
-            onPageChanged: (int index) =>
-                setState(() => _historyCardIndexCtrl = index),
-            itemBuilder: (_, i) {
-              return Transform.scale(
-                scale: i == _historyCardIndexCtrl ? 1.03 : 0.97,
-                child: _historyCardCase(_historyCardIndexCtrl, _page, context),
-              );
-            },
-          ),
+              controller: _historyCardcontroller,
+              onPageChanged: (int index) =>
+                  setState(() => _historyCardIndexCtrl = index),
+              itemBuilder: (_, i) {
+                return Transform.scale(
+                  scale: i == _historyCardIndexCtrl ? 1.03 : 0.97,
+                  child: _historyCardCase(i, _page, context),
+                );
+              }),
         ),
         Padding(
           padding: const EdgeInsets.all(4.0),
@@ -761,13 +760,13 @@ class _HomeState extends State<Home> {
           int _value = 0;
           for (var sdbdata in _historyDate) {
             if (DateTime(_toDay.year, _toDay.month,
-                            _toDay.day - (i).toInt() * 7 - _toDayKrInt())
+                            _toDay.day - (3 - i).toInt() * 7 - _toDayKrInt())
                         .difference(
                             DateTime.parse(sdbdata.date.substring(0, 10)))
                         .inDays >
                     -7 &&
                 DateTime(_toDay.year, _toDay.month,
-                            _toDay.day - (i).toInt() * 7 - _toDayKrInt())
+                            _toDay.day - (3 - i).toInt() * 7 - _toDayKrInt())
                         .difference(
                             DateTime.parse(sdbdata.date.substring(0, 10)))
                         .inDays <=
@@ -922,13 +921,13 @@ class _HomeState extends State<Home> {
           int _value = 0;
           for (var sdbdata in _historyDate) {
             if (DateTime(_toDay.year, _toDay.month,
-                            _toDay.day - (i).toInt() * 7 - _toDayKrInt())
+                            _toDay.day - (3 - i).toInt() * 7 - _toDayKrInt())
                         .difference(DateTime.parse(
                             sdbdata.sdbdata.date!.substring(0, 10)))
                         .inDays >
                     -7 &&
                 DateTime(_toDay.year, _toDay.month,
-                            _toDay.day - (i).toInt() * 7 - _toDayKrInt())
+                            _toDay.day - (3 - i).toInt() * 7 - _toDayKrInt())
                         .difference(DateTime.parse(
                             sdbdata.sdbdata.date!.substring(0, 10)))
                         .inDays <=
@@ -1093,13 +1092,13 @@ class _HomeState extends State<Home> {
           var _historySet = 0;
           for (SDBdata sdbdata in _historydata) {
             if (DateTime(_toDay.year, _toDay.month,
-                            _toDay.day - (i).toInt() * 7 - _toDayKrInt())
+                            _toDay.day - (3 - i).toInt() * 7 - _toDayKrInt())
                         .difference(
                             DateTime.parse(sdbdata.date!.substring(0, 10)))
                         .inDays >
                     -7 &&
                 DateTime(_toDay.year, _toDay.month,
-                            _toDay.day - (i).toInt() * 7 - _toDayKrInt())
+                            _toDay.day - (3 - i).toInt() * 7 - _toDayKrInt())
                         .difference(
                             DateTime.parse(sdbdata.date!.substring(0, 10)))
                         .inDays <=
@@ -1273,13 +1272,13 @@ class _HomeState extends State<Home> {
           var _historyWeight = 0;
           for (SDBdata sdbdata in _historydata) {
             if (DateTime(_toDay.year, _toDay.month,
-                            _toDay.day - (i).toInt() * 7 - _toDayKrInt())
+                            _toDay.day - (3 - i).toInt() * 7 - _toDayKrInt())
                         .difference(
                             DateTime.parse(sdbdata.date!.substring(0, 10)))
                         .inDays >
                     -7 &&
                 DateTime(_toDay.year, _toDay.month,
-                            _toDay.day - (i).toInt() * 7 - _toDayKrInt())
+                            _toDay.day - (3 - i).toInt() * 7 - _toDayKrInt())
                         .difference(
                             DateTime.parse(sdbdata.date!.substring(0, 10)))
                         .inDays <=
@@ -1454,13 +1453,13 @@ class _HomeState extends State<Home> {
           int _value = 0;
           for (SDBdata sdbdata in _historydata) {
             if (DateTime(_toDay.year, _toDay.month,
-                            _toDay.day - (i).toInt() * 7 - _toDayKrInt())
+                            _toDay.day - (3 - i).toInt() * 7 - _toDayKrInt())
                         .difference(
                             DateTime.parse(sdbdata.date!.substring(0, 10)))
                         .inDays >
                     -7 &&
                 DateTime(_toDay.year, _toDay.month,
-                            _toDay.day - (i).toInt() * 7 - _toDayKrInt())
+                            _toDay.day - (3 - i).toInt() * 7 - _toDayKrInt())
                         .difference(
                             DateTime.parse(sdbdata.date!.substring(0, 10)))
                         .inDays <=
