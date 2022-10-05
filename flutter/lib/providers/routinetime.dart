@@ -184,6 +184,11 @@ class RoutineTimeProvider extends ChangeNotifier {
   Future<void> _showNotificationWithChronometer(DateTime _starttime) async {
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
+    await flutterLocalNotificationsPlugin.initialize(
+      const InitializationSettings(
+        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+      ),
+    );
     print(DateTime.now());
     print(DateTime.now().millisecondsSinceEpoch / 1000);
     print(_starttime);
