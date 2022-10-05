@@ -603,9 +603,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
         builder: (BuildContext context) {
-          List<String> options = _exercisesdataProvider.options;
+          List<String> options = [..._exercisesdataProvider.options];
           options.remove('All');
-          List<String> options2 = _exercisesdataProvider.options2;
+          List<String> options2 = [..._exercisesdataProvider.options2];
           options2.remove('All');
           return SingleChildScrollView(
             child: StatefulBuilder(

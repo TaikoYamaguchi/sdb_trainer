@@ -80,7 +80,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                 ),
               ),
               onChanged: (text) {
-                searchExercise(_exSearchCtrl.text);
+                filterTotal(_exSearchCtrl.text,_exercisesdataProvider.tags,_exercisesdataProvider.tags2);
               }),
         ),
       ),
@@ -89,9 +89,42 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
     );
   }
 
+  filterTotal(String query,List tags,List tags2){
+
+    final suggestions = _exercisesdataProvider.exercisesdata.exercises.where((exercise) {
+      if (query == '') {
+        return true;
+      } else {
+        final exTitle = exercise.name;
+        return (exTitle.contains(query)) as bool;
+      }
+    }).toList();
+
+
+    final suggestions2 = _exercisesdataProvider.exercisesdata.exercises.where((exercise) {
+      if (tags[0]=='All'){
+        return true;
+      } else {
+        final extarget = Set.from(exercise.target);
+        final query_s = Set.from(tags);
+        return (query_s.intersection(extarget).isNotEmpty) as bool;
+      }
+    }).toList();
+
+    final suggestions3 = _exercisesdataProvider.exercisesdata.exercises.where((exercise) {
+      if (tags2[0]=='All'){
+        return true;
+      } else {
+        final excate = exercise.category;
+        return (tags2.contains(excate)) as bool;
+      }
+    }).toList();
+    _exercisesdataProvider.settesttotal(suggestions,suggestions2,suggestions3);
+  }
+
 
   void searchExercise(String query) {
-    final suggestions = _exercisesdataProvider.exercisesdata.exercises.where((exercise) {
+    final suggestions = _exercisesdataProvider.exercisesdata.exercises.map((exercise) {
       final exTitle = exercise.name;
       return (exTitle.contains(query)) as bool;
     }).toList();
@@ -100,31 +133,32 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
   }
 
   void filterExercise(List query) {
-    final suggestions = _exercisesdataProvider.exercisesdata.exercises.where((exercise) {
+    //List<bool> suggestions = [];
+    final suggestions = _exercisesdataProvider.exercisesdata.exercises.map((exercise) {
       if (query[0]=='All'){
-        print('imall');
         return true;
       } else {
         final extarget = Set.from(exercise.target);
         final query_s = Set.from(query);
-        return (query_s.intersection(extarget).isNotEmpty) as bool;
+        return query_s.intersection(extarget).isNotEmpty as bool;
+        //suggestions.add(query_s.intersection(extarget).isNotEmpty as bool);
+        //print(suggestions);
       }
     }).toList();
-    print(suggestions.length);
+    print(suggestions);
+
     _exercisesdataProvider.settestdata_f1(suggestions);
   }
 
   void filterExercise2(List query) {
-    final suggestions = _exercisesdataProvider.exercisesdata.exercises.where((exercise) {
+    final suggestions = _exercisesdataProvider.exercisesdata.exercises.map((exercise) {
       if (query[0]=='All'){
-        print('imall');
         return true;
       } else {
         final excate = exercise.category;
         return (query.contains(excate)) as bool;
       }
     }).toList();
-    print(suggestions.length);
     _exercisesdataProvider.settestdata_f2(suggestions);
   }
 
@@ -210,174 +244,180 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
         builder: (BuildContext context) {
-          List<String> options = _exercisesdataProvider.options;
+          List<String> options = [..._exercisesdataProvider.options];
           options.remove('All');
-          List<String> options2 = _exercisesdataProvider.options2;
+          List<String> options2 = [..._exercisesdataProvider.options2];
           options2.remove('All');
-          return Container(
-            padding: EdgeInsets.all(12.0),
-            height: 390,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-              color: Theme.of(context).cardColor,
-            ),
-            child:  Column(
-              children: [
-                Text(
-                  '커스텀 운동을 만들어보세요',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontSize: 24),
-                ),
-                Text('운동의 이름을 입력해 주세요',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
-                Text('외부를 터치하면 취소 할 수 있어요',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 12)),
-                SizedBox(height: 20),
-                TextField(
-                  onChanged: (value) {
-                    _exercisesdataProvider.exercisesdata.exercises
-                        .indexWhere((exercise) {
-                      if (exercise.name == _customExNameCtrl.text) {
-                        setState(() {
-                          _customExUsed = true;
-                        });
-                        return true;
-                      } else {
-                        setState(() {
-                          _customExUsed = false;
-                        });
-                        return false;
-                      }
-                    });
-                  },
-                  style: TextStyle(fontSize: 24.0, color: Colors.white),
-                  textAlign: TextAlign.center,
-                  controller: _customExNameCtrl,
-                  decoration: InputDecoration(
-                      filled: true,
-                      enabledBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor, width: 3),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor, width: 3),
-                      ),
-                      hintText: "커스텀 운동 이름",
-                      hintStyle:
-                      TextStyle(fontSize: 24.0, color: Colors.white)),
-                ),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      child: Text(
-                        '운동부위:',
+          return SingleChildScrollView(
+            child: StatefulBuilder(
+                builder: (BuildContext context, StateSetter mystate) {
+                return Container(
+                  padding: EdgeInsets.all(12.0),
+                  height: 390,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                    color: Theme.of(context).cardColor,
+                  ),
+                  child:  Column(
+                    children: [
+                      Text(
+                        '커스텀 운동을 만들어보세요',
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.white, fontSize: 24),
                       ),
-                    ),
-                    SizedBox(width: 20),
-                    Container(
-                      child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 2 / 5,
-                          child: DropdownButtonFormField(
-                            isExpanded: true,
-                            dropdownColor: Colors.black,
-                            decoration: InputDecoration(
-                              filled: true,
-                              enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                                borderSide:
-                                BorderSide(color: Colors.white, width: 3),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                                borderSide: BorderSide(
-                                    color: Theme.of(context).primaryColor,
-                                    width: 3),
-                              ),
-                            ),
-                            hint: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  '기타',
-                                  style: TextStyle(color: Colors.white),
-                                )),
-                            items: options.map((item) => DropdownMenuItem<String>(
-                                value: item.toString(),
-                                child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text(item,
-                                      style: TextStyle(color: Colors.white),)
-                                ))).toList(),
-                            onChanged: (item) =>
-                                setState(() => selectedItem = item as String),
-                          )
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      child: Text(
-                        '카테고리:',
+                      Text('운동의 이름을 입력해 주세요',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white, fontSize: 16)),
+                      Text('외부를 터치하면 취소 할 수 있어요',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.grey, fontSize: 12)),
+                      SizedBox(height: 20),
+                      TextField(
+                        onChanged: (value) {
+                          _exercisesdataProvider.exercisesdata.exercises
+                              .indexWhere((exercise) {
+                            if (exercise.name == _customExNameCtrl.text) {
+                              mystate(() {
+                                _customExUsed = true;
+                              });
+                              return true;
+                            } else {
+                              mystate(() {
+                                _customExUsed = false;
+                              });
+                              return false;
+                            }
+                          });
+                        },
+                        style: TextStyle(fontSize: 24.0, color: Colors.white),
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white, fontSize: 24),
-                      ),
-                    ),
-                    SizedBox(width: 20),
-                    Container(
-                      child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 2 / 5,
-                          child: DropdownButtonFormField(
-                            isExpanded: true,
-                            dropdownColor: Colors.black,
-                            decoration: InputDecoration(
-                              filled: true,
-                              enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                                borderSide:
-                                BorderSide(color: Colors.white, width: 3),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                                borderSide: BorderSide(
-                                    color: Theme.of(context).primaryColor,
-                                    width: 3),
-                              ),
+                        controller: _customExNameCtrl,
+                        decoration: InputDecoration(
+                            filled: true,
+                            enabledBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).primaryColor, width: 3),
                             ),
-                            hint: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  '기타',
-                                  style: TextStyle(color: Colors.white),
-                                )),
-                            items: options2.map((item) => DropdownMenuItem<String>(
-                                value: item.toString(),
-                                child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text(item,
-                                      style: TextStyle(color: Colors.white),)
-                                ))).toList(),
-                            onChanged: (item) =>
-                                setState(() => selectedItem2 = item as String),
-                          )
+                            focusedBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).primaryColor, width: 3),
+                            ),
+                            hintText: "커스텀 운동 이름",
+                            hintStyle:
+                            TextStyle(fontSize: 24.0, color: Colors.white)),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20),
-                _customExSubmitButton(context, provider)
-              ],
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            child: Text(
+                              '운동부위:',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.white, fontSize: 24),
+                            ),
+                          ),
+                          SizedBox(width: 20),
+                          Container(
+                            child: SizedBox(
+                                width: MediaQuery.of(context).size.width * 2 / 5,
+                                child: DropdownButtonFormField(
+                                  isExpanded: true,
+                                  dropdownColor: Colors.black,
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderSide:
+                                      BorderSide(color: Colors.white, width: 3),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderSide: BorderSide(
+                                          color: Theme.of(context).primaryColor,
+                                          width: 3),
+                                    ),
+                                  ),
+                                  hint: Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        '기타',
+                                        style: TextStyle(color: Colors.white),
+                                      )),
+                                  items: options.map((item) => DropdownMenuItem<String>(
+                                      value: item.toString(),
+                                      child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text(item,
+                                            style: TextStyle(color: Colors.white),)
+                                      ))).toList(),
+                                  onChanged: (item) =>
+                                      setState(() => selectedItem = item as String),
+                                )
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            child: Text(
+                              '카테고리:',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.white, fontSize: 24),
+                            ),
+                          ),
+                          SizedBox(width: 20),
+                          Container(
+                            child: SizedBox(
+                                width: MediaQuery.of(context).size.width * 2 / 5,
+                                child: DropdownButtonFormField(
+                                  isExpanded: true,
+                                  dropdownColor: Colors.black,
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderSide:
+                                      BorderSide(color: Colors.white, width: 3),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderSide: BorderSide(
+                                          color: Theme.of(context).primaryColor,
+                                          width: 3),
+                                    ),
+                                  ),
+                                  hint: Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        '기타',
+                                        style: TextStyle(color: Colors.white),
+                                      )),
+                                  items: options2.map((item) => DropdownMenuItem<String>(
+                                      value: item.toString(),
+                                      child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text(item,
+                                            style: TextStyle(color: Colors.white),)
+                                      ))).toList(),
+                                  onChanged: (item) =>
+                                      setState(() => selectedItem2 = item as String),
+                                )
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      _customExSubmitButton(context, provider)
+                    ],
+                  ),
+                );
+              }
             ),
           );
         });
@@ -388,7 +428,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
         user_email: _userdataProvider.userdata.email, exercises: _exercisesdataProvider.exercisesdata.exercises)
         .editExercise()
         .then((data) => data["user_email"] != null
-        ? {showToast("수정 완료"), _exercisesdataProvider.getdata()}
+        ? {showToast("수정 완료")}
         : showToast("입력을 확인해주세요"));
   }
 
@@ -422,7 +462,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                 print("nulllllllllllll");
                 _customExNameCtrl.clear();
 
-                _testdata = provider.exercisesdata.exercises;
+                filterTotal(_exSearchCtrl.text,_exercisesdataProvider.tags,_exercisesdataProvider.tags2);
 
                 Navigator.of(context).pop();
               }
@@ -434,8 +474,8 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
   Widget exercisesWidget(aaa, bool shirink) {
     double top = 0;
     double bottom = 0;
-    return Consumer2<WorkoutdataProvider, ExercisesdataProvider>(
-        builder: (builder, provider, provider2, child) {
+    return Consumer<ExercisesdataProvider>(
+        builder: (builder, provider2, child) {
           var exuniq = provider2.testdata;
           return ListView.separated(
             physics: NeverScrollableScrollPhysics(),
@@ -530,7 +570,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
               val.indexOf('All') == val.length-1
                   ? provider.settags(['All'])
                   : [val.remove('All'),provider.settags(val),];
-              filterExercise(provider.tags);
+              filterTotal(_exSearchCtrl.text,_exercisesdataProvider.tags,_exercisesdataProvider.tags2);
             },
             choiceItems: C2Choice.listFrom<String, String>(
               source: provider.options,
@@ -565,7 +605,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
               val.indexOf('All') == val.length-1
                   ? provider.settags2(['All'])
                   : [val.remove('All'),provider.settags2(val),];
-              filterExercise2(provider.tags2);
+              filterTotal(_exSearchCtrl.text,_exercisesdataProvider.tags,_exercisesdataProvider.tags2);
             },
             choiceItems: C2Choice.listFrom<String, String>(
               source: provider.options2,

@@ -68,6 +68,11 @@ class ExercisesdataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  removeExdata(ueindex) {
+    _exercisesdata.exercises.removeAt(ueindex);
+    notifyListeners();
+  }
+
   putHomeExList(exList) async {
     _homeExList = exList;
     notifyListeners();
@@ -108,6 +113,12 @@ class ExercisesdataProvider extends ChangeNotifier {
 
   settestdata(data) async {
     _testdata = data;
+    print(_testdata.length);
+    notifyListeners();
+  }
+
+  settestdata_d() async {
+    _testdata =_testdata.toSet().intersection(_exercisesdata.exercises.toSet()).toList();
     notifyListeners();
   }
 
@@ -126,6 +137,8 @@ class ExercisesdataProvider extends ChangeNotifier {
     [_testdata_s,_testdata_f1,_testdata_f2].fold<Set>(
         [_testdata_s,_testdata_f1,_testdata_f2].first.toSet(),
             (a, b) => a.intersection(b.toSet()));
+
+    print(commonElements);
     settestdata(commonElements.toList());
   }
 
@@ -137,6 +150,18 @@ class ExercisesdataProvider extends ChangeNotifier {
             (a, b) => a.intersection(b.toSet()));
     settestdata(commonElements.toList());
   }
+
+  settesttotal(data,data1,data2) async {
+    _testdata_s = data;
+    _testdata_f1 = data1;
+    _testdata_f2 = data2;
+    final commonElements =
+    [_testdata_s,_testdata_f1,_testdata_f2].fold<Set>(
+        [_testdata_s,_testdata_f1,_testdata_f2].first.toSet(),
+            (a, b) => a.intersection(b.toSet()));
+    settestdata(commonElements.toList());
+}
+
 
   setfiltmenu(num) async {
     _filtmenu = num;
