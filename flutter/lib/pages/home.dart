@@ -24,6 +24,7 @@ import 'package:intl/intl.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'dart:async';
 import 'package:fl_chart/fl_chart.dart';
+import 'dart:collection';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -53,6 +54,13 @@ class _HomeState extends State<Home> {
   late var _testdata = _testdata0.exercises;
   var _timer;
   late List<BarChartGroupData> _cardCoreBarChartGroupData;
+  var _isbottomTitleEx = false;
+  Map<String, int> _exerciseCountMap = {
+    "스쿼트": 0,
+    "데드리프트": 0,
+    "벤치프레스": 0,
+    "밀리터리프레스": 0
+  };
 
   DateTime _toDay = DateTime.now();
 
@@ -534,18 +542,26 @@ class _HomeState extends State<Home> {
     var _realIndex = _historyCardIndexCtrl % length;
     switch (_realIndex) {
       case 0:
+        _isbottomTitleEx = false;
         return _countHistoryNoWidget(context);
       case 1:
+        _isbottomTitleEx = false;
         return _countHistoryDateWidget(context);
       case 2:
+        _isbottomTitleEx = false;
         return _countHistorySetWidget(context);
       case 3:
+        _isbottomTitleEx = false;
         return _countHistoryWeightWidget(context);
       case 4:
+        _isbottomTitleEx = false;
         return _countHistoryTimeWidget(context);
       case 5:
+        _countHistoryBestCore(context);
+        _isbottomTitleEx = true;
         return _countHistoryBestWidget(context);
       default:
+        _isbottomTitleEx = false;
         return _countHistoryNoWidget(context);
     }
   }
@@ -715,6 +731,30 @@ class _HomeState extends State<Home> {
         }
       },
     );
+  }
+
+  SideTitles _bottomExTitles() {
+    return SideTitles(
+        showTitles: true,
+        getTitlesWidget: (value, meta) {
+          String text = '';
+          switch (value.toInt()) {
+            case 0:
+              text = _exerciseCountMap.keys.elementAt(3 - value.toInt());
+              break;
+            case 1:
+              text = _exerciseCountMap.keys.elementAt(3 - value.toInt());
+              break;
+            case 2:
+              text = _exerciseCountMap.keys.elementAt(3 - value.toInt());
+              break;
+            case 3:
+              text = _exerciseCountMap.keys.elementAt(3 - value.toInt());
+              break;
+          }
+          return Text(text,
+              style: TextStyle(fontSize: 12, color: Colors.white));
+        });
   }
 
   Widget _countHistoryNoWidget(context) {
@@ -1568,8 +1608,11 @@ class _HomeState extends State<Home> {
   }
 
   Widget _countHistoryBestWidget(context) {
-    Map<String, int> _exerciseCountMap = {};
     List<BarChartGroupData> _barChartGroupData = [];
+    var thevalue = 0;
+    var thekey = "운동을 시작해봐요";
+    _isbottomTitleEx = true;
+    _exerciseCountMap = {"스쿼트": 0, "데드리프트": 0, "벤치프레스": 0, "밀리터리프레스": 0};
 
     _dateController(_dateCtrl);
     double deviceWidth = MediaQuery.of(context).size.width;
@@ -1585,14 +1628,31 @@ class _HomeState extends State<Home> {
         }
       }
     }
-    var thevalue = 0;
-    var thekey = "운동을 시작해봐요";
+    _exerciseCountMap = Map.fromEntries(_exerciseCountMap.entries.toList()
+      ..sort((e1, e2) => e2.value.compareTo(e1.value)));
+
     _exerciseCountMap.forEach((key, value) {
       if (value > thevalue) {
         thevalue = value;
         thekey = key;
       }
     });
+
+    for (int i = 0; i < 4; i++) {
+      _barChartGroupData.add(BarChartGroupData(
+        x: i,
+        barRods: [
+          BarChartRodData(
+              toY: _exerciseCountMap.values.elementAt(3 - i).toDouble(),
+              width: 12,
+              gradient: _barsGradient,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(6), topRight: Radius.circular(6)))
+        ],
+        showingTooltipIndicators:
+            _exerciseCountMap.values.elementAt(3 - i) != 0 ? [0] : [],
+      ));
+    }
 
     return _countHistoryCardCore(
         context,
@@ -1603,6 +1663,8 @@ class _HomeState extends State<Home> {
         0,
         _barChartGroupData);
   }
+
+  void _countHistoryBestCore(context) async {}
 
   BarTouchData get barTouchData => BarTouchData(
         enabled: false,
@@ -1704,8 +1766,10 @@ class _HomeState extends State<Home> {
                           rightTitles: AxisTitles(
                             sideTitles: SideTitles(showTitles: false),
                           ),
-                          bottomTitles:
-                              AxisTitles(sideTitles: _bottomTitles())),
+                          bottomTitles: AxisTitles(
+                              sideTitles: _isbottomTitleEx
+                                  ? _bottomExTitles()
+                                  : _bottomTitles())),
                       alignment: BarChartAlignment.spaceAround,
                       borderData: FlBorderData(show: false),
                       gridData: FlGridData(show: false),
