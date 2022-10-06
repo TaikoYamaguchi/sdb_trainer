@@ -18,6 +18,7 @@ import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'dart:math';
+import 'dart:ui' as ui;
 
 class Calendar extends StatefulWidget {
   @override
@@ -164,7 +165,7 @@ class _CalendarState extends State<Calendar> {
         builder: (builder, provider1, provider2, child) {
       return PageView(
         controller: provider1.isPageController,
-        children: [_chartWidget(), _staticsWidget()],
+        children: [_chartWidget(context), _staticsWidget()],
         onPageChanged: (page) {
           if (page == 1) {
             _isChartWidget.change(false);
@@ -698,7 +699,24 @@ class _CalendarState extends State<Calendar> {
     );
   }
 
-  Widget _chartWidget() {
+  Widget _chartWidget(context) {
+    final List<Color> color = <Color>[];
+    color.add(Color(0xFffc60a8).withOpacity(0.7));
+    color.add(Theme.of(context).primaryColor.withOpacity(0.9));
+    color.add(Theme.of(context).primaryColor.withOpacity(0.9));
+    color.add(Color(0xFffc60a8).withOpacity(0.7));
+
+    final List<double> stops = <double>[];
+    stops.add(0.0);
+    stops.add(0.3);
+    stops.add(0.7);
+    stops.add(1.0);
+
+    final LinearGradient gradientColors = LinearGradient(
+        colors: color,
+        stops: stops,
+        begin: Alignment.bottomCenter,
+        end: Alignment.topCenter);
     return (Center(
         child: Column(
       children: [
@@ -714,50 +732,58 @@ class _CalendarState extends State<Calendar> {
                       text: _exercisesdataProvider.exercisesdata!
                           .exercises[_chartIndex.chartIndex].name,
                       textStyle: TextStyle(color: Colors.white)),
-                  primaryXAxis: DateTimeAxis(),
+                  plotAreaBorderWidth: 0,
+                  primaryXAxis: DateTimeAxis(
+                    majorGridLines: const MajorGridLines(width: 0),
+                    majorTickLines: const MajorTickLines(size: 0),
+                    axisLine: const AxisLine(width: 0),
+                  ),
                   primaryYAxis: NumericAxis(
-                      minimum: _sdbChartData!.length == 0
-                          ? 0
-                          : _sdbChartData!.length > 1
-                              ? _sdbChartData!
-                                  .reduce((curr, next) =>
-                                      curr.onerm! < next.onerm! ? curr : next)
-                                  .onerm
-                              : _sdbChartData![0].onerm),
+                      axisLine: const AxisLine(width: 0),
+                      majorTickLines: const MajorTickLines(size: 0),
+                      majorGridLines: const MajorGridLines(width: 0),
+                      minimum: 0),
                   tooltipBehavior: _tooltipBehavior,
                   zoomPanBehavior: _zoomPanBehavior,
                   legend: Legend(
                       isVisible: true,
                       position: LegendPosition.bottom,
+                      opacity: 0.7,
                       textStyle: TextStyle(color: Colors.white)),
-                  series: <LineSeries>[
+                  series: [
                 // Renders line chart
-                LineSeries<Exercises, DateTime>(
-                    isVisibleInLegend: true,
-                    markerSettings: MarkerSettings(
-                        isVisible: true, color: Theme.of(context).primaryColor),
-                    name: "1rm",
-                    width: 3,
-                    color: Theme.of(context).primaryColor,
-                    dataLabelSettings: DataLabelSettings(
-                        showZeroValue: false,
-                        isVisible: true,
-                        textStyle:
-                            TextStyle(color: Colors.white, fontSize: 10)),
-                    dataSource: _sdbChartData!,
-                    xValueMapper: (Exercises sales, _) =>
-                        DateTime.parse(sales.date!),
-                    yValueMapper: (Exercises sales, _) => sales.onerm),
+                SplineSeries<Exercises, DateTime>(
+                  isVisibleInLegend: true,
+                  onCreateShader: (ShaderDetails details) {
+                    return ui.Gradient.linear(details.rect.topRight,
+                        details.rect.bottomLeft, color, stops);
+                  },
+                  markerSettings: MarkerSettings(
+                      isVisible: true,
+                      height: 6,
+                      width: 6,
+                      borderWidth: 3,
+                      color: Theme.of(context).primaryColor.withOpacity(0.1),
+                      borderColor:
+                          Theme.of(context).primaryColor.withOpacity(0.1)),
+                  name: "1rm",
+                  color: Theme.of(context).primaryColor,
+                  width: 5,
+                  dataSource: _sdbChartData!,
+                  xValueMapper: (Exercises sales, _) =>
+                      DateTime.parse(sales.date!),
+                  yValueMapper: (Exercises sales, _) => sales.onerm,
+                ),
 
-                LineSeries<Exercises, DateTime>(
-                    isVisibleInLegend: true,
-                    color: Theme.of(context).cardColor,
-                    name: "goal",
-                    width: 2,
-                    dataSource: _sdbChartData!,
-                    xValueMapper: (Exercises sales, _) =>
-                        DateTime.parse(sales.date!),
-                    yValueMapper: (Exercises sales, _) => sales.goal),
+                // LineSeries<Exercises, DateTime>(
+                //   isVisibleInLegend: true,
+                //   color: Theme.of(context).cardColor,
+                //   name: "goal",
+                //   dataSource: _sdbChartData!,
+                //   xValueMapper: (Exercises sales, _) =>
+                //       DateTime.parse(sales.date!),
+                //   yValueMapper: (Exercises sales, _) => sales.goal,
+                // ),
               ])),
         ),
         _onechartExercisesWidget(_sdbChartData)
@@ -834,10 +860,13 @@ class _CalendarState extends State<Calendar> {
         child: TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(color: Colors.white,),
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
               disabledForegroundColor: Colors.black,
               padding: EdgeInsets.all(8.0),
             ),
