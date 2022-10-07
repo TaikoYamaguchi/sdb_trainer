@@ -7,10 +7,12 @@ class HistorydataProvider extends ChangeNotifier {
   var _historydata;
   var _historydataAll;
   var _historydataFriends;
+  var _historydataUserEmail;
   var _commentAll;
   get historydata => _historydata;
   get historydataAll => _historydataAll;
   get historydataFriends => _historydataFriends;
+  get historydataUserEmail => _historydataUserEmail;
   get commentAll => _commentAll;
 
   getdata() async {
@@ -77,6 +79,16 @@ class HistorydataProvider extends ChangeNotifier {
     });
   }
 
+  getUserEmailHistorydata(user_email) {
+    _historydataUserEmail = [];
+    HistorydataUserEmail(user_email: user_email)
+        .loadSDBdataUserEmail()
+        .then((value) {
+      _historydataUserEmail = value;
+      notifyListeners();
+    });
+  }
+
   patchHistoryLikedata(SDBdata, email, status) {
     if (status == "remove") {
       _historydata.sdbdatas.indexWhere((sdbdata) {
@@ -103,6 +115,15 @@ class HistorydataProvider extends ChangeNotifier {
           return false;
         }
       });
+      _historydataUserEmail.sdbdatas.indexWhere((sdbdata) {
+        if (sdbdata.id == SDBdata.id) {
+          sdbdata.like.remove(email);
+          return true;
+        } else {
+          return false;
+        }
+      });
+
       notifyListeners();
     } else if (status == "append") {
       _historydata.sdbdatas.indexWhere((sdbdata) {
@@ -122,6 +143,14 @@ class HistorydataProvider extends ChangeNotifier {
         }
       });
       _historydataAll.sdbdatas.indexWhere((sdbdata) {
+        if (sdbdata.id == SDBdata.id) {
+          sdbdata.like.add(email);
+          return true;
+        } else {
+          return false;
+        }
+      });
+      _historydataUserEmail.sdbdatas.indexWhere((sdbdata) {
         if (sdbdata.id == SDBdata.id) {
           sdbdata.like.add(email);
           return true;
@@ -158,6 +187,15 @@ class HistorydataProvider extends ChangeNotifier {
         return false;
       }
     });
+    _historydataUserEmail.sdbdatas.indexWhere((sdbdata) {
+      if (sdbdata.id == SDBdata.id) {
+        sdbdata.comment = comment;
+        return true;
+      } else {
+        return false;
+      }
+    });
+
     notifyListeners();
   }
 
@@ -187,6 +225,15 @@ class HistorydataProvider extends ChangeNotifier {
         return false;
       }
     });
+    _historydataUserEmail.sdbdatas.indexWhere((sdbdata) {
+      if (sdbdata.id == SDBdata.id) {
+        sdbdata.isVisible = status;
+        return true;
+      } else {
+        return false;
+      }
+    });
+
     notifyListeners();
   }
 

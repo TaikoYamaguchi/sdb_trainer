@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sdb_trainer/pages/feedCard.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
@@ -13,6 +14,8 @@ import 'package:like_button/like_button.dart';
 import 'dart:io';
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:sdb_trainer/providers/historydata.dart';
+import 'package:sdb_trainer/repository/history_repository.dart';
 
 class FriendProfile extends StatefulWidget {
   User user;
@@ -24,6 +27,7 @@ class FriendProfile extends StatefulWidget {
 
 class _FriendProfileState extends State<FriendProfile> {
   var _userdataProvider;
+  var _historydataProvider;
   var btnDisabled;
   @override
   void initState() {
@@ -53,94 +57,100 @@ class _FriendProfileState extends State<FriendProfile> {
   }
 
   Widget _userProfileWidget() {
+    _historydataProvider.getUserEmailHistorydata(widget.user.email);
     return SingleChildScrollView(
       child: Container(
         width: MediaQuery.of(context).size.width,
         color: Colors.black,
-        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          GestureDetector(
-              onTap: () {},
-              child: widget.user.image == ""
-                  ? Icon(
-                      Icons.account_circle,
-                      color: Colors.grey,
-                      size: 160.0,
-                    )
-                  : CachedNetworkImage(
-                      imageUrl: widget.user.image,
-                      imageBuilder: (context, imageProivder) => Container(
-                        height: 160.0,
-                        width: 160.0,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(50)),
-                            image: DecorationImage(
-                              image: imageProivder,
-                              fit: BoxFit.cover,
-                            )),
-                      ),
-                    )),
-          SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(
-                width: 70,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      widget.user.liked.length.toString(),
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontSize: 24,
-                      ),
+              GestureDetector(
+                  onTap: () {},
+                  child: widget.user.image == ""
+                      ? Icon(
+                          Icons.account_circle,
+                          color: Colors.grey,
+                          size: 160.0,
+                        )
+                      : CachedNetworkImage(
+                          imageUrl: widget.user.image,
+                          imageBuilder: (context, imageProivder) => Container(
+                            height: 160.0,
+                            width: 160.0,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(50)),
+                                image: DecorationImage(
+                                  image: imageProivder,
+                                  fit: BoxFit.cover,
+                                )),
+                          ),
+                        )),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SizedBox(
+                    width: 70,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          widget.user.liked.length.toString(),
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 24,
+                          ),
+                        ),
+                        Text("팔로워",
+                            style: TextStyle(color: Colors.white, fontSize: 16))
+                      ],
                     ),
-                    Text("팔로워",
-                        style: TextStyle(color: Colors.white, fontSize: 16))
-                  ],
-                ),
+                  ),
+                  SizedBox(
+                    width: 70,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          widget.user.like.length.toString(),
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 24,
+                          ),
+                        ),
+                        Text("팔로잉",
+                            style: TextStyle(color: Colors.white, fontSize: 16))
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 70,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          widget.user.history_cnt.toString(),
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 24,
+                          ),
+                        ),
+                        Text("운동기록",
+                            style: TextStyle(color: Colors.white, fontSize: 16))
+                      ],
+                    ),
+                  )
+                ],
               ),
-              SizedBox(
-                width: 70,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      widget.user.like.length.toString(),
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontSize: 24,
-                      ),
-                    ),
-                    Text("팔로잉",
-                        style: TextStyle(color: Colors.white, fontSize: 16))
-                  ],
-                ),
-              ),
-              SizedBox(
-                width: 70,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      widget.user.history_cnt.toString(),
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontSize: 24,
-                      ),
-                    ),
-                    Text("운동기록",
-                        style: TextStyle(color: Colors.white, fontSize: 16))
-                  ],
-                ),
-              )
-            ],
-          ),
-          SizedBox(height: 32),
-          Consumer<UserdataProvider>(builder: (builder, provider, child) {
-            return _feedLikeButton(provider, widget.user);
-          })
-        ]),
+              SizedBox(height: 32),
+              Consumer<UserdataProvider>(builder: (builder, provider, child) {
+                return _feedLikeButton(provider, widget.user);
+              }),
+              _feedCardList(context),
+            ]),
       ),
     );
   }
@@ -210,10 +220,62 @@ class _FriendProfileState extends State<FriendProfile> {
 
   @override
   Widget build(BuildContext context) {
+    _historydataProvider =
+        Provider.of<HistorydataProvider>(context, listen: false);
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     return Scaffold(
         appBar: _appbarWidget(),
         body: _userProfileWidget(),
         backgroundColor: Colors.black);
   }
+}
+
+Widget _feedCardList(context) {
+  return Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      Consumer<HistorydataProvider>(builder: (builder, provider, child) {
+        try {
+          return provider.historydataUserEmail.sdbdatas.isEmpty != true
+              ? ListView.separated(
+                  itemBuilder: (BuildContext _context, int index) {
+                    if (index < provider.historydataUserEmail.sdbdatas.length) {
+                      return Center(
+                          child: FeedCard(
+                              sdbdata:
+                                  provider.historydataUserEmail.sdbdatas[index],
+                              index: index,
+                              feedListCtrl: 0));
+                    } else {
+                      print("nononono");
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        child: Center(
+                            child: Text("데이터 없음",
+                                style: TextStyle(color: Colors.white))),
+                      );
+                    }
+                  },
+                  physics: NeverScrollableScrollPhysics(),
+                  separatorBuilder: (BuildContext _context, int index) {
+                    return Container(
+                      alignment: Alignment.center,
+                      height: 0,
+                      color: Colors.black,
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 0,
+                        color: Color(0xFF717171),
+                      ),
+                    );
+                  },
+                  shrinkWrap: true,
+                  itemCount: provider.historydataUserEmail.sdbdatas.length + 1)
+              : CircularProgressIndicator();
+        } catch (e) {
+          return CircularProgressIndicator();
+        }
+      }),
+    ],
+  );
 }

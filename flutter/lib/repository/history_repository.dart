@@ -111,6 +111,33 @@ class HistorydataFriends {
   }
 }
 
+class HistorydataUserEmail {
+  final String user_email;
+  HistorydataUserEmail({
+    required this.user_email,
+  });
+  Future<String> _loadUserEmailSDBdataFromServer() async {
+    final storage = new FlutterSecureStorage();
+    var url =
+        Uri.parse(LocalHost.getLocalHost() + "/api/history/${user_email}");
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      return utf8.decode(response.bodyBytes);
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<SDBdataList> loadSDBdataUserEmail() async {
+    String jsonString = await _loadUserEmailSDBdataFromServer();
+    final jsonResponse = json.decode(jsonString);
+    SDBdataList sdbdata = SDBdataList.fromJson(jsonResponse);
+    return (sdbdata);
+  }
+}
+
 class HistoryPost {
   final String user_email;
   final String nickname;
