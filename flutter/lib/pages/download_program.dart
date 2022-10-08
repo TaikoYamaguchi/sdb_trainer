@@ -332,17 +332,19 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                       padding: EdgeInsets.all(3),
                       constraints: BoxConstraints(),
                       onPressed: () {
+                        print(_famousdataProvider.week);
+                        print(num_week);
                         if (_famousdataProvider.week + 1 != num_week) {
                           if (plandata.progress % 7 < 6) {
                             _famousdataProvider
                                 .progresschange(plandata.progress + 1);
                           }
-                        } else {
-                          if (plandata.progress % 7 <
-                              plandata.plans.length % 7 - 1) {
-                            _famousdataProvider
-                                .progresschange(plandata.progress + 1);
-                          }
+                        } else if(plandata.progress % 7 < plandata.plans.length % 7 - 1){
+                          _famousdataProvider
+                              .progresschange(plandata.progress + 1);
+                        } else if(plandata.progress % 7 < 6){
+                          _famousdataProvider
+                              .progresschange(plandata.progress + 1);
                         }
                       },
                       icon: Icon(
@@ -425,14 +427,17 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                             Container(
                                               width: 10,
                                             ),
-                                            Container(
-                                              child: Text(
-                                                '기준: ${inplandata[index].ref_name}',
-                                                style: TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                            Expanded(
+                                              child: Container(
+                                                child: Text(
+                                                  '기준: ${inplandata[index].ref_name}',
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                      color: Colors.grey,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
                                               ),
                                             ),
                                             GestureDetector(
@@ -451,7 +456,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                                 content: Padding(
                                                   padding: EdgeInsets.all(8.0),
                                                   child: Text(
-                                                    '각자의 기준 운동 1rm X 무게비(%)로 운동 중량이 설정됩니다. 내 ${inplandata[index].ref_name} 1rm: ${refinfo.onerm}',
+                                                    '각자의 기준 운동 1rm X 무게비(%)로 운동 중량이 설정됩니다. 내 ${inplandata[index].ref_name} 1rm: ${refinfo.onerm.toStringAsFixed(0)}',
                                                     style: TextStyle(color: Colors.white),
                                                   ),
                                                 ),
@@ -479,7 +484,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                                   children: [
                                                     Container(
                                                       child: Text(
-                                                        '기준 1rm   X   ${(inplandata[index].sets[setindex].weight * refinfo.onerm / 100).toStringAsFixed(0)}%    X    ${inplandata[index].sets[setindex].reps}reps',
+                                                        '기준 1rm   X   ${(inplandata[index].sets[setindex].weight ).toStringAsFixed(0)}%    X    ${inplandata[index].sets[setindex].reps}reps',
                                                         style: TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 20),
