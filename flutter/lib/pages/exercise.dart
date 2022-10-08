@@ -174,7 +174,7 @@ class ExerciseState extends State<Exercise> {
                           provider.change(0);
                         },
                         child: Text(
-                          'My',
+                          '내 루틴',
                           style: TextStyle(
                               //decoration: provider.menustate == 0 ? TextDecoration.underline : null,
                               fontWeight: FontWeight.bold,
@@ -191,7 +191,7 @@ class ExerciseState extends State<Exercise> {
                           provider.change(1);
                         },
                         child: Text(
-                          'Famous',
+                          '루틴 은행',
                           style: TextStyle(
                               //decoration: provider.menustate == 1 ? TextDecoration.underline : null,
                               fontSize: 21,
@@ -404,6 +404,10 @@ class ExerciseState extends State<Exercise> {
                                     )
                                   ]),
                               child: Container(
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).cardColor,
+                                  borderRadius: BorderRadius.circular(15.0)
+                                ),
                                 child: ListTile(
                                     contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 5.0),
                                     leading: Container(
