@@ -1875,7 +1875,7 @@ class _HomeState extends State<Home> {
 
     return _countHistoryCardCore(
         context,
-        _dateStringCase(_dateCtrl) + " 많은 무게를 든 부위은?",
+        _dateStringCase(_dateCtrl) + " 많은 무게를 든 부위는?",
         thekey.toString() + "!",
         "",
         9999,
@@ -1948,7 +1948,7 @@ class _HomeState extends State<Home> {
 
     return _countHistoryCardCore(
         context,
-        _dateStringCase(_dateCtrl) + " 많은 세트를 한 부위은?",
+        _dateStringCase(_dateCtrl) + " 많은 세트를 한 부위는?",
         thekey.toString() + "!",
         "",
         9999,
@@ -2017,7 +2017,7 @@ class _HomeState extends State<Home> {
 
     return _countHistoryCardCore(
         context,
-        _dateStringCase(_dateCtrl) + " 많은 횟수를 한 부위은?",
+        _dateStringCase(_dateCtrl) + " 많은 횟수를 한 부위는?",
         thekey.toString() + "!",
         "",
         9999,

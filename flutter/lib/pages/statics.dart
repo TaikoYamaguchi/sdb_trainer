@@ -772,16 +772,15 @@ class _CalendarState extends State<Calendar> {
                       DateTime.parse(sales.date!),
                   yValueMapper: (Exercises sales, _) => sales.onerm,
                 ),
-
-                // LineSeries<Exercises, DateTime>(
-                //   isVisibleInLegend: true,
-                //   color: Theme.of(context).cardColor,
-                //   name: "goal",
-                //   dataSource: _sdbChartData!,
-                //   xValueMapper: (Exercises sales, _) =>
-                //       DateTime.parse(sales.date!),
-                //   yValueMapper: (Exercises sales, _) => sales.goal,
-                // ),
+                LineSeries<Exercises, DateTime>(
+                  isVisibleInLegend: true,
+                  color: Theme.of(context).cardColor,
+                  name: "goal",
+                  dataSource: _sdbChartData!,
+                  xValueMapper: (Exercises sales, _) =>
+                      DateTime.parse(sales.date!),
+                  yValueMapper: (Exercises sales, _) => sales.goal,
+                ),
               ])),
         ),
         _onechartExercisesWidget(_sdbChartData)
