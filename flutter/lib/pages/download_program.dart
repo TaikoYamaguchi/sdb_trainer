@@ -332,8 +332,6 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                       padding: EdgeInsets.all(3),
                       constraints: BoxConstraints(),
                       onPressed: () {
-                        print(_famousdataProvider.week);
-                        print(num_week);
                         if (_famousdataProvider.week + 1 != num_week) {
                           if (plandata.progress % 7 < 6) {
                             _famousdataProvider
@@ -342,9 +340,11 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                         } else if(plandata.progress % 7 < plandata.plans.length % 7 - 1){
                           _famousdataProvider
                               .progresschange(plandata.progress + 1);
-                        } else if(plandata.progress % 7 < 6){
-                          _famousdataProvider
-                              .progresschange(plandata.progress + 1);
+                        } else if(plandata.plans.length % 7 ==0){
+                          if(plandata.progress % 7 < 6){
+                            _famousdataProvider
+                                .progresschange(plandata.progress + 1);
+                          }
                         }
                       },
                       icon: Icon(
