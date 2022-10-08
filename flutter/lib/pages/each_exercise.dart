@@ -52,6 +52,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   var _chartIndex;
   var _staticPageState;
   var _currentExindex;
+  bool _isSetChanged = false;
   double top = 0;
   double bottom = 0;
   double? weight;
@@ -61,6 +62,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   List<Controllerlist> repsController = [];
   PageController? controller;
   var btnDisabled;
+  final ScrollController _controller = ScrollController();
 
   var runtime = 0;
   Timer? timer1;
@@ -193,18 +195,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             text: _routine.exercises[i].sets[s].weight == 0
                 ? null
                 : (_routine.exercises[i].sets[s].weight % 1) == 0
-                ? _routine.exercises[i].sets[s]
-                .weight
-                .toStringAsFixed(0)
-                : _routine.exercises[i].sets[s]
-                .weight
-                .toStringAsFixed(1)));
-        repsController[i].controllerlist.add(
-            new TextEditingController(
-                text: _routine.exercises[i].sets[s].reps == 1
-                    ? null
-                    : _routine.exercises[i].sets[s].reps.toStringAsFixed(0)));
-
+                    ? _routine.exercises[i].sets[s].weight.toStringAsFixed(0)
+                    : _routine.exercises[i].sets[s].weight.toStringAsFixed(1)));
+        repsController[i].controllerlist.add(new TextEditingController(
+            text: _routine.exercises[i].sets[s].reps == 1
+                ? null
+                : _routine.exercises[i].sets[s].reps.toStringAsFixed(0)));
       }
     }
     return PageView.builder(
@@ -269,9 +265,13 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           child: Consumer<RoutineTimeProvider>(
                               builder: (builder, provider, child) {
                             return Text(
-                              provider.userest ? 'Rest Timer on' : 'Rest Timer off',
+                              provider.userest
+                                  ? 'Rest Timer on'
+                                  : 'Rest Timer off',
                               style: TextStyle(
-                                color: provider.userest ? Colors.white : Color(0xFF717171),
+                                color: provider.userest
+                                    ? Colors.white
+                                    : Color(0xFF717171),
                                 fontSize: 21,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -304,7 +304,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           exguide(widget.ueindex);
                         },
                         child: Consumer<WorkoutdataProvider>(
@@ -316,16 +316,14 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               _exercise.name.length < 10
-                              ? Icon(
-                                  Icons.info_outline_rounded,
-                                  color: Colors.black,
-                                )
-                              : Container()
-                              ,
+                                  ? Icon(
+                                      Icons.info_outline_rounded,
+                                      color: Colors.black,
+                                    )
+                                  : Container(),
                               isKeyboardVisible
                                   ? Text(
                                       _exercise.name,
-
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 24),
                                     )
@@ -333,19 +331,23 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                       ? Text(
                                           _exercise.name,
                                           style: TextStyle(
-                                              color: Colors.white, fontSize: 48),
+                                              color: Colors.white,
+                                              fontSize: 48),
                                         )
                                       : Flexible(
-                                        child: Text(
+                                          child: Text(
                                             _exercise.name,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
-                                                color: Colors.white, fontSize: 38),
+                                                color: Colors.white,
+                                                fontSize: 38),
                                           ),
-                                      ),
+                                        ),
                               Column(
                                 children: [
-                                  Container(height: 7,),
+                                  Container(
+                                    height: 7,
+                                  ),
                                   Icon(
                                     Icons.info_outline_rounded,
                                     color: Theme.of(context).primaryColor,
@@ -428,12 +430,28 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   builder: (builder, provider, child) {
                 var _sets = provider.workoutdata.routinedatas[widget.rindex]
                     .exercises[pindex].sets;
+                if (_isSetChanged == true) {
+                  WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                    _controller.animateTo(
+                      _controller.position.maxScrollExtent,
+                      duration: Duration(milliseconds: 200),
+                      curve: Curves.easeInOut,
+                    );
+
+                    print(_controller);
+                  });
+                  _isSetChanged = false;
+                } else {
+                  null;
+                }
+
                 return Expanded(
                   child: Column(
                     children: [
                       Flexible(
                         child: ListView.separated(
                             shrinkWrap: true,
+                            controller: _controller,
                             itemBuilder: (BuildContext _context, int index) {
                               return Container(
                                 padding: EdgeInsets.only(right: 10),
@@ -479,10 +497,18 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                           _workoutdataProvider.setsplus(
                                                                               widget.rindex,
                                                                               pindex),
-                                                                          weightController[pindex].controllerlist.add(new TextEditingController(text: null)),
-                                                                          repsController[pindex].controllerlist.add(new TextEditingController(text: null)),
+                                                                          _isSetChanged =
+                                                                              true,
+                                                                          print(
+                                                                              "jjjjjjjjjjjjjj"),
+                                                                          weightController[pindex]
+                                                                              .controllerlist
+                                                                              .add(new TextEditingController(text: null)),
+                                                                          repsController[pindex]
+                                                                              .controllerlist
+                                                                              .add(new TextEditingController(text: null)),
                                                                           showToast(
-                                                                              "세트를 추가했어요 필요없으면 다음으로 넘어가보세요")
+                                                                              "세트를 추가했어요 필요없으면 다음으로 넘어가보세요"),
                                                                         ]
                                                                       : null,
                                                                 ]
@@ -527,8 +553,20 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                         widget
                                                                             .rindex,
                                                                         pindex),
-                                                                        weightController[pindex].controllerlist.add(new TextEditingController(text: null)),
-                                                                        repsController[pindex].controllerlist.add(new TextEditingController(text: null)),
+                                                                _isSetChanged =
+                                                                    true,
+                                                                weightController[
+                                                                        pindex]
+                                                                    .controllerlist
+                                                                    .add(new TextEditingController(
+                                                                        text:
+                                                                            null)),
+                                                                repsController[
+                                                                        pindex]
+                                                                    .controllerlist
+                                                                    .add(new TextEditingController(
+                                                                        text:
+                                                                            null)),
                                                                 showToast(
                                                                     "세트를 추가했어요! 다음으로 넘어갈 수도 있어요")
                                                               ]
@@ -704,9 +742,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 onPressed: () {
                                   _workoutdataProvider.setsminus(
                                       widget.rindex, pindex);
-                                  weightController[pindex].controllerlist.removeLast();
-                                  repsController[pindex].controllerlist.removeLast();
-
+                                  weightController[pindex]
+                                      .controllerlist
+                                      .removeLast();
+                                  repsController[pindex]
+                                      .controllerlist
+                                      .removeLast();
                                 },
                                 icon: Icon(
                                   Icons.remove,
@@ -715,10 +756,13 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 )),
                             IconButton(
                                 onPressed: () {
+                                  _isSetChanged = true;
                                   _workoutdataProvider.setsplus(
                                       widget.rindex, pindex);
-                                  weightController[pindex].controllerlist.add(new TextEditingController(text: null));
-                                  repsController[pindex].controllerlist.add(new TextEditingController(text: null));
+                                  weightController[pindex].controllerlist.add(
+                                      new TextEditingController(text: null));
+                                  repsController[pindex].controllerlist.add(
+                                      new TextEditingController(text: null));
                                 },
                                 icon: Icon(
                                   Icons.add,
@@ -914,7 +958,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               color: Colors.white,
             ),
-            child: ExerciseGuide(eindex: eindex,));
+            child: ExerciseGuide(
+              eindex: eindex,
+            ));
       },
     );
   }
@@ -959,10 +1005,13 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         child: TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(color: Colors.white,),
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
             ),
@@ -1036,10 +1085,13 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                 child: TextButton(
                   style: TextButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
                     foregroundColor: Theme.of(context).primaryColor,
                     backgroundColor: Theme.of(context).primaryColor,
-                    textStyle: TextStyle(color: Colors.white,),
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                    ),
                     disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
                     padding: EdgeInsets.all(12.0),
                   ),
@@ -1099,10 +1151,13 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         child: TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(color: Colors.white,),
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
             ),

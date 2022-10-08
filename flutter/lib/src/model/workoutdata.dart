@@ -214,7 +214,7 @@ class Sets {
   factory Sets.fromJson(Map<String, dynamic> parsedJson) {
     return Sets(
       index: parsedJson["index"],
-      weight: parsedJson["weight"],
+      weight: parsedJson["weight"].toDouble(),
       reps: parsedJson["reps"],
       ischecked: parsedJson["ischecked"],
     );

@@ -7,6 +7,7 @@ import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/src/model/historydata.dart';
+import 'package:sdb_trainer/src/model/exercisesdata.dart' as exercisesModel;
 import 'package:sdb_trainer/src/model/workoutdata.dart' as workoutModel;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
@@ -503,7 +504,7 @@ class _HomeState extends State<Home> {
   }
 
   Widget _historyCard(context) {
-    var _page = 6;
+    var _page = 11;
     return Column(
       children: [
         SizedBox(
@@ -557,9 +558,24 @@ class _HomeState extends State<Home> {
         _isbottomTitleEx = false;
         return _countHistoryTimeWidget(context);
       case 5:
-        _countHistoryBestCore(context);
         _isbottomTitleEx = true;
-        return _countHistoryBestWidget(context);
+        return _countHistoryExBestWidget(context);
+      case 6:
+        _isbottomTitleEx = true;
+        return _countHistoryExSetsWidget(context);
+      case 7:
+        _isbottomTitleEx = true;
+        return _countHistoryExWeightWidget(context);
+      case 8:
+        _isbottomTitleEx = true;
+        return _countHistoryPartCountWidget(context);
+      case 9:
+        _isbottomTitleEx = true;
+        return _countHistoryPartSetWidget(context);
+      case 10:
+        _isbottomTitleEx = true;
+        return _countHistoryPartWeightWidget(context);
+
       default:
         _isbottomTitleEx = false;
         return _countHistoryNoWidget(context);
@@ -1607,7 +1623,7 @@ class _HomeState extends State<Home> {
         _historyTime.toString() + "분", "운동했어요!", 2, 40, _barChartGroupData);
   }
 
-  Widget _countHistoryBestWidget(context) {
+  Widget _countHistoryExBestWidget(context) {
     List<BarChartGroupData> _barChartGroupData = [];
     var thevalue = 0;
     var thekey = "운동을 시작해봐요";
@@ -1664,7 +1680,350 @@ class _HomeState extends State<Home> {
         _barChartGroupData);
   }
 
-  void _countHistoryBestCore(context) async {}
+  Widget _countHistoryExSetsWidget(context) {
+    List<BarChartGroupData> _barChartGroupData = [];
+    var thevalue = 0;
+    var thekey = "운동을 시작해봐요";
+    _isbottomTitleEx = true;
+    _exerciseCountMap = {"스쿼트": 0, "데드리프트": 0, "벤치프레스": 0, "밀리터리프레스": 0};
+
+    _dateController(_dateCtrl);
+    double deviceWidth = MediaQuery.of(context).size.width;
+    if (_historydata != null) {
+      for (SDBdata sdbdata in _historydata) {
+        for (Exercises exercise in sdbdata.exercises) {
+          if (_exerciseCountMap.containsKey(exercise.name)) {
+            for (workoutModel.Sets sets in exercise.sets) {
+              _exerciseCountMap[exercise.name] =
+                  _exerciseCountMap[exercise.name]! + 1;
+            }
+          } else {
+            _exerciseCountMap[exercise.name] = 0;
+            for (workoutModel.Sets sets in exercise.sets) {
+              _exerciseCountMap[exercise.name] =
+                  _exerciseCountMap[exercise.name]! + 1;
+            }
+          }
+        }
+      }
+    }
+    _exerciseCountMap = Map.fromEntries(_exerciseCountMap.entries.toList()
+      ..sort((e1, e2) => e2.value.compareTo(e1.value)));
+
+    _exerciseCountMap.forEach((key, value) {
+      if (value > thevalue) {
+        thevalue = value;
+        thekey = key;
+      }
+    });
+
+    for (int i = 0; i < 4; i++) {
+      _barChartGroupData.add(BarChartGroupData(
+        x: i,
+        barRods: [
+          BarChartRodData(
+              toY: _exerciseCountMap.values.elementAt(3 - i).toDouble(),
+              width: 12,
+              gradient: _barsGradient,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(6), topRight: Radius.circular(6)))
+        ],
+        showingTooltipIndicators:
+            _exerciseCountMap.values.elementAt(3 - i) != 0 ? [0] : [],
+      ));
+    }
+
+    return _countHistoryCardCore(
+        context,
+        _dateStringCase(_dateCtrl) + " 많은 세트 한 운동은?",
+        thekey.toString() + "!",
+        "",
+        9999,
+        0,
+        _barChartGroupData);
+  }
+
+  Widget _countHistoryExWeightWidget(context) {
+    List<BarChartGroupData> _barChartGroupData = [];
+    var thevalue = 0;
+    var thekey = "운동을 시작해봐요";
+    _isbottomTitleEx = true;
+    _exerciseCountMap = {"스쿼트": 0, "데드리프트": 0, "벤치프레스": 0, "밀리터리프레스": 0};
+
+    _dateController(_dateCtrl);
+    double deviceWidth = MediaQuery.of(context).size.width;
+    if (_historydata != null) {
+      for (SDBdata sdbdata in _historydata) {
+        for (Exercises exercise in sdbdata.exercises) {
+          if (_exerciseCountMap.containsKey(exercise.name)) {
+            for (workoutModel.Sets sets in exercise.sets) {
+              _exerciseCountMap[exercise.name] =
+                  _exerciseCountMap[exercise.name]! +
+                      (sets.weight * sets.reps).toInt();
+            }
+          } else {
+            _exerciseCountMap[exercise.name] = 0;
+            for (workoutModel.Sets sets in exercise.sets) {
+              _exerciseCountMap[exercise.name] =
+                  _exerciseCountMap[exercise.name]! +
+                      (sets.weight * sets.reps).toInt();
+            }
+          }
+        }
+      }
+    }
+    _exerciseCountMap = Map.fromEntries(_exerciseCountMap.entries.toList()
+      ..sort((e1, e2) => e2.value.compareTo(e1.value)));
+
+    _exerciseCountMap.forEach((key, value) {
+      if (value > thevalue) {
+        thevalue = value;
+        thekey = key;
+      }
+    });
+
+    for (int i = 0; i < 4; i++) {
+      _barChartGroupData.add(BarChartGroupData(
+        x: i,
+        barRods: [
+          BarChartRodData(
+              toY: _exerciseCountMap.values.elementAt(3 - i).toDouble(),
+              width: 12,
+              gradient: _barsGradient,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(6), topRight: Radius.circular(6)))
+        ],
+        showingTooltipIndicators:
+            _exerciseCountMap.values.elementAt(3 - i) != 0 ? [0] : [],
+      ));
+    }
+
+    return _countHistoryCardCore(
+        context,
+        _dateStringCase(_dateCtrl) + " 많은 무게를 든 운동은?",
+        thekey.toString() + "!",
+        "",
+        9999,
+        0,
+        _barChartGroupData);
+  }
+
+  Widget _countHistoryPartWeightWidget(context) {
+    List<BarChartGroupData> _barChartGroupData = [];
+    var thevalue = 0;
+    var thekey = "운동을 시작해봐요";
+    _isbottomTitleEx = true;
+    _exerciseCountMap = {"가슴": 0, "등": 0, "다리": 0, "어깨": 0};
+
+    _dateController(_dateCtrl);
+    double deviceWidth = MediaQuery.of(context).size.width;
+    if (_historydata != null) {
+      for (SDBdata sdbdata in _historydata) {
+        for (Exercises exercise in sdbdata.exercises) {
+          for (String target in _exercisesdataProvider
+              .exercisesdata
+              .exercises[_exercisesdataProvider.exercisesdata.exercises
+                  .indexWhere((ex) {
+            if (ex.name == exercise.name) {
+              return true;
+            } else {
+              return false;
+            }
+          })]
+              .target) {
+            if (_exerciseCountMap.containsKey(target)) {
+              for (workoutModel.Sets sets in exercise.sets) {
+                _exerciseCountMap[target] = _exerciseCountMap[target]! +
+                    (sets.weight * sets.reps).toInt();
+              }
+            } else {
+              _exerciseCountMap[target] = 0;
+              for (workoutModel.Sets sets in exercise.sets) {
+                _exerciseCountMap[target] = _exerciseCountMap[target]! +
+                    (sets.weight * sets.reps).toInt();
+              }
+            }
+          }
+        }
+      }
+    }
+    _exerciseCountMap = Map.fromEntries(_exerciseCountMap.entries.toList()
+      ..sort((e1, e2) => e2.value.compareTo(e1.value)));
+
+    _exerciseCountMap.forEach((key, value) {
+      if (value > thevalue) {
+        thevalue = value;
+        thekey = key;
+      }
+    });
+
+    for (int i = 0; i < 4; i++) {
+      _barChartGroupData.add(BarChartGroupData(
+        x: i,
+        barRods: [
+          BarChartRodData(
+              toY: _exerciseCountMap.values.elementAt(3 - i).toDouble(),
+              width: 12,
+              gradient: _barsGradient,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(6), topRight: Radius.circular(6)))
+        ],
+        showingTooltipIndicators:
+            _exerciseCountMap.values.elementAt(3 - i) != 0 ? [0] : [],
+      ));
+    }
+
+    return _countHistoryCardCore(
+        context,
+        _dateStringCase(_dateCtrl) + " 많은 무게를 든 부위은?",
+        thekey.toString() + "!",
+        "",
+        9999,
+        0,
+        _barChartGroupData);
+  }
+
+  Widget _countHistoryPartSetWidget(context) {
+    List<BarChartGroupData> _barChartGroupData = [];
+    var thevalue = 0;
+    var thekey = "운동을 시작해봐요";
+    _isbottomTitleEx = true;
+    _exerciseCountMap = {"가슴": 0, "등": 0, "다리": 0, "어깨": 0};
+
+    _dateController(_dateCtrl);
+    double deviceWidth = MediaQuery.of(context).size.width;
+    if (_historydata != null) {
+      for (SDBdata sdbdata in _historydata) {
+        for (Exercises exercise in sdbdata.exercises) {
+          for (String target in _exercisesdataProvider
+              .exercisesdata
+              .exercises[_exercisesdataProvider.exercisesdata.exercises
+                  .indexWhere((ex) {
+            if (ex.name == exercise.name) {
+              return true;
+            } else {
+              return false;
+            }
+          })]
+              .target) {
+            if (_exerciseCountMap.containsKey(target)) {
+              for (workoutModel.Sets sets in exercise.sets) {
+                _exerciseCountMap[target] = _exerciseCountMap[target]! + 1;
+              }
+            } else {
+              _exerciseCountMap[target] = 0;
+              for (workoutModel.Sets sets in exercise.sets) {
+                _exerciseCountMap[target] = _exerciseCountMap[target]! + 1;
+              }
+            }
+          }
+        }
+      }
+    }
+    _exerciseCountMap = Map.fromEntries(_exerciseCountMap.entries.toList()
+      ..sort((e1, e2) => e2.value.compareTo(e1.value)));
+
+    _exerciseCountMap.forEach((key, value) {
+      if (value > thevalue) {
+        thevalue = value;
+        thekey = key;
+      }
+    });
+
+    for (int i = 0; i < 4; i++) {
+      _barChartGroupData.add(BarChartGroupData(
+        x: i,
+        barRods: [
+          BarChartRodData(
+              toY: _exerciseCountMap.values.elementAt(3 - i).toDouble(),
+              width: 12,
+              gradient: _barsGradient,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(6), topRight: Radius.circular(6)))
+        ],
+        showingTooltipIndicators:
+            _exerciseCountMap.values.elementAt(3 - i) != 0 ? [0] : [],
+      ));
+    }
+
+    return _countHistoryCardCore(
+        context,
+        _dateStringCase(_dateCtrl) + " 많은 세트를 한 부위은?",
+        thekey.toString() + "!",
+        "",
+        9999,
+        0,
+        _barChartGroupData);
+  }
+
+  Widget _countHistoryPartCountWidget(context) {
+    List<BarChartGroupData> _barChartGroupData = [];
+    var thevalue = 0;
+    var thekey = "운동을 시작해봐요";
+    _isbottomTitleEx = true;
+    _exerciseCountMap = {"가슴": 0, "등": 0, "다리": 0, "어깨": 0};
+
+    _dateController(_dateCtrl);
+    double deviceWidth = MediaQuery.of(context).size.width;
+    if (_historydata != null) {
+      for (SDBdata sdbdata in _historydata) {
+        for (Exercises exercise in sdbdata.exercises) {
+          for (String target in _exercisesdataProvider
+              .exercisesdata
+              .exercises[_exercisesdataProvider.exercisesdata.exercises
+                  .indexWhere((ex) {
+            if (ex.name == exercise.name) {
+              return true;
+            } else {
+              return false;
+            }
+          })]
+              .target) {
+            if (_exerciseCountMap.containsKey(target)) {
+              _exerciseCountMap[target] = _exerciseCountMap[target]! + 1;
+            } else {
+              _exerciseCountMap[target] = 0;
+              _exerciseCountMap[target] = _exerciseCountMap[target]! + 1;
+            }
+          }
+        }
+      }
+    }
+    _exerciseCountMap = Map.fromEntries(_exerciseCountMap.entries.toList()
+      ..sort((e1, e2) => e2.value.compareTo(e1.value)));
+
+    _exerciseCountMap.forEach((key, value) {
+      if (value > thevalue) {
+        thevalue = value;
+        thekey = key;
+      }
+    });
+
+    for (int i = 0; i < 4; i++) {
+      _barChartGroupData.add(BarChartGroupData(
+        x: i,
+        barRods: [
+          BarChartRodData(
+              toY: _exerciseCountMap.values.elementAt(3 - i).toDouble(),
+              width: 12,
+              gradient: _barsGradient,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(6), topRight: Radius.circular(6)))
+        ],
+        showingTooltipIndicators:
+            _exerciseCountMap.values.elementAt(3 - i) != 0 ? [0] : [],
+      ));
+    }
+
+    return _countHistoryCardCore(
+        context,
+        _dateStringCase(_dateCtrl) + " 많은 횟수를 한 부위은?",
+        thekey.toString() + "!",
+        "",
+        9999,
+        0,
+        _barChartGroupData);
+  }
 
   BarTouchData get barTouchData => BarTouchData(
         enabled: false,
