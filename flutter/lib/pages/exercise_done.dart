@@ -259,8 +259,8 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                               },
                               child: Column(
                                 children: [
-                                  Icon(Icons.camera_alt, size: 24),
-                                  Text('촬영', style: TextStyle(fontSize: 16)),
+                                  Icon(Icons.camera_alt, size: 24,color: Colors.white),
+                                  Text('촬영', style: TextStyle(fontSize: 16,color: Colors.white)),
                                 ],
                               ),
                             )),
@@ -282,8 +282,8 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                               },
                               child: Column(
                                 children: [
-                                  Icon(Icons.collections, size: 24),
-                                  Text('갤러리', style: TextStyle(fontSize: 16)),
+                                  Icon(Icons.collections, size: 24,color: Colors.white),
+                                  Text('갤러리', style: TextStyle(fontSize: 16,color: Colors.white)),
                                 ],
                               ),
                             )),
