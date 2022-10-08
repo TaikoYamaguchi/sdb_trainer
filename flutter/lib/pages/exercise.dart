@@ -375,7 +375,7 @@ class ExerciseState extends State<Exercise> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15.0)),
                             elevation: 8.0,
-                            margin: new EdgeInsets.symmetric(horizontal: 6, vertical: 6.0),
+                            margin: new EdgeInsets.symmetric(horizontal: 0, vertical: 6.0),
                             child: Slidable(
                               endActionPane: ActionPane(
                                   extentRatio: 0.4,
