@@ -84,7 +84,14 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
               }),
         ),
       ),
-      actions: null,
+      actions: [
+        GestureDetector(
+          onTap: (){
+            _menucontroller.expanded = !_menucontroller.expanded;
+          },
+          child: Icon(Icons.filter_list)
+        )
+      ],
       backgroundColor: Colors.black,
     );
   }
@@ -175,11 +182,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                   shrinkWrap: true,
                   children: [
                     exercisesWidget(provider.testdata, true),
-                    GestureDetector(
-                        onTap: () {
-                          _displayCustomExInputDialog(provider);
-                        },
-                        child: Padding(
+                    Padding(
                           padding: const EdgeInsets.all(2.0),
                           child: Align(
                             alignment: Alignment.topLeft,
@@ -187,11 +190,15 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                               height: 80,
                               width: MediaQuery.of(context).size.width,
                               decoration: BoxDecoration(
-                                  color: Theme.of(context).cardColor,
+                                  //color: Theme.of(context).cardColor,
                                   borderRadius: BorderRadius.circular(15.0)),
                               child: Padding(
                                 padding: const EdgeInsets.all(1.0),
-                                child: Row(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    _displayCustomExInputDialog(provider);
+                                  },
+                                  child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(
@@ -666,7 +673,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                 _menucontroller.expanded = true;
                             },
                             child: Card(
-                              color: Theme.of(context).primaryColor,
+                              color: provider.filtmenu == 1 ? Theme.of(context).primaryColor : Colors.white30,
                               child: Container(
                                 width: MediaQuery.of(context).size.width/2-10,
                                 height: _appbarWidget().preferredSize.height*2/3,
@@ -685,7 +692,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                 _menucontroller.expanded = true;
                             },
                             child: Card(
-                              color: Theme.of(context).primaryColor,
+                              color: provider.filtmenu == 2 ? Theme.of(context).primaryColor : Colors.white30,
                               child: Container(
                                 width: MediaQuery.of(context).size.width/2-10,
                                 height: _appbarWidget().preferredSize.height*2/3,
