@@ -942,15 +942,16 @@ class ExerciseState extends State<Exercise> {
         : null;
 
     return Consumer<PopProvider>(builder: (Builder, provider, child) {
-      int grindex = _workoutdataProvider.workoutdata.routinedatas.indexWhere(
-          (routine) =>
-              routine.name == _PrefsProvider.prefs.getString('lastroutine'));
+
       bool _goto = provider.goto;
       _goto == false
           ? null
           : [
               provider.exstackup(0),
               Future.delayed(Duration.zero, () async {
+                int grindex = _workoutdataProvider.workoutdata.routinedatas.indexWhere(
+                        (routine) =>
+                    routine.name == _PrefsProvider.prefs.getString('lastroutine'));
                 Navigator.of(context).popUntil((route) => route.isFirst);
                 if (_workoutdataProvider.workoutdata
                         .routinedatas[_routinetimeProvider.nowonrindex].mode ==
@@ -1001,6 +1002,9 @@ class ExerciseState extends State<Exercise> {
           : [
               provider.exstackup(0),
               Future.delayed(Duration.zero, () async {
+                int grindex = _workoutdataProvider.workoutdata.routinedatas.indexWhere(
+                        (routine) =>
+                    routine.name == _PrefsProvider.prefs.getString('lastroutine'));
                 Navigator.of(context).popUntil((route) => route.isFirst);
                 if (_workoutdataProvider
                         .workoutdata.routinedatas[grindex].mode ==
