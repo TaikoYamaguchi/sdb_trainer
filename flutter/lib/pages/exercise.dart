@@ -371,6 +371,9 @@ class ExerciseState extends State<Exercise> {
                       child: Column(
                         children: [
                           Card(
+                              color: Theme.of(context).cardColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0)),
                             elevation: 8.0,
                             margin: new EdgeInsets.symmetric(horizontal: 6, vertical: 6.0),
                             child: Slidable(
@@ -401,7 +404,6 @@ class ExerciseState extends State<Exercise> {
                                     )
                                   ]),
                               child: Container(
-                                decoration: BoxDecoration(color: Theme.of(context).cardColor,),
                                 child: ListTile(
                                     contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 5.0),
                                     leading: Container(
@@ -441,18 +443,18 @@ class ExerciseState extends State<Exercise> {
                                     subtitle: Row(
                                       children: [
                                         routinelist[index].mode == 0
-                                            ? Text("${routinelist[index].exercises.length} Exercises",
+                                            ? Text("${routinelist[index].exercises.length}개 운동",
                                             style: TextStyle(
                                                 fontSize: 13,
-                                                color: Colors.white))
-                                            : Text("Program Mode",
+                                                color: Colors.white30))
+                                            : Text("프로그램 모드",
                                             style: TextStyle(
                                                 fontSize: 13,
-                                                color: Colors.white)),
+                                                color: Colors.white30)),
                                       ],
                                     ),
                                     trailing:
-                                    Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0)
+                                    Icon(Icons.keyboard_arrow_right, color: Colors.white30, size: 30.0)
 
                                 ),
                               ),
