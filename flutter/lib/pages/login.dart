@@ -540,6 +540,7 @@ class LoginPageState extends State<LoginPage> {
       _famousdataProvider.getdata(),
       _initExercisesdataProvider.getdata(),
       _PrefsProvider.getprefs(),
+      _routinetimeProvider.getrest(),
       await UserAll().getUsers().then((userlist) {
         usertestList =
             userlist!.userdatas.where((user) => user.image != "").toList();
