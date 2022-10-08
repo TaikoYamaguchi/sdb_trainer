@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/each_exercise.dart';
 import 'package:sdb_trainer/pages/each_plan.dart';
@@ -369,34 +370,95 @@ class ExerciseState extends State<Exercise> {
                     child: Container(
                       child: Column(
                         children: [
-                          Slidable(
-                            endActionPane: ActionPane(
-                                extentRatio: 0.4,
-                                motion: const DrawerMotion(),
-                                children: [
-                                  SlidableAction(
-                                    onPressed: (_) {
-                                      _displayRoutineNameEditDialog(index);
-                                    },
-                                    backgroundColor:
-                                        Theme.of(context).primaryColor,
-                                    foregroundColor: Colors.white,
-                                    icon: Icons.edit,
-                                    label: '수정',
-                                  ),
-                                  SlidableAction(
-                                    onPressed: (_) {
-                                      _routinetimeProvider.isstarted
-                                      ? showToast("운동중엔 루틴제거는 불가능 해요")
-                                      : _displayDeleteAlert(index);
-                                    },
-                                    backgroundColor: Color(0xFFFE4A49),
-                                    foregroundColor: Colors.white,
-                                    icon: Icons.delete,
-                                    label: '삭제',
-                                  )
-                                ]),
-                            child: Container(
+                          Card(
+                            elevation: 8.0,
+                            margin: new EdgeInsets.symmetric(horizontal: 6, vertical: 6.0),
+                            child: Slidable(
+                              endActionPane: ActionPane(
+                                  extentRatio: 0.4,
+                                  motion: const DrawerMotion(),
+                                  children: [
+                                    SlidableAction(
+                                      onPressed: (_) {
+                                        _displayRoutineNameEditDialog(index);
+                                      },
+                                      backgroundColor:
+                                      Theme.of(context).primaryColor,
+                                      foregroundColor: Colors.white,
+                                      icon: Icons.edit,
+                                      label: '수정',
+                                    ),
+                                    SlidableAction(
+                                      onPressed: (_) {
+                                        _routinetimeProvider.isstarted
+                                            ? showToast("운동중엔 루틴제거는 불가능 해요")
+                                            : _displayDeleteAlert(index);
+                                      },
+                                      backgroundColor: Color(0xFFFE4A49),
+                                      foregroundColor: Colors.white,
+                                      icon: Icons.delete,
+                                      label: '삭제',
+                                    )
+                                  ]),
+                              child: Container(
+                                decoration: BoxDecoration(color: Theme.of(context).cardColor,),
+                                child: ListTile(
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 5.0),
+                                    leading: Container(
+                                      height: double.infinity,
+                                      padding: EdgeInsets.only(right: 15.0),
+                                      decoration: new BoxDecoration(
+                                          border: new Border(
+                                              right: new BorderSide(width: 1.0, color: Colors.white24))),
+                                      child: routinelist[index].mode == 0
+                                          ? Container(
+                                            padding: EdgeInsets.symmetric(horizontal: 8),
+                                            child: SizedBox(
+                                              width: 25,
+                                              child: SvgPicture.asset("assets/svg/dumbel_on.svg",
+                                              color: Colors.white30),
+                                            ),
+                                          )
+                                          : CircularPercentIndicator(
+                                            radius: 20,
+                                            lineWidth: 5.0,
+                                            animation: true,
+                                            percent: (routinelist[index].exercises[0].progress+1)/routinelist[index].exercises[0].plans.length,
+                                            center: new Text(
+                                              "${routinelist[index].exercises[0].progress+1}/${routinelist[index].exercises[0].plans.length}",
+                                              style:
+                                              new TextStyle(color: Colors.white ,  fontSize: 10.0),
+                                            ),
+                                            circularStrokeCap: CircularStrokeCap.round,
+                                            progressColor: Colors.purple,
+                                          ),
+                                    ),
+                                    title: Text(
+                                      routinelist[index].name,
+                                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                                    ),
+
+                                    subtitle: Row(
+                                      children: [
+                                        routinelist[index].mode == 0
+                                            ? Text("${routinelist[index].exercises.length} Exercises",
+                                            style: TextStyle(
+                                                fontSize: 13,
+                                                color: Colors.white))
+                                            : Text("Program Mode",
+                                            style: TextStyle(
+                                                fontSize: 13,
+                                                color: Colors.white)),
+                                      ],
+                                    ),
+                                    trailing:
+                                    Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0)
+
+                                ),
+                              ),
+                            )
+                                /*
+                            Container(
                               padding: EdgeInsets.symmetric(horizontal: 20),
                               decoration: BoxDecoration(
                                   color: Theme.of(context).cardColor,
@@ -440,21 +502,10 @@ class ExerciseState extends State<Exercise> {
                                 ],
                               ),
                             ),
+
+                                 */
                           ),
-                          index == routinelist.length - 1
-                              ? Container()
-                              : Container(
-                                  alignment: Alignment.center,
-                                  height: 1,
-                                  color: Color(0xFF212121),
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    height: 1,
-                                    color: Color(0xFF717171),
-                                  ),
-                                )
+
                         ],
                       ),
                     ),
@@ -487,211 +538,8 @@ class ExerciseState extends State<Exercise> {
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
-  void _deleteWorkoutCheck(int id) async {
-    WorkoutDelete(id: id).deleteWorkout().then((data) =>
-        data["user_email"] != null
-            ? _workoutdataProvider.getdata()
-            : showToast("입력을 확인해주세요"));
-  }
 
-  static Widget exercisesWidget(exuniq, userdata, bool shirink) {
-    double top = 0;
-    double bottom = 0;
-    return Container(
-      color: Colors.black,
-      child: ListView.separated(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          itemBuilder: (BuildContext _context, int index) {
-            if (index == 0) {
-              top = 20;
-              bottom = 0;
-            } else if (index == exuniq.length - 1) {
-              top = 0;
-              bottom = 20;
-            } else {
-              top = 0;
-              bottom = 0;
-            }
-            return Container(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                decoration: BoxDecoration(
-                    color: Theme.of(_context).cardColor,
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(top),
-                        bottomRight: Radius.circular(bottom),
-                        topLeft: Radius.circular(top),
-                        bottomLeft: Radius.circular(bottom))),
-                height: 52,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      exuniq[index].name,
-                      style: TextStyle(fontSize: 21, color: Colors.white),
-                    ),
-                    Container(
-                      child: Row(
-                        //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text("Rest: need to set",
-                              style: TextStyle(
-                                  fontSize: 13, color: Color(0xFF717171))),
-                          Expanded(child: SizedBox()),
-                          Text(
-                              "1RM: " +
-                                  exuniq[index].onerm.toStringAsFixed(1) +
-                                  "/${exuniq[index].goal.toStringAsFixed(1)}${userdata.weight_unit}",
-                              style: TextStyle(
-                                  fontSize: 13, color: Color(0xFF717171))),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            );
-          },
-          separatorBuilder: (BuildContext _context, int index) {
-            return Container(
-              alignment: Alignment.center,
-              height: 1,
-              color: Theme.of(_context).cardColor,
-              child: Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                height: 1,
-                color: Color(0xFF717171),
-              ),
-            );
-          },
-          scrollDirection: Axis.vertical,
-          shrinkWrap: shirink,
-          itemCount: exuniq.length),
-    );
-  }
 
-  void _postExerciseCheck() async {
-    ExerciseEdit(
-            user_email: _userdataProvider.userdata.email,
-            exercises: _exercisesdataProvider.exercisesdata.exercises)
-        .editExercise()
-        .then((data) => data["user_email"] != null
-            ? {showToast("수정 완료"), _exercisesdataProvider.getdata()}
-            : showToast("입력을 확인해주세요"));
-  }
-
-  Widget exercisesWidget2(bool shirink) {
-    double top = 0;
-    double bottom = 0;
-    return Container(
-      color: Colors.black,
-      child: Consumer2<ExercisesdataProvider, UserdataProvider>(
-          builder: (builer, exercise, user, child) {
-        var _userdata = user.userdata;
-        var _exunique = exercise.exercisesdata.exercises;
-
-        return ReorderableListView.builder(
-          onReorder: (int oldIndex, int newIndex) {
-            setState(() {
-              if (oldIndex < newIndex) {
-                newIndex -= 1;
-              }
-              final item = _exunique.removeAt(oldIndex);
-              _exunique.insert(newIndex, item);
-              _postExerciseCheck();
-            });
-          },
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          itemBuilder: (BuildContext _context, int index) {
-            if (index == 0) {
-              top = 20;
-              bottom = 0;
-            } else if (index == _exunique.length - 1) {
-              top = 0;
-              bottom = 20;
-            } else {
-              top = 0;
-              bottom = 0;
-            }
-            return GestureDetector(
-              key: Key('$index'),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    Transition(
-                        child: UniqueExerciseDetails(
-                          ueindex: index,
-                        ),
-                        transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-              },
-              child: Container(
-                child: Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      decoration: BoxDecoration(
-                          color: Theme.of(_context).cardColor,
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(top),
-                              bottomRight: Radius.circular(bottom),
-                              topLeft: Radius.circular(top),
-                              bottomLeft: Radius.circular(bottom))),
-                      height: 52,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _exunique[index].name,
-                            style: TextStyle(fontSize: 21, color: Colors.white),
-                          ),
-                          Container(
-                            child: Row(
-                              //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Text("Rest: need to set",
-                                    style: TextStyle(
-                                        fontSize: 13,
-                                        color: Color(0xFF717171))),
-                                Expanded(child: SizedBox()),
-                                Text(
-                                    "1RM: ${_exunique[index].onerm.toStringAsFixed(1)}/${_exunique[index].goal.toStringAsFixed(1)}${_userdata.weight_unit}",
-                                    style: TextStyle(
-                                        fontSize: 13,
-                                        color: Color(0xFF717171))),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    index == _exunique.length - 1
-                        ? Container()
-                        : Container(
-                            alignment: Alignment.center,
-                            height: 1,
-                            color: Color(0xFF212121),
-                            child: Container(
-                              alignment: Alignment.center,
-                              margin: EdgeInsets.symmetric(horizontal: 10),
-                              height: 1,
-                              color: Color(0xFF717171),
-                            ),
-                          )
-                  ],
-                ),
-              ),
-            );
-          },
-          scrollDirection: Axis.vertical,
-          shrinkWrap: shirink,
-          itemCount: _exunique.length,
-        );
-      }),
-    );
-  }
 
   void filterExercise(List query) {
     final suggestions = _exercisesdataProvider.exercisesdata.exercises.where((exercise) {
@@ -782,7 +630,6 @@ class ExerciseState extends State<Exercise> {
 
       case -1:
         return group_by_target();
-          //exercisesWidget2(false);
     }
     return Container();
   }
