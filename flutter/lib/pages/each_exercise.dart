@@ -311,23 +311,49 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             builder: (builder, provider, child) {
                           var _exercise = provider.workoutdata
                               .routinedatas[widget.rindex].exercises[pindex];
-                          return isKeyboardVisible
-                              ? Text(
-                                  _exercise.name,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 24),
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _exercise.name.length < 10
+                              ? Icon(
+                                  Icons.info_outline_rounded,
+                                  color: Colors.black,
                                 )
-                              : _exercise.name.length < 8
+                              : Container()
+                              ,
+                              isKeyboardVisible
                                   ? Text(
                                       _exercise.name,
+
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 48),
+                                          color: Colors.white, fontSize: 24),
                                     )
-                                  : Text(
-                                      _exercise.name,
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 40),
-                                    );
+                                  : _exercise.name.length < 8
+                                      ? Text(
+                                          _exercise.name,
+                                          style: TextStyle(
+                                              color: Colors.white, fontSize: 48),
+                                        )
+                                      : Flexible(
+                                        child: Text(
+                                            _exercise.name,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: Colors.white, fontSize: 38),
+                                          ),
+                                      ),
+                              Column(
+                                children: [
+                                  Container(height: 7,),
+                                  Icon(
+                                    Icons.info_outline_rounded,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          );
                         }),
                       ),
                       Consumer<ExercisesdataProvider>(
