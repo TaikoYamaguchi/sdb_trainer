@@ -32,8 +32,11 @@ class PrefsProvider extends ChangeNotifier {
     _prefs.getString('lastroutine') == null
         ? await _prefs.setString('lastroutine', '')
         : null;
-    print(_prefs.getString('lastroutine'));
-    print('여기');
+
+    _prefs.getBool('userest') == null
+        ? await _prefs.setBool('userest', false)
+        : null;
+
     notifyListeners();
   }
 

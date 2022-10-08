@@ -47,15 +47,29 @@ class RoutineTimeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  getrest() async{
+    _prefs = await SharedPreferences.getInstance();
+    _userest = _prefs.getBool('userest');
+    notifyListeners();
+
+  }
+
+  setrest() async {
+    _prefs = await SharedPreferences.getInstance();
+    await _prefs.setBool('userest', _userest);
+  }
+
   restcheck() {
     _userest
         ? [
             _userest = !_userest,
+            setrest(),
             restbutton = 'Rest Timer off',
             _restbuttoncolor = Color(0xFF717171)
           ]
         : [
             _userest = !_userest,
+            setrest(),
             restbutton = 'Rest Timer on',
             _restbuttoncolor = Colors.white
           ];

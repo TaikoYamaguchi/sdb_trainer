@@ -269,9 +269,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           child: Consumer<RoutineTimeProvider>(
                               builder: (builder, provider, child) {
                             return Text(
-                              provider.restbutton,
+                              provider.userest ? 'Rest Timer on' : 'Rest Timer off',
                               style: TextStyle(
-                                color: provider.restbuttoncolor,
+                                color: provider.userest ? Colors.white : Color(0xFF717171),
                                 fontSize: 21,
                                 fontWeight: FontWeight.bold,
                               ),
