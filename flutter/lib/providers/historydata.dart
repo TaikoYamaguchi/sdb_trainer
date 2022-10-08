@@ -115,14 +115,16 @@ class HistorydataProvider extends ChangeNotifier {
           return false;
         }
       });
-      _historydataUserEmail.sdbdatas.indexWhere((sdbdata) {
-        if (sdbdata.id == SDBdata.id) {
-          sdbdata.like.remove(email);
-          return true;
-        } else {
-          return false;
-        }
-      });
+      try {
+        _historydataUserEmail.sdbdatas.indexWhere((sdbdata) {
+          if (sdbdata.id == SDBdata.id) {
+            sdbdata.like.remove(email);
+            return true;
+          } else {
+            return false;
+          }
+        });
+      } catch (e) {}
 
       notifyListeners();
     } else if (status == "append") {
@@ -150,14 +152,16 @@ class HistorydataProvider extends ChangeNotifier {
           return false;
         }
       });
-      _historydataUserEmail.sdbdatas.indexWhere((sdbdata) {
-        if (sdbdata.id == SDBdata.id) {
-          sdbdata.like.add(email);
-          return true;
-        } else {
-          return false;
-        }
-      });
+      try {
+        _historydataUserEmail.sdbdatas.indexWhere((sdbdata) {
+          if (sdbdata.id == SDBdata.id) {
+            sdbdata.like.add(email);
+            return true;
+          } else {
+            return false;
+          }
+        });
+      } catch (e) {}
       notifyListeners();
     }
   }

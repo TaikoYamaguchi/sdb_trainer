@@ -708,8 +708,8 @@ class _CalendarState extends State<Calendar> {
 
     final List<double> stops = <double>[];
     stops.add(0.0);
-    stops.add(0.3);
-    stops.add(0.7);
+    stops.add(0.4);
+    stops.add(0.6);
     stops.add(1.0);
 
     final LinearGradient gradientColors = LinearGradient(
@@ -748,11 +748,10 @@ class _CalendarState extends State<Calendar> {
                   legend: Legend(
                       isVisible: true,
                       position: LegendPosition.bottom,
-                      opacity: 0.7,
                       textStyle: TextStyle(color: Colors.white)),
                   series: [
                 // Renders line chart
-                SplineSeries<Exercises, DateTime>(
+                LineSeries<Exercises, DateTime>(
                   isVisibleInLegend: true,
                   onCreateShader: (ShaderDetails details) {
                     return ui.Gradient.linear(details.rect.topRight,
@@ -763,9 +762,8 @@ class _CalendarState extends State<Calendar> {
                       height: 6,
                       width: 6,
                       borderWidth: 3,
-                      color: Theme.of(context).primaryColor.withOpacity(0.1),
-                      borderColor:
-                          Theme.of(context).primaryColor.withOpacity(0.1)),
+                      color: Theme.of(context).primaryColor,
+                      borderColor: Theme.of(context).primaryColor),
                   name: "1rm",
                   color: Theme.of(context).primaryColor,
                   width: 5,
