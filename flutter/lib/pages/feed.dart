@@ -28,17 +28,17 @@ class _FeedState extends State<Feed> {
 
   final Map<int, Widget> _feedList = const <int, Widget>{
     1: Padding(
-      child: Text("모두 보기", style: TextStyle(color: Colors.white, fontSize: 14)),
-      padding: const EdgeInsets.all(10.0),
+      child: Text("모두 보기", style: TextStyle(color: Colors.white, fontSize: 16)),
+      padding: const EdgeInsets.all(5.0),
     ),
     2: Padding(
         child:
-            Text("친구 보기", style: TextStyle(color: Colors.white, fontSize: 14)),
-        padding: const EdgeInsets.all(10.0)),
+            Text("친구 보기", style: TextStyle(color: Colors.white, fontSize: 16)),
+        padding: const EdgeInsets.all(5.0)),
     3: Padding(
         child:
-            Text("내 피드", style: TextStyle(color: Colors.white, fontSize: 14)),
-        padding: const EdgeInsets.all(10.0))
+            Text("내 피드", style: TextStyle(color: Colors.white, fontSize: 16)),
+        padding: const EdgeInsets.all(5.0))
   };
 
   var _historydataAll;
@@ -153,7 +153,11 @@ class _FeedState extends State<Feed> {
   Widget _feedCardList(context) {
     return Column(
       children: [
-        _feedControllerWidget(),
+        Container(
+            height: 40,
+            alignment: Alignment.center,
+            child: Center(
+                child: _feedControllerWidget())),
         Expanded(
           child: Consumer<HistorydataProvider>(
               builder: (builder, provider, child) {
@@ -206,7 +210,7 @@ class _FeedState extends State<Feed> {
         child: CupertinoSlidingSegmentedControl(
             groupValue: _feedListCtrl,
             children: _feedList,
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
             backgroundColor: Colors.black,
             thumbColor: Theme.of(context).primaryColor,
             onValueChanged: (i) {

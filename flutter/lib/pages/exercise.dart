@@ -61,6 +61,21 @@ class ExerciseState extends State<Exercise> {
   var keySearch = GlobalKey();
   var keySelect = GlobalKey();
 
+  final Map<int, Widget> _menuList = const <int, Widget>{
+    0: Padding(
+      child: Text("개별 운동", style: TextStyle(color: Colors.white, fontSize: 16)),
+      padding: const EdgeInsets.all(5.0),
+    ),
+    1: Padding(
+        child:
+        Text("나의 루틴", style: TextStyle(color: Colors.white, fontSize: 16)),
+        padding: const EdgeInsets.all(5.0)),
+    2: Padding(
+        child:
+        Text("루틴 찾기", style: TextStyle(color: Colors.white, fontSize: 16)),
+        padding: const EdgeInsets.all(5.0))
+  };
+
   List<TutorialItem> itens = [];
 
   @override
@@ -107,15 +122,7 @@ class ExerciseState extends State<Exercise> {
         ],
       ),
       actions: [Consumer<RoutineMenuStater>(builder: (builder, provider, child) {
-                if (provider.menustate == 1) {
-                  return IconButton(
-                    key: keyPlus,
-                    icon: SvgPicture.asset("assets/svg/add_white.svg"),
-                    onPressed: () {
-                      _displayTextInputDialog();
-                    },
-                  );
-                } else if(provider.menustate == 2) {
+                if(provider.menustate == 2) {
                   return IconButton(
                     iconSize: 30,
                     icon: Icon(Icons.refresh_rounded),
@@ -148,7 +155,9 @@ class ExerciseState extends State<Exercise> {
             child: Center(
               child: Consumer<RoutineMenuStater>(
                   builder: (builder, provider, child) {
-                return Row(
+                return _ExerciseControllerWidget();
+                  /*
+                  Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -205,6 +214,8 @@ class ExerciseState extends State<Exercise> {
                         ))
                   ],
                 );
+
+                   */
               }),
             ),
           ),
@@ -246,6 +257,31 @@ class ExerciseState extends State<Exercise> {
         });
   }
 
+  Widget _ExerciseControllerWidget() {
+    return SizedBox(
+      width: double.infinity,
+      child: Consumer<RoutineMenuStater>(
+        builder: (context, provider, child) {
+          return Container(
+            color: Colors.black,
+            child: CupertinoSlidingSegmentedControl(
+                groupValue: provider.menustate,
+                children: _menuList,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                backgroundColor: Colors.black,
+                thumbColor: Theme.of(context).primaryColor,
+                onValueChanged: (i) {
+                  controller!.animateToPage(i as int,
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeInOut);
+                    provider.change(i);
+                }),
+          );
+        }
+      ),
+    );
+  }
+
   Widget _routinemenuPage() {
     controller = PageController(initialPage: _RoutineMenuProvider.menustate);
     return Expanded(
@@ -268,72 +304,26 @@ class ExerciseState extends State<Exercise> {
     return Container(
       //padding: const EdgeInsets.symmetric(vertical: 8.0),
       color: Colors.black,
-      child: Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
-        List routinelist = provider.workoutdata.routinedatas;
-        return routinelist.isEmpty
-            ? GestureDetector(
-                onTap: () {
-                  _displayTextInputDialog();
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).cardColor,
-                          borderRadius: BorderRadius.circular(15.0)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 48,
-                                height: 48,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Theme.of(context).primaryColor),
-                                child: Icon(
-                                  Icons.add,
-                                  size: 28.0,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("운동 루틴을 만들어 보세요",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 18)),
-                                    Text("오른쪽 위를 클릭해도 만들 수 있어요",
-                                        style: TextStyle(
-                                            color: Colors.grey, fontSize: 14)),
-                                  ],
-                                ),
-                              )
-                            ]),
-                      ),
-                    ),
-                  ),
-                ))
-            : ReorderableListView.builder(
+      child: ListView(
+        shrinkWrap: true,
+        children: [
+          Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
+            List routinelist = provider.workoutdata.routinedatas;
+            return ReorderableListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
                 onReorder: (int oldIndex, int newIndex) {
-                  _routinetimeProvider.isstarted
-                      ? showToast("운동중엔 순서변경이 불가능 해요")
-                      : setState(() {
-                          if (oldIndex < newIndex) {
-                            newIndex -= 1;
-                          }
-                          final item = routinelist.removeAt(oldIndex);
-                          routinelist.insert(newIndex, item);
-                          _editWorkoutCheck();
-                        });
-                },
+                      _routinetimeProvider.isstarted
+                          ? showToast("운동중엔 순서변경이 불가능 해요")
+                          : setState(() {
+                              if (oldIndex < newIndex) {
+                                newIndex -= 1;
+                              }
+                              final item = routinelist.removeAt(oldIndex);
+                              routinelist.insert(newIndex, item);
+                              _editWorkoutCheck();
+                            });
+                      },
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 itemBuilder: (BuildContext _context, int index) {
                   if (routinelist.length == 1) {
@@ -348,211 +338,217 @@ class ExerciseState extends State<Exercise> {
                   } else {
                     top = 0;
                     bottom = 0;
-                  }
-                  ;
-                  final List<Color> color = <Color>[];
-                  color.add(Color(0xFffc60a8).withOpacity(1.0));
-                  color.add(Theme.of(context).primaryColor.withOpacity(1.0));
+                  };
+                      final List<Color> color = <Color>[];
+                      color.add(Color(0xFffc60a8).withOpacity(1.0));
+                      color.add(Theme.of(context).primaryColor.withOpacity(1.0));
 
-                  final List<double> stops = <double>[];
-                  stops.add(0.3);
-                  stops.add(1.0);
+                      final List<double> stops = <double>[];
+                      stops.add(0.3);
+                      stops.add(1.0);
 
-                  final LinearGradient gradientColors = LinearGradient(
-                      colors: color,
-                      stops: stops,
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter);
+                      final LinearGradient gradientColors = LinearGradient(
+                          colors: color,
+                          stops: stops,
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter);
 
-                  return GestureDetector(
-                    key: Key('$index'),
-                    onTap: () {
-                      _PopProvider.exstackup(1);
-                      routinelist[index].mode == 0
-                          ? Navigator.push(
-                              context,
-                              Transition(
-                                  child: EachWorkoutDetails(
-                                    rindex: index,
-                                  ),
-                                  transitionEffect:
-                                      TransitionEffect.RIGHT_TO_LEFT))
-                          : Navigator.push(
-                              context,
-                              Transition(
-                                  child: EachPlanDetails(
-                                    rindex: index,
-                                  ),
-                                  transitionEffect:
-                                      TransitionEffect.RIGHT_TO_LEFT));
-                    },
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Card(
-                              color: Theme.of(context).cardColor,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15.0)),
-                              elevation: 8.0,
-                              margin: new EdgeInsets.symmetric(
-                                  horizontal: 0, vertical: 6.0),
-                              child: Slidable(
-                                endActionPane: ActionPane(
-                                    extentRatio: 0.4,
-                                    motion: const DrawerMotion(),
-                                    children: [
-                                      SlidableAction(
-                                        onPressed: (_) {
-                                          _displayRoutineNameEditDialog(index);
-                                        },
-                                        backgroundColor:
-                                            Theme.of(context).primaryColor,
-                                        foregroundColor: Colors.white,
-                                        icon: Icons.edit,
-                                        label: '수정',
+                      return GestureDetector(
+                        key: Key('$index'),
+                        onTap: () {
+                          _PopProvider.exstackup(1);
+                          routinelist[index].mode == 0
+                              ? Navigator.push(
+                                  context,
+                                  Transition(
+                                      child: EachWorkoutDetails(
+                                        rindex: index,
                                       ),
-                                      SlidableAction(
-                                        onPressed: (_) {
-                                          _routinetimeProvider.isstarted
-                                              ? showToast("운동중엔 루틴제거는 불가능 해요")
-                                              : _displayDeleteAlert(index);
-                                        },
-                                        backgroundColor: Color(0xFFFE4A49),
-                                        foregroundColor: Colors.white,
-                                        icon: Icons.delete,
-                                        label: '삭제',
-                                      )
-                                    ]),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: Theme.of(context).cardColor,
-                                      borderRadius:
-                                          BorderRadius.circular(15.0)),
-                                  child: ListTile(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 15, vertical: 5.0),
-                                      leading: Container(
-                                        height: double.infinity,
-                                        padding: EdgeInsets.only(right: 15.0),
-                                        decoration: new BoxDecoration(
-                                            border: new Border(
-                                                right: new BorderSide(
-                                                    width: 1.0,
-                                                    color: Colors.white24))),
-                                        child: routinelist[index].mode == 0
-                                            ? Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 8),
-                                                child: SizedBox(
-                                                  width: 25,
-                                                  child: SvgPicture.asset(
-                                                      "assets/svg/dumbel_on.svg",
-                                                      color: Colors.white30),
-                                                ),
-                                              )
-                                            : CircularPercentIndicator(
-                                                radius: 20,
-                                                lineWidth: 5.0,
-                                                animation: true,
-                                                percent: (routinelist[index]
-                                                            .exercises[0]
-                                                            .progress +
-                                                        1) /
-                                                    routinelist[index]
-                                                        .exercises[0]
-                                                        .plans
-                                                        .length,
-                                                center: new Text(
-                                                  "${routinelist[index].exercises[0].progress + 1}/${routinelist[index].exercises[0].plans.length}",
-                                                  style: new TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 10.0),
-                                                ),
-                                                linearGradient: gradientColors,
-                                                circularStrokeCap:
-                                                    CircularStrokeCap.round,
-                                              ),
+                                      transitionEffect:
+                                          TransitionEffect.RIGHT_TO_LEFT))
+                              : Navigator.push(
+                                  context,
+                                  Transition(
+                                      child: EachPlanDetails(
+                                        rindex: index,
                                       ),
-                                      title: Text(
-                                        routinelist[index].name,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      subtitle: Row(
-                                        children: [
-                                          routinelist[index].mode == 0
-                                              ? Text(
-                                                  "${routinelist[index].exercises.length}개 운동",
-                                                  style: TextStyle(
-                                                      fontSize: 13,
-                                                      color: Colors.white30))
-                                              : Text("프로그램 모드",
-                                                  style: TextStyle(
-                                                      fontSize: 13,
-                                                      color: Colors.white30)),
-                                        ],
-                                      ),
-                                      trailing: Icon(Icons.keyboard_arrow_right,
-                                          color: Colors.white30, size: 30.0)),
-                                ),
-                              )
-                              /*
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              decoration: BoxDecoration(
+                                      transitionEffect:
+                                          TransitionEffect.RIGHT_TO_LEFT));
+                        },
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Card(
                                   color: Theme.of(context).cardColor,
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(top),
-                                      bottomRight: Radius.circular(bottom),
-                                      topLeft: Radius.circular(top),
-                                      bottomLeft: Radius.circular(bottom))),
-                              height: 52,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        routinelist[index].name,
-                                        style: TextStyle(
-                                            fontSize: 21, color: Colors.white),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15.0)),
+                                  elevation: 8.0,
+                                  margin: new EdgeInsets.symmetric(
+                                      horizontal: 0, vertical: 6.0),
+                                  child: Slidable(
+                                    endActionPane: ActionPane(
+                                        extentRatio: 0.4,
+                                        motion: const DrawerMotion(),
                                         children: [
-                                          routinelist[index].mode == 0
-                                              ? Text("${routinelist[index].exercises.length} Exercises",
-                                              style: TextStyle(
-                                                fontSize: 13,
-                                                color: Color(0xFF717171)))
-                                              : Text("Program Mode",
-                                              style: TextStyle(
-                                                  fontSize: 13,
-                                                  color: Color(0xFF717171))),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ],
+                                          SlidableAction(
+                                            onPressed: (_) {
+                                              _displayRoutineNameEditDialog(index);
+                                            },
+                                            backgroundColor:
+                                                Theme.of(context).primaryColor,
+                                            foregroundColor: Colors.white,
+                                            icon: Icons.edit,
+                                            label: '수정',
+                                          ),
+                                          SlidableAction(
+                                            onPressed: (_) {
+                                              _routinetimeProvider.isstarted
+                                                  ? showToast("운동중엔 루틴제거는 불가능 해요")
+                                                  : _displayDeleteAlert(index);
+                                            },
+                                            backgroundColor: Color(0xFFFE4A49),
+                                            foregroundColor: Colors.white,
+                                            icon: Icons.delete,
+                                            label: '삭제',
+                                          )
+                                        ]),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: Theme.of(context).cardColor,
+                                          borderRadius:
+                                              BorderRadius.circular(15.0)),
+                                      child: ListTile(
+                                          contentPadding: EdgeInsets.symmetric(
+                                              horizontal: 15, vertical: 5.0),
+                                          leading: Container(
+                                            height: double.infinity,
+                                            padding: EdgeInsets.only(right: 15.0),
+                                            decoration: new BoxDecoration(
+                                                border: new Border(
+                                                    right: new BorderSide(
+                                                        width: 1.0,
+                                                        color: Colors.white24))),
+                                            child: routinelist[index].mode == 0
+                                                ? Container(
+                                                    padding: EdgeInsets.symmetric(
+                                                        horizontal: 8),
+                                                    child: SizedBox(
+                                                      width: 25,
+                                                      child: SvgPicture.asset(
+                                                          "assets/svg/dumbel_on.svg",
+                                                          color: Colors.white30),
+                                                    ),
+                                                  )
+                                                : CircularPercentIndicator(
+                                                    radius: 20,
+                                                    lineWidth: 5.0,
+                                                    animation: true,
+                                                    percent: (routinelist[index]
+                                                                .exercises[0]
+                                                                .progress +
+                                                            1) /
+                                                        routinelist[index]
+                                                            .exercises[0]
+                                                            .plans
+                                                            .length,
+                                                    center: new Text(
+                                                      "${routinelist[index].exercises[0].progress + 1}/${routinelist[index].exercises[0].plans.length}",
+                                                      style: new TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 10.0),
+                                                    ),
+                                                    linearGradient: gradientColors,
+                                                    circularStrokeCap:
+                                                        CircularStrokeCap.round,
+                                                  ),
+                                          ),
+                                          title: Text(
+                                            routinelist[index].name,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          subtitle: Row(
+                                            children: [
+                                              routinelist[index].mode == 0
+                                                  ? Text(
+                                                      "${routinelist[index].exercises.length}개 운동",
+                                                      style: TextStyle(
+                                                          fontSize: 13,
+                                                          color: Colors.white30))
+                                                  : Text("프로그램 모드",
+                                                      style: TextStyle(
+                                                          fontSize: 13,
+                                                          color: Colors.white30)),
+                                            ],
+                                          ),
+                                          trailing: Icon(Icons.keyboard_arrow_right,
+                                              color: Colors.white30, size: 30.0)),
+                                    ),
+                                  )
                               ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    itemCount: routinelist.length);
+          }),
+          Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Container(
+                height: 80,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                    //color: Theme.of(context).cardColor,
+                    borderRadius: BorderRadius.circular(15.0)),
+                child: Padding(
+                  padding: const EdgeInsets.all(1.0),
+                  child: GestureDetector(
+                    onTap: (){
+                      _displayTextInputDialog();
+                    },
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 48,
+                            height: 48,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Theme.of(context).primaryColor),
+                            child: Icon(
+                              Icons.add,
+                              size: 28.0,
+                              color: Colors.white,
                             ),
-
-                                 */
-                              ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-                itemCount: routinelist.length);
-      }),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("운동 루틴을 만들어 보세요",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 18)),
+                                Text("원하는 이름, 종류의 루틴을 만들 수 있어요",
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 14)),
+                              ],
+                            ),
+                          )
+                        ]),
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 
