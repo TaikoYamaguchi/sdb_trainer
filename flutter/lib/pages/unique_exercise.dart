@@ -72,7 +72,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
         "",
         style: TextStyle(color: Colors.white, fontSize: 30),
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFF101012),
     );
   }
 
@@ -116,11 +116,14 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
         child: TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(color: Colors.white,),
-              disabledForegroundColor: Colors.black,
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+              disabledForegroundColor: Color(0xFF101012),
               padding: EdgeInsets.all(12.0),
             ),
             onPressed: () {
@@ -130,7 +133,6 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
               Navigator.of(context, rootNavigator: true).pop();
               Navigator.of(context).pop();
             },
-
             child: Text("운동 종료 하기",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
@@ -153,7 +155,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 5),
-      color: Colors.black,
+      color: Color(0xFF101012),
       child: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -302,7 +304,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                                   Transform.scale(
                                       scale: 1.2,
                                       child: Checkbox(
-                                          checkColor: Colors.black,
+                                          checkColor: Color(0xFF101012),
                                           fillColor:
                                               MaterialStateProperty.resolveWith(
                                                   getColor),
@@ -427,7 +429,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                       return Container(
                         alignment: Alignment.center,
                         height: 1,
-                        color: Colors.black,
+                        color: Color(0xFF101012),
                         child: Container(
                           alignment: Alignment.center,
                           margin: EdgeInsets.symmetric(horizontal: 10),
@@ -619,11 +621,14 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
         child: TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(color: Colors.white,),
-              disabledForegroundColor: Colors.black,
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+              disabledForegroundColor: Color(0xFF101012),
               padding: EdgeInsets.all(12.0),
             ),
             onPressed: () {
@@ -666,7 +671,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                   keyboardType: TextInputType.number,
                   style: TextStyle(
                     fontSize: 21,
-                    color: Colors.black,
+                    color: Color(0xFF101012),
                   ),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
@@ -698,11 +703,14 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                 child: TextButton(
                   style: TextButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
                     foregroundColor: Theme.of(context).primaryColor,
                     backgroundColor: Theme.of(context).primaryColor,
-                    textStyle: TextStyle(color: Colors.white,),
-                    disabledForegroundColor: Colors.black,
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                    disabledForegroundColor: Color(0xFF101012),
                     padding: EdgeInsets.all(8.0),
                   ),
                   child: Text('휴식 시간 설정하기',

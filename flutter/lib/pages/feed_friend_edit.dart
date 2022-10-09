@@ -66,13 +66,13 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
               child: Text("차단친구", style: TextStyle(color: Colors.white))),
         ],
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFF101012),
     );
   }
 
   Widget _friend_searchWidget() {
     return Container(
-        color: Colors.black,
+        color: Color(0xFF101012),
         child: Column(children: [
           Consumer<UserdataProvider>(builder: (builder, provider, child) {
             return Container(
@@ -116,7 +116,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
                       return Container(
                         alignment: Alignment.center,
                         height: 1,
-                        color: Colors.black,
+                        color: Color(0xFF101012),
                         child: Container(
                           alignment: Alignment.center,
                           margin: EdgeInsets.symmetric(horizontal: 10),

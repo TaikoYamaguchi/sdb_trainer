@@ -38,7 +38,8 @@ class Profile extends StatelessWidget {
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-          title: Text("설정", style: TextStyle(color: Colors.white, fontSize: 25)),
+          title:
+              Text("설정", style: TextStyle(color: Colors.white, fontSize: 25)),
           actions: [
             Container(
                 alignment: Alignment.center,
@@ -56,11 +57,11 @@ class Profile extends StatelessWidget {
                             Theme.of(context).cardColor)),
                     child: Text('튜토리얼', style: TextStyle(color: Colors.white))))
           ],
-          backgroundColor: Colors.black),
+          backgroundColor: Color(0xFF101012)),
       body: _userdataProvider.userdata != null
           ? _profile(context)
           : Center(child: CircularProgressIndicator()),
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFF101012),
     );
   }
 
@@ -199,8 +200,6 @@ class Profile extends StatelessWidget {
           ),
 
            */
-
-
         ]),
       ),
     );

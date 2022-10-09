@@ -46,7 +46,7 @@ class _UserProfileState extends State<UserProfile> {
         "",
         style: TextStyle(color: Colors.white, fontSize: 30),
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFF101012),
     );
   }
 
@@ -178,7 +178,7 @@ class _UserProfileState extends State<UserProfile> {
           resizeToAvoidBottomInset: false,
           appBar: _appbarWidget(),
           body: _userProfileWidget(),
-          backgroundColor: Colors.black);
+          backgroundColor: Color(0xFF101012));
     });
   }
 }

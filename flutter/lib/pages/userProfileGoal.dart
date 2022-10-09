@@ -57,13 +57,13 @@ class _ProfileGoalState extends State<ProfileGoal> {
         "",
         style: TextStyle(color: Colors.white, fontSize: 30),
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFF101012),
     );
   }
 
   Widget _signupExerciseWidget() {
     return Container(
-      color: Colors.black,
+      color: Color(0xFF101012),
       child: Center(
           child: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -131,7 +131,7 @@ class _ProfileGoalState extends State<ProfileGoal> {
                             return Container(
                               alignment: Alignment.center,
                               height: 1,
-                              color: Colors.black,
+                              color: Color(0xFF101012),
                               child: Container(
                                 alignment: Alignment.center,
                                 margin: EdgeInsets.symmetric(horizontal: 10),
@@ -225,11 +225,14 @@ class _ProfileGoalState extends State<ProfileGoal> {
         child: TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(color: Colors.white,),
-              disabledForegroundColor: Colors.black,
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+              disabledForegroundColor: Color(0xFF101012),
               padding: EdgeInsets.all(8.0),
             ),
             onPressed: () => _postExerciseCheck(),

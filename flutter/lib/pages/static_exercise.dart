@@ -75,7 +75,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
               )),
         ],
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFF101012),
     );
   }
 
@@ -92,7 +92,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 5),
-      color: Colors.black,
+      color: Color(0xFF101012),
       child: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -218,7 +218,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                                         Transform.scale(
                                             scale: 1.2,
                                             child: Checkbox(
-                                                checkColor: Colors.black,
+                                                checkColor: Color(0xFF101012),
                                                 fillColor: MaterialStateProperty
                                                     .resolveWith(getColor),
                                                 value: widget.exercise
@@ -340,7 +340,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                         return Container(
                           alignment: Alignment.center,
                           height: 1,
-                          color: Colors.black,
+                          color: Color(0xFF101012),
                           child: Container(
                             alignment: Alignment.center,
                             margin: EdgeInsets.symmetric(horizontal: 10),

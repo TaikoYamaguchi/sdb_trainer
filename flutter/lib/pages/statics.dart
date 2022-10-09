@@ -255,7 +255,7 @@ class _CalendarState extends State<Calendar> {
               borderRadius: BorderRadius.circular(5.0),
             ),
             markerDecoration:
-                BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+                BoxDecoration(color: Color(0xFffc60a8), shape: BoxShape.circle),
             selectedTextStyle: const TextStyle(
                 color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
             defaultTextStyle: const TextStyle(color: Colors.white),
@@ -349,7 +349,7 @@ class _CalendarState extends State<Calendar> {
     double top = 0;
     double bottom = 0;
     return Container(
-      color: Colors.black,
+      color: Color(0xFF101012),
       child: Column(
         children: [
           Row(
@@ -408,7 +408,7 @@ class _CalendarState extends State<Calendar> {
     double top = 0;
     double bottom = 0;
     return Container(
-      color: Colors.black,
+      color: Color(0xFF101012),
       child: Column(
         children: [
           Row(
@@ -681,7 +681,7 @@ class _CalendarState extends State<Calendar> {
                   return Container(
                     alignment: Alignment.center,
                     height: 1,
-                    color: Colors.black,
+                    color: Color(0xFF101012),
                     child: Container(
                       alignment: Alignment.center,
                       margin: EdgeInsets.symmetric(horizontal: 10),
@@ -864,7 +864,7 @@ class _CalendarState extends State<Calendar> {
               textStyle: TextStyle(
                 color: Colors.white,
               ),
-              disabledForegroundColor: Colors.black,
+              disabledForegroundColor: Color(0xFF101012),
               padding: EdgeInsets.all(8.0),
             ),
             onPressed: () {
@@ -889,7 +889,7 @@ class _CalendarState extends State<Calendar> {
     _getChartSourcefromDay();
     return Scaffold(
         appBar: _appbarWidget(),
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xFF101012),
         body: _staticsPages());
   }
 }

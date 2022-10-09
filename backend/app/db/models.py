@@ -33,6 +33,7 @@ class User(Base):
     history_cnt = Column(Integer, nullable=False)
     comment_cnt = Column(Integer, nullable=False)
     fcm_token= Column(String, nullable=True)
+    body_stats = Column(JSON, index=True, nullable=True)
     
     
 class Workout(Base):

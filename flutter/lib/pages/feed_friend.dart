@@ -67,20 +67,20 @@ class _FeedFriendState extends State<FeedFriend> {
               child: Text("친구찾기", style: TextStyle(color: Colors.white))),
         ],
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFF101012),
     );
   }
 
   Widget _friend_searchWidget() {
     return Container(
-        color: Colors.black,
+        color: Color(0xFF101012),
         child: Column(children: [
           Expanded(
             child:
                 Consumer<UserdataProvider>(builder: (builder, provider, child) {
               return provider.userFriends.userdatas.isEmpty
                   ? Container(
-                      color: Colors.black,
+                      color: Color(0xFF101012),
                       child: Center(
                         child: Text("친구를 찾고 추가해 보세요",
                             style:
@@ -95,7 +95,7 @@ class _FeedFriendState extends State<FeedFriend> {
                         return Container(
                           alignment: Alignment.center,
                           height: 1,
-                          color: Colors.black,
+                          color: Color(0xFF101012),
                           child: Container(
                             alignment: Alignment.center,
                             margin: EdgeInsets.symmetric(horizontal: 10),

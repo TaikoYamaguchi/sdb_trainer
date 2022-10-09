@@ -63,7 +63,7 @@ class LoginPageState extends State<LoginPage> {
     return Scaffold(
       key: _scaffoldKey,
       body: Container(
-          color: Colors.black,
+          color: Color(0xFF101012),
           child: Center(
               child: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -119,10 +119,12 @@ class LoginPageState extends State<LoginPage> {
         child: TextButton(
             style: TextButton.styleFrom(
               foregroundColor: Colors.blueAccent,
-              backgroundColor: Colors.black,
-              textStyle: TextStyle(color: Colors.white,),
-              disabledForegroundColor: Colors.black,
-              padding:EdgeInsets.all(8.0),
+              backgroundColor: Color(0xFF101012),
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+              disabledForegroundColor: Color(0xFF101012),
+              padding: EdgeInsets.all(8.0),
             ),
             onPressed: () => isLoading
                 ? null
@@ -141,10 +143,12 @@ class LoginPageState extends State<LoginPage> {
         child: TextButton(
             style: TextButton.styleFrom(
               foregroundColor: Colors.blueAccent,
-              backgroundColor: Colors.black,
-              textStyle: TextStyle(color: Colors.grey,),
-              disabledForegroundColor: Colors.black,
-              padding:EdgeInsets.all(4.0),
+              backgroundColor: Color(0xFF101012),
+              textStyle: TextStyle(
+                color: Colors.grey,
+              ),
+              disabledForegroundColor: Color(0xFF101012),
+              padding: EdgeInsets.all(4.0),
             ),
             onPressed: () => isLoading
                 ? null
@@ -348,9 +352,11 @@ class LoginPageState extends State<LoginPage> {
               style: TextButton.styleFrom(
                 foregroundColor: Color.fromRGBO(25, 106, 223, 20),
                 backgroundColor: Color.fromRGBO(25, 106, 223, 20),
-                textStyle: TextStyle(color: Colors.white,),
+                textStyle: TextStyle(
+                  color: Colors.white,
+                ),
                 disabledForegroundColor: Color.fromRGBO(25, 106, 223, 20),
-                padding:EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.0),
               ),
               onPressed: () => isLoading ? null : _loginCheck(context),
               child: Text(isLoading ? 'loggin in.....' : "로그인",
@@ -371,9 +377,11 @@ class LoginPageState extends State<LoginPage> {
               style: TextButton.styleFrom(
                 foregroundColor: Color.fromRGBO(246, 58, 64, 20),
                 backgroundColor: Color.fromRGBO(246, 58, 64, 20),
-                textStyle: TextStyle(color: Colors.white,),
+                textStyle: TextStyle(
+                  color: Colors.white,
+                ),
                 disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-                padding:EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.0),
               ),
               onPressed: () =>
                   isLoading ? null : _loginState.changeSignup(true),
@@ -561,6 +569,8 @@ class LoginPageState extends State<LoginPage> {
 
     binding.addPostFrameCallback((_) async {
       BuildContext context = binding.renderViewElement!;
+      print(_initUserdataProvider.userdata.bodyStats[0].weight);
+      print(_initUserdataProvider.userdata.bodyStats[0].weight_goal);
       if (context != null) {
         for (var user in usertestList) {
           print(user.image);

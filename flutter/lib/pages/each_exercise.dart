@@ -116,7 +116,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
           },
         )
       ],
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFF101012),
     );
   }
 
@@ -237,7 +237,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 5),
-        color: Colors.black,
+        color: Color(0xFF101012),
         child: GestureDetector(
           onTap: () {
             FocusScope.of(context).unfocus();
@@ -318,7 +318,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               _exercise.name.length < 10
                                   ? Icon(
                                       Icons.info_outline_rounded,
-                                      color: Colors.black,
+                                      color: Color(0xFF101012),
                                     )
                                   : Container(),
                               isKeyboardVisible
@@ -722,7 +722,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               return Container(
                                 alignment: Alignment.center,
                                 height: 1,
-                                color: Colors.black,
+                                color: Color(0xFF101012),
                                 child: Container(
                                   alignment: Alignment.center,
                                   margin: EdgeInsets.symmetric(horizontal: 10),
@@ -1278,6 +1278,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     return Scaffold(
         appBar: _appbarWidget(),
         body: _exercisedetailPage(),
-        backgroundColor: Colors.black);
+        backgroundColor: Color(0xFF101012));
   }
 }

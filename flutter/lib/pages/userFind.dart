@@ -37,13 +37,13 @@ class _UserFindPageState extends State<UserFindPage> {
         "회원 찾기",
         style: TextStyle(color: Colors.white, fontSize: 30),
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFF101012),
     );
   }
 
   Widget _signupProfileWidget() {
     return Container(
-      color: Colors.black,
+      color: Color(0xFF101012),
       child: Center(
           child: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -171,7 +171,9 @@ class _UserFindPageState extends State<UserFindPage> {
             style: TextButton.styleFrom(
               foregroundColor: Color.fromRGBO(246, 58, 64, 20),
               backgroundColor: Color.fromRGBO(246, 58, 64, 20),
-              textStyle: TextStyle(color: Colors.white,),
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(8.0),
             ),

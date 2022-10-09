@@ -37,13 +37,13 @@ class _ProfileNicknameState extends State<ProfileNickname> {
         "",
         style: TextStyle(color: Colors.white, fontSize: 30),
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFF101012),
     );
   }
 
   Widget _signupProfileWidget() {
     return Container(
-      color: Colors.black,
+      color: Color(0xFF101012),
       child: Center(
           child: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -133,11 +133,14 @@ class _ProfileNicknameState extends State<ProfileNickname> {
         child: TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(color: Colors.white,),
-              disabledForegroundColor: Colors.black,
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+              disabledForegroundColor: Color(0xFF101012),
               padding: EdgeInsets.all(8.0),
             ),
             onPressed: () => _editCheck(),

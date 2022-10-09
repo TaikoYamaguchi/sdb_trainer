@@ -63,6 +63,13 @@ class _HomeState extends State<Home> {
     "밀리터리프레스": 0
   };
 
+  Map<String, int> _exerciseCountMapOdd = {
+    "스쿼트": 0,
+    "데드리프트": 0,
+    "벤치프레스": 0,
+    "밀리터리프레스": 0
+  };
+
   DateTime _toDay = DateTime.now();
 
   @override
@@ -94,11 +101,11 @@ class _HomeState extends State<Home> {
           return PreferredSize(
               preferredSize: Size.fromHeight(56.0),
               child: Container(
-                  color: Colors.black,
+                  color: Color(0xFF101012),
                   child: Center(child: CircularProgressIndicator())));
         }
       }),
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFF101012),
     );
   }
 
@@ -106,7 +113,7 @@ class _HomeState extends State<Home> {
     return SizedBox(
       width: double.infinity,
       child: Container(
-        color: Colors.black,
+        color: Color(0xFF101012),
         child: CupertinoSlidingSegmentedControl(
             groupValue: _dateCtrl,
             children: <int, Widget>{
@@ -143,7 +150,7 @@ class _HomeState extends State<Home> {
                   padding: const EdgeInsets.all(4.0))
             },
             padding: EdgeInsets.symmetric(horizontal: 6),
-            backgroundColor: Colors.black,
+            backgroundColor: Color(0xFF101012),
             thumbColor: Theme.of(context).primaryColor,
             onValueChanged: (i) {
               setState(() {
@@ -292,7 +299,7 @@ class _HomeState extends State<Home> {
 
   Widget _homeWidget(_exunique, context) {
     return Container(
-      color: Colors.black,
+      color: Color(0xFF101012),
       child: NotificationListener<OverscrollIndicatorNotification>(
           onNotification: (overscroll) {
             overscroll.disallowIndicator();
@@ -409,11 +416,6 @@ class _HomeState extends State<Home> {
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 4.0, vertical: 1.0),
-                  child: _liftingStatWidget(_exunique, context),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 4.0, vertical: 1.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
@@ -431,76 +433,227 @@ class _HomeState extends State<Home> {
 
   Widget _lastRoutineWidget() {
     double deviceWidth = MediaQuery.of(context).size.width;
-    return Card(
-        color: Theme.of(context).cardColor,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Consumer<PrefsProvider>(builder: (builder, provider, child) {
-            return Column(children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(right: deviceWidth / 2 - 40),
-                      child: Text(
-                          provider.prefs.getString('lastroutine') == ''
-                              ? "최근 루틴이 없어요"
-                              : '''최근 수행한 루틴은''',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: provider.prefs.getString('lastroutine') ==
-                                      null
-                                  ? Colors.grey
-                                  : Colors.white,
-                              fontSize:
-                                  provider.prefs.getString('lastroutine') ==
-                                          null
-                                      ? 18
-                                      : 20,
-                              fontWeight: FontWeight.w600)),
+    return Container(
+      width: deviceWidth,
+      child: Card(
+          color: Theme.of(context).cardColor,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Consumer<PrefsProvider>(builder: (builder, provider, child) {
+                  return IntrinsicHeight(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                    provider.prefs.getString('lastroutine') ==
+                                            ''
+                                        ? "최근 루틴이 없어요"
+                                        : '''최근 수행한 루틴''',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: provider.prefs
+                                                    .getString('lastroutine') ==
+                                                null
+                                            ? Colors.grey
+                                            : Colors.white,
+                                        fontSize: provider.prefs
+                                                    .getString('lastroutine') ==
+                                                null
+                                            ? 18
+                                            : 20,
+                                        fontWeight: FontWeight.w600)),
+                              ),
+                            ],
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              provider.prefs.getString('lastroutine') == null
+                                  ? _bodyStater.change(1)
+                                  : [
+                                      _PopProvider.gotoonlast(),
+                                      _bodyStater.change(1)
+                                    ];
+                            },
+                            child: Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                      provider.prefs.getString('lastroutine') ==
+                                              ''
+                                          ? '눌러서 루틴을 수행 해보세요!'
+                                          : '${provider.prefs.getString('lastroutine')}',
+                                      style: TextStyle(
+                                          color: Color(0xFffc60a8),
+                                          fontSize: provider.prefs.getString(
+                                                      'lastroutine') ==
+                                                  ''
+                                              ? 18
+                                              : 28,
+                                          fontWeight: FontWeight.w600)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ]),
+                        VerticalDivider(
+                            color: Color(0xFF717171), thickness: 1, width: 1),
+                        Column(children: [
+                          Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("현재 몸무게",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600)),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: Text(
+                                      "(" +
+                                          DateFormat('MM/dd')
+                                              .format(DateTime.parse(
+                                                  _userdataProvider.userdata
+                                                      .bodyStats.last.date))
+                                              .toString() +
+                                          ")",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Color(0xFF717171),
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600)),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                  _userdataProvider
+                                          .userdata.bodyStats.last.weight
+                                          .toString() +
+                                      _userdataProvider.userdata.weight_unit,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Color(0xFffc60a8),
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.w600)),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 12.0),
+                                child: Text(
+                                    "/" +
+                                        _userdataProvider
+                                            .userdata.bodyStats.last.weight_goal
+                                            .toString() +
+                                        _userdataProvider.userdata.weight_unit,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Color(0xFF717171),
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600)),
+                              ),
+                            ],
+                          ),
+                        ]),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-              GestureDetector(
-                onTap: () {
-                  provider.prefs.getString('lastroutine') == null
-                      ? _bodyStater.change(1)
-                      : [_PopProvider.gotoonlast(), _bodyStater.change(1)];
-                },
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                          provider.prefs.getString('lastroutine') == ''
-                              ? '눌러서 루틴을 수행 해보세요!'
-                              : '${provider.prefs.getString('lastroutine')}',
-                          style: TextStyle(
-                              color: Color(0xFffc60a8),
-                              fontSize:
-                                  provider.prefs.getString('lastroutine') == ''
-                                      ? 18
-                                      : 28,
-                              fontWeight: FontWeight.w600)),
-                      provider.prefs.getString('lastroutine') == ''
-                          ? Container()
-                          : Text('에요',
+                  );
+                }),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
+                  child: Divider(
+                      color: Color(0xFF717171), thickness: 1, height: 1),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 12.0),
+                          child: Text('''Lifting Stats''',
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600))
-                    ],
-                  ),
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w600)),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                        onTap: () {
+                          _testdata = _testdata0.exercises;
+                          setState(() {});
+                          exselect(true, true, context);
+                        },
+                        child: Icon(Icons.settings,
+                            color: Colors.grey, size: 18.0))
+                  ],
                 ),
-              ),
-            ]);
-          }),
-        ));
+                SizedBox(height: 8.0),
+                Consumer<ExercisesdataProvider>(
+                    builder: (builder, provider, child) {
+                  final storage = FlutterSecureStorage();
+                  return ReorderableListView.builder(
+                      onReorder: (int oldIndex, int newIndex) {
+                        if (oldIndex > newIndex) {
+                          provider.insertHomeExList(
+                              newIndex, provider.homeExList[oldIndex]);
+                          provider.removeHomeExList(oldIndex + 1);
+                        } else {
+                          provider.insertHomeExList(
+                              newIndex, provider.homeExList[oldIndex]);
+                          provider.removeHomeExList(oldIndex);
+                        }
+                        storage.write(
+                            key: 'sdb_HomeExList',
+                            value: jsonEncode(
+                                (_exercisesdataProvider.homeExList)));
+                      },
+                      itemBuilder: (BuildContext _context, int index) {
+                        return Slidable(
+                            key: Key("$index"),
+                            endActionPane: ActionPane(
+                                extentRatio: 0.15,
+                                motion: const ScrollMotion(),
+                                children: [
+                                  SlidableAction(
+                                    onPressed: (_) {
+                                      provider.removeHomeExList(index);
+                                      storage.write(
+                                          key: 'sdb_HomeExList',
+                                          value: jsonEncode(
+                                              (_exercisesdataProvider
+                                                  .homeExList)));
+                                    },
+                                    backgroundColor: Color(0xFFFE4A49),
+                                    foregroundColor: Colors.white,
+                                    icon: Icons.delete,
+                                  )
+                                ]),
+                            child: _homeProgressiveBarChart(index, context));
+                      },
+                      shrinkWrap: true,
+                      itemCount: _exercisesdataProvider.homeExList.length);
+                }),
+              ],
+            ),
+          )),
+    );
   }
 
   Widget _historyCard(context) {
@@ -1685,32 +1838,32 @@ class _HomeState extends State<Home> {
     var thevalue = 0;
     var thekey = "운동을 시작해봐요";
     _isbottomTitleEx = true;
-    _exerciseCountMap = {"스쿼트": 0, "데드리프트": 0, "벤치프레스": 0, "밀리터리프레스": 0};
+    _exerciseCountMapOdd = {"스쿼트": 0, "데드리프트": 0, "벤치프레스": 0, "밀리터리프레스": 0};
 
     _dateController(_dateCtrl);
     double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercise in sdbdata.exercises) {
-          if (_exerciseCountMap.containsKey(exercise.name)) {
+          if (_exerciseCountMapOdd.containsKey(exercise.name)) {
             for (workoutModel.Sets sets in exercise.sets) {
-              _exerciseCountMap[exercise.name] =
-                  _exerciseCountMap[exercise.name]! + 1;
+              _exerciseCountMapOdd[exercise.name] =
+                  _exerciseCountMapOdd[exercise.name]! + 1;
             }
           } else {
-            _exerciseCountMap[exercise.name] = 0;
+            _exerciseCountMapOdd[exercise.name] = 0;
             for (workoutModel.Sets sets in exercise.sets) {
-              _exerciseCountMap[exercise.name] =
-                  _exerciseCountMap[exercise.name]! + 1;
+              _exerciseCountMapOdd[exercise.name] =
+                  _exerciseCountMapOdd[exercise.name]! + 1;
             }
           }
         }
       }
     }
-    _exerciseCountMap = Map.fromEntries(_exerciseCountMap.entries.toList()
+    _exerciseCountMapOdd = Map.fromEntries(_exerciseCountMapOdd.entries.toList()
       ..sort((e1, e2) => e2.value.compareTo(e1.value)));
 
-    _exerciseCountMap.forEach((key, value) {
+    _exerciseCountMapOdd.forEach((key, value) {
       if (value > thevalue) {
         thevalue = value;
         thekey = key;
@@ -1722,14 +1875,14 @@ class _HomeState extends State<Home> {
         x: i,
         barRods: [
           BarChartRodData(
-              toY: _exerciseCountMap.values.elementAt(3 - i).toDouble(),
+              toY: _exerciseCountMapOdd.values.elementAt(3 - i).toDouble(),
               width: 12,
               gradient: _barsGradient,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6)))
         ],
         showingTooltipIndicators:
-            _exerciseCountMap.values.elementAt(3 - i) != 0 ? [0] : [],
+            _exerciseCountMapOdd.values.elementAt(3 - i) != 0 ? [0] : [],
       ));
     }
 
@@ -1813,7 +1966,7 @@ class _HomeState extends State<Home> {
     var thevalue = 0;
     var thekey = "운동을 시작해봐요";
     _isbottomTitleEx = true;
-    _exerciseCountMap = {"가슴": 0, "등": 0, "다리": 0, "어깨": 0};
+    _exerciseCountMapOdd = {"가슴": 0, "등": 0, "다리": 0, "어깨": 0};
 
     _dateController(_dateCtrl);
     double deviceWidth = MediaQuery.of(context).size.width;
@@ -1831,15 +1984,15 @@ class _HomeState extends State<Home> {
             }
           })]
               .target) {
-            if (_exerciseCountMap.containsKey(target)) {
+            if (_exerciseCountMapOdd.containsKey(target)) {
               for (workoutModel.Sets sets in exercise.sets) {
-                _exerciseCountMap[target] = _exerciseCountMap[target]! +
+                _exerciseCountMapOdd[target] = _exerciseCountMapOdd[target]! +
                     (sets.weight * sets.reps).toInt();
               }
             } else {
-              _exerciseCountMap[target] = 0;
+              _exerciseCountMapOdd[target] = 0;
               for (workoutModel.Sets sets in exercise.sets) {
-                _exerciseCountMap[target] = _exerciseCountMap[target]! +
+                _exerciseCountMapOdd[target] = _exerciseCountMapOdd[target]! +
                     (sets.weight * sets.reps).toInt();
               }
             }
@@ -1847,10 +2000,10 @@ class _HomeState extends State<Home> {
         }
       }
     }
-    _exerciseCountMap = Map.fromEntries(_exerciseCountMap.entries.toList()
+    _exerciseCountMapOdd = Map.fromEntries(_exerciseCountMapOdd.entries.toList()
       ..sort((e1, e2) => e2.value.compareTo(e1.value)));
 
-    _exerciseCountMap.forEach((key, value) {
+    _exerciseCountMapOdd.forEach((key, value) {
       if (value > thevalue) {
         thevalue = value;
         thekey = key;
@@ -1862,14 +2015,14 @@ class _HomeState extends State<Home> {
         x: i,
         barRods: [
           BarChartRodData(
-              toY: _exerciseCountMap.values.elementAt(3 - i).toDouble(),
+              toY: _exerciseCountMapOdd.values.elementAt(3 - i).toDouble(),
               width: 12,
               gradient: _barsGradient,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6)))
         ],
         showingTooltipIndicators:
-            _exerciseCountMap.values.elementAt(3 - i) != 0 ? [0] : [],
+            _exerciseCountMapOdd.values.elementAt(3 - i) != 0 ? [0] : [],
       ));
     }
 
@@ -1961,7 +2114,7 @@ class _HomeState extends State<Home> {
     var thevalue = 0;
     var thekey = "운동을 시작해봐요";
     _isbottomTitleEx = true;
-    _exerciseCountMap = {"가슴": 0, "등": 0, "다리": 0, "어깨": 0};
+    _exerciseCountMapOdd = {"가슴": 0, "등": 0, "다리": 0, "어깨": 0};
 
     _dateController(_dateCtrl);
     double deviceWidth = MediaQuery.of(context).size.width;
@@ -1979,20 +2132,20 @@ class _HomeState extends State<Home> {
             }
           })]
               .target) {
-            if (_exerciseCountMap.containsKey(target)) {
-              _exerciseCountMap[target] = _exerciseCountMap[target]! + 1;
+            if (_exerciseCountMapOdd.containsKey(target)) {
+              _exerciseCountMapOdd[target] = _exerciseCountMapOdd[target]! + 1;
             } else {
-              _exerciseCountMap[target] = 0;
-              _exerciseCountMap[target] = _exerciseCountMap[target]! + 1;
+              _exerciseCountMapOdd[target] = 0;
+              _exerciseCountMapOdd[target] = _exerciseCountMapOdd[target]! + 1;
             }
           }
         }
       }
     }
-    _exerciseCountMap = Map.fromEntries(_exerciseCountMap.entries.toList()
+    _exerciseCountMapOdd = Map.fromEntries(_exerciseCountMapOdd.entries.toList()
       ..sort((e1, e2) => e2.value.compareTo(e1.value)));
 
-    _exerciseCountMap.forEach((key, value) {
+    _exerciseCountMapOdd.forEach((key, value) {
       if (value > thevalue) {
         thevalue = value;
         thekey = key;
@@ -2004,14 +2157,14 @@ class _HomeState extends State<Home> {
         x: i,
         barRods: [
           BarChartRodData(
-              toY: _exerciseCountMap.values.elementAt(3 - i).toDouble(),
+              toY: _exerciseCountMapOdd.values.elementAt(3 - i).toDouble(),
               width: 12,
               gradient: _barsGradient,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6)))
         ],
         showingTooltipIndicators:
-            _exerciseCountMap.values.elementAt(3 - i) != 0 ? [0] : [],
+            _exerciseCountMapOdd.values.elementAt(3 - i) != 0 ? [0] : [],
       ));
     }
 
@@ -2145,76 +2298,7 @@ class _HomeState extends State<Home> {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 12.0),
-                      child: Text('''Lifting Stats''',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w600)),
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                    onTap: () {
-                      _testdata = _testdata0.exercises;
-                      setState(() {});
-                      exselect(true, true, context);
-                    },
-                    child: Icon(Icons.settings, color: Colors.grey, size: 18.0))
-              ],
-            ),
-            SizedBox(height: 8.0),
-            Consumer<ExercisesdataProvider>(
-                builder: (builder, provider, child) {
-              final storage = FlutterSecureStorage();
-              return ReorderableListView.builder(
-                  onReorder: (int oldIndex, int newIndex) {
-                    if (oldIndex > newIndex) {
-                      provider.insertHomeExList(
-                          newIndex, provider.homeExList[oldIndex]);
-                      provider.removeHomeExList(oldIndex + 1);
-                    } else {
-                      provider.insertHomeExList(
-                          newIndex, provider.homeExList[oldIndex]);
-                      provider.removeHomeExList(oldIndex);
-                    }
-                    storage.write(
-                        key: 'sdb_HomeExList',
-                        value: jsonEncode((_exercisesdataProvider.homeExList)));
-                  },
-                  itemBuilder: (BuildContext _context, int index) {
-                    return Slidable(
-                        key: Key("$index"),
-                        endActionPane: ActionPane(
-                            extentRatio: 0.15,
-                            motion: const ScrollMotion(),
-                            children: [
-                              SlidableAction(
-                                onPressed: (_) {
-                                  provider.removeHomeExList(index);
-                                  storage.write(
-                                      key: 'sdb_HomeExList',
-                                      value: jsonEncode(
-                                          (_exercisesdataProvider.homeExList)));
-                                },
-                                backgroundColor: Color(0xFFFE4A49),
-                                foregroundColor: Colors.white,
-                                icon: Icons.delete,
-                              )
-                            ]),
-                        child: _homeProgressiveBarChart(index, context));
-                  },
-                  shrinkWrap: true,
-                  itemCount: _exercisesdataProvider.homeExList.length);
-            }),
-          ]),
+          child: Column(children: []),
         ));
   }
 
@@ -2293,7 +2377,7 @@ class _HomeState extends State<Home> {
     double top = 0;
     double bottom = 0;
     return Expanded(
-      //color: Colors.black,
+      //color: Color(0xFF101012),
       child: Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
         return ListView.separated(
             padding: EdgeInsets.symmetric(horizontal: 5),
@@ -2585,7 +2669,7 @@ class _HomeState extends State<Home> {
             child: CircularProgressIndicator(),
           );
         }),
-        backgroundColor: Colors.black);
+        backgroundColor: Color(0xFF101012));
   }
 
   @override

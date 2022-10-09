@@ -72,13 +72,13 @@ class _ProfileBodyState extends State<ProfileBody> {
         "",
         style: TextStyle(color: Colors.white, fontSize: 30),
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFF101012),
     );
   }
 
   Widget _signupSettingWidget() {
     return Container(
-      color: Colors.black,
+      color: Color(0xFF101012),
       child: Center(
           child: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -188,7 +188,7 @@ class _ProfileBodyState extends State<ProfileBody> {
     return CupertinoSlidingSegmentedControl(
         groupValue: _userWeightUnitCtrl,
         children: _weightUnitList,
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xFF101012),
         thumbColor: Theme.of(context).primaryColor,
         onValueChanged: (i) {
           _userWeightUnitCtrl = i as String;
@@ -199,7 +199,7 @@ class _ProfileBodyState extends State<ProfileBody> {
     return CupertinoSlidingSegmentedControl(
         groupValue: _userHeightUnitCtrl,
         children: _heightUnitList,
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xFF101012),
         thumbColor: Theme.of(context).primaryColor,
         onValueChanged: (i) {
           _userHeightUnitCtrl = i as String;
@@ -212,11 +212,14 @@ class _ProfileBodyState extends State<ProfileBody> {
         child: TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(color: Colors.white,),
-              disabledForegroundColor: Colors.black,
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+              disabledForegroundColor: Color(0xFF101012),
               padding: EdgeInsets.all(8.0),
             ),
             onPressed: () => _editCheck(),

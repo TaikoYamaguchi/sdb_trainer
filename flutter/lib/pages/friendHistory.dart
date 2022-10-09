@@ -48,7 +48,7 @@ class _FriendHistoryState extends State<FriendHistory> {
         widget.sdbdata.nickname!,
         style: TextStyle(color: Colors.white, fontSize: 30),
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFF101012),
     );
   }
 
@@ -56,7 +56,7 @@ class _FriendHistoryState extends State<FriendHistory> {
     return SingleChildScrollView(
       child: Container(
           width: MediaQuery.of(context).size.width,
-          color: Colors.black,
+          color: Color(0xFF101012),
           child: _onechartExercisesWidget(widget.sdbdata.exercises)),
     );
   }
@@ -92,7 +92,7 @@ class _FriendHistoryState extends State<FriendHistory> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        color: Colors.black,
+        color: Color(0xFF101012),
         child: Column(
           children: [
             Row(
@@ -288,7 +288,7 @@ class _FriendHistoryState extends State<FriendHistory> {
                   return Container(
                     alignment: Alignment.center,
                     height: 0,
-                    color: Colors.black,
+                    color: Color(0xFF101012),
                     child: Container(
                       alignment: Alignment.center,
                       height: 0,
@@ -311,6 +311,6 @@ class _FriendHistoryState extends State<FriendHistory> {
     return Scaffold(
         appBar: _appbarWidget(),
         body: _friendHistoryWidget(),
-        backgroundColor: Colors.black);
+        backgroundColor: Color(0xFF101012));
   }
 }

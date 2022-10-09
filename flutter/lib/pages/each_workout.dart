@@ -279,7 +279,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 },
               )
       ],
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFF101012),
     );
   }
 
@@ -342,10 +342,13 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
         child: TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(color: Colors.white,),
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
             ),
@@ -399,9 +402,12 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
         child: TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
               backgroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(color: Colors.white,),
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
             ),
@@ -575,12 +581,16 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
         child: TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
               foregroundColor: Theme.of(context).primaryColor,
-              backgroundColor: _workoutNameCtrl.text == "" || _customRuUsed == true
-                  ? Color(0xFF212121)
-                  : Theme.of(context).primaryColor,
-              textStyle: TextStyle(color: Colors.white,),
+              backgroundColor:
+                  _workoutNameCtrl.text == "" || _customRuUsed == true
+                      ? Color(0xFF212121)
+                      : Theme.of(context).primaryColor,
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
             ),
@@ -610,174 +620,181 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
           return SingleChildScrollView(
             child: StatefulBuilder(
                 builder: (BuildContext context, StateSetter mystate) {
-                return Container(
-                  padding: EdgeInsets.all(12.0),
-                  height: 390,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                    color: Theme.of(context).cardColor,
-                  ),
-                  child:  Column(
-                    children: [
-                      Text(
-                          '커스텀 운동을 만들어보세요',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white, fontSize: 24),
-                        ),
-                      Text('운동의 이름을 입력해 주세요',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white, fontSize: 16)),
-                      Text('외부를 터치하면 취소 할 수 있어요',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.grey, fontSize: 12)),
-                      SizedBox(height: 20),
-                      TextField(
-                        onChanged: (value) {
-                          _exercisesdataProvider.exercisesdata.exercises
-                              .indexWhere((exercise) {
-                            if (exercise.name == _customExNameCtrl.text) {
-                              mystate(() {
-                                _customExUsed = true;
-                              });
-                              return true;
-                            } else {
-                              mystate(() {
-                                _customExUsed = false;
-                              });
-                              return false;
-                            }
-                          });
-                        },
-                        style: TextStyle(fontSize: 24.0, color: Colors.white),
+              return Container(
+                padding: EdgeInsets.all(12.0),
+                height: 390,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                  color: Theme.of(context).cardColor,
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      '커스텀 운동을 만들어보세요',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 24),
+                    ),
+                    Text('운동의 이름을 입력해 주세요',
                         textAlign: TextAlign.center,
-                        controller: _customExNameCtrl,
-                        decoration: InputDecoration(
-                            filled: true,
-                            enabledBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor, width: 3),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor, width: 3),
-                            ),
-                            hintText: "커스텀 운동 이름",
-                            hintStyle:
-                            TextStyle(fontSize: 24.0, color: Colors.white)),
-                      ),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            child: Text(
-                              '운동부위:',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.white, fontSize: 24),
-                            ),
+                        style: TextStyle(color: Colors.white, fontSize: 16)),
+                    Text('외부를 터치하면 취소 할 수 있어요',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.grey, fontSize: 12)),
+                    SizedBox(height: 20),
+                    TextField(
+                      onChanged: (value) {
+                        _exercisesdataProvider.exercisesdata.exercises
+                            .indexWhere((exercise) {
+                          if (exercise.name == _customExNameCtrl.text) {
+                            mystate(() {
+                              _customExUsed = true;
+                            });
+                            return true;
+                          } else {
+                            mystate(() {
+                              _customExUsed = false;
+                            });
+                            return false;
+                          }
+                        });
+                      },
+                      style: TextStyle(fontSize: 24.0, color: Colors.white),
+                      textAlign: TextAlign.center,
+                      controller: _customExNameCtrl,
+                      decoration: InputDecoration(
+                          filled: true,
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).primaryColor,
+                                width: 3),
                           ),
-                          SizedBox(width: 20),
-                          Container(
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 2 / 5,
-                                child: DropdownButtonFormField(
-                                  isExpanded: true,
-                                  dropdownColor: Colors.black,
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      borderSide:
-                                      BorderSide(color: Colors.white, width: 3),
-                                    ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      borderSide: BorderSide(
-                                          color: Theme.of(context).primaryColor,
-                                          width: 3),
-                                    ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).primaryColor,
+                                width: 3),
+                          ),
+                          hintText: "커스텀 운동 이름",
+                          hintStyle:
+                              TextStyle(fontSize: 24.0, color: Colors.white)),
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          child: Text(
+                            '운동부위:',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white, fontSize: 24),
+                          ),
+                        ),
+                        SizedBox(width: 20),
+                        Container(
+                          child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 2 / 5,
+                              child: DropdownButtonFormField(
+                                isExpanded: true,
+                                dropdownColor: Color(0xFF101012),
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    borderSide: BorderSide(
+                                        color: Colors.white, width: 3),
                                   ),
-                                  hint: Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        '기타',
-                                        style: TextStyle(color: Colors.white),
-                                      )),
-                                  items: options.map((item) => DropdownMenuItem<String>(
-                                      value: item.toString(),
-                                      child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(item,
-                                            style: TextStyle(color: Colors.white),)
-                                      ))).toList(),
-                                  onChanged: (item) =>
-                                      setState(() => selectedItem = item as String),
-                                )
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            child: Text(
-                              '카테고리:',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.white, fontSize: 24),
-                            ),
-                          ),
-                          SizedBox(width: 20),
-                          Container(
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 2 / 5,
-                                child: DropdownButtonFormField(
-                                  isExpanded: true,
-                                  dropdownColor: Colors.black,
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      borderSide:
-                                      BorderSide(color: Colors.white, width: 3),
-                                    ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      borderSide: BorderSide(
-                                          color: Theme.of(context).primaryColor,
-                                          width: 3),
-                                    ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    borderSide: BorderSide(
+                                        color: Theme.of(context).primaryColor,
+                                        width: 3),
                                   ),
-                                  hint: Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        '기타',
-                                        style: TextStyle(color: Colors.white),
-                                      )),
-                                  items: options2.map((item) => DropdownMenuItem<String>(
-                                      value: item.toString(),
-                                      child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(item,
-                                            style: TextStyle(color: Colors.white),)
-                                      ))).toList(),
-                                  onChanged: (item) =>
-                                      setState(() => selectedItem2 = item as String),
-                                )
-                            ),
+                                ),
+                                hint: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      '기타',
+                                      style: TextStyle(color: Colors.white),
+                                    )),
+                                items: options
+                                    .map((item) => DropdownMenuItem<String>(
+                                        value: item.toString(),
+                                        child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              item,
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ))))
+                                    .toList(),
+                                onChanged: (item) => setState(
+                                    () => selectedItem = item as String),
+                              )),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          child: Text(
+                            '카테고리:',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white, fontSize: 24),
                           ),
-                        ],
-                      ),
-                      SizedBox(height: 20),
-                      _customExSubmitButton(context, provider)
-                    ],
-                  ),
-                );
-              }
-            ),
+                        ),
+                        SizedBox(width: 20),
+                        Container(
+                          child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 2 / 5,
+                              child: DropdownButtonFormField(
+                                isExpanded: true,
+                                dropdownColor: Color(0xFF101012),
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    borderSide: BorderSide(
+                                        color: Colors.white, width: 3),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    borderSide: BorderSide(
+                                        color: Theme.of(context).primaryColor,
+                                        width: 3),
+                                  ),
+                                ),
+                                hint: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      '기타',
+                                      style: TextStyle(color: Colors.white),
+                                    )),
+                                items: options2
+                                    .map((item) => DropdownMenuItem<String>(
+                                        value: item.toString(),
+                                        child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              item,
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ))))
+                                    .toList(),
+                                onChanged: (item) => setState(
+                                    () => selectedItem2 = item as String),
+                              )),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    _customExSubmitButton(context, provider)
+                  ],
+                ),
+              );
+            }),
           );
         });
   }
@@ -788,12 +805,16 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
         child: TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
               foregroundColor: Theme.of(context).primaryColor,
-              backgroundColor: _customExNameCtrl.text == "" || _customExUsed == true
-                ? Color(0xFF212121)
-                : Theme.of(context).primaryColor,
-              textStyle: TextStyle(color: Colors.white,),
+              backgroundColor:
+                  _customExNameCtrl.text == "" || _customExUsed == true
+                      ? Color(0xFF212121)
+                      : Theme.of(context).primaryColor,
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
             ),
@@ -845,9 +866,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             : showToast("입력을 확인해주세요"));
   }
 
-  Widget _exercisesWidget(bool scrollable,bool shirink) {
+  Widget _exercisesWidget(bool scrollable, bool shirink) {
     return Container(
-      color: Colors.black,
+      color: Color(0xFF101012),
       child: Consumer2<WorkoutdataProvider, ExercisesdataProvider>(
           builder: (builder, wdp, exp, child) {
         List exunique = exp.exercisesdata.exercises;
@@ -968,7 +989,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                       ),
                     ))
             : ReorderableListView.builder(
-                physics: scrollable? new NeverScrollableScrollPhysics() : null,
+                physics: scrollable ? new NeverScrollableScrollPhysics() : null,
                 onReorder: (int oldIndex, int newIndex) {
                   setState(() {
                     if (oldIndex < newIndex) {
@@ -1126,7 +1147,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
 
   Widget _exercises_searchWidget() {
     return Container(
-      color: Colors.black,
+      color: Color(0xFF101012),
       child: Column(
         children: [
           Row(
@@ -1317,8 +1338,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                             exuniq[index].name,
                             style: TextStyle(
                                 fontSize: _isexsearch ? 14 : 21,
-                                color:
-                                    alreadyexist ? Colors.black : Colors.white),
+                                color: alreadyexist
+                                    ? Color(0xFF101012)
+                                    : Colors.white),
                           ),
                         ],
                       ),
@@ -1405,53 +1427,56 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
 
       return Scaffold(
           appBar: _isexsearch ? _appbarWidget() : null,
-          body:
-              _isexsearch ? _exercises_searchWidget() : CustomScrollView(
-                slivers: [
+          body: _isexsearch
+              ? _exercises_searchWidget()
+              : CustomScrollView(slivers: [
                   SliverAppBar(
                     snap: true,
                     floating: true,
                     pinned: true,
                     actions: [
                       IconButton(
-                      key: keyPlus,
-                      icon: SvgPicture.asset("assets/svg/add_white.svg"),
-                      onPressed: () {
-                        _workoutdataProvider.dataBU(widget.rindex);
+                        key: keyPlus,
+                        icon: SvgPicture.asset("assets/svg/add_white.svg"),
+                        onPressed: () {
+                          _workoutdataProvider.dataBU(widget.rindex);
 
-                        setState(() {
-                          _isexsearch = !_isexsearch;
-                        });
-                        _PrefsProvider.eachworkouttutor
-                            ? [
-                          Future.delayed(Duration(milliseconds: 100))
-                              .then((value) {
-                            Tutorial.showTutorial(context, itens);
-                          }),
-                          _PrefsProvider.tutordone()
-                        ]
-                            : null;
-                      },
-                    )
+                          setState(() {
+                            _isexsearch = !_isexsearch;
+                          });
+                          _PrefsProvider.eachworkouttutor
+                              ? [
+                                  Future.delayed(Duration(milliseconds: 100))
+                                      .then((value) {
+                                    Tutorial.showTutorial(context, itens);
+                                  }),
+                                  _PrefsProvider.tutordone()
+                                ]
+                              : null;
+                        },
+                      )
                     ],
-
                     leading: Center(
                       child: GestureDetector(
                         child: Icon(Icons.arrow_back_ios_outlined),
                         onTap: () {
                           btnDisabled == true
                               ? null
-                              : [btnDisabled = true, Navigator.of(context).pop()];
+                              : [
+                                  btnDisabled = true,
+                                  Navigator.of(context).pop()
+                                ];
                         },
                       ),
                     ),
-                    expandedHeight: _appbarWidget().preferredSize.height*2,
+                    expandedHeight: _appbarWidget().preferredSize.height * 2,
                     collapsedHeight: _appbarWidget().preferredSize.height,
-                    backgroundColor: Colors.black,
-
+                    backgroundColor: Color(0xFF101012),
                     flexibleSpace: myFlexibleSpaceBar(
                       expandedTitleScale: 1.2,
-                      titlePaddingTween: EdgeInsetsTween(begin: EdgeInsets.only(left: 12.0, bottom: 8), end: EdgeInsets.only(left: 60.0, bottom: 8)),
+                      titlePaddingTween: EdgeInsetsTween(
+                          begin: EdgeInsets.only(left: 12.0, bottom: 8),
+                          end: EdgeInsets.only(left: 60.0, bottom: 8)),
                       title: GestureDetector(
                         onTap: () {
                           _displayTextInputDialog();
@@ -1462,11 +1487,13 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                             Container(
                               child: Consumer<WorkoutdataProvider>(
                                   builder: (builder, provider, child) {
-                                    return Text(
-                                      provider.workoutdata.routinedatas[widget.rindex].name,
-                                      style: TextStyle(color: Colors.white, fontSize: 30),
-                                    );
-                                  }),
+                                return Text(
+                                  provider.workoutdata
+                                      .routinedatas[widget.rindex].name,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 30),
+                                );
+                              }),
                             ),
                           ],
                         ),
@@ -1474,18 +1501,15 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                     ),
                   ),
                   SliverList(
-                    delegate: SliverChildBuilderDelegate((context, _index) {
-                      return Container(
-                        child: _exercisesWidget(true,true)
-                      );
-                    },
-                    childCount: 1,
+                    delegate: SliverChildBuilderDelegate(
+                      (context, _index) {
+                        return Container(child: _exercisesWidget(true, true));
+                      },
+                      childCount: 1,
                     ),
                   )
-                ]
-              ),
-
-          backgroundColor: Colors.black);
+                ]),
+          backgroundColor: Color(0xFF101012));
     });
   }
 }

@@ -54,19 +54,19 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
         "차단 친구 관리",
         style: TextStyle(color: Colors.white, fontSize: 30),
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFF101012),
     );
   }
 
   Widget _dislikeEditWidget() {
     return Container(
-        color: Colors.black,
+        color: Color(0xFF101012),
         child: Column(children: [
           Consumer<UserdataProvider>(builder: (builder, provider, child) {
             return Expanded(
               child: _userdataProvider.userdata.dislike.isEmpty
                   ? Container(
-                      color: Colors.black,
+                      color: Color(0xFF101012),
                       child: Center(
                         child: Text("차단 친구가 없네요",
                             style:
@@ -81,7 +81,7 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
                         return Container(
                           alignment: Alignment.center,
                           height: 1,
-                          color: Colors.black,
+                          color: Color(0xFF101012),
                           child: Container(
                             alignment: Alignment.center,
                             margin: EdgeInsets.symmetric(horizontal: 10),

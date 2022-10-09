@@ -1,3 +1,5 @@
+import json
+from sqlalchemy.sql.elements import Null
 from app.core.sms import verification_user
 import datetime
 
@@ -16,11 +18,28 @@ def get_user(db: Session, user_id: int):
     user = db.query(models.User).filter(models.User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
+    if (user.body_stats == None):
+        setattr(user,"body_stats", {"date":datetime.datetime.utcnow() + datetime.timedelta(hours=9),"weight":user.weight,"weight_goal":user.weight,"height":user.height,"height_goal":user.height})
+        db.add(user)
+        db.commit()
+        db.refresh((user))
+
     return user
 
 def get_users(
     db: Session, skip: int = 0, limit: int = 100
 ) -> t.List[schemas.UserOut]:
+    #나중에 지우기ㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣ 아래는 Model에 bodystat json넣기 위함
+    users = db.query(models.User).all()
+    
+    for i in range(len(users)):
+        if (users[i].body_stats == None):
+            setattr(users[i],"body_stats", [json.dumps({"date":(datetime.datetime.utcnow() + datetime.timedelta(hours=9)),"weight":users[i].weight,"weight_goal":users[i].weight,"height":users[i].height,"height_goal":users[i].height}, indent=4,sort_keys=True,default=str)])
+            print(users[i].body_stats)
+            db.add(users[i])
+            db.commit()
+            db.refresh((users[i]))
+    print(users)
     return db.query(models.User).all()
 
 def create_user(db: Session, user: schemas.UserCreate):
@@ -63,7 +82,17 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 def get_user_by_email(db: Session, email: str) -> schemas.UserBase:
-    return db.query(models.User).filter(models.User.email == email).first()
+    user=db.query(models.User).filter(models.User.email == email).first()
+    print(user.body_stats)
+    print("uessssssssssss")
+    if (user.body_stats == None):
+        setattr(user,"body_stats", [json.dumps({"date":(datetime.datetime.utcnow() + datetime.timedelta(hours=9)),"weight":user.weight,"weight_goal":user.weight,"height":user.height,"height_goal":user.height}, indent=4,sort_keys=True,default=str)])
+        db.add(user)
+        db.commit()
+        db.refresh((user))
+
+
+    return user
 
 def get_user_by_nickname(db: Session, nickname: str) -> schemas.UserBase:
     return db.query(models.User).filter(models.User.nickname == nickname).first()
@@ -155,9 +184,7 @@ def edit_comment_nickname_by_user_edit(db: Session, email:str, user : schemas.Us
         setattr(db_comment[i], "writer_nickname", user.nickname)
 
 def edit_fcm_token(db: Session, fcm_token:schemas.UserFCMTokenIn, user:schemas.UserBase):
-    print("333333333333333")
     db_user = db.query(models.User).filter(models.User.email == user.email).first()
-    print("444444444444")
     setattr(db_user, "fcm_token", fcm_token.fcm_token)
     db.commit()
     db.refresh(db_user)

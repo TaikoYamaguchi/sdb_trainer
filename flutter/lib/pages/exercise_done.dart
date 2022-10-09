@@ -86,7 +86,7 @@ class _ExerciseDoneState extends State<ExerciseDone> {
         "운동 기록",
         style: TextStyle(color: Colors.white, fontSize: 30),
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFF101012),
     );
   }
 
@@ -246,11 +246,15 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                             child: TextButton(
                               style: TextButton.styleFrom(
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0),),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
                                 foregroundColor: Theme.of(context).primaryColor,
                                 backgroundColor: Theme.of(context).primaryColor,
-                                textStyle: TextStyle(color: Colors.white,),
-                                disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                ),
+                                disabledForegroundColor:
+                                    Color.fromRGBO(246, 58, 64, 20),
                                 padding: EdgeInsets.all(12.0),
                               ),
                               onPressed: () {
@@ -259,8 +263,11 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                               },
                               child: Column(
                                 children: [
-                                  Icon(Icons.camera_alt, size: 24,color: Colors.white),
-                                  Text('촬영', style: TextStyle(fontSize: 16,color: Colors.white)),
+                                  Icon(Icons.camera_alt,
+                                      size: 24, color: Colors.white),
+                                  Text('촬영',
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.white)),
                                 ],
                               ),
                             )),
@@ -269,11 +276,15 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                             child: TextButton(
                               style: TextButton.styleFrom(
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0),),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
                                 foregroundColor: Theme.of(context).primaryColor,
                                 backgroundColor: Theme.of(context).primaryColor,
-                                textStyle: TextStyle(color: Colors.white,),
-                                disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                ),
+                                disabledForegroundColor:
+                                    Color.fromRGBO(246, 58, 64, 20),
                                 padding: EdgeInsets.all(12.0),
                               ),
                               onPressed: () {
@@ -282,8 +293,11 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                               },
                               child: Column(
                                 children: [
-                                  Icon(Icons.collections, size: 24,color: Colors.white),
-                                  Text('갤러리', style: TextStyle(fontSize: 16,color: Colors.white)),
+                                  Icon(Icons.collections,
+                                      size: 24, color: Colors.white),
+                                  Text('갤러리',
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.white)),
                                 ],
                               ),
                             )),
@@ -305,10 +319,13 @@ class _ExerciseDoneState extends State<ExerciseDone> {
           child: TextButton(
               style: TextButton.styleFrom(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
                 foregroundColor: Theme.of(context).primaryColor,
                 backgroundColor: Theme.of(context).primaryColor,
-                textStyle: TextStyle(color: Colors.white,),
+                textStyle: TextStyle(
+                  color: Colors.white,
+                ),
                 disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
                 padding: EdgeInsets.all(12.0),
               ),
@@ -377,6 +394,6 @@ class _ExerciseDoneState extends State<ExerciseDone> {
         resizeToAvoidBottomInset: false,
         appBar: _appbarWidget(),
         body: _exerciseDoneWidget(),
-        backgroundColor: Colors.black);
+        backgroundColor: Color(0xFF101012));
   }
 }

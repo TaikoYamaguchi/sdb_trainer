@@ -55,13 +55,11 @@ class _ProgramDownloadState extends State<ProgramDownload> {
   };
   List<ExpandableController> Controllerlist = [];
   var _selectImage;
-  List ref_exercise =[];
-  List do_exercise =[];
-  List exercise_names =[];
-  List ref_exercise_index =[];
+  List ref_exercise = [];
+  List do_exercise = [];
+  List exercise_names = [];
+  List ref_exercise_index = [];
   var _customRuUsed = false;
-
-
 
   @override
   void initState() {
@@ -89,7 +87,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
           fontSize: 30,
         ),
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFF101012),
     );
   }
 
@@ -288,10 +286,11 @@ class _ProgramDownloadState extends State<ProgramDownload> {
       var uniqexinfo = exinfo.exercisesdata.exercises;
       for (int s = 0; s < 40; s++) {
         tooltipController.add(new JustTheController());
-      };
+      }
+      ;
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 5),
-        color: Colors.black,
+        color: Color(0xFF101012),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -337,11 +336,12 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                             _famousdataProvider
                                 .progresschange(plandata.progress + 1);
                           }
-                        } else if(plandata.progress % 7 < plandata.plans.length % 7 - 1){
+                        } else if (plandata.progress % 7 <
+                            plandata.plans.length % 7 - 1) {
                           _famousdataProvider
                               .progresschange(plandata.progress + 1);
-                        } else if(plandata.plans.length % 7 ==0){
-                          if(plandata.progress % 7 < 6){
+                        } else if (plandata.plans.length % 7 == 0) {
+                          if (plandata.progress % 7 < 6) {
                             _famousdataProvider
                                 .progresschange(plandata.progress + 1);
                           }
@@ -394,11 +394,10 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                         child: ListView.builder(
                           physics: new NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext _context, int index) {
-                            var refinfo = uniqexinfo[uniqexinfo
-                                .indexWhere((element) =>
-                            element.name ==
-                                inplandata[index]
-                                    .ref_name)];
+                            var refinfo = uniqexinfo[uniqexinfo.indexWhere(
+                                (element) =>
+                                    element.name ==
+                                    inplandata[index].ref_name)];
                             Controllerlist.add(ExpandableController(
                               initialExpanded: true,
                             ));
@@ -431,7 +430,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                               child: Container(
                                                 child: Text(
                                                   '기준: ${inplandata[index].ref_name}',
-                                                  overflow: TextOverflow.ellipsis,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   style: TextStyle(
                                                       color: Colors.grey,
                                                       fontSize: 15,
@@ -441,23 +441,27 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                               ),
                                             ),
                                             GestureDetector(
-                                              onTap: (){
-                                                tooltipController[index].showTooltip();
+                                              onTap: () {
+                                                tooltipController[index]
+                                                    .showTooltip();
                                               },
                                               child: JustTheTooltip(
-                                                controller: tooltipController[index],
+                                                controller:
+                                                    tooltipController[index],
                                                 child: Padding(
                                                   padding: EdgeInsets.all(8.0),
                                                   child: Icon(
                                                     Icons.info_outline_rounded,
-                                                    color: Theme.of(context).primaryColor,
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
                                                   ),
                                                 ),
                                                 content: Padding(
                                                   padding: EdgeInsets.all(8.0),
                                                   child: Text(
                                                     '각자의 기준 운동 1rm X 무게비(%)로 운동 중량이 설정됩니다. 내 ${inplandata[index].ref_name} 1rm: ${refinfo.onerm.toStringAsFixed(0)}',
-                                                    style: TextStyle(color: Colors.white),
+                                                    style: TextStyle(
+                                                        color: Colors.white),
                                                   ),
                                                 ),
                                               ),
@@ -473,7 +477,6 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                               new NeverScrollableScrollPhysics(),
                                           itemBuilder: (BuildContext _context,
                                               int setindex) {
-
                                             return Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -484,7 +487,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                                   children: [
                                                     Container(
                                                       child: Text(
-                                                        '기준 1rm   X   ${(inplandata[index].sets[setindex].weight ).toStringAsFixed(0)}%    X    ${inplandata[index].sets[setindex].reps}reps',
+                                                        '기준 1rm   X   ${(inplandata[index].sets[setindex].weight).toStringAsFixed(0)}%    X    ${inplandata[index].sets[setindex].reps}reps',
                                                         style: TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 20),
@@ -651,13 +654,15 @@ class _ProgramDownloadState extends State<ProgramDownload> {
           child: TextButton(
               style: TextButton.styleFrom(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
                 foregroundColor: Theme.of(context).primaryColor,
                 backgroundColor: Theme.of(context).primaryColor,
-                textStyle: TextStyle(color: Colors.white,),
+                textStyle: TextStyle(
+                  color: Colors.white,
+                ),
                 disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
                 padding: EdgeInsets.all(12.0),
-
               ),
               onPressed: () {
                 for (int p = 0;
@@ -674,31 +679,50 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                         .plans[p].exercises[e].name);
                   }
                 }
-                for(int s = 0; s <  _exercisesdataProvider.exercisesdata.exercises.length; s++){
-                  exercise_names.add(_exercisesdataProvider.exercisesdata.exercises[s].name);
+                for (int s = 0;
+                    s < _exercisesdataProvider.exercisesdata.exercises.length;
+                    s++) {
+                  exercise_names.add(
+                      _exercisesdataProvider.exercisesdata.exercises[s].name);
                 }
-                ref_exercise= ref_exercise.toSet().toList();
-                do_exercise= do_exercise.toSet().toList();
+                ref_exercise = ref_exercise.toSet().toList();
+                do_exercise = do_exercise.toSet().toList();
                 for (int i = 0; i < do_exercise.length; i++) {
                   exercise_names.contains(do_exercise[i])
                       ? null
-                      : [_exercisesdataProvider.addExdata(uex.Exercises(name: do_exercise[i], onerm: 0, goal: 0, image: null, category: 'custom', target: ['custom'], custom: true, note: '')),
+                      : [
+                          _exercisesdataProvider.addExdata(uex.Exercises(
+                              name: do_exercise[i],
+                              onerm: 0,
+                              goal: 0,
+                              image: null,
+                              category: 'custom',
+                              target: ['custom'],
+                              custom: true,
+                              note: '')),
                           exercise_names.add(do_exercise[i])
                         ];
                 }
                 for (int i = 0; i < ref_exercise.length; i++) {
-
                   exercise_names.contains(ref_exercise[i])
                       ? null
-                      : _exercisesdataProvider.addExdata(uex.Exercises(name: ref_exercise[i], onerm: 0, goal: 0, image: null, category: 'custom', target: ['custom'], custom: true, note: ''));
-                  ref_exercise_index.add(_exercisesdataProvider.exercisesdata.exercises.indexWhere((element) => element.name == ref_exercise[i])) ;
+                      : _exercisesdataProvider.addExdata(uex.Exercises(
+                          name: ref_exercise[i],
+                          onerm: 0,
+                          goal: 0,
+                          image: null,
+                          category: 'custom',
+                          target: ['custom'],
+                          custom: true,
+                          note: ''));
+                  ref_exercise_index.add(
+                      _exercisesdataProvider.exercisesdata.exercises.indexWhere(
+                          (element) => element.name == ref_exercise[i]));
                 }
                 _postExerciseCheck();
                 ref_exercise_index = ref_exercise_index.toSet().toList();
 
                 _displayStartAlert();
-
-
               },
               child: Text("시작하기",
                   style: TextStyle(fontSize: 20.0, color: Colors.white)))),
@@ -755,13 +779,15 @@ class _ProgramDownloadState extends State<ProgramDownload> {
         child: TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(color: Colors.white,),
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
-
             ),
             onPressed: () {
               Navigator.of(context, rootNavigator: true).pop();
@@ -850,71 +876,70 @@ class _ProgramDownloadState extends State<ProgramDownload> {
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (BuildContext context) {
         return StatefulBuilder(builder: (context, state) {
-            return Container(
-              padding: EdgeInsets.all(12.0),
-              height: 240,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                color: Theme.of(context).cardColor,
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    child: Text(
-                      '프로그램 이름을 정해주세요',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 24),
-                    ),
-                  ),
-                  Container(
-                    child: Text('외부를 터치하면 취소 할 수 있어요',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.grey, fontSize: 12)),
-                  ),
-                  SizedBox(height: 20),
-                  TextField(
-                    onChanged: (value) {
-                      _workoutdataProvider.workoutdata.routinedatas
-                          .indexWhere((routine) {
-                        if (routine.name == _workoutNameCtrl.text) {
-                          state(() {
-                            _customRuUsed = true;
-                          });
-                          return true;
-                        } else {
-                          state(() {
-                            _customRuUsed = false;
-                          });
-                          return false;
-                        }
-                      });
-                    },
-                    style: TextStyle(fontSize: 24.0, color: Colors.white),
+          return Container(
+            padding: EdgeInsets.all(12.0),
+            height: 240,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              color: Theme.of(context).cardColor,
+            ),
+            child: Column(
+              children: [
+                Container(
+                  child: Text(
+                    '프로그램 이름을 정해주세요',
                     textAlign: TextAlign.center,
-                    controller: _workoutNameCtrl,
-                    decoration: InputDecoration(
-                        filled: true,
-                        enabledBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).primaryColor, width: 3),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).primaryColor, width: 3),
-                        ),
-                        hintText: "운동 루틴 이름",
-                        hintStyle:
-                        TextStyle(fontSize: 24.0, color: Colors.white)),
+                    style: TextStyle(color: Colors.white, fontSize: 24),
                   ),
-                  SizedBox(height: 20),
-                  _finalConfirmButton(state)
-                ],
-              ),
-            );
-          }
-        );
+                ),
+                Container(
+                  child: Text('외부를 터치하면 취소 할 수 있어요',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.grey, fontSize: 12)),
+                ),
+                SizedBox(height: 20),
+                TextField(
+                  onChanged: (value) {
+                    _workoutdataProvider.workoutdata.routinedatas
+                        .indexWhere((routine) {
+                      if (routine.name == _workoutNameCtrl.text) {
+                        state(() {
+                          _customRuUsed = true;
+                        });
+                        return true;
+                      } else {
+                        state(() {
+                          _customRuUsed = false;
+                        });
+                        return false;
+                      }
+                    });
+                  },
+                  style: TextStyle(fontSize: 24.0, color: Colors.white),
+                  textAlign: TextAlign.center,
+                  controller: _workoutNameCtrl,
+                  decoration: InputDecoration(
+                      filled: true,
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      hintText: "운동 루틴 이름",
+                      hintStyle:
+                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                ),
+                SizedBox(height: 20),
+                _finalConfirmButton(state)
+              ],
+            ),
+          );
+        });
       },
     );
   }
@@ -925,23 +950,31 @@ class _ProgramDownloadState extends State<ProgramDownload> {
         child: TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),),
-              backgroundColor: _workoutNameCtrl.text == "" || _customRuUsed == true
-                  ? Color(0xFF212121)
-                  : Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              backgroundColor:
+                  _workoutNameCtrl.text == "" || _customRuUsed == true
+                      ? Color(0xFF212121)
+                      : Theme.of(context).primaryColor,
               foregroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(color: Colors.white,),
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
             ),
             onPressed: () {
-              if(_customRuUsed == false || _workoutNameCtrl.text == ""){
+              if (_customRuUsed == false || _workoutNameCtrl.text == "") {
                 _famousdataProvider.weekchange(0);
-                _workoutdataProvider.addroutine(new Routinedatas(name: _workoutNameCtrl.text, mode: 3, exercises: widget.program.routinedata.exercises, routine_time: widget.program.routinedata.routine_time));
+                _workoutdataProvider.addroutine(new Routinedatas(
+                    name: _workoutNameCtrl.text,
+                    mode: 3,
+                    exercises: widget.program.routinedata.exercises,
+                    routine_time: widget.program.routinedata.routine_time));
                 _editWorkoutCheck();
                 Navigator.of(context).popUntil((route) => route.isFirst);
                 ProgramSubscribe(id: widget.program.id).subscribeProgram().then(
-                        (data) => data["user_email"] != null
+                    (data) => data["user_email"] != null
                         ? [showToast("done!"), _famousdataProvider.getdata()]
                         : showToast("입력을 확인해주세요"));
                 _workoutNameCtrl.clear();
@@ -1031,7 +1064,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
           Container(
             alignment: Alignment.center,
             height: 1,
-            color: Colors.black,
+            color: Color(0xFF101012),
             child: Container(
               alignment: Alignment.center,
               margin: EdgeInsets.symmetric(horizontal: 10),
@@ -1050,24 +1083,29 @@ class _ProgramDownloadState extends State<ProgramDownload> {
         child: TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(color: Colors.white,),
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
             ),
             onPressed: () {
               List rname = [];
-              for(int i = 0; i <  _workoutdataProvider.workoutdata.routinedatas.length; i++){
-                rname.add(_workoutdataProvider.workoutdata.routinedatas[i].name);
+              for (int i = 0;
+                  i < _workoutdataProvider.workoutdata.routinedatas.length;
+                  i++) {
+                rname
+                    .add(_workoutdataProvider.workoutdata.routinedatas[i].name);
               }
               if (rname.contains(widget.program.routinedata.name)) {
-                _customRuUsed= true;
+                _customRuUsed = true;
               }
               Navigator.pop(context);
               titleSetting();
-
             },
             child: Text("1rm 확인",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
@@ -1099,6 +1137,6 @@ class _ProgramDownloadState extends State<ProgramDownload> {
         resizeToAvoidBottomInset: false,
         appBar: _appbarWidget(),
         body: _programDownloadWidget(),
-        backgroundColor: Colors.black);
+        backgroundColor: Color(0xFF101012));
   }
 }

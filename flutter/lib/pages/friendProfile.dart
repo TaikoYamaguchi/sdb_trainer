@@ -52,7 +52,7 @@ class _FriendProfileState extends State<FriendProfile> {
         widget.user.nickname,
         style: TextStyle(color: Colors.white, fontSize: 30),
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFF101012),
     );
   }
 
@@ -61,7 +61,7 @@ class _FriendProfileState extends State<FriendProfile> {
     return SingleChildScrollView(
       child: Container(
         width: MediaQuery.of(context).size.width,
-        color: Colors.black,
+        color: Color(0xFF101012),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
@@ -226,7 +226,7 @@ class _FriendProfileState extends State<FriendProfile> {
     return Scaffold(
         appBar: _appbarWidget(),
         body: _userProfileWidget(),
-        backgroundColor: Colors.black);
+        backgroundColor: Color(0xFF101012));
   }
 }
 
@@ -261,7 +261,7 @@ Widget _feedCardList(context) {
                     return Container(
                       alignment: Alignment.center,
                       height: 0,
-                      color: Colors.black,
+                      color: Color(0xFF101012),
                       child: Container(
                         alignment: Alignment.center,
                         height: 0,

@@ -94,22 +94,24 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
       actions: [
         IconButton(
             onPressed: () {
-              _workoutdataProvider.workoutdata.routinedatas[widget.rindex].mode == 3 
+              _workoutdataProvider
+                          .workoutdata.routinedatas[widget.rindex].mode ==
+                      3
                   ? showToast("다운받은 루틴은 업로드 할 수 없어요")
                   : Navigator.push(
-                    context,
-                    Transition(
-                        child: ProgramUpload(
-                          program: _workoutdataProvider
-                              .workoutdata.routinedatas[widget.rindex],
-                        ),
-                        transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+                      context,
+                      Transition(
+                          child: ProgramUpload(
+                            program: _workoutdataProvider
+                                .workoutdata.routinedatas[widget.rindex],
+                          ),
+                          transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
             },
             icon: Icon(
               Icons.cloud_upload_rounded,
             ))
       ],
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFF101012),
     );
   }
 
@@ -153,10 +155,13 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
         child: TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(color: Colors.white,),
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
             ),
@@ -246,12 +251,16 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
         child: TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),),
-              backgroundColor: _workoutNameCtrl.text == "" || _customRuUsed == true
-                  ? Color(0xFF212121)
-                  : Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              backgroundColor:
+                  _workoutNameCtrl.text == "" || _customRuUsed == true
+                      ? Color(0xFF212121)
+                      : Theme.of(context).primaryColor,
               foregroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(color: Colors.white,),
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
             ),
@@ -288,7 +297,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
       var uniqexinfo = exinfo.exercisesdata.exercises;
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 5),
-        color: Colors.black,
+        color: Color(0xFF101012),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -541,7 +550,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                       GestureDetector(
                                                         child: Container(
                                                           child: Text(
-                                                            '${((inplandata[index].sets[setindex].weight * refinfo.onerm / 100 /2.5).floor()*2.5).toStringAsFixed(1)}kg  X  ${inplandata[index].sets[setindex].reps}',
+                                                            '${((inplandata[index].sets[setindex].weight * refinfo.onerm / 100 / 2.5).floor() * 2.5).toStringAsFixed(1)}kg  X  ${inplandata[index].sets[setindex].reps}',
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .white,
@@ -733,28 +742,26 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                 builder: (builder, provider, child) {
               return ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    primary:
-                    (provider.nowonrindex != widget.rindex) &&
-                        _routinetimeProvider.isstarted
+                    primary: (provider.nowonrindex != widget.rindex) &&
+                            _routinetimeProvider.isstarted
                         ? Color(0xFF212121)
                         : provider.buttoncolor,
                     textStyle: const TextStyle(fontSize: 20)),
                 onPressed: () {
                   (provider.nowonrindex != widget.rindex) &&
-                      _routinetimeProvider.isstarted
+                          _routinetimeProvider.isstarted
                       ? null
-                      : [if (_routinetimeProvider.isstarted) {
-                            _displayFinishAlert()
-                          } else {
-                            provider.routinecheck(widget.rindex)
-                          }
+                      : [
+                          if (_routinetimeProvider.isstarted)
+                            {_displayFinishAlert()}
+                          else
+                            {provider.routinecheck(widget.rindex)}
                         ];
                 },
-                child: Text(
-                    (provider.nowonrindex != widget.rindex) &&
+                child: Text((provider.nowonrindex != widget.rindex) &&
                         _routinetimeProvider.isstarted
-                        ? '다른 루틴 수행중'
-                        : provider.routineButton),
+                    ? '다른 루틴 수행중'
+                    : provider.routineButton),
               );
             })),
           ],
@@ -1197,7 +1204,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                               sdbdata: hisdata.SDBdata.fromJson(data)),
                           transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
                   _routinetimeProvider.routinecheck(widget.rindex),
-                  _routinetimeProvider.getprefs(_workoutdataProvider.workoutdata.routinedatas[widget.rindex].name),
+                  _routinetimeProvider.getprefs(_workoutdataProvider
+                      .workoutdata.routinedatas[widget.rindex].name),
                   _historydataProvider.getdata(),
                   _historydataProvider.getHistorydataAll(),
                   exerciseList = []
@@ -1271,7 +1279,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
       return Scaffold(
           appBar: _appbarWidget(),
           body: _Nday_RoutineWidget(),
-          backgroundColor: Colors.black);
+          backgroundColor: Color(0xFF101012));
     });
   }
 }

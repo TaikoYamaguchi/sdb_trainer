@@ -114,7 +114,7 @@ class _FeedState extends State<Feed> {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
 
     return Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xFF101012),
         extendBody: true,
         appBar: AppBar(
             title: Row(
@@ -133,7 +133,7 @@ class _FeedState extends State<Feed> {
                     child: Text("친구관리", style: TextStyle(color: Colors.white))),
               ],
             ),
-            backgroundColor: Colors.black),
+            backgroundColor: Color(0xFF101012)),
         body: RefreshIndicator(
           child: _userdataProvider.userdata != null
               ? _feedCardList(context)
@@ -156,8 +156,7 @@ class _FeedState extends State<Feed> {
         Container(
             height: 40,
             alignment: Alignment.center,
-            child: Center(
-                child: _feedControllerWidget())),
+            child: Center(child: _feedControllerWidget())),
         Expanded(
           child: Consumer<HistorydataProvider>(
               builder: (builder, provider, child) {
@@ -187,7 +186,7 @@ class _FeedState extends State<Feed> {
                   return Container(
                     alignment: Alignment.center,
                     height: 0,
-                    color: Colors.black,
+                    color: Color(0xFF101012),
                     child: Container(
                       alignment: Alignment.center,
                       height: 0,
@@ -206,12 +205,12 @@ class _FeedState extends State<Feed> {
     return SizedBox(
       width: double.infinity,
       child: Container(
-        color: Colors.black,
+        color: Color(0xFF101012),
         child: CupertinoSlidingSegmentedControl(
             groupValue: _feedListCtrl,
             children: _feedList,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-            backgroundColor: Colors.black,
+            backgroundColor: Color(0xFF101012),
             thumbColor: Theme.of(context).primaryColor,
             onValueChanged: (i) {
               setState(() {

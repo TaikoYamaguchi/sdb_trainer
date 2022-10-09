@@ -15,6 +15,7 @@ class UserBase(BaseModel):
     weight_unit:str
     isMan:bool
     favor_exercise:list
+    body_stats:t.Any
 
 
 class UserOut(UserBase):
