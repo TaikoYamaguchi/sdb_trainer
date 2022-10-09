@@ -38,7 +38,7 @@ class Profile extends StatelessWidget {
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-          title: Text("설정", style: TextStyle(color: Colors.white)),
+          title: Text("설정", style: TextStyle(color: Colors.white, fontSize: 25)),
           actions: [
             Container(
                 alignment: Alignment.center,

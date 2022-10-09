@@ -73,7 +73,7 @@ class _RoutineBankState extends State<RoutineBank> {
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width / 2,
                       child: Card(
-                        color: Theme.of(context).cardColor,
+                        color: Colors.black,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -233,7 +233,7 @@ class _RoutineBankState extends State<RoutineBank> {
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width / 2,
                       child: Card(
-                        color: Theme.of(context).cardColor,
+                        color: Colors.black,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -263,7 +263,7 @@ class _RoutineBankState extends State<RoutineBank> {
                                       height:
                                           MediaQuery.of(context).size.width / 2,
                                       child: Icon(
-                                        Icons.image_not_supported,
+                                        Icons.image_not_supported, color: Colors.grey,
                                         size: 70,
                                       )),
                             ),

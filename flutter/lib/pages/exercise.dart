@@ -96,33 +96,18 @@ class ExerciseState extends State<Exercise> {
   }
 
   PreferredSizeWidget _appbarWidget() {
-    if (swap == 1) {
-      _title = "루틴 리스트";
-    } else {
-      _title = "운동 리스트";
-    }
-    ;
     return AppBar(
       title: Row(
         children: [
           Text(
-            _title,
-            style: TextStyle(color: Colors.white, fontSize: 30),
+            "운동",
+            style: TextStyle(color: Colors.white, fontSize: 25),
           ),
-          IconButton(
-              iconSize: 30,
-              onPressed: () {
-                setState(() {
-                  swap = swap * -1;
-                });
-              },
-              icon: Icon(Icons.swap_horiz_outlined))
+
         ],
       ),
-      actions: swap == 1
-          ? [
-              Consumer<RoutineMenuStater>(builder: (builder, provider, child) {
-                if (provider.menustate == 0) {
+      actions: [Consumer<RoutineMenuStater>(builder: (builder, provider, child) {
+                if (provider.menustate == 1) {
                   return IconButton(
                     key: keyPlus,
                     icon: SvgPicture.asset("assets/svg/add_white.svg"),
@@ -130,7 +115,7 @@ class ExerciseState extends State<Exercise> {
                       _displayTextInputDialog();
                     },
                   );
-                } else {
+                } else if(provider.menustate == 2) {
                   return IconButton(
                     iconSize: 30,
                     icon: Icon(Icons.refresh_rounded),
@@ -138,10 +123,11 @@ class ExerciseState extends State<Exercise> {
                       _onRefresh();
                     },
                   );
+                } else {
+                  return Container();
                 }
               })
-            ]
-          : null,
+            ],
       backgroundColor: Colors.black,
     );
   }
@@ -174,11 +160,11 @@ class ExerciseState extends State<Exercise> {
                           provider.change(0);
                         },
                         child: Text(
-                          '나의 루틴',
+                          '개별 운동',
                           style: TextStyle(
-                              //decoration: provider.menustate == 0 ? TextDecoration.underline : null,
+                            //decoration: provider.menustate == 0 ? TextDecoration.underline : null,
                               fontWeight: FontWeight.bold,
-                              fontSize: 21,
+                              fontSize: 18,
                               color: provider.menustate == 0
                                   ? Theme.of(context).primaryColor
                                   : Color(0xFF717171)),
@@ -191,12 +177,29 @@ class ExerciseState extends State<Exercise> {
                           provider.change(1);
                         },
                         child: Text(
+                          '나의 루틴',
+                          style: TextStyle(
+                              //decoration: provider.menustate == 0 ? TextDecoration.underline : null,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              color: provider.menustate == 1
+                                  ? Theme.of(context).primaryColor
+                                  : Color(0xFF717171)),
+                        )),
+                    GestureDetector(
+                        onTap: () {
+                          controller!.animateToPage(2,
+                              duration: const Duration(milliseconds: 200),
+                              curve: Curves.easeInOut);
+                          provider.change(2);
+                        },
+                        child: Text(
                           '루틴 찾기',
                           style: TextStyle(
                               //decoration: provider.menustate == 1 ? TextDecoration.underline : null,
-                              fontSize: 21,
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: provider.menustate == 1
+                              color: provider.menustate == 2
                                   ? Theme.of(context).primaryColor
                                   : Color(0xFF717171)),
                         ))
@@ -252,8 +255,10 @@ class ExerciseState extends State<Exercise> {
         },
         controller: controller,
         children: [
+          group_by_target(),
           _MyWorkout(),
           RoutineBank(),
+
         ],
       ),
     );
@@ -261,7 +266,7 @@ class ExerciseState extends State<Exercise> {
 
   Widget _MyWorkout() {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      //padding: const EdgeInsets.symmetric(vertical: 8.0),
       color: Colors.black,
       child: Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
         List routinelist = provider.workoutdata.routinedatas;

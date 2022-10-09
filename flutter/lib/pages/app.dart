@@ -79,7 +79,7 @@ class _AppState extends State<App> {
   Widget _bottomNavigationBarwidget() {
     return Container(
       decoration: BoxDecoration(
-        color: Color(0xFF212121),
+
         borderRadius: BorderRadius.only(
             topRight: Radius.circular(30), topLeft: Radius.circular(30)),
       ),
