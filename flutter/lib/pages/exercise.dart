@@ -164,7 +164,7 @@ class ExerciseState extends State<Exercise> {
                           style: TextStyle(
                             //decoration: provider.menustate == 0 ? TextDecoration.underline : null,
                               fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                              fontSize: 20,
                               color: provider.menustate == 0
                                   ? Theme.of(context).primaryColor
                                   : Color(0xFF717171)),
@@ -181,7 +181,7 @@ class ExerciseState extends State<Exercise> {
                           style: TextStyle(
                               //decoration: provider.menustate == 0 ? TextDecoration.underline : null,
                               fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                              fontSize: 20,
                               color: provider.menustate == 1
                                   ? Theme.of(context).primaryColor
                                   : Color(0xFF717171)),
@@ -197,7 +197,7 @@ class ExerciseState extends State<Exercise> {
                           '루틴 찾기',
                           style: TextStyle(
                               //decoration: provider.menustate == 1 ? TextDecoration.underline : null,
-                              fontSize: 18,
+                              fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: provider.menustate == 2
                                   ? Theme.of(context).primaryColor
