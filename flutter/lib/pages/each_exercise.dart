@@ -959,7 +959,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
               color: Colors.white,
             ),
             child: ExerciseGuide(
-              eindex: eindex,
+              eindex: eindex, isroutine: true,
             ));
       },
     );

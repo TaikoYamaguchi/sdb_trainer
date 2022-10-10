@@ -11,7 +11,8 @@ import 'package:sdb_trainer/src/utils/util.dart';
 
 class ExerciseGuide extends StatefulWidget {
   int eindex;
-  ExerciseGuide({Key? key, required this.eindex}) : super(key: key);
+  bool isroutine;
+  ExerciseGuide({Key? key, required this.eindex, this.isroutine = false}) : super(key: key);
 
   @override
   State<ExerciseGuide> createState() => _ExerciseGuideState();
@@ -70,13 +71,61 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                       SizedBox(
                           width: MediaQuery.of(context).size.width / 5,
                           child: Center(
+                            child: Text("Target",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold)),
+                          )),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 5,
+                        child: Center(
+                          child: Text(
+                              provier.exercisesdata.exercises[widget.eindex].target.length == 1
+                                  ? provier.exercisesdata.exercises[widget.eindex].target[0]
+                                  : '${provier.exercisesdata.exercises[widget.eindex].target.toString().substring(1,provier.exercisesdata.exercises[widget.eindex].target.toString().length-1)}'
+                              ,
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width / 5,
+                          child: Center(
+                            child: Text("Category",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold)),
+                          )),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 5,
+                        child: Center(
+                          child: Text(
+                              provier.exercisesdata.exercises[widget.eindex].target.length == 1
+                                  ? provier.exercisesdata.exercises[widget.eindex].target[0]
+                                  : '${provier.exercisesdata.exercises[widget.eindex].category}'
+                              ,
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width / 5,
+                          child: Center(
                             child: Text("1rm",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold)),
                           )),
                       SizedBox(
-                        width: 100,
+                        width: MediaQuery.of(context).size.width / 5,
                         child: Center(
                           child: Text(
                               '${provier.exercisesdata.exercises[widget.eindex].onerm.toStringAsFixed(0)}${_userdataProvider.userdata.weight_unit}',
@@ -97,7 +146,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                     fontWeight: FontWeight.bold)),
                           )),
                       SizedBox(
-                        width: 100,
+                        width: MediaQuery.of(context).size.width / 5,
                         child: Center(
                           child: Text(
                               '${provier.exercisesdata.exercises[widget.eindex].goal.toStringAsFixed(0)}${_userdataProvider.userdata.weight_unit}',
@@ -546,7 +595,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                 pinned: true,
                 actions: [
                   _exercisesdataProvider
-                          .exercisesdata.exercises[widget.eindex].custom
+                          .exercisesdata.exercises[widget.eindex].custom && !widget.isroutine
                       ? Container(
                           child: IconButton(
                             onPressed: () {
