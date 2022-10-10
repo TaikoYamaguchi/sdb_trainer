@@ -734,7 +734,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             itemCount: _sets.length),
                       ),
                       Container(
-                        height: 60,
+                        height: 20,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

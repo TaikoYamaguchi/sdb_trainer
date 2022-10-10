@@ -531,8 +531,8 @@ class _AppState extends State<App> {
                   : null,
             );
           }),
-          extendBody: true,
-          backgroundColor: Colors.transparent,
+          extendBody: false,
+          backgroundColor: Color(0xFF101012),
           bottomNavigationBar:
               _loginState.isLogin ? _bottomNavigationBarwidget() : null,
         ),
