@@ -646,7 +646,7 @@ class _HomeState extends State<Home> {
                             return Slidable(
                                 key: Key("$index"),
                                 endActionPane: ActionPane(
-                                    extentRatio: 0.15,
+                                    extentRatio: 0.1,
                                     motion: const ScrollMotion(),
                                     children: [
                                       SlidableAction(
@@ -661,6 +661,8 @@ class _HomeState extends State<Home> {
                                         backgroundColor: Color(0xFFFE4A49),
                                         foregroundColor: Colors.white,
                                         icon: Icons.delete,
+                                        padding: EdgeInsets.zero,
+
                                       )
                                     ]),
                                 child:
@@ -2738,7 +2740,7 @@ class _HomeState extends State<Home> {
     return _exercisesdataProvider.homeExList.length > index
         ? Padding(
             key: Key('$index'),
-            padding: const EdgeInsets.only(bottom: 8.0),
+            padding: const EdgeInsets.symmetric(vertical: 3),
             child: GestureDetector(
               onTap: () => {
                 _chartIndex.change(_exercisesdataProvider
