@@ -246,38 +246,102 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               isKeyboardVisible
-                  ? SizedBox()
+                  ? Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(child: Text(
+                          'Timer: ',
+                          style: TextStyle(
+                            color:  Colors.white,
+                            fontSize: 21,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),),
+                        Container(child: Consumer<RoutineTimeProvider>(
+                            builder: (context, provider, child) {
+                              return Text(
+                                  provider.userest
+                                      ? provider.timeron < 0
+                                      ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
+                                      : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
+                                      : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                                  style: TextStyle(
+                                      fontSize: 21,
+                                      fontWeight: FontWeight.bold,
+                                      color: (provider.userest &&
+                                          provider.timeron < 0)
+                                          ? Colors.red
+                                          : Colors.white));
+                            })),
+                      ],
+                    ),
+                  )
                   : Container(
                       child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            _routinetimeProvider.restcheck();
-                            _routinetimeProvider.resttimecheck(
-                                _workoutdataProvider
-                                    .workoutdata
-                                    .routinedatas[widget.rindex]
-                                    .exercises[pindex]
-                                    .rest);
-                          },
-                          child: Consumer<RoutineTimeProvider>(
-                              builder: (builder, provider, child) {
-                            return Text(
-                              provider.userest
-                                  ? 'Rest Timer on'
-                                  : 'Rest Timer off',
-                              style: TextStyle(
-                                color: provider.userest
-                                    ? Colors.white
-                                    : Color(0xFF717171),
-                                fontSize: 21,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            );
-                          }),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Container(child: Text(
+                                  '  Timer: ',
+                                  style: TextStyle(
+                                    color:  Colors.white,
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),),
+                                Container(child: Consumer<RoutineTimeProvider>(
+                                    builder: (context, provider, child) {
+                                      return Text(
+                                          provider.userest
+                                              ? provider.timeron < 0
+                                              ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
+                                              : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
+                                              : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                                          style: TextStyle(
+                                              fontSize: 21,
+                                              fontWeight: FontWeight.bold,
+                                              color: (provider.userest &&
+                                                  provider.timeron < 0)
+                                                  ? Colors.red
+                                                  : Colors.white));
+                                    })),
+                              ],
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                _routinetimeProvider.restcheck();
+                                _routinetimeProvider.resttimecheck(
+                                    _workoutdataProvider
+                                        .workoutdata
+                                        .routinedatas[widget.rindex]
+                                        .exercises[pindex]
+                                        .rest);
+                              },
+                              child: Consumer<RoutineTimeProvider>(
+                                  builder: (builder, provider, child) {
+                                    return Text(
+                                      provider.userest
+                                          ? 'Rest Timer on'
+                                          : 'Rest Timer off',
+                                      style: TextStyle(
+                                        color: provider.userest
+                                            ? Colors.white
+                                            : Color(0xFF717171),
+                                        fontSize: 21,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    );
+                                  }),
+                            ),
+                          ],
                         ),
+
                         GestureDetector(
                           onTap: () {
                             _displaySetRestAlert(pindex);
@@ -734,8 +798,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             itemCount: _sets.length),
                       ),
                       Container(
-                        height: 20,
+                        height: 50,
                         child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             IconButton(
@@ -780,26 +845,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   padding: EdgeInsets.only(bottom: 10),
                   child: Column(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(child: Consumer<RoutineTimeProvider>(
-                              builder: (context, provider, child) {
-                            return Text(
-                                provider.userest
-                                    ? provider.timeron < 0
-                                        ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
-                                        : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
-                                    : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
-                                style: TextStyle(
-                                    fontSize: 25,
-                                    color: (provider.userest &&
-                                            provider.timeron < 0)
-                                        ? Colors.red
-                                        : Colors.white));
-                          })),
-                        ],
-                      ),
+
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -820,7 +867,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               icon: Icon(
                                                 Icons.arrow_back_ios_outlined,
                                                 color: Colors.white,
-                                                size: 40,
+                                                size: 30,
                                               )),
                                           Consumer<WorkoutdataProvider>(builder:
                                               (builder, provider, child) {
@@ -853,6 +900,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           Container(child: Consumer<RoutineTimeProvider>(
                               builder: (builder, provider, child) {
                             return ElevatedButton(
+
                               style: ElevatedButton.styleFrom(
                                   primary:
                                       (provider.nowonrindex != widget.rindex) &&
@@ -868,7 +916,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                         if (_routinetimeProvider.isstarted)
                                           {_displayFinishAlert()}
                                         else
-                                          {provider.routinecheck(widget.rindex)}
+                                          {_routinetimeProvider
+                                              .resettimer(_workoutdataProvider
+                                              .workoutdata
+                                              .routinedatas[widget.rindex].exercises[pindex].rest),
+                                            provider.routinecheck(widget.rindex)}
                                       ];
                               },
                               child: Text(
@@ -919,7 +971,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                 Icons
                                                     .arrow_forward_ios_outlined,
                                                 color: Colors.white,
-                                                size: 40,
+                                                size: 30,
                                               )),
                                         ],
                                       ),
