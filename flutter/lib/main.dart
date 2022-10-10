@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
           primaryColor: const Color(0xff7a28cb),
-          cardColor: const Color(0xff40434e),
+          cardColor: const Color(0xff25272c),
           canvasColor: Colors.transparent,
           textSelectionTheme: TextSelectionThemeData(
             cursorColor: const Color(0xff7a28cb),

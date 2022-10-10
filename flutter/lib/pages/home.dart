@@ -25,7 +25,7 @@ import 'package:intl/intl.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'dart:async';
 import 'package:fl_chart/fl_chart.dart';
-import 'dart:collection';
+import 'dart:math';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -309,105 +309,105 @@ class _HomeState extends State<Home> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    textBaseline: TextBaseline.alphabetic,
-                    children: <Widget>[
-                      Text("SDB ",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 54,
-                              fontWeight: FontWeight.w600)),
-                      Text(
-                          (_exercisesdataProvider
-                                      .exercisesdata
-                                      .exercises[(_exercisesdataProvider
-                                          .exercisesdata.exercises
-                                          .indexWhere((exercise) {
-                                    if (exercise.name == "스쿼트") {
-                                      return true;
-                                    } else {
-                                      return false;
-                                    }
-                                  }))]
-                                      .onerm +
-                                  _exercisesdataProvider
-                                      .exercisesdata
-                                      .exercises[(_exercisesdataProvider
-                                          .exercisesdata.exercises
-                                          .indexWhere((exercise) {
-                                    if (exercise.name == "데드리프트") {
-                                      return true;
-                                    } else {
-                                      return false;
-                                    }
-                                  }))]
-                                      .onerm +
-                                  _exercisesdataProvider
-                                      .exercisesdata
-                                      .exercises[(_exercisesdataProvider
-                                          .exercisesdata.exercises
-                                          .indexWhere((exercise) {
-                                    if (exercise.name == "벤치프레스") {
-                                      return true;
-                                    } else {
-                                      return false;
-                                    }
-                                  }))]
-                                      .onerm)
-                              .floor()
-                              .toString(),
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 46,
-                              fontWeight: FontWeight.w800)),
-                      Text(
-                          "/" +
-                              (_exercisesdataProvider
-                                          .exercisesdata
-                                          .exercises[(_exercisesdataProvider
-                                              .exercisesdata.exercises
-                                              .indexWhere((exercise) {
-                                        if (exercise.name == "스쿼트") {
-                                          return true;
-                                        } else {
-                                          return false;
-                                        }
-                                      }))]
-                                          .goal +
-                                      _exercisesdataProvider
-                                          .exercisesdata
-                                          .exercises[(_exercisesdataProvider
-                                              .exercisesdata.exercises
-                                              .indexWhere((exercise) {
-                                        if (exercise.name == "데드리프트") {
-                                          return true;
-                                        } else {
-                                          return false;
-                                        }
-                                      }))]
-                                          .goal +
-                                      _exercisesdataProvider
-                                          .exercisesdata
-                                          .exercises[(_exercisesdataProvider
-                                              .exercisesdata.exercises
-                                              .indexWhere((exercise) {
-                                        if (exercise.name == "벤치프레스") {
-                                          return true;
-                                        } else {
-                                          return false;
-                                        }
-                                      }))]
-                                          .goal)
-                                  .floor()
-                                  .toString() +
-                              "kg",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w600)),
-                    ]),
+                // Row(
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     crossAxisAlignment: CrossAxisAlignment.baseline,
+                //     textBaseline: TextBaseline.alphabetic,
+                //     children: <Widget>[
+                //       Text("SDB ",
+                //           style: TextStyle(
+                //               color: Colors.white,
+                //               fontSize: 54,
+                //               fontWeight: FontWeight.w600)),
+                //       Text(
+                //           (_exercisesdataProvider
+                //                       .exercisesdata
+                //                       .exercises[(_exercisesdataProvider
+                //                           .exercisesdata.exercises
+                //                           .indexWhere((exercise) {
+                //                     if (exercise.name == "스쿼트") {
+                //                       return true;
+                //                     } else {
+                //                       return false;
+                //                     }
+                //                   }))]
+                //                       .onerm +
+                //                   _exercisesdataProvider
+                //                       .exercisesdata
+                //                       .exercises[(_exercisesdataProvider
+                //                           .exercisesdata.exercises
+                //                           .indexWhere((exercise) {
+                //                     if (exercise.name == "데드리프트") {
+                //                       return true;
+                //                     } else {
+                //                       return false;
+                //                     }
+                //                   }))]
+                //                       .onerm +
+                //                   _exercisesdataProvider
+                //                       .exercisesdata
+                //                       .exercises[(_exercisesdataProvider
+                //                           .exercisesdata.exercises
+                //                           .indexWhere((exercise) {
+                //                     if (exercise.name == "벤치프레스") {
+                //                       return true;
+                //                     } else {
+                //                       return false;
+                //                     }
+                //                   }))]
+                //                       .onerm)
+                //               .floor()
+                //               .toString(),
+                //           style: TextStyle(
+                //               color: Colors.white,
+                //               fontSize: 46,
+                //               fontWeight: FontWeight.w800)),
+                //       Text(
+                //           "/" +
+                //               (_exercisesdataProvider
+                //                           .exercisesdata
+                //                           .exercises[(_exercisesdataProvider
+                //                               .exercisesdata.exercises
+                //                               .indexWhere((exercise) {
+                //                         if (exercise.name == "스쿼트") {
+                //                           return true;
+                //                         } else {
+                //                           return false;
+                //                         }
+                //                       }))]
+                //                           .goal +
+                //                       _exercisesdataProvider
+                //                           .exercisesdata
+                //                           .exercises[(_exercisesdataProvider
+                //                               .exercisesdata.exercises
+                //                               .indexWhere((exercise) {
+                //                         if (exercise.name == "데드리프트") {
+                //                           return true;
+                //                         } else {
+                //                           return false;
+                //                         }
+                //                       }))]
+                //                           .goal +
+                //                       _exercisesdataProvider
+                //                           .exercisesdata
+                //                           .exercises[(_exercisesdataProvider
+                //                               .exercisesdata.exercises
+                //                               .indexWhere((exercise) {
+                //                         if (exercise.name == "벤치프레스") {
+                //                           return true;
+                //                         } else {
+                //                           return false;
+                //                         }
+                //                       }))]
+                //                           .goal)
+                //                   .floor()
+                //                   .toString() +
+                //               "kg",
+                //           style: TextStyle(
+                //               color: Colors.white,
+                //               fontSize: 24,
+                //               fontWeight: FontWeight.w600)),
+                //     ]),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 4.0, vertical: 1.0),
@@ -419,11 +419,16 @@ class _HomeState extends State<Home> {
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      _dateControllerWidget(),
-                      SizedBox(height: 2.0),
                       _historyCard(context),
                     ],
                   ),
+                ),
+                SizedBox(height: 10),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 4.0, vertical: 1.0),
+                  child: _weightLiftingWidget(context),
                 ),
               ],
             ),
@@ -436,223 +441,241 @@ class _HomeState extends State<Home> {
     return Container(
       width: deviceWidth,
       child: Card(
-          color: Theme.of(context).cardColor,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Consumer<PrefsProvider>(builder: (builder, provider, child) {
-                  return IntrinsicHeight(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(
-                                    provider.prefs.getString('lastroutine') ==
-                                            ''
-                                        ? "최근 루틴이 없어요"
-                                        : '''최근 수행한 루틴''',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: provider.prefs
-                                                    .getString('lastroutine') ==
-                                                null
-                                            ? Colors.grey
-                                            : Colors.white,
-                                        fontSize: provider.prefs
-                                                    .getString('lastroutine') ==
-                                                null
-                                            ? 18
-                                            : 20,
-                                        fontWeight: FontWeight.w600)),
-                              ),
-                            ],
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              provider.prefs.getString('lastroutine') == null
-                                  ? _bodyStater.change(1)
-                                  : [
-                                      _PopProvider.gotoonlast(),
-                                      _bodyStater.change(1)
-                                    ];
-                            },
-                            child: Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                      provider.prefs.getString('lastroutine') ==
-                                              ''
-                                          ? '눌러서 루틴을 수행 해보세요!'
-                                          : '${provider.prefs.getString('lastroutine')}',
-                                      style: TextStyle(
-                                          color: Color(0xFffc60a8),
-                                          fontSize: provider.prefs.getString(
-                                                      'lastroutine') ==
-                                                  ''
-                                              ? 18
-                                              : 28,
-                                          fontWeight: FontWeight.w600)),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ]),
-                        VerticalDivider(
-                            color: Color(0xFF717171), thickness: 1, width: 1),
-                        Column(children: [
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("현재 몸무게",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600)),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8.0),
-                                  child: Text(
-                                      "(" +
-                                          DateFormat('MM/dd')
-                                              .format(DateTime.parse(
-                                                  _userdataProvider.userdata
-                                                      .bodyStats.last.date))
-                                              .toString() +
-                                          ")",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: Color(0xFF717171),
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600)),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                  _userdataProvider
-                                          .userdata.bodyStats.last.weight
-                                          .toString() +
-                                      _userdataProvider.userdata.weight_unit,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Color(0xFffc60a8),
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.w600)),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 12.0),
-                                child: Text(
-                                    "/" +
-                                        _userdataProvider
-                                            .userdata.bodyStats.last.weight_goal
-                                            .toString() +
-                                        _userdataProvider.userdata.weight_unit,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Color(0xFF717171),
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600)),
-                              ),
-                            ],
-                          ),
-                        ]),
-                      ],
+        color: Theme.of(context).cardColor,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Consumer<PrefsProvider>(builder: (builder, provider, child) {
+            return IntrinsicHeight(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(mainAxisSize: MainAxisSize.min, children: [
+                    Padding(
+                      padding: EdgeInsets.only(right: deviceWidth / 2 - 40),
+                      child: Text(
+                          provider.prefs.getString('lastroutine') == ''
+                              ? "수행 한 루틴이 없어요"
+                              : '''최근 진행한 루틴은''',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: provider.prefs.getString('lastroutine') ==
+                                      null
+                                  ? Colors.grey
+                                  : Colors.white,
+                              fontSize:
+                                  provider.prefs.getString('lastroutine') ==
+                                          null
+                                      ? 12
+                                      : 18,
+                              fontWeight: FontWeight.w600)),
                     ),
-                  );
-                }),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
-                  child: Divider(
-                      color: Color(0xFF717171), thickness: 1, height: 1),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 12.0),
-                          child: Text('''Lifting Stats''',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w600)),
+                    GestureDetector(
+                      onTap: () {
+                        provider.prefs.getString('lastroutine') == null
+                            ? _bodyStater.change(1)
+                            : [
+                                _PopProvider.gotoonlast(),
+                                _bodyStater.change(1)
+                              ];
+                      },
+                      child: Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                                provider.prefs.getString('lastroutine') == ''
+                                    ? '눌러서 루틴을 수행 해보세요!'
+                                    : '${provider.prefs.getString('lastroutine')}',
+                                style: TextStyle(
+                                    color: Color(0xFffc60a8),
+                                    fontSize: provider.prefs
+                                                .getString('lastroutine') ==
+                                            ''
+                                        ? 18
+                                        : 24,
+                                    fontWeight: FontWeight.w600)),
+                          ],
                         ),
                       ),
                     ),
-                    GestureDetector(
-                        onTap: () {
-                          _testdata = _testdata0.exercises;
-                          setState(() {});
-                          exselect(true, true, context);
-                        },
-                        child: Icon(Icons.settings,
-                            color: Colors.grey, size: 18.0))
-                  ],
+                  ]),
+                ],
+              ),
+            );
+          }),
+        ),
+      ),
+    );
+  }
+
+  Widget _weightLiftingWidget(context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
+    return Container(
+      width: deviceWidth,
+      child: Card(
+        color: Theme.of(context).cardColor,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Consumer<PrefsProvider>(builder: (builder, provider, child) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: deviceWidth * 0.3,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(4.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("몸무게",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600)),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 4.0),
+                              child: Text(
+                                  "(" +
+                                      DateFormat('MM/dd')
+                                          .format(DateTime.parse(
+                                              _userdataProvider.userdata
+                                                  .bodyStats.last.date))
+                                          .toString() +
+                                      ")",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Color(0xFF717171),
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600)),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                                _userdataProvider.userdata.bodyStats.last.weight
+                                        .toString() +
+                                    _userdataProvider.userdata.weight_unit,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Color(0xFffc60a8),
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w600)),
+                          ]),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6.0),
+                        child: Text(
+                            "목표 " +
+                                _userdataProvider
+                                    .userdata.bodyStats.last.weight_goal
+                                    .toString() +
+                                _userdataProvider.userdata.weight_unit,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Color(0xFF717171),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600)),
+                      ),
+                    ],
+                  ),
                 ),
-                SizedBox(height: 8.0),
-                Consumer<ExercisesdataProvider>(
-                    builder: (builder, provider, child) {
-                  final storage = FlutterSecureStorage();
-                  return ReorderableListView.builder(
-                      onReorder: (int oldIndex, int newIndex) {
-                        if (oldIndex > newIndex) {
-                          provider.insertHomeExList(
-                              newIndex, provider.homeExList[oldIndex]);
-                          provider.removeHomeExList(oldIndex + 1);
-                        } else {
-                          provider.insertHomeExList(
-                              newIndex, provider.homeExList[oldIndex]);
-                          provider.removeHomeExList(oldIndex);
-                        }
-                        storage.write(
-                            key: 'sdb_HomeExList',
-                            value: jsonEncode(
-                                (_exercisesdataProvider.homeExList)));
-                      },
-                      itemBuilder: (BuildContext _context, int index) {
-                        return Slidable(
-                            key: Key("$index"),
-                            endActionPane: ActionPane(
-                                extentRatio: 0.15,
-                                motion: const ScrollMotion(),
-                                children: [
-                                  SlidableAction(
-                                    onPressed: (_) {
-                                      provider.removeHomeExList(index);
-                                      storage.write(
-                                          key: 'sdb_HomeExList',
-                                          value: jsonEncode(
-                                              (_exercisesdataProvider
-                                                  .homeExList)));
-                                    },
-                                    backgroundColor: Color(0xFFFE4A49),
-                                    foregroundColor: Colors.white,
-                                    icon: Icons.delete,
-                                  )
-                                ]),
-                            child: _homeProgressiveBarChart(index, context));
-                      },
-                      shrinkWrap: true,
-                      itemCount: _exercisesdataProvider.homeExList.length);
-                }),
+                Container(
+                  width: deviceWidth * 0.6,
+                  child: Column(mainAxisSize: MainAxisSize.min, children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Center(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 12.0, top: 4.0),
+                              child: Text('''Lifting Stats''',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600)),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                            onTap: () {
+                              _testdata = _testdata0.exercises;
+                              setState(() {});
+                              exselect(true, true, context);
+                            },
+                            child: Icon(Icons.settings,
+                                color: Colors.grey, size: 18.0))
+                      ],
+                    ),
+                    SizedBox(height: 8.0),
+                    Consumer<ExercisesdataProvider>(
+                        builder: (builder, provider, child) {
+                      final storage = FlutterSecureStorage();
+                      return ReorderableListView.builder(
+                          onReorder: (int oldIndex, int newIndex) {
+                            if (oldIndex > newIndex) {
+                              provider.insertHomeExList(
+                                  newIndex, provider.homeExList[oldIndex]);
+                              provider.removeHomeExList(oldIndex + 1);
+                            } else {
+                              provider.insertHomeExList(
+                                  newIndex, provider.homeExList[oldIndex]);
+                              provider.removeHomeExList(oldIndex);
+                            }
+                            storage.write(
+                                key: 'sdb_HomeExList',
+                                value: jsonEncode(
+                                    (_exercisesdataProvider.homeExList)));
+                          },
+                          itemBuilder: (BuildContext _context, int index) {
+                            return Slidable(
+                                key: Key("$index"),
+                                endActionPane: ActionPane(
+                                    extentRatio: 0.15,
+                                    motion: const ScrollMotion(),
+                                    children: [
+                                      SlidableAction(
+                                        onPressed: (_) {
+                                          provider.removeHomeExList(index);
+                                          storage.write(
+                                              key: 'sdb_HomeExList',
+                                              value: jsonEncode(
+                                                  (_exercisesdataProvider
+                                                      .homeExList)));
+                                        },
+                                        backgroundColor: Color(0xFFFE4A49),
+                                        foregroundColor: Colors.white,
+                                        icon: Icons.delete,
+                                      )
+                                    ]),
+                                child:
+                                    _homeProgressiveBarChart(index, context));
+                          },
+                          shrinkWrap: true,
+                          itemCount: _exercisesdataProvider.homeExList.length);
+                    }),
+                  ]),
+                ),
               ],
-            ),
-          )),
+            );
+          }),
+        ),
+      ),
     );
   }
 
@@ -661,7 +684,7 @@ class _HomeState extends State<Home> {
     return Column(
       children: [
         SizedBox(
-          height: 270,
+          height: 260,
           child: PageView.builder(
               controller: _historyCardcontroller,
               onPageChanged: (int index) =>
@@ -673,14 +696,16 @@ class _HomeState extends State<Home> {
                 );
               }),
         ),
+        _dateControllerWidget(),
+        SizedBox(height: 6.0),
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: SmoothPageIndicator(
             controller: _historyCardcontroller,
             count: _page,
             effect: WormEffect(
-              dotHeight: 12,
-              dotWidth: 12,
+              dotHeight: 8,
+              dotWidth: 8,
               type: WormType.thin,
               activeDotColor: Theme.of(context).primaryColor,
               dotColor: Colors.grey,
@@ -781,7 +806,7 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                style: TextStyle(fontSize: 12, color: Colors.white));
+                style: TextStyle(fontSize: 12, color: Colors.grey));
           case 2:
             switch (value.toInt()) {
               case 0:
@@ -798,7 +823,7 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                style: TextStyle(fontSize: 12, color: Colors.white));
+                style: TextStyle(fontSize: 12, color: Colors.grey));
           case 3:
             switch (value.toInt()) {
               case 0:
@@ -831,7 +856,7 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                style: TextStyle(fontSize: 12, color: Colors.white));
+                style: TextStyle(fontSize: 12, color: Colors.grey));
           case 4:
             switch (value.toInt()) {
               case 0:
@@ -852,7 +877,7 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                style: TextStyle(fontSize: 12, color: Colors.white));
+                style: TextStyle(fontSize: 12, color: Colors.grey));
           case 5:
             switch (value.toInt()) {
               case 0:
@@ -862,7 +887,7 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                style: TextStyle(fontSize: 12, color: Colors.white));
+                style: TextStyle(fontSize: 12, color: Colors.grey));
 
           default:
             switch (value.toInt()) {
@@ -896,7 +921,7 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                style: TextStyle(fontSize: 12, color: Colors.white));
+                style: TextStyle(fontSize: 12, color: Colors.grey));
         }
       },
     );
@@ -921,13 +946,14 @@ class _HomeState extends State<Home> {
               text = _exerciseCountMap.keys.elementAt(3 - value.toInt());
               break;
           }
-          return Text(text,
-              style: TextStyle(fontSize: 12, color: Colors.white));
+          return Text(text, style: TextStyle(fontSize: 12, color: Colors.grey));
         });
   }
 
   Widget _countHistoryNoWidget(context) {
     var _historyDate = [];
+    List<double> _chartData = [];
+    var _chartDataBest;
     List<BarChartGroupData> _barChartGroupData = [];
 
     _dateController(_dateCtrl);
@@ -949,18 +975,26 @@ class _HomeState extends State<Home> {
               _value++;
             }
           }
+          _chartData.add(_value.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 7; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _value.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _value != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -983,18 +1017,26 @@ class _HomeState extends State<Home> {
               _value++;
             }
           }
+          _chartData.add(_value.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 4; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _value.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _value != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1012,18 +1054,26 @@ class _HomeState extends State<Home> {
               _value++;
             }
           }
+          _chartData.add(_value.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 6; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _value.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _value != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1037,18 +1087,26 @@ class _HomeState extends State<Home> {
               _value++;
             }
           }
+          _chartData.add(_value.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 4; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _value.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _value != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1061,18 +1119,26 @@ class _HomeState extends State<Home> {
               _value++;
             }
           }
+          _chartData.add(_value.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 1; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _value.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _value != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1092,6 +1158,8 @@ class _HomeState extends State<Home> {
     var _historyDate = <DuplicateHistoryDate>{};
     List<BarChartGroupData> _barChartGroupData = [];
     _dateController(_dateCtrl);
+    List<double> _chartData = [];
+    var _chartDataBest;
     double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (var sdbdata in _historydata) {
@@ -1110,18 +1178,26 @@ class _HomeState extends State<Home> {
               _value++;
             }
           }
+          _chartData.add(_value.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 7; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _value.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _value != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1144,18 +1220,26 @@ class _HomeState extends State<Home> {
               _value++;
             }
           }
+          _chartData.add(_value.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 4; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _value.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _value != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1174,18 +1258,26 @@ class _HomeState extends State<Home> {
               _value++;
             }
           }
+          _chartData.add(_value.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 6; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _value.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _value != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1200,18 +1292,26 @@ class _HomeState extends State<Home> {
               _value++;
             }
           }
+          _chartData.add(_value.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 4; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _value.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _value != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1225,18 +1325,26 @@ class _HomeState extends State<Home> {
               _value++;
             }
           }
+          _chartData.add(_value.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 1; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _value.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _value != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1255,6 +1363,8 @@ class _HomeState extends State<Home> {
   Widget _countHistorySetWidget(context) {
     List<BarChartGroupData> _barChartGroupData = [];
     _dateController(_dateCtrl);
+    List<double> _chartData = [];
+    var _chartDataBest;
     var _historySet = 0;
     double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
@@ -1281,18 +1391,26 @@ class _HomeState extends State<Home> {
               }
             }
           }
+          _chartData.add(_historySet.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 7; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _historySet.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _historySet != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1319,18 +1437,26 @@ class _HomeState extends State<Home> {
               }
             }
           }
+          _chartData.add(_historySet.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 4; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _historySet.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _historySet != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1353,18 +1479,26 @@ class _HomeState extends State<Home> {
               }
             }
           }
+          _chartData.add(_historySet.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 6; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _historySet.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _historySet != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1382,18 +1516,26 @@ class _HomeState extends State<Home> {
               }
             }
           }
+          _chartData.add(_historySet.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 4; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _historySet.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _historySet != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1410,18 +1552,26 @@ class _HomeState extends State<Home> {
               }
             }
           }
+          _chartData.add(_historySet.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 1; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _historySet.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _historySet != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1434,6 +1584,8 @@ class _HomeState extends State<Home> {
   Widget _countHistoryWeightWidget(context) {
     var _historyWeight = 0;
     List<BarChartGroupData> _barChartGroupData = [];
+    List<double> _chartData = [];
+    var _chartDataBest;
     _dateController(_dateCtrl);
     double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
@@ -1461,18 +1613,26 @@ class _HomeState extends State<Home> {
               }
             }
           }
+          _chartData.add(_historyWeight.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 7; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _historyWeight.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _historyWeight != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1500,18 +1660,26 @@ class _HomeState extends State<Home> {
               }
             }
           }
+          _chartData.add(_historyWeight.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 4; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _historyWeight.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _historyWeight != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1535,18 +1703,26 @@ class _HomeState extends State<Home> {
               }
             }
           }
+          _chartData.add(_historyWeight.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 6; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _historyWeight.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _historyWeight != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1565,18 +1741,26 @@ class _HomeState extends State<Home> {
               }
             }
           }
+          _chartData.add(_historyWeight.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 4; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _historyWeight.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _historyWeight != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1594,18 +1778,26 @@ class _HomeState extends State<Home> {
               }
             }
           }
+          _chartData.add(_historyWeight.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 1; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _historyWeight.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _historyWeight != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1624,6 +1816,8 @@ class _HomeState extends State<Home> {
   Widget _countHistoryTimeWidget(context) {
     var _historyTime = 0;
     List<BarChartGroupData> _barChartGroupData = [];
+    List<double> _chartData = [];
+    var _chartDataBest;
     _dateController(_dateCtrl);
     double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
@@ -1642,18 +1836,26 @@ class _HomeState extends State<Home> {
               _value = _value + (sdbdata.workout_time / 60).toInt();
             }
           }
+          _chartData.add(_historyTime.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 7; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _value.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _value != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1676,18 +1878,26 @@ class _HomeState extends State<Home> {
               _value = _value + (sdbdata.workout_time / 60).toInt();
             }
           }
+          _chartData.add(_historyTime.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 4; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _value.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _value != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1706,18 +1916,26 @@ class _HomeState extends State<Home> {
               _value = _value + (sdbdata.workout_time / 60).toInt();
             }
           }
+          _chartData.add(_historyTime.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 6; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _value.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _value != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1731,18 +1949,26 @@ class _HomeState extends State<Home> {
               _value = _value + (sdbdata.workout_time / 60).toInt();
             }
           }
+          _chartData.add(_historyTime.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 4; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _value.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _value != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1755,18 +1981,26 @@ class _HomeState extends State<Home> {
               _value = _value + (sdbdata.workout_time / 60).toInt();
             }
           }
+          _chartData.add(_historyTime.toDouble());
+        }
+        _chartDataBest = _chartData.reduce(max);
+        for (int i = 0; i < 1; i++) {
           _barChartGroupData.add(BarChartGroupData(
             x: i,
             barRods: [
               BarChartRodData(
-                  toY: _value.toDouble(),
+                  toY: _chartData[i].toDouble(),
                   width: 12,
                   gradient: _barsGradient,
+                  backDrawRodData: BackgroundBarChartRodData(
+                      show: _chartData[i] != 0 ? false : true,
+                      toY: _chartDataBest == 0 ? 1 : _chartDataBest,
+                      color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
-            showingTooltipIndicators: _value != 0 ? [0] : [],
+            showingTooltipIndicators: _chartData[i] != 0 ? [0] : [],
           ));
         }
         break;
@@ -1815,6 +2049,14 @@ class _HomeState extends State<Home> {
               toY: _exerciseCountMap.values.elementAt(3 - i).toDouble(),
               width: 12,
               gradient: _barsGradient,
+              backDrawRodData: BackgroundBarChartRodData(
+                  show: _exerciseCountMap.values.elementAt(3 - i) != 0
+                      ? false
+                      : true,
+                  toY: _exerciseCountMap.values.elementAt(0) == 0
+                      ? 1
+                      : _exerciseCountMap.values.elementAt(0).toDouble(),
+                  color: Theme.of(context).cardColor),
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6)))
         ],
@@ -1878,6 +2120,14 @@ class _HomeState extends State<Home> {
               toY: _exerciseCountMapOdd.values.elementAt(3 - i).toDouble(),
               width: 12,
               gradient: _barsGradient,
+              backDrawRodData: BackgroundBarChartRodData(
+                  show: _exerciseCountMapOdd.values.elementAt(3 - i) != 0
+                      ? false
+                      : true,
+                  toY: _exerciseCountMapOdd.values.elementAt(0) == 0
+                      ? 1
+                      : _exerciseCountMapOdd.values.elementAt(0).toDouble(),
+                  color: Theme.of(context).cardColor),
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6)))
         ],
@@ -1942,6 +2192,14 @@ class _HomeState extends State<Home> {
           BarChartRodData(
               toY: _exerciseCountMap.values.elementAt(3 - i).toDouble(),
               width: 12,
+              backDrawRodData: BackgroundBarChartRodData(
+                  show: _exerciseCountMap.values.elementAt(3 - i) != 0
+                      ? false
+                      : true,
+                  toY: _exerciseCountMap.values.elementAt(0) == 0
+                      ? 1
+                      : _exerciseCountMap.values.elementAt(0).toDouble(),
+                  color: Theme.of(context).cardColor),
               gradient: _barsGradient,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6)))
@@ -2017,6 +2275,14 @@ class _HomeState extends State<Home> {
           BarChartRodData(
               toY: _exerciseCountMapOdd.values.elementAt(3 - i).toDouble(),
               width: 12,
+              backDrawRodData: BackgroundBarChartRodData(
+                  show: _exerciseCountMapOdd.values.elementAt(3 - i) != 0
+                      ? false
+                      : true,
+                  toY: _exerciseCountMapOdd.values.elementAt(0) == 0
+                      ? 1
+                      : _exerciseCountMapOdd.values.elementAt(0).toDouble(),
+                  color: Theme.of(context).cardColor),
               gradient: _barsGradient,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6)))
@@ -2090,6 +2356,14 @@ class _HomeState extends State<Home> {
           BarChartRodData(
               toY: _exerciseCountMap.values.elementAt(3 - i).toDouble(),
               width: 12,
+              backDrawRodData: BackgroundBarChartRodData(
+                  show: _exerciseCountMap.values.elementAt(3 - i) != 0
+                      ? false
+                      : true,
+                  toY: _exerciseCountMap.values.elementAt(0) == 0
+                      ? 1
+                      : _exerciseCountMap.values.elementAt(0).toDouble(),
+                  color: Theme.of(context).cardColor),
               gradient: _barsGradient,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6)))
@@ -2159,6 +2433,14 @@ class _HomeState extends State<Home> {
           BarChartRodData(
               toY: _exerciseCountMapOdd.values.elementAt(3 - i).toDouble(),
               width: 12,
+              backDrawRodData: BackgroundBarChartRodData(
+                  show: _exerciseCountMapOdd.values.elementAt(3 - i) != 0
+                      ? false
+                      : true,
+                  toY: _exerciseCountMapOdd.values.elementAt(0) == 0
+                      ? 1
+                      : _exerciseCountMapOdd.values.elementAt(0).toDouble(),
+                  color: Theme.of(context).cardColor),
               gradient: _barsGradient,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6)))
@@ -2211,7 +2493,7 @@ class _HomeState extends State<Home> {
       List<BarChartGroupData> _barChartGroupData) {
     double deviceWidth = MediaQuery.of(context).size.width;
     return Card(
-        color: Theme.of(context).cardColor,
+        color: Color(0xFF101012),
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
         child: Padding(
@@ -2261,44 +2543,39 @@ class _HomeState extends State<Home> {
                 ),
               );
             }),
-            SizedBox(height: 50),
+            SizedBox(height: 40),
             _barChartGroupData != null
-                ? AspectRatio(
-                    aspectRatio: 3,
-                    child: BarChart(BarChartData(
-                      barGroups: _barChartGroupData,
-                      barTouchData: barTouchData,
-                      titlesData: FlTitlesData(
-                          leftTitles: AxisTitles(
-                            sideTitles: SideTitles(showTitles: false),
-                          ),
-                          topTitles: AxisTitles(
-                            sideTitles: SideTitles(showTitles: false),
-                          ),
-                          rightTitles: AxisTitles(
-                            sideTitles: SideTitles(showTitles: false),
-                          ),
-                          bottomTitles: AxisTitles(
-                              sideTitles: _isbottomTitleEx
-                                  ? _bottomExTitles()
-                                  : _bottomTitles())),
-                      alignment: BarChartAlignment.spaceAround,
-                      borderData: FlBorderData(show: false),
-                      gridData: FlGridData(show: false),
-                    )))
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                          width: deviceWidth - 80,
+                          height: 110,
+                          child: BarChart(BarChartData(
+                            barGroups: _barChartGroupData,
+                            barTouchData: barTouchData,
+                            titlesData: FlTitlesData(
+                                leftTitles: AxisTitles(
+                                  sideTitles: SideTitles(showTitles: false),
+                                ),
+                                topTitles: AxisTitles(
+                                  sideTitles: SideTitles(showTitles: false),
+                                ),
+                                rightTitles: AxisTitles(
+                                  sideTitles: SideTitles(showTitles: false),
+                                ),
+                                bottomTitles: AxisTitles(
+                                    sideTitles: _isbottomTitleEx
+                                        ? _bottomExTitles()
+                                        : _bottomTitles())),
+                            alignment: BarChartAlignment.spaceAround,
+                            borderData: FlBorderData(show: false),
+                            gridData: FlGridData(show: false),
+                          ))),
+                    ],
+                  )
                 : Container()
           ]),
-        ));
-  }
-
-  Widget _liftingStatWidget(_exunique, context) {
-    return Card(
-        color: Theme.of(context).cardColor,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(children: []),
         ));
   }
 
@@ -2478,101 +2755,98 @@ class _HomeState extends State<Home> {
                 _staticPageState.change(true),
                 _bodyStater.change(3),
               },
-              child: Container(
-                height: 24,
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  children: [
-                    Container(
-                        width: MediaQuery.of(context).size.width / 2 - 40,
-                        child: Text(_exercisesdataProvider.homeExList[index],
+              child: Row(
+                children: [
+                  Container(
+                      width: MediaQuery.of(context).size.width / 3 - 10,
+                      child: Text(_exercisesdataProvider.homeExList[index],
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center)),
+                  Container(
+                    width: MediaQuery.of(context).size.width / 3 - 20,
+                    height: 16,
+                    child: LiquidLinearProgressIndicator(
+                      value: _exercisesdataProvider
+                              .exercisesdata
+                              .exercises[(_exercisesdataProvider
+                                  .exercisesdata.exercises
+                                  .indexWhere((exercise) {
+                            if (exercise.name ==
+                                _exercisesdataProvider.homeExList[index]) {
+                              return true;
+                            } else {
+                              return false;
+                            }
+                          }))]
+                              .onerm /
+                          _exercisesdataProvider
+                              .exercisesdata
+                              .exercises[(_exercisesdataProvider
+                                  .exercisesdata.exercises
+                                  .indexWhere((exercise) {
+                            if (exercise.name ==
+                                _exercisesdataProvider.homeExList[index]) {
+                              return true;
+                            } else {
+                              return false;
+                            }
+                          }))]
+                              .goal, // Defaults to 0.5.
+                      borderColor: Theme.of(context).primaryColor,
+                      valueColor: AlwaysStoppedAnimation(
+                          Theme.of(context).primaryColor),
+                      backgroundColor: Colors.grey,
+                      borderWidth: 0.0,
+                      borderRadius: 15.0,
+                      direction: Axis
+                          .horizontal, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
+                      center: Center(
+                        child: Text(
+                            _exercisesdataProvider
+                                    .exercisesdata
+                                    .exercises[(_exercisesdataProvider
+                                        .exercisesdata.exercises
+                                        .indexWhere((exercise) {
+                                  if (exercise.name ==
+                                      _exercisesdataProvider
+                                          .homeExList[index]) {
+                                    return true;
+                                  } else {
+                                    return false;
+                                  }
+                                }))]
+                                    .onerm
+                                    .floor()
+                                    .toString() +
+                                "/" +
+                                _exercisesdataProvider
+                                    .exercisesdata
+                                    .exercises[(_exercisesdataProvider
+                                        .exercisesdata.exercises
+                                        .indexWhere((exercise) {
+                                  if (exercise.name ==
+                                      _exercisesdataProvider
+                                          .homeExList[index]) {
+                                    return true;
+                                  } else {
+                                    return false;
+                                  }
+                                }))]
+                                    .goal
+                                    .floor()
+                                    .toString(),
                             style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 12,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center)),
-                    Container(
-                      width: MediaQuery.of(context).size.width / 2,
-                      child: LiquidLinearProgressIndicator(
-                        value: _exercisesdataProvider
-                                .exercisesdata
-                                .exercises[(_exercisesdataProvider
-                                    .exercisesdata.exercises
-                                    .indexWhere((exercise) {
-                              if (exercise.name ==
-                                  _exercisesdataProvider.homeExList[index]) {
-                                return true;
-                              } else {
-                                return false;
-                              }
-                            }))]
-                                .onerm /
-                            _exercisesdataProvider
-                                .exercisesdata
-                                .exercises[(_exercisesdataProvider
-                                    .exercisesdata.exercises
-                                    .indexWhere((exercise) {
-                              if (exercise.name ==
-                                  _exercisesdataProvider.homeExList[index]) {
-                                return true;
-                              } else {
-                                return false;
-                              }
-                            }))]
-                                .goal, // Defaults to 0.5.
-                        borderColor: Theme.of(context).primaryColor,
-                        valueColor: AlwaysStoppedAnimation(
-                            Theme.of(context).primaryColor),
-                        backgroundColor: Colors.grey,
-                        borderWidth: 0.0,
-                        borderRadius: 15.0,
-                        direction: Axis
-                            .horizontal, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
-                        center: Center(
-                          child: Text(
-                              _exercisesdataProvider
-                                      .exercisesdata
-                                      .exercises[(_exercisesdataProvider
-                                          .exercisesdata.exercises
-                                          .indexWhere((exercise) {
-                                    if (exercise.name ==
-                                        _exercisesdataProvider
-                                            .homeExList[index]) {
-                                      return true;
-                                    } else {
-                                      return false;
-                                    }
-                                  }))]
-                                      .onerm
-                                      .floor()
-                                      .toString() +
-                                  "/" +
-                                  _exercisesdataProvider
-                                      .exercisesdata
-                                      .exercises[(_exercisesdataProvider
-                                          .exercisesdata.exercises
-                                          .indexWhere((exercise) {
-                                    if (exercise.name ==
-                                        _exercisesdataProvider
-                                            .homeExList[index]) {
-                                      return true;
-                                    } else {
-                                      return false;
-                                    }
-                                  }))]
-                                      .goal
-                                      .floor()
-                                      .toString(),
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center),
-                        ),
+                            textAlign: TextAlign.center),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           )
