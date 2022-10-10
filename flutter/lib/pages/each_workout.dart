@@ -873,6 +873,15 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
           builder: (builder, wdp, exp, child) {
         List exunique = exp.exercisesdata.exercises;
         List exlist = wdp.workoutdata.routinedatas[widget.rindex].exercises;
+        for (int i = 0; i < exlist.length; i++) {
+          final filter = exunique.where((unique) {
+            return (unique.name == exlist[i].name);
+          }).toList();
+          if(filter.isEmpty){
+            _workoutdataProvider.removeexAt(widget.rindex, i);
+            showToast('더 이상 존재하지 않는 운동은 삭제되요');
+          }
+        }
         return exlist.isEmpty == true
             ? _isexsearch
                 ? GestureDetector(

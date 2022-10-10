@@ -531,7 +531,7 @@ class _AppState extends State<App> {
                   : null,
             );
           }),
-          extendBody: _bodyStater.bodystate == 2 ? true : false,
+          extendBody: true,
           backgroundColor: Colors.transparent,
           bottomNavigationBar:
               _loginState.isLogin ? _bottomNavigationBarwidget() : null,
