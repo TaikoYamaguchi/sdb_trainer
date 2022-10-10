@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class RoutineMenuStater extends ChangeNotifier {
-  int _menustate = 0;
+  int _menustate = 1;
   int get menustate => _menustate;
   bool _ismodechecked = false;
   bool get ismodechecked => _ismodechecked;
