@@ -191,14 +191,16 @@ class HistorydataProvider extends ChangeNotifier {
         return false;
       }
     });
-    _historydataUserEmail.sdbdatas.indexWhere((sdbdata) {
-      if (sdbdata.id == SDBdata.id) {
-        sdbdata.comment = comment;
-        return true;
-      } else {
-        return false;
-      }
-    });
+    try {
+      _historydataUserEmail.sdbdatas.indexWhere((sdbdata) {
+        if (sdbdata.id == SDBdata.id) {
+          sdbdata.comment = comment;
+          return true;
+        } else {
+          return false;
+        }
+      });
+    } catch (e) {}
 
     notifyListeners();
   }
@@ -229,14 +231,16 @@ class HistorydataProvider extends ChangeNotifier {
         return false;
       }
     });
-    _historydataUserEmail.sdbdatas.indexWhere((sdbdata) {
-      if (sdbdata.id == SDBdata.id) {
-        sdbdata.isVisible = status;
-        return true;
-      } else {
-        return false;
-      }
-    });
+    try {
+      _historydataUserEmail.sdbdatas.indexWhere((sdbdata) {
+        if (sdbdata.id == SDBdata.id) {
+          sdbdata.isVisible = status;
+          return true;
+        } else {
+          return false;
+        }
+      });
+    } catch (e) {}
 
     notifyListeners();
   }
