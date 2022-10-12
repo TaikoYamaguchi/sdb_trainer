@@ -69,6 +69,12 @@ class _HomeState extends State<Home> {
     "벤치프레스": 0,
     "밀리터리프레스": 0
   };
+  Map<String, int> _exerciseCountMapThird = {
+    "스쿼트": 0,
+    "데드리프트": 0,
+    "벤치프레스": 0,
+    "밀리터리프레스": 0
+  };
 
   DateTime _toDay = DateTime.now();
 
@@ -662,7 +668,6 @@ class _HomeState extends State<Home> {
                                         foregroundColor: Colors.white,
                                         icon: Icons.delete,
                                         padding: EdgeInsets.zero,
-
                                       )
                                     ]),
                                 child:
@@ -1838,7 +1843,7 @@ class _HomeState extends State<Home> {
               _value = _value + (sdbdata.workout_time / 60).toInt();
             }
           }
-          _chartData.add(_historyTime.toDouble());
+          _chartData.add(_value.toDouble());
         }
         _chartDataBest = _chartData.reduce(max);
         for (int i = 0; i < 7; i++) {
@@ -1880,7 +1885,7 @@ class _HomeState extends State<Home> {
               _value = _value + (sdbdata.workout_time / 60).toInt();
             }
           }
-          _chartData.add(_historyTime.toDouble());
+          _chartData.add(_value.toDouble());
         }
         _chartDataBest = _chartData.reduce(max);
         for (int i = 0; i < 4; i++) {
@@ -1918,7 +1923,7 @@ class _HomeState extends State<Home> {
               _value = _value + (sdbdata.workout_time / 60).toInt();
             }
           }
-          _chartData.add(_historyTime.toDouble());
+          _chartData.add(_value.toDouble());
         }
         _chartDataBest = _chartData.reduce(max);
         for (int i = 0; i < 6; i++) {
@@ -1951,7 +1956,7 @@ class _HomeState extends State<Home> {
               _value = _value + (sdbdata.workout_time / 60).toInt();
             }
           }
-          _chartData.add(_historyTime.toDouble());
+          _chartData.add(_value.toDouble());
         }
         _chartDataBest = _chartData.reduce(max);
         for (int i = 0; i < 4; i++) {
@@ -1983,7 +1988,7 @@ class _HomeState extends State<Home> {
               _value = _value + (sdbdata.workout_time / 60).toInt();
             }
           }
-          _chartData.add(_historyTime.toDouble());
+          _chartData.add(_value.toDouble());
         }
         _chartDataBest = _chartData.reduce(max);
         for (int i = 0; i < 1; i++) {
@@ -2153,34 +2158,35 @@ class _HomeState extends State<Home> {
     var thevalue = 0;
     var thekey = "운동을 시작해봐요";
     _isbottomTitleEx = true;
-    _exerciseCountMap = {"스쿼트": 0, "데드리프트": 0, "벤치프레스": 0, "밀리터리프레스": 0};
+    _exerciseCountMapThird = {"스쿼트": 0, "데드리프트": 0, "벤치프레스": 0, "밀리터리프레스": 0};
 
     _dateController(_dateCtrl);
     double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercise in sdbdata.exercises) {
-          if (_exerciseCountMap.containsKey(exercise.name)) {
+          if (_exerciseCountMapThird.containsKey(exercise.name)) {
             for (workoutModel.Sets sets in exercise.sets) {
-              _exerciseCountMap[exercise.name] =
-                  _exerciseCountMap[exercise.name]! +
+              _exerciseCountMapThird[exercise.name] =
+                  _exerciseCountMapThird[exercise.name]! +
                       (sets.weight * sets.reps).toInt();
             }
           } else {
-            _exerciseCountMap[exercise.name] = 0;
+            _exerciseCountMapThird[exercise.name] = 0;
             for (workoutModel.Sets sets in exercise.sets) {
-              _exerciseCountMap[exercise.name] =
-                  _exerciseCountMap[exercise.name]! +
+              _exerciseCountMapThird[exercise.name] =
+                  _exerciseCountMapThird[exercise.name]! +
                       (sets.weight * sets.reps).toInt();
             }
           }
         }
       }
     }
-    _exerciseCountMap = Map.fromEntries(_exerciseCountMap.entries.toList()
-      ..sort((e1, e2) => e2.value.compareTo(e1.value)));
+    _exerciseCountMapThird = Map.fromEntries(
+        _exerciseCountMapThird.entries.toList()
+          ..sort((e1, e2) => e2.value.compareTo(e1.value)));
 
-    _exerciseCountMap.forEach((key, value) {
+    _exerciseCountMapThird.forEach((key, value) {
       if (value > thevalue) {
         thevalue = value;
         thekey = key;
@@ -2192,22 +2198,22 @@ class _HomeState extends State<Home> {
         x: i,
         barRods: [
           BarChartRodData(
-              toY: _exerciseCountMap.values.elementAt(3 - i).toDouble(),
+              toY: _exerciseCountMapThird.values.elementAt(3 - i).toDouble(),
               width: 12,
               backDrawRodData: BackgroundBarChartRodData(
-                  show: _exerciseCountMap.values.elementAt(3 - i) != 0
+                  show: _exerciseCountMapThird.values.elementAt(3 - i) != 0
                       ? false
                       : true,
-                  toY: _exerciseCountMap.values.elementAt(0) == 0
+                  toY: _exerciseCountMapThird.values.elementAt(0) == 0
                       ? 1
-                      : _exerciseCountMap.values.elementAt(0).toDouble(),
+                      : _exerciseCountMapThird.values.elementAt(0).toDouble(),
                   color: Theme.of(context).cardColor),
               gradient: _barsGradient,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6)))
         ],
         showingTooltipIndicators:
-            _exerciseCountMap.values.elementAt(3 - i) != 0 ? [0] : [],
+            _exerciseCountMapThird.values.elementAt(3 - i) != 0 ? [0] : [],
       ));
     }
 
@@ -2222,6 +2228,92 @@ class _HomeState extends State<Home> {
   }
 
   Widget _countHistoryPartWeightWidget(context) {
+    List<BarChartGroupData> _barChartGroupData = [];
+    var thevalue = 0;
+    var thekey = "운동을 시작해봐요";
+    _isbottomTitleEx = true;
+    _exerciseCountMapThird = {"가슴": 0, "등": 0, "다리": 0, "어깨": 0};
+
+    _dateController(_dateCtrl);
+    double deviceWidth = MediaQuery.of(context).size.width;
+    if (_historydata != null) {
+      for (SDBdata sdbdata in _historydata) {
+        for (Exercises exercise in sdbdata.exercises) {
+          for (String target in _exercisesdataProvider
+              .exercisesdata
+              .exercises[_exercisesdataProvider.exercisesdata.exercises
+                  .indexWhere((ex) {
+            if (ex.name == exercise.name) {
+              return true;
+            } else {
+              return false;
+            }
+          })]
+              .target) {
+            if (_exerciseCountMapThird.containsKey(target)) {
+              for (workoutModel.Sets sets in exercise.sets) {
+                _exerciseCountMapThird[target] =
+                    _exerciseCountMapThird[target]! +
+                        (sets.weight * sets.reps).toInt();
+              }
+            } else {
+              _exerciseCountMapThird[target] = 0;
+              for (workoutModel.Sets sets in exercise.sets) {
+                _exerciseCountMapThird[target] =
+                    _exerciseCountMapThird[target]! +
+                        (sets.weight * sets.reps).toInt();
+              }
+            }
+          }
+        }
+      }
+    }
+    _exerciseCountMapThird = Map.fromEntries(
+        _exerciseCountMapThird.entries.toList()
+          ..sort((e1, e2) => e2.value.compareTo(e1.value)));
+
+    _exerciseCountMapThird.forEach((key, value) {
+      if (value > thevalue) {
+        thevalue = value;
+        thekey = key;
+      }
+    });
+
+    for (int i = 0; i < 4; i++) {
+      _barChartGroupData.add(BarChartGroupData(
+        x: i,
+        barRods: [
+          BarChartRodData(
+              toY: _exerciseCountMapThird.values.elementAt(3 - i).toDouble(),
+              width: 12,
+              backDrawRodData: BackgroundBarChartRodData(
+                  show: _exerciseCountMapThird.values.elementAt(3 - i) != 0
+                      ? false
+                      : true,
+                  toY: _exerciseCountMapThird.values.elementAt(0) == 0
+                      ? 1
+                      : _exerciseCountMapThird.values.elementAt(0).toDouble(),
+                  color: Theme.of(context).cardColor),
+              gradient: _barsGradient,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(6), topRight: Radius.circular(6)))
+        ],
+        showingTooltipIndicators:
+            _exerciseCountMapThird.values.elementAt(3 - i) != 0 ? [0] : [],
+      ));
+    }
+
+    return _countHistoryCardCore(
+        context,
+        _dateStringCase(_dateCtrl) + " 많은 무게를 든 부위는?",
+        thekey.toString() + "!",
+        "",
+        9999,
+        0,
+        _barChartGroupData);
+  }
+
+  Widget _countHistoryPartSetWidget(context) {
     List<BarChartGroupData> _barChartGroupData = [];
     var thevalue = 0;
     var thekey = "운동을 시작해봐요";
@@ -2246,14 +2338,14 @@ class _HomeState extends State<Home> {
               .target) {
             if (_exerciseCountMapOdd.containsKey(target)) {
               for (workoutModel.Sets sets in exercise.sets) {
-                _exerciseCountMapOdd[target] = _exerciseCountMapOdd[target]! +
-                    (sets.weight * sets.reps).toInt();
+                _exerciseCountMapOdd[target] =
+                    _exerciseCountMapOdd[target]! + 1;
               }
             } else {
               _exerciseCountMapOdd[target] = 0;
               for (workoutModel.Sets sets in exercise.sets) {
-                _exerciseCountMapOdd[target] = _exerciseCountMapOdd[target]! +
-                    (sets.weight * sets.reps).toInt();
+                _exerciseCountMapOdd[target] =
+                    _exerciseCountMapOdd[target]! + 1;
               }
             }
           }
@@ -2296,7 +2388,7 @@ class _HomeState extends State<Home> {
 
     return _countHistoryCardCore(
         context,
-        _dateStringCase(_dateCtrl) + " 많은 무게를 든 부위는?",
+        _dateStringCase(_dateCtrl) + " 많은 세트를 한 부위는?",
         thekey.toString() + "!",
         "",
         9999,
@@ -2304,7 +2396,7 @@ class _HomeState extends State<Home> {
         _barChartGroupData);
   }
 
-  Widget _countHistoryPartSetWidget(context) {
+  Widget _countHistoryPartCountWidget(context) {
     List<BarChartGroupData> _barChartGroupData = [];
     var thevalue = 0;
     var thekey = "운동을 시작해봐요";
@@ -2328,14 +2420,10 @@ class _HomeState extends State<Home> {
           })]
               .target) {
             if (_exerciseCountMap.containsKey(target)) {
-              for (workoutModel.Sets sets in exercise.sets) {
-                _exerciseCountMap[target] = _exerciseCountMap[target]! + 1;
-              }
+              _exerciseCountMap[target] = _exerciseCountMap[target]! + 1;
             } else {
               _exerciseCountMap[target] = 0;
-              for (workoutModel.Sets sets in exercise.sets) {
-                _exerciseCountMap[target] = _exerciseCountMap[target]! + 1;
-              }
+              _exerciseCountMap[target] = _exerciseCountMap[target]! + 1;
             }
           }
         }
@@ -2372,83 +2460,6 @@ class _HomeState extends State<Home> {
         ],
         showingTooltipIndicators:
             _exerciseCountMap.values.elementAt(3 - i) != 0 ? [0] : [],
-      ));
-    }
-
-    return _countHistoryCardCore(
-        context,
-        _dateStringCase(_dateCtrl) + " 많은 세트를 한 부위는?",
-        thekey.toString() + "!",
-        "",
-        9999,
-        0,
-        _barChartGroupData);
-  }
-
-  Widget _countHistoryPartCountWidget(context) {
-    List<BarChartGroupData> _barChartGroupData = [];
-    var thevalue = 0;
-    var thekey = "운동을 시작해봐요";
-    _isbottomTitleEx = true;
-    _exerciseCountMapOdd = {"가슴": 0, "등": 0, "다리": 0, "어깨": 0};
-
-    _dateController(_dateCtrl);
-    double deviceWidth = MediaQuery.of(context).size.width;
-    if (_historydata != null) {
-      for (SDBdata sdbdata in _historydata) {
-        for (Exercises exercise in sdbdata.exercises) {
-          for (String target in _exercisesdataProvider
-              .exercisesdata
-              .exercises[_exercisesdataProvider.exercisesdata.exercises
-                  .indexWhere((ex) {
-            if (ex.name == exercise.name) {
-              return true;
-            } else {
-              return false;
-            }
-          })]
-              .target) {
-            if (_exerciseCountMapOdd.containsKey(target)) {
-              _exerciseCountMapOdd[target] = _exerciseCountMapOdd[target]! + 1;
-            } else {
-              _exerciseCountMapOdd[target] = 0;
-              _exerciseCountMapOdd[target] = _exerciseCountMapOdd[target]! + 1;
-            }
-          }
-        }
-      }
-    }
-    _exerciseCountMapOdd = Map.fromEntries(_exerciseCountMapOdd.entries.toList()
-      ..sort((e1, e2) => e2.value.compareTo(e1.value)));
-
-    _exerciseCountMapOdd.forEach((key, value) {
-      if (value > thevalue) {
-        thevalue = value;
-        thekey = key;
-      }
-    });
-
-    for (int i = 0; i < 4; i++) {
-      _barChartGroupData.add(BarChartGroupData(
-        x: i,
-        barRods: [
-          BarChartRodData(
-              toY: _exerciseCountMapOdd.values.elementAt(3 - i).toDouble(),
-              width: 12,
-              backDrawRodData: BackgroundBarChartRodData(
-                  show: _exerciseCountMapOdd.values.elementAt(3 - i) != 0
-                      ? false
-                      : true,
-                  toY: _exerciseCountMapOdd.values.elementAt(0) == 0
-                      ? 1
-                      : _exerciseCountMapOdd.values.elementAt(0).toDouble(),
-                  color: Theme.of(context).cardColor),
-              gradient: _barsGradient,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(6), topRight: Radius.circular(6)))
-        ],
-        showingTooltipIndicators:
-            _exerciseCountMapOdd.values.elementAt(3 - i) != 0 ? [0] : [],
       ));
     }
 
