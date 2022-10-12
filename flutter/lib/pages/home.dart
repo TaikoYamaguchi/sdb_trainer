@@ -56,6 +56,10 @@ class _HomeState extends State<Home> {
   var _timer;
   late List<BarChartGroupData> _cardCoreBarChartGroupData;
   var _isbottomTitleEx = false;
+
+  TextEditingController _userWeightController = TextEditingController(text: "");
+  TextEditingController _userWeightGoalController =
+      TextEditingController(text: "");
   Map<String, int> _exerciseCountMap = {
     "스쿼트": 0,
     "데드리프트": 0,
@@ -534,71 +538,79 @@ class _HomeState extends State<Home> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: deviceWidth * 0.3,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(4.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("몸무게",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600)),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4.0),
-                              child: Text(
-                                  "(" +
-                                      DateFormat('MM/dd')
-                                          .format(DateTime.parse(
-                                              _userdataProvider.userdata
-                                                  .bodyStats.last.date))
-                                          .toString() +
-                                      ")",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Color(0xFF717171),
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w600)),
+                Consumer<UserdataProvider>(builder: (builder, provider, child) {
+                  return GestureDetector(
+                    onTap: () {
+                      _displayBodyWeightDialog();
+                    },
+                    child: Container(
+                      width: deviceWidth * 0.3,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(4.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("몸무게",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600)),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 4.0),
+                                  child: Text(
+                                      "(" +
+                                          DateFormat('MM/dd')
+                                              .format(DateTime.parse(
+                                                  _userdataProvider.userdata
+                                                      .bodyStats.last.date))
+                                              .toString() +
+                                          ")",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Color(0xFF717171),
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w600)),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                                _userdataProvider.userdata.bodyStats.last.weight
+                          ),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                    _userdataProvider
+                                            .userdata.bodyStats.last.weight
+                                            .toString() +
+                                        _userdataProvider.userdata.weight_unit,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Color(0xFffc60a8),
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w600)),
+                              ]),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 6.0),
+                            child: Text(
+                                "목표 " +
+                                    _userdataProvider
+                                        .userdata.bodyStats.last.weight_goal
                                         .toString() +
                                     _userdataProvider.userdata.weight_unit,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    color: Color(0xFffc60a8),
-                                    fontSize: 24,
+                                    color: Color(0xFF717171),
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w600)),
-                          ]),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 6.0),
-                        child: Text(
-                            "목표 " +
-                                _userdataProvider
-                                    .userdata.bodyStats.last.weight_goal
-                                    .toString() +
-                                _userdataProvider.userdata.weight_unit,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Color(0xFF717171),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600)),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
+                    ),
+                  );
+                }),
                 Container(
                   width: deviceWidth * 0.6,
                   child: Column(mainAxisSize: MainAxisSize.min, children: [
@@ -2864,6 +2876,121 @@ class _HomeState extends State<Home> {
             ),
           )
         : Container();
+  }
+
+  void _displayBodyWeightDialog() {
+    _userWeightController = TextEditingController(
+        text: _userdataProvider.userdata.bodyStats.last.weight.toString());
+    _userWeightGoalController = TextEditingController(
+        text: _userdataProvider.userdata.bodyStats.last.weight_goal.toString());
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            buttonPadding: EdgeInsets.all(12.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            backgroundColor: Theme.of(context).cardColor,
+            contentPadding: EdgeInsets.all(12.0),
+            title: Text(
+              '몸무게를 기록 할 수 있어요',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('몸무게와 목표치를 바꿔보세요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 16)),
+                SizedBox(height: 20),
+                TextField(
+                  controller: _userWeightController,
+                  keyboardType: TextInputType.number,
+                  style: TextStyle(
+                    fontSize: 21,
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                      filled: true,
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      labelText: "몸무게",
+                      labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
+                      hintText: "몸무게",
+                      hintStyle:
+                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                  onChanged: (text) {},
+                ),
+                TextField(
+                  controller: _userWeightGoalController,
+                  keyboardType: TextInputType.number,
+                  style: TextStyle(
+                    fontSize: 21,
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                      filled: true,
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      labelText: "목표 몸무게",
+                      labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
+                      hintText: "목표 몸무게",
+                      hintStyle:
+                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                  onChanged: (text) {},
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    foregroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).primaryColor,
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                    disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+                    padding: EdgeInsets.all(12.0),
+                  ),
+                  child: Text('오늘 몸무게 기록하기',
+                      style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                  onPressed: () {
+                    _userdataProvider.setUserWeightAdd(
+                        _toDay.toString(),
+                        double.parse(_userWeightController.text),
+                        double.parse(_userWeightGoalController.text));
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                ),
+              ),
+            ],
+          );
+        });
   }
 
   Widget _homeGaugeChart(_exunique, index, color) {

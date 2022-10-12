@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
+import 'package:sdb_trainer/src/model/userdata.dart';
 
 class UserdataProvider extends ChangeNotifier {
   var _userdata;
@@ -67,6 +68,17 @@ class UserdataProvider extends ChangeNotifier {
 
   setUserKakaoName(state) {
     _userKakaoName = state;
+    notifyListeners();
+  }
+
+  setUserWeightAdd(date, weight, weightGoal) {
+    _userdata.bodyStats.add(BodyStat(
+        date: date,
+        weight: weight,
+        weight_goal: weightGoal,
+        height: _userdata.bodyStats.last.height,
+        height_goal: _userdata.bodyStats.last.height_goal));
+    UserBodyStatEdit(bodyStat: _userdata.bodyStats).patchUserBodyStat();
     notifyListeners();
   }
 

@@ -277,4 +277,6 @@ class ManageLikeFamous(BaseModel):
 class UserFCMTokenIn(BaseModel):
     fcm_token:str
 
+class UserBodyStatIn(BaseModel):
+    body_stats:t.Any
 

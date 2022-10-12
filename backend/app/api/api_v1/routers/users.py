@@ -4,11 +4,12 @@ import typing as t
 from app.db.session import get_db
 from app.db.crud import (
     edit_fcm_token,
+    edit_user_body_stat,
     get_user_by_email,
     get_users,
     manage_like_by_liked_email,
 )
-from app.db.schemas import UserCreate, User, ManageLikeUser, UserFCMTokenIn
+from app.db.schemas import UserBodyStatIn, UserCreate, User, ManageLikeUser, UserFCMTokenIn
 from app.core.auth import get_current_active_user, get_current_active_superuser, get_current_user
 
 
@@ -59,6 +60,20 @@ async def user_fcm_token(
     current_user=Depends(get_current_user)
 ):
     user = edit_fcm_token(db, fcm_token, current_user)
+    return user
+
+@r.patch(
+    "/user/bodystat",
+    response_model=User,
+    response_model_exclude_none=True,
+)
+async def user_patch_bodystat(
+    response: Response,
+    body_stats:UserBodyStatIn,
+    db=Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    user = edit_user_body_stat(db, body_stats, current_user)
     return user
 
 '''

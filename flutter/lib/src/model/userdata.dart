@@ -53,8 +53,12 @@ class User {
     var list = parsedJson['body_stats'].runtimeType == String
         ? json.decode(parsedJson['body_stats']) as List
         : parsedJson['body_stats'] as List;
-    List<BodyStat> bodyStats =
-        list.map((i) => BodyStat.fromJson(json.decode(i))).toList();
+
+    List<BodyStat> bodyStats = list
+        .map((i) => i.runtimeType == String
+            ? BodyStat.fromJson(json.decode(i))
+            : BodyStat.fromJson(i))
+        .toList();
     return User(
       id: parsedJson['id'],
       email: parsedJson['email'],
@@ -110,13 +114,23 @@ class BodyStat {
     required this.height,
     required this.height_goal,
   });
+
   factory BodyStat.fromJson(Map<String, dynamic> parsedJson) {
-    return new BodyStat(
+    return BodyStat(
       date: parsedJson["date"],
       weight: parsedJson["weight"].toDouble(),
       weight_goal: parsedJson["weight_goal"].toDouble(),
       height: parsedJson["height"].toDouble(),
       height_goal: parsedJson["height_goal"].toDouble(),
     );
+  }
+  Map toJson() {
+    return {
+      'date': date,
+      'weight': weight,
+      'weight_goal': weight_goal,
+      'height': height,
+      'height_goal': height_goal,
+    };
   }
 }
