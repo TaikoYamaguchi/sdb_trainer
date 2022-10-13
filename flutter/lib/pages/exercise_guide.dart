@@ -573,7 +573,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                 planlist();
 
               },
-              child: Text("내 플랜에 이 운동 추가하기",
+              child: Text("플랜에 운동 추가하기",
                   style: TextStyle(fontSize: 20.0, color: Colors.white)))),
     );
   }
