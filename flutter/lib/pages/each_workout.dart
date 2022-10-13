@@ -1317,9 +1317,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 return GestureDetector(
                   onTap: () {
                     setState(() {
-                      alreadyexist
-                          ? print("already")
-                          : _workoutdataProvider.addexAt(
+                           _workoutdataProvider.addexAt(
                               widget.rindex,
                               new wod.Exercises(
                                   name: exuniq[index].name,
@@ -1347,9 +1345,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                             exuniq[index].name,
                             style: TextStyle(
                                 fontSize: _isexsearch ? 14 : 21,
-                                color: alreadyexist
-                                    ? Color(0xFF101012)
-                                    : Colors.white),
+                                color: Colors.white),
                           ),
                         ],
                       ),

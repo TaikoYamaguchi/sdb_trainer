@@ -5,7 +5,9 @@ import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
+import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
+import 'package:sdb_trainer/src/model/workoutdata.dart' as wod;
 import 'package:sdb_trainer/src/utils/my_flexible_space_bar.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 
@@ -22,6 +24,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
   var btnDisabled;
   var _userdataProvider;
   var _exercisesdataProvider;
+  var _workoutdataProvider;
   TextEditingController _exercisenoteCtrl = TextEditingController(text: '');
   bool editing = false;
   var _exercises;
@@ -548,6 +551,180 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
         });
   }
 
+  Widget _Add_to_Plan_Button() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: TextButton(
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                foregroundColor: Theme.of(context).primaryColor,
+                backgroundColor: Theme.of(context).primaryColor,
+                textStyle: TextStyle(
+                  color: Colors.white,
+                ),
+                disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+                padding: EdgeInsets.all(12.0),
+              ),
+              onPressed: () {
+                planlist();
+
+              },
+              child: Text("내 플랜에 이 운동 추가하기",
+                  style: TextStyle(fontSize: 20.0, color: Colors.white)))),
+    );
+  }
+
+  void _editWorkoutCheck() async {
+    WorkoutEdit(
+        user_email: _userdataProvider.userdata.email,
+        id: _workoutdataProvider.workoutdata.id,
+        routinedatas: _workoutdataProvider.workoutdata.routinedatas)
+        .editWorkout()
+        .then((data) => data["user_email"] != null
+        ? [showToast("done!")]
+        : showToast("입력을 확인해주세요"));
+  }
+
+  Widget _MyWorkout() {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        color: Color(0xFF101012),
+      ),
+
+      child: ListView(
+        shrinkWrap: true,
+        children: [
+          Container(height: 10,),
+          Center(
+            child: Text('추가할 플랜을 선택하세요' ,style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold),
+            ),
+          ),
+          Text('외부를 터치하면 취소 할 수 있어요',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey, fontSize: 12)),
+          Container(height: 10,),
+          Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
+            final routinelist = provider.workoutdata.routinedatas.where((element){return element.mode == 0;}).toList();
+
+            return ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                itemBuilder: (BuildContext _context, int index) {
+                  return GestureDetector(
+                    onTap: () {
+                      _workoutdataProvider.addexAt(
+                          provider.workoutdata.routinedatas.indexWhere((e) => e.name == routinelist[index].name),
+                          new wod.Exercises(
+                              name: _exercisesdataProvider
+                                  .exercisesdata.exercises[widget.eindex].name,
+                              sets: wod.Setslist().setslist,
+                              rest: 0));
+                      _editWorkoutCheck();
+                      Navigator.of(context).pop();
+
+                    },
+                    child: Container(
+                      child: Column(
+                        children: [
+                          Card(
+                              color: Theme.of(context).cardColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0)),
+                              elevation: 8.0,
+                              margin: new EdgeInsets.symmetric(
+                                  horizontal: 0, vertical: 6.0),
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Theme.of(context).cardColor,
+                                      borderRadius:
+                                      BorderRadius.circular(15.0)),
+                                  child: ListTile(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 15, vertical: 5.0),
+                                      leading: Container(
+                                        height: double.infinity,
+                                        padding: EdgeInsets.only(right: 15.0),
+                                        decoration: new BoxDecoration(
+                                            border: new Border(
+                                                right: new BorderSide(
+                                                    width: 1.0,
+                                                    color: Colors.white24))),
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 8),
+                                          child: SizedBox(
+                                            width: 25,
+                                            child: SvgPicture.asset(
+                                                "assets/svg/dumbel_on.svg",
+                                                color: Colors.white30),
+                                          ),
+                                        )
+                                      ),
+                                      title: Text(
+                                        routinelist[index].name,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      subtitle: Row(
+                                        children: [
+                                          routinelist[index].mode == 0
+                                              ? Text(
+                                              "${routinelist[index].exercises.length}개 운동",
+                                              style: TextStyle(
+                                                  fontSize: 13,
+                                                  color: Colors.white30))
+                                              : Text("루틴 모드",
+                                              style: TextStyle(
+                                                  fontSize: 13,
+                                                  color: Colors.white30)),
+                                        ],
+                                      ),
+
+                                  ),
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+                itemCount: routinelist.length);
+          }),
+
+        ],
+      ),
+    );
+  }
+
+  void planlist() {
+    showModalBottomSheet<void>(
+      context: context,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      builder: (BuildContext context) {
+        return Container(
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              color: Color(0xFF101012),
+            ),
+            child: _MyWorkout()
+        );
+      },
+    );
+  }
+
   Widget _FinishConfirmButton() {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -585,6 +762,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
+    _workoutdataProvider =
+        Provider.of<WorkoutdataProvider>(context, listen: false);
     return Scaffold(
       body: _delete
           ? Container()
@@ -641,20 +820,28 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                   ),
                 ),
               ),
+
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, _index) {
-                    return Container(
-                      child: Column(
-                        children: [Status(), exercisenote()],
-                      ),
+                    return Column(
+                      children: [
+                        Container(
+                          child: Column(
+                            children: [Status(), exercisenote()],
+                          ),
+                        ),
+                      ],
                     );
                   },
                   childCount: 1,
                 ),
-              )
-            ]),
+              ),
+
+            ]
+      ),
       backgroundColor: Color(0xFF101012),
+      bottomNavigationBar: _Add_to_Plan_Button(),
     );
   }
 }

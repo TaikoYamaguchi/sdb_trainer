@@ -68,7 +68,7 @@ class ExerciseState extends State<Exercise> {
     ),
     1: Padding(
         child:
-            Text("나의 루틴", style: TextStyle(color: Colors.white, fontSize: 16)),
+            Text("나의 플랜", style: TextStyle(color: Colors.white, fontSize: 16)),
         padding: const EdgeInsets.all(5.0)),
     2: Padding(
         child:
@@ -323,20 +323,7 @@ class ExerciseState extends State<Exercise> {
                 },
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 itemBuilder: (BuildContext _context, int index) {
-                  if (routinelist.length == 1) {
-                    top = 20;
-                    bottom = 20;
-                  } else if (index == 0) {
-                    top = 20;
-                    bottom = 0;
-                  } else if (index == routinelist.length - 1) {
-                    top = 0;
-                    bottom = 20;
-                  } else {
-                    top = 0;
-                    bottom = 0;
-                  }
-                  ;
+
                   final List<Color> color = <Color>[];
                   color.add(Color(0xFffc60a8).withOpacity(1.0));
                   color.add(Theme.of(context).primaryColor.withOpacity(1.0));
@@ -475,7 +462,7 @@ class ExerciseState extends State<Exercise> {
                                                   style: TextStyle(
                                                       fontSize: 13,
                                                       color: Colors.white30))
-                                              : Text("프로그램 모드",
+                                              : Text("루틴 모드",
                                                   style: TextStyle(
                                                       fontSize: 13,
                                                       color: Colors.white30)),
@@ -529,10 +516,10 @@ class ExerciseState extends State<Exercise> {
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("운동 루틴을 만들어 보세요",
+                                Text("운동 플랜을 만들어 보세요",
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 18)),
-                                Text("원하는 이름, 종류의 루틴을 만들 수 있어요",
+                                Text("원하는 이름, 종류의 플랜을 만들 수 있어요",
                                     style: TextStyle(
                                         color: Colors.grey, fontSize: 14)),
                               ],
