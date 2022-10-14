@@ -33,6 +33,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
   var _customExUsed = false;
   var _delete = false;
   TextEditingController _customExNameCtrl = TextEditingController(text: "");
+  TextEditingController _workoutNameCtrl = TextEditingController(text: "");
 
   PreferredSizeWidget _appbarWidget() {
     btnDisabled = false;
@@ -701,6 +702,58 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                 },
                 itemCount: routinelist.length);
           }),
+          Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Container(
+                height: 80,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  //color: Theme.of(context).cardColor,
+                    borderRadius: BorderRadius.circular(15.0)),
+                child: Padding(
+                  padding: const EdgeInsets.all(1.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      _displayTextInputDialog();
+                    },
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 48,
+                            height: 48,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Theme.of(context).primaryColor),
+                            child: Icon(
+                              Icons.add,
+                              size: 28.0,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("운동 플랜을 만들어 보세요",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 18)),
+                                Text("원하는 이름, 종류의 플랜을 만들 수 있어요",
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 14)),
+                              ],
+                            ),
+                          )
+                        ]),
+                  ),
+                ),
+              ),
+            ),
+          )
 
         ],
       ),
@@ -723,6 +776,126 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
         );
       },
     );
+  }
+
+  void _displayTextInputDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          Color getColor(Set<MaterialState> states) {
+            const Set<MaterialState> interactiveStates = <MaterialState>{
+              MaterialState.pressed,
+            };
+            if (states.any(interactiveStates.contains)) {
+              return Theme.of(context).primaryColor;
+            }
+            return Color(0xFF101012);
+          }
+
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              buttonPadding: EdgeInsets.all(12.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              backgroundColor: Theme.of(context).cardColor,
+              contentPadding: EdgeInsets.all(12.0),
+              title: Text(
+                '운동 루틴을 추가 해볼게요',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('운동 루틴의 이름을 입력해 주세요',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 16)),
+                  Text('외부를 터치하면 취소 할 수 있어요',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.grey, fontSize: 12)),
+                  SizedBox(height: 20),
+                  TextField(
+                    onChanged: (value) {
+                      _workoutdataProvider.workoutdata.routinedatas
+                          .indexWhere((routine) {
+                        if (routine.name == _workoutNameCtrl.text) {
+                          setState(() {
+                            _customExUsed = true;
+                          });
+                          return true;
+                        } else {
+                          setState(() {
+                            _customExUsed = false;
+                          });
+                          return false;
+                        }
+                      });
+                    },
+                    style: TextStyle(fontSize: 24.0, color: Colors.white),
+                    textAlign: TextAlign.center,
+                    controller: _workoutNameCtrl,
+                    decoration: InputDecoration(
+                        filled: true,
+                        enabledBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).primaryColor, width: 3),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).primaryColor, width: 3),
+                        ),
+                        hintText: "운동 루틴 이름",
+                        hintStyle:
+                        TextStyle(fontSize: 24.0, color: Colors.white)),
+                  ),
+
+                ],
+              ),
+              actions: <Widget>[
+                _workoutSubmitButton(context),
+              ],
+            );
+          });
+        });
+  }
+
+  Widget _workoutSubmitButton(context) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor:
+              _workoutNameCtrl.text == "" || _customExUsed == true
+                  ? Color(0xFF212121)
+                  : Theme.of(context).primaryColor,
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
+            ),
+            onPressed: () {
+              if (!_customExUsed && _workoutNameCtrl.text != "") {
+                _workoutdataProvider.addroutine(new wod.Routinedatas(
+                    name: _workoutNameCtrl.text,
+                    mode: 0,
+                    exercises: [],
+                    routine_time: 0));
+                _editWorkoutCheck();
+                _workoutNameCtrl.clear();
+                Navigator.of(context, rootNavigator: true).pop();
+              }
+              ;
+            },
+            child: Text(_customExUsed == true ? "존재하는 루틴 이름" : "새 루틴 추가",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
   Widget _FinishConfirmButton() {
