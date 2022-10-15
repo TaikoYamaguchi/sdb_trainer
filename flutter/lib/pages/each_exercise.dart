@@ -1334,8 +1334,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 shrinkWrap: true,
                                 controller: _controller,
                                 itemBuilder: (BuildContext _context, int index) {
-                                  weightController[pindex].controllerlist[index].text= provider2.userdata.weight.toString();
-                                  provider.workoutdata.routinedatas[widget.rindex].exercises[pindex].sets[index].weight = provider2.userdata.weight;
+                                  weightController[pindex].controllerlist[index].text= provider2.userdata.bodyStats.last.weight.toString();
+                                  provider.workoutdata.routinedatas[widget.rindex].exercises[pindex].sets[index].weight = provider2.userdata.bodyStats.last.weight;
                                   return Container(
                                     padding: EdgeInsets.only(right: 10),
                                     child: Row(
@@ -1386,7 +1386,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                 "jjjjjjjjjjjjjj"),
                                                             weightController[pindex]
                                                                 .controllerlist
-                                                                .add(new TextEditingController(text: provider2.userdata.weight.toString())),
+                                                                .add(new TextEditingController(text: provider2.userdata.bodyStats.last.weight.toString())),
                                                             repsController[pindex]
                                                                 .controllerlist
                                                                 .add(new TextEditingController(text: null)),
@@ -1442,7 +1442,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                         pindex]
                                                             .controllerlist
                                                             .add(new TextEditingController(
-                                                            text: provider2.userdata.weight.toString())),
+                                                            text: provider2.userdata.bodyStats.last.weight.toString())),
                                                         repsController[
                                                         pindex]
                                                             .controllerlist
@@ -1651,7 +1651,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                       _workoutdataProvider.setsplus(
                                           widget.rindex, pindex);
                                       weightController[pindex].controllerlist.add(
-                                          new TextEditingController(text: provider2.userdata.weight.toString()));
+                                          new TextEditingController(text: provider2.userdata.bodyStats.last.weight.toString()));
                                       repsController[pindex].controllerlist.add(
                                           new TextEditingController(text: null));
                                     },

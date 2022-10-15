@@ -101,7 +101,7 @@ class _UserProfileState extends State<UserProfile> {
                         _userdataProvider.userdata.height.toString() +
                             _userdataProvider.userdata.height_unit +
                             "/" +
-                            _userdataProvider.userdata.weight.toString() +
+                            _userdataProvider.userdata.bodyStats.last.weight.toString() +
                             _userdataProvider.userdata.weight_unit,
                         style: TextStyle(color: Colors.white)),
                     Icon(Icons.chevron_right, color: Colors.white),

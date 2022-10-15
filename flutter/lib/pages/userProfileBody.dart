@@ -18,6 +18,7 @@ class _ProfileBodyState extends State<ProfileBody> {
   var _userHeightUnitCtrl = "cm";
   var _userHeightCtrl;
   var _userWeightCtrl;
+  DateTime _toDay = DateTime.now();
 
   final Map<String, Widget> _heightUnitList = const <String, Widget>{
     "cm": Padding(
@@ -52,7 +53,7 @@ class _ProfileBodyState extends State<ProfileBody> {
     _userHeightCtrl = TextEditingController(
         text: _userdataProvider.userdata.height.toString());
     _userWeightCtrl = TextEditingController(
-        text: _userdataProvider.userdata.weight.toString());
+        text: _userdataProvider.userdata.bodyStats.last.weight.toString());
 
     _userHeightCtrl.selection = TextSelection.fromPosition(
         TextPosition(offset: _userHeightCtrl.text.length));
@@ -222,7 +223,12 @@ class _ProfileBodyState extends State<ProfileBody> {
               disabledForegroundColor: Color(0xFF101012),
               padding: EdgeInsets.all(8.0),
             ),
-            onPressed: () => _editCheck(),
+            onPressed: () {
+              _userdataProvider.setUserWeightAdd(
+                  _toDay.toString(),
+                  double.parse(_userWeightCtrl.text),
+                  _userdataProvider.userdata.bodyStats.last.weight);
+            },
             child: Text(isLoading ? 'loggin in.....' : "프로필 수정",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
