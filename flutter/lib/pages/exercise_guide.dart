@@ -108,9 +108,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                         width: MediaQuery.of(context).size.width / 5,
                         child: Center(
                           child: Text(
-                              provier.exercisesdata.exercises[widget.eindex].target.length == 1
-                                  ? provier.exercisesdata.exercises[widget.eindex].target[0]
-                                  : '${provier.exercisesdata.exercises[widget.eindex].category}'
+                              '${provier.exercisesdata.exercises[widget.eindex].category}'
                               ,
                               style: TextStyle(color: Colors.white)),
                         ),
