@@ -2980,10 +2980,119 @@ class _HomeState extends State<Home> {
                   child: Text('오늘 몸무게 기록하기',
                       style: TextStyle(fontSize: 20.0, color: Colors.white)),
                   onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    _displayBodyWeightPushDialog(
+                        double.parse(_userWeightController.text),
+                        double.parse(_userWeightGoalController.text));
                     _userdataProvider.setUserWeightAdd(
                         _toDay.toString(),
                         double.parse(_userWeightController.text),
                         double.parse(_userWeightGoalController.text));
+                  },
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  void _displayBodyWeightPushDialog(_userWeight, _userGoal) {
+    var _weightChange = "";
+    var _weightSuccess = "";
+    print(_userWeight);
+    print(_userdataProvider.userdata.bodyStats.reversed.elementAt(1).weight);
+    print(_userdataProvider.userdata.bodyStats.last.weight);
+
+    print(_userWeight - _userdataProvider.userdata.bodyStats.last.weight);
+    if ((_userWeight - _userdataProvider.userdata.bodyStats.last.weight) > 0) {
+      _weightChange = "+" +
+          (_userWeight - _userdataProvider.userdata.bodyStats.last.weight)
+              .toStringAsFixed(1) +
+          "kg 증가했어요";
+      if (_userdataProvider.userdata.bodyStats.last.weight >
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "감량에 분발이 필요해요";
+      } else if (_userdataProvider.userdata.bodyStats.last.weight <
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "증량이 성공중 이에요";
+      } else if (_userdataProvider.userdata.bodyStats.last.weight ==
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "현재 몸무게를 유지해주세요";
+      }
+    } else if ((_userWeight -
+            _userdataProvider.userdata.bodyStats.last.weight) <
+        0) {
+      _weightChange = "" +
+          (_userWeight - _userdataProvider.userdata.bodyStats.last.weight)
+              .toStringAsFixed(1) +
+          "kg 감소했어요";
+      if (_userdataProvider.userdata.bodyStats.last.weight >
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "감량에 성공중 이에요";
+      } else if (_userdataProvider.userdata.bodyStats.last.weight <
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "증량에 분발이 필요해요";
+      } else if (_userdataProvider.userdata.bodyStats.last.weight ==
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "현재 몸무게를 유지해주세요";
+      }
+    } else {
+      _weightChange = "몸무게가 유지 되었어요";
+      if (_userdataProvider.userdata.bodyStats.last.weight >
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "감량에 분발이 필요해요";
+      } else if (_userdataProvider.userdata.bodyStats.last.weight <
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "증량에 분발이 필요해요";
+      } else if (_userdataProvider.userdata.bodyStats.last.weight ==
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "현재 몸무게를 유지해주세요";
+      }
+    }
+
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            buttonPadding: EdgeInsets.all(12.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            backgroundColor: Theme.of(context).cardColor,
+            contentPadding: EdgeInsets.all(12.0),
+            title: Text(
+              _weightChange,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(_weightSuccess,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 16)),
+                SizedBox(height: 20),
+              ],
+            ),
+            actions: <Widget>[
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    foregroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).primaryColor,
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                    disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+                    padding: EdgeInsets.all(12.0),
+                  ),
+                  child: Text('닫기',
+                      style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                  onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
                 ),
