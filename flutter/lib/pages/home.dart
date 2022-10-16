@@ -8,6 +8,7 @@ import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/src/model/historydata.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart' as exercisesModel;
+import 'package:sdb_trainer/src/model/userdata.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart' as workoutModel;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
@@ -26,6 +27,9 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'dart:async';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:math';
+import 'package:syncfusion_flutter_charts/charts.dart';
+
+import 'dart:ui' as ui;
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -80,11 +84,25 @@ class _HomeState extends State<Home> {
     "밀리터리프레스": 0
   };
 
+  late TooltipBehavior _tooltipBehavior;
+  late ZoomPanBehavior _zoomPanBehavior;
+
   DateTime _toDay = DateTime.now();
 
   @override
   void initState() {
     super.initState();
+    _tooltipBehavior = TooltipBehavior(enable: true);
+    _zoomPanBehavior = ZoomPanBehavior(
+        enablePinching: true,
+        enableDoubleTapZooming: true,
+        enableSelectionZooming: true,
+        selectionRectBorderColor: Colors.red,
+        selectionRectBorderWidth: 2,
+        selectionRectColor: Colors.grey,
+        enablePanning: true,
+        maximumZoomLevel: 0.7);
+
     Future.delayed(Duration(seconds: 30)).then((value) {
       _timer = Timer.periodic(Duration(seconds: 30), (Timer timer) {
         _historyCardIndexCtrl++;
@@ -2980,10 +2998,119 @@ class _HomeState extends State<Home> {
                   child: Text('오늘 몸무게 기록하기',
                       style: TextStyle(fontSize: 20.0, color: Colors.white)),
                   onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    _displayBodyWeightPushDialog(
+                        double.parse(_userWeightController.text),
+                        double.parse(_userWeightGoalController.text));
                     _userdataProvider.setUserWeightAdd(
                         _toDay.toString(),
                         double.parse(_userWeightController.text),
                         double.parse(_userWeightGoalController.text));
+                  },
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  void _displayBodyWeightPushDialog(_userWeight, _userGoal) {
+    var _weightChange = "";
+    var _weightSuccess = "";
+    print(_userWeight);
+    print(_userdataProvider.userdata.bodyStats.reversed.elementAt(1).weight);
+    print(_userdataProvider.userdata.bodyStats.last.weight);
+
+    print(_userWeight - _userdataProvider.userdata.bodyStats.last.weight);
+    if ((_userWeight - _userdataProvider.userdata.bodyStats.last.weight) > 0) {
+      _weightChange = "+" +
+          (_userWeight - _userdataProvider.userdata.bodyStats.last.weight)
+              .toStringAsFixed(1) +
+          "kg 증가했어요";
+      if (_userdataProvider.userdata.bodyStats.last.weight >
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "감량에 분발이 필요해요";
+      } else if (_userdataProvider.userdata.bodyStats.last.weight <
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "증량이 성공중 이에요";
+      } else if (_userdataProvider.userdata.bodyStats.last.weight ==
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "현재 몸무게를 유지해주세요";
+      }
+    } else if ((_userWeight -
+            _userdataProvider.userdata.bodyStats.last.weight) <
+        0) {
+      _weightChange = "" +
+          (_userWeight - _userdataProvider.userdata.bodyStats.last.weight)
+              .toStringAsFixed(1) +
+          "kg 감소했어요";
+      if (_userdataProvider.userdata.bodyStats.last.weight >
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "감량에 성공중 이에요";
+      } else if (_userdataProvider.userdata.bodyStats.last.weight <
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "증량에 분발이 필요해요";
+      } else if (_userdataProvider.userdata.bodyStats.last.weight ==
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "현재 몸무게를 유지해주세요";
+      }
+    } else {
+      _weightChange = "몸무게가 유지 되었어요";
+      if (_userdataProvider.userdata.bodyStats.last.weight >
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "감량에 분발이 필요해요";
+      } else if (_userdataProvider.userdata.bodyStats.last.weight <
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "증량에 분발이 필요해요";
+      } else if (_userdataProvider.userdata.bodyStats.last.weight ==
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "현재 몸무게를 유지해주세요";
+      }
+    }
+
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            buttonPadding: EdgeInsets.all(12.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            backgroundColor: Theme.of(context).cardColor,
+            contentPadding: EdgeInsets.all(12.0),
+            title: Text(
+              _weightChange,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(_weightSuccess,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 16)),
+                _chartWidget(context),
+              ],
+            ),
+            actions: <Widget>[
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    foregroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).primaryColor,
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                    disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+                    padding: EdgeInsets.all(12.0),
+                  ),
+                  child: Text('닫기',
+                      style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                  onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
                 ),
@@ -2991,6 +3118,91 @@ class _HomeState extends State<Home> {
             ],
           );
         });
+  }
+
+  Widget _chartWidget(context) {
+    final List<Color> color = <Color>[];
+    color.add(Color(0xFffc60a8).withOpacity(0.7));
+    color.add(Theme.of(context).primaryColor.withOpacity(0.9));
+    color.add(Theme.of(context).primaryColor.withOpacity(0.9));
+    color.add(Color(0xFffc60a8).withOpacity(0.7));
+
+    final List<double> stops = <double>[];
+    stops.add(0.0);
+    stops.add(0.4);
+    stops.add(0.6);
+    stops.add(1.0);
+
+    double deviceWidth = MediaQuery.of(context).size.width;
+
+    final LinearGradient gradientColors = LinearGradient(
+        colors: color,
+        stops: stops,
+        begin: Alignment.bottomCenter,
+        end: Alignment.topCenter);
+    return (Center(
+      child: Container(
+          width: deviceWidth * 2 / 3,
+          height: 200,
+          child: SfCartesianChart(
+              plotAreaBorderWidth: 0,
+              primaryXAxis: DateTimeAxis(
+                majorGridLines: const MajorGridLines(width: 0),
+                majorTickLines: const MajorTickLines(size: 0),
+                axisLine: const AxisLine(width: 0),
+              ),
+              primaryYAxis: NumericAxis(
+                  axisLine: const AxisLine(width: 0),
+                  majorTickLines: const MajorTickLines(size: 0),
+                  majorGridLines: const MajorGridLines(width: 0),
+                  minimum: _userdataProvider.userdata.bodyStats!.length == 0
+                      ? 0
+                      : _userdataProvider.userdata.bodyStats!.length > 1
+                          ? _userdataProvider.userdata.bodyStats!
+                              .reduce((BodyStat curr, BodyStat next) =>
+                                  curr.weight! < next.weight! ? curr : next)
+                              .weight
+                          : _userdataProvider.userdata.bodyStats![0].weight),
+              tooltipBehavior: _tooltipBehavior,
+              zoomPanBehavior: _zoomPanBehavior,
+              legend: Legend(
+                  isVisible: true,
+                  position: LegendPosition.bottom,
+                  textStyle: TextStyle(color: Colors.white)),
+              series: [
+                LineSeries<BodyStat, DateTime>(
+                  isVisibleInLegend: true,
+                  color: Colors.grey,
+                  name: "목표",
+                  dataSource: _userdataProvider.userdata.bodyStats!,
+                  xValueMapper: (BodyStat sales, _) =>
+                      DateTime.parse(sales.date!),
+                  yValueMapper: (BodyStat sales, _) => sales.weight_goal!,
+                ),
+                // Renders line chart
+                LineSeries<BodyStat, DateTime>(
+                  isVisibleInLegend: true,
+                  onCreateShader: (ShaderDetails details) {
+                    return ui.Gradient.linear(details.rect.topRight,
+                        details.rect.bottomLeft, color, stops);
+                  },
+                  markerSettings: MarkerSettings(
+                      isVisible: true,
+                      height: 6,
+                      width: 6,
+                      borderWidth: 3,
+                      color: Theme.of(context).primaryColor,
+                      borderColor: Theme.of(context).primaryColor),
+                  name: "몸무게",
+                  color: Theme.of(context).primaryColor,
+                  width: 5,
+                  dataSource: _userdataProvider.userdata.bodyStats!,
+                  xValueMapper: (BodyStat sales, _) =>
+                      DateTime.parse(sales.date!),
+                  yValueMapper: (BodyStat sales, _) => sales.weight!,
+                ),
+              ])),
+    ));
   }
 
   Widget _homeGaugeChart(_exunique, index, color) {
