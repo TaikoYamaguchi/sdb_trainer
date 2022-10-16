@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 class RoutineMenuStater extends ChangeNotifier {
   int _menustate = 1;
   int get menustate => _menustate;
+  bool _ispositive = true;
+  bool get ispositive => _ispositive;
   bool _ismodechecked = false;
   bool get ismodechecked => _ismodechecked;
   bool _plansetting = false;
@@ -11,6 +13,15 @@ class RoutineMenuStater extends ChangeNotifier {
   change(state) {
     _menustate = state;
     notifyListeners();
+  }
+
+  boolchange() {
+    _ispositive = !_ispositive;
+    notifyListeners();
+  }
+
+  boolchangeto(boolto) {
+    _ispositive = boolto;
   }
 
   planset() {
