@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
@@ -6,6 +7,7 @@ import 'package:sdb_trainer/pages/exercise_done.dart';
 import 'package:sdb_trainer/pages/exercise_guide.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
+import 'package:sdb_trainer/providers/routinemenu.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
@@ -46,6 +48,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   var _exercisesdataProvider;
   var _workoutdataProvider;
   var _routinetimeProvider;
+  var _routinemenuProvider;
   var _PopProvider;
   var _exercise;
   var _bodyStater;
@@ -53,6 +56,16 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   var _chartIndex;
   var _staticPageState;
   var _currentExindex;
+  final Map<int, Widget> _menuList = const <int, Widget>{
+    0: Padding(
+      child: Text("중량 추가", style: TextStyle(color: Colors.white, fontSize: 16)),
+      padding: const EdgeInsets.all(5.0),
+    ),
+    1: Padding(
+        child:
+        Text("중량 제거", style: TextStyle(color: Colors.white, fontSize: 16)),
+        padding: const EdgeInsets.all(5.0)),
+  };
   JustTheController tooltipController = new JustTheController();
   bool _isSetChanged = false;
   double top = 0;
@@ -60,6 +73,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   double? weight;
   int? reps;
   TextEditingController _resttimectrl = TextEditingController(text: "");
+  TextEditingController _additionalweightctrl = TextEditingController(text: "");
   List<Controllerlist> weightController = [];
   List<Controllerlist> repsController = [];
   PageController? controller;
@@ -1335,7 +1349,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 controller: _controller,
                                 itemBuilder: (BuildContext _context, int index) {
                                   weightController[pindex].controllerlist[index].text= provider2.userdata.bodyStats.last.weight.toString();
-                                  provider.workoutdata.routinedatas[widget.rindex].exercises[pindex].sets[index].weight = provider2.userdata.bodyStats.last.weight;
+                                  provider.workoutdata.routinedatas[widget.rindex].exercises[pindex].sets[index].index = provider2.userdata.bodyStats.last.weight;
                                   return Container(
                                     padding: EdgeInsets.only(right: 10),
                                     child: Row(
@@ -1490,49 +1504,18 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                 ),
                                                 Container(
                                                     width: 70,
-                                                    child: Text("${_sets[index].weight}",
-                                                        style: TextStyle(
-                                                          fontSize: 21,
-                                                          color: Colors.white,
-                                                        ))
-                                                  /*
-                                              TextField(
-                                                controller:
-                                                    weightController[pindex]
-                                                        .controllerlist[index],
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                style: TextStyle(
-                                                  fontSize: 21,
-                                                  color: Colors.white,
-                                                ),
-                                                textAlign: TextAlign.center,
-                                                decoration: InputDecoration(
-                                                  hintText:
-                                                      "${_sets[index].weight}",
-                                                  hintStyle: TextStyle(
-                                                    fontSize: 21,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                                onChanged: (text) {
-                                                  double changeweight;
-                                                  if (text == "") {
-                                                    changeweight = 0.0;
-                                                  } else {
-                                                    changeweight =
-                                                        double.parse(text);
-                                                  }
-                                                  _workoutdataProvider
-                                                      .weightcheck(
-                                                          widget.rindex,
-                                                          pindex,
-                                                          index,
-                                                          changeweight);
-                                                },
-                                              ),
+                                                    child: GestureDetector(
+                                                      onTap: (){
+                                                        _displaySetWeightAlert(pindex,index);
+                                                      },
+                                                      child: Text("${_sets[index].index+_sets[index].weight}",
+                                                          style: TextStyle(
+                                                            fontSize: 21,
+                                                            color: Colors.white,
+                                                          )
+                                                      ),
+                                                    )
 
-                                               */
                                                 ),
                                                 Container(
                                                     width: 35,
@@ -1582,7 +1565,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                     width: 70,
                                                     child: (_sets[index].reps != 1)
                                                         ? Text(
-                                                      "${(_sets[index].weight * (1 + _sets[index].reps / 30)).toStringAsFixed(1)}",
+                                                      "${((_sets[index].weight+_sets[index].index) * (1 + _sets[index].reps / 30)).toStringAsFixed(1)}",
                                                       style: TextStyle(
                                                           fontSize: 21,
                                                           color:
@@ -1591,7 +1574,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                       TextAlign.center,
                                                     )
                                                         : Text(
-                                                      "${_sets[index].weight}",
+                                                      "${_sets[index].weight+_sets[index].index}",
                                                       style: TextStyle(
                                                           fontSize: 21,
                                                           color:
@@ -1989,6 +1972,135 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         });
   }
 
+  void _displaySetWeightAlert(pindex, eindex) {
+    double input = _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises[pindex].sets[eindex].weight.abs();
+    _additionalweightctrl.text = _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises[pindex].sets[eindex].weight.abs().toString();
+    _routinemenuProvider.boolchangeto(_workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises[pindex].sets[eindex].weight < 0 ? false : true);
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            buttonPadding: EdgeInsets.all(12.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            backgroundColor: Theme.of(context).cardColor,
+            contentPadding: EdgeInsets.all(12.0),
+            title: Text(
+              '중량 추가/제거가 가능해요',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('추가/제거할 중량을 입력해주세요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                SizedBox(height: 20),
+                _posnegControllerWidget(),
+                SizedBox(
+                  width: 150,
+                  child: Consumer2<RoutineMenuStater, WorkoutdataProvider>(
+                      builder: (context, provider, provider2, child) {
+
+                      return TextField(
+
+                        controller: _additionalweightctrl,
+                        keyboardType: TextInputType.number,
+                        style: TextStyle(
+                          fontSize: 21,
+                          color: provider.ispositive ? Colors.white : Colors.red,
+                        ),
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                            isDense: true,
+                            prefixIcon:Text(provider.ispositive ? "+" : "-",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                  fontSize: 35,
+                                  color: provider.ispositive ? Colors.white : Colors.red,
+                                ),
+                            ),
+
+                            prefixIconConstraints: BoxConstraints(minWidth: 0, minHeight: 0),
+                            filled: true,
+                            enabledBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).primaryColor, width: 3),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).primaryColor, width: 3),
+                            ),
+                            hintText: "입력",
+                            hintStyle:
+                            TextStyle(fontSize: 21.0, color: provider.ispositive ? Colors.white : Colors.red)),
+                        onChanged: (text) {
+                          input = double.parse(text);
+
+
+                        },
+                      );
+                    }
+                  ),
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    foregroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).primaryColor,
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                    disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+                    padding: EdgeInsets.all(12.0),
+                  ),
+                  child: Text('중량 추가/제거 하기',
+                      style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                  onPressed: () {
+                    _workoutdataProvider.weightcheck(widget.rindex, pindex, eindex, _routinemenuProvider.ispositive ? input : -input);
+                    _editWorkoutwCheck();
+                    _additionalweightctrl.clear();
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  Widget _posnegControllerWidget() {
+    return SizedBox(
+      width: double.infinity,
+      child: Consumer<RoutineMenuStater>(builder: (context, provider, child) {
+        return Container(
+          color: Theme.of(context).cardColor,
+          child: CupertinoSlidingSegmentedControl(
+              groupValue: provider.ispositive ? 0 : 1,
+              children: _menuList,
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+              backgroundColor: Theme.of(context).cardColor,
+              thumbColor: provider.ispositive ? Theme.of(context).primaryColor : Colors.red,
+
+              onValueChanged: (i) {
+                provider.boolchange();
+              }),
+        );
+      }),
+    );
+  }
+
   void _displayStartAlert(pindex, sindex, newvalue) {
     showDialog(
         context: context,
@@ -2143,6 +2255,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         Provider.of<WorkoutdataProvider>(context, listen: false);
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
+    _routinemenuProvider =
+        Provider.of<RoutineMenuStater>(context, listen: false);
 
     _chartIndex = Provider.of<ChartIndexProvider>(context, listen: false);
 

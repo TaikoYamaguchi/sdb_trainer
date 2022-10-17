@@ -148,8 +148,7 @@ class WorkoutdataProvider extends ChangeNotifier {
 
   setsplus(rindex, eindex) {
     _workoutdata.routinedatas[rindex].exercises[eindex].sets.add(new Sets(
-        index:
-            _workoutdata.routinedatas[rindex].exercises[eindex].sets.length + 1,
+        index: 0.0,
         weight: 0.0,
         reps: 1,
         ischecked: false));

@@ -406,7 +406,8 @@ class _FeedCardState extends State<FeedCard> {
                                         color: Colors.grey,
                                         fontSize: 14,
                                       ),
-                                      textAlign: TextAlign.center))
+                                      textAlign: TextAlign.center)
+                              )
                             ],
                           ),
                         ),

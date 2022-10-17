@@ -200,7 +200,7 @@ class Exercises {
 }
 
 class Sets {
-  final int index;
+  double index;
   double weight;
   int reps;
   bool? ischecked;
@@ -213,7 +213,7 @@ class Sets {
       {"index": index, "weight": weight, "reps": reps, "ischecked": ischecked};
   factory Sets.fromJson(Map<String, dynamic> parsedJson) {
     return Sets(
-      index: parsedJson["index"],
+      index: parsedJson["index"].toDouble(),
       weight: parsedJson["weight"].toDouble(),
       reps: parsedJson["reps"],
       ischecked: parsedJson["ischecked"],
