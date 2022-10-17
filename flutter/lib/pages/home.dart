@@ -3017,11 +3017,6 @@ class _HomeState extends State<Home> {
   void _displayBodyWeightPushDialog(_userWeight, _userGoal) {
     var _weightChange = "";
     var _weightSuccess = "";
-    print(_userWeight);
-    print(_userdataProvider.userdata.bodyStats.reversed.elementAt(1).weight);
-    print(_userdataProvider.userdata.bodyStats.last.weight);
-
-    print(_userWeight - _userdataProvider.userdata.bodyStats.last.weight);
     if ((_userWeight - _userdataProvider.userdata.bodyStats.last.weight) > 0) {
       _weightChange = "+" +
           (_userWeight - _userdataProvider.userdata.bodyStats.last.weight)

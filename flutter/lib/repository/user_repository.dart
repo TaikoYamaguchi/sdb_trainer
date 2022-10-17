@@ -119,6 +119,8 @@ class UserSignUp {
   final String userImage;
   final bool userGender;
   final String password;
+
+  final List<BodyStat> bodyStats;
   UserSignUp(
       {required this.userEmail,
       required this.userName,
@@ -130,7 +132,8 @@ class UserSignUp {
       required this.userPhonenumber,
       required this.userImage,
       required this.userGender,
-      required this.password});
+      required this.password,
+      required this.bodyStats});
   Future<String> _userSignUpFromServer() async {
     var formData = new Map<String, dynamic>();
     formData["username"] = userName;
@@ -148,6 +151,7 @@ class UserSignUp {
     formData["like"] = [];
     formData["dislike"] = [];
     formData["favor_exercise"] = [];
+    formData["body_stats"] = bodyStats;
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/usercreate");
     var response = await http.post(url, body: json.encode(formData));

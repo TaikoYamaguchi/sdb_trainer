@@ -73,6 +73,7 @@ def create_user(db: Session, user: schemas.UserCreate):
         selfIntroduce="",
         history_cnt=0,
         comment_cnt=0,
+        body_stats=user.body_stats,
         hashed_password=hashed_password,
         created_at=datetime.datetime.utcnow()+datetime.timedelta(hours=9),
     )
@@ -83,15 +84,6 @@ def create_user(db: Session, user: schemas.UserCreate):
 
 def get_user_by_email(db: Session, email: str) -> schemas.UserBase:
     user=db.query(models.User).filter(models.User.email == email).first()
-    print(user.body_stats)
-    print("uessssssssssss")
-    if (user.body_stats == None):
-        setattr(user,"body_stats", [json.dumps({"date":(datetime.datetime.utcnow() + datetime.timedelta(hours=9)),"weight":user.weight,"weight_goal":user.weight,"height":user.height,"height_goal":user.height}, indent=4,sort_keys=True,default=str)])
-        db.add(user)
-        db.commit()
-        db.refresh((user))
-
-
     return user
 
 def get_user_by_nickname(db: Session, nickname: str) -> schemas.UserBase:

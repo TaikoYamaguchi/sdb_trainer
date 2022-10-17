@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sdb_trainer/pages/login.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
+import 'package:sdb_trainer/src/model/userdata.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:sdb_trainer/pages/home.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
@@ -1210,6 +1211,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
   void _signUpCheck() async {
     showToast("회원가입이 완료 중이니 기다려주세요");
+
+    DateTime _toDay = DateTime.now();
     UserSignUp(
             userEmail: _userEmailCtrl.text,
             userName: _userNameCtrl.text,
@@ -1221,6 +1224,14 @@ class _SignUpPageState extends State<SignUpPage> {
             userPhonenumber: _userPhoneNumberCtrl.text,
             userImage: _userImageCtrl.text,
             userGender: _userGenderCtrl,
+            bodyStats: [
+              BodyStat(
+                  date: _toDay.toString(),
+                  weight: double.parse(_userWeightCtrl.text),
+                  weight_goal: double.parse(_userWeightCtrl.text),
+                  height: double.parse(_userHeightCtrl.text),
+                  height_goal: double.parse(_userHeightCtrl.text))
+            ],
             password: _userPasswordCtrl.text)
         .signUpUser()
         .then((data) => data["username"] != null
