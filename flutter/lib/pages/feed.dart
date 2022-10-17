@@ -49,6 +49,8 @@ class _FeedState extends State<Feed> {
   var _final_history_id;
   var _hasMore = true;
 
+  final _isPageController = PageController(initialPage: 4242, keepPage: true);
+
   final binding = WidgetsFlutterBinding.ensureInitialized();
   @override
   void initState() {
@@ -114,32 +116,29 @@ class _FeedState extends State<Feed> {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
 
     return Scaffold(
-        backgroundColor: Color(0xFF101012),
-        extendBody: true,
-        appBar: AppBar(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("피드", style: TextStyle(color: Colors.white, fontSize: 25)),
-                TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          Transition(
-                              child: FeedFriend(),
-                              transitionEffect:
-                                  TransitionEffect.RIGHT_TO_LEFT));
-                    },
-                    child: Text("친구관리", style: TextStyle(color: Colors.white))),
-              ],
-            ),
-            backgroundColor: Color(0xFF101012)),
-        body: RefreshIndicator(
-          child: _userdataProvider.userdata != null
-              ? _feedCardList(context)
-              : Center(child: CircularProgressIndicator()),
-          onRefresh: _onRefresh,
-        ));
+      backgroundColor: Color(0xFF101012),
+      extendBody: true,
+      appBar: AppBar(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("피드", style: TextStyle(color: Colors.white, fontSize: 25)),
+              TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        Transition(
+                            child: FeedFriend(),
+                            transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+                  },
+                  child: Text("친구관리", style: TextStyle(color: Colors.white))),
+            ],
+          ),
+          backgroundColor: Color(0xFF101012)),
+      body: _userdataProvider.userdata != null
+          ? Center(child: _feedCardList(context))
+          : Center(child: CircularProgressIndicator()),
+    );
   }
 
   Future<void> _onRefresh() {
@@ -161,40 +160,53 @@ class _FeedState extends State<Feed> {
           child: Consumer<HistorydataProvider>(
               builder: (builder, provider, child) {
             _feedController(_feedListCtrl);
-            return ListView.separated(
-                controller: _pageController,
-                itemBuilder: (BuildContext _context, int index) {
-                  if (index < _historydata.length) {
-                    return Center(
-                        child: FeedCard(
-                            sdbdata: _historydata[index],
-                            index: index,
-                            feedListCtrl: _feedListCtrl));
-                  } else {
-                    _final_history_id = _historydata[index - 1].id;
-                    return Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      child: Center(
-                          child: _hasMore
-                              ? CircularProgressIndicator()
-                              : Text("데이터 없음",
-                                  style: TextStyle(color: Colors.white))),
-                    );
-                  }
+            return PageView.builder(
+                controller: _isPageController,
+                itemBuilder: (_, page) {
+                  return RefreshIndicator(
+                      onRefresh: _onRefresh,
+                      child: ListView.separated(
+                          controller: _pageController,
+                          itemBuilder: (BuildContext _context, int index) {
+                            if (index < _historydata.length) {
+                              return Center(
+                                  child: FeedCard(
+                                      sdbdata: _historydata[index],
+                                      index: index,
+                                      feedListCtrl: _feedListCtrl));
+                            } else {
+                              _final_history_id = _historydata[index - 1].id;
+                              return Padding(
+                                padding: EdgeInsets.symmetric(vertical: 16),
+                                child: Center(
+                                    child: _hasMore
+                                        ? CircularProgressIndicator()
+                                        : Text("데이터 없음",
+                                            style: TextStyle(
+                                                color: Colors.white))),
+                              );
+                            }
+                          },
+                          separatorBuilder: (BuildContext _context, int index) {
+                            return Container(
+                              alignment: Alignment.center,
+                              height: 0,
+                              color: Color(0xFF101012),
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 0,
+                                color: Color(0xFF717171),
+                              ),
+                            );
+                          },
+                          itemCount: _historydata.length + 1));
                 },
-                separatorBuilder: (BuildContext _context, int index) {
-                  return Container(
-                    alignment: Alignment.center,
-                    height: 0,
-                    color: Color(0xFF101012),
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 0,
-                      color: Color(0xFF717171),
-                    ),
-                  );
-                },
-                itemCount: _historydata.length + 1);
+                onPageChanged: (page) {
+                  setState(() {
+                    _feedListCtrl = (page % 3) + 1 as int;
+                    _feedController(_feedListCtrl);
+                  });
+                });
           }),
         ),
       ],

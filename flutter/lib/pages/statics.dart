@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sdb_trainer/pages/static_exercise.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
+import 'package:sdb_trainer/src/model/userdata.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -18,6 +19,7 @@ import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'dart:ui' as ui;
 
 class Calendar extends StatefulWidget {
@@ -33,7 +35,6 @@ class _CalendarState extends State<Calendar> {
   DateTime _selectedDay = DateTime.now();
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
   var _userdataProvider;
-  var _isChartWidget;
   var _chartIndex;
   late TooltipBehavior _tooltipBehavior;
   late ZoomPanBehavior _zoomPanBehavior;
@@ -43,6 +44,19 @@ class _CalendarState extends State<Calendar> {
   var _exercisesdataProvider;
 
   TextEditingController _eventController = TextEditingController();
+
+  final Map<int, Widget> _staticList = const <int, Widget>{
+    0: Padding(
+      child: Text("운동", style: TextStyle(color: Colors.white, fontSize: 16)),
+      padding: const EdgeInsets.all(5.0),
+    ),
+    1: Padding(
+        child: Text("달력", style: TextStyle(color: Colors.white, fontSize: 16)),
+        padding: const EdgeInsets.all(5.0)),
+    2: Padding(
+        child: Text("몸무게", style: TextStyle(color: Colors.white, fontSize: 16)),
+        padding: const EdgeInsets.all(5.0)),
+  };
 
   @override
   void initState() {
@@ -61,6 +75,28 @@ class _CalendarState extends State<Calendar> {
         maximumZoomLevel: 0.7);
     initialProviderGet();
     super.initState();
+  }
+
+  Widget _staticControllerWidget() {
+    return SizedBox(
+      width: double.infinity,
+      child: Consumer<ChartIndexProvider>(builder: (builder, provider, child) {
+        return Container(
+          color: Color(0xFF101012),
+          child: CupertinoSlidingSegmentedControl(
+              groupValue: provider.isPageController.hasClients
+                  ? provider.isPageController.page
+                  : provider.isPageController.initialPage,
+              children: _staticList,
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+              backgroundColor: Color(0xFF101012),
+              thumbColor: Theme.of(context).primaryColor,
+              onValueChanged: (i) {
+                provider.changePageController(i as int);
+              }),
+        );
+      }),
+    );
   }
 
   initialHistorydataGet() async {
@@ -163,16 +199,26 @@ class _CalendarState extends State<Calendar> {
   Widget _staticsPages() {
     return Consumer2<ChartIndexProvider, StaticPageProvider>(
         builder: (builder, provider1, provider2, child) {
-      return PageView(
-        controller: provider1.isPageController,
-        children: [_chartWidget(context), _staticsWidget()],
-        onPageChanged: (page) {
-          if (page == 1) {
-            _isChartWidget.change(false);
-          } else if (page == 0) {
-            _isChartWidget.change(true);
-          }
-        },
+      return Column(
+        children: [
+          _staticControllerWidget(),
+          SizedBox(height: 10),
+          Expanded(
+            child: PageView(
+              controller: provider1.isPageController,
+              children: [
+                _chartWidget(context),
+                _staticsWidget(),
+                _weightWidget()
+              ],
+              onPageChanged: (page) {
+                print(page);
+
+                _chartIndex.changePageController(page as int);
+              },
+            ),
+          ),
+        ],
       );
     });
   }
@@ -182,33 +228,99 @@ class _CalendarState extends State<Calendar> {
       title: Consumer2<ChartIndexProvider, StaticPageProvider>(
           builder: (builder, provider1, provider2, child) {
         return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              IconButton(
-                icon: _isChartWidget.isChartWidget
-                    ? SvgPicture.asset("assets/svg/chart_statics_on.svg",
-                        color: Theme.of(context).primaryColor)
-                    : SvgPicture.asset("assets/svg/chart_statics_off.svg"),
-                onPressed: () {
-                  _chartIndex.changePageController(0);
-                  _isChartWidget.change(true);
-                },
-              ),
-              SizedBox(width: 150),
-              IconButton(
-                icon: _isChartWidget.isChartWidget
-                    ? SvgPicture.asset("assets/svg/calendar_statics_off.svg")
-                    : SvgPicture.asset("assets/svg/calendar_statics_on.svg",
-                        color: Theme.of(context).primaryColor),
-                onPressed: () {
-                  _chartIndex.changePageController(1);
-                  _isChartWidget.change(false);
-                },
-              ),
-            ]);
+          children: [
+            Text("기록", style: TextStyle(color: Colors.white, fontSize: 25)),
+          ],
+        );
       }),
-      backgroundColor: Color(0xFF212121),
+      backgroundColor: Color(0xFF101012),
     );
+  }
+
+  Widget _weightWidget() {
+    final List<Color> color = <Color>[];
+    color.add(Color(0xFffc60a8).withOpacity(0.7));
+    color.add(Theme.of(context).primaryColor.withOpacity(0.9));
+    color.add(Theme.of(context).primaryColor.withOpacity(0.9));
+    color.add(Color(0xFffc60a8).withOpacity(0.7));
+
+    final List<double> stops = <double>[];
+    stops.add(0.0);
+    stops.add(0.4);
+    stops.add(0.6);
+    stops.add(1.0);
+
+    double deviceWidth = MediaQuery.of(context).size.width;
+
+    final LinearGradient gradientColors = LinearGradient(
+        colors: color,
+        stops: stops,
+        begin: Alignment.bottomCenter,
+        end: Alignment.topCenter);
+
+    return Consumer<UserdataProvider>(builder: (builder, provider, child) {
+      return (Container(
+          width: double.infinity,
+          height: 200,
+          child: SfCartesianChart(
+              plotAreaBorderWidth: 0,
+              primaryXAxis: DateTimeAxis(
+                majorGridLines: const MajorGridLines(width: 0),
+                majorTickLines: const MajorTickLines(size: 0),
+                axisLine: const AxisLine(width: 0),
+              ),
+              primaryYAxis: NumericAxis(
+                  axisLine: const AxisLine(width: 0),
+                  majorTickLines: const MajorTickLines(size: 0),
+                  majorGridLines: const MajorGridLines(width: 0),
+                  minimum: _userdataProvider.userdata.bodyStats!.length == 0
+                      ? 0
+                      : _userdataProvider.userdata.bodyStats!.length > 1
+                          ? _userdataProvider.userdata.bodyStats!
+                              .reduce((BodyStat curr, BodyStat next) =>
+                                  curr.weight! < next.weight! ? curr : next)
+                              .weight
+                          : _userdataProvider.userdata.bodyStats![0].weight),
+              tooltipBehavior: _tooltipBehavior,
+              zoomPanBehavior: _zoomPanBehavior,
+              legend: Legend(
+                  isVisible: true,
+                  position: LegendPosition.bottom,
+                  textStyle: TextStyle(color: Colors.white)),
+              series: [
+                LineSeries<BodyStat, DateTime>(
+                  isVisibleInLegend: true,
+                  color: Colors.grey,
+                  name: "목표",
+                  dataSource: _userdataProvider.userdata.bodyStats!,
+                  xValueMapper: (BodyStat sales, _) =>
+                      DateTime.parse(sales.date!),
+                  yValueMapper: (BodyStat sales, _) => sales.weight_goal!,
+                ),
+                // Renders line chart
+                LineSeries<BodyStat, DateTime>(
+                  isVisibleInLegend: true,
+                  onCreateShader: (ShaderDetails details) {
+                    return ui.Gradient.linear(details.rect.topRight,
+                        details.rect.bottomLeft, color, stops);
+                  },
+                  markerSettings: MarkerSettings(
+                      isVisible: true,
+                      height: 6,
+                      width: 6,
+                      borderWidth: 3,
+                      color: Theme.of(context).primaryColor,
+                      borderColor: Theme.of(context).primaryColor),
+                  name: "몸무게",
+                  color: Theme.of(context).primaryColor,
+                  width: 5,
+                  dataSource: _userdataProvider.userdata.bodyStats!,
+                  xValueMapper: (BodyStat sales, _) =>
+                      DateTime.parse(sales.date!),
+                  yValueMapper: (BodyStat sales, _) => sales.weight!,
+                ),
+              ])));
+    });
   }
 
   Widget _staticsWidget() {
@@ -881,7 +993,6 @@ class _CalendarState extends State<Calendar> {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     initializeDateFormatting('pt_BR', null);
     _chartIndex = Provider.of<ChartIndexProvider>(context, listen: false);
-    _isChartWidget = Provider.of<StaticPageProvider>(context, listen: false);
     _historydataProvider =
         Provider.of<HistorydataProvider>(context, listen: false);
     _exercisesdataProvider =
