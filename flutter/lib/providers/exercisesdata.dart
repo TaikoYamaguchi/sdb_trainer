@@ -31,6 +31,7 @@ class ExercisesdataProvider extends ChangeNotifier {
     '덤벨',
     '머신',
     '맨몸',
+    '유산소',
     '기타',
   ];
   List<String> options = [
