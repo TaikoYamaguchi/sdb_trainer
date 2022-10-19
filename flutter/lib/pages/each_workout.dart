@@ -1322,7 +1322,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                               new wod.Exercises(
                                   name: exuniq[index].name,
                                   sets: wod.Setslist().setslist,
-                                  rest: 0));
+                                  rest: 90));
                     });
                   },
                   child: Container(

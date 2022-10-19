@@ -626,7 +626,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                               name: _exercisesdataProvider
                                   .exercisesdata.exercises[widget.eindex].name,
                               sets: wod.Setslist().setslist,
-                              rest: 0));
+                              rest: 90));
                       _editWorkoutCheck();
                       Navigator.of(context).pop();
 
