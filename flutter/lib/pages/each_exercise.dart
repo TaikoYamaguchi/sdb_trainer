@@ -1810,11 +1810,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   void exguide(int eindex) {
     showModalBottomSheet<void>(
       context: context,
+      isScrollControlled: true,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (BuildContext context) {
         return Container(
-            height: MediaQuery.of(context).size.height,
+            height: MediaQuery.of(context).size.height*0.75,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               color: Colors.white,
