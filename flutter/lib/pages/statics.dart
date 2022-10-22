@@ -181,11 +181,14 @@ class _CalendarState extends State<Calendar> {
                 : false)
             .toList())
         .toList();
+    print(_sdbChartDataExample);
     for (int i = 0; i < _sdbChartDataExample.length; i++) {
       if (_sdbChartDataExample[i].isEmpty) {
         null;
       } else {
-        _sdbChartData!.add(_sdbChartDataExample[i][0]);
+        for (int k = 0; k < _sdbChartDataExample[i].length; k++) {
+          _sdbChartData!.add(_sdbChartDataExample[i][k]);
+        }
       }
     }
   }
@@ -212,8 +215,6 @@ class _CalendarState extends State<Calendar> {
                 _weightWidget()
               ],
               onPageChanged: (page) {
-                print(page);
-
                 _chartIndex.changePageController(page as int);
               },
             ),
@@ -434,6 +435,7 @@ class _CalendarState extends State<Calendar> {
     return Expanded(
       child: ListView.separated(
           itemBuilder: (BuildContext _context, int index) {
+            print(exercises);
             return _onechartExerciseWidget(
                 exercises[index], 0, _userdataProvider.userdata, true, index);
           },

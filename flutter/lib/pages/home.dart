@@ -759,41 +759,41 @@ class _HomeState extends State<Home> {
     switch (_realIndex) {
       case 0:
         _isbottomTitleEx = false;
-        return _countHistoryNoWidget(context);
+        return _countHistoryNoWidget(context, _realIndex);
       case 1:
         _isbottomTitleEx = false;
-        return _countHistoryDateWidget(context);
+        return _countHistoryDateWidget(context, _realIndex);
       case 2:
         _isbottomTitleEx = false;
-        return _countHistorySetWidget(context);
+        return _countHistorySetWidget(context, _realIndex);
       case 3:
         _isbottomTitleEx = false;
-        return _countHistoryWeightWidget(context);
+        return _countHistoryWeightWidget(context, _realIndex);
       case 4:
         _isbottomTitleEx = false;
-        return _countHistoryTimeWidget(context);
+        return _countHistoryTimeWidget(context, _realIndex);
       case 5:
         _isbottomTitleEx = true;
-        return _countHistoryExBestWidget(context);
+        return _countHistoryExBestWidget(context, _realIndex);
       case 6:
         _isbottomTitleEx = true;
-        return _countHistoryExSetsWidget(context);
+        return _countHistoryExSetsWidget(context, _realIndex);
       case 7:
         _isbottomTitleEx = true;
-        return _countHistoryExWeightWidget(context);
+        return _countHistoryExWeightWidget(context, _realIndex);
       case 8:
         _isbottomTitleEx = true;
-        return _countHistoryPartCountWidget(context);
+        return _countHistoryPartCountWidget(context, _realIndex);
       case 9:
         _isbottomTitleEx = true;
-        return _countHistoryPartSetWidget(context);
+        return _countHistoryPartSetWidget(context, _realIndex);
       case 10:
         _isbottomTitleEx = true;
-        return _countHistoryPartWeightWidget(context);
+        return _countHistoryPartWeightWidget(context, _realIndex);
 
       default:
         _isbottomTitleEx = false;
-        return _countHistoryNoWidget(context);
+        return _countHistoryNoWidget(context, 0);
     }
   }
 
@@ -964,30 +964,99 @@ class _HomeState extends State<Home> {
     );
   }
 
-  SideTitles _bottomExTitles() {
-    return SideTitles(
-        showTitles: true,
-        getTitlesWidget: (value, meta) {
-          String text = '';
-          switch (value.toInt()) {
-            case 0:
-              text = _exerciseCountMap.keys.elementAt(3 - value.toInt());
-              break;
-            case 1:
-              text = _exerciseCountMap.keys.elementAt(3 - value.toInt());
-              break;
-            case 2:
-              text = _exerciseCountMap.keys.elementAt(3 - value.toInt());
-              break;
-            case 3:
-              text = _exerciseCountMap.keys.elementAt(3 - value.toInt());
-              break;
-          }
-          return Text(text, style: TextStyle(fontSize: 12, color: Colors.grey));
-        });
+  SideTitles _bottomExTitles(_realIndex) {
+    if (_realIndex == 5 || _realIndex == 8) {
+      return SideTitles(
+          showTitles: true,
+          getTitlesWidget: (value, meta) {
+            String text = '';
+            switch (value.toInt()) {
+              case 0:
+                text = _exerciseCountMap.keys.elementAt(3 - value.toInt());
+                break;
+              case 1:
+                text = _exerciseCountMap.keys.elementAt(3 - value.toInt());
+                break;
+              case 2:
+                text = _exerciseCountMap.keys.elementAt(3 - value.toInt());
+                break;
+              case 3:
+                text = _exerciseCountMap.keys.elementAt(3 - value.toInt());
+                break;
+            }
+            return Text(text,
+                style: TextStyle(fontSize: 12, color: Colors.grey));
+          });
+    } else if (_realIndex == 6 || _realIndex == 9) {
+      return SideTitles(
+          showTitles: true,
+          getTitlesWidget: (value, meta) {
+            String text = '';
+            switch (value.toInt()) {
+              case 0:
+                text = _exerciseCountMapOdd.keys.elementAt(3 - value.toInt());
+                break;
+              case 1:
+                text = _exerciseCountMapOdd.keys.elementAt(3 - value.toInt());
+                break;
+              case 2:
+                text = _exerciseCountMapOdd.keys.elementAt(3 - value.toInt());
+                break;
+              case 3:
+                text = _exerciseCountMapOdd.keys.elementAt(3 - value.toInt());
+                break;
+            }
+            return Text(text,
+                style: TextStyle(fontSize: 12, color: Colors.grey));
+          });
+    } else if (_realIndex == 7 || _realIndex == 10) {
+      return SideTitles(
+          showTitles: true,
+          getTitlesWidget: (value, meta) {
+            String text = '';
+            switch (value.toInt()) {
+              case 0:
+                text = _exerciseCountMapThird.keys.elementAt(3 - value.toInt());
+                break;
+              case 1:
+                text = _exerciseCountMapThird.keys.elementAt(3 - value.toInt());
+                break;
+              case 2:
+                text = _exerciseCountMapThird.keys.elementAt(3 - value.toInt());
+                break;
+              case 3:
+                text = _exerciseCountMapThird.keys.elementAt(3 - value.toInt());
+                break;
+            }
+            return Text(text,
+                style: TextStyle(fontSize: 12, color: Colors.grey));
+          });
+    } else {
+      return SideTitles(
+          showTitles: true,
+          getTitlesWidget: (value, meta) {
+            String text = '';
+            switch (value.toInt()) {
+              case 0:
+                text = _exerciseCountMapThird.keys.elementAt(3 - value.toInt());
+                break;
+              case 1:
+                text = _exerciseCountMapThird.keys.elementAt(3 - value.toInt());
+                break;
+              case 2:
+                text = _exerciseCountMapThird.keys.elementAt(3 - value.toInt());
+                break;
+              case 3:
+                text = _exerciseCountMapThird.keys.elementAt(3 - value.toInt());
+                break;
+            }
+            return Text(text,
+                style: TextStyle(fontSize: 12, color: Colors.grey));
+          });
+    }
   }
 
-  Widget _countHistoryNoWidget(context) {
+  Widget _countHistoryNoWidget(context, _realIndex) {
     var _historyDate = [];
     List<double> _chartData = [];
     var _chartDataBest;
@@ -1188,10 +1257,11 @@ class _HomeState extends State<Home> {
         " 운동했어요!",
         2,
         40,
+        _realIndex,
         _barChartGroupData);
   }
 
-  Widget _countHistoryDateWidget(context) {
+  Widget _countHistoryDateWidget(context, _realIndex) {
     var _historyDate = <DuplicateHistoryDate>{};
     List<BarChartGroupData> _barChartGroupData = [];
     _dateController(_dateCtrl);
@@ -1394,10 +1464,11 @@ class _HomeState extends State<Home> {
         " 운동했어요!",
         2,
         40,
+        _realIndex,
         _barChartGroupData);
   }
 
-  Widget _countHistorySetWidget(context) {
+  Widget _countHistorySetWidget(context, _realIndex) {
     List<BarChartGroupData> _barChartGroupData = [];
     _dateController(_dateCtrl);
     List<double> _chartData = [];
@@ -1614,11 +1685,18 @@ class _HomeState extends State<Home> {
         break;
     }
 
-    return _countHistoryCardCore(context, _dateStringCase(_dateCtrl),
-        _historySet.toString() + "세트", " 수행했어요!", 2, 40, _barChartGroupData);
+    return _countHistoryCardCore(
+        context,
+        _dateStringCase(_dateCtrl),
+        _historySet.toString() + "세트",
+        " 수행했어요!",
+        2,
+        40,
+        _realIndex,
+        _barChartGroupData);
   }
 
-  Widget _countHistoryWeightWidget(context) {
+  Widget _countHistoryWeightWidget(context, _realIndex) {
     var _historyWeight = 0;
     List<BarChartGroupData> _barChartGroupData = [];
     List<double> _chartData = [];
@@ -1847,10 +1925,11 @@ class _HomeState extends State<Home> {
         " 들었어요!",
         2,
         40,
+        _realIndex,
         _barChartGroupData);
   }
 
-  Widget _countHistoryTimeWidget(context) {
+  Widget _countHistoryTimeWidget(context, _realIndex) {
     var _historyTime = 0;
     List<BarChartGroupData> _barChartGroupData = [];
     List<double> _chartData = [];
@@ -2043,11 +2122,18 @@ class _HomeState extends State<Home> {
         break;
     }
 
-    return _countHistoryCardCore(context, _dateStringCase(_dateCtrl),
-        _historyTime.toString() + "분", "운동했어요!", 2, 40, _barChartGroupData);
+    return _countHistoryCardCore(
+        context,
+        _dateStringCase(_dateCtrl),
+        _historyTime.toString() + "분",
+        "운동했어요!",
+        2,
+        40,
+        _realIndex,
+        _barChartGroupData);
   }
 
-  Widget _countHistoryExBestWidget(context) {
+  Widget _countHistoryExBestWidget(context, _realIndex) {
     List<BarChartGroupData> _barChartGroupData = [];
     var thevalue = 0;
     var thekey = "운동을 시작해봐요";
@@ -2109,10 +2195,11 @@ class _HomeState extends State<Home> {
         "",
         9999,
         0,
+        _realIndex,
         _barChartGroupData);
   }
 
-  Widget _countHistoryExSetsWidget(context) {
+  Widget _countHistoryExSetsWidget(context, _realIndex) {
     List<BarChartGroupData> _barChartGroupData = [];
     var thevalue = 0;
     var thekey = "운동을 시작해봐요";
@@ -2180,10 +2267,11 @@ class _HomeState extends State<Home> {
         "",
         9999,
         0,
+        _realIndex,
         _barChartGroupData);
   }
 
-  Widget _countHistoryExWeightWidget(context) {
+  Widget _countHistoryExWeightWidget(context, _realIndex) {
     List<BarChartGroupData> _barChartGroupData = [];
     var thevalue = 0;
     var thekey = "운동을 시작해봐요";
@@ -2254,10 +2342,11 @@ class _HomeState extends State<Home> {
         "",
         9999,
         0,
+        _realIndex,
         _barChartGroupData);
   }
 
-  Widget _countHistoryPartWeightWidget(context) {
+  Widget _countHistoryPartWeightWidget(context, _realIndex) {
     List<BarChartGroupData> _barChartGroupData = [];
     var thevalue = 0;
     var thekey = "운동을 시작해봐요";
@@ -2340,10 +2429,11 @@ class _HomeState extends State<Home> {
         "",
         9999,
         0,
+        _realIndex,
         _barChartGroupData);
   }
 
-  Widget _countHistoryPartSetWidget(context) {
+  Widget _countHistoryPartSetWidget(context, _realIndex) {
     List<BarChartGroupData> _barChartGroupData = [];
     var thevalue = 0;
     var thekey = "운동을 시작해봐요";
@@ -2423,10 +2513,11 @@ class _HomeState extends State<Home> {
         "",
         9999,
         0,
+        _realIndex,
         _barChartGroupData);
   }
 
-  Widget _countHistoryPartCountWidget(context) {
+  Widget _countHistoryPartCountWidget(context, _realIndex) {
     List<BarChartGroupData> _barChartGroupData = [];
     var thevalue = 0;
     var thekey = "운동을 시작해봐요";
@@ -2500,6 +2591,7 @@ class _HomeState extends State<Home> {
         "",
         9999,
         0,
+        _realIndex,
         _barChartGroupData);
   }
 
@@ -2533,6 +2625,7 @@ class _HomeState extends State<Home> {
       _histroySideText,
       int _devicePaddingWidth,
       int _devicePaddingWidthAdd,
+      int _realIndex,
       List<BarChartGroupData> _barChartGroupData) {
     double deviceWidth = MediaQuery.of(context).size.width;
     return Card(
@@ -2609,7 +2702,7 @@ class _HomeState extends State<Home> {
                                 ),
                                 bottomTitles: AxisTitles(
                                     sideTitles: _isbottomTitleEx
-                                        ? _bottomExTitles()
+                                        ? _bottomExTitles(_realIndex)
                                         : _bottomTitles())),
                             alignment: BarChartAlignment.spaceAround,
                             borderData: FlBorderData(show: false),
