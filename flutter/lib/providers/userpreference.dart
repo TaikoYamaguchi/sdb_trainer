@@ -74,4 +74,12 @@ class PrefsProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  lastplan(value) async {
+    _prefs = await SharedPreferences.getInstance();
+    await _prefs.setString('lastroutine', value);
+    notifyListeners();
+
+  }
+
 }

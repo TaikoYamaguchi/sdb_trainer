@@ -10,6 +10,7 @@ import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/routinemenu.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
+import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
@@ -51,7 +52,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   var _workoutdataProvider;
   var _routinetimeProvider;
   var _routinemenuProvider;
-  var _PopProvider;
+  var _prefsProvider;
   var _exercise;
   var _bodyStater;
   var _exercises;
@@ -2870,7 +2871,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises;
     for (int n = 0; n < exercise_all.length; n++) {
       var recordedsets = exercise_all[n].sets.where((sets) {
-        return (sets.ischecked);
+        return (sets.ischecked as bool);
       }).toList();
       double monerm = 0;
       for (int i = 0; i < recordedsets.length; i++) {
@@ -2921,7 +2922,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               sdbdata: hisdata.SDBdata.fromJson(data)),
                           transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
                   _routinetimeProvider.routinecheck(widget.rindex),
-                  _routinetimeProvider.getprefs(_workoutdataProvider
+                  _prefsProvider.lastplan(_workoutdataProvider
                       .workoutdata.routinedatas[widget.rindex].name),
                   _historydataProvider.getdata(),
                   _historydataProvider.getHistorydataAll(),
@@ -2965,8 +2966,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _exercises = _exercisesdataProvider.exercisesdata.exercises;
     _staticPageState = Provider.of<StaticPageProvider>(context, listen: false);
-    _PopProvider = Provider.of<PopProvider>(context, listen: false);
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
+    _prefsProvider = Provider.of<PrefsProvider>(context, listen: false);
 
     return Scaffold(
         appBar: _appbarWidget(),
