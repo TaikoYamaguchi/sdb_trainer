@@ -88,6 +88,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                   ? provier.exercisesdata.exercises[widget.eindex].target[0]
                                   : '${provier.exercisesdata.exercises[widget.eindex].target.toString().substring(1,provier.exercisesdata.exercises[widget.eindex].target.toString().length-1)}'
                               ,
+                              textAlign: TextAlign.center,
                               style: TextStyle(color: Colors.white)),
                         ),
                       ),
