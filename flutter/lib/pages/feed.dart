@@ -202,6 +202,8 @@ class _FeedState extends State<Feed> {
                           itemCount: _historydata.length + 1));
                 },
                 onPageChanged: (page) {
+                  print(page);
+                  print((page % 3) + 1);
                   setState(() {
                     _feedListCtrl = (page % 3) + 1 as int;
                     _feedController(_feedListCtrl);
@@ -225,8 +227,11 @@ class _FeedState extends State<Feed> {
             backgroundColor: Color(0xFF101012),
             thumbColor: Theme.of(context).primaryColor,
             onValueChanged: (i) {
+              print(i);
               setState(() {
                 _feedListCtrl = i as int;
+
+                _isPageController.jumpToPage(4241 + i);
                 _feedController(_feedListCtrl);
               });
             }),
