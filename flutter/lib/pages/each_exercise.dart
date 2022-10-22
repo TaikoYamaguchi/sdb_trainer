@@ -1513,11 +1513,13 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                       onTap: (){
                                                         _displaySetWeightAlert(pindex,index);
                                                       },
-                                                      child: Text("${_sets[index].index+_sets[index].weight}",
-                                                          style: TextStyle(
-                                                            fontSize: 21,
-                                                            color: Colors.white,
-                                                          )
+                                                      child: Center(
+                                                        child: Text("${_sets[index].index+_sets[index].weight}",
+                                                            style: TextStyle(
+                                                              fontSize: 21,
+                                                              color: Colors.white,
+                                                            )
+                                                        ),
                                                       ),
                                                     )
 
@@ -2868,7 +2870,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises;
     for (int n = 0; n < exercise_all.length; n++) {
       var recordedsets = exercise_all[n].sets.where((sets) {
-        return (sets.ischecked as bool && sets.weight != 0);
+        return (sets.ischecked);
       }).toList();
       double monerm = 0;
       for (int i = 0; i < recordedsets.length; i++) {
