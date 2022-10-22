@@ -109,7 +109,7 @@ class ProgramPost {
   final String image;
   final Routinedatas routinedata;
   final int level;
-  final int category;
+  final List<dynamic> category;
   ProgramPost({
     required this.user_email,
     required this.type,

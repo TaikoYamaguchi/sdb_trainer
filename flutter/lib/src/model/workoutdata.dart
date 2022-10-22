@@ -57,7 +57,7 @@ class Famous {
   final List<dynamic> dislike;
   final int level;
   final int subscribe;
-  final int category;
+  final List<dynamic> category;
 
   Famous({
     required this.id,

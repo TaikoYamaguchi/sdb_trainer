@@ -111,4 +111,4 @@ class Famous(Base):
     dislike = Column(MutableList.as_mutable(ARRAY(String)))
     level = Column(Integer, nullable=True)
     subscribe = Column(Integer, nullable=True)
-    category = Column(Integer, nullable=True)
+    category = Column(MutableList.as_mutable(ARRAY(String)))

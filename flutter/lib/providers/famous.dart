@@ -10,10 +10,21 @@ class FamousdataProvider extends ChangeNotifier {
   get download => _download;
   var _week = 0;
   get week => _week;
+  List<String> _tags =[];
+  get tags => _tags;
 
   weekchangepre(index) {
     _week = index;
     _download.routinedata.exercises[0].progress = index * 7;
+  }
+
+  settags(item) async {
+    _tags = item;
+    notifyListeners();
+  }
+
+  emptytags() async {
+    _tags = [];
   }
 
   weekchange(index) {

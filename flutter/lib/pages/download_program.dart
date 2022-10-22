@@ -120,7 +120,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(item_map2[widget.program.category],
+                            Text(widget.program.category.toString(),
                                 style: TextStyle(
                                     fontSize: 15.0,
                                     color: Theme.of(context).primaryColor,

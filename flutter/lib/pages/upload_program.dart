@@ -1,5 +1,7 @@
+import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
@@ -49,7 +51,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
   Map item_map = {"뉴비": 0, "초급": 1, '중급': 2, '상급': 3, '엘리트': 4};
 
   List<String> items2 = ['기타', '근비대', '근력', '근지구력', '바디빌딩', '파워리프팅', '역도'];
-  var selectedItem2 = '기타';
+  List<String> selectedItem2 = [];
   Map item_map2 = {
     "기타": 0,
     "근비대": 1,
@@ -193,6 +195,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
                               color: Colors.white,
                               fontWeight: FontWeight.bold)),
                     ),
+                    /*
                     SizedBox(
                         width: MediaQuery.of(context).size.width * 2 / 5,
                         child: DropdownButtonFormField(
@@ -230,10 +233,14 @@ class _ProgramUploadState extends State<ProgramUpload> {
                               .toList(),
                           onChanged: (item) =>
                               setState(() => selectedItem2 = item as String),
-                        )),
+                        )
+                    ),
+
+                     */
                   ],
                 ),
               ),
+              pulposechip(),
               Container(
                 padding: const EdgeInsets.all(12.0),
                 alignment: Alignment.centerLeft,
@@ -441,6 +448,37 @@ class _ProgramUploadState extends State<ProgramUpload> {
         });
   }
 
+  Widget pulposechip() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      color: Color(0xFF101012),
+      child:
+      Consumer<FamousdataProvider>(builder: (context, provider, child) {
+        return ChipsChoice<String>.multiple(
+          value: provider.tags,
+          onChanged: (val) {
+            provider.settags(val);
+          },
+          choiceItems: C2Choice.listFrom<String, String>(
+            source: items2,
+            value: (i, v) => v,
+            label: (i, v) => v,
+            tooltip: (i, v) => v,
+          ),
+          wrapped: true,
+          choiceStyle: const C2ChoiceStyle(
+            color: Color(0xff40434e),
+            appearance: C2ChipType.elevated,
+          ),
+          choiceActiveStyle: const C2ChoiceStyle(
+            color: Color(0xff7a28cb),
+            appearance: C2ChipType.elevated,
+          ),
+        );
+      }),
+    );
+  }
+
   Widget _exercise_Done_Button() {
     return Padding(
       padding: const EdgeInsets.all(12.0),
@@ -474,7 +512,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
                   type: 0,
                   user_email: _userdataProvider.userdata.email,
                   level: item_map[selectedItem],
-                  category: item_map2[selectedItem2],
+                  category: _famousdataProvider.tags,
                 ).postProgram().then((data) => {
                       if (_selectImage != null)
                         {
@@ -491,6 +529,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
                           _famousdataProvider.getdata(),
                         },
                     });
+                _famousdataProvider.emptytags();
 
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
