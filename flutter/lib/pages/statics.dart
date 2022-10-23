@@ -43,6 +43,7 @@ class _CalendarState extends State<Calendar> {
   var _historydataProvider;
   var _exercisesdataProvider;
   TextEditingController _exSearchCtrl = TextEditingController(text: "");
+  TextEditingController _exCalendarSearchCtrl = TextEditingController(text: "");
 
   TextEditingController _eventController = TextEditingController();
 
@@ -148,7 +149,8 @@ class _CalendarState extends State<Calendar> {
   List<SDBdata> _getEventsfromDay(DateTime date) {
     String date_calendar = DateFormat('yyyy-MM-dd').format(date);
     selectedEvents = {};
-    if (_historydataProvider.historydata != null) {
+    if (_historydataProvider.historydata != null &&
+        _chartIndex.staticIndex == 0) {
       for (int i = 0;
           i < _historydataProvider.historydata!.sdbdatas.length;
           i++) {
@@ -165,7 +167,49 @@ class _CalendarState extends State<Calendar> {
           }
         }
       }
-    } else {}
+    } else if (_historydataProvider.historydata != null &&
+        _chartIndex.staticIndex != 0) {
+      for (int i = 0;
+          i < _historydataProvider.historydata!.sdbdatas.length;
+          i++) {
+        if (_historydataProvider.historydata!.sdbdatas[i].date!
+                .substring(0, 10) ==
+            date_calendar) {
+          if (selectedEvents[date] != null) {
+            if (_historydataProvider.historydata!.sdbdatas[i].exercises
+                    .indexWhere((exercise) {
+                  if (exercise.name ==
+                      _exercisesdataProvider.exercisesdata!
+                          .exercises[_chartIndex.staticIndex - 1].name) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                }) !=
+                -1) {
+              selectedEvents[date]!
+                  .add(_historydataProvider.historydata!.sdbdatas[i]);
+            }
+          } else {
+            if (_historydataProvider.historydata!.sdbdatas[i].exercises
+                    .indexWhere((exercise) {
+                  if (exercise.name ==
+                      _exercisesdataProvider.exercisesdata!
+                          .exercises[_chartIndex.staticIndex - 1].name) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                }) !=
+                -1) {
+              selectedEvents[date] = [
+                _historydataProvider.historydata!.sdbdatas[i]
+              ];
+            }
+          }
+        }
+      }
+    }
     return selectedEvents[date] ?? [];
   }
 
@@ -226,6 +270,75 @@ class _CalendarState extends State<Calendar> {
     });
   }
 
+  Widget _appbarSearchWidget(provider1) {
+    switch (provider1.isPageController.page) {
+      case 0:
+        return Container(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(10, 16, 10, 16),
+            child: TextField(
+                controller: _exSearchCtrl,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(0),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  hintText: "운동 검색",
+                  hintStyle: TextStyle(fontSize: 20.0, color: Colors.white),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 2, color: Theme.of(context).cardColor),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Theme.of(context).primaryColor, width: 2.0),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+                onChanged: (text) {
+                  setState(() {});
+                }),
+          ),
+        );
+      case 1:
+        return Container(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(10, 16, 10, 16),
+            child: TextField(
+                controller: _exCalendarSearchCtrl,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(0),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  hintText: "운동 검색",
+                  hintStyle: TextStyle(fontSize: 20.0, color: Colors.white),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 2, color: Theme.of(context).cardColor),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Theme.of(context).primaryColor, width: 2.0),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+                onChanged: (text) {
+                  setState(() {});
+                }),
+          ),
+        );
+      default:
+        return Container();
+    }
+  }
+
   PreferredSizeWidget _appbarWidget() {
     return AppBar(
       title: Consumer2<ChartIndexProvider, StaticPageProvider>(
@@ -233,43 +346,7 @@ class _CalendarState extends State<Calendar> {
         return Row(
           children: [
             Text("기록", style: TextStyle(color: Colors.white, fontSize: 25)),
-            provider1.isPageController.page != 2
-                ? Expanded(
-                    child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 16, 10, 16),
-                        child: TextField(
-                            controller: _exSearchCtrl,
-                            style: TextStyle(color: Colors.white),
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.all(0),
-                              prefixIcon: Icon(
-                                Icons.search,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                              hintText: "운동 검색",
-                              hintStyle: TextStyle(
-                                  fontSize: 20.0, color: Colors.white),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 2,
-                                    color: Theme.of(context).cardColor),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Theme.of(context).primaryColor,
-                                    width: 2.0),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                            ),
-                            onChanged: (text) {
-                              setState(() {});
-                            }),
-                      ),
-                    ),
-                  )
-                : Container()
+            Expanded(child: _appbarSearchWidget(provider1))
           ],
         );
       }),
@@ -366,78 +443,89 @@ class _CalendarState extends State<Calendar> {
   Widget _staticsWidget() {
     return Consumer<HistorydataProvider>(builder: (builder, provider, child) {
       return Column(children: [
-        TableCalendar(
-          firstDay: DateTime(1990),
-          lastDay: DateTime(2050),
-          focusedDay: _focusedDay,
-          calendarFormat: _calendarFormat,
-          daysOfWeekVisible: true,
-          selectedDayPredicate: (day) {
-            return isSameDay(_selectedDay, day);
-          },
-          eventLoader: _getEventsfromDay,
-          onDaySelected: (selectedDay, focusedDay) {
-            if (!isSameDay(_selectedDay, selectedDay)) {
-              setState(() {
-                _selectedDay = selectedDay;
-                _focusedDay = focusedDay;
-              });
-            }
-          },
-          onFormatChanged: (format) {
-            if (_calendarFormat != format) {
-              setState(() {
-                _calendarFormat = format;
-              });
-            }
-          },
-          onPageChanged: (focusedDay) {
-            _focusedDay = focusedDay;
-          },
-          locale: "ko-KR",
-          calendarStyle: CalendarStyle(
-            isTodayHighlighted: true,
-            selectedDecoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(5.0),
+        SingleChildScrollView(
+            child: Column(mainAxisSize: MainAxisSize.min, children: [
+          Container(
+              height: 40,
+              child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: _calendartechChips())),
+          TableCalendar(
+            rowHeight: 40,
+            firstDay: DateTime(1990),
+            lastDay: DateTime(2050),
+            focusedDay: _focusedDay,
+            calendarFormat: _calendarFormat,
+            daysOfWeekVisible: true,
+            selectedDayPredicate: (day) {
+              return isSameDay(_selectedDay, day);
+            },
+            eventLoader: _getEventsfromDay,
+            onDaySelected: (selectedDay, focusedDay) {
+              if (!isSameDay(_selectedDay, selectedDay)) {
+                setState(() {
+                  _selectedDay = selectedDay;
+                  _focusedDay = focusedDay;
+                });
+              }
+            },
+            onFormatChanged: (format) {
+              if (_calendarFormat != format) {
+                setState(() {
+                  _calendarFormat = format;
+                });
+              }
+            },
+            onPageChanged: (focusedDay) {
+              _focusedDay = focusedDay;
+            },
+            locale: "ko-KR",
+            calendarStyle: CalendarStyle(
+              isTodayHighlighted: true,
+              selectedDecoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              outsideDecoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              markerDecoration: BoxDecoration(
+                  color: Color(0xFffc60a8), shape: BoxShape.circle),
+              selectedTextStyle: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold),
+              defaultTextStyle: const TextStyle(color: Colors.white),
+              withinRangeTextStyle: TextStyle(color: Colors.white),
+              weekendTextStyle: TextStyle(color: Colors.white),
+              outsideTextStyle:
+                  TextStyle(color: Color.fromRGBO(113, 113, 113, 100)),
+              todayDecoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: Theme.of(context).cardColor,
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              defaultDecoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              weekendDecoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(5.0),
+              ),
             ),
-            outsideDecoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(5.0),
-            ),
-            markerDecoration:
-                BoxDecoration(color: Color(0xFffc60a8), shape: BoxShape.circle),
-            selectedTextStyle: const TextStyle(
-                color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-            defaultTextStyle: const TextStyle(color: Colors.white),
-            withinRangeTextStyle: TextStyle(color: Colors.white),
-            weekendTextStyle: TextStyle(color: Colors.white),
-            outsideTextStyle:
-                TextStyle(color: Color.fromRGBO(113, 113, 113, 100)),
-            todayDecoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(5.0),
-            ),
-            defaultDecoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(5.0),
-            ),
-            weekendDecoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(5.0),
-            ),
+            headerStyle: const HeaderStyle(
+                formatButtonVisible: false,
+                titleTextStyle: TextStyle(color: Colors.white),
+                titleCentered: true,
+                leftChevronIcon: Icon(Icons.arrow_left, color: Colors.white),
+                rightChevronIcon: Icon(Icons.arrow_right, color: Colors.white),
+                headerPadding:
+                    EdgeInsets.symmetric(horizontal: 5.0, vertical: 3.0)),
           ),
-          headerStyle: const HeaderStyle(
-              formatButtonVisible: false,
-              titleTextStyle: TextStyle(color: Colors.white),
-              titleCentered: true,
-              leftChevronIcon: Icon(Icons.arrow_left, color: Colors.white),
-              rightChevronIcon: Icon(Icons.arrow_right, color: Colors.white),
-              headerPadding:
-                  EdgeInsets.symmetric(horizontal: 5.0, vertical: 3.0)),
-        ),
+        ])),
         _getEventsfromDay(_selectedDay).isEmpty != true
             ? _allchartExercisesWidget(
                 List.from(_getEventsfromDay(_selectedDay).reversed))
@@ -466,6 +554,7 @@ class _CalendarState extends State<Calendar> {
                 ),
               );
             },
+            shrinkWrap: true,
             itemCount: exercises.length,
             scrollDirection: Axis.vertical));
   }
@@ -987,6 +1076,76 @@ class _CalendarState extends State<Calendar> {
         );
         if (_exercisesdataProvider.exercisesdata!.exercises[i].name
             .contains(_exSearchCtrl.text)) {
+          chips.add(item);
+        }
+      }
+    } else {
+      _exercisesdataProvider.getdata();
+    }
+    return chips;
+  }
+
+  List<Widget> _calendartechChips() {
+    List<Widget> chips = [
+      Padding(
+        padding: const EdgeInsets.only(left: 10, right: 5),
+        child: ChoiceChip(
+          label: Text("All"),
+          labelStyle: TextStyle(color: Colors.white),
+          selected: _chartIndex.staticIndex == 0,
+          selectedColor: Theme.of(context).primaryColor,
+          backgroundColor: Theme.of(context).cardColor,
+          onSelected: (bool value) {
+            _chartIndex.changeStaticIndex(0);
+            _getChartSourcefromDay();
+          },
+        ),
+      )
+    ];
+    if (_exercisesdataProvider.exercisesdata != null &&
+        _exCalendarSearchCtrl.text == "") {
+      for (int i = 1;
+          i < _exercisesdataProvider.exercisesdata!.exercises.length + 1;
+          i++) {
+        Widget item = Padding(
+          padding: const EdgeInsets.only(left: 10, right: 5),
+          child: ChoiceChip(
+            label: Text(
+                _exercisesdataProvider.exercisesdata!.exercises[i - 1].name),
+            labelStyle: TextStyle(color: Colors.white),
+            selected: _chartIndex.staticIndex == i,
+            selectedColor: Theme.of(context).primaryColor,
+            backgroundColor: Theme.of(context).cardColor,
+            onSelected: (bool value) {
+              _chartIndex.changeStaticIndex(i);
+              _getChartSourcefromDay();
+            },
+          ),
+        );
+        chips.add(item);
+      }
+    } else if (_exercisesdataProvider.exercisesdata != null &&
+        _exCalendarSearchCtrl.text != "") {
+      for (int i = 1;
+          i < _exercisesdataProvider.exercisesdata!.exercises.length + 1;
+          i++) {
+        Widget item = Padding(
+          padding: const EdgeInsets.only(left: 10, right: 5),
+          child: ChoiceChip(
+            label: Text(
+                _exercisesdataProvider.exercisesdata!.exercises[i - 1].name),
+            labelStyle: TextStyle(color: Colors.white),
+            selected: _chartIndex.staticIndex == i,
+            selectedColor: Theme.of(context).primaryColor,
+            backgroundColor: Theme.of(context).cardColor,
+            onSelected: (bool value) {
+              _chartIndex.changeStaticIndex(i);
+              _getChartSourcefromDay();
+            },
+          ),
+        );
+        if (_exercisesdataProvider.exercisesdata!.exercises[i - 1].name
+            .contains(_exCalendarSearchCtrl.text)) {
           chips.add(item);
         }
       }
