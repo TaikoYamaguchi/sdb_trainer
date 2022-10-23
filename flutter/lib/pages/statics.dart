@@ -42,6 +42,7 @@ class _CalendarState extends State<Calendar> {
   var _tapPosition;
   var _historydataProvider;
   var _exercisesdataProvider;
+  TextEditingController _exSearchCtrl = TextEditingController(text: "");
 
   TextEditingController _eventController = TextEditingController();
 
@@ -175,8 +176,9 @@ class _CalendarState extends State<Calendar> {
     }
     var _sdbChartDataExample = _historydataProvider.historydata.sdbdatas
         .map((name) => name.exercises
-            .where((name) => name.name.contains(_exercisesdataProvider
-                    .exercisesdata!.exercises[_chartIndex.chartIndex].name)
+            .where((name) => name.name ==
+                    _exercisesdataProvider
+                        .exercisesdata!.exercises[_chartIndex.chartIndex].name
                 ? true
                 : false)
             .toList())
@@ -231,6 +233,43 @@ class _CalendarState extends State<Calendar> {
         return Row(
           children: [
             Text("기록", style: TextStyle(color: Colors.white, fontSize: 25)),
+            provider1.isPageController.page != 2
+                ? Expanded(
+                    child: Container(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 16, 10, 16),
+                        child: TextField(
+                            controller: _exSearchCtrl,
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.all(0),
+                              prefixIcon: Icon(
+                                Icons.search,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              hintText: "운동 검색",
+                              hintStyle: TextStyle(
+                                  fontSize: 20.0, color: Colors.white),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 2,
+                                    color: Theme.of(context).cardColor),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 2.0),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
+                            onChanged: (text) {
+                              setState(() {});
+                            }),
+                      ),
+                    ),
+                  )
+                : Container()
           ],
         );
       }),
@@ -904,7 +943,8 @@ class _CalendarState extends State<Calendar> {
 
   List<Widget> techChips() {
     List<Widget> chips = [];
-    if (_exercisesdataProvider.exercisesdata != null) {
+    if (_exercisesdataProvider.exercisesdata != null &&
+        _exSearchCtrl.text == "") {
       for (int i = 0;
           i < _exercisesdataProvider.exercisesdata!.exercises.length;
           i++) {
@@ -924,6 +964,31 @@ class _CalendarState extends State<Calendar> {
           ),
         );
         chips.add(item);
+      }
+    } else if (_exercisesdataProvider.exercisesdata != null &&
+        _exSearchCtrl.text != "") {
+      for (int i = 0;
+          i < _exercisesdataProvider.exercisesdata!.exercises.length;
+          i++) {
+        Widget item = Padding(
+          padding: const EdgeInsets.only(left: 10, right: 5),
+          child: ChoiceChip(
+            label:
+                Text(_exercisesdataProvider.exercisesdata!.exercises[i].name),
+            labelStyle: TextStyle(color: Colors.white),
+            selected: _chartIndex.chartIndex == i,
+            selectedColor: Theme.of(context).primaryColor,
+            backgroundColor: Theme.of(context).cardColor,
+            onSelected: (bool value) {
+              _chartIndex.change(i);
+              _getChartSourcefromDay();
+            },
+          ),
+        );
+        if (_exercisesdataProvider.exercisesdata!.exercises[i].name
+            .contains(_exSearchCtrl.text)) {
+          chips.add(item);
+        }
       }
     } else {
       _exercisesdataProvider.getdata();
