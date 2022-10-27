@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
@@ -148,8 +149,25 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
           Row(children: [
             Padding(
               padding: const EdgeInsets.only(right: 12),
-              child:
-                  Icon(Icons.account_circle, color: Colors.white, size: 28.0),
+              child: user.image == ""
+                  ? Icon(
+                      Icons.account_circle,
+                      color: Colors.grey,
+                      size: 28.0,
+                    )
+                  : CachedNetworkImage(
+                      imageUrl: user.image,
+                      imageBuilder: (context, imageProivder) => Container(
+                        height: 28,
+                        width: 28,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(50)),
+                            image: DecorationImage(
+                              image: imageProivder,
+                              fit: BoxFit.cover,
+                            )),
+                      ),
+                    ),
             ),
             Text(user.nickname,
                 style: TextStyle(color: Colors.white, fontSize: 18.0)),
