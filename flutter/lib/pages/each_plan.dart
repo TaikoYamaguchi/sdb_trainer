@@ -940,7 +940,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                     ),
                     onPressed: () {
                       workout.plansetcheck(widget.rindex, eindex, sindex,
-                          changeweight, changereps);
+                          double.parse(_weightctrl.text), int.parse(_repsctrl.text));
                       Navigator.pop(context);
                       _editWorkoutCheck();
                     },
