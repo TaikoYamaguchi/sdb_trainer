@@ -67,144 +67,144 @@ class _TimeInputFieldState extends State<TimeInputField> {
     }
 
     return Row(
-      children: [
-        Flexible(
-          child: TextFormField(
-            controller: timectrllist[0],
-            keyboardType: TextInputType.numberWithOptions(decimal: false),
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontSize: 21),
-            decoration: InputDecoration(
+          children: [
+            Flexible(
+              child: TextFormField(
+                controller: timectrllist[0],
+                keyboardType: TextInputType.numberWithOptions(decimal: false),
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 21),
+                decoration: InputDecoration(
 
-                hintText: '0',
-                hintStyle: TextStyle(color: Colors.grey)
+                    hintText: '0',
+                    hintStyle: TextStyle(color: Colors.white)
+                ),
+                inputFormatters: [
+                  new LengthLimitingTextInputFormatter(1),
+                ],
+                onChanged: (text){
+                  gather();
+                  if(text.length > 0){
+                    FocusScope.of(context).nextFocus();
+
+                  }
+                },
+              ),
             ),
-            inputFormatters: [
-              new LengthLimitingTextInputFormatter(1),
-            ],
-            onChanged: (text){
-              gather();
-              if(text.length == 1){
-                FocusScope.of(context).nextFocus();
+            Flexible(
+              child: TextFormField(
+                controller: timectrllist[1],
+                keyboardType: TextInputType.numberWithOptions(decimal: false),
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 21),
+                decoration: InputDecoration(
 
-              }
-            },
-          ),
-        ),
-        Flexible(
-          child: TextFormField(
-            controller: timectrllist[1],
-            keyboardType: TextInputType.numberWithOptions(decimal: false),
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontSize: 21),
-            decoration: InputDecoration(
-
-                hintText: '0',
-                hintStyle: TextStyle(color: Colors.grey)
+                    hintText: '0',
+                    hintStyle: TextStyle(color: Colors.white)
+                ),
+                inputFormatters: [
+                  new LengthLimitingTextInputFormatter(1),
+                ],
+                onChanged: (text){
+                  gather();
+                  if(text.length == 1){
+                    FocusScope.of(context).nextFocus();
+                  }
+                },
+              ),
             ),
-            inputFormatters: [
-              new LengthLimitingTextInputFormatter(1),
-            ],
-            onChanged: (text){
-              gather();
-              if(text.length == 1){
-                FocusScope.of(context).nextFocus();
-              }
-            },
-          ),
-        ),
-        Text(':', style: TextStyle(color: Colors.grey, fontSize: 21),),
-        Flexible(
-          child: TextFormField(
-            controller: timectrllist[2],
-            keyboardType: TextInputType.numberWithOptions(decimal: false),
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontSize: 21),
-            decoration: InputDecoration(
+            Text(':', style: TextStyle(color: Colors.grey, fontSize: 21),),
+            Flexible(
+              child: TextFormField(
+                controller: timectrllist[2],
+                keyboardType: TextInputType.numberWithOptions(decimal: false),
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 21),
+                decoration: InputDecoration(
 
-                hintText: '0',
-                hintStyle: TextStyle(color: Colors.grey)
+                    hintText: '0',
+                    hintStyle: TextStyle(color: Colors.white)
+                ),
+                inputFormatters: [
+                  new LengthLimitingTextInputFormatter(1),
+                ],
+                onChanged: (text){
+                  gather();
+                  if(text.length == 1){
+                    FocusScope.of(context).nextFocus();
+                  }
+                },
+              ),
             ),
-            inputFormatters: [
-              new LengthLimitingTextInputFormatter(1),
-            ],
-            onChanged: (text){
-              gather();
-              if(text.length == 1){
-                FocusScope.of(context).nextFocus();
-              }
-            },
-          ),
-        ),
-        Flexible(
-          child: TextFormField(
-            controller: timectrllist[3],
-            keyboardType: TextInputType.numberWithOptions(decimal: false),
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontSize: 21),
-            decoration: InputDecoration(
+            Flexible(
+              child: TextFormField(
+                controller: timectrllist[3],
+                keyboardType: TextInputType.numberWithOptions(decimal: false),
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 21),
+                decoration: InputDecoration(
 
-                hintText: '0',
-                hintStyle: TextStyle(color: Colors.grey)
+                    hintText: '0',
+                    hintStyle: TextStyle(color: Colors.white)
+                ),
+                inputFormatters: [
+                  new LengthLimitingTextInputFormatter(1),
+                ],
+                onChanged: (text){
+                  gather();
+                  if(text.length == 1){
+                    FocusScope.of(context).nextFocus();
+                  }
+                },
+              ),
             ),
-            inputFormatters: [
-              new LengthLimitingTextInputFormatter(1),
-            ],
-            onChanged: (text){
-              gather();
-              if(text.length == 1){
-                FocusScope.of(context).nextFocus();
-              }
-            },
-          ),
-        ),
-        Text(':', style: TextStyle(color: Colors.grey, fontSize: 21),),
-        Flexible(
-          child: TextFormField(
-            controller: timectrllist[4],
-            keyboardType: TextInputType.numberWithOptions(decimal: false),
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontSize: 21),
-            decoration: InputDecoration(
+            Text(':', style: TextStyle(color: Colors.grey, fontSize: 21),),
+            Flexible(
+              child: TextFormField(
+                controller: timectrllist[4],
+                keyboardType: TextInputType.numberWithOptions(decimal: false),
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 21),
+                decoration: InputDecoration(
 
-                hintText: '0',
-                hintStyle: TextStyle(color: Colors.grey)
+                    hintText: '0',
+                    hintStyle: TextStyle(color: Colors.white)
+                ),
+                inputFormatters: [
+                  new LengthLimitingTextInputFormatter(1),
+                ],
+                onChanged: (text){
+                  gather();
+                  if(text.length == 1){
+                    FocusScope.of(context).nextFocus();
+                  }
+                },
+              ),
             ),
-            inputFormatters: [
-              new LengthLimitingTextInputFormatter(1),
-            ],
-            onChanged: (text){
-              gather();
-              if(text.length == 1){
-                FocusScope.of(context).nextFocus();
-              }
-            },
-          ),
-        ),
-        Flexible(
-          child: TextFormField(
-            controller: timectrllist[5],
-            keyboardType: TextInputType.numberWithOptions(decimal: false),
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontSize: 21),
-            decoration: InputDecoration(
+            Flexible(
+              child: TextFormField(
+                controller: timectrllist[5],
+                keyboardType: TextInputType.numberWithOptions(decimal: false),
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 21),
+                decoration: InputDecoration(
 
-                hintText: '0',
-                hintStyle: TextStyle(color: Colors.grey)
+                    hintText: '0',
+                    hintStyle: TextStyle(color: Colors.white)
+                ),
+                inputFormatters: [
+                  new LengthLimitingTextInputFormatter(1),
+                ],
+                onChanged: (text){
+                  gather();
+                  if(text.length == 1){
+                    FocusScope.of(context).nextFocus();
+                  }
+                },
+              ),
             ),
-            inputFormatters: [
-              new LengthLimitingTextInputFormatter(1),
-            ],
-            onChanged: (text){
-              gather();
-              if(text.length == 1){
-                FocusScope.of(context).nextFocus();
-              }
-            },
-          ),
-        ),
-      ],
-    );
+          ],
+        );
   }
 }
 

@@ -2053,7 +2053,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             textAlign: TextAlign.right,
                           )),
                       Container(
-                          width: 70,
+                          width: 40,
+                          padding: EdgeInsets.only(right: 4),
+                      ),
+                      Container(
+                          width: 80,
                           child: Text(
                             "Distance",
                             style: TextStyle(
@@ -2258,7 +2262,20 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                   ),
                                                 ),
                                                 Container(
-                                                    width: 70,
+                                                  width: 40,
+                                                  child: Center(
+                                                    child: IconButton(
+                                                      padding: EdgeInsets.fromLTRB(10, 2, 0, 0),
+                                                      iconSize: 30,
+                                                      onPressed: (){
+
+                                                      },
+                                                      icon: Icon(Icons.play_arrow_rounded, color: Colors.white),
+                                                    ),
+                                                  )
+                                                ),
+                                                Container(
+                                                    width: 80,
                                                     child: GestureDetector(
                                                       onTap: (){
                                                         _displaySetWeightAlert(pindex,index);
