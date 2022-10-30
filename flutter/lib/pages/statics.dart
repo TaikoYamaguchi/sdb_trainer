@@ -593,40 +593,105 @@ class _CalendarState extends State<Calendar> {
   }
 
   Widget _bodyWeightListWidget(List<BodyStat> bodyStats) {
+    double deviceWidth = MediaQuery.of(context).size.width;
+    double top = 0;
+    double bottom = 0;
     return Expanded(
-      child: ListView.separated(
-          itemBuilder: (BuildContext _context, int index) {
-            return _bodyWeightListItemWidget(
-                bodyStats[index], _userdataProvider.userdata, true, index);
-          },
-          separatorBuilder: (BuildContext _context, int index) {
-            return Container(
-              alignment: Alignment.center,
-              height: 1,
-              color: Color(0xFF212121),
-              child: Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                height: 1,
-                color: Color(0xFF717171),
+        child: Container(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(top),
+              bottomRight: Radius.circular(bottom),
+              topLeft: Radius.circular(top),
+              bottomLeft: Radius.circular(bottom))),
+      child: Column(
+        children: [
+          Container(
+              child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Container(
+                width: deviceWidth / 3 - 20,
+                child: Text(
+                  "날짜",
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               ),
-            );
-          },
-          shrinkWrap: true,
-          itemCount: bodyStats.length,
-          scrollDirection: Axis.vertical),
-    );
+              Container(
+                width: deviceWidth / 3 - 20,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "몸무게",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              Container(
+                width: deviceWidth / 3 - 20,
+                child: Text(
+                  "목표",
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              )
+            ],
+          )),
+          ListView.separated(
+              itemBuilder: (BuildContext _context, int index) {
+                return _bodyWeightListItemWidget(
+                    List.from(bodyStats.reversed)[index],
+                    _userdataProvider.userdata,
+                    true,
+                    index);
+              },
+              separatorBuilder: (BuildContext _context, int index) {
+                return Container(
+                  alignment: Alignment.center,
+                  height: 1,
+                  color: Color(0xFF212121),
+                  child: Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    height: 1,
+                    color: Color(0xFF717171),
+                  ),
+                );
+              },
+              shrinkWrap: true,
+              itemCount: bodyStats.length,
+              scrollDirection: Axis.vertical),
+        ],
+      ),
+    ));
   }
 
   Widget _bodyWeightListItemWidget(bodyStat, userdata, bool shirink, index) {
     double top = 0;
     double bottom = 0;
+
+    double deviceWidth = MediaQuery.of(context).size.width;
     return Container(
         color: Color(0xFF101012),
         child: GestureDetector(
           onTap: () {},
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.only(
@@ -639,61 +704,35 @@ class _CalendarState extends State<Calendar> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                    child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      "날짜",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "몸무게",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Text(
-                      "목표",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    )
-                  ],
-                )),
-                Container(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text(bodyStat.date.substring(0, 10),
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                          textAlign: TextAlign.center),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
+                      Container(
+                        width: deviceWidth / 3 - 20,
+                        child: Text(bodyStat.date.substring(0, 10),
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                            textAlign: TextAlign.center),
+                      ),
+                      Container(
+                        width: deviceWidth / 3 - 20,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                              bodyStat.weight.toStringAsFixed(1) +
+                                  "${userdata.weight_unit}",
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.white),
+                              textAlign: TextAlign.center),
+                        ),
+                      ),
+                      Container(
+                        width: deviceWidth / 3 - 20,
                         child: Text(
-                            bodyStat.weight.toStringAsFixed(1) +
+                            bodyStat.weight_goal.toStringAsFixed(1) +
                                 "${userdata.weight_unit}",
                             style: TextStyle(fontSize: 18, color: Colors.white),
                             textAlign: TextAlign.center),
                       ),
-                      Text(
-                          bodyStat.weight_goal.toStringAsFixed(1) +
-                              "${userdata.weight_unit}",
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                          textAlign: TextAlign.center),
                     ],
                   ),
                 )
