@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/pages/statics.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
+import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
+import '../src/model/historydata.dart' as historyModel;
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart' as wod;
 import 'package:sdb_trainer/src/utils/my_flexible_space_bar.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:sdb_trainer/providers/chartIndexState.dart';
+import 'dart:ui' as ui;
+import 'dart:math';
 
 class ExerciseGuide extends StatefulWidget {
   int eindex;
   bool isroutine;
-  ExerciseGuide({Key? key, required this.eindex, this.isroutine = false}) : super(key: key);
+  ExerciseGuide({Key? key, required this.eindex, this.isroutine = false})
+      : super(key: key);
 
   @override
   State<ExerciseGuide> createState() => _ExerciseGuideState();
@@ -22,18 +30,43 @@ class ExerciseGuide extends StatefulWidget {
 
 class _ExerciseGuideState extends State<ExerciseGuide> {
   var btnDisabled;
+  var _tapPosition;
+  late Map<DateTime, List<historyModel.SDBdata>> selectedEvents;
   var _userdataProvider;
   var _exercisesdataProvider;
   var _workoutdataProvider;
   TextEditingController _exercisenoteCtrl = TextEditingController(text: '');
   bool editing = false;
   var _exercises;
+  var _historydataProvider;
   var selectedItem = '기타';
   var selectedItem2 = '기타';
   var _customExUsed = false;
   var _delete = false;
+  late TooltipBehavior _tooltipBehavior;
+  late ZoomPanBehavior _zoomPanBehavior;
+  List<historyModel.Exercises>? _sdbChartData = [];
+  var _chartIndex;
   TextEditingController _customExNameCtrl = TextEditingController(text: "");
   TextEditingController _workoutNameCtrl = TextEditingController(text: "");
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _tapPosition = Offset(0.0, 0.0);
+    selectedEvents = {};
+    _tooltipBehavior = TooltipBehavior(enable: true);
+    _zoomPanBehavior = ZoomPanBehavior(
+        enablePinching: true,
+        enableDoubleTapZooming: true,
+        enableSelectionZooming: true,
+        selectionRectBorderColor: Colors.red,
+        selectionRectBorderWidth: 2,
+        selectionRectColor: Colors.grey,
+        enablePanning: true,
+        maximumZoomLevel: 0.7);
+    super.initState();
+  }
 
   PreferredSizeWidget _appbarWidget() {
     btnDisabled = false;
@@ -77,17 +110,19 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                           child: Center(
                             child: Text("Target",
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: Colors.grey,
                                     fontWeight: FontWeight.bold)),
                           )),
                       SizedBox(
                         width: MediaQuery.of(context).size.width / 5,
                         child: Center(
                           child: Text(
-                              provier.exercisesdata.exercises[widget.eindex].target.length == 1
-                                  ? provier.exercisesdata.exercises[widget.eindex].target[0]
-                                  : '${provier.exercisesdata.exercises[widget.eindex].target.toString().substring(1,provier.exercisesdata.exercises[widget.eindex].target.toString().length-1)}'
-                              ,
+                              provier.exercisesdata.exercises[widget.eindex]
+                                          .target.length ==
+                                      1
+                                  ? provier.exercisesdata
+                                      .exercises[widget.eindex].target[0]
+                                  : '${provier.exercisesdata.exercises[widget.eindex].target.toString().substring(1, provier.exercisesdata.exercises[widget.eindex].target.toString().length - 1)}',
                               textAlign: TextAlign.center,
                               style: TextStyle(color: Colors.white)),
                         ),
@@ -102,15 +137,14 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                           child: Center(
                             child: Text("Category",
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: Colors.grey,
                                     fontWeight: FontWeight.bold)),
                           )),
                       SizedBox(
                         width: MediaQuery.of(context).size.width / 5,
                         child: Center(
                           child: Text(
-                              '${provier.exercisesdata.exercises[widget.eindex].category}'
-                              ,
+                              '${provier.exercisesdata.exercises[widget.eindex].category}',
                               style: TextStyle(color: Colors.white)),
                         ),
                       ),
@@ -124,7 +158,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                           child: Center(
                             child: Text("1rm",
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: Colors.grey,
                                     fontWeight: FontWeight.bold)),
                           )),
                       SizedBox(
@@ -145,7 +179,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                           child: Center(
                             child: Text("Goal",
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: Colors.grey,
                                     fontWeight: FontWeight.bold)),
                           )),
                       SizedBox(
@@ -169,75 +203,83 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
 
   Widget exercisenote() {
     return Container(
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12.0),
-                alignment: Alignment.centerLeft,
-                child: Text("나만의 운동 Note",
-                    style: TextStyle(
-                        fontSize: 25.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold)),
-              ),
-              editing
-                  ? Container(
-                      child: IconButton(
-                        onPressed: () {
-                          _exercisesdataProvider
-                              .exercisesdata
-                              .exercises[widget.eindex]
-                              .note = _exercisenoteCtrl.text;
-                          _postExerciseCheck();
-                          setState(() {
-                            editing = !editing;
-                          });
-                        },
-                        icon: Icon(
-                          Icons.check,
-                          size: 30,
-                          color: Theme.of(context).primaryColor,
-                        ),
+        child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(
+                color: Theme.of(context).cardColor,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(12.0),
+                            alignment: Alignment.centerLeft,
+                            child: Text("나만의 운동 노트",
+                                style: TextStyle(
+                                    fontSize: 18.0,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                          editing
+                              ? Container(
+                                  child: IconButton(
+                                    onPressed: () {
+                                      _exercisesdataProvider
+                                          .exercisesdata
+                                          .exercises[widget.eindex]
+                                          .note = _exercisenoteCtrl.text;
+                                      _postExerciseCheck();
+                                      setState(() {
+                                        editing = !editing;
+                                      });
+                                    },
+                                    icon: Icon(
+                                      Icons.check,
+                                      size: 18,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  child: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        editing = !editing;
+                                      });
+                                    },
+                                    icon: Icon(
+                                      Icons.edit,
+                                      size: 18,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                )
+                        ],
                       ),
-                    )
-                  : Container(
-                      child: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            editing = !editing;
-                          });
-                        },
-                        icon: Icon(
-                          Icons.edit,
-                          size: 25,
-                          color: Colors.white,
-                        ),
-                      ),
-                    )
-            ],
-          ),
-          editing
-              ? _commentWidget()
-              : Container(
-                  padding: const EdgeInsets.all(12.0),
-                  alignment: Alignment.centerLeft,
-                  child: Consumer<ExercisesdataProvider>(
-                      builder: (context, provier, child) {
-                    return Text(
-                        provier.exercisesdata.exercises[widget.eindex].note ??
-                            '나만의 운동노트를 적어주세요',
-                        style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold));
-                  }),
-                ),
-        ],
-      ),
-    );
+                      editing
+                          ? _commentWidget()
+                          : Container(
+                              padding: const EdgeInsets.all(12.0),
+                              alignment: Alignment.centerLeft,
+                              child: Consumer<ExercisesdataProvider>(
+                                  builder: (context, provier, child) {
+                                return Text(
+                                    provier.exercisesdata
+                                            .exercises[widget.eindex].note ??
+                                        '나만의 운동노트를 적어주세요',
+                                    style: TextStyle(
+                                        fontSize: 16.0,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold));
+                              }),
+                            ),
+                    ],
+                  ),
+                ))));
   }
 
   void _postExerciseCheck() async {
@@ -501,16 +543,17 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
           //expands: true,
           maxLines: null,
           decoration: InputDecoration(
-              prefixIcon: Icon(Icons.edit, color: Colors.white),
-              labelText: '운동에 대한 노트를 적어주세요',
-              labelStyle: TextStyle(color: Colors.white),
-              border: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.white, width: 2.0),
-                borderRadius: BorderRadius.circular(5.0),
+              labelText: '운동에 관해 적을 수 있어요',
+              labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
+              enabledBorder: UnderlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide:
+                    BorderSide(color: Theme.of(context).primaryColor, width: 3),
               ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white, width: 2.0),
-                borderRadius: BorderRadius.circular(5.0),
+              focusedBorder: UnderlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide:
+                    BorderSide(color: Theme.of(context).primaryColor, width: 3),
               ),
               fillColor: Colors.white),
           style: TextStyle(color: Colors.white)),
@@ -571,7 +614,6 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
               ),
               onPressed: () {
                 planlist();
-
               },
               child: Text("플랜에 운동 추가하기",
                   style: TextStyle(fontSize: 20.0, color: Colors.white)))),
@@ -580,13 +622,13 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
 
   void _editWorkoutCheck() async {
     WorkoutEdit(
-        user_email: _userdataProvider.userdata.email,
-        id: _workoutdataProvider.workoutdata.id,
-        routinedatas: _workoutdataProvider.workoutdata.routinedatas)
+            user_email: _userdataProvider.userdata.email,
+            id: _workoutdataProvider.workoutdata.id,
+            routinedatas: _workoutdataProvider.workoutdata.routinedatas)
         .editWorkout()
         .then((data) => data["user_email"] != null
-        ? [showToast("done!")]
-        : showToast("입력을 확인해주세요"));
+            ? [showToast("done!")]
+            : showToast("입력을 확인해주세요"));
   }
 
   Widget _MyWorkout() {
@@ -595,24 +637,32 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         color: Color(0xFF101012),
       ),
-
       child: ListView(
         shrinkWrap: true,
         children: [
-          Container(height: 10,),
+          Container(
+            height: 10,
+          ),
           Center(
-            child: Text('추가할 플랜을 선택하세요' ,style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold),
+            child: Text(
+              '추가할 플랜을 선택하세요',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold),
             ),
           ),
           Text('외부를 터치하면 취소 할 수 있어요',
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.grey, fontSize: 12)),
-          Container(height: 10,),
+          Container(
+            height: 10,
+          ),
           Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
-            final routinelist = provider.workoutdata.routinedatas.where((element){return element.mode == 0;}).toList();
+            final routinelist =
+                provider.workoutdata.routinedatas.where((element) {
+              return element.mode == 0;
+            }).toList();
 
             return ListView.builder(
                 physics: NeverScrollableScrollPhysics(),
@@ -622,7 +672,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                   return GestureDetector(
                     onTap: () {
                       _workoutdataProvider.addexAt(
-                          provider.workoutdata.routinedatas.indexWhere((e) => e.name == routinelist[index].name),
+                          provider.workoutdata.routinedatas.indexWhere(
+                              (e) => e.name == routinelist[index].name),
                           new wod.Exercises(
                               name: _exercisesdataProvider
                                   .exercisesdata.exercises[widget.eindex].name,
@@ -630,69 +681,65 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                               rest: 90));
                       _editWorkoutCheck();
                       Navigator.of(context).pop();
-
                     },
                     child: Container(
                       child: Column(
                         children: [
                           Card(
-                              color: Theme.of(context).cardColor,
-                              shape: RoundedRectangleBorder(
+                            color: Theme.of(context).cardColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0)),
+                            elevation: 8.0,
+                            margin: new EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 6.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context).cardColor,
                                   borderRadius: BorderRadius.circular(15.0)),
-                              elevation: 8.0,
-                              margin: new EdgeInsets.symmetric(
-                                  horizontal: 0, vertical: 6.0),
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                      color: Theme.of(context).cardColor,
-                                      borderRadius:
-                                      BorderRadius.circular(15.0)),
-                                  child: ListTile(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 15, vertical: 5.0),
-                                      leading: Container(
-                                        height: double.infinity,
-                                        padding: EdgeInsets.only(right: 15.0),
-                                        decoration: new BoxDecoration(
-                                            border: new Border(
-                                                right: new BorderSide(
-                                                    width: 1.0,
-                                                    color: Colors.white24))),
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 8),
-                                          child: SizedBox(
-                                            width: 25,
-                                            child: SvgPicture.asset(
-                                                "assets/svg/dumbel_on.svg",
-                                                color: Colors.white30),
-                                          ),
-                                        )
+                              child: ListTile(
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 5.0),
+                                leading: Container(
+                                    height: double.infinity,
+                                    padding: EdgeInsets.only(right: 15.0),
+                                    decoration: new BoxDecoration(
+                                        border: new Border(
+                                            right: new BorderSide(
+                                                width: 1.0,
+                                                color: Colors.white24))),
+                                    child: Container(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 8),
+                                      child: SizedBox(
+                                        width: 25,
+                                        child: SvgPicture.asset(
+                                            "assets/svg/dumbel_on.svg",
+                                            color: Colors.white30),
                                       ),
-                                      title: Text(
-                                        routinelist[index].name,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      subtitle: Row(
-                                        children: [
-                                          routinelist[index].mode == 0
-                                              ? Text(
-                                              "${routinelist[index].exercises.length}개 운동",
-                                              style: TextStyle(
-                                                  fontSize: 13,
-                                                  color: Colors.white30))
-                                              : Text("루틴 모드",
-                                              style: TextStyle(
-                                                  fontSize: 13,
-                                                  color: Colors.white30)),
-                                        ],
-                                      ),
-
-                                  ),
+                                    )),
+                                title: Text(
+                                  routinelist[index].name,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
                                 ),
+                                subtitle: Row(
+                                  children: [
+                                    routinelist[index].mode == 0
+                                        ? Text(
+                                            "${routinelist[index].exercises.length}개 운동",
+                                            style: TextStyle(
+                                                fontSize: 13,
+                                                color: Colors.white30))
+                                        : Text("루틴 모드",
+                                            style: TextStyle(
+                                                fontSize: 13,
+                                                color: Colors.white30)),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -709,7 +756,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                 height: 80,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  //color: Theme.of(context).cardColor,
+                    //color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(15.0)),
                 child: Padding(
                   padding: const EdgeInsets.all(1.0),
@@ -753,7 +800,6 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
               ),
             ),
           )
-
         ],
       ),
     );
@@ -771,8 +817,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               color: Color(0xFF101012),
             ),
-            child: _MyWorkout()
-        );
+            child: _MyWorkout());
       },
     );
   }
@@ -848,9 +893,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                         ),
                         hintText: "운동 루틴 이름",
                         hintStyle:
-                        TextStyle(fontSize: 24.0, color: Colors.white)),
+                            TextStyle(fontSize: 24.0, color: Colors.white)),
                   ),
-
                 ],
               ),
               actions: <Widget>[
@@ -871,9 +915,9 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
               ),
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor:
-              _workoutNameCtrl.text == "" || _customExUsed == true
-                  ? Color(0xFF212121)
-                  : Theme.of(context).primaryColor,
+                  _workoutNameCtrl.text == "" || _customExUsed == true
+                      ? Color(0xFF212121)
+                      : Theme.of(context).primaryColor,
               textStyle: TextStyle(
                 color: Colors.white,
               ),
@@ -895,6 +939,42 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
             },
             child: Text(_customExUsed == true ? "존재하는 루틴 이름" : "새 루틴 추가",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
+  }
+
+  void _getChartSourcefromDay() async {
+    _sdbChartData = [];
+    if (_historydataProvider.historydata == null) {
+      await initialHistorydataGet();
+    }
+    var _sdbChartDataExample = _historydataProvider.historydata.sdbdatas
+        .map((name) => name.exercises
+            .where((name) => name.name ==
+                    _exercisesdataProvider
+                        .exercisesdata!.exercises[widget.eindex].name
+                ? true
+                : false)
+            .toList())
+        .toList();
+    print(_sdbChartDataExample);
+    for (int i = 0; i < _sdbChartDataExample.length; i++) {
+      if (_sdbChartDataExample[i].isEmpty) {
+        null;
+      } else {
+        for (int k = 0; k < _sdbChartDataExample[i].length; k++) {
+          _sdbChartData!.add(_sdbChartDataExample[i][k]);
+        }
+      }
+    }
+  }
+
+  initialHistorydataGet() async {
+    final _initHistorydataProvider =
+        Provider.of<HistorydataProvider>(context, listen: false);
+    final _initExercisesdataProvider =
+        Provider.of<ExercisesdataProvider>(context, listen: false);
+
+    _initExercisesdataProvider.getdata();
+    await _initHistorydataProvider.getdata();
   }
 
   Widget _FinishConfirmButton() {
@@ -929,13 +1009,352 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
+  Widget _chartWidget(context) {
+    final List<Color> color = <Color>[];
+    color.add(Color(0xFffc60a8).withOpacity(0.7));
+    color.add(Theme.of(context).primaryColor.withOpacity(0.9));
+    color.add(Theme.of(context).primaryColor.withOpacity(0.9));
+    color.add(Color(0xFffc60a8).withOpacity(0.7));
+
+    final List<double> stops = <double>[];
+    stops.add(0.0);
+    stops.add(0.4);
+    stops.add(0.6);
+    stops.add(1.0);
+
+    final LinearGradient gradientColors = LinearGradient(
+        colors: color,
+        stops: stops,
+        begin: Alignment.bottomCenter,
+        end: Alignment.topCenter);
+    return (Center(
+        child: Column(
+      children: [
+        Container(
+            height: 200,
+            width: double.infinity,
+            child: SfCartesianChart(
+                plotAreaBorderWidth: 0,
+                primaryXAxis: DateTimeAxis(
+                  majorGridLines: const MajorGridLines(width: 0),
+                  majorTickLines: const MajorTickLines(size: 0),
+                  axisLine: const AxisLine(width: 0),
+                ),
+                primaryYAxis: NumericAxis(
+                    axisLine: const AxisLine(width: 0),
+                    majorTickLines: const MajorTickLines(size: 0),
+                    majorGridLines: const MajorGridLines(width: 0),
+                    minimum: _sdbChartData!.length == 0
+                        ? 0
+                        : _sdbChartData!.length > 1
+                            ? _sdbChartData!
+                                    .reduce((curr, next) =>
+                                        curr.onerm! < next.onerm! ? curr : next)
+                                    .onerm! *
+                                0.9
+                            : _sdbChartData![0].onerm),
+                tooltipBehavior: _tooltipBehavior,
+                zoomPanBehavior: _zoomPanBehavior,
+                legend: Legend(
+                    isVisible: true,
+                    position: LegendPosition.bottom,
+                    textStyle: TextStyle(color: Colors.white)),
+                series: [
+                  // Renders line chart
+                  LineSeries<historyModel.Exercises, DateTime>(
+                    isVisibleInLegend: true,
+                    onCreateShader: (ShaderDetails details) {
+                      return ui.Gradient.linear(details.rect.topRight,
+                          details.rect.bottomLeft, color, stops);
+                    },
+                    markerSettings: MarkerSettings(
+                        isVisible: true,
+                        height: 6,
+                        width: 6,
+                        borderWidth: 3,
+                        color: Theme.of(context).primaryColor,
+                        borderColor: Theme.of(context).primaryColor),
+                    name: "1rm",
+                    color: Theme.of(context).primaryColor,
+                    width: 5,
+                    dataSource: _sdbChartData!,
+                    xValueMapper: (historyModel.Exercises sales, _) =>
+                        DateTime.parse(sales.date!),
+                    yValueMapper: (historyModel.Exercises sales, _) =>
+                        sales.onerm,
+                  ),
+                  LineSeries<historyModel.Exercises, DateTime>(
+                    isVisibleInLegend: true,
+                    color: Theme.of(context).cardColor,
+                    name: "goal",
+                    dataSource: _sdbChartData!,
+                    xValueMapper: (historyModel.Exercises sales, _) =>
+                        DateTime.parse(sales.date!),
+                    yValueMapper: (historyModel.Exercises sales, _) =>
+                        sales.goal,
+                  ),
+                ])),
+        _onechartExercisesWidget(_sdbChartData)
+      ],
+    )));
+  }
+
+  Widget _onechartExercisesWidget(exercises) {
+    return ListView.separated(
+        itemBuilder: (BuildContext _context, int index) {
+          return _onechartExerciseWidget(
+              exercises[index], 0, _userdataProvider.userdata, true, index);
+        },
+        separatorBuilder: (BuildContext _context, int index) {
+          return Container(
+            alignment: Alignment.center,
+            height: 1,
+            color: Color(0xFF212121),
+            child: Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              height: 1,
+              color: Color(0xFF717171),
+            ),
+          );
+        },
+        shrinkWrap: true,
+        itemCount: exercises.length,
+        scrollDirection: Axis.vertical);
+  }
+
+  Widget _onechartExerciseWidget(
+      exuniq, history_id, userdata, bool shirink, index) {
+    double top = 0;
+    double bottom = 0;
+    return Container(
+      color: Color(0xFF101012),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(exuniq.date,
+                    style: TextStyle(fontSize: 18, color: Colors.white)),
+              ),
+            ],
+          ),
+          GestureDetector(
+            onTap: () {},
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(top),
+                      bottomRight: Radius.circular(bottom),
+                      topLeft: Radius.circular(top),
+                      bottomLeft: Radius.circular(bottom))),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _chartExerciseSetsWidget(exuniq.sets),
+                  Container(
+                    child: Row(
+                      //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text("",
+                            style: TextStyle(
+                                fontSize: 13, color: Color(0xFF717171))),
+                        Expanded(child: SizedBox()),
+                        Text(
+                            "1RM: " +
+                                exuniq.onerm.toStringAsFixed(1) +
+                                "/${exuniq.goal.toStringAsFixed(1)}${userdata.weight_unit}",
+                            style: TextStyle(
+                                fontSize: 13, color: Color(0xFF717171))),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _chartExerciseSetsWidget(sets) {
+    return Container(
+      child: Column(
+        children: [
+          Container(
+              padding: EdgeInsets.all(5.0),
+              height: 28,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 80,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 25,
+                          child: Text(
+                            "Set",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                      width: 70,
+                      child: Text(
+                        "Weight(${_userdataProvider.userdata.weight_unit})",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      )),
+                  Container(width: 35),
+                  Container(
+                      width: 40,
+                      child: Text(
+                        "Reps",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      )),
+                  Container(
+                      width: 70,
+                      child: Text(
+                        "1RM",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      )),
+                ],
+              )),
+          SizedBox(
+            child: ListView.separated(
+                itemBuilder: (BuildContext _context, int index) {
+                  return Container(
+                    padding: EdgeInsets.all(5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 80,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                width: 25,
+                                child: Text(
+                                  "${index + 1}",
+                                  style: TextStyle(
+                                    fontSize: 21,
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: 70,
+                          child: Text(
+                            sets[index].weight.toStringAsFixed(1),
+                            style: TextStyle(
+                              fontSize: 21,
+                              color: Colors.white,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Container(
+                            width: 35,
+                            child: SvgPicture.asset("assets/svg/multiply.svg",
+                                color: Colors.white, height: 19)),
+                        Container(
+                          width: 40,
+                          child: Text(
+                            sets[index].reps.toString(),
+                            style: TextStyle(
+                              fontSize: 21,
+                              color: Colors.white,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Container(
+                            width: 70,
+                            child: (sets[index].reps != 1)
+                                ? Text(
+                                    "${(sets[index].weight * (1 + sets[index].reps / 30)).toStringAsFixed(1)}",
+                                    style: TextStyle(
+                                        fontSize: 21, color: Colors.white),
+                                    textAlign: TextAlign.center,
+                                  )
+                                : Text(
+                                    "${sets[index].weight}",
+                                    style: TextStyle(
+                                        fontSize: 21, color: Colors.white),
+                                    textAlign: TextAlign.center,
+                                  )),
+                      ],
+                    ),
+                  );
+                },
+                separatorBuilder: (BuildContext _context, int index) {
+                  return Container(
+                    alignment: Alignment.center,
+                    height: 1,
+                    color: Color(0xFF101012),
+                    child: Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      height: 1,
+                      color: Color(0xFF717171),
+                    ),
+                  );
+                },
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: sets.length),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
+    _chartIndex = Provider.of<ChartIndexProvider>(context, listen: false);
     _workoutdataProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
+    _historydataProvider =
+        Provider.of<HistorydataProvider>(context, listen: false);
+    _getChartSourcefromDay();
+
     return Scaffold(
       body: _delete
           ? Container()
@@ -946,7 +1365,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                 pinned: true,
                 actions: [
                   _exercisesdataProvider
-                          .exercisesdata.exercises[widget.eindex].custom && !widget.isroutine
+                              .exercisesdata.exercises[widget.eindex].custom &&
+                          !widget.isroutine
                       ? Container(
                           child: IconButton(
                             onPressed: () {
@@ -992,26 +1412,25 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                   ),
                 ),
               ),
-
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, _index) {
-                    return Column(
-                      children: [
-                        Container(
-                          child: Column(
-                            children: [Status(), exercisenote()],
-                          ),
+                    return Container(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Status(),
+                            exercisenote(),
+                            _chartWidget(context)
+                          ],
                         ),
-                      ],
+                      ),
                     );
                   },
                   childCount: 1,
                 ),
               ),
-
-            ]
-      ),
+            ]),
       backgroundColor: Color(0xFF101012),
       bottomNavigationBar: _Add_to_Plan_Button(),
     );
