@@ -380,7 +380,7 @@ class _CalendarState extends State<Calendar> {
         children: [
           Container(
               width: double.infinity,
-              height: 200,
+              height: 250,
               child: SfCartesianChart(
                   plotAreaBorderWidth: 0,
                   primaryXAxis: DateTimeAxis(

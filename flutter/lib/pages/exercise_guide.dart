@@ -1031,7 +1031,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
         child: Column(
       children: [
         Container(
-            height: 200,
+            height: 250,
             width: double.infinity,
             child: SfCartesianChart(
                 plotAreaBorderWidth: 0,
@@ -1118,6 +1118,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
             ),
           );
         },
+        physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemCount: exercises.length,
         scrollDirection: Axis.vertical);
