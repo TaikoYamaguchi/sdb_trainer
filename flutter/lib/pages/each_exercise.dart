@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
+import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -59,6 +61,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   var _chartIndex;
   var _staticPageState;
   var _currentExindex;
+  List exControllerlist = [];
+  List<CountDownController> _countcontroller = [];
   final Map<int, Widget> _menuList = const <int, Widget>{
     0: Padding(
       child: Text("중량 추가", style: TextStyle(color: Colors.white, fontSize: 16)),
@@ -2108,27 +2112,94 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 shrinkWrap: true,
                                 controller: _controller,
                                 itemBuilder: (BuildContext _context, int index) {
+                                  exControllerlist.add(ExpandableController());
+                                  _countcontroller.add(CountDownController());
                                   weightController[pindex].controllerlist[index].text= provider2.userdata.bodyStats.last.weight.toString();
                                   provider.workoutdata.routinedatas[widget.rindex].exercises[pindex].sets[index].index = provider2.userdata.bodyStats.last.weight;
                                   return Container(
                                     padding: EdgeInsets.only(right: 10),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          width: 60,
-                                          child: Transform.scale(
-                                              scale: 1.2,
-                                              child: Theme(
-                                                data: ThemeData(
-                                                    unselectedWidgetColor:
-                                                    Colors.white),
-                                                child: Checkbox(
-                                                    checkColor: Colors.white,
-                                                    activeColor: Theme.of(context)
-                                                        .primaryColor,
-                                                    value: _sets[index].ischecked,
-                                                    onChanged: (newvalue) {
+                                    child: ExpandablePanel(
+                                      controller: exControllerlist[index],
+                                      theme: const ExpandableThemeData(
+                                        headerAlignment:
+                                        ExpandablePanelHeaderAlignment
+                                            .center,
+                                        hasIcon: false,
+                                        iconColor: Colors.white,
+                                      ),
+                                      header: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            width: 60,
+                                            child: Transform.scale(
+                                                scale: 1.2,
+                                                child: Theme(
+                                                  data: ThemeData(
+                                                      unselectedWidgetColor:
+                                                      Colors.white),
+                                                  child: Checkbox(
+                                                      checkColor: Colors.white,
+                                                      activeColor: Theme.of(context)
+                                                          .primaryColor,
+                                                      value: _sets[index].ischecked,
+                                                      onChanged: (newvalue) {
+                                                        _routinetimeProvider.isstarted
+                                                            ? [
+                                                          _workoutdataProvider
+                                                              .boolcheck(
+                                                              widget.rindex,
+                                                              pindex,
+                                                              index,
+                                                              newvalue),
+                                                          newvalue == true
+                                                              ? [
+                                                            _routinetimeProvider.resettimer(provider
+                                                                .workoutdata
+                                                                .routinedatas[
+                                                            widget
+                                                                .rindex]
+                                                                .exercises[
+                                                            pindex]
+                                                                .rest),
+                                                            index ==
+                                                                _sets.length -
+                                                                    1
+                                                                ? [
+                                                              _workoutdataProvider.setsplus(
+                                                                  widget.rindex,
+                                                                  pindex),
+                                                              _isSetChanged =
+                                                              true,
+                                                              print(
+                                                                  "jjjjjjjjjjjjjj"),
+                                                              weightController[pindex]
+                                                                  .controllerlist
+                                                                  .add(new TextEditingController(text: provider2.userdata.bodyStats.last.weight.toString())),
+                                                              repsController[pindex]
+                                                                  .controllerlist
+                                                                  .add(new TextEditingController(text: null)),
+                                                              showToast(
+                                                                  "세트를 추가했어요 필요없으면 다음으로 넘어가보세요"),
+                                                            ]
+                                                                : null,
+                                                          ]
+                                                              : null,
+                                                          _editWorkoutwCheck()
+                                                        ]
+                                                            : _displayStartAlert(
+                                                            pindex,
+                                                            index,
+                                                            newvalue);
+                                                      }),
+                                                )),
+                                          ),
+                                          Expanded(
+                                            child: Slidable(
+                                              startActionPane: ActionPane(
+                                                  extentRatio: 1.0,
+                                                  motion: CustomMotion(
+                                                    onOpen: () {
                                                       _routinetimeProvider.isstarted
                                                           ? [
                                                         _workoutdataProvider
@@ -2136,174 +2207,164 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                             widget.rindex,
                                                             pindex,
                                                             index,
-                                                            newvalue),
-                                                        newvalue == true
+                                                            true),
+                                                        _routinetimeProvider
+                                                            .resettimer(provider
+                                                            .workoutdata
+                                                            .routinedatas[
+                                                        widget
+                                                            .rindex]
+                                                            .exercises[
+                                                        pindex]
+                                                            .rest),
+                                                        index ==
+                                                            _sets.length - 1
                                                             ? [
-                                                          _routinetimeProvider.resettimer(provider
-                                                              .workoutdata
-                                                              .routinedatas[
-                                                          widget
-                                                              .rindex]
-                                                              .exercises[
+                                                          _workoutdataProvider
+                                                              .setsplus(
+                                                              widget
+                                                                  .rindex,
+                                                              pindex),
+                                                          _isSetChanged =
+                                                          true,
+                                                          weightController[
                                                           pindex]
-                                                              .rest),
-                                                          index ==
-                                                              _sets.length -
-                                                                  1
-                                                              ? [
-                                                            _workoutdataProvider.setsplus(
-                                                                widget.rindex,
-                                                                pindex),
-                                                            _isSetChanged =
-                                                            true,
-                                                            print(
-                                                                "jjjjjjjjjjjjjj"),
-                                                            weightController[pindex]
-                                                                .controllerlist
-                                                                .add(new TextEditingController(text: provider2.userdata.bodyStats.last.weight.toString())),
-                                                            repsController[pindex]
-                                                                .controllerlist
-                                                                .add(new TextEditingController(text: null)),
-                                                            showToast(
-                                                                "세트를 추가했어요 필요없으면 다음으로 넘어가보세요"),
-                                                          ]
-                                                              : null,
+                                                              .controllerlist
+                                                              .add(new TextEditingController(
+                                                              text: provider2.userdata.bodyStats.last.weight.toString())),
+                                                          repsController[
+                                                          pindex]
+                                                              .controllerlist
+                                                              .add(new TextEditingController(
+                                                              text:
+                                                              null)),
+                                                          showToast(
+                                                              "세트를 추가했어요! 다음으로 넘어갈 수도 있어요")
                                                         ]
                                                             : null,
                                                         _editWorkoutwCheck()
                                                       ]
                                                           : _displayStartAlert(
-                                                          pindex,
-                                                          index,
-                                                          newvalue);
-                                                    }),
-                                              )),
-                                        ),
-                                        Expanded(
-                                          child: Slidable(
-                                            startActionPane: ActionPane(
-                                                extentRatio: 1.0,
-                                                motion: CustomMotion(
-                                                  onOpen: () {
-                                                    _routinetimeProvider.isstarted
-                                                        ? [
-                                                      _workoutdataProvider
-                                                          .boolcheck(
-                                                          widget.rindex,
-                                                          pindex,
-                                                          index,
-                                                          true),
-                                                      _routinetimeProvider
-                                                          .resettimer(provider
-                                                          .workoutdata
-                                                          .routinedatas[
-                                                      widget
-                                                          .rindex]
-                                                          .exercises[
-                                                      pindex]
-                                                          .rest),
-                                                      index ==
-                                                          _sets.length - 1
-                                                          ? [
-                                                        _workoutdataProvider
-                                                            .setsplus(
-                                                            widget
-                                                                .rindex,
-                                                            pindex),
-                                                        _isSetChanged =
-                                                        true,
-                                                        weightController[
-                                                        pindex]
-                                                            .controllerlist
-                                                            .add(new TextEditingController(
-                                                            text: provider2.userdata.bodyStats.last.weight.toString())),
-                                                        repsController[
-                                                        pindex]
-                                                            .controllerlist
-                                                            .add(new TextEditingController(
-                                                            text:
-                                                            null)),
-                                                        showToast(
-                                                            "세트를 추가했어요! 다음으로 넘어갈 수도 있어요")
-                                                      ]
-                                                          : null,
-                                                      _editWorkoutwCheck()
-                                                    ]
-                                                        : _displayStartAlert(
-                                                        pindex, index, true);
-                                                  },
-                                                  onClose: () {},
-                                                  motionWidget: StretchMotion(),
-                                                ),
-                                                children: [
-                                                  SlidableAction(
-                                                    autoClose: true,
-                                                    onPressed: (_) {},
-                                                    backgroundColor:
-                                                    Theme.of(context)
-                                                        .primaryColor,
-                                                    foregroundColor: Colors.white,
-                                                    icon: Icons.check,
-                                                    label: '밀어서 check',
-                                                  )
-                                                ]),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Container(
-                                                  width: 25,
-                                                  child: Text(
-                                                    "${index + 1}",
-                                                    style: TextStyle(
-                                                      fontSize: 21,
-                                                      color: Colors.white,
-                                                    ),
-                                                    textAlign: TextAlign.center,
+                                                          pindex, index, true);
+                                                    },
+                                                    onClose: () {},
+                                                    motionWidget: StretchMotion(),
                                                   ),
-                                                ),
-                                                Container(
-                                                  width: 40,
-                                                  child: Center(
-                                                    child: IconButton(
-                                                      padding: EdgeInsets.fromLTRB(10, 2, 0, 0),
-                                                      iconSize: 30,
-                                                      onPressed: (){
-
-                                                      },
-                                                      icon: Icon(Icons.play_arrow_rounded, color: Colors.white),
+                                                  children: [
+                                                    SlidableAction(
+                                                      autoClose: true,
+                                                      onPressed: (_) {},
+                                                      backgroundColor:
+                                                      Theme.of(context)
+                                                          .primaryColor,
+                                                      foregroundColor: Colors.white,
+                                                      icon: Icons.check,
+                                                      label: '밀어서 check',
+                                                    )
+                                                  ]),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Container(
+                                                    width: 25,
+                                                    child: Text(
+                                                      "${index + 1}",
+                                                      style: TextStyle(
+                                                        fontSize: 21,
+                                                        color: Colors.white,
+                                                      ),
+                                                      textAlign: TextAlign.center,
                                                     ),
-                                                  )
-                                                ),
-                                                Container(
-                                                    width: 80,
-                                                    child: GestureDetector(
-                                                      onTap: (){
-                                                        _displaySetWeightAlert(pindex,index);
-                                                      },
-                                                      child: Center(
-                                                        child: Text("${_sets[index].weight}",
-                                                            style: TextStyle(
-                                                              fontSize: 21,
-                                                              color: Colors.white,
-                                                            )
-                                                        ),
+                                                  ),
+                                                  Container(
+                                                    width: 40,
+                                                    child: Center(
+                                                      child: IconButton(
+                                                        padding: EdgeInsets.fromLTRB(10, 2, 0, 0),
+                                                        iconSize: 30,
+                                                        onPressed: (){
+                                                          _countcontroller[index].start();
+
+                                                        },
+                                                        icon: Icon(Icons.play_arrow_rounded, color: Colors.white),
                                                       ),
                                                     )
+                                                  ),
+                                                  Container(
+                                                      width: 80,
+                                                      child: GestureDetector(
+                                                        onTap: (){
+                                                          _displaySetWeightAlert(pindex,index);
+                                                        },
+                                                        child: Center(
+                                                          child: Text("${_sets[index].weight}",
+                                                              style: TextStyle(
+                                                                fontSize: 21,
+                                                                color: Colors.white,
+                                                              )
+                                                          ),
+                                                        ),
+                                                      )
 
-                                                ),
+                                                  ),
 
-                                                Container(
-                                                  width: 140,
-                                                  child: Center(
-                                                    child: TimeInputField(duration: _sets[index].reps, rindex: widget.rindex,pindex: pindex,index: index)
-                                                  )
-                                                ),
+                                                  Container(
+                                                    width: 140,
+                                                    child: Center(
+                                                      child: TimeInputField(duration: _sets[index].reps, rindex: widget.rindex,pindex: pindex,index: index)
+                                                    )
+                                                  ),
 
-                                              ],
+
+                                                ],
+                                              ),
                                             ),
                                           ),
+                                        ],
+                                      ),
+                                      collapsed: Container(),
+                                      expanded: Container(
+                                        child: Center(
+                                            child: CircularCountDownTimer(
+                                              duration: 10,
+                                              initialDuration: 0,
+                                              controller: _countcontroller[index],
+                                              width: MediaQuery.of(context).size.width / 2,
+                                              height: MediaQuery.of(context).size.height / 3,
+                                              ringColor: Colors.grey[300]!,
+                                              ringGradient: null,
+                                              fillColor: Colors.purpleAccent[100]!,
+                                              fillGradient: null,
+                                              backgroundColor: Colors.purple[500],
+                                              backgroundGradient: null,
+                                              strokeWidth: 20.0,
+                                              strokeCap: StrokeCap.round,
+                                              textStyle: TextStyle(
+                                                  fontSize: 33.0, color: Colors.white, fontWeight: FontWeight.bold),
+                                              textFormat: CountdownTextFormat.S,
+                                              isReverse: false,
+                                              isReverseAnimation: false,
+                                              isTimerTextShown: true,
+                                              autoStart: false,
+                                              onStart: () {
+                                                debugPrint('Countdown Started');
+                                              },
+                                              onComplete: () {
+                                                debugPrint('Countdown Ended');
+                                              },
+                                              onChange: (String timeStamp) {
+                                                debugPrint('Countdown Changed $timeStamp');
+                                              },
+                                              timeFormatterFunction: (defaultFormatterFunction, duration) {
+                                                if (duration.inSeconds == 0) {
+                                                  return "Start";
+                                                } else {
+                                                  return Function.apply(defaultFormatterFunction, [duration]);
+                                                }
+                                              },
+                                            ),
                                         ),
-                                      ],
+                                      )
                                     ),
                                   );
                                 },
