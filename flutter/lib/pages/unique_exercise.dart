@@ -53,27 +53,30 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
 
   PreferredSizeWidget _appbarWidget() {
     btnDisabled = false;
-    return AppBar(
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back_ios_outlined),
-        onPressed: () {
-          _routinetimeProvider.isstarted
-              ? _displayFinishAlert()
-              : btnDisabled == true
-                  ? null
-                  : [
-                      Navigator.of(context).pop(),
-                      btnDisabled = true,
-                      _routinetimeProvider.resttimecheck(0)
-                    ];
-        },
-      ),
-      title: Text(
-        "",
-        style: TextStyle(color: Colors.white, fontSize: 30),
-      ),
-      backgroundColor: Color(0xFF101012),
-    );
+    return PreferredSize(
+        preferredSize: Size.fromHeight(40.0), // here the desired height
+        child: AppBar(
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios_outlined),
+            onPressed: () {
+              _routinetimeProvider.isstarted
+                  ? _displayFinishAlert()
+                  : btnDisabled == true
+                      ? null
+                      : [
+                          Navigator.of(context).pop(),
+                          btnDisabled = true,
+                          _routinetimeProvider.resttimecheck(0)
+                        ];
+            },
+          ),
+          title: Text(
+            "",
+            style: TextStyle(color: Colors.white, fontSize: 30),
+          ),
+          backgroundColor: Color(0xFF101012),
+        ));
   }
 
   void _displayFinishAlert() {

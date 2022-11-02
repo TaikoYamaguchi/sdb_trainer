@@ -92,7 +92,6 @@ class _FeedCardState extends State<FeedCard> {
     }
     return Container(
       width: MediaQuery.of(context).size.width,
-      color: Colors.black,
       child: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
@@ -383,7 +382,7 @@ class _FeedCardState extends State<FeedCard> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                  width: 180,
+                                  width: 200,
                                   child: Text(
                                     "운동",
                                     style: TextStyle(
@@ -406,8 +405,7 @@ class _FeedCardState extends State<FeedCard> {
                                         color: Colors.grey,
                                         fontSize: 14,
                                       ),
-                                      textAlign: TextAlign.center)
-                              )
+                                      textAlign: TextAlign.center))
                             ],
                           ),
                         ),
@@ -1129,7 +1127,7 @@ class _FeedCardState extends State<FeedCard> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              width: 180,
+              width: 200,
               child: Text(
                 Exercises.name,
                 style: TextStyle(fontSize: 18, color: Colors.white),

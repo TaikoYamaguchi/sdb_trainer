@@ -112,6 +112,7 @@ class ExerciseState extends State<Exercise> {
 
   PreferredSizeWidget _appbarWidget() {
     return AppBar(
+      elevation: 0,
       title: Row(
         children: [
           Text(
@@ -323,7 +324,6 @@ class ExerciseState extends State<Exercise> {
                 },
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 itemBuilder: (BuildContext _context, int index) {
-
                   final List<Color> color = <Color>[];
                   color.add(Color(0xFffc60a8).withOpacity(1.0));
                   color.add(Theme.of(context).primaryColor.withOpacity(1.0));

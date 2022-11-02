@@ -39,59 +39,62 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
 
   PreferredSizeWidget _appbarWidget() {
     btnDisabled = false;
-    return AppBar(
-      titleSpacing: 0,
-      leading: Center(
-        child: GestureDetector(
-          child: Icon(Icons.arrow_back_ios_outlined),
-          onTap: () {
-            btnDisabled == true
-                ? null
-                : [btnDisabled = true, Navigator.of(context).pop()];
-          },
-        ),
-      ),
-      title: Container(
-        width: MediaQuery.of(context).size.width,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(10, 16, 10, 16),
-          child: TextField(
-              controller: _exSearchCtrl,
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.all(0),
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: Theme.of(context).primaryColor,
-                ),
-                hintText: "운동 검색",
-                hintStyle: TextStyle(fontSize: 20.0, color: Colors.white),
-                enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(width: 2, color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Theme.of(context).primaryColor, width: 2.0),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-              ),
-              onChanged: (text) {
-                filterTotal(_exSearchCtrl.text, _exercisesdataProvider.tags,
-                    _exercisesdataProvider.tags2);
-              }),
-        ),
-      ),
-      actions: [
-        GestureDetector(
-            onTap: () {
-              _menucontroller.expanded = !_menucontroller.expanded;
-            },
-            child: Icon(Icons.filter_list))
-      ],
-      backgroundColor: Color(0xFF101012),
-    );
+    return PreferredSize(
+        preferredSize: Size.fromHeight(40.0), // here the desired height
+        child: AppBar(
+          elevation: 0,
+          titleSpacing: 0,
+          leading: Center(
+            child: GestureDetector(
+              child: Icon(Icons.arrow_back_ios_outlined),
+              onTap: () {
+                btnDisabled == true
+                    ? null
+                    : [btnDisabled = true, Navigator.of(context).pop()];
+              },
+            ),
+          ),
+          title: Container(
+            width: MediaQuery.of(context).size.width,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(10, 16, 10, 16),
+              child: TextField(
+                  controller: _exSearchCtrl,
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(0),
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    hintText: "운동 검색",
+                    hintStyle: TextStyle(fontSize: 20.0, color: Colors.white),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 2, color: Theme.of(context).cardColor),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).primaryColor, width: 2.0),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                  onChanged: (text) {
+                    filterTotal(_exSearchCtrl.text, _exercisesdataProvider.tags,
+                        _exercisesdataProvider.tags2);
+                  }),
+            ),
+          ),
+          actions: [
+            GestureDetector(
+                onTap: () {
+                  _menucontroller.expanded = !_menucontroller.expanded;
+                },
+                child: Icon(Icons.filter_list))
+          ],
+          backgroundColor: Color(0xFF101012),
+        ));
   }
 
   filterTotal(String query, List tags, List tags2) {
@@ -249,8 +252,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
     return Container(
       width: MediaQuery.of(context).size.width,
       color: Theme.of(context).cardColor,
-      child:
-      Consumer<FamousdataProvider>(builder: (context, provider, child) {
+      child: Consumer<FamousdataProvider>(builder: (context, provider, child) {
         return ChipsChoice<String>.multiple(
           value: provider.tags,
           onChanged: (val) {
@@ -293,7 +295,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                 builder: (BuildContext context, StateSetter mystate) {
               return Container(
                 padding: EdgeInsets.all(12.0),
-                height: MediaQuery.of(context).size.height*0.65,
+                height: MediaQuery.of(context).size.height * 0.65,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                   color: Theme.of(context).cardColor,
@@ -311,10 +313,12 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                           ),
                           Text('운동의 이름을 입력해 주세요',
                               textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.white, fontSize: 16)),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16)),
                           Text('외부를 터치하면 취소 할 수 있어요',
                               textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.grey, fontSize: 12)),
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 12)),
                           SizedBox(height: 20),
                           TextField(
                             onChanged: (value) {
@@ -333,7 +337,8 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                 }
                               });
                             },
-                            style: TextStyle(fontSize: 24.0, color: Colors.white),
+                            style:
+                                TextStyle(fontSize: 24.0, color: Colors.white),
                             textAlign: TextAlign.center,
                             controller: _customExNameCtrl,
                             decoration: InputDecoration(
@@ -351,8 +356,8 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                       width: 3),
                                 ),
                                 hintText: "커스텀 운동 이름",
-                                hintStyle:
-                                    TextStyle(fontSize: 24.0, color: Colors.white)),
+                                hintStyle: TextStyle(
+                                    fontSize: 24.0, color: Colors.white)),
                           ),
                           SizedBox(height: 20),
                           Row(
@@ -363,7 +368,8 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                 child: Text(
                                   '운동부위:',
                                   textAlign: TextAlign.start,
-                                  style: TextStyle(color: Colors.white, fontSize: 24),
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 24),
                                 ),
                               ),
                             ],
@@ -377,27 +383,33 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                 child: Text(
                                   '카테고리:',
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white, fontSize: 24),
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 24),
                                 ),
                               ),
                               SizedBox(width: 20),
                               Container(
                                 child: SizedBox(
-                                    width: MediaQuery.of(context).size.width * 2 / 5,
+                                    width: MediaQuery.of(context).size.width *
+                                        2 /
+                                        5,
                                     child: DropdownButtonFormField(
                                       isExpanded: true,
                                       dropdownColor: Color(0xFF101012),
                                       decoration: InputDecoration(
                                         filled: true,
                                         enabledBorder: UnderlineInputBorder(
-                                          borderRadius: BorderRadius.circular(8.0),
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
                                           borderSide: BorderSide(
                                               color: Colors.white, width: 3),
                                         ),
                                         focusedBorder: UnderlineInputBorder(
-                                          borderRadius: BorderRadius.circular(8.0),
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
                                           borderSide: BorderSide(
-                                              color: Theme.of(context).primaryColor,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
                                               width: 3),
                                         ),
                                       ),
@@ -405,10 +417,12 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                           alignment: Alignment.center,
                                           child: Text(
                                             '기타',
-                                            style: TextStyle(color: Colors.white),
+                                            style:
+                                                TextStyle(color: Colors.white),
                                           )),
                                       items: options2
-                                          .map((item) => DropdownMenuItem<String>(
+                                          .map((item) => DropdownMenuItem<
+                                                  String>(
                                               value: item.toString(),
                                               child: Align(
                                                   alignment: Alignment.center,
@@ -425,7 +439,6 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                             ],
                           ),
                           SizedBox(height: 20),
-
                         ],
                       ),
                     ),
@@ -484,7 +497,6 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
 
                 filterTotal(_exSearchCtrl.text, _exercisesdataProvider.tags,
                     _exercisesdataProvider.tags2);
-
 
                 Navigator.of(context).pop();
               }
@@ -658,7 +670,8 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
   @override
   Widget build(BuildContext context) {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _famousdataProvider = Provider.of<FamousdataProvider>(context, listen: false);
+    _famousdataProvider =
+        Provider.of<FamousdataProvider>(context, listen: false);
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
 

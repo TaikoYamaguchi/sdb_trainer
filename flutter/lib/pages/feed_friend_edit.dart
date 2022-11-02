@@ -40,35 +40,38 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
   }
 
   PreferredSizeWidget _appbarWidget() {
-    return AppBar(
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back_ios_outlined),
-        onPressed: () {
-          btnDisabled == true
-              ? null
-              : [
-                  btnDisabled = true,
-                  Navigator.of(context).pop(),
-                ];
-        },
-      ),
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text("친구 찾기", style: TextStyle(color: Colors.white)),
-          TextButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    Transition(
-                        child: FeedFriendDislikeEdit(),
-                        transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-              },
-              child: Text("차단친구", style: TextStyle(color: Colors.white))),
-        ],
-      ),
-      backgroundColor: Color(0xFF101012),
-    );
+    return PreferredSize(
+        preferredSize: Size.fromHeight(40.0), // here the desired height
+        child: AppBar(
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios_outlined),
+            onPressed: () {
+              btnDisabled == true
+                  ? null
+                  : [
+                      btnDisabled = true,
+                      Navigator.of(context).pop(),
+                    ];
+            },
+          ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("친구 찾기", style: TextStyle(color: Colors.white)),
+              TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        Transition(
+                            child: FeedFriendDislikeEdit(),
+                            transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+                  },
+                  child: Text("차단친구", style: TextStyle(color: Colors.white))),
+            ],
+          ),
+          backgroundColor: Color(0xFF101012),
+        ));
   }
 
   Widget _friend_searchWidget() {

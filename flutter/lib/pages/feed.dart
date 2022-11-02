@@ -118,23 +118,29 @@ class _FeedState extends State<Feed> {
     return Scaffold(
       backgroundColor: Color(0xFF101012),
       extendBody: true,
-      appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("피드", style: TextStyle(color: Colors.white, fontSize: 25)),
-              TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        Transition(
-                            child: FeedFriend(),
-                            transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-                  },
-                  child: Text("친구관리", style: TextStyle(color: Colors.white))),
-            ],
-          ),
-          backgroundColor: Color(0xFF101012)),
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(40.0), // here the desired height
+          child: AppBar(
+              elevation: 0,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("피드",
+                      style: TextStyle(color: Colors.white, fontSize: 25)),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            Transition(
+                                child: FeedFriend(),
+                                transitionEffect:
+                                    TransitionEffect.RIGHT_TO_LEFT));
+                      },
+                      child:
+                          Text("친구관리", style: TextStyle(color: Colors.white))),
+                ],
+              ),
+              backgroundColor: Color(0xFF101012))),
       body: _userdataProvider.userdata != null
           ? Center(child: _feedCardList(context))
           : Center(child: CircularProgressIndicator()),
@@ -150,68 +156,72 @@ class _FeedState extends State<Feed> {
   }
 
   Widget _feedCardList(context) {
-    return Column(
-      children: [
-        Container(
-            height: 40,
-            alignment: Alignment.center,
-            child: Center(child: _feedControllerWidget())),
-        Expanded(
-          child: Consumer<HistorydataProvider>(
-              builder: (builder, provider, child) {
-            _feedController(_feedListCtrl);
-            return PageView.builder(
-                controller: _isPageController,
-                itemBuilder: (_, page) {
-                  return RefreshIndicator(
-                      onRefresh: _onRefresh,
-                      child: ListView.separated(
-                          controller: _pageController,
-                          itemBuilder: (BuildContext _context, int index) {
-                            if (index < _historydata.length) {
-                              return Center(
-                                  child: FeedCard(
-                                      sdbdata: _historydata[index],
-                                      index: index,
-                                      feedListCtrl: _feedListCtrl));
-                            } else {
-                              _final_history_id = _historydata[index - 1].id;
-                              return Padding(
-                                padding: EdgeInsets.symmetric(vertical: 16),
-                                child: Center(
-                                    child: _hasMore
-                                        ? CircularProgressIndicator()
-                                        : Text("데이터 없음",
-                                            style: TextStyle(
-                                                color: Colors.white))),
-                              );
-                            }
-                          },
-                          separatorBuilder: (BuildContext _context, int index) {
-                            return Container(
-                              alignment: Alignment.center,
-                              height: 0,
-                              color: Color(0xFF101012),
-                              child: Container(
+    return Container(
+      color: Color(0xFF101012),
+      child: Column(
+        children: [
+          Container(
+              height: 40,
+              alignment: Alignment.center,
+              child: Center(child: _feedControllerWidget())),
+          Expanded(
+            child: Consumer<HistorydataProvider>(
+                builder: (builder, provider, child) {
+              _feedController(_feedListCtrl);
+              return PageView.builder(
+                  controller: _isPageController,
+                  itemBuilder: (_, page) {
+                    return RefreshIndicator(
+                        onRefresh: _onRefresh,
+                        child: ListView.separated(
+                            controller: _pageController,
+                            itemBuilder: (BuildContext _context, int index) {
+                              if (index < _historydata.length) {
+                                return Center(
+                                    child: FeedCard(
+                                        sdbdata: _historydata[index],
+                                        index: index,
+                                        feedListCtrl: _feedListCtrl));
+                              } else {
+                                _final_history_id = _historydata[index - 1].id;
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 16),
+                                  child: Center(
+                                      child: _hasMore
+                                          ? CircularProgressIndicator()
+                                          : Text("데이터 없음",
+                                              style: TextStyle(
+                                                  color: Colors.white))),
+                                );
+                              }
+                            },
+                            separatorBuilder:
+                                (BuildContext _context, int index) {
+                              return Container(
                                 alignment: Alignment.center,
                                 height: 0,
-                                color: Color(0xFF717171),
-                              ),
-                            );
-                          },
-                          itemCount: _historydata.length + 1));
-                },
-                onPageChanged: (page) {
-                  print(page);
-                  print((page % 3) + 1);
-                  setState(() {
-                    _feedListCtrl = (page % 3) + 1 as int;
-                    _feedController(_feedListCtrl);
+                                color: Color(0xFF101012),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  height: 0,
+                                  color: Color(0xFF717171),
+                                ),
+                              );
+                            },
+                            itemCount: _historydata.length + 1));
+                  },
+                  onPageChanged: (page) {
+                    print(page);
+                    print((page % 3) + 1);
+                    setState(() {
+                      _feedListCtrl = (page % 3) + 1 as int;
+                      _feedController(_feedListCtrl);
+                    });
                   });
-                });
-          }),
-        ),
-      ],
+            }),
+          ),
+        ],
+      ),
     );
   }
 

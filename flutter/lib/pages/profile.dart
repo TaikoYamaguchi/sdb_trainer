@@ -37,27 +37,32 @@ class Profile extends StatelessWidget {
     _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
     return Scaffold(
-      appBar: AppBar(
-          title:
-              Text("설정", style: TextStyle(color: Colors.white, fontSize: 25)),
-          actions: [
-            Container(
-                alignment: Alignment.center,
-                child: ElevatedButton(
-                    onPressed: () {
-                      _PopProvider.tutorpopon();
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(40.0), // here the desired height
+          child: AppBar(
+              elevation: 0,
+              title: Text("설정",
+                  style: TextStyle(color: Colors.white, fontSize: 25)),
+              actions: [
+                Container(
+                    alignment: Alignment.center,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          _PopProvider.tutorpopon();
 
-                      Future.delayed(Duration(milliseconds: 400)).then((value) {
-                        _bodyStater.change(1);
-                      });
-                      _PrefsProvider.tutorstart();
-                    },
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            Theme.of(context).cardColor)),
-                    child: Text('튜토리얼', style: TextStyle(color: Colors.white))))
-          ],
-          backgroundColor: Color(0xFF101012)),
+                          Future.delayed(Duration(milliseconds: 400))
+                              .then((value) {
+                            _bodyStater.change(1);
+                          });
+                          _PrefsProvider.tutorstart();
+                        },
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                                Theme.of(context).cardColor)),
+                        child: Text('튜토리얼',
+                            style: TextStyle(color: Colors.white))))
+              ],
+              backgroundColor: Color(0xFF101012))),
       body: _userdataProvider.userdata != null
           ? _profile(context)
           : Center(child: CircularProgressIndicator()),

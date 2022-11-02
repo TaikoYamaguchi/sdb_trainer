@@ -41,13 +41,15 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   PreferredSizeWidget _appbarWidget() {
-    return AppBar(
-      title: Text(
-        "",
-        style: TextStyle(color: Colors.white, fontSize: 30),
-      ),
-      backgroundColor: Color(0xFF101012),
-    );
+    return PreferredSize(
+        preferredSize: Size.fromHeight(40.0), // here the desired height
+        child: AppBar(
+          title: Text(
+            "",
+            style: TextStyle(color: Colors.white, fontSize: 30),
+          ),
+          backgroundColor: Color(0xFF101012),
+        ));
   }
 
   Widget _userProfileWidget() {
@@ -101,7 +103,8 @@ class _UserProfileState extends State<UserProfile> {
                         _userdataProvider.userdata.height.toString() +
                             _userdataProvider.userdata.height_unit +
                             "/" +
-                            _userdataProvider.userdata.bodyStats.last.weight.toString() +
+                            _userdataProvider.userdata.bodyStats.last.weight
+                                .toString() +
                             _userdataProvider.userdata.weight_unit,
                         style: TextStyle(color: Colors.white)),
                     Icon(Icons.chevron_right, color: Colors.white),

@@ -32,13 +32,16 @@ class _UserFindPageState extends State<UserFindPage> {
   }
 
   PreferredSizeWidget _appbarWidget() {
-    return AppBar(
-      title: Text(
-        "회원 찾기",
-        style: TextStyle(color: Colors.white, fontSize: 30),
-      ),
-      backgroundColor: Color(0xFF101012),
-    );
+    return PreferredSize(
+        preferredSize: Size.fromHeight(40.0), // here the desired height
+        child: AppBar(
+          elevation: 0,
+          title: Text(
+            "회원 찾기",
+            style: TextStyle(color: Colors.white, fontSize: 30),
+          ),
+          backgroundColor: Color(0xFF101012),
+        ));
   }
 
   Widget _signupProfileWidget() {

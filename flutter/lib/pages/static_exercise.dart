@@ -53,30 +53,33 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
   }
 
   PreferredSizeWidget _appbarWidget() {
-    return AppBar(
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back_ios_outlined),
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-      ),
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text("", style: TextStyle(color: Colors.white)),
-          GestureDetector(
-              onTap: () {
-                _deleteExerciseCheck();
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(right: 5),
-                child: Text("운동 삭제",
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
-              )),
-        ],
-      ),
-      backgroundColor: Color(0xFF101012),
-    );
+    return PreferredSize(
+        preferredSize: Size.fromHeight(40.0), // here the desired height
+        child: AppBar(
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios_outlined),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("", style: TextStyle(color: Colors.white)),
+              GestureDetector(
+                  onTap: () {
+                    _deleteExerciseCheck();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 5),
+                    child: Text("운동 삭제",
+                        style: TextStyle(color: Colors.white, fontSize: 16)),
+                  )),
+            ],
+          ),
+          backgroundColor: Color(0xFF101012),
+        ));
   }
 
   Widget _exercisedetailWidget() {

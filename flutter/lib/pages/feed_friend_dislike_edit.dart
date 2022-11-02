@@ -39,24 +39,27 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
   }
 
   PreferredSizeWidget _appbarWidget() {
-    return AppBar(
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back_ios_outlined),
-        onPressed: () {
-          btnDisabled == true
-              ? null
-              : [
-                  btnDisabled = true,
-                  Navigator.of(context).pop(),
-                ];
-        },
-      ),
-      title: Text(
-        "차단 친구 관리",
-        style: TextStyle(color: Colors.white, fontSize: 30),
-      ),
-      backgroundColor: Color(0xFF101012),
-    );
+    return PreferredSize(
+        preferredSize: Size.fromHeight(40.0), // here the desired height
+        child: AppBar(
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios_outlined),
+            onPressed: () {
+              btnDisabled == true
+                  ? null
+                  : [
+                      btnDisabled = true,
+                      Navigator.of(context).pop(),
+                    ];
+            },
+          ),
+          title: Text(
+            "차단 친구 관리",
+            style: TextStyle(color: Colors.white, fontSize: 30),
+          ),
+          backgroundColor: Color(0xFF101012),
+        ));
   }
 
   Widget _dislikeEditWidget() {
