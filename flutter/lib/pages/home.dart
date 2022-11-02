@@ -118,23 +118,27 @@ class _HomeState extends State<Home> {
 
   PreferredSizeWidget _appbarWidget() {
     //if (_userdataProvider.userdata != null) {
-    return AppBar(
-      title: Consumer<UserdataProvider>(builder: (builder, provider, child) {
-        if (provider.userdata != null) {
-          return Text(
-            provider.userdata.nickname + "님 반가워요",
-            style: TextStyle(color: Colors.white),
-          );
-        } else {
-          return PreferredSize(
-              preferredSize: Size.fromHeight(56.0),
-              child: Container(
-                  color: Color(0xFF101012),
-                  child: Center(child: CircularProgressIndicator())));
-        }
-      }),
-      backgroundColor: Color(0xFF101012),
-    );
+    return PreferredSize(
+        preferredSize: Size.fromHeight(40.0), // here the desired height
+        child: AppBar(
+          elevation: 0,
+          title:
+              Consumer<UserdataProvider>(builder: (builder, provider, child) {
+            if (provider.userdata != null) {
+              return Text(
+                provider.userdata.nickname + "님 반가워요",
+                style: TextStyle(color: Colors.white),
+              );
+            } else {
+              return PreferredSize(
+                  preferredSize: Size.fromHeight(56.0),
+                  child: Container(
+                      color: Color(0xFF101012),
+                      child: Center(child: CircularProgressIndicator())));
+            }
+          }),
+          backgroundColor: Color(0xFF101012),
+        ));
   }
 
   Widget _dateControllerWidget() {

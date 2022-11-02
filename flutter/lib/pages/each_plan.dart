@@ -59,60 +59,64 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
 
   PreferredSizeWidget _appbarWidget() {
     btnDisabled = false;
-    return AppBar(
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back_ios_outlined),
-        onPressed: () {
-          _editWorkoutCheck();
-          btnDisabled == true
-              ? null
-              : [btnDisabled = true, Navigator.of(context).pop()];
-        },
-      ),
-      title: Row(
-        children: [
-          GestureDetector(
-            onTap: () {
-              _displayTextInputDialog();
-            },
-            child: Container(
-              width: MediaQuery.of(context).size.width * 5 / 8,
-              child: Consumer<WorkoutdataProvider>(
-                  builder: (builder, provider, child) {
-                return Text(
-                  provider.workoutdata.routinedatas[widget.rindex].name,
-                  style: TextStyle(
-                      color: Colors.white,
-                      overflow: TextOverflow.ellipsis,
-                      fontSize: 30),
-                );
-              }),
-            ),
-          ),
-        ],
-      ),
-      actions: [
-        IconButton(
+    return PreferredSize(
+        preferredSize: Size.fromHeight(40.0), // here the desired height
+        child: AppBar(
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios_outlined),
             onPressed: () {
-              _workoutdataProvider
-                          .workoutdata.routinedatas[widget.rindex].mode ==
-                      3
-                  ? showToast("다운받은 루틴은 업로드 할 수 없어요")
-                  : Navigator.push(
-                      context,
-                      Transition(
-                          child: ProgramUpload(
-                            program: _workoutdataProvider
-                                .workoutdata.routinedatas[widget.rindex],
-                          ),
-                          transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+              _editWorkoutCheck();
+              btnDisabled == true
+                  ? null
+                  : [btnDisabled = true, Navigator.of(context).pop()];
             },
-            icon: Icon(
-              Icons.cloud_upload_rounded,
-            ))
-      ],
-      backgroundColor: Color(0xFF101012),
-    );
+          ),
+          title: Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  _displayTextInputDialog();
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 5 / 8,
+                  child: Consumer<WorkoutdataProvider>(
+                      builder: (builder, provider, child) {
+                    return Text(
+                      provider.workoutdata.routinedatas[widget.rindex].name,
+                      style: TextStyle(
+                          color: Colors.white,
+                          overflow: TextOverflow.ellipsis,
+                          fontSize: 30),
+                    );
+                  }),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  _workoutdataProvider
+                              .workoutdata.routinedatas[widget.rindex].mode ==
+                          3
+                      ? showToast("다운받은 루틴은 업로드 할 수 없어요")
+                      : Navigator.push(
+                          context,
+                          Transition(
+                              child: ProgramUpload(
+                                program: _workoutdataProvider
+                                    .workoutdata.routinedatas[widget.rindex],
+                              ),
+                              transitionEffect:
+                                  TransitionEffect.RIGHT_TO_LEFT));
+                },
+                icon: Icon(
+                  Icons.cloud_upload_rounded,
+                ))
+          ],
+          backgroundColor: Color(0xFF101012),
+        ));
   }
 
   void _displayFinishAlert() {
@@ -939,8 +943,12 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                           EdgeInsets.symmetric(horizontal: 50)),
                     ),
                     onPressed: () {
-                      workout.plansetcheck(widget.rindex, eindex, sindex,
-                          double.parse(_weightctrl.text), int.parse(_repsctrl.text));
+                      workout.plansetcheck(
+                          widget.rindex,
+                          eindex,
+                          sindex,
+                          double.parse(_weightctrl.text),
+                          int.parse(_repsctrl.text));
                       Navigator.pop(context);
                       _editWorkoutCheck();
                     },

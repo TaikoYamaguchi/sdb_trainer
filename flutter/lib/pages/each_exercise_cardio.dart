@@ -76,48 +76,55 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
 
   PreferredSizeWidget _appbarWidget() {
     btnDisabled = false;
-    return AppBar(
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back_ios_outlined),
-        onPressed: () {
-          btnDisabled == true
-              ? null
-              : [
-                  btnDisabled = true,
-                  Navigator.of(context).pop(),
-                  _editWorkoutCheck()
-                ];
-        },
-      ),
-      title: Text(
-        "",
-        style: TextStyle(color: Colors.white, fontSize: 30),
-      ),
-      actions: [
-        GestureDetector(
-          child: Padding(
-            padding: const EdgeInsets.only(right: 4.0),
-            child: Icon(Icons.equalizer, size: 32),
+    return PreferredSize(
+        preferredSize: Size.fromHeight(40.0), // here the desired height
+        child: AppBar(
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios_outlined),
+            onPressed: () {
+              btnDisabled == true
+                  ? null
+                  : [
+                      btnDisabled = true,
+                      Navigator.of(context).pop(),
+                      _editWorkoutCheck()
+                    ];
+            },
           ),
-          onTap: () {
-            _chartIndex.change(_exercisesdataProvider.exercisesdata.exercises
-                .indexWhere((exercise) {
-              if (exercise.name ==
-                  _workoutdataProvider.workoutdata.routinedatas[widget.rindex]
-                      .exercises[_currentExindex].name) {
-                return true;
-              } else {
-                return false;
-              }
-            }));
-            _chartIndex.changePageController(0);
-            _staticPageState.change(true);
-            _bodyStater.change(3);
-          },
-        )
-      ],
-      backgroundColor: Color(0xFF101012),
-    );
+          title: Text(
+            "",
+            style: TextStyle(color: Colors.white, fontSize: 30),
+          ),
+          actions: [
+            GestureDetector(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 4.0),
+                child: Icon(Icons.equalizer, size: 32),
+              ),
+              onTap: () {
+                _chartIndex.change(_exercisesdataProvider
+                    .exercisesdata.exercises
+                    .indexWhere((exercise) {
+                  if (exercise.name ==
+                      _workoutdataProvider
+                          .workoutdata
+                          .routinedatas[widget.rindex]
+                          .exercises[_currentExindex]
+                          .name) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                }));
+                _chartIndex.changePageController(0);
+                _staticPageState.change(true);
+                _bodyStater.change(3);
+              },
+            )
+          ],
+          backgroundColor: Color(0xFF101012),
+        ));
   }
 
   void _editWorkoutCheck() async {
@@ -247,36 +254,38 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
             children: [
               isKeyboardVisible
                   ? Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(child: Text(
-                          'Timer: ',
-                          style: TextStyle(
-                            color:  Colors.white,
-                            fontSize: 21,
-                            fontWeight: FontWeight.bold,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            child: Text(
+                              'Timer: ',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 21,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
-                        ),),
-                        Container(child: Consumer<RoutineTimeProvider>(
-                            builder: (context, provider, child) {
-                              return Text(
-                                  provider.userest
-                                      ? provider.timeron < 0
-                                      ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
-                                      : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
-                                      : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
-                                  style: TextStyle(
-                                      fontSize: 21,
-                                      fontWeight: FontWeight.bold,
-                                      color: (provider.userest &&
-                                          provider.timeron < 0)
-                                          ? Colors.red
-                                          : Colors.white));
-                            })),
-                      ],
-                    ),
-                  )
+                          Container(child: Consumer<RoutineTimeProvider>(
+                              builder: (context, provider, child) {
+                            return Text(
+                                provider.userest
+                                    ? provider.timeron < 0
+                                        ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
+                                        : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
+                                    : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                                style: TextStyle(
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.bold,
+                                    color: (provider.userest &&
+                                            provider.timeron < 0)
+                                        ? Colors.red
+                                        : Colors.white));
+                          })),
+                        ],
+                      ),
+                    )
                   : Container(
                       child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -287,30 +296,32 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                           children: [
                             Row(
                               children: [
-                                Container(child: Text(
-                                  '  Timer: ',
-                                  style: TextStyle(
-                                    color:  Colors.white,
-                                    fontSize: 21,
-                                    fontWeight: FontWeight.bold,
+                                Container(
+                                  child: Text(
+                                    '  Timer: ',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 21,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),),
+                                ),
                                 Container(child: Consumer<RoutineTimeProvider>(
                                     builder: (context, provider, child) {
-                                      return Text(
-                                          provider.userest
-                                              ? provider.timeron < 0
+                                  return Text(
+                                      provider.userest
+                                          ? provider.timeron < 0
                                               ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
                                               : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
-                                              : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
-                                          style: TextStyle(
-                                              fontSize: 21,
-                                              fontWeight: FontWeight.bold,
-                                              color: (provider.userest &&
+                                          : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                                      style: TextStyle(
+                                          fontSize: 21,
+                                          fontWeight: FontWeight.bold,
+                                          color: (provider.userest &&
                                                   provider.timeron < 0)
-                                                  ? Colors.red
-                                                  : Colors.white));
-                                    })),
+                                              ? Colors.red
+                                              : Colors.white));
+                                })),
                               ],
                             ),
                             GestureDetector(
@@ -325,23 +336,22 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                               },
                               child: Consumer<RoutineTimeProvider>(
                                   builder: (builder, provider, child) {
-                                    return Text(
-                                      provider.userest
-                                          ? 'Rest Timer on'
-                                          : 'Rest Timer off',
-                                      style: TextStyle(
-                                        color: provider.userest
-                                            ? Colors.white
-                                            : Color(0xFF717171),
-                                        fontSize: 21,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    );
-                                  }),
+                                return Text(
+                                  provider.userest
+                                      ? 'Rest Timer on'
+                                      : 'Rest Timer off',
+                                  style: TextStyle(
+                                    color: provider.userest
+                                        ? Colors.white
+                                        : Color(0xFF717171),
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                );
+                              }),
                             ),
                           ],
                         ),
-
                         GestureDetector(
                           onTap: () {
                             _displaySetRestAlert(pindex);
@@ -845,8 +855,6 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                   padding: EdgeInsets.only(bottom: 10),
                   child: Column(
                     children: [
-
-
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -900,7 +908,6 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                           Container(child: Consumer<RoutineTimeProvider>(
                               builder: (builder, provider, child) {
                             return ElevatedButton(
-
                               style: ElevatedButton.styleFrom(
                                   primary:
                                       (provider.nowonrindex != widget.rindex) &&
@@ -916,11 +923,15 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                         if (_routinetimeProvider.isstarted)
                                           {_displayFinishAlert()}
                                         else
-                                          {_routinetimeProvider
-                                              .resettimer(_workoutdataProvider
-                                              .workoutdata
-                                              .routinedatas[widget.rindex].exercises[pindex].rest),
-                                            provider.routinecheck(widget.rindex)}
+                                          {
+                                            _routinetimeProvider.resettimer(
+                                                _workoutdataProvider
+                                                    .workoutdata
+                                                    .routinedatas[widget.rindex]
+                                                    .exercises[pindex]
+                                                    .rest),
+                                            provider.routinecheck(widget.rindex)
+                                          }
                                       ];
                               },
                               child: Text(
@@ -1011,7 +1022,8 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
               color: Colors.white,
             ),
             child: ExerciseGuide(
-              eindex: eindex, isroutine: true,
+              eindex: eindex,
+              isroutine: true,
             ));
       },
     );

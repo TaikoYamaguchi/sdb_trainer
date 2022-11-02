@@ -70,7 +70,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     ),
     1: Padding(
         child:
-        Text("중량 제거", style: TextStyle(color: Colors.white, fontSize: 16)),
+            Text("중량 제거", style: TextStyle(color: Colors.white, fontSize: 16)),
         padding: const EdgeInsets.all(5.0)),
   };
   JustTheController tooltipController = new JustTheController();
@@ -100,48 +100,55 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
 
   PreferredSizeWidget _appbarWidget() {
     btnDisabled = false;
-    return AppBar(
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back_ios_outlined),
-        onPressed: () {
-          btnDisabled == true
-              ? null
-              : [
-                  btnDisabled = true,
-                  Navigator.of(context).pop(),
-                  _editWorkoutCheck()
-                ];
-        },
-      ),
-      title: Text(
-        "",
-        style: TextStyle(color: Colors.white, fontSize: 30),
-      ),
-      actions: [
-        GestureDetector(
-          child: Padding(
-            padding: const EdgeInsets.only(right: 4.0),
-            child: Icon(Icons.equalizer, size: 32),
+    return PreferredSize(
+        preferredSize: Size.fromHeight(40.0), // here the desired height
+        child: AppBar(
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios_outlined),
+            onPressed: () {
+              btnDisabled == true
+                  ? null
+                  : [
+                      btnDisabled = true,
+                      Navigator.of(context).pop(),
+                      _editWorkoutCheck()
+                    ];
+            },
           ),
-          onTap: () {
-            _chartIndex.change(_exercisesdataProvider.exercisesdata.exercises
-                .indexWhere((exercise) {
-              if (exercise.name ==
-                  _workoutdataProvider.workoutdata.routinedatas[widget.rindex]
-                      .exercises[_currentExindex].name) {
-                return true;
-              } else {
-                return false;
-              }
-            }));
-            _chartIndex.changePageController(0);
-            _staticPageState.change(true);
-            _bodyStater.change(3);
-          },
-        )
-      ],
-      backgroundColor: Color(0xFF101012),
-    );
+          title: Text(
+            "",
+            style: TextStyle(color: Colors.white, fontSize: 30),
+          ),
+          actions: [
+            GestureDetector(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 4.0),
+                child: Icon(Icons.equalizer, size: 32),
+              ),
+              onTap: () {
+                _chartIndex.change(_exercisesdataProvider
+                    .exercisesdata.exercises
+                    .indexWhere((exercise) {
+                  if (exercise.name ==
+                      _workoutdataProvider
+                          .workoutdata
+                          .routinedatas[widget.rindex]
+                          .exercises[_currentExindex]
+                          .name) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                }));
+                _chartIndex.changePageController(0);
+                _staticPageState.change(true);
+                _bodyStater.change(3);
+              },
+            )
+          ],
+          backgroundColor: Color(0xFF101012),
+        ));
   }
 
   void _editWorkoutCheck() async {
@@ -236,11 +243,34 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
       controller: controller,
       itemBuilder: (context, pindex) {
         _currentExindex = pindex;
-        return _exercisesdataProvider.exercisesdata.exercises[_exercisesdataProvider.exercisesdata.exercises.indexWhere((element) => element.name == _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises[pindex].name)].category == '맨몸'
+        return _exercisesdataProvider
+                    .exercisesdata
+                    .exercises[_exercisesdataProvider.exercisesdata.exercises
+                        .indexWhere((element) =>
+                            element.name ==
+                            _workoutdataProvider
+                                .workoutdata
+                                .routinedatas[widget.rindex]
+                                .exercises[pindex]
+                                .name)]
+                    .category ==
+                '맨몸'
             ? _bodyexercisedetailWidget(pindex)
-            : _exercisesdataProvider.exercisesdata.exercises[_exercisesdataProvider.exercisesdata.exercises.indexWhere((element) => element.name == _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises[pindex].name)].category == '유산소'
-              ? _cardioexercisedetailWidget(pindex)
-              : _exercisedetailWidget(pindex);
+            : _exercisesdataProvider
+                        .exercisesdata
+                        .exercises[_exercisesdataProvider
+                            .exercisesdata.exercises
+                            .indexWhere((element) =>
+                                element.name ==
+                                _workoutdataProvider
+                                    .workoutdata
+                                    .routinedatas[widget.rindex]
+                                    .exercises[pindex]
+                                    .name)]
+                        .category ==
+                    '유산소'
+                ? _cardioexercisedetailWidget(pindex)
+                : _exercisedetailWidget(pindex);
       },
       itemCount: numEx,
     );
@@ -275,36 +305,38 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             children: [
               isKeyboardVisible
                   ? Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(child: Text(
-                          'Timer: ',
-                          style: TextStyle(
-                            color:  Colors.white,
-                            fontSize: 21,
-                            fontWeight: FontWeight.bold,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            child: Text(
+                              'Timer: ',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 21,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
-                        ),),
-                        Container(child: Consumer<RoutineTimeProvider>(
-                            builder: (context, provider, child) {
-                              return Text(
-                                  provider.userest
-                                      ? provider.timeron < 0
-                                      ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
-                                      : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
-                                      : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
-                                  style: TextStyle(
-                                      fontSize: 21,
-                                      fontWeight: FontWeight.bold,
-                                      color: (provider.userest &&
-                                          provider.timeron < 0)
-                                          ? Colors.red
-                                          : Colors.white));
-                            })),
-                      ],
-                    ),
-                  )
+                          Container(child: Consumer<RoutineTimeProvider>(
+                              builder: (context, provider, child) {
+                            return Text(
+                                provider.userest
+                                    ? provider.timeron < 0
+                                        ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
+                                        : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
+                                    : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                                style: TextStyle(
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.bold,
+                                    color: (provider.userest &&
+                                            provider.timeron < 0)
+                                        ? Colors.red
+                                        : Colors.white));
+                          })),
+                        ],
+                      ),
+                    )
                   : Container(
                       child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -315,30 +347,32 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           children: [
                             Row(
                               children: [
-                                Container(child: Text(
-                                  '  Timer: ',
-                                  style: TextStyle(
-                                    color:  Colors.white,
-                                    fontSize: 21,
-                                    fontWeight: FontWeight.bold,
+                                Container(
+                                  child: Text(
+                                    '  Timer: ',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 21,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),),
+                                ),
                                 Container(child: Consumer<RoutineTimeProvider>(
                                     builder: (context, provider, child) {
-                                      return Text(
-                                          provider.userest
-                                              ? provider.timeron < 0
+                                  return Text(
+                                      provider.userest
+                                          ? provider.timeron < 0
                                               ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
                                               : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
-                                              : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
-                                          style: TextStyle(
-                                              fontSize: 21,
-                                              fontWeight: FontWeight.bold,
-                                              color: (provider.userest &&
+                                          : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                                      style: TextStyle(
+                                          fontSize: 21,
+                                          fontWeight: FontWeight.bold,
+                                          color: (provider.userest &&
                                                   provider.timeron < 0)
-                                                  ? Colors.red
-                                                  : Colors.white));
-                                    })),
+                                              ? Colors.red
+                                              : Colors.white));
+                                })),
                               ],
                             ),
                             GestureDetector(
@@ -353,23 +387,22 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               },
                               child: Consumer<RoutineTimeProvider>(
                                   builder: (builder, provider, child) {
-                                    return Text(
-                                      provider.userest
-                                          ? 'Rest Timer on'
-                                          : 'Rest Timer off',
-                                      style: TextStyle(
-                                        color: provider.userest
-                                            ? Colors.white
-                                            : Color(0xFF717171),
-                                        fontSize: 21,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    );
-                                  }),
+                                return Text(
+                                  provider.userest
+                                      ? 'Rest Timer on'
+                                      : 'Rest Timer off',
+                                  style: TextStyle(
+                                    color: provider.userest
+                                        ? Colors.white
+                                        : Color(0xFF717171),
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                );
+                              }),
                             ),
                           ],
                         ),
-
                         GestureDetector(
                           onTap: () {
                             _displaySetRestAlert(pindex);
@@ -700,8 +733,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                             ),
                                             Container(
                                               width: 70,
-                                              child:
-                                              TextField(
+                                              child: TextField(
                                                 controller:
                                                     weightController[pindex]
                                                         .controllerlist[index],
@@ -737,7 +769,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                 },
                                               ),
                                             ),
-
                                             Container(
                                                 width: 35,
                                                 child: SvgPicture.asset(
@@ -875,8 +906,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   padding: EdgeInsets.only(bottom: 10),
                   child: Column(
                     children: [
-
-
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -930,7 +959,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           Container(child: Consumer<RoutineTimeProvider>(
                               builder: (builder, provider, child) {
                             return ElevatedButton(
-
                               style: ElevatedButton.styleFrom(
                                   primary:
                                       (provider.nowonrindex != widget.rindex) &&
@@ -946,11 +974,15 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                         if (_routinetimeProvider.isstarted)
                                           {_displayFinishAlert()}
                                         else
-                                          {_routinetimeProvider
-                                              .resettimer(_workoutdataProvider
-                                              .workoutdata
-                                              .routinedatas[widget.rindex].exercises[pindex].rest),
-                                            provider.routinecheck(widget.rindex)}
+                                          {
+                                            _routinetimeProvider.resettimer(
+                                                _workoutdataProvider
+                                                    .workoutdata
+                                                    .routinedatas[widget.rindex]
+                                                    .exercises[pindex]
+                                                    .rest),
+                                            provider.routinecheck(widget.rindex)
+                                          }
                                       ];
                               },
                               child: Text(
@@ -1030,8 +1062,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
 
   Widget _bodyexercisedetailWidget(pindex) {
     int ueindex = _exercisesdataProvider.exercisesdata.exercises.indexWhere(
-            (element) =>
-        element.name ==
+        (element) =>
+            element.name ==
             _workoutdataProvider.workoutdata.routinedatas[widget.rindex]
                 .exercises[pindex].name);
     Color getColor(Set<MaterialState> states) {
@@ -1057,121 +1089,124 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             children: [
               isKeyboardVisible
                   ? Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(child: Text(
-                      'Timer: ',
-                      style: TextStyle(
-                        color:  Colors.white,
-                        fontSize: 21,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),),
-                    Container(child: Consumer<RoutineTimeProvider>(
-                        builder: (context, provider, child) {
-                          return Text(
-                              provider.userest
-                                  ? provider.timeron < 0
-                                  ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
-                                  : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
-                                  : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
-                              style: TextStyle(
-                                  fontSize: 21,
-                                  fontWeight: FontWeight.bold,
-                                  color: (provider.userest &&
-                                      provider.timeron < 0)
-                                      ? Colors.red
-                                      : Colors.white));
-                        })),
-                  ],
-                ),
-              )
-                  : Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Row(
-                            children: [
-                              Container(child: Text(
-                                '  Timer: ',
-                                style: TextStyle(
-                                  color:  Colors.white,
-                                  fontSize: 21,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),),
-                              Container(child: Consumer<RoutineTimeProvider>(
-                                  builder: (context, provider, child) {
-                                    return Text(
-                                        provider.userest
-                                            ? provider.timeron < 0
-                                            ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
-                                            : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
-                                            : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
-                                        style: TextStyle(
-                                            fontSize: 21,
-                                            fontWeight: FontWeight.bold,
-                                            color: (provider.userest &&
-                                                provider.timeron < 0)
-                                                ? Colors.red
-                                                : Colors.white));
-                                  })),
-                            ],
+                          Container(
+                            child: Text(
+                              'Timer: ',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 21,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              _routinetimeProvider.restcheck();
-                              _routinetimeProvider.resttimecheck(
-                                  _workoutdataProvider
-                                      .workoutdata
-                                      .routinedatas[widget.rindex]
-                                      .exercises[pindex]
-                                      .rest);
-                            },
-                            child: Consumer<RoutineTimeProvider>(
-                                builder: (builder, provider, child) {
-                                  return Text(
-                                    provider.userest
-                                        ? 'Rest Timer on'
-                                        : 'Rest Timer off',
+                          Container(child: Consumer<RoutineTimeProvider>(
+                              builder: (context, provider, child) {
+                            return Text(
+                                provider.userest
+                                    ? provider.timeron < 0
+                                        ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
+                                        : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
+                                    : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                                style: TextStyle(
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.bold,
+                                    color: (provider.userest &&
+                                            provider.timeron < 0)
+                                        ? Colors.red
+                                        : Colors.white));
+                          })),
+                        ],
+                      ),
+                    )
+                  : Container(
+                      child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  child: Text(
+                                    '  Timer: ',
                                     style: TextStyle(
-                                      color: provider.userest
-                                          ? Colors.white
-                                          : Color(0xFF717171),
+                                      color: Colors.white,
                                       fontSize: 21,
                                       fontWeight: FontWeight.bold,
                                     ),
-                                  );
-                                }),
-                          ),
-                        ],
-                      ),
-
-                      GestureDetector(
-                        onTap: () {
-                          _displaySetRestAlert(pindex);
-                        },
-                        child: Consumer<WorkoutdataProvider>(
-                            builder: (builder, provider, child) {
-                              _exercise = provider.workoutdata
-                                  .routinedatas[widget.rindex].exercises[pindex];
-                              return Text(
-                                "Rest: ${_exercise.rest}",
-                                style: TextStyle(
-                                  color: Color(0xFF717171),
-                                  fontSize: 21,
-                                  fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              );
-                            }),
-                      ),
-                    ],
-                  )),
+                                Container(child: Consumer<RoutineTimeProvider>(
+                                    builder: (context, provider, child) {
+                                  return Text(
+                                      provider.userest
+                                          ? provider.timeron < 0
+                                              ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
+                                              : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
+                                          : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                                      style: TextStyle(
+                                          fontSize: 21,
+                                          fontWeight: FontWeight.bold,
+                                          color: (provider.userest &&
+                                                  provider.timeron < 0)
+                                              ? Colors.red
+                                              : Colors.white));
+                                })),
+                              ],
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                _routinetimeProvider.restcheck();
+                                _routinetimeProvider.resttimecheck(
+                                    _workoutdataProvider
+                                        .workoutdata
+                                        .routinedatas[widget.rindex]
+                                        .exercises[pindex]
+                                        .rest);
+                              },
+                              child: Consumer<RoutineTimeProvider>(
+                                  builder: (builder, provider, child) {
+                                return Text(
+                                  provider.userest
+                                      ? 'Rest Timer on'
+                                      : 'Rest Timer off',
+                                  style: TextStyle(
+                                    color: provider.userest
+                                        ? Colors.white
+                                        : Color(0xFF717171),
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                );
+                              }),
+                            ),
+                          ],
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            _displaySetRestAlert(pindex);
+                          },
+                          child: Consumer<WorkoutdataProvider>(
+                              builder: (builder, provider, child) {
+                            _exercise = provider.workoutdata
+                                .routinedatas[widget.rindex].exercises[pindex];
+                            return Text(
+                              "Rest: ${_exercise.rest}",
+                              style: TextStyle(
+                                color: Color(0xFF717171),
+                                fontSize: 21,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            );
+                          }),
+                        ),
+                      ],
+                    )),
               Container(
                   height: isKeyboardVisible ? 40 : 110,
                   child: Column(
@@ -1183,66 +1218,66 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                         },
                         child: Consumer<WorkoutdataProvider>(
                             builder: (builder, provider, child) {
-                              var _exercise = provider.workoutdata
-                                  .routinedatas[widget.rindex].exercises[pindex];
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _exercise.name.length < 10
-                                      ? Icon(
-                                    Icons.info_outline_rounded,
-                                    color: Color(0xFF101012),
-                                  )
-                                      : Container(),
-                                  isKeyboardVisible
-                                      ? Text(
-                                    _exercise.name,
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 24),
-                                  )
-                                      : _exercise.name.length < 8
-                                      ? Text(
-                                    _exercise.name,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 48),
-                                  )
-                                      : Flexible(
-                                    child: Text(
+                          var _exercise = provider.workoutdata
+                              .routinedatas[widget.rindex].exercises[pindex];
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _exercise.name.length < 10
+                                  ? Icon(
+                                      Icons.info_outline_rounded,
+                                      color: Color(0xFF101012),
+                                    )
+                                  : Container(),
+                              isKeyboardVisible
+                                  ? Text(
                                       _exercise.name,
-                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 38),
-                                    ),
+                                          color: Colors.white, fontSize: 24),
+                                    )
+                                  : _exercise.name.length < 8
+                                      ? Text(
+                                          _exercise.name,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 48),
+                                        )
+                                      : Flexible(
+                                          child: Text(
+                                            _exercise.name,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 38),
+                                          ),
+                                        ),
+                              Column(
+                                children: [
+                                  Container(
+                                    height: 7,
                                   ),
-                                  Column(
-                                    children: [
-                                      Container(
-                                        height: 7,
-                                      ),
-                                      Icon(
-                                        Icons.info_outline_rounded,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                    ],
+                                  Icon(
+                                    Icons.info_outline_rounded,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 ],
-                              );
-                            }),
+                              ),
+                            ],
+                          );
+                        }),
                       ),
                       Consumer<ExercisesdataProvider>(
                           builder: (builder, provider, child) {
-                            var _info = provider.exercisesdata.exercises[ueindex];
-                            return isKeyboardVisible
-                                ? Container()
-                                : Text(
-                              "Best 1RM: ${_info.onerm.toStringAsFixed(1)}/${_info.goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
-                              style: TextStyle(
-                                  color: Color(0xFF717171), fontSize: 21),
-                            );
-                          }),
+                        var _info = provider.exercisesdata.exercises[ueindex];
+                        return isKeyboardVisible
+                            ? Container()
+                            : Text(
+                                "Best 1RM: ${_info.onerm.toStringAsFixed(1)}/${_info.goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
+                                style: TextStyle(
+                                    color: Color(0xFF717171), fontSize: 21),
+                              );
+                      }),
                     ],
                   )),
               Container(
@@ -1282,14 +1317,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                   tooltipController.showTooltip();
                                 },
                                 child: JustTheTooltip(
-                                  controller:
-                                  tooltipController,
+                                  controller: tooltipController,
                                   child: Padding(
                                     padding: EdgeInsets.zero,
                                     child: Icon(
                                       Icons.info_outline_rounded,
-                                      color: Theme.of(context)
-                                          .primaryColor,
+                                      color: Theme.of(context).primaryColor,
                                       size: 20,
                                     ),
                                   ),
@@ -1297,15 +1330,13 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                     padding: EdgeInsets.all(8.0),
                                     child: Text(
                                       '맨몸 카테고리의 운동은 기본 무게가 체중으로 세팅되고,\n무게를 누르면 체중에 추가/제거가 가능해요.',
-                                      style: TextStyle(
-                                          color: Colors.white),
+                                      style: TextStyle(color: Colors.white),
                                     ),
                                   ),
                                 ),
                               ),
                             ],
                           )),
-
                       Container(width: 35),
                       Container(
                           width: 40,
@@ -1333,481 +1364,495 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   )),
               Consumer2<WorkoutdataProvider, UserdataProvider>(
                   builder: (builder, provider, provider2, child) {
-                    var _sets = provider.workoutdata.routinedatas[widget.rindex]
-                        .exercises[pindex].sets;
-                    if (_isSetChanged == true) {
-                      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                        _controller.animateTo(
-                          _controller.position.maxScrollExtent,
-                          duration: Duration(milliseconds: 200),
-                          curve: Curves.easeInOut,
-                        );
+                var _sets = provider.workoutdata.routinedatas[widget.rindex]
+                    .exercises[pindex].sets;
+                if (_isSetChanged == true) {
+                  WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                    _controller.animateTo(
+                      _controller.position.maxScrollExtent,
+                      duration: Duration(milliseconds: 200),
+                      curve: Curves.easeInOut,
+                    );
 
-                        print(_controller);
-                      });
-                      _isSetChanged = false;
-                    } else {
-                      null;
-                    }
+                    print(_controller);
+                  });
+                  _isSetChanged = false;
+                } else {
+                  null;
+                }
 
-                    return Expanded(
-                      child: Column(
-                        children: [
-                          Flexible(
-                            child: ListView.separated(
-                                shrinkWrap: true,
-                                controller: _controller,
-                                itemBuilder: (BuildContext _context, int index) {
-                                  weightController[pindex].controllerlist[index].text= provider2.userdata.bodyStats.last.weight.toString();
-                                  provider.workoutdata.routinedatas[widget.rindex].exercises[pindex].sets[index].index = provider2.userdata.bodyStats.last.weight;
-                                  return Container(
-                                    padding: EdgeInsets.only(right: 10),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          width: 60,
-                                          child: Transform.scale(
-                                              scale: 1.2,
-                                              child: Theme(
-                                                data: ThemeData(
-                                                    unselectedWidgetColor:
+                return Expanded(
+                  child: Column(
+                    children: [
+                      Flexible(
+                        child: ListView.separated(
+                            shrinkWrap: true,
+                            controller: _controller,
+                            itemBuilder: (BuildContext _context, int index) {
+                              weightController[pindex]
+                                      .controllerlist[index]
+                                      .text =
+                                  provider2.userdata.bodyStats.last.weight
+                                      .toString();
+                              provider.workoutdata.routinedatas[widget.rindex]
+                                      .exercises[pindex].sets[index].index =
+                                  provider2.userdata.bodyStats.last.weight;
+                              return Container(
+                                padding: EdgeInsets.only(right: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 60,
+                                      child: Transform.scale(
+                                          scale: 1.2,
+                                          child: Theme(
+                                            data: ThemeData(
+                                                unselectedWidgetColor:
                                                     Colors.white),
-                                                child: Checkbox(
-                                                    checkColor: Colors.white,
-                                                    activeColor: Theme.of(context)
-                                                        .primaryColor,
-                                                    value: _sets[index].ischecked,
-                                                    onChanged: (newvalue) {
-                                                      _routinetimeProvider.isstarted
-                                                          ? [
-                                                        _workoutdataProvider
-                                                            .boolcheck(
-                                                            widget.rindex,
-                                                            pindex,
-                                                            index,
-                                                            newvalue),
-                                                        newvalue == true
-                                                            ? [
-                                                          _routinetimeProvider.resettimer(provider
-                                                              .workoutdata
-                                                              .routinedatas[
-                                                          widget
-                                                              .rindex]
-                                                              .exercises[
-                                                          pindex]
-                                                              .rest),
-                                                          index ==
-                                                              _sets.length -
-                                                                  1
+                                            child: Checkbox(
+                                                checkColor: Colors.white,
+                                                activeColor: Theme.of(context)
+                                                    .primaryColor,
+                                                value: _sets[index].ischecked,
+                                                onChanged: (newvalue) {
+                                                  _routinetimeProvider.isstarted
+                                                      ? [
+                                                          _workoutdataProvider
+                                                              .boolcheck(
+                                                                  widget.rindex,
+                                                                  pindex,
+                                                                  index,
+                                                                  newvalue),
+                                                          newvalue == true
                                                               ? [
-                                                            _workoutdataProvider.setsplus(
-                                                                widget.rindex,
-                                                                pindex),
-                                                            _isSetChanged =
-                                                            true,
-                                                            print(
-                                                                "jjjjjjjjjjjjjj"),
-                                                            weightController[pindex]
-                                                                .controllerlist
-                                                                .add(new TextEditingController(text: provider2.userdata.bodyStats.last.weight.toString())),
-                                                            repsController[pindex]
-                                                                .controllerlist
-                                                                .add(new TextEditingController(text: null)),
-                                                            showToast(
-                                                                "세트를 추가했어요 필요없으면 다음으로 넘어가보세요"),
-                                                          ]
+                                                                  _routinetimeProvider.resettimer(provider
+                                                                      .workoutdata
+                                                                      .routinedatas[
+                                                                          widget
+                                                                              .rindex]
+                                                                      .exercises[
+                                                                          pindex]
+                                                                      .rest),
+                                                                  index ==
+                                                                          _sets.length -
+                                                                              1
+                                                                      ? [
+                                                                          _workoutdataProvider.setsplus(
+                                                                              widget.rindex,
+                                                                              pindex),
+                                                                          _isSetChanged =
+                                                                              true,
+                                                                          print(
+                                                                              "jjjjjjjjjjjjjj"),
+                                                                          weightController[pindex]
+                                                                              .controllerlist
+                                                                              .add(new TextEditingController(text: provider2.userdata.bodyStats.last.weight.toString())),
+                                                                          repsController[pindex]
+                                                                              .controllerlist
+                                                                              .add(new TextEditingController(text: null)),
+                                                                          showToast(
+                                                                              "세트를 추가했어요 필요없으면 다음으로 넘어가보세요"),
+                                                                        ]
+                                                                      : null,
+                                                                ]
                                                               : null,
+                                                          _editWorkoutwCheck()
                                                         ]
-                                                            : null,
-                                                        _editWorkoutwCheck()
-                                                      ]
-                                                          : _displayStartAlert(
+                                                      : _displayStartAlert(
                                                           pindex,
                                                           index,
                                                           newvalue);
-                                                    }),
-                                              )),
-                                        ),
-                                        Expanded(
-                                          child: Slidable(
-                                            startActionPane: ActionPane(
-                                                extentRatio: 1.0,
-                                                motion: CustomMotion(
-                                                  onOpen: () {
-                                                    _routinetimeProvider.isstarted
-                                                        ? [
-                                                      _workoutdataProvider
-                                                          .boolcheck(
-                                                          widget.rindex,
-                                                          pindex,
-                                                          index,
-                                                          true),
-                                                      _routinetimeProvider
-                                                          .resettimer(provider
-                                                          .workoutdata
-                                                          .routinedatas[
-                                                      widget
-                                                          .rindex]
-                                                          .exercises[
-                                                      pindex]
-                                                          .rest),
-                                                      index ==
-                                                          _sets.length - 1
-                                                          ? [
+                                                }),
+                                          )),
+                                    ),
+                                    Expanded(
+                                      child: Slidable(
+                                        startActionPane: ActionPane(
+                                            extentRatio: 1.0,
+                                            motion: CustomMotion(
+                                              onOpen: () {
+                                                _routinetimeProvider.isstarted
+                                                    ? [
                                                         _workoutdataProvider
-                                                            .setsplus(
-                                                            widget
-                                                                .rindex,
-                                                            pindex),
-                                                        _isSetChanged =
-                                                        true,
-                                                        weightController[
-                                                        pindex]
-                                                            .controllerlist
-                                                            .add(new TextEditingController(
-                                                            text: provider2.userdata.bodyStats.last.weight.toString())),
-                                                        repsController[
-                                                        pindex]
-                                                            .controllerlist
-                                                            .add(new TextEditingController(
-                                                            text:
-                                                            null)),
-                                                        showToast(
-                                                            "세트를 추가했어요! 다음으로 넘어갈 수도 있어요")
+                                                            .boolcheck(
+                                                                widget.rindex,
+                                                                pindex,
+                                                                index,
+                                                                true),
+                                                        _routinetimeProvider
+                                                            .resettimer(provider
+                                                                .workoutdata
+                                                                .routinedatas[
+                                                                    widget
+                                                                        .rindex]
+                                                                .exercises[
+                                                                    pindex]
+                                                                .rest),
+                                                        index ==
+                                                                _sets.length - 1
+                                                            ? [
+                                                                _workoutdataProvider
+                                                                    .setsplus(
+                                                                        widget
+                                                                            .rindex,
+                                                                        pindex),
+                                                                _isSetChanged =
+                                                                    true,
+                                                                weightController[
+                                                                        pindex]
+                                                                    .controllerlist
+                                                                    .add(new TextEditingController(
+                                                                        text: provider2
+                                                                            .userdata
+                                                                            .bodyStats
+                                                                            .last
+                                                                            .weight
+                                                                            .toString())),
+                                                                repsController[
+                                                                        pindex]
+                                                                    .controllerlist
+                                                                    .add(new TextEditingController(
+                                                                        text:
+                                                                            null)),
+                                                                showToast(
+                                                                    "세트를 추가했어요! 다음으로 넘어갈 수도 있어요")
+                                                              ]
+                                                            : null,
+                                                        _editWorkoutwCheck()
                                                       ]
-                                                          : null,
-                                                      _editWorkoutwCheck()
-                                                    ]
-                                                        : _displayStartAlert(
+                                                    : _displayStartAlert(
                                                         pindex, index, true);
-                                                  },
-                                                  onClose: () {},
-                                                  motionWidget: StretchMotion(),
-                                                ),
-                                                children: [
-                                                  SlidableAction(
-                                                    autoClose: true,
-                                                    onPressed: (_) {},
-                                                    backgroundColor:
+                                              },
+                                              onClose: () {},
+                                              motionWidget: StretchMotion(),
+                                            ),
+                                            children: [
+                                              SlidableAction(
+                                                autoClose: true,
+                                                onPressed: (_) {},
+                                                backgroundColor:
                                                     Theme.of(context)
                                                         .primaryColor,
-                                                    foregroundColor: Colors.white,
-                                                    icon: Icons.check,
-                                                    label: '밀어서 check',
-                                                  )
-                                                ]),
-                                            child: Row(
-                                              mainAxisAlignment:
+                                                foregroundColor: Colors.white,
+                                                icon: Icons.check,
+                                                label: '밀어서 check',
+                                              )
+                                            ]),
+                                        child: Row(
+                                          mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Container(
-                                                  width: 25,
-                                                  child: Text(
-                                                    "${index + 1}",
-                                                    style: TextStyle(
-                                                      fontSize: 21,
-                                                      color: Colors.white,
-                                                    ),
-                                                    textAlign: TextAlign.center,
+                                          children: [
+                                            Container(
+                                              width: 25,
+                                              child: Text(
+                                                "${index + 1}",
+                                                style: TextStyle(
+                                                  fontSize: 21,
+                                                  color: Colors.white,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                            Container(
+                                                width: 70,
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    _displaySetWeightAlert(
+                                                        pindex, index);
+                                                  },
+                                                  child: Center(
+                                                    child: Text(
+                                                        "${_sets[index].index + _sets[index].weight}",
+                                                        style: TextStyle(
+                                                          fontSize: 21,
+                                                          color: Colors.white,
+                                                        )),
                                                   ),
-                                                ),
-                                                Container(
-                                                    width: 70,
-                                                    child: GestureDetector(
-                                                      onTap: (){
-                                                        _displaySetWeightAlert(pindex,index);
-                                                      },
-                                                      child: Center(
-                                                        child: Text("${_sets[index].index+_sets[index].weight}",
-                                                            style: TextStyle(
-                                                              fontSize: 21,
-                                                              color: Colors.white,
-                                                            )
-                                                        ),
-                                                      ),
-                                                    )
-
-                                                ),
-                                                Container(
-                                                    width: 35,
-                                                    child: SvgPicture.asset(
-                                                        "assets/svg/multiply.svg",
-                                                        color: Colors.white,
-                                                        height: 19)),
-                                                Container(
-                                                  width: 40,
-                                                  child: TextField(
-                                                    controller:
+                                                )),
+                                            Container(
+                                                width: 35,
+                                                child: SvgPicture.asset(
+                                                    "assets/svg/multiply.svg",
+                                                    color: Colors.white,
+                                                    height: 19)),
+                                            Container(
+                                              width: 40,
+                                              child: TextField(
+                                                controller:
                                                     repsController[pindex]
                                                         .controllerlist[index],
-                                                    keyboardType:
+                                                keyboardType:
                                                     TextInputType.number,
-                                                    style: TextStyle(
-                                                      fontSize: 21,
-                                                      color: Colors.white,
-                                                    ),
-                                                    textAlign: TextAlign.center,
-                                                    decoration: InputDecoration(
-                                                      hintText:
+                                                style: TextStyle(
+                                                  fontSize: 21,
+                                                  color: Colors.white,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                                decoration: InputDecoration(
+                                                  hintText:
                                                       "${_sets[index].reps}",
-                                                      hintStyle: TextStyle(
-                                                        fontSize: 21,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                    onChanged: (text) {
-                                                      int changereps;
-                                                      if (text == "") {
-                                                        changereps = 1;
-                                                      } else {
-                                                        changereps =
-                                                            int.parse(text);
-                                                      }
-                                                      _workoutdataProvider
-                                                          .repscheck(
+                                                  hintStyle: TextStyle(
+                                                    fontSize: 21,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                onChanged: (text) {
+                                                  int changereps;
+                                                  if (text == "") {
+                                                    changereps = 1;
+                                                  } else {
+                                                    changereps =
+                                                        int.parse(text);
+                                                  }
+                                                  _workoutdataProvider
+                                                      .repscheck(
                                                           widget.rindex,
                                                           pindex,
                                                           index,
                                                           changereps);
-                                                    },
-                                                  ),
-                                                ),
-                                                Container(
-                                                    width: 70,
-                                                    child: (_sets[index].reps != 1)
-                                                        ? Text(
-                                                      "${((_sets[index].weight+_sets[index].index) * (1 + _sets[index].reps / 30)).toStringAsFixed(1)}",
-                                                      style: TextStyle(
-                                                          fontSize: 21,
-                                                          color:
-                                                          Colors.white),
-                                                      textAlign:
-                                                      TextAlign.center,
-                                                    )
-                                                        : Text(
-                                                      "${_sets[index].weight+_sets[index].index}",
-                                                      style: TextStyle(
-                                                          fontSize: 21,
-                                                          color:
-                                                          Colors.white),
-                                                      textAlign:
-                                                      TextAlign.center,
-                                                    )),
-                                              ],
+                                                },
+                                              ),
                                             ),
-                                          ),
+                                            Container(
+                                                width: 70,
+                                                child: (_sets[index].reps != 1)
+                                                    ? Text(
+                                                        "${((_sets[index].weight + _sets[index].index) * (1 + _sets[index].reps / 30)).toStringAsFixed(1)}",
+                                                        style: TextStyle(
+                                                            fontSize: 21,
+                                                            color:
+                                                                Colors.white),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      )
+                                                    : Text(
+                                                        "${_sets[index].weight + _sets[index].index}",
+                                                        style: TextStyle(
+                                                            fontSize: 21,
+                                                            color:
+                                                                Colors.white),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      )),
+                                          ],
                                         ),
-                                      ],
+                                      ),
                                     ),
-                                  );
-                                },
-                                separatorBuilder:
-                                    (BuildContext _context, int index) {
-                                  return Container(
-                                    alignment: Alignment.center,
-                                    height: 1,
-                                    color: Color(0xFF101012),
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      margin: EdgeInsets.symmetric(horizontal: 10),
-                                      height: 1,
-                                      color: Color(0xFF717171),
-                                    ),
-                                  );
-                                },
-                                itemCount: _sets.length),
-                          ),
-                          Container(
-                            height: 50,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                IconButton(
-                                    onPressed: () {
-                                      _workoutdataProvider.setsminus(
-                                          widget.rindex, pindex);
-                                      weightController[pindex]
-                                          .controllerlist
-                                          .removeLast();
-                                      repsController[pindex]
-                                          .controllerlist
-                                          .removeLast();
-                                    },
-                                    icon: Icon(
-                                      Icons.remove,
-                                      color: Colors.white,
-                                      size: 24,
-                                    )),
-                                IconButton(
-                                    onPressed: () {
-                                      _isSetChanged = true;
-                                      _workoutdataProvider.setsplus(
-                                          widget.rindex, pindex);
-                                      weightController[pindex].controllerlist.add(
-                                          new TextEditingController(text: provider2.userdata.bodyStats.last.weight.toString()));
-                                      repsController[pindex].controllerlist.add(
-                                          new TextEditingController(text: null));
-                                    },
-                                    icon: Icon(
-                                      Icons.add,
-                                      color: Colors.white,
-                                      size: 24,
-                                    )),
-                              ],
-                            ),
-                          )
-                        ],
+                                  ],
+                                ),
+                              );
+                            },
+                            separatorBuilder:
+                                (BuildContext _context, int index) {
+                              return Container(
+                                alignment: Alignment.center,
+                                height: 1,
+                                color: Color(0xFF101012),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.symmetric(horizontal: 10),
+                                  height: 1,
+                                  color: Color(0xFF717171),
+                                ),
+                              );
+                            },
+                            itemCount: _sets.length),
                       ),
-                    );
-                  }),
+                      Container(
+                        height: 50,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  _workoutdataProvider.setsminus(
+                                      widget.rindex, pindex);
+                                  weightController[pindex]
+                                      .controllerlist
+                                      .removeLast();
+                                  repsController[pindex]
+                                      .controllerlist
+                                      .removeLast();
+                                },
+                                icon: Icon(
+                                  Icons.remove,
+                                  color: Colors.white,
+                                  size: 24,
+                                )),
+                            IconButton(
+                                onPressed: () {
+                                  _isSetChanged = true;
+                                  _workoutdataProvider.setsplus(
+                                      widget.rindex, pindex);
+                                  weightController[pindex].controllerlist.add(
+                                      new TextEditingController(
+                                          text: provider2
+                                              .userdata.bodyStats.last.weight
+                                              .toString()));
+                                  repsController[pindex].controllerlist.add(
+                                      new TextEditingController(text: null));
+                                },
+                                icon: Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  size: 24,
+                                )),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              }),
               Container(
                   padding: EdgeInsets.only(bottom: 10),
                   child: Column(
                     children: [
-
-
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
                               child: pindex != 0
                                   ? Container(
-                                width:
-                                MediaQuery.of(context).size.width / 4,
-                                child: Row(
-                                  children: [
-                                    IconButton(
-                                        onPressed: () {
-                                          controller!.previousPage(
-                                              duration: const Duration(
-                                                  milliseconds: 500),
-                                              curve: Curves.easeInOut);
-                                        },
-                                        icon: Icon(
-                                          Icons.arrow_back_ios_outlined,
-                                          color: Colors.white,
-                                          size: 30,
-                                        )),
-                                    Consumer<WorkoutdataProvider>(builder:
-                                        (builder, provider, child) {
-                                      return Expanded(
-                                          child: Text(
-                                            provider
-                                                .workoutdata
-                                                .routinedatas[widget.rindex]
-                                                .exercises[pindex - 1]
-                                                .name,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                color: Colors.white),
-                                          ));
-                                    })
-                                  ],
-                                ),
-                              )
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
+                                      child: Row(
+                                        children: [
+                                          IconButton(
+                                              onPressed: () {
+                                                controller!.previousPage(
+                                                    duration: const Duration(
+                                                        milliseconds: 500),
+                                                    curve: Curves.easeInOut);
+                                              },
+                                              icon: Icon(
+                                                Icons.arrow_back_ios_outlined,
+                                                color: Colors.white,
+                                                size: 30,
+                                              )),
+                                          Consumer<WorkoutdataProvider>(builder:
+                                              (builder, provider, child) {
+                                            return Expanded(
+                                                child: Text(
+                                              provider
+                                                  .workoutdata
+                                                  .routinedatas[widget.rindex]
+                                                  .exercises[pindex - 1]
+                                                  .name,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ));
+                                          })
+                                        ],
+                                      ),
+                                    )
                                   : Container(
-                                width:
-                                MediaQuery.of(context).size.width / 4,
-                                child: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      null,
-                                      color: Colors.white,
-                                      size: 40,
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
+                                      child: IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            null,
+                                            color: Colors.white,
+                                            size: 40,
+                                          )),
                                     )),
-                              )),
                           Container(child: Consumer<RoutineTimeProvider>(
                               builder: (builder, provider, child) {
-                                return ElevatedButton(
-
-                                  style: ElevatedButton.styleFrom(
-                                      primary:
+                            return ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary:
                                       (provider.nowonrindex != widget.rindex) &&
-                                          _routinetimeProvider.isstarted
+                                              _routinetimeProvider.isstarted
                                           ? Color(0xFF212121)
                                           : provider.buttoncolor,
-                                      textStyle: const TextStyle(fontSize: 20)),
-                                  onPressed: () {
-                                    (provider.nowonrindex != widget.rindex) &&
+                                  textStyle: const TextStyle(fontSize: 20)),
+                              onPressed: () {
+                                (provider.nowonrindex != widget.rindex) &&
                                         _routinetimeProvider.isstarted
-                                        ? null
-                                        : [
-                                      if (_routinetimeProvider.isstarted)
-                                        {_displayFinishAlert()}
-                                      else
-                                        {_routinetimeProvider
-                                            .resettimer(_workoutdataProvider
-                                            .workoutdata
-                                            .routinedatas[widget.rindex].exercises[pindex].rest),
-                                          provider.routinecheck(widget.rindex)}
-                                    ];
-                                  },
-                                  child: Text(
-                                      (provider.nowonrindex != widget.rindex) &&
+                                    ? null
+                                    : [
+                                        if (_routinetimeProvider.isstarted)
+                                          {_displayFinishAlert()}
+                                        else
+                                          {
+                                            _routinetimeProvider.resettimer(
+                                                _workoutdataProvider
+                                                    .workoutdata
+                                                    .routinedatas[widget.rindex]
+                                                    .exercises[pindex]
+                                                    .rest),
+                                            provider.routinecheck(widget.rindex)
+                                          }
+                                      ];
+                              },
+                              child: Text(
+                                  (provider.nowonrindex != widget.rindex) &&
                                           _routinetimeProvider.isstarted
-                                          ? '다른 루틴 수행중'
-                                          : provider.routineButton),
-                                );
-                              })),
+                                      ? '다른 루틴 수행중'
+                                      : provider.routineButton),
+                            );
+                          })),
                           Container(
                               child: pindex !=
-                                  _workoutdataProvider
-                                      .workoutdata
-                                      .routinedatas[widget.rindex]
-                                      .exercises
-                                      .length -
-                                      1
+                                      _workoutdataProvider
+                                              .workoutdata
+                                              .routinedatas[widget.rindex]
+                                              .exercises
+                                              .length -
+                                          1
                                   ? Container(
-                                width:
-                                MediaQuery.of(context).size.width / 4,
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.end,
-                                  children: [
-                                    Consumer<WorkoutdataProvider>(builder:
-                                        (builder, provider, child) {
-                                      return Expanded(
-                                          child: Text(
-                                            provider
-                                                .workoutdata
-                                                .routinedatas[widget.rindex]
-                                                .exercises[pindex + 1]
-                                                .name,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            ),
-                                          ));
-                                    }),
-                                    IconButton(
-                                        onPressed: () {
-                                          controller!.nextPage(
-                                              duration: const Duration(
-                                                  milliseconds: 500),
-                                              curve: Curves.easeInOut);
-                                        },
-                                        icon: Icon(
-                                          Icons
-                                              .arrow_forward_ios_outlined,
-                                          color: Colors.white,
-                                          size: 30,
-                                        )),
-                                  ],
-                                ),
-                              )
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Consumer<WorkoutdataProvider>(builder:
+                                              (builder, provider, child) {
+                                            return Expanded(
+                                                child: Text(
+                                              provider
+                                                  .workoutdata
+                                                  .routinedatas[widget.rindex]
+                                                  .exercises[pindex + 1]
+                                                  .name,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                            ));
+                                          }),
+                                          IconButton(
+                                              onPressed: () {
+                                                controller!.nextPage(
+                                                    duration: const Duration(
+                                                        milliseconds: 500),
+                                                    curve: Curves.easeInOut);
+                                              },
+                                              icon: Icon(
+                                                Icons
+                                                    .arrow_forward_ios_outlined,
+                                                color: Colors.white,
+                                                size: 30,
+                                              )),
+                                        ],
+                                      ),
+                                    )
                                   : Container(
-                                width:
-                                MediaQuery.of(context).size.width / 4,
-                                child: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      null,
-                                      color: Colors.white,
-                                      size: 40,
-                                    )),
-                              ))
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
+                                      child: IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            null,
+                                            color: Colors.white,
+                                            size: 40,
+                                          )),
+                                    ))
                         ],
                       ),
                     ],
@@ -1819,11 +1864,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     });
   }
 
-
   Widget _cardioexercisedetailWidget(pindex) {
     int ueindex = _exercisesdataProvider.exercisesdata.exercises.indexWhere(
-            (element) =>
-        element.name ==
+        (element) =>
+            element.name ==
             _workoutdataProvider.workoutdata.routinedatas[widget.rindex]
                 .exercises[pindex].name);
     Color getColor(Set<MaterialState> states) {
@@ -1849,121 +1893,124 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             children: [
               isKeyboardVisible
                   ? Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(child: Text(
-                      'Timer: ',
-                      style: TextStyle(
-                        color:  Colors.white,
-                        fontSize: 21,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),),
-                    Container(child: Consumer<RoutineTimeProvider>(
-                        builder: (context, provider, child) {
-                          return Text(
-                              provider.userest
-                                  ? provider.timeron < 0
-                                  ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
-                                  : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
-                                  : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
-                              style: TextStyle(
-                                  fontSize: 21,
-                                  fontWeight: FontWeight.bold,
-                                  color: (provider.userest &&
-                                      provider.timeron < 0)
-                                      ? Colors.red
-                                      : Colors.white));
-                        })),
-                  ],
-                ),
-              )
-                  : Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Row(
-                            children: [
-                              Container(child: Text(
-                                '  Timer: ',
-                                style: TextStyle(
-                                  color:  Colors.white,
-                                  fontSize: 21,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),),
-                              Container(child: Consumer<RoutineTimeProvider>(
-                                  builder: (context, provider, child) {
-                                    return Text(
-                                        provider.userest
-                                            ? provider.timeron < 0
-                                            ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
-                                            : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
-                                            : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
-                                        style: TextStyle(
-                                            fontSize: 21,
-                                            fontWeight: FontWeight.bold,
-                                            color: (provider.userest &&
-                                                provider.timeron < 0)
-                                                ? Colors.red
-                                                : Colors.white));
-                                  })),
-                            ],
+                          Container(
+                            child: Text(
+                              'Timer: ',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 21,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              _routinetimeProvider.restcheck();
-                              _routinetimeProvider.resttimecheck(
-                                  _workoutdataProvider
-                                      .workoutdata
-                                      .routinedatas[widget.rindex]
-                                      .exercises[pindex]
-                                      .rest);
-                            },
-                            child: Consumer<RoutineTimeProvider>(
-                                builder: (builder, provider, child) {
-                                  return Text(
-                                    provider.userest
-                                        ? 'Rest Timer on'
-                                        : 'Rest Timer off',
+                          Container(child: Consumer<RoutineTimeProvider>(
+                              builder: (context, provider, child) {
+                            return Text(
+                                provider.userest
+                                    ? provider.timeron < 0
+                                        ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
+                                        : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
+                                    : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                                style: TextStyle(
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.bold,
+                                    color: (provider.userest &&
+                                            provider.timeron < 0)
+                                        ? Colors.red
+                                        : Colors.white));
+                          })),
+                        ],
+                      ),
+                    )
+                  : Container(
+                      child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  child: Text(
+                                    '  Timer: ',
                                     style: TextStyle(
-                                      color: provider.userest
-                                          ? Colors.white
-                                          : Color(0xFF717171),
+                                      color: Colors.white,
                                       fontSize: 21,
                                       fontWeight: FontWeight.bold,
                                     ),
-                                  );
-                                }),
-                          ),
-                        ],
-                      ),
-
-                      GestureDetector(
-                        onTap: () {
-                          _displaySetRestAlert(pindex);
-                        },
-                        child: Consumer<WorkoutdataProvider>(
-                            builder: (builder, provider, child) {
-                              _exercise = provider.workoutdata
-                                  .routinedatas[widget.rindex].exercises[pindex];
-                              return Text(
-                                "Rest: ${_exercise.rest}",
-                                style: TextStyle(
-                                  color: Color(0xFF717171),
-                                  fontSize: 21,
-                                  fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              );
-                            }),
-                      ),
-                    ],
-                  )),
+                                Container(child: Consumer<RoutineTimeProvider>(
+                                    builder: (context, provider, child) {
+                                  return Text(
+                                      provider.userest
+                                          ? provider.timeron < 0
+                                              ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
+                                              : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
+                                          : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                                      style: TextStyle(
+                                          fontSize: 21,
+                                          fontWeight: FontWeight.bold,
+                                          color: (provider.userest &&
+                                                  provider.timeron < 0)
+                                              ? Colors.red
+                                              : Colors.white));
+                                })),
+                              ],
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                _routinetimeProvider.restcheck();
+                                _routinetimeProvider.resttimecheck(
+                                    _workoutdataProvider
+                                        .workoutdata
+                                        .routinedatas[widget.rindex]
+                                        .exercises[pindex]
+                                        .rest);
+                              },
+                              child: Consumer<RoutineTimeProvider>(
+                                  builder: (builder, provider, child) {
+                                return Text(
+                                  provider.userest
+                                      ? 'Rest Timer on'
+                                      : 'Rest Timer off',
+                                  style: TextStyle(
+                                    color: provider.userest
+                                        ? Colors.white
+                                        : Color(0xFF717171),
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                );
+                              }),
+                            ),
+                          ],
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            _displaySetRestAlert(pindex);
+                          },
+                          child: Consumer<WorkoutdataProvider>(
+                              builder: (builder, provider, child) {
+                            _exercise = provider.workoutdata
+                                .routinedatas[widget.rindex].exercises[pindex];
+                            return Text(
+                              "Rest: ${_exercise.rest}",
+                              style: TextStyle(
+                                color: Color(0xFF717171),
+                                fontSize: 21,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            );
+                          }),
+                        ),
+                      ],
+                    )),
               Container(
                   height: isKeyboardVisible ? 40 : 110,
                   child: Column(
@@ -1975,66 +2022,66 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                         },
                         child: Consumer<WorkoutdataProvider>(
                             builder: (builder, provider, child) {
-                              var _exercise = provider.workoutdata
-                                  .routinedatas[widget.rindex].exercises[pindex];
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _exercise.name.length < 10
-                                      ? Icon(
-                                    Icons.info_outline_rounded,
-                                    color: Color(0xFF101012),
-                                  )
-                                      : Container(),
-                                  isKeyboardVisible
-                                      ? Text(
-                                    _exercise.name,
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 24),
-                                  )
-                                      : _exercise.name.length < 8
-                                      ? Text(
-                                    _exercise.name,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 48),
-                                  )
-                                      : Flexible(
-                                    child: Text(
+                          var _exercise = provider.workoutdata
+                              .routinedatas[widget.rindex].exercises[pindex];
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _exercise.name.length < 10
+                                  ? Icon(
+                                      Icons.info_outline_rounded,
+                                      color: Color(0xFF101012),
+                                    )
+                                  : Container(),
+                              isKeyboardVisible
+                                  ? Text(
                                       _exercise.name,
-                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 38),
-                                    ),
+                                          color: Colors.white, fontSize: 24),
+                                    )
+                                  : _exercise.name.length < 8
+                                      ? Text(
+                                          _exercise.name,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 48),
+                                        )
+                                      : Flexible(
+                                          child: Text(
+                                            _exercise.name,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 38),
+                                          ),
+                                        ),
+                              Column(
+                                children: [
+                                  Container(
+                                    height: 7,
                                   ),
-                                  Column(
-                                    children: [
-                                      Container(
-                                        height: 7,
-                                      ),
-                                      Icon(
-                                        Icons.info_outline_rounded,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                    ],
+                                  Icon(
+                                    Icons.info_outline_rounded,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 ],
-                              );
-                            }),
+                              ),
+                            ],
+                          );
+                        }),
                       ),
                       Consumer<ExercisesdataProvider>(
                           builder: (builder, provider, child) {
-                            var _info = provider.exercisesdata.exercises[ueindex];
-                            return isKeyboardVisible
-                                ? Container()
-                                : Text(
-                              "Best 1RM: ${_info.onerm.toStringAsFixed(1)}/${_info.goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
-                              style: TextStyle(
-                                  color: Color(0xFF717171), fontSize: 21),
-                            );
-                          }),
+                        var _info = provider.exercisesdata.exercises[ueindex];
+                        return isKeyboardVisible
+                            ? Container()
+                            : Text(
+                                "Best 1RM: ${_info.onerm.toStringAsFixed(1)}/${_info.goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
+                                style: TextStyle(
+                                    color: Color(0xFF717171), fontSize: 21),
+                              );
+                      }),
                     ],
                   )),
               Container(
@@ -2057,8 +2104,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             textAlign: TextAlign.right,
                           )),
                       Container(
-                          width: 40,
-                          padding: EdgeInsets.only(right: 4),
+                        width: 40,
+                        padding: EdgeInsets.only(right: 4),
                       ),
                       Container(
                           width: 80,
@@ -2071,7 +2118,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             ),
                             textAlign: TextAlign.center,
                           )),
-
                       Container(
                           width: 140,
                           child: Text(
@@ -2087,23 +2133,24 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   )),
               Consumer2<WorkoutdataProvider, UserdataProvider>(
                   builder: (builder, provider, provider2, child) {
-                    var _sets = provider.workoutdata.routinedatas[widget.rindex]
-                        .exercises[pindex].sets;
-                    if (_isSetChanged == true) {
-                      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                        _controller.animateTo(
-                          _controller.position.maxScrollExtent,
-                          duration: Duration(milliseconds: 200),
-                          curve: Curves.easeInOut,
-                        );
+                var _sets = provider.workoutdata.routinedatas[widget.rindex]
+                    .exercises[pindex].sets;
+                if (_isSetChanged == true) {
+                  WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                    _controller.animateTo(
+                      _controller.position.maxScrollExtent,
+                      duration: Duration(milliseconds: 200),
+                      curve: Curves.easeInOut,
+                    );
 
-                        print(_controller);
-                      });
-                      _isSetChanged = false;
-                    } else {
-                      null;
-                    }
+                    print(_controller);
+                  });
+                  _isSetChanged = false;
+                } else {
+                  null;
+                }
 
+<<<<<<< HEAD
                     return Expanded(
                       child: Column(
                         children: [
@@ -2365,215 +2412,439 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                             ),
                                         ),
                                       )
+=======
+                return Expanded(
+                  child: Column(
+                    children: [
+                      Flexible(
+                        child: ListView.separated(
+                            shrinkWrap: true,
+                            controller: _controller,
+                            itemBuilder: (BuildContext _context, int index) {
+                              weightController[pindex]
+                                      .controllerlist[index]
+                                      .text =
+                                  provider2.userdata.bodyStats.last.weight
+                                      .toString();
+                              provider.workoutdata.routinedatas[widget.rindex]
+                                      .exercises[pindex].sets[index].index =
+                                  provider2.userdata.bodyStats.last.weight;
+                              return Container(
+                                padding: EdgeInsets.only(right: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 60,
+                                      child: Transform.scale(
+                                          scale: 1.2,
+                                          child: Theme(
+                                            data: ThemeData(
+                                                unselectedWidgetColor:
+                                                    Colors.white),
+                                            child: Checkbox(
+                                                checkColor: Colors.white,
+                                                activeColor: Theme.of(context)
+                                                    .primaryColor,
+                                                value: _sets[index].ischecked,
+                                                onChanged: (newvalue) {
+                                                  _routinetimeProvider.isstarted
+                                                      ? [
+                                                          _workoutdataProvider
+                                                              .boolcheck(
+                                                                  widget.rindex,
+                                                                  pindex,
+                                                                  index,
+                                                                  newvalue),
+                                                          newvalue == true
+                                                              ? [
+                                                                  _routinetimeProvider.resettimer(provider
+                                                                      .workoutdata
+                                                                      .routinedatas[
+                                                                          widget
+                                                                              .rindex]
+                                                                      .exercises[
+                                                                          pindex]
+                                                                      .rest),
+                                                                  index ==
+                                                                          _sets.length -
+                                                                              1
+                                                                      ? [
+                                                                          _workoutdataProvider.setsplus(
+                                                                              widget.rindex,
+                                                                              pindex),
+                                                                          _isSetChanged =
+                                                                              true,
+                                                                          print(
+                                                                              "jjjjjjjjjjjjjj"),
+                                                                          weightController[pindex]
+                                                                              .controllerlist
+                                                                              .add(new TextEditingController(text: provider2.userdata.bodyStats.last.weight.toString())),
+                                                                          repsController[pindex]
+                                                                              .controllerlist
+                                                                              .add(new TextEditingController(text: null)),
+                                                                          showToast(
+                                                                              "세트를 추가했어요 필요없으면 다음으로 넘어가보세요"),
+                                                                        ]
+                                                                      : null,
+                                                                ]
+                                                              : null,
+                                                          _editWorkoutwCheck()
+                                                        ]
+                                                      : _displayStartAlert(
+                                                          pindex,
+                                                          index,
+                                                          newvalue);
+                                                }),
+                                          )),
                                     ),
-                                  );
-                                },
-                                separatorBuilder:
-                                    (BuildContext _context, int index) {
-                                  return Container(
-                                    alignment: Alignment.center,
-                                    height: 1,
-                                    color: Color(0xFF101012),
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      margin: EdgeInsets.symmetric(horizontal: 10),
-                                      height: 1,
-                                      color: Color(0xFF717171),
+                                    Expanded(
+                                      child: Slidable(
+                                        startActionPane: ActionPane(
+                                            extentRatio: 1.0,
+                                            motion: CustomMotion(
+                                              onOpen: () {
+                                                _routinetimeProvider.isstarted
+                                                    ? [
+                                                        _workoutdataProvider
+                                                            .boolcheck(
+                                                                widget.rindex,
+                                                                pindex,
+                                                                index,
+                                                                true),
+                                                        _routinetimeProvider
+                                                            .resettimer(provider
+                                                                .workoutdata
+                                                                .routinedatas[
+                                                                    widget
+                                                                        .rindex]
+                                                                .exercises[
+                                                                    pindex]
+                                                                .rest),
+                                                        index ==
+                                                                _sets.length - 1
+                                                            ? [
+                                                                _workoutdataProvider
+                                                                    .setsplus(
+                                                                        widget
+                                                                            .rindex,
+                                                                        pindex),
+                                                                _isSetChanged =
+                                                                    true,
+                                                                weightController[
+                                                                        pindex]
+                                                                    .controllerlist
+                                                                    .add(new TextEditingController(
+                                                                        text: provider2
+                                                                            .userdata
+                                                                            .bodyStats
+                                                                            .last
+                                                                            .weight
+                                                                            .toString())),
+                                                                repsController[
+                                                                        pindex]
+                                                                    .controllerlist
+                                                                    .add(new TextEditingController(
+                                                                        text:
+                                                                            null)),
+                                                                showToast(
+                                                                    "세트를 추가했어요! 다음으로 넘어갈 수도 있어요")
+                                                              ]
+                                                            : null,
+                                                        _editWorkoutwCheck()
+                                                      ]
+                                                    : _displayStartAlert(
+                                                        pindex, index, true);
+                                              },
+                                              onClose: () {},
+                                              motionWidget: StretchMotion(),
+                                            ),
+                                            children: [
+                                              SlidableAction(
+                                                autoClose: true,
+                                                onPressed: (_) {},
+                                                backgroundColor:
+                                                    Theme.of(context)
+                                                        .primaryColor,
+                                                foregroundColor: Colors.white,
+                                                icon: Icons.check,
+                                                label: '밀어서 check',
+                                              )
+                                            ]),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              width: 25,
+                                              child: Text(
+                                                "${index + 1}",
+                                                style: TextStyle(
+                                                  fontSize: 21,
+                                                  color: Colors.white,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                            Container(
+                                                width: 40,
+                                                child: Center(
+                                                  child: IconButton(
+                                                    padding:
+                                                        EdgeInsets.fromLTRB(
+                                                            10, 2, 0, 0),
+                                                    iconSize: 30,
+                                                    onPressed: () {},
+                                                    icon: Icon(
+                                                        Icons
+                                                            .play_arrow_rounded,
+                                                        color: Colors.white),
+                                                  ),
+                                                )),
+                                            Container(
+                                                width: 80,
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    _displaySetWeightAlert(
+                                                        pindex, index);
+                                                  },
+                                                  child: Center(
+                                                    child: Text(
+                                                        "${_sets[index].weight}",
+                                                        style: TextStyle(
+                                                          fontSize: 21,
+                                                          color: Colors.white,
+                                                        )),
+                                                  ),
+                                                )),
+                                            Container(
+                                                width: 140,
+                                                child: Center(
+                                                    child: TimeInputField(
+                                                        duration:
+                                                            _sets[index].reps,
+                                                        rindex: widget.rindex,
+                                                        pindex: pindex,
+                                                        index: index))),
+                                          ],
+                                        ),
+                                      ),
+>>>>>>> 31d60c7e67ffd79427196628cd49498527c4396a
                                     ),
-                                  );
-                                },
-                                itemCount: _sets.length),
-                          ),
-                          Container(
-                            height: 50,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                IconButton(
-                                    onPressed: () {
-                                      _workoutdataProvider.setsminus(
-                                          widget.rindex, pindex);
-                                      weightController[pindex]
-                                          .controllerlist
-                                          .removeLast();
-                                      repsController[pindex]
-                                          .controllerlist
-                                          .removeLast();
-                                    },
-                                    icon: Icon(
-                                      Icons.remove,
-                                      color: Colors.white,
-                                      size: 24,
-                                    )),
-                                IconButton(
-                                    onPressed: () {
-                                      _isSetChanged = true;
-                                      _workoutdataProvider.setsplus(
-                                          widget.rindex, pindex);
-                                      weightController[pindex].controllerlist.add(
-                                          new TextEditingController(text: provider2.userdata.bodyStats.last.weight.toString()));
-                                      repsController[pindex].controllerlist.add(
-                                          new TextEditingController(text: null));
-                                    },
-                                    icon: Icon(
-                                      Icons.add,
-                                      color: Colors.white,
-                                      size: 24,
-                                    )),
-                              ],
-                            ),
-                          )
-                        ],
+                                  ],
+                                ),
+                              );
+                            },
+                            separatorBuilder:
+                                (BuildContext _context, int index) {
+                              return Container(
+                                alignment: Alignment.center,
+                                height: 1,
+                                color: Color(0xFF101012),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.symmetric(horizontal: 10),
+                                  height: 1,
+                                  color: Color(0xFF717171),
+                                ),
+                              );
+                            },
+                            itemCount: _sets.length),
                       ),
-                    );
-                  }),
+                      Container(
+                        height: 50,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  _workoutdataProvider.setsminus(
+                                      widget.rindex, pindex);
+                                  weightController[pindex]
+                                      .controllerlist
+                                      .removeLast();
+                                  repsController[pindex]
+                                      .controllerlist
+                                      .removeLast();
+                                },
+                                icon: Icon(
+                                  Icons.remove,
+                                  color: Colors.white,
+                                  size: 24,
+                                )),
+                            IconButton(
+                                onPressed: () {
+                                  _isSetChanged = true;
+                                  _workoutdataProvider.setsplus(
+                                      widget.rindex, pindex);
+                                  weightController[pindex].controllerlist.add(
+                                      new TextEditingController(
+                                          text: provider2
+                                              .userdata.bodyStats.last.weight
+                                              .toString()));
+                                  repsController[pindex].controllerlist.add(
+                                      new TextEditingController(text: null));
+                                },
+                                icon: Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  size: 24,
+                                )),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              }),
               Container(
                   padding: EdgeInsets.only(bottom: 10),
                   child: Column(
                     children: [
-
-
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
                               child: pindex != 0
                                   ? Container(
-                                width:
-                                MediaQuery.of(context).size.width / 4,
-                                child: Row(
-                                  children: [
-                                    IconButton(
-                                        onPressed: () {
-                                          controller!.previousPage(
-                                              duration: const Duration(
-                                                  milliseconds: 500),
-                                              curve: Curves.easeInOut);
-                                        },
-                                        icon: Icon(
-                                          Icons.arrow_back_ios_outlined,
-                                          color: Colors.white,
-                                          size: 30,
-                                        )),
-                                    Consumer<WorkoutdataProvider>(builder:
-                                        (builder, provider, child) {
-                                      return Expanded(
-                                          child: Text(
-                                            provider
-                                                .workoutdata
-                                                .routinedatas[widget.rindex]
-                                                .exercises[pindex - 1]
-                                                .name,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                color: Colors.white),
-                                          ));
-                                    })
-                                  ],
-                                ),
-                              )
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
+                                      child: Row(
+                                        children: [
+                                          IconButton(
+                                              onPressed: () {
+                                                controller!.previousPage(
+                                                    duration: const Duration(
+                                                        milliseconds: 500),
+                                                    curve: Curves.easeInOut);
+                                              },
+                                              icon: Icon(
+                                                Icons.arrow_back_ios_outlined,
+                                                color: Colors.white,
+                                                size: 30,
+                                              )),
+                                          Consumer<WorkoutdataProvider>(builder:
+                                              (builder, provider, child) {
+                                            return Expanded(
+                                                child: Text(
+                                              provider
+                                                  .workoutdata
+                                                  .routinedatas[widget.rindex]
+                                                  .exercises[pindex - 1]
+                                                  .name,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ));
+                                          })
+                                        ],
+                                      ),
+                                    )
                                   : Container(
-                                width:
-                                MediaQuery.of(context).size.width / 4,
-                                child: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      null,
-                                      color: Colors.white,
-                                      size: 40,
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
+                                      child: IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            null,
+                                            color: Colors.white,
+                                            size: 40,
+                                          )),
                                     )),
-                              )),
                           Container(child: Consumer<RoutineTimeProvider>(
                               builder: (builder, provider, child) {
-                                return ElevatedButton(
-
-                                  style: ElevatedButton.styleFrom(
-                                      primary:
+                            return ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary:
                                       (provider.nowonrindex != widget.rindex) &&
-                                          _routinetimeProvider.isstarted
+                                              _routinetimeProvider.isstarted
                                           ? Color(0xFF212121)
                                           : provider.buttoncolor,
-                                      textStyle: const TextStyle(fontSize: 20)),
-                                  onPressed: () {
-                                    (provider.nowonrindex != widget.rindex) &&
+                                  textStyle: const TextStyle(fontSize: 20)),
+                              onPressed: () {
+                                (provider.nowonrindex != widget.rindex) &&
                                         _routinetimeProvider.isstarted
-                                        ? null
-                                        : [
-                                      if (_routinetimeProvider.isstarted)
-                                        {_displayFinishAlert()}
-                                      else
-                                        {_routinetimeProvider
-                                            .resettimer(_workoutdataProvider
-                                            .workoutdata
-                                            .routinedatas[widget.rindex].exercises[pindex].rest),
-                                          provider.routinecheck(widget.rindex)}
-                                    ];
-                                  },
-                                  child: Text(
-                                      (provider.nowonrindex != widget.rindex) &&
+                                    ? null
+                                    : [
+                                        if (_routinetimeProvider.isstarted)
+                                          {_displayFinishAlert()}
+                                        else
+                                          {
+                                            _routinetimeProvider.resettimer(
+                                                _workoutdataProvider
+                                                    .workoutdata
+                                                    .routinedatas[widget.rindex]
+                                                    .exercises[pindex]
+                                                    .rest),
+                                            provider.routinecheck(widget.rindex)
+                                          }
+                                      ];
+                              },
+                              child: Text(
+                                  (provider.nowonrindex != widget.rindex) &&
                                           _routinetimeProvider.isstarted
-                                          ? '다른 루틴 수행중'
-                                          : provider.routineButton),
-                                );
-                              })),
+                                      ? '다른 루틴 수행중'
+                                      : provider.routineButton),
+                            );
+                          })),
                           Container(
                               child: pindex !=
-                                  _workoutdataProvider
-                                      .workoutdata
-                                      .routinedatas[widget.rindex]
-                                      .exercises
-                                      .length -
-                                      1
+                                      _workoutdataProvider
+                                              .workoutdata
+                                              .routinedatas[widget.rindex]
+                                              .exercises
+                                              .length -
+                                          1
                                   ? Container(
-                                width:
-                                MediaQuery.of(context).size.width / 4,
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.end,
-                                  children: [
-                                    Consumer<WorkoutdataProvider>(builder:
-                                        (builder, provider, child) {
-                                      return Expanded(
-                                          child: Text(
-                                            provider
-                                                .workoutdata
-                                                .routinedatas[widget.rindex]
-                                                .exercises[pindex + 1]
-                                                .name,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            ),
-                                          ));
-                                    }),
-                                    IconButton(
-                                        onPressed: () {
-                                          controller!.nextPage(
-                                              duration: const Duration(
-                                                  milliseconds: 500),
-                                              curve: Curves.easeInOut);
-                                        },
-                                        icon: Icon(
-                                          Icons
-                                              .arrow_forward_ios_outlined,
-                                          color: Colors.white,
-                                          size: 30,
-                                        )),
-                                  ],
-                                ),
-                              )
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Consumer<WorkoutdataProvider>(builder:
+                                              (builder, provider, child) {
+                                            return Expanded(
+                                                child: Text(
+                                              provider
+                                                  .workoutdata
+                                                  .routinedatas[widget.rindex]
+                                                  .exercises[pindex + 1]
+                                                  .name,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                            ));
+                                          }),
+                                          IconButton(
+                                              onPressed: () {
+                                                controller!.nextPage(
+                                                    duration: const Duration(
+                                                        milliseconds: 500),
+                                                    curve: Curves.easeInOut);
+                                              },
+                                              icon: Icon(
+                                                Icons
+                                                    .arrow_forward_ios_outlined,
+                                                color: Colors.white,
+                                                size: 30,
+                                              )),
+                                        ],
+                                      ),
+                                    )
                                   : Container(
-                                width:
-                                MediaQuery.of(context).size.width / 4,
-                                child: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      null,
-                                      color: Colors.white,
-                                      size: 40,
-                                    )),
-                              ))
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
+                                      child: IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            null,
+                                            color: Colors.white,
+                                            size: 40,
+                                          )),
+                                    ))
                         ],
                       ),
                     ],
@@ -2585,7 +2856,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     });
   }
 
-
   void exguide(int eindex) {
     showModalBottomSheet<void>(
       context: context,
@@ -2594,13 +2864,14 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (BuildContext context) {
         return Container(
-            height: MediaQuery.of(context).size.height*0.75,
+            height: MediaQuery.of(context).size.height * 0.75,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               color: Colors.white,
             ),
             child: ExerciseGuide(
-              eindex: eindex, isroutine: true,
+              eindex: eindex,
+              isroutine: true,
             ));
       },
     );
@@ -2753,9 +3024,22 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   }
 
   void _displaySetWeightAlert(pindex, eindex) {
-    double input = _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises[pindex].sets[eindex].weight.abs();
-    _additionalweightctrl.text = _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises[pindex].sets[eindex].weight.abs().toString();
-    _routinemenuProvider.boolchangeto(_workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises[pindex].sets[eindex].weight < 0 ? false : true);
+    double input = _workoutdataProvider.workoutdata.routinedatas[widget.rindex]
+        .exercises[pindex].sets[eindex].weight
+        .abs();
+    _additionalweightctrl.text = _workoutdataProvider.workoutdata
+        .routinedatas[widget.rindex].exercises[pindex].sets[eindex].weight
+        .abs()
+        .toString();
+    _routinemenuProvider.boolchangeto(_workoutdataProvider
+                .workoutdata
+                .routinedatas[widget.rindex]
+                .exercises[pindex]
+                .sets[eindex]
+                .weight <
+            0
+        ? false
+        : true);
     showDialog(
         context: context,
         builder: (context) {
@@ -2783,49 +3067,52 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   width: 150,
                   child: Consumer2<RoutineMenuStater, WorkoutdataProvider>(
                       builder: (context, provider, provider2, child) {
-
-                      return TextField(
-
-                        controller: _additionalweightctrl,
-                        keyboardType: TextInputType.number,
-                        style: TextStyle(
-                          fontSize: 21,
-                          color: provider.ispositive ? Colors.white : Colors.red,
-                        ),
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                            isDense: true,
-                            prefixIcon:Text(provider.ispositive ? "+" : "-",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                  fontSize: 35,
-                                  color: provider.ispositive ? Colors.white : Colors.red,
-                                ),
+                    return TextField(
+                      controller: _additionalweightctrl,
+                      keyboardType: TextInputType.number,
+                      style: TextStyle(
+                        fontSize: 21,
+                        color: provider.ispositive ? Colors.white : Colors.red,
+                      ),
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                          isDense: true,
+                          prefixIcon: Text(
+                            provider.ispositive ? "+" : "-",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 35,
+                              color: provider.ispositive
+                                  ? Colors.white
+                                  : Colors.red,
                             ),
-
-                            prefixIconConstraints: BoxConstraints(minWidth: 0, minHeight: 0),
-                            filled: true,
-                            enabledBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor, width: 3),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor, width: 3),
-                            ),
-                            hintText: "입력",
-                            hintStyle:
-                            TextStyle(fontSize: 21.0, color: provider.ispositive ? Colors.white : Colors.red)),
-                        onChanged: (text) {
-                          input = double.parse(text);
-
-
-                        },
-                      );
-                    }
-                  ),
+                          ),
+                          prefixIconConstraints:
+                              BoxConstraints(minWidth: 0, minHeight: 0),
+                          filled: true,
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).primaryColor,
+                                width: 3),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).primaryColor,
+                                width: 3),
+                          ),
+                          hintText: "입력",
+                          hintStyle: TextStyle(
+                              fontSize: 21.0,
+                              color: provider.ispositive
+                                  ? Colors.white
+                                  : Colors.red)),
+                      onChanged: (text) {
+                        input = double.parse(text);
+                      },
+                    );
+                  }),
                 ),
               ],
             ),
@@ -2848,7 +3135,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   child: Text('중량 추가/제거 하기',
                       style: TextStyle(fontSize: 20.0, color: Colors.white)),
                   onPressed: () {
-                    _workoutdataProvider.weightcheck(widget.rindex, pindex, eindex, _routinemenuProvider.ispositive ? input : -input);
+                    _workoutdataProvider.weightcheck(
+                        widget.rindex,
+                        pindex,
+                        eindex,
+                        _routinemenuProvider.ispositive ? input : -input);
                     _editWorkoutwCheck();
                     _additionalweightctrl.clear();
                     Navigator.of(context, rootNavigator: true).pop();
@@ -2871,8 +3162,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
               children: _menuList,
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
               backgroundColor: Theme.of(context).cardColor,
-              thumbColor: provider.ispositive ? Theme.of(context).primaryColor : Colors.red,
-
+              thumbColor: provider.ispositive
+                  ? Theme.of(context).primaryColor
+                  : Colors.red,
               onValueChanged: (i) {
                 provider.boolchange();
               }),

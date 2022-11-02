@@ -71,6 +71,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
   PreferredSizeWidget _appbarWidget() {
     btnDisabled = false;
     return AppBar(
+      elevation: 0,
       titleSpacing: 0,
       leading: Center(
         child: GestureDetector(
@@ -92,11 +93,11 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
     return Container(
       height: 100,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(0),
         child: Card(
           color: Theme.of(context).cardColor,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8.0),
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Consumer<ExercisesdataProvider>(
                 builder: (context, provier, child) {
               return Row(
@@ -204,12 +205,11 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
   Widget exercisenote() {
     return Container(
         child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(0),
             child: Card(
                 color: Theme.of(context).cardColor,
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Column(
                     children: [
                       Row(
@@ -1033,6 +1033,13 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
         Container(
             height: 250,
             width: double.infinity,
+            decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                    topLeft: Radius.circular(20),
+                    bottomLeft: Radius.circular(20))),
             child: SfCartesianChart(
                 plotAreaBorderWidth: 0,
                 primaryXAxis: DateTimeAxis(
@@ -1063,6 +1070,17 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                   // Renders line chart
                   LineSeries<historyModel.Exercises, DateTime>(
                     isVisibleInLegend: true,
+                    color: Color(0xFF101012),
+                    name: "goal",
+                    dataSource: _sdbChartData!,
+                    xValueMapper: (historyModel.Exercises sales, _) =>
+                        DateTime.parse(sales.date!),
+                    yValueMapper: (historyModel.Exercises sales, _) =>
+                        sales.goal,
+                  ),
+
+                  LineSeries<historyModel.Exercises, DateTime>(
+                    isVisibleInLegend: true,
                     onCreateShader: (ShaderDetails details) {
                       return ui.Gradient.linear(details.rect.topRight,
                           details.rect.bottomLeft, color, stops);
@@ -1082,16 +1100,6 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                         DateTime.parse(sales.date!),
                     yValueMapper: (historyModel.Exercises sales, _) =>
                         sales.onerm,
-                  ),
-                  LineSeries<historyModel.Exercises, DateTime>(
-                    isVisibleInLegend: true,
-                    color: Theme.of(context).cardColor,
-                    name: "goal",
-                    dataSource: _sdbChartData!,
-                    xValueMapper: (historyModel.Exercises sales, _) =>
-                        DateTime.parse(sales.date!),
-                    yValueMapper: (historyModel.Exercises sales, _) =>
-                        sales.goal,
                   ),
                 ])),
         _onechartExercisesWidget(_sdbChartData)
@@ -1126,8 +1134,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
 
   Widget _onechartExerciseWidget(
       exuniq, history_id, userdata, bool shirink, index) {
-    double top = 0;
-    double bottom = 0;
+    double top = 20;
+    double bottom = 20;
     return Container(
       color: Color(0xFF101012),
       child: Column(
@@ -1421,7 +1429,9 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                         child: Column(
                           children: [
                             Status(),
+                            SizedBox(height: 20),
                             exercisenote(),
+                            SizedBox(height: 20),
                             _chartWidget(context)
                           ],
                         ),

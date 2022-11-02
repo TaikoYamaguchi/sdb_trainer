@@ -52,13 +52,16 @@ class _ProfileGoalState extends State<ProfileGoal> {
   }
 
   PreferredSizeWidget _appbarWidget() {
-    return AppBar(
-      title: Text(
-        "",
-        style: TextStyle(color: Colors.white, fontSize: 30),
-      ),
-      backgroundColor: Color(0xFF101012),
-    );
+    return PreferredSize(
+        preferredSize: Size.fromHeight(40.0), // here the desired height
+        child: AppBar(
+          elevation: 0,
+          title: Text(
+            "",
+            style: TextStyle(color: Colors.white, fontSize: 30),
+          ),
+          backgroundColor: Color(0xFF101012),
+        ));
   }
 
   Widget _signupExerciseWidget() {

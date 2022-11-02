@@ -275,18 +275,19 @@ class _CalendarState extends State<Calendar> {
       case 0:
         return Container(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(10, 16, 10, 16),
+            padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
             child: TextField(
                 controller: _exSearchCtrl,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(0),
+                  isDense: true,
                   prefixIcon: Icon(
                     Icons.search,
                     color: Theme.of(context).primaryColor,
                   ),
                   hintText: "운동 검색",
-                  hintStyle: TextStyle(fontSize: 20.0, color: Colors.white),
+                  hintStyle: TextStyle(fontSize: 16.0, color: Colors.white),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                         width: 2, color: Theme.of(context).cardColor),
@@ -306,18 +307,19 @@ class _CalendarState extends State<Calendar> {
       case 1:
         return Container(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(10, 16, 10, 16),
+            padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
             child: TextField(
                 controller: _exCalendarSearchCtrl,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(0),
+                  contentPadding: const EdgeInsets.all(8),
+                  isDense: true,
                   prefixIcon: Icon(
                     Icons.search,
                     color: Theme.of(context).primaryColor,
                   ),
                   hintText: "운동 검색",
-                  hintStyle: TextStyle(fontSize: 20.0, color: Colors.white),
+                  hintStyle: TextStyle(fontSize: 16.0, color: Colors.white),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                         width: 2, color: Theme.of(context).cardColor),
@@ -340,18 +342,21 @@ class _CalendarState extends State<Calendar> {
   }
 
   PreferredSizeWidget _appbarWidget() {
-    return AppBar(
-      title: Consumer2<ChartIndexProvider, StaticPageProvider>(
-          builder: (builder, provider1, provider2, child) {
-        return Row(
-          children: [
-            Text("기록", style: TextStyle(color: Colors.white, fontSize: 25)),
-            Expanded(child: _appbarSearchWidget(provider1))
-          ],
-        );
-      }),
-      backgroundColor: Color(0xFF101012),
-    );
+    return PreferredSize(
+        preferredSize: Size.fromHeight(40.0), // here the desired height
+        child: AppBar(
+          elevation: 0,
+          title: Consumer2<ChartIndexProvider, StaticPageProvider>(
+              builder: (builder, provider1, provider2, child) {
+            return Row(
+              children: [
+                Text("기록", style: TextStyle(color: Colors.white, fontSize: 25)),
+                Expanded(child: _appbarSearchWidget(provider1))
+              ],
+            );
+          }),
+          backgroundColor: Color(0xFF101012),
+        ));
   }
 
   Widget _weightWidget() {
@@ -381,7 +386,16 @@ class _CalendarState extends State<Calendar> {
           Container(
               width: double.infinity,
               height: 250,
+              decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                      topLeft: Radius.circular(20),
+                      bottomLeft: Radius.circular(20))),
               child: SfCartesianChart(
+                  title: ChartTitle(
+                      text: "몸무게", textStyle: TextStyle(color: Colors.white)),
                   plotAreaBorderWidth: 0,
                   primaryXAxis: DateTimeAxis(
                     majorGridLines: const MajorGridLines(width: 0),
@@ -410,7 +424,7 @@ class _CalendarState extends State<Calendar> {
                   series: [
                     LineSeries<BodyStat, DateTime>(
                       isVisibleInLegend: true,
-                      color: Colors.grey,
+                      color: Color(0xFF101012),
                       name: "목표",
                       dataSource: _userdataProvider.userdata.bodyStats!,
                       xValueMapper: (BodyStat sales, _) =>
@@ -440,6 +454,7 @@ class _CalendarState extends State<Calendar> {
                       yValueMapper: (BodyStat sales, _) => sales.weight!,
                     ),
                   ])),
+          SizedBox(height: 12),
           _bodyWeightListWidget(_userdataProvider.userdata.bodyStats)
         ],
       ));
@@ -594,42 +609,29 @@ class _CalendarState extends State<Calendar> {
 
   Widget _bodyWeightListWidget(List<BodyStat> bodyStats) {
     double deviceWidth = MediaQuery.of(context).size.width;
-    double top = 0;
-    double bottom = 0;
+    double top = 20;
+    double bottom = 20;
     return Expanded(
-        child: Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(top),
-              bottomRight: Radius.circular(bottom),
-              topLeft: Radius.circular(top),
-              bottomLeft: Radius.circular(bottom))),
-      child: Column(
-        children: [
-          Container(
-              child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                width: deviceWidth / 3 - 20,
-                child: Text(
-                  "날짜",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Container(
-                width: deviceWidth / 3 - 20,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+      child: SingleChildScrollView(
+          child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        decoration: BoxDecoration(
+            color: Theme.of(context).cardColor,
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(top),
+                bottomRight: Radius.circular(bottom),
+                topLeft: Radius.circular(top),
+                bottomLeft: Radius.circular(bottom))),
+        child: Column(
+          children: [
+            Container(
+                child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                  width: deviceWidth / 3 - 20,
                   child: Text(
-                    "몸무게",
+                    "날짜",
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.grey,
@@ -638,48 +640,64 @@ class _CalendarState extends State<Calendar> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-              ),
-              Container(
-                width: deviceWidth / 3 - 20,
-                child: Text(
-                  "목표",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.bold,
+                Container(
+                  width: deviceWidth / 3 - 20,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "몸무게",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                  textAlign: TextAlign.center,
                 ),
-              )
-            ],
-          )),
-          ListView.separated(
-              itemBuilder: (BuildContext _context, int index) {
-                return _bodyWeightListItemWidget(
-                    List.from(bodyStats.reversed)[index],
-                    _userdataProvider.userdata,
-                    true,
-                    index);
-              },
-              separatorBuilder: (BuildContext _context, int index) {
-                return Container(
-                  alignment: Alignment.center,
-                  height: 1,
-                  color: Color(0xFF212121),
-                  child: Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                    height: 1,
-                    color: Color(0xFF717171),
+                Container(
+                  width: deviceWidth / 3 - 20,
+                  child: Text(
+                    "목표",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                );
-              },
-              shrinkWrap: true,
-              itemCount: bodyStats.length,
-              scrollDirection: Axis.vertical),
-        ],
-      ),
-    ));
+                )
+              ],
+            )),
+            ListView.separated(
+                itemBuilder: (BuildContext _context, int index) {
+                  return _bodyWeightListItemWidget(
+                      List.from(bodyStats.reversed)[index],
+                      _userdataProvider.userdata,
+                      true,
+                      index);
+                },
+                separatorBuilder: (BuildContext _context, int index) {
+                  return Container(
+                    alignment: Alignment.center,
+                    height: 1,
+                    color: Color(0xFF212121),
+                    child: Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      height: 1,
+                      color: Color(0xFF717171),
+                    ),
+                  );
+                },
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: bodyStats.length,
+                scrollDirection: Axis.vertical),
+          ],
+        ),
+      )),
+    );
   }
 
   Widget _bodyWeightListItemWidget(bodyStat, userdata, bool shirink, index) {
@@ -710,7 +728,7 @@ class _CalendarState extends State<Calendar> {
                       Container(
                         width: deviceWidth / 3 - 20,
                         child: Text(bodyStat.date.substring(0, 10),
-                            style: TextStyle(fontSize: 18, color: Colors.white),
+                            style: TextStyle(fontSize: 18, color: Colors.grey),
                             textAlign: TextAlign.center),
                       ),
                       Container(
@@ -744,8 +762,8 @@ class _CalendarState extends State<Calendar> {
 
   Widget _onechartExerciseWidget(
       exuniq, history_id, userdata, bool shirink, index) {
-    double top = 0;
-    double bottom = 0;
+    double top = 20;
+    double bottom = 20;
     return Container(
       color: Color(0xFF101012),
       child: Column(
@@ -1119,12 +1137,19 @@ class _CalendarState extends State<Calendar> {
         child: Column(
       children: [
         Container(
-            height: 40,
+            height: 50,
             child: ListView(
                 scrollDirection: Axis.horizontal, children: techChips())),
         Expanded(
           flex: 1,
           child: Container(
+              decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                      topLeft: Radius.circular(20),
+                      bottomLeft: Radius.circular(20))),
               child: SfCartesianChart(
                   title: ChartTitle(
                       text: _exercisesdataProvider.exercisesdata!
@@ -1158,38 +1183,39 @@ class _CalendarState extends State<Calendar> {
                       position: LegendPosition.bottom,
                       textStyle: TextStyle(color: Colors.white)),
                   series: [
-                // Renders line chart
-                LineSeries<Exercises, DateTime>(
-                  isVisibleInLegend: true,
-                  onCreateShader: (ShaderDetails details) {
-                    return ui.Gradient.linear(details.rect.topRight,
-                        details.rect.bottomLeft, color, stops);
-                  },
-                  markerSettings: MarkerSettings(
-                      isVisible: true,
-                      height: 6,
-                      width: 6,
-                      borderWidth: 3,
+                    // Renders line chart
+                    LineSeries<Exercises, DateTime>(
+                      isVisibleInLegend: true,
+                      color: Color(0xFF101012),
+                      name: "goal",
+                      dataSource: _sdbChartData!,
+                      xValueMapper: (Exercises sales, _) =>
+                          DateTime.parse(sales.date!),
+                      yValueMapper: (Exercises sales, _) => sales.goal,
+                    ),
+
+                    LineSeries<Exercises, DateTime>(
+                      isVisibleInLegend: true,
+                      onCreateShader: (ShaderDetails details) {
+                        return ui.Gradient.linear(details.rect.topRight,
+                            details.rect.bottomLeft, color, stops);
+                      },
+                      markerSettings: MarkerSettings(
+                          isVisible: true,
+                          height: 6,
+                          width: 6,
+                          borderWidth: 3,
+                          color: Theme.of(context).primaryColor,
+                          borderColor: Theme.of(context).primaryColor),
+                      name: "1rm",
                       color: Theme.of(context).primaryColor,
-                      borderColor: Theme.of(context).primaryColor),
-                  name: "1rm",
-                  color: Theme.of(context).primaryColor,
-                  width: 5,
-                  dataSource: _sdbChartData!,
-                  xValueMapper: (Exercises sales, _) =>
-                      DateTime.parse(sales.date!),
-                  yValueMapper: (Exercises sales, _) => sales.onerm,
-                ),
-                LineSeries<Exercises, DateTime>(
-                  isVisibleInLegend: true,
-                  color: Theme.of(context).cardColor,
-                  name: "goal",
-                  dataSource: _sdbChartData!,
-                  xValueMapper: (Exercises sales, _) =>
-                      DateTime.parse(sales.date!),
-                  yValueMapper: (Exercises sales, _) => sales.goal,
-                ),
-              ])),
+                      width: 5,
+                      dataSource: _sdbChartData!,
+                      xValueMapper: (Exercises sales, _) =>
+                          DateTime.parse(sales.date!),
+                      yValueMapper: (Exercises sales, _) => sales.onerm,
+                    ),
+                  ])),
         ),
         _onechartExercisesWidget(_sdbChartData)
       ],
