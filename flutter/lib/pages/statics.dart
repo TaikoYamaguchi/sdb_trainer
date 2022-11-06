@@ -42,6 +42,8 @@ class _CalendarState extends State<Calendar> {
   var _tapPosition;
   var _historydataProvider;
   var _exercisesdataProvider;
+  var _exSearchCtrlBool = false;
+  var _exCalendarSearchCtrlBool = false;
   TextEditingController _exSearchCtrl = TextEditingController(text: "");
   TextEditingController _exCalendarSearchCtrl = TextEditingController(text: "");
 
@@ -257,7 +259,7 @@ class _CalendarState extends State<Calendar> {
               controller: provider1.isPageController,
               children: [
                 _chartWidget(context),
-                _staticsWidget(),
+                _calendarWidget(),
                 _weightWidget()
               ],
               onPageChanged: (page) {
@@ -270,77 +272,6 @@ class _CalendarState extends State<Calendar> {
     });
   }
 
-  Widget _appbarSearchWidget(provider1) {
-    switch (provider1.isPageController.page) {
-      case 0:
-        return Container(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
-            child: TextField(
-                controller: _exSearchCtrl,
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(0),
-                  isDense: true,
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  hintText: "운동 검색",
-                  hintStyle: TextStyle(fontSize: 16.0, color: Colors.white),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        width: 2, color: Theme.of(context).cardColor),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).primaryColor, width: 2.0),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-                onChanged: (text) {
-                  setState(() {});
-                }),
-          ),
-        );
-      case 1:
-        return Container(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-            child: TextField(
-                controller: _exCalendarSearchCtrl,
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(8),
-                  isDense: true,
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  hintText: "운동 검색",
-                  hintStyle: TextStyle(fontSize: 16.0, color: Colors.white),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        width: 2, color: Theme.of(context).cardColor),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).primaryColor, width: 2.0),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-                onChanged: (text) {
-                  setState(() {});
-                }),
-          ),
-        );
-      default:
-        return Container();
-    }
-  }
-
   PreferredSizeWidget _appbarWidget() {
     return PreferredSize(
         preferredSize: Size.fromHeight(40.0), // here the desired height
@@ -351,7 +282,6 @@ class _CalendarState extends State<Calendar> {
             return Row(
               children: [
                 Text("기록", style: TextStyle(color: Colors.white, fontSize: 25)),
-                Expanded(child: _appbarSearchWidget(provider1))
               ],
             );
           }),
@@ -461,92 +391,153 @@ class _CalendarState extends State<Calendar> {
     });
   }
 
-  Widget _staticsWidget() {
+  Widget _calendarWidget() {
     return Consumer<HistorydataProvider>(builder: (builder, provider, child) {
       return Column(children: [
-        SingleChildScrollView(
-            child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Container(
-              height: 40,
-              child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: _calendartechChips())),
-          TableCalendar(
-            rowHeight: 40,
-            firstDay: DateTime(1990),
-            lastDay: DateTime(2050),
-            focusedDay: _focusedDay,
-            calendarFormat: _calendarFormat,
-            daysOfWeekVisible: true,
-            selectedDayPredicate: (day) {
-              return isSameDay(_selectedDay, day);
+        GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
             },
-            eventLoader: _getEventsfromDay,
-            onDaySelected: (selectedDay, focusedDay) {
-              if (!isSameDay(_selectedDay, selectedDay)) {
-                setState(() {
-                  _selectedDay = selectedDay;
-                  _focusedDay = focusedDay;
-                });
-              }
-            },
-            onFormatChanged: (format) {
-              if (_calendarFormat != format) {
-                setState(() {
-                  _calendarFormat = format;
-                });
-              }
-            },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
-            locale: "ko-KR",
-            calendarStyle: CalendarStyle(
-              isTodayHighlighted: true,
-              selectedDecoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              outsideDecoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              markerDecoration: BoxDecoration(
-                  color: Color(0xFffc60a8), shape: BoxShape.circle),
-              selectedTextStyle: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold),
-              defaultTextStyle: const TextStyle(color: Colors.white),
-              withinRangeTextStyle: TextStyle(color: Colors.white),
-              weekendTextStyle: TextStyle(color: Colors.white),
-              outsideTextStyle:
-                  TextStyle(color: Color.fromRGBO(113, 113, 113, 100)),
-              todayDecoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              defaultDecoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              weekendDecoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-            ),
-            headerStyle: const HeaderStyle(
-                formatButtonVisible: false,
-                titleTextStyle: TextStyle(color: Colors.white),
-                titleCentered: true,
-                leftChevronIcon: Icon(Icons.arrow_left, color: Colors.white),
-                rightChevronIcon: Icon(Icons.arrow_right, color: Colors.white),
-                headerPadding:
-                    EdgeInsets.symmetric(horizontal: 5.0, vertical: 3.0)),
-          ),
-        ])),
+            child: SingleChildScrollView(
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Container(
+                      width: _exCalendarSearchCtrlBool ? 150 : 50,
+                      height: 40,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 3.0),
+                        child: Focus(
+                          child: TextField(
+                              controller: _exCalendarSearchCtrl,
+                              style: TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.all(0),
+                                isDense: true,
+                                prefixIcon: Icon(
+                                  Icons.search,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                hintText: "운동 검색",
+                                hintStyle: TextStyle(
+                                    fontSize: 16.0, color: Colors.white),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1.5,
+                                      color: Theme.of(context).cardColor),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context).primaryColor,
+                                      width: 1.5),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                              ),
+                              onChanged: (text) {
+                                setState(() {});
+                              }),
+                          onFocusChange: (hasFocus) {
+                            setState(() {
+                              if (_exCalendarSearchCtrl.text != "") {
+                                _exCalendarSearchCtrlBool = true;
+                              } else {
+                                _exCalendarSearchCtrlBool = hasFocus;
+                              }
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                          height: 40,
+                          child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: _calendartechChips())),
+                    ),
+                  ],
+                ),
+                TableCalendar(
+                  rowHeight: 40,
+                  firstDay: DateTime(1990),
+                  lastDay: DateTime(2050),
+                  focusedDay: _focusedDay,
+                  calendarFormat: _calendarFormat,
+                  daysOfWeekVisible: true,
+                  selectedDayPredicate: (day) {
+                    return isSameDay(_selectedDay, day);
+                  },
+                  eventLoader: _getEventsfromDay,
+                  onDaySelected: (selectedDay, focusedDay) {
+                    if (!isSameDay(_selectedDay, selectedDay)) {
+                      setState(() {
+                        _selectedDay = selectedDay;
+                        _focusedDay = focusedDay;
+                      });
+                    }
+                  },
+                  onFormatChanged: (format) {
+                    if (_calendarFormat != format) {
+                      setState(() {
+                        _calendarFormat = format;
+                      });
+                    }
+                  },
+                  onPageChanged: (focusedDay) {
+                    _focusedDay = focusedDay;
+                  },
+                  locale: "ko-KR",
+                  calendarStyle: CalendarStyle(
+                    isTodayHighlighted: true,
+                    selectedDecoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    outsideDecoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    markerDecoration: BoxDecoration(
+                        color: Color(0xFffc60a8), shape: BoxShape.circle),
+                    selectedTextStyle: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                    defaultTextStyle: const TextStyle(color: Colors.white),
+                    withinRangeTextStyle: TextStyle(color: Colors.white),
+                    weekendTextStyle: TextStyle(color: Colors.white),
+                    outsideTextStyle:
+                        TextStyle(color: Color.fromRGBO(113, 113, 113, 100)),
+                    todayDecoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    defaultDecoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    weekendDecoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                  headerStyle: const HeaderStyle(
+                      formatButtonVisible: false,
+                      titleTextStyle: TextStyle(color: Colors.white),
+                      titleCentered: true,
+                      leftChevronIcon:
+                          Icon(Icons.arrow_left, color: Colors.white),
+                      rightChevronIcon:
+                          Icon(Icons.arrow_right, color: Colors.white),
+                      headerPadding:
+                          EdgeInsets.symmetric(horizontal: 5.0, vertical: 3.0)),
+                ),
+              ]),
+            )),
         _getEventsfromDay(_selectedDay).isEmpty != true
             ? _allchartExercisesWidget(
                 List.from(_getEventsfromDay(_selectedDay).reversed))
@@ -1134,91 +1125,151 @@ class _CalendarState extends State<Calendar> {
         begin: Alignment.bottomCenter,
         end: Alignment.topCenter);
     return (Center(
-        child: Column(
-      children: [
-        Container(
-            height: 50,
-            child: ListView(
-                scrollDirection: Axis.horizontal, children: techChips())),
-        Expanded(
-          flex: 1,
-          child: Container(
-              decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                      topLeft: Radius.circular(20),
-                      bottomLeft: Radius.circular(20))),
-              child: SfCartesianChart(
-                  title: ChartTitle(
-                      text: _exercisesdataProvider.exercisesdata!
-                          .exercises[_chartIndex.chartIndex].name,
-                      textStyle: TextStyle(color: Colors.white)),
-                  plotAreaBorderWidth: 0,
-                  primaryXAxis: DateTimeAxis(
-                    majorGridLines: const MajorGridLines(width: 0),
-                    majorTickLines: const MajorTickLines(size: 0),
-                    axisLine: const AxisLine(width: 0),
+        child: GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Column(
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Container(
+                width: _exSearchCtrlBool ? 150 : 50,
+                height: 40,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 3.0),
+                  child: Focus(
+                    child: TextField(
+                        controller: _exSearchCtrl,
+                        style: TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.all(0),
+                          isDense: true,
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          hintText: "운동 검색",
+                          hintStyle:
+                              TextStyle(fontSize: 16.0, color: Colors.white),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                width: 1.5, color: Theme.of(context).cardColor),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Theme.of(context).primaryColor,
+                                width: 1.5),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                        onChanged: (text) {
+                          setState(() {});
+                        }),
+                    onFocusChange: (hasFocus) {
+                      setState(() {
+                        if (_exSearchCtrl.text != "") {
+                          _exSearchCtrlBool = true;
+                        } else {
+                          _exSearchCtrlBool = hasFocus;
+                        }
+                      });
+                    },
                   ),
-                  primaryYAxis: NumericAxis(
-                      axisLine: const AxisLine(width: 0),
-                      majorTickLines: const MajorTickLines(size: 0),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                    height: 40,
+                    child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: techChips())),
+              ),
+            ],
+          ),
+          SizedBox(height: 5),
+          Expanded(
+            flex: 1,
+            child: Container(
+                decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
+                        topLeft: Radius.circular(20),
+                        bottomLeft: Radius.circular(20))),
+                child: SfCartesianChart(
+                    title: ChartTitle(
+                        text: _exercisesdataProvider.exercisesdata!
+                            .exercises[_chartIndex.chartIndex].name,
+                        textStyle: TextStyle(color: Colors.white)),
+                    plotAreaBorderWidth: 0,
+                    primaryXAxis: DateTimeAxis(
                       majorGridLines: const MajorGridLines(width: 0),
-                      minimum: _sdbChartData!.length == 0
-                          ? 0
-                          : _sdbChartData!.length > 1
-                              ? _sdbChartData!
-                                      .reduce((curr, next) =>
-                                          curr.onerm! < next.onerm!
-                                              ? curr
-                                              : next)
-                                      .onerm! *
-                                  0.9
-                              : _sdbChartData![0].onerm),
-                  tooltipBehavior: _tooltipBehavior,
-                  zoomPanBehavior: _zoomPanBehavior,
-                  legend: Legend(
-                      isVisible: true,
-                      position: LegendPosition.bottom,
-                      textStyle: TextStyle(color: Colors.white)),
-                  series: [
-                    // Renders line chart
-                    LineSeries<Exercises, DateTime>(
-                      isVisibleInLegend: true,
-                      color: Color(0xFF101012),
-                      name: "goal",
-                      dataSource: _sdbChartData!,
-                      xValueMapper: (Exercises sales, _) =>
-                          DateTime.parse(sales.date!),
-                      yValueMapper: (Exercises sales, _) => sales.goal,
+                      majorTickLines: const MajorTickLines(size: 0),
+                      axisLine: const AxisLine(width: 0),
                     ),
+                    primaryYAxis: NumericAxis(
+                        axisLine: const AxisLine(width: 0),
+                        majorTickLines: const MajorTickLines(size: 0),
+                        majorGridLines: const MajorGridLines(width: 0),
+                        minimum: _sdbChartData!.length == 0
+                            ? 0
+                            : _sdbChartData!.length > 1
+                                ? _sdbChartData!
+                                        .reduce((curr, next) =>
+                                            curr.onerm! < next.onerm!
+                                                ? curr
+                                                : next)
+                                        .onerm! *
+                                    0.9
+                                : _sdbChartData![0].onerm),
+                    tooltipBehavior: _tooltipBehavior,
+                    zoomPanBehavior: _zoomPanBehavior,
+                    legend: Legend(
+                        isVisible: true,
+                        position: LegendPosition.bottom,
+                        textStyle: TextStyle(color: Colors.white)),
+                    series: [
+                      // Renders line chart
+                      LineSeries<Exercises, DateTime>(
+                        isVisibleInLegend: true,
+                        color: Color(0xFF101012),
+                        name: "goal",
+                        dataSource: _sdbChartData!,
+                        xValueMapper: (Exercises sales, _) =>
+                            DateTime.parse(sales.date!),
+                        yValueMapper: (Exercises sales, _) => sales.goal,
+                      ),
 
-                    LineSeries<Exercises, DateTime>(
-                      isVisibleInLegend: true,
-                      onCreateShader: (ShaderDetails details) {
-                        return ui.Gradient.linear(details.rect.topRight,
-                            details.rect.bottomLeft, color, stops);
-                      },
-                      markerSettings: MarkerSettings(
-                          isVisible: true,
-                          height: 6,
-                          width: 6,
-                          borderWidth: 3,
-                          color: Theme.of(context).primaryColor,
-                          borderColor: Theme.of(context).primaryColor),
-                      name: "1rm",
-                      color: Theme.of(context).primaryColor,
-                      width: 5,
-                      dataSource: _sdbChartData!,
-                      xValueMapper: (Exercises sales, _) =>
-                          DateTime.parse(sales.date!),
-                      yValueMapper: (Exercises sales, _) => sales.onerm,
-                    ),
-                  ])),
-        ),
-        _onechartExercisesWidget(_sdbChartData)
-      ],
+                      LineSeries<Exercises, DateTime>(
+                        isVisibleInLegend: true,
+                        onCreateShader: (ShaderDetails details) {
+                          return ui.Gradient.linear(details.rect.topRight,
+                              details.rect.bottomLeft, color, stops);
+                        },
+                        markerSettings: MarkerSettings(
+                            isVisible: true,
+                            height: 6,
+                            width: 6,
+                            borderWidth: 3,
+                            color: Theme.of(context).primaryColor,
+                            borderColor: Theme.of(context).primaryColor),
+                        name: "1rm",
+                        color: Theme.of(context).primaryColor,
+                        width: 5,
+                        dataSource: _sdbChartData!,
+                        xValueMapper: (Exercises sales, _) =>
+                            DateTime.parse(sales.date!),
+                        yValueMapper: (Exercises sales, _) => sales.onerm,
+                      ),
+                    ])),
+          ),
+          _onechartExercisesWidget(_sdbChartData)
+        ],
+      ),
     )));
   }
 
@@ -1230,7 +1281,7 @@ class _CalendarState extends State<Calendar> {
           i < _exercisesdataProvider.exercisesdata!.exercises.length;
           i++) {
         Widget item = Padding(
-          padding: const EdgeInsets.only(left: 10, right: 5),
+          padding: const EdgeInsets.only(left: 3, right: 3),
           child: ChoiceChip(
             label:
                 Text(_exercisesdataProvider.exercisesdata!.exercises[i].name),
@@ -1252,7 +1303,7 @@ class _CalendarState extends State<Calendar> {
           i < _exercisesdataProvider.exercisesdata!.exercises.length;
           i++) {
         Widget item = Padding(
-          padding: const EdgeInsets.only(left: 10, right: 5),
+          padding: const EdgeInsets.only(left: 3, right: 3),
           child: ChoiceChip(
             label:
                 Text(_exercisesdataProvider.exercisesdata!.exercises[i].name),
@@ -1280,7 +1331,7 @@ class _CalendarState extends State<Calendar> {
   List<Widget> _calendartechChips() {
     List<Widget> chips = [
       Padding(
-        padding: const EdgeInsets.only(left: 10, right: 5),
+        padding: const EdgeInsets.only(left: 3, right: 3),
         child: ChoiceChip(
           label: Text("All"),
           labelStyle: TextStyle(color: Colors.white),
@@ -1300,7 +1351,7 @@ class _CalendarState extends State<Calendar> {
           i < _exercisesdataProvider.exercisesdata!.exercises.length + 1;
           i++) {
         Widget item = Padding(
-          padding: const EdgeInsets.only(left: 10, right: 5),
+          padding: const EdgeInsets.only(left: 3, right: 3),
           child: ChoiceChip(
             label: Text(
                 _exercisesdataProvider.exercisesdata!.exercises[i - 1].name),
