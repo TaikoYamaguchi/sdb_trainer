@@ -511,7 +511,7 @@ class ExerciseState extends State<Exercise> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(16.0),
+                            padding: const EdgeInsets.all(14.0),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,

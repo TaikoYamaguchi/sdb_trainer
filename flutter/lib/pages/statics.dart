@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:sdb_trainer/pages/static_exercise.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
@@ -61,9 +64,18 @@ class _CalendarState extends State<Calendar> {
         child: Text("몸무게", style: TextStyle(color: Colors.white, fontSize: 16)),
         padding: const EdgeInsets.all(5.0)),
   };
+  late StreamSubscription<bool> keyboardSubscription;
 
   @override
   void initState() {
+    var keyboardVisibilityController = KeyboardVisibilityController();
+    keyboardSubscription =
+        keyboardVisibilityController.onChange.listen((bool visible) {
+      if (visible == false) {
+        FocusScope.of(context).unfocus();
+      }
+      ;
+    });
     // TODO: implement initState
     _tapPosition = Offset(0.0, 0.0);
     selectedEvents = {};
@@ -255,17 +267,21 @@ class _CalendarState extends State<Calendar> {
           _staticControllerWidget(),
           SizedBox(height: 10),
           Expanded(
-            child: PageView(
-              controller: provider1.isPageController,
-              children: [
-                _chartWidget(context),
-                _calendarWidget(),
-                _weightWidget()
-              ],
-              onPageChanged: (page) {
-                _chartIndex.changePageController(page as int);
-              },
-            ),
+            child: GestureDetector(
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                },
+                child: PageView(
+                  controller: provider1.isPageController,
+                  children: [
+                    _chartWidget(context),
+                    _calendarWidget(),
+                    _weightWidget()
+                  ],
+                  onPageChanged: (page) {
+                    _chartIndex.changePageController(page as int);
+                  },
+                )),
           ),
         ],
       );
@@ -313,6 +329,58 @@ class _CalendarState extends State<Calendar> {
     return Consumer<UserdataProvider>(builder: (builder, provider, child) {
       return (Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Container(
+                height: 80,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                    //color: Theme.of(context).cardColor,
+                    borderRadius: BorderRadius.circular(15.0)),
+                child: Padding(
+                  padding: const EdgeInsets.all(1.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      _displayBodyWeightDialog();
+                    },
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 48,
+                            height: 48,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Theme.of(context).primaryColor),
+                            child: Icon(
+                              Icons.add,
+                              size: 28.0,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(14.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("몸무게를 기록해 보세요",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 18)),
+                                Text("목표치를 기록하고 달성 할 수 있어요",
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 14)),
+                              ],
+                            ),
+                          )
+                        ]),
+                  ),
+                ),
+              ),
+            ),
+          ),
           Container(
               width: double.infinity,
               height: 250,
@@ -391,153 +459,454 @@ class _CalendarState extends State<Calendar> {
     });
   }
 
+  void _displayBodyWeightDialog() {
+    var _userWeightController = TextEditingController(
+        text: _userdataProvider.userdata.bodyStats.last.weight.toString());
+    var _userWeightGoalController = TextEditingController(
+        text: _userdataProvider.userdata.bodyStats.last.weight_goal.toString());
+
+    DateTime _toDay = DateTime.now();
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            buttonPadding: EdgeInsets.all(12.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            backgroundColor: Theme.of(context).cardColor,
+            contentPadding: EdgeInsets.all(12.0),
+            title: Text(
+              '몸무게를 기록 할 수 있어요',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('몸무게와 목표치를 바꿔보세요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 16)),
+                SizedBox(height: 20),
+                TextField(
+                  controller: _userWeightController,
+                  keyboardType: TextInputType.number,
+                  style: TextStyle(
+                    fontSize: 21,
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                      filled: true,
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      labelText: "몸무게",
+                      labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
+                      hintText: "몸무게",
+                      hintStyle:
+                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                  onChanged: (text) {},
+                ),
+                TextField(
+                  controller: _userWeightGoalController,
+                  keyboardType: TextInputType.number,
+                  style: TextStyle(
+                    fontSize: 21,
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                      filled: true,
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      labelText: "목표 몸무게",
+                      labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
+                      hintText: "목표 몸무게",
+                      hintStyle:
+                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                  onChanged: (text) {},
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    foregroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).primaryColor,
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                    disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+                    padding: EdgeInsets.all(12.0),
+                  ),
+                  child: Text('오늘 몸무게 기록하기',
+                      style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    _displayBodyWeightPushDialog(
+                        double.parse(_userWeightController.text),
+                        double.parse(_userWeightGoalController.text));
+                    _userdataProvider.setUserWeightAdd(
+                        _toDay.toString(),
+                        double.parse(_userWeightController.text),
+                        double.parse(_userWeightGoalController.text));
+                  },
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  void _displayBodyWeightPushDialog(_userWeight, _userGoal) {
+    var _weightChange = "";
+    var _weightSuccess = "";
+    if ((_userWeight - _userdataProvider.userdata.bodyStats.last.weight) > 0) {
+      _weightChange = "+" +
+          (_userWeight - _userdataProvider.userdata.bodyStats.last.weight)
+              .toStringAsFixed(1) +
+          "kg 증가했어요";
+      if (_userdataProvider.userdata.bodyStats.last.weight >
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "감량에 분발이 필요해요";
+      } else if (_userdataProvider.userdata.bodyStats.last.weight <
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "증량이 성공중 이에요";
+      } else if (_userdataProvider.userdata.bodyStats.last.weight ==
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "현재 몸무게를 유지해주세요";
+      }
+    } else if ((_userWeight -
+            _userdataProvider.userdata.bodyStats.last.weight) <
+        0) {
+      _weightChange = "" +
+          (_userWeight - _userdataProvider.userdata.bodyStats.last.weight)
+              .toStringAsFixed(1) +
+          "kg 감소했어요";
+      if (_userdataProvider.userdata.bodyStats.last.weight >
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "감량에 성공중 이에요";
+      } else if (_userdataProvider.userdata.bodyStats.last.weight <
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "증량에 분발이 필요해요";
+      } else if (_userdataProvider.userdata.bodyStats.last.weight ==
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "현재 몸무게를 유지해주세요";
+      }
+    } else {
+      _weightChange = "몸무게가 유지 되었어요";
+      if (_userdataProvider.userdata.bodyStats.last.weight >
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "감량에 분발이 필요해요";
+      } else if (_userdataProvider.userdata.bodyStats.last.weight <
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "증량에 분발이 필요해요";
+      } else if (_userdataProvider.userdata.bodyStats.last.weight ==
+          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+        _weightSuccess = "현재 몸무게를 유지해주세요";
+      }
+    }
+
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            buttonPadding: EdgeInsets.all(12.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            backgroundColor: Theme.of(context).cardColor,
+            contentPadding: EdgeInsets.all(12.0),
+            title: Text(
+              _weightChange,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(_weightSuccess,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 16)),
+                _bodyWeightChartWidget(context),
+              ],
+            ),
+            actions: <Widget>[
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    foregroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).primaryColor,
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                    disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+                    padding: EdgeInsets.all(12.0),
+                  ),
+                  child: Text('닫기',
+                      style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  Widget _bodyWeightChartWidget(context) {
+    final List<Color> color = <Color>[];
+    color.add(Color(0xFffc60a8).withOpacity(0.7));
+    color.add(Theme.of(context).primaryColor.withOpacity(0.9));
+    color.add(Theme.of(context).primaryColor.withOpacity(0.9));
+    color.add(Color(0xFffc60a8).withOpacity(0.7));
+
+    final List<double> stops = <double>[];
+    stops.add(0.0);
+    stops.add(0.4);
+    stops.add(0.6);
+    stops.add(1.0);
+
+    double deviceWidth = MediaQuery.of(context).size.width;
+
+    final LinearGradient gradientColors = LinearGradient(
+        colors: color,
+        stops: stops,
+        begin: Alignment.bottomCenter,
+        end: Alignment.topCenter);
+    return (Center(
+      child: Container(
+          width: deviceWidth * 2 / 3,
+          height: 200,
+          child: SfCartesianChart(
+              plotAreaBorderWidth: 0,
+              primaryXAxis: DateTimeAxis(
+                majorGridLines: const MajorGridLines(width: 0),
+                majorTickLines: const MajorTickLines(size: 0),
+                axisLine: const AxisLine(width: 0),
+              ),
+              primaryYAxis: NumericAxis(
+                  axisLine: const AxisLine(width: 0),
+                  majorTickLines: const MajorTickLines(size: 0),
+                  majorGridLines: const MajorGridLines(width: 0),
+                  minimum: _userdataProvider.userdata.bodyStats!.length == 0
+                      ? 0
+                      : _userdataProvider.userdata.bodyStats!.length > 1
+                          ? _userdataProvider.userdata.bodyStats!
+                              .reduce((BodyStat curr, BodyStat next) =>
+                                  curr.weight! < next.weight! ? curr : next)
+                              .weight
+                          : _userdataProvider.userdata.bodyStats![0].weight),
+              tooltipBehavior: _tooltipBehavior,
+              zoomPanBehavior: _zoomPanBehavior,
+              legend: Legend(
+                  isVisible: true,
+                  position: LegendPosition.bottom,
+                  textStyle: TextStyle(color: Colors.white)),
+              series: [
+                LineSeries<BodyStat, DateTime>(
+                  isVisibleInLegend: true,
+                  color: Colors.grey,
+                  name: "목표",
+                  dataSource: _userdataProvider.userdata.bodyStats!,
+                  xValueMapper: (BodyStat sales, _) =>
+                      DateTime.parse(sales.date!),
+                  yValueMapper: (BodyStat sales, _) => sales.weight_goal!,
+                ),
+                // Renders line chart
+                LineSeries<BodyStat, DateTime>(
+                  isVisibleInLegend: true,
+                  onCreateShader: (ShaderDetails details) {
+                    return ui.Gradient.linear(details.rect.topRight,
+                        details.rect.bottomLeft, color, stops);
+                  },
+                  markerSettings: MarkerSettings(
+                      isVisible: true,
+                      height: 6,
+                      width: 6,
+                      borderWidth: 3,
+                      color: Theme.of(context).primaryColor,
+                      borderColor: Theme.of(context).primaryColor),
+                  name: "몸무게",
+                  color: Theme.of(context).primaryColor,
+                  width: 5,
+                  dataSource: _userdataProvider.userdata.bodyStats!,
+                  xValueMapper: (BodyStat sales, _) =>
+                      DateTime.parse(sales.date!),
+                  yValueMapper: (BodyStat sales, _) => sales.weight!,
+                ),
+              ])),
+    ));
+  }
+
   Widget _calendarWidget() {
     return Consumer<HistorydataProvider>(builder: (builder, provider, child) {
       return Column(children: [
-        GestureDetector(
-            onTap: () {
-              FocusScope.of(context).unfocus();
-            },
-            child: SingleChildScrollView(
-              child: Column(mainAxisSize: MainAxisSize.min, children: [
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Container(
-                      width: _exCalendarSearchCtrlBool ? 150 : 50,
-                      height: 40,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 3.0),
-                        child: Focus(
-                          child: TextField(
-                              controller: _exCalendarSearchCtrl,
-                              style: TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.all(0),
-                                isDense: true,
-                                prefixIcon: Icon(
-                                  Icons.search,
+        SingleChildScrollView(
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Container(
+                  width: _exCalendarSearchCtrlBool ? 150 : 50,
+                  height: 40,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 3.0),
+                    child: Focus(
+                      child: TextField(
+                          controller: _exCalendarSearchCtrl,
+                          style: TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.all(0),
+                            isDense: true,
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            hintText: "운동 검색",
+                            hintStyle:
+                                TextStyle(fontSize: 16.0, color: Colors.white),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  width: 1.5,
+                                  color: Theme.of(context).cardColor),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
                                   color: Theme.of(context).primaryColor,
-                                ),
-                                hintText: "운동 검색",
-                                hintStyle: TextStyle(
-                                    fontSize: 16.0, color: Colors.white),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: Theme.of(context).cardColor),
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Theme.of(context).primaryColor,
-                                      width: 1.5),
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                              ),
-                              onChanged: (text) {
-                                setState(() {});
-                              }),
-                          onFocusChange: (hasFocus) {
-                            setState(() {
-                              if (_exCalendarSearchCtrl.text != "") {
-                                _exCalendarSearchCtrlBool = true;
-                              } else {
-                                _exCalendarSearchCtrlBool = hasFocus;
-                              }
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                          height: 40,
-                          child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children: _calendartechChips())),
-                    ),
-                  ],
-                ),
-                TableCalendar(
-                  rowHeight: 40,
-                  firstDay: DateTime(1990),
-                  lastDay: DateTime(2050),
-                  focusedDay: _focusedDay,
-                  calendarFormat: _calendarFormat,
-                  daysOfWeekVisible: true,
-                  selectedDayPredicate: (day) {
-                    return isSameDay(_selectedDay, day);
-                  },
-                  eventLoader: _getEventsfromDay,
-                  onDaySelected: (selectedDay, focusedDay) {
-                    if (!isSameDay(_selectedDay, selectedDay)) {
-                      setState(() {
-                        _selectedDay = selectedDay;
-                        _focusedDay = focusedDay;
-                      });
-                    }
-                  },
-                  onFormatChanged: (format) {
-                    if (_calendarFormat != format) {
-                      setState(() {
-                        _calendarFormat = format;
-                      });
-                    }
-                  },
-                  onPageChanged: (focusedDay) {
-                    _focusedDay = focusedDay;
-                  },
-                  locale: "ko-KR",
-                  calendarStyle: CalendarStyle(
-                    isTodayHighlighted: true,
-                    selectedDecoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    outsideDecoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    markerDecoration: BoxDecoration(
-                        color: Color(0xFffc60a8), shape: BoxShape.circle),
-                    selectedTextStyle: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold),
-                    defaultTextStyle: const TextStyle(color: Colors.white),
-                    withinRangeTextStyle: TextStyle(color: Colors.white),
-                    weekendTextStyle: TextStyle(color: Colors.white),
-                    outsideTextStyle:
-                        TextStyle(color: Color.fromRGBO(113, 113, 113, 100)),
-                    todayDecoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      color: Theme.of(context).cardColor,
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    defaultDecoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    weekendDecoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(5.0),
+                                  width: 1.5),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                          onChanged: (text) {
+                            setState(() {});
+                          }),
+                      onFocusChange: (hasFocus) {
+                        setState(() {
+                          if (_exCalendarSearchCtrl.text != "") {
+                            _exCalendarSearchCtrlBool = true;
+                          } else {
+                            _exCalendarSearchCtrlBool = hasFocus;
+                          }
+                        });
+                      },
                     ),
                   ),
-                  headerStyle: const HeaderStyle(
-                      formatButtonVisible: false,
-                      titleTextStyle: TextStyle(color: Colors.white),
-                      titleCentered: true,
-                      leftChevronIcon:
-                          Icon(Icons.arrow_left, color: Colors.white),
-                      rightChevronIcon:
-                          Icon(Icons.arrow_right, color: Colors.white),
-                      headerPadding:
-                          EdgeInsets.symmetric(horizontal: 5.0, vertical: 3.0)),
                 ),
-              ]),
-            )),
+                Expanded(
+                  child: Container(
+                      height: 40,
+                      child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: _calendartechChips())),
+                ),
+              ],
+            ),
+            TableCalendar(
+              rowHeight: 40,
+              firstDay: DateTime(1990),
+              lastDay: DateTime(2050),
+              focusedDay: _focusedDay,
+              calendarFormat: _calendarFormat,
+              daysOfWeekVisible: true,
+              selectedDayPredicate: (day) {
+                return isSameDay(_selectedDay, day);
+              },
+              eventLoader: _getEventsfromDay,
+              onDaySelected: (selectedDay, focusedDay) {
+                if (!isSameDay(_selectedDay, selectedDay)) {
+                  setState(() {
+                    _selectedDay = selectedDay;
+                    _focusedDay = focusedDay;
+                  });
+                }
+              },
+              onFormatChanged: (format) {
+                if (_calendarFormat != format) {
+                  setState(() {
+                    _calendarFormat = format;
+                  });
+                }
+              },
+              onPageChanged: (focusedDay) {
+                _focusedDay = focusedDay;
+              },
+              locale: "ko-KR",
+              calendarStyle: CalendarStyle(
+                isTodayHighlighted: true,
+                selectedDecoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                outsideDecoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                markerDecoration: BoxDecoration(
+                    color: Color(0xFffc60a8), shape: BoxShape.circle),
+                selectedTextStyle: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+                defaultTextStyle: const TextStyle(color: Colors.white),
+                withinRangeTextStyle: TextStyle(color: Colors.white),
+                weekendTextStyle: TextStyle(color: Colors.white),
+                outsideTextStyle:
+                    TextStyle(color: Color.fromRGBO(113, 113, 113, 100)),
+                todayDecoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                defaultDecoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                weekendDecoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+              ),
+              headerStyle: const HeaderStyle(
+                  formatButtonVisible: false,
+                  titleTextStyle: TextStyle(color: Colors.white),
+                  titleCentered: true,
+                  leftChevronIcon: Icon(Icons.arrow_left, color: Colors.white),
+                  rightChevronIcon:
+                      Icon(Icons.arrow_right, color: Colors.white),
+                  headerPadding:
+                      EdgeInsets.symmetric(horizontal: 5.0, vertical: 3.0)),
+            ),
+          ]),
+        ),
         _getEventsfromDay(_selectedDay).isEmpty != true
             ? _allchartExercisesWidget(
                 List.from(_getEventsfromDay(_selectedDay).reversed))
@@ -1125,10 +1494,6 @@ class _CalendarState extends State<Calendar> {
         begin: Alignment.bottomCenter,
         end: Alignment.topCenter);
     return (Center(
-        child: GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
       child: Column(
         children: [
           Row(
@@ -1270,7 +1635,7 @@ class _CalendarState extends State<Calendar> {
           _onechartExercisesWidget(_sdbChartData)
         ],
       ),
-    )));
+    ));
   }
 
   List<Widget> techChips() {
