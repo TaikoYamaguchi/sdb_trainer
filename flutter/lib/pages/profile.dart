@@ -91,6 +91,12 @@ class _ProfileState extends State<Profile> {
   Future _getImage(ImageSource imageSource) async {
     _selectImage =
         await _picker.pickImage(source: imageSource, imageQuality: 30);
+    if (_selectImage != null) {
+      dynamic sendData = _selectImage.path;
+      UserImageEdit(file: sendData).patchUserImage().then((data) {
+        _userdataProvider.setUserdata(data);
+      });
+    }
 
     setState(() {
       _image = File(_selectImage!.path); // 가져온 이미지를 _image에 저장
