@@ -19,10 +19,17 @@ import 'dart:io';
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   Profile({Key? key}) : super(key: key);
 
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
   final ImagePicker _picker = ImagePicker();
+  var _selectImage;
+  File? _image;
   var _userdataProvider;
   var _PopProvider;
   var _loginState;
@@ -79,6 +86,106 @@ class Profile extends StatelessWidget {
         _userdataProvider.setUserdata(data);
       });
     }
+  }
+
+  Future _getImage(ImageSource imageSource) async {
+    _selectImage =
+        await _picker.pickImage(source: imageSource, imageQuality: 30);
+
+    setState(() {
+      _image = File(_selectImage!.path); // 가져온 이미지를 _image에 저장
+    });
+  }
+
+  void _displayPhotoDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).cardColor,
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+                      child: Text("사진을 올릴 방법을 고를 수 있어요",
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 16.0)),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width / 4,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                foregroundColor: Theme.of(context).primaryColor,
+                                backgroundColor: Theme.of(context).primaryColor,
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                ),
+                                disabledForegroundColor:
+                                    Color.fromRGBO(246, 58, 64, 20),
+                                padding: EdgeInsets.all(12.0),
+                              ),
+                              onPressed: () {
+                                _getImage(ImageSource.camera);
+                                Navigator.pop(context);
+                              },
+                              child: Column(
+                                children: [
+                                  Icon(Icons.camera_alt,
+                                      size: 24, color: Colors.white),
+                                  Text('촬영',
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.white)),
+                                ],
+                              ),
+                            )),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width / 4,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                foregroundColor: Theme.of(context).primaryColor,
+                                backgroundColor: Theme.of(context).primaryColor,
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                ),
+                                disabledForegroundColor:
+                                    Color.fromRGBO(246, 58, 64, 20),
+                                padding: EdgeInsets.all(12.0),
+                              ),
+                              onPressed: () {
+                                _getImage(ImageSource.gallery);
+                                Navigator.pop(context);
+                              },
+                              child: Column(
+                                children: [
+                                  Icon(Icons.collections,
+                                      size: 24, color: Colors.white),
+                                  Text('갤러리',
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.white)),
+                                ],
+                              ),
+                            )),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        });
   }
 
   Widget _profile(context) {
@@ -148,7 +255,7 @@ class Profile extends StatelessWidget {
           SizedBox(height: 30),
           GestureDetector(
               onTap: () {
-                _pickImg();
+                _displayPhotoDialog();
               },
               child: _userdataProvider.userdata.image == ""
                   ? Icon(

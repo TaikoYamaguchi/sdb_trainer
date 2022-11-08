@@ -579,6 +579,124 @@ class _CalendarState extends State<Calendar> {
         });
   }
 
+  void _displayEditBodyWeightDialog(index) {
+    var _userWeightController = TextEditingController(
+        text: _userdataProvider.userdata.bodyStats[index].weight.toString());
+    var _userWeightGoalController = TextEditingController(
+        text:
+            _userdataProvider.userdata.bodyStats[index].weight_goal.toString());
+
+    DateTime _toDay = DateTime.now();
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            buttonPadding: EdgeInsets.all(12.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            backgroundColor: Theme.of(context).cardColor,
+            contentPadding: EdgeInsets.all(12.0),
+            title: Text(
+              '몸무게를 수정 할 수 있어요',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('몸무게와 목표치를 수정해보세요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 16)),
+                SizedBox(height: 20),
+                TextField(
+                  controller: _userWeightController,
+                  keyboardType: TextInputType.number,
+                  style: TextStyle(
+                    fontSize: 21,
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                      filled: true,
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      labelText: "몸무게",
+                      labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
+                      hintText: "몸무게",
+                      hintStyle:
+                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                  onChanged: (text) {},
+                ),
+                TextField(
+                  controller: _userWeightGoalController,
+                  keyboardType: TextInputType.number,
+                  style: TextStyle(
+                    fontSize: 21,
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                      filled: true,
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      labelText: "목표 몸무게",
+                      labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
+                      hintText: "목표 몸무게",
+                      hintStyle:
+                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                  onChanged: (text) {},
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    foregroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).primaryColor,
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                    disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+                    padding: EdgeInsets.all(12.0),
+                  ),
+                  child: Text('몸무게 수정 하기',
+                      style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    _userdataProvider.setUserWeightEdit(
+                        index,
+                        double.parse(_userWeightController.text),
+                        double.parse(_userWeightGoalController.text));
+                  },
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
   void _displayBodyWeightPushDialog(_userWeight, _userGoal) {
     var _weightChange = "";
     var _weightSuccess = "";
@@ -1026,7 +1144,8 @@ class _CalendarState extends State<Calendar> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                )
+                ),
+                SizedBox(width: 16)
               ],
             )),
             ListView.separated(
@@ -1035,7 +1154,7 @@ class _CalendarState extends State<Calendar> {
                       List.from(bodyStats.reversed)[index],
                       _userdataProvider.userdata,
                       true,
-                      index);
+                      bodyStats.length - index - 1);
                 },
                 separatorBuilder: (BuildContext _context, int index) {
                   return Container(
@@ -1111,6 +1230,56 @@ class _CalendarState extends State<Calendar> {
                             style: TextStyle(fontSize: 18, color: Colors.white),
                             textAlign: TextAlign.center),
                       ),
+                      GestureDetector(
+                        child: Icon(
+                          Icons.more_vert,
+                          color: Colors.grey,
+                          size: 18.0,
+                        ),
+                        onTapDown: _storePosition,
+                        onTap: () {
+                          showMenu(
+                              context: context,
+                              position: RelativeRect.fromRect(
+                                  _tapPosition & Size(30, 30),
+                                  Offset.zero & Size(0, 0)),
+                              items: [
+                                PopupMenuItem(
+                                    onTap: () {
+                                      Future<void>.delayed(
+                                          const Duration(), // OR const Duration(milliseconds: 500),
+                                          () => _displayEditBodyWeightDialog(
+                                              index));
+                                    },
+                                    padding: EdgeInsets.all(0.0),
+                                    child: ListTile(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 4.0, vertical: 0.0),
+                                        leading: Icon(Icons.edit,
+                                            color: Colors.white),
+                                        title: Text("수정",
+                                            style: TextStyle(
+                                                color: Colors.white)))),
+                                PopupMenuItem(
+                                    onTap: () {
+                                      Future<void>.delayed(
+                                          const Duration(), // OR const Duration(milliseconds: 500),
+                                          () => _userdataProvider
+                                              .setUserWeightDelete(index));
+                                      ;
+                                    },
+                                    padding: EdgeInsets.all(0.0),
+                                    child: ListTile(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 4.0, vertical: 0.0),
+                                        leading: Icon(Icons.delete,
+                                            color: Colors.white),
+                                        title: Text("삭제",
+                                            style: TextStyle(
+                                                color: Colors.white)))),
+                              ]);
+                        },
+                      )
                     ],
                   ),
                 )

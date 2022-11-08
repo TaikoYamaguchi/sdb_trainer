@@ -82,6 +82,19 @@ class UserdataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  setUserWeightEdit(index, weight, weightGoal) {
+    _userdata.bodyStats[index].weight = weight;
+    _userdata.bodyStats[index].weight_goal = weightGoal;
+    UserBodyStatEdit(bodyStat: _userdata.bodyStats).patchUserBodyStat();
+    notifyListeners();
+  }
+
+  setUserWeightDelete(index) {
+    _userdata.bodyStats.removeAt(index);
+    UserBodyStatEdit(bodyStat: _userdata.bodyStats).patchUserBodyStat();
+    notifyListeners();
+  }
+
   setUserKakaoGender(state) {
     if (state.toString() == "Gender.male") {
       _userKakaoGender = true;

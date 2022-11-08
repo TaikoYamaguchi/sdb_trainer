@@ -103,8 +103,8 @@ class UserList {
 
 class BodyStat {
   final String? date;
-  final double? weight;
-  final double? weight_goal;
+  double? weight;
+  double? weight_goal;
   final double? height;
   final double? height_goal;
   BodyStat({

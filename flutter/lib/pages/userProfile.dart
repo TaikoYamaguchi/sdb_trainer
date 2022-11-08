@@ -23,6 +23,8 @@ class UserProfile extends StatefulWidget {
 class _UserProfileState extends State<UserProfile> {
   var _userdataProvider;
   var _PopProvider;
+  var _selectImage;
+  File? _image;
   final ImagePicker _picker = ImagePicker();
   @override
   void initState() {
@@ -50,6 +52,106 @@ class _UserProfileState extends State<UserProfile> {
           ),
           backgroundColor: Color(0xFF101012),
         ));
+  }
+
+  Future _getImage(ImageSource imageSource) async {
+    _selectImage =
+        await _picker.pickImage(source: imageSource, imageQuality: 30);
+
+    setState(() {
+      _image = File(_selectImage!.path); // 가져온 이미지를 _image에 저장
+    });
+  }
+
+  void _displayPhotoDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).cardColor,
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+                      child: Text("사진을 올릴 방법을 고를 수 있어요",
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 16.0)),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width / 4,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                foregroundColor: Theme.of(context).primaryColor,
+                                backgroundColor: Theme.of(context).primaryColor,
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                ),
+                                disabledForegroundColor:
+                                    Color.fromRGBO(246, 58, 64, 20),
+                                padding: EdgeInsets.all(12.0),
+                              ),
+                              onPressed: () {
+                                _getImage(ImageSource.camera);
+                                Navigator.pop(context);
+                              },
+                              child: Column(
+                                children: [
+                                  Icon(Icons.camera_alt,
+                                      size: 24, color: Colors.white),
+                                  Text('촬영',
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.white)),
+                                ],
+                              ),
+                            )),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width / 4,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                foregroundColor: Theme.of(context).primaryColor,
+                                backgroundColor: Theme.of(context).primaryColor,
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                ),
+                                disabledForegroundColor:
+                                    Color.fromRGBO(246, 58, 64, 20),
+                                padding: EdgeInsets.all(12.0),
+                              ),
+                              onPressed: () {
+                                _getImage(ImageSource.gallery);
+                                Navigator.pop(context);
+                              },
+                              child: Column(
+                                children: [
+                                  Icon(Icons.collections,
+                                      size: 24, color: Colors.white),
+                                  Text('갤러리',
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.white)),
+                                ],
+                              ),
+                            )),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        });
   }
 
   Widget _userProfileWidget() {
@@ -129,7 +231,7 @@ class _UserProfileState extends State<UserProfile> {
         SizedBox(height: 30),
         GestureDetector(
             onTap: () {
-              _pickImg();
+              _displayPhotoDialog();
             },
             child: _userdataProvider.userdata.image == ""
                 ? Icon(
@@ -155,7 +257,7 @@ class _UserProfileState extends State<UserProfile> {
                   })),
         TextButton(
             onPressed: () {
-              _pickImg();
+              _displayPhotoDialog();
             },
             child: Text("사진 편집", style: TextStyle(color: Colors.white)))
       ]),
