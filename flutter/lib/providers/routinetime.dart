@@ -10,6 +10,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class RoutineTimeProvider extends ChangeNotifier {
   int _routineTime = 0;
+  int _routineNewRecord = 0;
+  int get routineNewRecord => _routineNewRecord;
   int _timetosubstract = 0;
   int get routineTime => _routineTime;
   int _changetime = 0;
@@ -43,15 +45,18 @@ class RoutineTimeProvider extends ChangeNotifier {
     _nowoneindex = value;
   }
 
+  newRoutineUpdate() {
+    _routineNewRecord = _routineNewRecord + 1;
+  }
+
   getinfo() {
     notifyListeners();
   }
 
-  getrest() async{
+  getrest() async {
     _prefs = await SharedPreferences.getInstance();
     _userest = _prefs.getBool('userest');
     notifyListeners();
-
   }
 
   setrest() async {

@@ -111,33 +111,35 @@ class ExerciseState extends State<Exercise> {
   }
 
   PreferredSizeWidget _appbarWidget() {
-    return AppBar(
-      elevation: 0,
-      title: Row(
-        children: [
-          Text(
-            "운동",
-            style: TextStyle(color: Colors.white, fontSize: 25),
+    return PreferredSize(
+        preferredSize: Size.fromHeight(40.0), // here the desired height
+        child: AppBar(
+          elevation: 0,
+          title: Row(
+            children: [
+              Text(
+                "운동",
+                style: TextStyle(color: Colors.white, fontSize: 25),
+              ),
+            ],
           ),
-        ],
-      ),
-      actions: [
-        Consumer<RoutineMenuStater>(builder: (builder, provider, child) {
-          if (provider.menustate == 2) {
-            return IconButton(
-              iconSize: 30,
-              icon: Icon(Icons.refresh_rounded),
-              onPressed: () {
-                _onRefresh();
-              },
-            );
-          } else {
-            return Container();
-          }
-        })
-      ],
-      backgroundColor: Color(0xFF101012),
-    );
+          actions: [
+            Consumer<RoutineMenuStater>(builder: (builder, provider, child) {
+              if (provider.menustate == 2) {
+                return IconButton(
+                  iconSize: 30,
+                  icon: Icon(Icons.refresh_rounded),
+                  onPressed: () {
+                    _onRefresh();
+                  },
+                );
+              } else {
+                return Container();
+              }
+            })
+          ],
+          backgroundColor: Color(0xFF101012),
+        ));
   }
 
   Future<void> _onRefresh() {

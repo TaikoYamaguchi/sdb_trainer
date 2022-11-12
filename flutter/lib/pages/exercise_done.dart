@@ -185,7 +185,8 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                         SizedBox(
                             width: 60,
                             child: Center(
-                                child: Text("0",
+                                child: Text(
+                                    widget.sdbdata.new_record.toString(),
                                     style: TextStyle(color: Colors.white)))),
                       ],
                     ),

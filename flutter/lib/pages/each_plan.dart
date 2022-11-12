@@ -1197,7 +1197,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
       HistoryPost(
               user_email: _userdataProvider.userdata.email,
               exercises: exerciseList,
-              new_record: 120,
+              new_record: _routinetimeProvider.routineNewRecord,
               workout_time: _routinetimeProvider.routineTime,
               nickname: _userdataProvider.userdata.nickname)
           .postHistory()

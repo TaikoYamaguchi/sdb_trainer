@@ -79,7 +79,6 @@ class _AppState extends State<App> {
   Widget _bottomNavigationBarwidget() {
     return Container(
       decoration: BoxDecoration(
-
         borderRadius: BorderRadius.only(
             topRight: Radius.circular(30), topLeft: Radius.circular(30)),
       ),
@@ -114,13 +113,13 @@ class _AppState extends State<App> {
 
   void _editWorkoutCheck() async {
     WorkoutEdit(
-        user_email: _userdataProvider.userdata.email,
-        id: _workoutdataProvider.workoutdata.id,
-        routinedatas: _workoutdataProvider.workoutdata.routinedatas)
+            user_email: _userdataProvider.userdata.email,
+            id: _workoutdataProvider.workoutdata.id,
+            routinedatas: _workoutdataProvider.workoutdata.routinedatas)
         .editWorkout()
         .then((data) => data["user_email"] != null
-        ? [showToast("done!"), _workoutdataProvider.getdata()]
-        : showToast("입력을 확인해주세요"));
+            ? [showToast("done!"), _workoutdataProvider.getdata()]
+            : showToast("입력을 확인해주세요"));
   }
 
   void _editWorkoutwoCheck() async {
@@ -189,18 +188,22 @@ class _AppState extends State<App> {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: TextButton(
-          style: TextButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),),
-            foregroundColor: Theme.of(context).primaryColor,
-            backgroundColor: Theme.of(context).primaryColor,
-            textStyle: TextStyle(color: Colors.white,),
-            disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-            padding: EdgeInsets.all(12.0),
-
-          ),
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
+            ),
             onPressed: () {
-              if(_workoutdataProvider.workoutdata.routinedatas[_routinetimeProvider.nowonrindex].mode == 1){
+              if (_workoutdataProvider.workoutdata
+                      .routinedatas[_routinetimeProvider.nowonrindex].mode ==
+                  1) {
                 recordExercise_plan();
                 _editHistoryCheck();
                 _editWorkoutCheck();
@@ -221,7 +224,10 @@ class _AppState extends State<App> {
         .routinedatas[_routinetimeProvider.nowonrindex]
         .exercises[0]
         .plans[_workoutdataProvider
-        .workoutdata.routinedatas[_routinetimeProvider.nowonrindex].exercises[0].progress]
+            .workoutdata
+            .routinedatas[_routinetimeProvider.nowonrindex]
+            .exercises[0]
+            .progress]
         .exercises;
     for (int n = 0; n < exercise_all.length; n++) {
       var recordedsets = exercise_all[n].sets.where((sets) {
@@ -239,8 +245,8 @@ class _AppState extends State<App> {
         }
       }
       var _eachex = _exercisesdataProvider.exercisesdata.exercises[
-      _exercisesdataProvider.exercisesdata.exercises
-          .indexWhere((element) => element.name == exercise_all[n].name)];
+          _exercisesdataProvider.exercisesdata.exercises
+              .indexWhere((element) => element.name == exercise_all[n].name)];
       if (!recordedsets.isEmpty) {
         exerciseList.add(hisdata.Exercises(
             name: exercise_all[n].name,
@@ -326,13 +332,16 @@ class _AppState extends State<App> {
                     child: TextButton(
                         style: TextButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
                           foregroundColor: Theme.of(context).primaryColor,
                           backgroundColor: Theme.of(context).primaryColor,
-                          textStyle: TextStyle(color: Colors.white,),
-                          disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+                          textStyle: TextStyle(
+                            color: Colors.white,
+                          ),
+                          disabledForegroundColor:
+                              Color.fromRGBO(246, 58, 64, 20),
                           padding: EdgeInsets.all(12.0),
-
                         ),
                         child: new Text("업데이트 하러가기",
                             style:
@@ -353,7 +362,7 @@ class _AppState extends State<App> {
       HistoryPost(
               user_email: _userdataProvider.userdata.email,
               exercises: exerciseList,
-              new_record: 120,
+              new_record: _routinetimeProvider.routineNewRecord,
               workout_time: _routinetimeProvider.routineTime,
               nickname: _userdataProvider.userdata.nickname)
           .postHistory()
@@ -368,7 +377,8 @@ class _AppState extends State<App> {
                               sdbdata: hisdata.SDBdata.fromJson(data)),
                           transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
                   _routinetimeProvider.routinecheck(0),
-                  _routinetimeProvider.getprefs(_workoutdataProvider.workoutdata.routinedatas[_routinetimeProvider.nowonrindex].name),
+                  _routinetimeProvider.getprefs(_workoutdataProvider.workoutdata
+                      .routinedatas[_routinetimeProvider.nowonrindex].name),
                   _historydataProvider.getdata(),
                   _historydataProvider.getHistorydataAll(),
                   exerciseList = []
@@ -486,13 +496,18 @@ class _AppState extends State<App> {
                             child: TextButton(
                                 style: TextButton.styleFrom(
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8.0),),
-                                  foregroundColor: Theme.of(context).primaryColor,
-                                  backgroundColor: Theme.of(context).primaryColor,
-                                  textStyle: TextStyle(color: Colors.white,),
-                                  disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  foregroundColor:
+                                      Theme.of(context).primaryColor,
+                                  backgroundColor:
+                                      Theme.of(context).primaryColor,
+                                  textStyle: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                  disabledForegroundColor:
+                                      Color.fromRGBO(246, 58, 64, 20),
                                   padding: EdgeInsets.all(12.0),
-
                                 ),
                                 onPressed: () {
                                   provider.restcheck();

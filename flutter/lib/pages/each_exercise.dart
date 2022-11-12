@@ -615,6 +615,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                       .exercises[
                                                                           pindex]
                                                                       .rest),
+                                                                  _workoutOnermCheck(
+                                                                      _sets[
+                                                                          index],
+                                                                      ueindex),
                                                                   index ==
                                                                           _sets.length -
                                                                               1
@@ -1060,6 +1064,30 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     });
   }
 
+  void _workoutOnermCheck(Sets _sets, ueindex) {
+    var _onerm;
+    var _exercise = _exercisesdataProvider.exercisesdata.exercises[ueindex];
+    print("onerm");
+    if (_sets.reps != 1) {
+      _onerm = (_sets.weight * (1 + _sets.reps / 30));
+    } else if (_sets.reps == 1) {
+      _onerm = _sets.weight;
+    } else {
+      _onerm = 0;
+    }
+    if (_onerm > _exercise.onerm) {
+      _displayNewOnermAlert(_onerm);
+      _routinetimeProvider.newRoutineUpdate();
+      print("display");
+      print(_onerm);
+      print(_exercise.onerm);
+    } else {
+      print("nodisplay");
+      print(_onerm);
+      print(_exercise.onerm);
+    }
+  }
+
   Widget _bodyexercisedetailWidget(pindex) {
     int ueindex = _exercisesdataProvider.exercisesdata.exercises.indexWhere(
         (element) =>
@@ -1434,6 +1462,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                       .exercises[
                                                                           pindex]
                                                                       .rest),
+                                                                  _workoutOnermCheck(
+                                                                      _sets[
+                                                                          index],
+                                                                      ueindex),
                                                                   index ==
                                                                           _sets.length -
                                                                               1
@@ -2217,6 +2249,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                           .exercises[
                                                                               pindex]
                                                                           .rest),
+                                                                      _workoutOnermCheck(
+                                                                          _sets[
+                                                                              index],
+                                                                          ueindex),
                                                                       index ==
                                                                               _sets.length - 1
                                                                           ? [
@@ -2684,6 +2720,63 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     );
   }
 
+  void _displayNewOnermAlert(_onerm) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            buttonPadding: EdgeInsets.all(12.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            backgroundColor: Theme.of(context).cardColor,
+            contentPadding: EdgeInsets.all(12.0),
+            title: Text(
+              '신기록을 달성했어요!',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                    _onerm.toStringAsFixed(1) +
+                        _userdataProvider.userdata.weight_unit +
+                        ' 축하합니다',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 16)),
+              ],
+            ),
+            actions: <Widget>[
+              _closeNewOnermButton(),
+            ],
+          );
+        });
+  }
+
+  Widget _closeNewOnermButton() {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
+            ),
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            child: Text("계속 운동 하기",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+  }
+
   void _displayFinishAlert() {
     showDialog(
         context: context,
@@ -3084,7 +3177,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
       HistoryPost(
               user_email: _userdataProvider.userdata.email,
               exercises: exerciseList,
-              new_record: 120,
+              new_record: _routinetimeProvider.routineNewRecord,
               workout_time: _routinetimeProvider.routineTime,
               nickname: _userdataProvider.userdata.nickname)
           .postHistory()
