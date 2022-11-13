@@ -422,7 +422,7 @@ class _CalendarState extends State<Calendar> {
                   series: [
                     LineSeries<BodyStat, DateTime>(
                       isVisibleInLegend: true,
-                      color: Color(0xFF101012),
+                      color: Colors.white54,
                       name: "목표",
                       dataSource: _userdataProvider.userdata.bodyStats!,
                       xValueMapper: (BodyStat sales, _) =>
@@ -850,7 +850,7 @@ class _CalendarState extends State<Calendar> {
               series: [
                 LineSeries<BodyStat, DateTime>(
                   isVisibleInLegend: true,
-                  color: Colors.grey,
+                  color: Colors.white54,
                   name: "목표",
                   dataSource: _userdataProvider.userdata.bodyStats!,
                   xValueMapper: (BodyStat sales, _) =>
@@ -1770,7 +1770,7 @@ class _CalendarState extends State<Calendar> {
                       // Renders line chart
                       LineSeries<Exercises, DateTime>(
                         isVisibleInLegend: true,
-                        color: Color(0xFF101012),
+                        color: Colors.white54,
                         name: "goal",
                         dataSource: _sdbChartData!,
                         xValueMapper: (Exercises sales, _) =>

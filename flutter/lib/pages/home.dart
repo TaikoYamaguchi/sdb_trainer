@@ -3264,7 +3264,7 @@ class _HomeState extends State<Home> {
               series: [
                 LineSeries<BodyStat, DateTime>(
                   isVisibleInLegend: true,
-                  color: Colors.grey,
+                  color: Colors.white54,
                   name: "목표",
                   dataSource: _userdataProvider.userdata.bodyStats!,
                   xValueMapper: (BodyStat sales, _) =>

@@ -31,6 +31,7 @@ import 'package:transition/transition.dart';
 import 'package:sdb_trainer/providers/chartIndexState.dart';
 import 'package:sdb_trainer/providers/staticPageState.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
+import 'package:confetti/confetti.dart';
 
 class EachExerciseDetails extends StatefulWidget {
   int ueindex;
@@ -1076,7 +1077,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
       _onerm = 0;
     }
     if (_onerm > _exercise.onerm) {
-      _displayNewOnermAlert(_onerm);
+      _displayNewOnermAlert(_onerm, _sets);
       _routinetimeProvider.newRoutineUpdate();
       print("display");
       print(_onerm);
@@ -2720,7 +2721,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     );
   }
 
-  void _displayNewOnermAlert(_onerm) {
+  void _displayNewOnermAlert(_onerm, Sets _sets) {
+    late ConfettiController _controllerCenter;
+    _controllerCenter =
+        ConfettiController(duration: const Duration(seconds: 3));
+    _controllerCenter.play();
     showDialog(
         context: context,
         builder: (context) {
@@ -2739,12 +2744,88 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                    _onerm.toStringAsFixed(1) +
-                        _userdataProvider.userdata.weight_unit +
-                        ' 축하합니다',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                Stack(children: [
+                  Column(
+                    children: [
+                      _exercise.name.length < 8
+                          ? Text(
+                              _exercise.name,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFffc60a8),
+                                  fontSize: 28),
+                            )
+                          : Flexible(
+                              child: Text(
+                                _exercise.name,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFffc60a8),
+                                    fontSize: 16),
+                              ),
+                            ),
+                      Center(
+                        child: Text(
+                            _onerm.toStringAsFixed(1) +
+                                _userdataProvider.userdata.weight_unit,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFffc60a8),
+                                fontSize: 32)),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                              width: 120,
+                              child: Center(
+                                  child: Text(
+                                "${_sets.weight}${_userdataProvider.userdata.weight_unit}",
+                                style: TextStyle(
+                                  fontSize: 21,
+                                  color: Colors.grey,
+                                ),
+                              ))),
+                          Container(
+                              width: 20,
+                              child: SvgPicture.asset("assets/svg/multiply.svg",
+                                  color: Colors.grey, height: 19)),
+                          Container(
+                              width: 120,
+                              child: Center(
+                                  child: Text(
+                                "${_sets.reps}회",
+                                style: TextStyle(
+                                  fontSize: 21,
+                                  color: Colors.grey,
+                                ),
+                              )))
+                        ],
+                      )
+                    ],
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: ConfettiWidget(
+                      confettiController: _controllerCenter,
+                      blastDirectionality: BlastDirectionality
+                          .explosive, // don't specify a direction, blast randomly
+                      shouldLoop:
+                          true, // start again as soon as the animation is finished
+                      colors: const [
+                        Colors.green,
+                        Colors.blue,
+                        Colors.pink,
+                        Colors.orange,
+                        Colors.purple
+                      ], // manually specify the colors to be used
+                    ),
+                  )
+                ])
               ],
             ),
             actions: <Widget>[
