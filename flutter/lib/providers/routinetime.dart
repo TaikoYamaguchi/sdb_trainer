@@ -129,6 +129,7 @@ class RoutineTimeProvider extends ChangeNotifier {
           _routineTime = 0;
         }
       });
+      _routineNewRecord = 0;
       _routineButton = '운동 종료 하기';
       _buttoncolor = Color(0xFffc60a8);
       _isstarted = !_isstarted;

@@ -20,7 +20,7 @@ class ExercisesdataProvider extends ChangeNotifier {
   get exercisesdatas => _exercisesdatas;
   var _homeExList;
   get homeExList => _homeExList;
-  List<String> _tags =['All'];
+  List<String> _tags = ['All'];
   get tags => _tags;
   List<String> _tags2 = ['All'];
   get tags2 => _tags2;
@@ -49,7 +49,6 @@ class ExercisesdataProvider extends ChangeNotifier {
     '기타',
   ];
 
-
   getdata() async {
     await ExercisesRepository.loadExercisesdata().then((value) {
       _exercisesdata = value;
@@ -62,6 +61,11 @@ class ExercisesdataProvider extends ChangeNotifier {
       _exercisesdatas = value;
       notifyListeners();
     });
+  }
+
+  putOnermValue(int index, double onerm) {
+    _exercisesdata.exercises[index].onerm = onerm;
+    notifyListeners();
   }
 
   addExdata(Exercises) {
@@ -119,25 +123,26 @@ class ExercisesdataProvider extends ChangeNotifier {
   }
 
   settestdata_d() async {
-    _testdata =_testdata.toSet().intersection(_exercisesdata.exercises.toSet()).toList();
+    _testdata = _testdata
+        .toSet()
+        .intersection(_exercisesdata.exercises.toSet())
+        .toList();
     notifyListeners();
   }
 
   settestdata_s(data) async {
     _testdata_s = data;
-    final commonElements =
-        [_testdata_s,_testdata_f1,_testdata_f2].fold<Set>(
-            [_testdata_s,_testdata_f1,_testdata_f2].first.toSet(),
-                (a, b) => a.intersection(b.toSet()));
+    final commonElements = [_testdata_s, _testdata_f1, _testdata_f2].fold<Set>(
+        [_testdata_s, _testdata_f1, _testdata_f2].first.toSet(),
+        (a, b) => a.intersection(b.toSet()));
     settestdata(commonElements.toList());
   }
 
   settestdata_f1(data) async {
     _testdata_f1 = data;
-    final commonElements =
-    [_testdata_s,_testdata_f1,_testdata_f2].fold<Set>(
-        [_testdata_s,_testdata_f1,_testdata_f2].first.toSet(),
-            (a, b) => a.intersection(b.toSet()));
+    final commonElements = [_testdata_s, _testdata_f1, _testdata_f2].fold<Set>(
+        [_testdata_s, _testdata_f1, _testdata_f2].first.toSet(),
+        (a, b) => a.intersection(b.toSet()));
 
     print(commonElements);
     settestdata(commonElements.toList());
@@ -145,28 +150,24 @@ class ExercisesdataProvider extends ChangeNotifier {
 
   settestdata_f2(data) async {
     _testdata_f2 = data;
-    final commonElements =
-    [_testdata_s,_testdata_f1,_testdata_f2].fold<Set>(
-        [_testdata_s,_testdata_f1,_testdata_f2].first.toSet(),
-            (a, b) => a.intersection(b.toSet()));
+    final commonElements = [_testdata_s, _testdata_f1, _testdata_f2].fold<Set>(
+        [_testdata_s, _testdata_f1, _testdata_f2].first.toSet(),
+        (a, b) => a.intersection(b.toSet()));
     settestdata(commonElements.toList());
   }
 
-  settesttotal(data,data1,data2) async {
+  settesttotal(data, data1, data2) async {
     _testdata_s = data;
     _testdata_f1 = data1;
     _testdata_f2 = data2;
-    final commonElements =
-    [_testdata_s,_testdata_f1,_testdata_f2].fold<Set>(
-        [_testdata_s,_testdata_f1,_testdata_f2].first.toSet(),
-            (a, b) => a.intersection(b.toSet()));
+    final commonElements = [_testdata_s, _testdata_f1, _testdata_f2].fold<Set>(
+        [_testdata_s, _testdata_f1, _testdata_f2].first.toSet(),
+        (a, b) => a.intersection(b.toSet()));
     settestdata(commonElements.toList());
-}
-
+  }
 
   setfiltmenu(num) async {
     _filtmenu = num;
     notifyListeners();
   }
-
 }

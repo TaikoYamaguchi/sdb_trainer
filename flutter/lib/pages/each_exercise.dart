@@ -675,6 +675,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                 .exercises[
                                                                     pindex]
                                                                 .rest),
+                                                        _workoutOnermCheck(
+                                                            _sets[index],
+                                                            ueindex),
                                                         index ==
                                                                 _sets.length - 1
                                                             ? [
@@ -1522,6 +1525,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                 .exercises[
                                                                     pindex]
                                                                 .rest),
+                                                        _workoutOnermCheck(
+                                                            _sets[index],
+                                                            ueindex),
                                                         index ==
                                                                 _sets.length - 1
                                                             ? [
@@ -2301,6 +2307,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                     .exercises[
                                                                         pindex]
                                                                     .rest),
+                                                            _workoutOnermCheck(
+                                                                _sets[index],
+                                                                ueindex),
                                                             index ==
                                                                     _sets.length -
                                                                         1
@@ -2726,6 +2735,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     _controllerCenter =
         ConfettiController(duration: const Duration(seconds: 3));
     _controllerCenter.play();
+    _exercisesdataProvider.putOnermValue(
+        _exercisesdataProvider.exercisesdata.exercises
+            .indexWhere((element) => element.name == _exercise.name),
+        _onerm);
     showDialog(
         context: context,
         builder: (context) {
@@ -3154,7 +3167,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     );
   }
 
-  void _displayStartAlert(pindex, sindex, newvalue) {
+  void _displayStartAlert(pindex, index, newvalue) {
     showDialog(
         context: context,
         builder: (context) {
@@ -3182,13 +3195,20 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
               ],
             ),
             actions: <Widget>[
-              _StartConfirmButton(pindex, sindex, newvalue),
+              _StartConfirmButton(pindex, index, newvalue),
             ],
           );
         });
   }
 
-  Widget _StartConfirmButton(pindex, sindex, newvalue) {
+  Widget _StartConfirmButton(pindex, index, newvalue) {
+    var _sets = _workoutdataProvider
+        .workoutdata.routinedatas[widget.rindex].exercises[pindex].sets;
+    int ueindex = _exercisesdataProvider.exercisesdata.exercises.indexWhere(
+        (element) =>
+            element.name ==
+            _workoutdataProvider.workoutdata.routinedatas[widget.rindex]
+                .exercises[pindex].name);
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: TextButton(
@@ -3208,10 +3228,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
               _routinetimeProvider.resettimer(_workoutdataProvider.workoutdata
                   .routinedatas[widget.rindex].exercises[pindex].rest);
               _routinetimeProvider.routinecheck(widget.rindex);
+
               _workoutdataProvider.boolcheck(
-                  widget.rindex, pindex, sindex, newvalue);
+                  widget.rindex, pindex, index, newvalue);
               _editWorkoutwCheck();
               Navigator.of(context, rootNavigator: true).pop();
+              _workoutOnermCheck(_sets[index], ueindex);
             },
             child: Text("운동 시작 하기",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
