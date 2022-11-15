@@ -68,6 +68,12 @@ class ExercisesdataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  putOnermGoalValue(int index, double onerm, double goal) {
+    _exercisesdata.exercises[index].onerm = onerm;
+    _exercisesdata.exercises[index].goal = goal;
+    notifyListeners();
+  }
+
   addExdata(Exercises) {
     _exercisesdata.exercises.add(Exercises);
     notifyListeners();
