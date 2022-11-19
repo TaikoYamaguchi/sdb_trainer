@@ -466,11 +466,11 @@ class _FeedCardState extends State<FeedCard> {
                                 children: [
                                   Container(
                                     alignment: Alignment.center,
-                                    height: 1,
+                                    height: 0.5,
                                     color: Colors.black,
                                     child: Container(
                                       alignment: Alignment.center,
-                                      height: 1,
+                                      height: 0.5,
                                       color: Color(0xFF717171),
                                     ),
                                   ),
@@ -485,11 +485,11 @@ class _FeedCardState extends State<FeedCard> {
                                 children: [
                                   Container(
                                     alignment: Alignment.center,
-                                    height: 1,
+                                    height: 0.5,
                                     color: Colors.black,
                                     child: Container(
                                       alignment: Alignment.center,
-                                      height: 1,
+                                      height: 0.5,
                                       color: Color(0xFF717171),
                                     ),
                                   ),
@@ -537,11 +537,11 @@ class _FeedCardState extends State<FeedCard> {
                 },
                 separatorBuilder: (BuildContext _context, int index) {
                   return Container(
-                    height: 1,
+                    height: 0.5,
                     alignment: Alignment.center,
                     color: Colors.black,
                     child: Container(
-                      height: 1,
+                      height: 0.5,
                       alignment: Alignment.center,
                       color: Color(0xFF717171),
                     ),
@@ -595,11 +595,11 @@ class _FeedCardState extends State<FeedCard> {
         separatorBuilder: (BuildContext _context, int index) {
           return Container(
             alignment: Alignment.center,
-            height: 1,
+            height: 0.5,
             color: Colors.black,
             child: Container(
               alignment: Alignment.center,
-              height: 1,
+              height: 0.5,
               color: Color(0xFF717171),
             ),
           );

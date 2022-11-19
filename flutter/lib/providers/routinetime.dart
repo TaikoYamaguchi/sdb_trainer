@@ -206,7 +206,7 @@ class RoutineTimeProvider extends ChangeNotifier {
         FlutterLocalNotificationsPlugin();
     await flutterLocalNotificationsPlugin.initialize(
       const InitializationSettings(
-        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+        android: AndroidInitializationSettings('launch_background'),
       ),
     );
     print(DateTime.now());
@@ -225,7 +225,7 @@ class RoutineTimeProvider extends ChangeNotifier {
     final NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
-        0, '운동을 하고 있어요', "누른 후 운동으로 돌아가보세요", platformChannelSpecifics,
+        0, '운동이 진행 중 이에요', "알림은 운동 종료시 사라져요!", platformChannelSpecifics,
         payload: 'item x');
   }
 

@@ -1724,83 +1724,82 @@ class _CalendarState extends State<Calendar> {
             ],
           ),
           SizedBox(height: 5),
-          Expanded(
-            flex: 1,
-            child: Container(
-                decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(20),
-                        bottomRight: Radius.circular(20),
-                        topLeft: Radius.circular(20),
-                        bottomLeft: Radius.circular(20))),
-                child: SfCartesianChart(
-                    title: ChartTitle(
-                        text: _exercisesdataProvider.exercisesdata!
-                            .exercises[_chartIndex.chartIndex].name,
-                        textStyle: TextStyle(color: Colors.white)),
-                    plotAreaBorderWidth: 0,
-                    primaryXAxis: DateTimeAxis(
-                      majorGridLines: const MajorGridLines(width: 0),
-                      majorTickLines: const MajorTickLines(size: 0),
+          Container(
+              height: 250,
+              decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                      topLeft: Radius.circular(20),
+                      bottomLeft: Radius.circular(20))),
+              child: SfCartesianChart(
+                  title: ChartTitle(
+                      text: _exercisesdataProvider.exercisesdata!
+                          .exercises[_chartIndex.chartIndex].name,
+                      textStyle: TextStyle(color: Colors.white)),
+                  plotAreaBorderWidth: 0,
+                  primaryXAxis: DateTimeAxis(
+                    majorGridLines: const MajorGridLines(width: 0),
+                    majorTickLines: const MajorTickLines(size: 0),
+                    axisLine: const AxisLine(width: 0),
+                  ),
+                  primaryYAxis: NumericAxis(
                       axisLine: const AxisLine(width: 0),
+                      majorTickLines: const MajorTickLines(size: 0),
+                      majorGridLines: const MajorGridLines(width: 0),
+                      minimum: _sdbChartData!.length == 0
+                          ? 0
+                          : _sdbChartData!.length > 1
+                              ? _sdbChartData!
+                                      .reduce((curr, next) =>
+                                          curr.onerm! < next.onerm!
+                                              ? curr
+                                              : next)
+                                      .onerm! *
+                                  0.9
+                              : _sdbChartData![0].onerm),
+                  tooltipBehavior: _tooltipBehavior,
+                  zoomPanBehavior: _zoomPanBehavior,
+                  legend: Legend(
+                      isVisible: true,
+                      position: LegendPosition.bottom,
+                      textStyle: TextStyle(color: Colors.white)),
+                  series: [
+                    // Renders line chart
+                    LineSeries<Exercises, DateTime>(
+                      isVisibleInLegend: true,
+                      color: Colors.white54,
+                      name: "goal",
+                      dataSource: _sdbChartData!,
+                      xValueMapper: (Exercises sales, _) =>
+                          DateTime.parse(sales.date!),
+                      yValueMapper: (Exercises sales, _) => sales.goal,
                     ),
-                    primaryYAxis: NumericAxis(
-                        axisLine: const AxisLine(width: 0),
-                        majorTickLines: const MajorTickLines(size: 0),
-                        majorGridLines: const MajorGridLines(width: 0),
-                        minimum: _sdbChartData!.length == 0
-                            ? 0
-                            : _sdbChartData!.length > 1
-                                ? _sdbChartData!
-                                        .reduce((curr, next) =>
-                                            curr.onerm! < next.onerm!
-                                                ? curr
-                                                : next)
-                                        .onerm! *
-                                    0.9
-                                : _sdbChartData![0].onerm),
-                    tooltipBehavior: _tooltipBehavior,
-                    zoomPanBehavior: _zoomPanBehavior,
-                    legend: Legend(
-                        isVisible: true,
-                        position: LegendPosition.bottom,
-                        textStyle: TextStyle(color: Colors.white)),
-                    series: [
-                      // Renders line chart
-                      LineSeries<Exercises, DateTime>(
-                        isVisibleInLegend: true,
-                        color: Colors.white54,
-                        name: "goal",
-                        dataSource: _sdbChartData!,
-                        xValueMapper: (Exercises sales, _) =>
-                            DateTime.parse(sales.date!),
-                        yValueMapper: (Exercises sales, _) => sales.goal,
-                      ),
 
-                      LineSeries<Exercises, DateTime>(
-                        isVisibleInLegend: true,
-                        onCreateShader: (ShaderDetails details) {
-                          return ui.Gradient.linear(details.rect.topRight,
-                              details.rect.bottomLeft, color, stops);
-                        },
-                        markerSettings: MarkerSettings(
-                            isVisible: true,
-                            height: 6,
-                            width: 6,
-                            borderWidth: 3,
-                            color: Theme.of(context).primaryColor,
-                            borderColor: Theme.of(context).primaryColor),
-                        name: "1rm",
-                        color: Theme.of(context).primaryColor,
-                        width: 5,
-                        dataSource: _sdbChartData!,
-                        xValueMapper: (Exercises sales, _) =>
-                            DateTime.parse(sales.date!),
-                        yValueMapper: (Exercises sales, _) => sales.onerm,
-                      ),
-                    ])),
-          ),
+                    LineSeries<Exercises, DateTime>(
+                      isVisibleInLegend: true,
+                      onCreateShader: (ShaderDetails details) {
+                        return ui.Gradient.linear(details.rect.topRight,
+                            details.rect.bottomLeft, color, stops);
+                      },
+                      markerSettings: MarkerSettings(
+                          isVisible: true,
+                          height: 6,
+                          width: 6,
+                          borderWidth: 3,
+                          color: Theme.of(context).primaryColor,
+                          borderColor: Theme.of(context).primaryColor),
+                      name: "1rm",
+                      color: Theme.of(context).primaryColor,
+                      width: 5,
+                      dataSource: _sdbChartData!,
+                      xValueMapper: (Exercises sales, _) =>
+                          DateTime.parse(sales.date!),
+                      yValueMapper: (Exercises sales, _) => sales.onerm,
+                    ),
+                  ])),
+          SizedBox(height: 12),
           _onechartExercisesWidget(_sdbChartData)
         ],
       ),
