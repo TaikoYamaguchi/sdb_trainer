@@ -590,6 +590,7 @@ class ExerciseState extends State<Exercise> {
           var key_list = ExImage().body_part_image.keys.toList();
           return GestureDetector(
             onTap: () {
+              _PopProvider.exstackup(1);
               _exercisesdataProvider.inittestdata();
               _exercisesdataProvider.settags([key_list[index].toString()]);
               filterExercise(_exercisesdataProvider.tags);

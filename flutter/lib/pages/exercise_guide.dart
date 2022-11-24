@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/statics.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
+import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
@@ -34,6 +35,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
   late Map<DateTime, List<historyModel.SDBdata>> selectedEvents;
   var _userdataProvider;
   var _exercisesdataProvider;
+  var _PopProvider;
   var _workoutdataProvider;
   TextEditingController _exercisenoteCtrl = TextEditingController(text: '');
   bool editing = false;
@@ -1363,87 +1365,102 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
     _historydataProvider =
         Provider.of<HistorydataProvider>(context, listen: false);
     _getChartSourcefromDay();
+    _PopProvider = Provider.of<PopProvider>(context, listen: false);
 
-    return Scaffold(
-      body: _delete
-          ? Container()
-          : CustomScrollView(slivers: [
-              SliverAppBar(
-                snap: true,
-                floating: true,
-                pinned: true,
-                actions: [
-                  _exercisesdataProvider
-                              .exercisesdata.exercises[widget.eindex].custom &&
-                          !widget.isroutine
-                      ? Container(
-                          child: IconButton(
-                            onPressed: () {
-                              _displayFinishAlert();
-                            },
-                            icon: Icon(
-                              Icons.delete,
-                              size: 25,
-                              color: Colors.white,
+    return Consumer<PopProvider>(
+      builder: (builder, provider, child) {
+        bool _popable = provider.isstacking;
+        _popable == false
+            ? null
+            : [
+          provider.exstackdown(),
+          provider.popoff(),
+          Future.delayed(Duration.zero, () async {
+            Navigator.of(context).pop();
+          })
+        ];
+        return Scaffold(
+          body: _delete
+              ? Container()
+              : CustomScrollView(slivers: [
+                  SliverAppBar(
+                    snap: true,
+                    floating: true,
+                    pinned: true,
+                    actions: [
+                      _exercisesdataProvider
+                                  .exercisesdata.exercises[widget.eindex].custom &&
+                              !widget.isroutine
+                          ? Container(
+                              child: IconButton(
+                                onPressed: () {
+                                  _displayFinishAlert();
+                                },
+                                icon: Icon(
+                                  Icons.delete,
+                                  size: 25,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )
+                          : Container()
+                    ],
+                    leading: Center(
+                      child: GestureDetector(
+                        child: Icon(Icons.arrow_back_ios_outlined),
+                        onTap: () {
+                          btnDisabled == true
+                              ? null
+                              : [btnDisabled = true, Navigator.of(context).pop()];
+                        },
+                      ),
+                    ),
+                    expandedHeight: _appbarWidget().preferredSize.height * 2,
+                    collapsedHeight: _appbarWidget().preferredSize.height,
+                    backgroundColor: Color(0xFF101012),
+                    flexibleSpace: myFlexibleSpaceBar(
+                      expandedTitleScale: 1.2,
+                      titlePaddingTween: EdgeInsetsTween(
+                          begin: EdgeInsets.only(left: 12.0, bottom: 8),
+                          end: EdgeInsets.only(left: 60.0, bottom: 8)),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                              child: Text(
+                            _exercisesdataProvider
+                                .exercisesdata.exercises[widget.eindex].name,
+                            style: TextStyle(color: Colors.white, fontSize: 30),
+                          )),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, _index) {
+                        return Container(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                Status(),
+                                SizedBox(height: 20),
+                                exercisenote(),
+                                SizedBox(height: 20),
+                                _chartWidget(context)
+                              ],
                             ),
                           ),
-                        )
-                      : Container()
-                ],
-                leading: Center(
-                  child: GestureDetector(
-                    child: Icon(Icons.arrow_back_ios_outlined),
-                    onTap: () {
-                      btnDisabled == true
-                          ? null
-                          : [btnDisabled = true, Navigator.of(context).pop()];
-                    },
+                        );
+                      },
+                      childCount: 1,
+                    ),
                   ),
-                ),
-                expandedHeight: _appbarWidget().preferredSize.height * 2,
-                collapsedHeight: _appbarWidget().preferredSize.height,
-                backgroundColor: Color(0xFF101012),
-                flexibleSpace: myFlexibleSpaceBar(
-                  expandedTitleScale: 1.2,
-                  titlePaddingTween: EdgeInsetsTween(
-                      begin: EdgeInsets.only(left: 12.0, bottom: 8),
-                      end: EdgeInsets.only(left: 60.0, bottom: 8)),
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                          child: Text(
-                        _exercisesdataProvider
-                            .exercisesdata.exercises[widget.eindex].name,
-                        style: TextStyle(color: Colors.white, fontSize: 30),
-                      )),
-                    ],
-                  ),
-                ),
-              ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, _index) {
-                    return Container(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Status(),
-                            SizedBox(height: 20),
-                            exercisenote(),
-                            SizedBox(height: 20),
-                            _chartWidget(context)
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                  childCount: 1,
-                ),
-              ),
-            ]),
-      backgroundColor: Color(0xFF101012),
-      bottomNavigationBar: _Add_to_Plan_Button(),
+                ]),
+          backgroundColor: Color(0xFF101012),
+          bottomNavigationBar: _Add_to_Plan_Button(),
+        );
+      }
     );
   }
 }

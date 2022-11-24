@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/exercise_guide.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
+import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
@@ -25,6 +26,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
   var _exercisesdataProvider;
   var _famousdataProvider;
   var _userdataProvider;
+  var _PopProvider;
   var _exercises;
   TextEditingController _exSearchCtrl = TextEditingController(text: "");
   TextEditingController _customExNameCtrl = TextEditingController(text: "");
@@ -528,6 +530,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
             ;
             return GestureDetector(
               onTap: () {
+                _PopProvider.exstackup(2);
                 Navigator.push(
                     context,
                     Transition(
@@ -674,100 +677,115 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
         Provider.of<FamousdataProvider>(context, listen: false);
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
+    _PopProvider = Provider.of<PopProvider>(context, listen: false);
 
-    return Scaffold(
-      appBar: _appbarWidget(),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 4.0),
-            child: Container(
-              child: Consumer<ExercisesdataProvider>(
-                  builder: (context, provider, child) {
-                return ExpandablePanel(
-                  controller: _menucontroller,
-                  theme: const ExpandableThemeData(
-                    headerAlignment: ExpandablePanelHeaderAlignment.center,
-                    hasIcon: false,
-                    iconColor: Colors.white,
-                  ),
-                  header: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          provider.setfiltmenu(1);
-                          _menucontroller.expanded = true;
-                        },
-                        child: Card(
-                          color: provider.filtmenu == 1
-                              ? Theme.of(context).primaryColor
-                              : Colors.white30,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width / 2 - 10,
-                            height:
-                                _appbarWidget().preferredSize.height * 2 / 3,
-                            child: Center(
-                              child: Text("운동부위",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 18)),
+    return Consumer<PopProvider>(
+      builder: (builder, provider, child) {
+        bool _popable = provider.isstacking;
+        _popable == false
+            ? null
+            : [
+          provider.exstackdown(),
+          provider.popoff(),
+          Future.delayed(Duration.zero, () async {
+            Navigator.of(context).pop();
+          })
+        ];
+        return Scaffold(
+          appBar: _appbarWidget(),
+          body: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 4.0),
+                child: Container(
+                  child: Consumer<ExercisesdataProvider>(
+                      builder: (context, provider, child) {
+                    return ExpandablePanel(
+                      controller: _menucontroller,
+                      theme: const ExpandableThemeData(
+                        headerAlignment: ExpandablePanelHeaderAlignment.center,
+                        hasIcon: false,
+                        iconColor: Colors.white,
+                      ),
+                      header: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              provider.setfiltmenu(1);
+                              _menucontroller.expanded = true;
+                            },
+                            child: Card(
+                              color: provider.filtmenu == 1
+                                  ? Theme.of(context).primaryColor
+                                  : Colors.white30,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width / 2 - 10,
+                                height:
+                                    _appbarWidget().preferredSize.height * 2 / 3,
+                                child: Center(
+                                  child: Text("운동부위",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 18)),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          provider.setfiltmenu(2);
-                          _menucontroller.expanded = true;
-                        },
-                        child: Card(
-                          color: provider.filtmenu == 2
-                              ? Theme.of(context).primaryColor
-                              : Colors.white30,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width / 2 - 10,
-                            height:
-                                _appbarWidget().preferredSize.height * 2 / 3,
-                            child: Center(
-                              child: Text("운동유형",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 18)),
+                          GestureDetector(
+                            onTap: () {
+                              provider.setfiltmenu(2);
+                              _menucontroller.expanded = true;
+                            },
+                            child: Card(
+                              color: provider.filtmenu == 2
+                                  ? Theme.of(context).primaryColor
+                                  : Colors.white30,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width / 2 - 10,
+                                height:
+                                    _appbarWidget().preferredSize.height * 2 / 3,
+                                child: Center(
+                                  child: Text("운동유형",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 18)),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
-                  collapsed: Container(),
-                  expanded: provider.filtmenu == 1
-                      ? exp1()
-                      : provider.filtmenu == 2
-                          ? exp2()
-                          : Container(),
-                );
-              }),
-            ),
+                      collapsed: Container(),
+                      expanded: provider.filtmenu == 1
+                          ? exp1()
+                          : provider.filtmenu == 2
+                              ? exp2()
+                              : Container(),
+                    );
+                  }),
+                ),
+              ),
+              Expanded(
+                  child: NotificationListener<ScrollNotification>(
+                      onNotification: (ScrollNotification notification) {
+                        if (notification is UserScrollNotification) {
+                          if (notification.direction == ScrollDirection.forward) {
+                            //_menucontroller.expanded = true;
+                          } else if (notification.direction ==
+                              ScrollDirection.reverse) {
+                            _menucontroller.expanded = false;
+                          }
+                        }
+
+                        // Returning null (or false) to
+                        // "allow the notification to continue to be dispatched to further ancestors".
+                        return false;
+                      },
+                      child: _exercises_searchWidget())),
+            ],
           ),
-          Expanded(
-              child: NotificationListener<ScrollNotification>(
-                  onNotification: (ScrollNotification notification) {
-                    if (notification is UserScrollNotification) {
-                      if (notification.direction == ScrollDirection.forward) {
-                        //_menucontroller.expanded = true;
-                      } else if (notification.direction ==
-                          ScrollDirection.reverse) {
-                        _menucontroller.expanded = false;
-                      }
-                    }
-
-                    // Returning null (or false) to
-                    // "allow the notification to continue to be dispatched to further ancestors".
-                    return false;
-                  },
-                  child: _exercises_searchWidget())),
-        ],
-      ),
-      backgroundColor: Color(0xFF101012),
+          backgroundColor: Color(0xFF101012),
+        );
+      }
     );
   }
 }
