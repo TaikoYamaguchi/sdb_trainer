@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:sdb_trainer/src/utils/notification.dart';
 
 class RoutineTimeProvider extends ChangeNotifier {
   int _routineTime = 0;
@@ -134,7 +135,7 @@ class RoutineTimeProvider extends ChangeNotifier {
       _buttoncolor = Color(0xFffc60a8);
       _isstarted = !_isstarted;
       _nowonrindex = rindex;
-      _showNotificationWithChronometer(_starttime);
+      showNotificationWithChronometer(_starttime);
       notifyListeners();
     } else {
       await storage.write(key: "sdb_isStart", value: "false");
@@ -147,7 +148,7 @@ class RoutineTimeProvider extends ChangeNotifier {
       _routineButton = '운동 시작 하기';
       _buttoncolor = const Color(0xff7a28cb);
       _isstarted = !_isstarted;
-      _cancelNotificationWithChronometer();
+      cancelNotificationWithChronometer();
       notifyListeners();
     }
   }
@@ -183,7 +184,7 @@ class RoutineTimeProvider extends ChangeNotifier {
             _routineTime = 0;
           }
         });
-        _showNotificationWithChronometer(_starttime);
+        showNotificationWithChronometer(_starttime);
         _routineButton = '운동 종료 하기';
         _buttoncolor = Color(0xFffc60a8);
         _isstarted = !_isstarted;
@@ -196,42 +197,8 @@ class RoutineTimeProvider extends ChangeNotifier {
       await storage.write(key: "sdb_initialEx", value: "");
       await storage.write(key: "sdb_initialRindex", value: "");
 
-      _cancelNotificationWithChronometer();
+      cancelNotificationWithChronometer();
       null;
     }
-  }
-
-  Future<void> _showNotificationWithChronometer(DateTime _starttime) async {
-    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
-    await flutterLocalNotificationsPlugin.initialize(
-      const InitializationSettings(
-        android: AndroidInitializationSettings('launch_background'),
-      ),
-    );
-    print(DateTime.now());
-    print(DateTime.now().millisecondsSinceEpoch / 1000);
-    print(_starttime);
-    print(_starttime.millisecondsSinceEpoch / 1000);
-    final AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails('Supero', 'Supero',
-            channelDescription: 'Supero에서는 운동을 지원합니다',
-            importance: Importance.max,
-            priority: Priority.high,
-            when: _starttime.millisecondsSinceEpoch,
-            usesChronometer: true,
-            ongoing: true,
-            autoCancel: false);
-    final NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
-        0, '운동이 진행 중 이에요', "알림은 운동 종료시 사라져요!", platformChannelSpecifics,
-        payload: 'item x');
-  }
-
-  Future<void> _cancelNotificationWithChronometer() async {
-    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
-    await flutterLocalNotificationsPlugin.cancel(0);
   }
 }

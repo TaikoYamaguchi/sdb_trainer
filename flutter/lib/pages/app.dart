@@ -32,6 +32,7 @@ import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/exercise_done.dart';
 
 import 'statics.dart';
+import 'package:sdb_trainer/src/utils/ios_notification.dart';
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
