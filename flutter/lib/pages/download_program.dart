@@ -4,6 +4,7 @@ import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:like_button/like_button.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
+import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
@@ -35,6 +36,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
   var _famousdataProvider;
   var _workoutdataProvider;
   var _exercisesdataProvider;
+  var _PopProvider;
   var _routinetimeProvider;
   var _btnDisabled;
   List<JustTheController> tooltipController = [];
@@ -1136,10 +1138,26 @@ class _ProgramDownloadState extends State<ProgramDownload> {
         Provider.of<ExercisesdataProvider>(context, listen: false);
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: _appbarWidget(),
-        body: _programDownloadWidget(),
-        backgroundColor: Color(0xFF101012));
+    _PopProvider = Provider.of<PopProvider>(context, listen: false);
+
+    return Consumer<PopProvider>(
+      builder: (builder, provider, child) {
+        bool _popable = provider.isstacking;
+        _popable == false
+            ? null
+            : [
+          provider.exstackdown(),
+          provider.popoff(),
+          Future.delayed(Duration.zero, () async {
+            Navigator.of(context).pop();
+          })
+        ];
+        return Scaffold(
+            resizeToAvoidBottomInset: false,
+            appBar: _appbarWidget(),
+            body: _programDownloadWidget(),
+            backgroundColor: Color(0xFF101012));
+      }
+    );
   }
 }

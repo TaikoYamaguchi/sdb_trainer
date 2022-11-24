@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/download_program.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
+import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:flutter/cupertino.dart';
@@ -60,6 +61,7 @@ class _RoutineBankState extends State<RoutineBank> {
                   var program = user_famous[index];
                   return GestureDetector(
                     onTap: () {
+                      _PopProvider.exstackup(1);
                       _famousdataProvider.downloadset(user_famous[index]);
                       Navigator.push(
                           context,
@@ -220,6 +222,7 @@ class _RoutineBankState extends State<RoutineBank> {
                   var program = user_famous[index];
                   return GestureDetector(
                     onTap: () {
+                      _PopProvider.exstackup(1);
                       _famousdataProvider.downloadset(user_famous[index]);
                       Navigator.push(
                           context,
@@ -444,6 +447,7 @@ class _RoutineBankState extends State<RoutineBank> {
         Provider.of<WorkoutdataProvider>(context, listen: false);
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
+    _PopProvider = Provider.of<PopProvider>(context, listen: false);
     return famous_body();
   }
 }
