@@ -1453,8 +1453,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               ? _exercises_searchWidget()
               : CustomScrollView(slivers: [
                   SliverAppBar(
-                    snap: true,
-                    floating: true,
+                    snap: false,
+                    floating: false,
                     pinned: true,
                     actions: [
                       IconButton(
