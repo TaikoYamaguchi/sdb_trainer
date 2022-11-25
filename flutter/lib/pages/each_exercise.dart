@@ -3456,7 +3456,21 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
               _editWorkoutwCheck();
               Navigator.of(context, rootNavigator: true).pop();
               _workoutOnermCheck(_sets[index], ueindex);
-              _countcontroller[index].start();
+
+              _exercisesdataProvider
+                  .exercisesdata
+                  .exercises[_exercisesdataProvider
+                  .exercisesdata.exercises
+                  .indexWhere((element) =>
+              element.name ==
+                  _workoutdataProvider
+                      .workoutdata
+                      .routinedatas[widget.rindex]
+                      .exercises[pindex]
+                      .name)]
+                  .category ==
+                  '유산소'
+                  ? _countcontroller[index].start() : null;
             },
             child: Text("운동 시작 하기",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
