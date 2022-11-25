@@ -266,7 +266,7 @@ class LoginPageState extends State<LoginPage> {
     return InkWell(
       child: IconButton(
         icon: Image.asset(
-          'assets/svg/kakao_login_large_wide.png',
+          'assets/svg/kakao.png',
         ),
         constraints: BoxConstraints(
             minWidth: MediaQuery.of(context).size.width, minHeight: 70),
