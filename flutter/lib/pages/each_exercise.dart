@@ -2419,7 +2419,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                 extentRatio: 1.0,
                                                 motion: CustomMotion(
                                                   onOpen: () {
-                                                    _routinetimeProvider.isstarted
+                                                    _routinetimeProvider
+                                                            .isstarted
                                                         ? [
                                                             _workoutdataProvider
                                                                 .boolcheck(
@@ -2515,41 +2516,82 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                 10, 2, 0, 0),
                                                         iconSize: 30,
                                                         onPressed: () {
-                                                          int _duration=(((_sets[index].reps/10000).floor() * 3600) + ((_sets[index].reps-(_sets[index].reps/10000).floor()*10000)/100).floor()*60 + (_sets[index].reps-(_sets[index].reps/100).floor()*100)).toInt();
-                                                          for (int s = 0; s < _sets.length; s++) {
-                                                            exControllerlist[s].value = false;
-                                                          };
-                                                          exControllerlist[index].value = true;
-                                                          _routinetimeProvider.isstarted
-                                                              ? [_workoutdataProvider.boolcheck(widget.rindex, pindex, index, true),
-                                                            _routinetimeProvider.resettimer(provider.workoutdata.routinedatas[widget.rindex].exercises[pindex].rest),
-                                                            _countcontroller[index].restart(duration : _duration),
-                                                            _workoutOnermCheck(_sets[index], ueindex),
-                                                            index == _sets.length - 1
-                                                                ? [_workoutdataProvider.setsplus(widget.rindex, pindex),
-                                                              _isSetChanged = true,
-                                                              weightController[pindex].controllerlist.add(new TextEditingController(
-                                                                  text: provider2
-                                                                      .userdata
-                                                                      .bodyStats
-                                                                      .last
-                                                                      .weight
-                                                                      .toString())),
-                                                              repsController[
-                                                              pindex]
-                                                                  .controllerlist
-                                                                  .add(new TextEditingController(
-                                                                  text:
-                                                                  null)),
-                                                              showToast(
-                                                                  "세트를 추가했어요! 다음으로 넘어갈 수도 있어요")
-                                                            ]
-                                                                : null,
-                                                            _editWorkoutwCheck()
-                                                          ]
-                                                              : _displayStartAlert(pindex, index, true);
-
-
+                                                          int _duration = (((_sets[index].reps /
+                                                                              10000)
+                                                                          .floor() *
+                                                                      3600) +
+                                                                  ((_sets[index].reps - (_sets[index].reps / 10000).floor() * 10000) /
+                                                                              100)
+                                                                          .floor() *
+                                                                      60 +
+                                                                  (_sets[index]
+                                                                          .reps -
+                                                                      (_sets[index].reps / 100)
+                                                                              .floor() *
+                                                                          100))
+                                                              .toInt();
+                                                          for (int s = 0;
+                                                              s < _sets.length;
+                                                              s++) {
+                                                            exControllerlist[s]
+                                                                .value = false;
+                                                          }
+                                                          ;
+                                                          exControllerlist[
+                                                                  index]
+                                                              .value = true;
+                                                          _routinetimeProvider
+                                                                  .isstarted
+                                                              ? [
+                                                                  _workoutdataProvider
+                                                                      .boolcheck(
+                                                                          widget
+                                                                              .rindex,
+                                                                          pindex,
+                                                                          index,
+                                                                          true),
+                                                                  _routinetimeProvider.resettimer(provider
+                                                                      .workoutdata
+                                                                      .routinedatas[
+                                                                          widget
+                                                                              .rindex]
+                                                                      .exercises[
+                                                                          pindex]
+                                                                      .rest),
+                                                                  _countcontroller[
+                                                                          index]
+                                                                      .restart(
+                                                                          duration:
+                                                                              _duration),
+                                                                  _workoutOnermCheck(
+                                                                      _sets[
+                                                                          index],
+                                                                      ueindex),
+                                                                  index ==
+                                                                          _sets.length -
+                                                                              1
+                                                                      ? [
+                                                                          _workoutdataProvider.setsplus(
+                                                                              widget.rindex,
+                                                                              pindex),
+                                                                          _isSetChanged =
+                                                                              true,
+                                                                          weightController[pindex]
+                                                                              .controllerlist
+                                                                              .add(new TextEditingController(text: provider2.userdata.bodyStats.last.weight.toString())),
+                                                                          repsController[pindex]
+                                                                              .controllerlist
+                                                                              .add(new TextEditingController(text: null)),
+                                                                          showToast(
+                                                                              "세트를 추가했어요! 다음으로 넘어갈 수도 있어요")
+                                                                        ]
+                                                                      : null,
+                                                                  _editWorkoutwCheck()
+                                                                ]
+                                                              : _displayStartAlert(
+                                                                  pindex,
+                                                                  index,
+                                                                  true);
                                                         },
                                                         icon: Icon(
                                                             Icons
@@ -2578,7 +2620,14 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                 Container(
                                                     width: 140,
                                                     child: Center(
-                                                        child: TimeInputField(duration: _sets[index].reps, rindex: widget.rindex, pindex: pindex, index: index))),
+                                                        child: TimeInputField(
+                                                            duration:
+                                                                _sets[index]
+                                                                    .reps,
+                                                            rindex:
+                                                                widget.rindex,
+                                                            pindex: pindex,
+                                                            index: index))),
                                               ],
                                             ),
                                           ),
@@ -2589,7 +2638,23 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                     expanded: Container(
                                       child: Center(
                                         child: CircularCountDownTimer(
-                                          duration: (((_sets[index].reps/10000).floor() * 3600) + ((_sets[index].reps-(_sets[index].reps/10000).floor()*10000)/100).floor()*60 + (_sets[index].reps-(_sets[index].reps/100).floor()*100)).toInt(),
+                                          duration: (((_sets[index].reps /
+                                                              10000)
+                                                          .floor() *
+                                                      3600) +
+                                                  ((_sets[index].reps -
+                                                                  (_sets[index].reps /
+                                                                              10000)
+                                                                          .floor() *
+                                                                      10000) /
+                                                              100)
+                                                          .floor() *
+                                                      60 +
+                                                  (_sets[index].reps -
+                                                      (_sets[index].reps / 100)
+                                                              .floor() *
+                                                          100))
+                                              .toInt(),
                                           initialDuration: 0,
                                           controller: _countcontroller[index],
                                           width: MediaQuery.of(context)
@@ -2612,7 +2677,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               fontSize: 33.0,
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold),
-                                          textFormat: CountdownTextFormat.HH_MM_SS,
+                                          textFormat:
+                                              CountdownTextFormat.HH_MM_SS,
                                           isReverse: true,
                                           isReverseAnimation: false,
                                           isTimerTextShown: true,
@@ -2629,11 +2695,14 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                 'Countdown Changed $timeStamp');
                                           },
                                           timeFormatterFunction:
-                                              (defaultFormatterFunction, duration) {
+                                              (defaultFormatterFunction,
+                                                  duration) {
                                             if (duration.inSeconds == 10) {
                                               return "Start";
                                             } else {
-                                              return Function.apply(defaultFormatterFunction, [duration]);
+                                              return Function.apply(
+                                                  defaultFormatterFunction,
+                                                  [duration]);
                                             }
                                           },
                                         ),
@@ -3378,17 +3447,16 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
               padding: EdgeInsets.all(12.0),
             ),
             onPressed: () {
-
               _routinetimeProvider.resettimer(_workoutdataProvider.workoutdata
                   .routinedatas[widget.rindex].exercises[pindex].rest);
               _routinetimeProvider.routinecheck(widget.rindex);
 
               _workoutdataProvider.boolcheck(
                   widget.rindex, pindex, index, newvalue);
-              _countcontroller[index].start();
               _editWorkoutwCheck();
               Navigator.of(context, rootNavigator: true).pop();
               _workoutOnermCheck(_sets[index], ueindex);
+              _countcontroller[index].start();
             },
             child: Text("운동 시작 하기",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));

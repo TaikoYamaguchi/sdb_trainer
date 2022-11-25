@@ -23,6 +23,8 @@ import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/src/utils/firebase_fcm.dart';
 import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:flutter/foundation.dart' as foundation;
 
 class LoginPage extends StatefulWidget {
   @override
@@ -37,6 +39,7 @@ class LoginPageState extends State<LoginPage> {
   var _exercisesdataProvider;
   bool isLoading = false;
   bool _isEmailLogin = false;
+  bool _isiOS = false;
   TextEditingController _userEmailCtrl = TextEditingController(text: "");
   TextEditingController _userPasswordCtrl = TextEditingController(text: "");
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
@@ -56,6 +59,7 @@ class LoginPageState extends State<LoginPage> {
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
     _loginState = Provider.of<LoginPageProvider>(context, listen: false);
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _isiOS = foundation.defaultTargetPlatform == foundation.TargetPlatform.iOS;
 
     _exercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
@@ -106,6 +110,7 @@ class LoginPageState extends State<LoginPage> {
                         ),
                   _loginWithKakao(context),
                   _loginWithGoogle(context),
+                  _isiOS ? _loginWithApple(context) : Container(),
                   _emailLoginButton(context),
                   _isEmailLogin ? _findUser(context) : Container(),
                 ]),
@@ -275,9 +280,13 @@ class LoginPageState extends State<LoginPage> {
   Widget _loginWithGoogle(context) {
     return InkWell(
       child: IconButton(
-        icon: Image.asset(
-          'assets/svg/google_login_large_wide.png',
-        ),
+        icon: _isiOS
+            ? Image.asset(
+                'assets/svg/google_ios.png',
+              )
+            : Image.asset(
+                'assets/svg/google_and.png',
+              ),
         constraints: BoxConstraints(
             minWidth: MediaQuery.of(context).size.width, minHeight: 70),
         onPressed: () {
@@ -303,6 +312,48 @@ class LoginPageState extends State<LoginPage> {
           _userProvider.setUserKakaoEmail(user.email);
           _userProvider.setUserKakaoImageUrl(user.photoUrl);
           _userProvider.setUserKakaoName(user.displayName);
+
+          _loginkakaoCheck();
+        } catch (error) {
+          print('사용자 정보 요청 실패 $error');
+        }
+      } else {
+        _loginkakaoCheck();
+      }
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  Widget _loginWithApple(context) {
+    return InkWell(
+      child: IconButton(
+        icon: Image.asset(
+          'assets/svg/apple_ios.png',
+        ),
+        constraints: BoxConstraints(
+            minWidth: MediaQuery.of(context).size.width, minHeight: 70),
+        onPressed: () {
+          _loginApplePressed();
+        },
+      ),
+    );
+  }
+
+  Future<void> _loginApplePressed() async {
+    final credential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+    );
+    try {
+      print(credential);
+      if (credential.authorizationCode != null) {
+        try {
+          _userEmailCtrl.text = credential.email!;
+          _userProvider.setUserKakaoEmail(credential.email);
+          _userProvider.setUserKakaoName(credential.givenName);
 
           _loginkakaoCheck();
         } catch (error) {

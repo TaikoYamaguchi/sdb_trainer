@@ -523,7 +523,6 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                     custom: true,
                     note: ''));
                 _postExerciseCheck();
-                print("nulllllllllllll");
                 _customExNameCtrl.clear();
 
                 Navigator.of(context).pop();
@@ -957,7 +956,6 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                 : false)
             .toList())
         .toList();
-    print(_sdbChartDataExample);
     for (int i = 0; i < _sdbChartDataExample.length; i++) {
       if (_sdbChartDataExample[i].isEmpty) {
         null;
@@ -1367,100 +1365,98 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
     _getChartSourcefromDay();
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
 
-    return Consumer<PopProvider>(
-      builder: (builder, provider, child) {
-        bool _popable = provider.isstacking;
-        _popable == false
-            ? null
-            : [
-          provider.exstackdown(),
-          provider.popoff(),
-          Future.delayed(Duration.zero, () async {
-            Navigator.of(context).pop();
-          })
-        ];
-        return Scaffold(
-          body: _delete
-              ? Container()
-              : CustomScrollView(slivers: [
-                  SliverAppBar(
-                    snap: false,
-                    floating: false,
-                    pinned: true,
-                    actions: [
-                      _exercisesdataProvider
-                                  .exercisesdata.exercises[widget.eindex].custom &&
-                              !widget.isroutine
-                          ? Container(
-                              child: IconButton(
-                                onPressed: () {
-                                  _displayFinishAlert();
-                                },
-                                icon: Icon(
-                                  Icons.delete,
-                                  size: 25,
-                                  color: Colors.white,
-                                ),
+    return Consumer<PopProvider>(builder: (builder, provider, child) {
+      bool _popable = provider.isstacking;
+      _popable == false
+          ? null
+          : [
+              provider.exstackdown(),
+              provider.popoff(),
+              Future.delayed(Duration.zero, () async {
+                Navigator.of(context).pop();
+              })
+            ];
+      return Scaffold(
+        body: _delete
+            ? Container()
+            : CustomScrollView(slivers: [
+                SliverAppBar(
+                  snap: false,
+                  floating: false,
+                  pinned: true,
+                  actions: [
+                    _exercisesdataProvider.exercisesdata
+                                .exercises[widget.eindex].custom &&
+                            !widget.isroutine
+                        ? Container(
+                            child: IconButton(
+                              onPressed: () {
+                                _displayFinishAlert();
+                              },
+                              icon: Icon(
+                                Icons.delete,
+                                size: 25,
+                                color: Colors.white,
                               ),
-                            )
-                          : Container()
-                    ],
-                    leading: Center(
-                      child: GestureDetector(
-                        child: Icon(Icons.arrow_back_ios_outlined),
-                        onTap: () {
-                          btnDisabled == true
-                              ? null
-                              : [btnDisabled = true, Navigator.of(context).pop()];
-                        },
-                      ),
-                    ),
-                    expandedHeight: _appbarWidget().preferredSize.height * 2,
-                    collapsedHeight: _appbarWidget().preferredSize.height,
-                    backgroundColor: Color(0xFF101012),
-                    flexibleSpace: myFlexibleSpaceBar(
-                      expandedTitleScale: 1.2,
-                      titlePaddingTween: EdgeInsetsTween(
-                          begin: EdgeInsets.only(left: 12.0, bottom: 8),
-                          end: EdgeInsets.only(left: 60.0, bottom: 8)),
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                              child: Text(
-                            _exercisesdataProvider
-                                .exercisesdata.exercises[widget.eindex].name,
-                            style: TextStyle(color: Colors.white, fontSize: 30),
-                          )),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, _index) {
-                        return Container(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                Status(),
-                                SizedBox(height: 20),
-                                exercisenote(),
-                                SizedBox(height: 20),
-                                _chartWidget(context)
-                              ],
                             ),
-                          ),
-                        );
+                          )
+                        : Container()
+                  ],
+                  leading: Center(
+                    child: GestureDetector(
+                      child: Icon(Icons.arrow_back_ios_outlined),
+                      onTap: () {
+                        btnDisabled == true
+                            ? null
+                            : [btnDisabled = true, Navigator.of(context).pop()];
                       },
-                      childCount: 1,
                     ),
                   ),
-                ]),
-          backgroundColor: Color(0xFF101012),
-          bottomNavigationBar: _Add_to_Plan_Button(),
-        );
-      }
-    );
+                  expandedHeight: _appbarWidget().preferredSize.height * 2,
+                  collapsedHeight: _appbarWidget().preferredSize.height,
+                  backgroundColor: Color(0xFF101012),
+                  flexibleSpace: myFlexibleSpaceBar(
+                    expandedTitleScale: 1.2,
+                    titlePaddingTween: EdgeInsetsTween(
+                        begin: EdgeInsets.only(left: 12.0, bottom: 8),
+                        end: EdgeInsets.only(left: 60.0, bottom: 8)),
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                            child: Text(
+                          _exercisesdataProvider
+                              .exercisesdata.exercises[widget.eindex].name,
+                          style: TextStyle(color: Colors.white, fontSize: 30),
+                        )),
+                      ],
+                    ),
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, _index) {
+                      return Container(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Status(),
+                              SizedBox(height: 20),
+                              exercisenote(),
+                              SizedBox(height: 20),
+                              _chartWidget(context)
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    childCount: 1,
+                  ),
+                ),
+              ]),
+        backgroundColor: Color(0xFF101012),
+        bottomNavigationBar: _Add_to_Plan_Button(),
+      );
+    });
   }
 }

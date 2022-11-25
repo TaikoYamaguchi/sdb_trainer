@@ -241,7 +241,6 @@ class _CalendarState extends State<Calendar> {
                 : false)
             .toList())
         .toList();
-    print(_sdbChartDataExample);
     for (int i = 0; i < _sdbChartDataExample.length; i++) {
       if (_sdbChartDataExample[i].isEmpty) {
         null;
@@ -1062,7 +1061,6 @@ class _CalendarState extends State<Calendar> {
     return Expanded(
       child: ListView.separated(
           itemBuilder: (BuildContext _context, int index) {
-            print(exercises);
             return _onechartExerciseWidget(
                 exercises[index], 0, _userdataProvider.userdata, true, index);
           },

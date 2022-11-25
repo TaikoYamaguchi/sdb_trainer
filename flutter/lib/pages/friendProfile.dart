@@ -250,7 +250,6 @@ Widget _feedCardList(context) {
                               index: index,
                               feedListCtrl: 0));
                     } else {
-                      print("nononono");
                       return Padding(
                         padding: EdgeInsets.symmetric(vertical: 16),
                         child: Center(

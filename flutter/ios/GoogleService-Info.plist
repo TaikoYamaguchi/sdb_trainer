@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>508959158364-a98jdhmhtp38qqvvisf20hn773cr9gsd.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.508959158364-a98jdhmhtp38qqvvisf20hn773cr9gsd</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>508959158364-1sh9bb60117hjt3qm32rlnkkp1958g0d.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA9tCtyp99IeJuZwvDvJRW5gzIUZToZ1yw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>508959158364</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.tklck.sdbTrainer</string>
+	<key>PROJECT_ID</key>
+	<string>peak-academy-350108</string>
+	<key>STORAGE_BUCKET</key>
+	<string>peak-academy-350108.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:508959158364:ios:7edab3bf37a86483e73699</string>
+</dict>
+</plist>

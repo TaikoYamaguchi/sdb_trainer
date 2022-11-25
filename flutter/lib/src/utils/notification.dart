@@ -33,7 +33,6 @@ Future<void> showNotificationWithChronometer(DateTime _starttime) async {
     presentBadge: true,
     presentSound: true,
   );
-  print("yesssss");
   final NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics, iOS: iosDetails);
   await notifications.show(

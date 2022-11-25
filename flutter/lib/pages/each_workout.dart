@@ -845,7 +845,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                     custom: true,
                     note: ''));
                 _postExerciseCheck();
-                print("nulllllllllllll");
                 _customExNameCtrl.clear();
 
                 _testdata = provider.exercisesdata.exercises;
