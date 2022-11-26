@@ -518,10 +518,10 @@ class ExerciseState extends State<Exercise> {
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("운동 플랜을 만들어 보세요",
+                                Text("이곳을 눌러보세요",
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 18)),
-                                Text("원하는 이름, 종류의 플랜을 만들 수 있어요",
+                                Text("원하는 운동 플랜을 만들 수 있어요",
                                     style: TextStyle(
                                         color: Colors.grey, fontSize: 14)),
                               ],

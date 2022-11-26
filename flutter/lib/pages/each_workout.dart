@@ -896,259 +896,142 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             showToast('더 이상 존재하지 않는 운동은 삭제되요');
           }
         }
-        return exlist.isEmpty == true
-            ? _isexsearch
-                ? GestureDetector(
-                    onTap: () {},
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 2, right: 2),
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: Container(
-                          height: 100,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).cardColor,
-                              borderRadius: BorderRadius.circular(15.0)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width: 48,
-                                        height: 48,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color:
-                                                Theme.of(context).primaryColor),
-                                        child: Icon(
-                                          Icons.add,
-                                          size: 28.0,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text("운동 추가",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 18)),
-                                          ],
-                                        ),
-                                      )
-                                    ]),
-                                Text("오른쪽을 눌러서 추가 할 수 있어요",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 12)),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ))
-                : GestureDetector(
-                    onTap: () {
-                      _workoutdataProvider.dataBU(widget.rindex);
-                      setState(() {
-                        _isexsearch = !_isexsearch;
-                      });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: Container(
-                          height: 100,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).cardColor,
-                              borderRadius: BorderRadius.circular(15.0)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 48,
-                                    height: 48,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Theme.of(context).primaryColor),
-                                    child: Icon(
-                                      Icons.add,
-                                      size: 28.0,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("운동을 추가 해보세요",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 18)),
-                                        Text("오른쪽 위를 클릭해도 추가 할 수 있어요",
-                                            style: TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 14)),
-                                      ],
-                                    ),
-                                  )
-                                ]),
-                          ),
-                        ),
-                      ),
-                    ))
-            : ReorderableListView.builder(
-                physics: scrollable ? new NeverScrollableScrollPhysics() : null,
-                onReorder: (int oldIndex, int newIndex) {
-                  setState(() {
-                    if (oldIndex < newIndex) {
-                      newIndex -= 1;
-                    }
-                    final item = exlist.removeAt(oldIndex);
-                    exlist.insert(newIndex, item);
-                    _editWorkoutCheck();
-                  });
-                },
-                padding: EdgeInsets.symmetric(horizontal: _isexsearch ? 2 : 5),
-                itemBuilder: (BuildContext _context, int index) {
-                  final exinfo = exunique.where((unique) {
-                    return (unique.name == exlist[index].name);
-                  }).toList();
-                  if (exlist.length == 1) {
-                    top = 20;
-                    bottom = 20;
-                  } else if (index == 0) {
-                    top = 20;
-                    bottom = 0;
-                  } else if (index == exlist.length - 1) {
-                    top = 0;
-                    bottom = 20;
-                  } else {
-                    top = 0;
-                    bottom = 0;
+        return Column(children: [
+          ReorderableListView.builder(
+              physics: scrollable ? new NeverScrollableScrollPhysics() : null,
+              onReorder: (int oldIndex, int newIndex) {
+                setState(() {
+                  if (oldIndex < newIndex) {
+                    newIndex -= 1;
                   }
-                  ;
-                  return GestureDetector(
-                    key: Key('$index'),
-                    onTap: () {
-                      _isexsearch
-                          ? [
-                              _workoutdataProvider.removeexAt(
-                                  widget.rindex, index)
-                            ]
-                          : [
-                              _PopProvider.exstackup(2),
-                              Navigator.push(
-                                  context,
-                                  Transition(
-                                      child: EachExerciseDetails(
-                                        ueindex: exunique.indexWhere(
-                                            (element) =>
-                                                element.name ==
-                                                exlist[index].name),
-                                        eindex: index,
-                                        rindex: widget.rindex,
-                                      ),
-                                      transitionEffect:
-                                          TransitionEffect.RIGHT_TO_LEFT))
-                            ];
-                    },
-                    child: Slidable(
-                      endActionPane: ActionPane(
-                          extentRatio: 0.2,
-                          motion: const ScrollMotion(),
-                          children: [
-                            SlidableAction(
-                              onPressed: (_) {
-                                _workoutdataProvider.removeexAt(
-                                    widget.rindex, index);
-                                _editWorkoutCheck();
-                              },
-                              backgroundColor: Color(0xFFFE4A49),
-                              foregroundColor: Colors.white,
-                              icon: Icons.delete,
-                              label: 'Delete',
-                            )
-                          ]),
-                      child: Column(
+                  final item = exlist.removeAt(oldIndex);
+                  exlist.insert(newIndex, item);
+                  _editWorkoutCheck();
+                });
+              },
+              padding: EdgeInsets.symmetric(horizontal: _isexsearch ? 2 : 5),
+              itemBuilder: (BuildContext _context, int index) {
+                final exinfo = exunique.where((unique) {
+                  return (unique.name == exlist[index].name);
+                }).toList();
+                if (exlist.length == 1) {
+                  top = 20;
+                  bottom = 20;
+                } else if (index == 0) {
+                  top = 20;
+                  bottom = 0;
+                } else if (index == exlist.length - 1) {
+                  top = 0;
+                  bottom = 20;
+                } else {
+                  top = 0;
+                  bottom = 0;
+                }
+                ;
+                return GestureDetector(
+                  key: Key('$index'),
+                  onTap: () {
+                    _isexsearch
+                        ? [
+                            _workoutdataProvider.removeexAt(
+                                widget.rindex, index)
+                          ]
+                        : [
+                            _PopProvider.exstackup(2),
+                            Navigator.push(
+                                context,
+                                Transition(
+                                    child: EachExerciseDetails(
+                                      ueindex: exunique.indexWhere((element) =>
+                                          element.name == exlist[index].name),
+                                      eindex: index,
+                                      rindex: widget.rindex,
+                                    ),
+                                    transitionEffect:
+                                        TransitionEffect.RIGHT_TO_LEFT))
+                          ];
+                  },
+                  child: Slidable(
+                    endActionPane: ActionPane(
+                        extentRatio: 0.2,
+                        motion: const ScrollMotion(),
                         children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: _isexsearch ? 10 : 20),
-                            decoration: BoxDecoration(
-                                color: Theme.of(context).cardColor,
-                                borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(top),
-                                    bottomRight: Radius.circular(bottom),
-                                    topLeft: Radius.circular(top),
-                                    bottomLeft: Radius.circular(bottom))),
-                            height: _isexsearch ? 42 : 52,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  exlist[index].name,
-                                  style: TextStyle(
-                                      fontSize: _isexsearch ? 14 : 21,
-                                      color: Colors.white),
-                                ),
-                                _isexsearch
-                                    ? Container()
-                                    : Container(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text("Rest: ${exlist[index].rest}",
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    color: Color(0xFF717171))),
-                                            Text(
-                                                "1RM: ${exinfo[0].onerm.toStringAsFixed(1)}/${exinfo[0].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    color: Color(0xFF717171))),
-                                          ],
-                                        ),
-                                      )
-                              ],
-                            ),
+                          SlidableAction(
+                            onPressed: (_) {
+                              _workoutdataProvider.removeexAt(
+                                  widget.rindex, index);
+                              _editWorkoutCheck();
+                            },
+                            backgroundColor: Color(0xFFFE4A49),
+                            foregroundColor: Colors.white,
+                            icon: Icons.delete,
+                            label: 'Delete',
+                          )
+                        ]),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: _isexsearch ? 10 : 20),
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).cardColor,
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(top),
+                                  bottomRight: Radius.circular(bottom),
+                                  topLeft: Radius.circular(top),
+                                  bottomLeft: Radius.circular(bottom))),
+                          height: _isexsearch ? 42 : 52,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                exlist[index].name,
+                                style: TextStyle(
+                                    fontSize: _isexsearch ? 14 : 21,
+                                    color: Colors.white),
+                              ),
+                              _isexsearch
+                                  ? Container()
+                                  : Container(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("Rest: ${exlist[index].rest}",
+                                              style: TextStyle(
+                                                  fontSize: 13,
+                                                  color: Color(0xFF717171))),
+                                          Text(
+                                              "1RM: ${exinfo[0].onerm.toStringAsFixed(1)}/${exinfo[0].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
+                                              style: TextStyle(
+                                                  fontSize: 13,
+                                                  color: Color(0xFF717171))),
+                                        ],
+                                      ),
+                                    )
+                            ],
                           ),
-                          index == exlist.length - 1
-                              ? Container()
-                              : Container(
+                        ),
+                        index == exlist.length - 1
+                            ? Container()
+                            : Container(
+                                alignment: Alignment.center,
+                                height: 1,
+                                color: Color(0xFF212121),
+                                child: Container(
                                   alignment: Alignment.center,
+                                  margin: EdgeInsets.symmetric(horizontal: 10),
                                   height: 1,
-                                  color: Color(0xFF212121),
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    height: 1,
-                                    color: Color(0xFF717171),
-                                  ),
-                                )
-                        ],
-                      ),
+                                  color: Color(0xFF717171),
+                                ),
+                              )
+                      ],
                     ),
-                  );
-                },
-                /*
+                  ),
+                );
+              },
+              /*
               separatorBuilder: (BuildContext _context, int index){
                 return Container(
                   alignment: Alignment.center,
@@ -1162,8 +1045,127 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
 
               },
                */
-                shrinkWrap: shirink,
-                itemCount: exlist.length);
+              shrinkWrap: shirink,
+              itemCount: exlist.length),
+          _isexsearch
+              ? exlist.isEmpty == true
+                  ? GestureDetector(
+                      onTap: () {},
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 2, right: 2),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Container(
+                            height: 80,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).cardColor,
+                                borderRadius: BorderRadius.circular(15.0)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: 48,
+                                          height: 48,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Theme.of(context)
+                                                  .primaryColor),
+                                          child: Icon(
+                                            Icons.add,
+                                            size: 28.0,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16.0, vertical: 4.0),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text("운동 추가",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18)),
+                                            ],
+                                          ),
+                                        )
+                                      ]),
+                                  Text("오른쪽을 눌러서 추가 할 수 있어요",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 12)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ))
+                  : Container()
+              : GestureDetector(
+                  onTap: () {
+                    _workoutdataProvider.dataBU(widget.rindex);
+                    setState(() {
+                      _isexsearch = !_isexsearch;
+                    });
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Container(
+                        height: 80,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15.0)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 48,
+                                  height: 48,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Theme.of(context).primaryColor),
+                                  child: Icon(
+                                    Icons.add,
+                                    size: 28.0,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0, vertical: 4.0),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text("이곳을 눌러보세요",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18)),
+                                      Text("운동을 추가 할 수 있어요",
+                                          style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 14)),
+                                    ],
+                                  ),
+                                )
+                              ]),
+                        ),
+                      ),
+                    ),
+                  ))
+        ]);
       }),
     );
   }
@@ -1318,11 +1320,11 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               itemBuilder: (BuildContext _context, int index) {
                 bool alreadyexist = existlist.contains(exuniq[index].name);
                 if (index == 0) {
-                  top = 20;
+                  top = 15;
                   bottom = 0;
                 } else if (index == exuniq.length - 1) {
                   top = 0;
-                  bottom = 20;
+                  bottom = 15;
                 } else {
                   top = 0;
                   bottom = 0;

@@ -85,6 +85,12 @@ class LoginPageState extends State<LoginPage> {
                           color: Colors.white,
                           fontSize: 54,
                           fontWeight: FontWeight.w800)),
+                  Expanded(
+                    flex: 3,
+                    child: SizedBox(
+                      height: 6,
+                    ),
+                  ),
                   _isEmailLogin ? _emailWidget() : Container(),
                   SizedBox(
                     height: 8,
@@ -98,19 +104,13 @@ class LoginPageState extends State<LoginPage> {
                     height: 14,
                   ),
                   _isEmailLogin ? _signUpButton(context) : Container(),
+                  _isEmailLogin ? Container() : _loginWithKakao(context),
+                  _isEmailLogin ? Container() : _loginWithGoogle(context),
                   _isEmailLogin
-                      ? SizedBox(
-                          height: 6,
-                        )
-                      : Expanded(
-                          flex: 3,
-                          child: SizedBox(
-                            height: 6,
-                          ),
-                        ),
-                  _loginWithKakao(context),
-                  _loginWithGoogle(context),
-                  _isiOS ? _loginWithApple(context) : Container(),
+                      ? Container()
+                      : _isiOS
+                          ? _loginWithApple(context)
+                          : Container(),
                   _emailLoginButton(context),
                   _isEmailLogin ? _findUser(context) : Container(),
                 ]),
