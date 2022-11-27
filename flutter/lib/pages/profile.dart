@@ -324,12 +324,13 @@ class _ProfileState extends State<Profile> {
   }
 
   void _userLogOut() {
-    UserLogOut.logOut();
-    _loginState.change(false);
-    _loginState.changeSignup(false);
+    print("loggggggout");
     _userdataProvider.setUserKakaoEmail(null);
     _userdataProvider.setUserKakaoName(null);
     _userdataProvider.setUserKakaoImageUrl(null);
     _userdataProvider.setUserKakaoGender(null);
+    UserLogOut.logOut();
+    _loginState.change(false);
+    _loginState.changeSignup(false);
   }
 }

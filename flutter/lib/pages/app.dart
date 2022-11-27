@@ -43,7 +43,7 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   var _historydataProvider;
-  var _exercisesdataProvider;
+  var _exProvider;
   var _exercises;
   var _routinetimeProvider;
   var _PopProvider;
@@ -245,9 +245,9 @@ class _AppState extends State<App> {
           monerm = recordedsets[i].weight;
         }
       }
-      var _eachex = _exercisesdataProvider.exercisesdata.exercises[
-          _exercisesdataProvider.exercisesdata.exercises
-              .indexWhere((element) => element.name == exercise_all[n].name)];
+      var _eachex = _exProvider.exercisesdata.exercises[_exProvider
+          .exercisesdata.exercises
+          .indexWhere((element) => element.name == exercise_all[n].name)];
       if (!recordedsets.isEmpty) {
         exerciseList.add(hisdata.Exercises(
             name: exercise_all[n].name,
@@ -281,9 +281,9 @@ class _AppState extends State<App> {
           monerm = recordedsets[i].weight;
         }
       }
-      var _eachex = _exercisesdataProvider.exercisesdata.exercises[
-          _exercisesdataProvider.exercisesdata.exercises
-              .indexWhere((element) => element.name == exercise_all[n].name)];
+      var _eachex = _exProvider.exercisesdata.exercises[_exProvider
+          .exercisesdata.exercises
+          .indexWhere((element) => element.name == exercise_all[n].name)];
       if (!recordedsets.isEmpty) {
         exerciseList.add(hisdata.Exercises(
             name: exercise_all[n].name,
@@ -391,9 +391,9 @@ class _AppState extends State<App> {
   }
 
   void modifyExercise(double newonerm, exname) {
-    _exercisesdataProvider
+    _exProvider
         .exercisesdata
-        .exercises[_exercisesdataProvider.exercisesdata.exercises
+        .exercises[_exProvider.exercisesdata.exercises
             .indexWhere((element) => element.name == exname)]
         .onerm = newonerm;
   }
@@ -401,10 +401,10 @@ class _AppState extends State<App> {
   void _postExerciseCheck() async {
     ExerciseEdit(
             user_email: _userdataProvider.userdata.email,
-            exercises: _exercisesdataProvider.exercisesdata.exercises)
+            exercises: _exProvider.exercisesdata.exercises)
         .editExercise()
         .then((data) => data["user_email"] != null
-            ? {showToast("수정 완료"), _exercisesdataProvider.getdata()}
+            ? {showToast("수정 완료"), _exProvider.getdata()}
             : showToast("입력을 확인해주세요"));
   }
 
@@ -445,8 +445,7 @@ class _AppState extends State<App> {
     _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _workoutdataProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
-    _exercisesdataProvider =
-        Provider.of<ExercisesdataProvider>(context, listen: false);
+    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);

@@ -36,13 +36,13 @@ class LoginPageState extends State<LoginPage> {
   var _loginState;
   var _signUpState;
   var _userProvider;
-  var _exercisesdataProvider;
+  var _exProvider;
   bool isLoading = false;
   bool _isEmailLogin = false;
   bool _isiOS = false;
   TextEditingController _userEmailCtrl = TextEditingController(text: "");
   TextEditingController _userPasswordCtrl = TextEditingController(text: "");
-  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   @override
   void initState() {
@@ -60,9 +60,7 @@ class LoginPageState extends State<LoginPage> {
     _loginState = Provider.of<LoginPageProvider>(context, listen: false);
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _isiOS = foundation.defaultTargetPlatform == foundation.TargetPlatform.iOS;
-
-    _exercisesdataProvider =
-        Provider.of<ExercisesdataProvider>(context, listen: false);
+    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -74,47 +72,69 @@ class LoginPageState extends State<LoginPage> {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Expanded(
-                    flex: 3,
-                    child: SizedBox(
-                      height: 6,
-                    ),
-                  ),
+                  Expanded(flex: 3, child: SizedBox(height: 6)),
                   Text("SUPERO",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 54,
                           fontWeight: FontWeight.w800)),
-                  Expanded(
-                    flex: 3,
-                    child: SizedBox(
-                      height: 6,
-                    ),
-                  ),
+                  Expanded(flex: 3, child: SizedBox(height: 6)),
                   _isEmailLogin ? _emailWidget() : Container(),
-                  SizedBox(
-                    height: 8,
-                  ),
+                  SizedBox(height: 8),
                   _isEmailLogin ? _passwordWidget() : Container(),
-                  SizedBox(
-                    height: 14,
-                  ),
-                  _isEmailLogin ? _loginButton(context) : Container(),
-                  SizedBox(
-                    height: 14,
-                  ),
-                  _isEmailLogin ? _signUpButton(context) : Container(),
-                  _isEmailLogin ? Container() : _loginWithKakao(context),
-                  _isEmailLogin ? Container() : _loginWithGoogle(context),
+                  SizedBox(height: 14),
+                  _isEmailLogin ? _signInUpButton("로그인", context) : Container(),
+                  SizedBox(height: 14),
+                  _isEmailLogin
+                      ? _signInUpButton("회원가입", context)
+                      : Container(),
+                  _isEmailLogin
+                      ? Container()
+                      : _loginSocialButton("kakao", context),
+                  _isEmailLogin
+                      ? Container()
+                      : _loginSocialButton("google", context),
                   _isEmailLogin
                       ? Container()
                       : _isiOS
-                          ? _loginWithApple(context)
+                          ? _loginSocialButton("apple", context)
                           : Container(),
                   _emailLoginButton(context),
-                  _isEmailLogin ? _findUser(context) : Container(),
+                  _isEmailLogin ? _findUser(context) : Container()
                 ]),
           ))),
+    );
+  }
+
+  Widget _loginSocialButton(String content, context) {
+    final Map<String, String> _loginList = <String, String>{
+      "kakao": 'assets/svg/kakao.png',
+      "google":
+          _isiOS ? 'assets/svg/google_ios.png' : 'assets/svg/google_and.png',
+      "apple": 'assets/svg/apple_ios.png',
+    };
+
+    return InkWell(
+      child: IconButton(
+        icon: Image.asset(
+          _loginList[content]!,
+        ),
+        constraints: BoxConstraints(
+            minWidth: MediaQuery.of(context).size.width, minHeight: 70),
+        onPressed: () {
+          switch (content) {
+            case "kakao":
+              _loginButtonPressed();
+              break;
+            case "google":
+              _loginGooglePressed();
+              break;
+            case "apple":
+              _loginApplePressed();
+              break;
+          }
+        },
+      ),
     );
   }
 
@@ -172,6 +192,32 @@ class LoginPageState extends State<LoginPage> {
           decoration: InputDecoration(
               prefixIcon: Icon(Icons.email, color: Colors.white),
               labelText: "이메일",
+              labelStyle: TextStyle(color: Colors.white),
+              border: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.white, width: 2.0),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white, width: 2.0),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              fillColor: Colors.white),
+          style: TextStyle(color: Colors.white)),
+    );
+  }
+
+  Widget _passwordWidget() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: TextFormField(
+          controller: _userPasswordCtrl,
+          obscureText: true,
+          enableSuggestions: false,
+          autocorrect: false,
+          obscuringCharacter: "*",
+          decoration: InputDecoration(
+              prefixIcon: Icon(Icons.vpn_key_rounded, color: Colors.white),
+              labelText: "비밀번호",
               labelStyle: TextStyle(color: Colors.white),
               border: OutlineInputBorder(
                 borderSide: const BorderSide(color: Colors.white, width: 2.0),
@@ -262,40 +308,6 @@ class LoginPageState extends State<LoginPage> {
     }
   }
 
-  Widget _loginWithKakao(context) {
-    return InkWell(
-      child: IconButton(
-        icon: Image.asset(
-          'assets/svg/kakao.png',
-        ),
-        constraints: BoxConstraints(
-            minWidth: MediaQuery.of(context).size.width, minHeight: 70),
-        onPressed: () {
-          _loginButtonPressed();
-        },
-      ),
-    );
-  }
-
-  Widget _loginWithGoogle(context) {
-    return InkWell(
-      child: IconButton(
-        icon: _isiOS
-            ? Image.asset(
-                'assets/svg/google_ios.png',
-              )
-            : Image.asset(
-                'assets/svg/google_and.png',
-              ),
-        constraints: BoxConstraints(
-            minWidth: MediaQuery.of(context).size.width, minHeight: 70),
-        onPressed: () {
-          _loginGooglePressed();
-        },
-      ),
-    );
-  }
-
   GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: [
       'email',
@@ -325,21 +337,6 @@ class LoginPageState extends State<LoginPage> {
     }
   }
 
-  Widget _loginWithApple(context) {
-    return InkWell(
-      child: IconButton(
-        icon: Image.asset(
-          'assets/svg/apple_ios.png',
-        ),
-        constraints: BoxConstraints(
-            minWidth: MediaQuery.of(context).size.width, minHeight: 70),
-        onPressed: () {
-          _loginApplePressed();
-        },
-      ),
-    );
-  }
-
   Future<void> _loginApplePressed() async {
     final credential = await SignInWithApple.getAppleIDCredential(
       scopes: [
@@ -367,33 +364,12 @@ class LoginPageState extends State<LoginPage> {
     }
   }
 
-  Widget _passwordWidget() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: TextFormField(
-          controller: _userPasswordCtrl,
-          obscureText: true,
-          enableSuggestions: false,
-          autocorrect: false,
-          obscuringCharacter: "*",
-          decoration: InputDecoration(
-              prefixIcon: Icon(Icons.vpn_key_rounded, color: Colors.white),
-              labelText: "비밀번호",
-              labelStyle: TextStyle(color: Colors.white),
-              border: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.white, width: 2.0),
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white, width: 2.0),
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              fillColor: Colors.white),
-          style: TextStyle(color: Colors.white)),
-    );
-  }
+  Widget _signInUpButton(String content, context) {
+    final Map<String, Color> _loginColor = <String, Color>{
+      "로그인": Theme.of(context).cardColor,
+      "회원가입": Theme.of(context).primaryColor,
+    };
 
-  Widget _loginButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         height: 53,
@@ -401,42 +377,20 @@ class LoginPageState extends State<LoginPage> {
           padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
           child: TextButton(
               style: TextButton.styleFrom(
-                foregroundColor: Color.fromRGBO(25, 106, 223, 20),
-                backgroundColor: Color.fromRGBO(25, 106, 223, 20),
+                foregroundColor: _loginColor[content],
+                backgroundColor: _loginColor[content],
                 textStyle: TextStyle(
                   color: Colors.white,
                 ),
-                disabledForegroundColor: Color.fromRGBO(25, 106, 223, 20),
+                disabledForegroundColor: _loginColor[content],
                 padding: EdgeInsets.all(8.0),
               ),
-              onPressed: () => isLoading ? null : _loginCheck(context),
-              child: Text(isLoading ? 'loggin in.....' : "로그인",
-                  style: TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400))),
-        ));
-  }
-
-  Widget _signUpButton(context) {
-    return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: 53,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
-          child: TextButton(
-              style: TextButton.styleFrom(
-                foregroundColor: Color.fromRGBO(246, 58, 64, 20),
-                backgroundColor: Color.fromRGBO(246, 58, 64, 20),
-                textStyle: TextStyle(
-                  color: Colors.white,
-                ),
-                disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-                padding: EdgeInsets.all(8.0),
-              ),
-              onPressed: () =>
-                  isLoading ? null : _loginState.changeSignup(true),
-              child: Text(isLoading ? 'loggin in.....' : "회원가입",
+              onPressed: () => isLoading
+                  ? null
+                  : content == "로그인"
+                      ? _loginCheck(context)
+                      : _loginState.changeSignup(true),
+              child: Text(isLoading ? 'loggin in.....' : content,
                   style: TextStyle(
                       fontSize: 20.0,
                       color: Colors.white,
@@ -620,11 +574,8 @@ class LoginPageState extends State<LoginPage> {
 
     binding.addPostFrameCallback((_) async {
       BuildContext context = binding.renderViewElement!;
-      print(_initUserdataProvider.userdata.bodyStats[0].weight);
-      print(_initUserdataProvider.userdata.bodyStats[0].weight_goal);
       if (context != null) {
         for (var user in usertestList) {
-          print(user.image);
           precacheImage(CachedNetworkImageProvider(user.image), context);
         }
       }
