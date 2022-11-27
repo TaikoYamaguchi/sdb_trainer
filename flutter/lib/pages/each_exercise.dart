@@ -49,10 +49,10 @@ class EachExerciseDetails extends StatefulWidget {
 }
 
 class _EachExerciseDetailsState extends State<EachExerciseDetails> {
-  var _userdataProvider;
-  var _historydataProvider;
-  var _exercisesdataProvider;
-  var _workoutdataProvider;
+  var _userProvider;
+  var _hisProvider;
+  var _exProvider;
+  var _workoutProvider;
   var _routinetimeProvider;
   var _routinemenuProvider;
   var _prefsProvider;
@@ -128,15 +128,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                 child: Icon(Icons.equalizer, size: 32),
               ),
               onTap: () {
-                _chartIndex.change(_exercisesdataProvider
-                    .exercisesdata.exercises
-                    .indexWhere((exercise) {
+                _chartIndex.change(
+                    _exProvider.exercisesdata.exercises.indexWhere((exercise) {
                   if (exercise.name ==
-                      _workoutdataProvider
-                          .workoutdata
-                          .routinedatas[widget.rindex]
-                          .exercises[_currentExindex]
-                          .name) {
+                      _workoutProvider.workoutdata.routinedatas[widget.rindex]
+                          .exercises[_currentExindex].name) {
                     return true;
                   } else {
                     return false;
@@ -155,14 +151,14 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   void _editWorkoutCheck() async {
     if (_routinetimeProvider.isstarted) {
       WorkoutEdit(
-              id: _workoutdataProvider.workoutdata.id,
-              user_email: _userdataProvider.userdata.email,
-              routinedatas: _workoutdataProvider.workoutdata.routinedatas)
+              id: _workoutProvider.workoutdata.id,
+              user_email: _userProvider.userdata.email,
+              routinedatas: _workoutProvider.workoutdata.routinedatas)
           .editWorkout()
           .then((data) =>
               data["user_email"] != null ? null : showToast("입력을 확인해주세요"));
     } else {
-      var routinedatas_all = _workoutdataProvider.workoutdata.routinedatas;
+      var routinedatas_all = _workoutProvider.workoutdata.routinedatas;
       for (int n = 0;
           n < routinedatas_all[widget.rindex].exercises.length;
           n++) {
@@ -174,8 +170,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         }
       }
       WorkoutEdit(
-              id: _workoutdataProvider.workoutdata.id,
-              user_email: _userdataProvider.userdata.email,
+              id: _workoutProvider.workoutdata.id,
+              user_email: _userProvider.userdata.email,
               routinedatas: routinedatas_all)
           .editWorkout()
           .then((data) =>
@@ -185,16 +181,16 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
 
   void _editWorkoutwCheck() async {
     WorkoutEdit(
-            id: _workoutdataProvider.workoutdata.id,
-            user_email: _userdataProvider.userdata.email,
-            routinedatas: _workoutdataProvider.workoutdata.routinedatas)
+            id: _workoutProvider.workoutdata.id,
+            user_email: _userProvider.userdata.email,
+            routinedatas: _workoutProvider.workoutdata.routinedatas)
         .editWorkout()
         .then((data) =>
             data["user_email"] != null ? null : showToast("입력을 확인해주세요"));
   }
 
   void _editWorkoutwoCheck() async {
-    var routinedatas_all = _workoutdataProvider.workoutdata.routinedatas;
+    var routinedatas_all = _workoutProvider.workoutdata.routinedatas;
     for (int n = 0; n < routinedatas_all[widget.rindex].exercises.length; n++) {
       for (int i = 0;
           i < routinedatas_all[widget.rindex].exercises[n].sets.length;
@@ -203,8 +199,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
       }
     }
     WorkoutEdit(
-            id: _workoutdataProvider.workoutdata.id,
-            user_email: _userdataProvider.userdata.email,
+            id: _workoutProvider.workoutdata.id,
+            user_email: _userProvider.userdata.email,
             routinedatas: routinedatas_all)
         .editWorkout()
         .then((data) =>
@@ -216,9 +212,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     if (_routinetimeProvider.nowonrindex == widget.rindex) {
       _routinetimeProvider.nowoneindexupdate(widget.eindex);
     }
-    int numEx = _workoutdataProvider
+    int numEx = _workoutProvider
         .workoutdata.routinedatas[widget.rindex].exercises.length;
-    var _routine = _workoutdataProvider.workoutdata.routinedatas[widget.rindex];
+    var _routine = _workoutProvider.workoutdata.routinedatas[widget.rindex];
     for (int i = 0; i < numEx; i++) {
       weightController.add(new Controllerlist());
       repsController.add(new Controllerlist());
@@ -244,12 +240,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
       controller: controller,
       itemBuilder: (context, pindex) {
         _currentExindex = pindex;
-        return _exercisesdataProvider
+        return _exProvider
                     .exercisesdata
-                    .exercises[_exercisesdataProvider.exercisesdata.exercises
-                        .indexWhere((element) =>
+                    .exercises[_exProvider.exercisesdata.exercises.indexWhere(
+                        (element) =>
                             element.name ==
-                            _workoutdataProvider
+                            _workoutProvider
                                 .workoutdata
                                 .routinedatas[widget.rindex]
                                 .exercises[pindex]
@@ -257,13 +253,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                     .category ==
                 '맨몸'
             ? _bodyexercisedetailWidget(pindex)
-            : _exercisesdataProvider
+            : _exProvider
                         .exercisesdata
-                        .exercises[_exercisesdataProvider
-                            .exercisesdata.exercises
+                        .exercises[_exProvider.exercisesdata.exercises
                             .indexWhere((element) =>
                                 element.name ==
-                                _workoutdataProvider
+                                _workoutProvider
                                     .workoutdata
                                     .routinedatas[widget.rindex]
                                     .exercises[pindex]
@@ -278,11 +273,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   }
 
   Widget _exercisedetailWidget(pindex) {
-    int ueindex = _exercisesdataProvider.exercisesdata.exercises.indexWhere(
-        (element) =>
-            element.name ==
-            _workoutdataProvider.workoutdata.routinedatas[widget.rindex]
-                .exercises[pindex].name);
+    int ueindex = _exProvider.exercisesdata.exercises.indexWhere((element) =>
+        element.name ==
+        _workoutProvider
+            .workoutdata.routinedatas[widget.rindex].exercises[pindex].name);
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
         MaterialState.pressed,
@@ -380,7 +374,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               onTap: () {
                                 _routinetimeProvider.restcheck();
                                 _routinetimeProvider.resttimecheck(
-                                    _workoutdataProvider
+                                    _workoutProvider
                                         .workoutdata
                                         .routinedatas[widget.rindex]
                                         .exercises[pindex]
@@ -494,7 +488,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                   _displayExEditDialog();
                                 },
                                 child: Text(
-                                  "Best 1RM: ${_info.onerm.toStringAsFixed(1)}/${_info.goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
+                                  "Best 1RM: ${_info.onerm.toStringAsFixed(1)}/${_info.goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
                                   style: TextStyle(
                                       color: Color(0xFF717171), fontSize: 21),
                                 ),
@@ -524,7 +518,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                       Container(
                           width: 70,
                           child: Text(
-                            "Weight(${_userdataProvider.userdata.weight_unit})",
+                            "Weight(${_userProvider.userdata.weight_unit})",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,
@@ -605,7 +599,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                 onChanged: (newvalue) {
                                                   _routinetimeProvider.isstarted
                                                       ? [
-                                                          _workoutdataProvider
+                                                          _workoutProvider
                                                               .boolcheck(
                                                                   widget.rindex,
                                                                   pindex,
@@ -629,7 +623,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                           _sets.length -
                                                                               1
                                                                       ? [
-                                                                          _workoutdataProvider.setsplus(
+                                                                          _workoutProvider.setsplus(
                                                                               widget.rindex,
                                                                               pindex),
                                                                           _isSetChanged =
@@ -665,7 +659,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               onOpen: () {
                                                 _routinetimeProvider.isstarted
                                                     ? [
-                                                        _workoutdataProvider
+                                                        _workoutProvider
                                                             .boolcheck(
                                                                 widget.rindex,
                                                                 pindex,
@@ -686,7 +680,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                         index ==
                                                                 _sets.length - 1
                                                             ? [
-                                                                _workoutdataProvider
+                                                                _workoutProvider
                                                                     .setsplus(
                                                                         widget
                                                                             .rindex,
@@ -773,12 +767,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                     changeweight =
                                                         double.parse(text);
                                                   }
-                                                  _workoutdataProvider
-                                                      .weightcheck(
-                                                          widget.rindex,
-                                                          pindex,
-                                                          index,
-                                                          changeweight);
+                                                  _workoutProvider.weightcheck(
+                                                      widget.rindex,
+                                                      pindex,
+                                                      index,
+                                                      changeweight);
                                                 },
                                               ),
                                             ),
@@ -817,12 +810,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                     changereps =
                                                         int.parse(text);
                                                   }
-                                                  _workoutdataProvider
-                                                      .repscheck(
-                                                          widget.rindex,
-                                                          pindex,
-                                                          index,
-                                                          changereps);
+                                                  _workoutProvider.repscheck(
+                                                      widget.rindex,
+                                                      pindex,
+                                                      index,
+                                                      changereps);
                                                 },
                                               ),
                                             ),
@@ -879,7 +871,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           children: [
                             IconButton(
                                 onPressed: () {
-                                  _workoutdataProvider.setsminus(
+                                  _workoutProvider.setsminus(
                                       widget.rindex, pindex);
                                   weightController[pindex]
                                       .controllerlist
@@ -896,7 +888,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             IconButton(
                                 onPressed: () {
                                   _isSetChanged = true;
-                                  _workoutdataProvider.setsplus(
+                                  _workoutProvider.setsplus(
                                       widget.rindex, pindex);
                                   weightController[pindex].controllerlist.add(
                                       new TextEditingController(text: null));
@@ -989,7 +981,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                         else
                                           {
                                             _routinetimeProvider.resettimer(
-                                                _workoutdataProvider
+                                                _workoutProvider
                                                     .workoutdata
                                                     .routinedatas[widget.rindex]
                                                     .exercises[pindex]
@@ -1007,7 +999,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           })),
                           Container(
                               child: pindex !=
-                                      _workoutdataProvider
+                                      _workoutProvider
                                               .workoutdata
                                               .routinedatas[widget.rindex]
                                               .exercises
@@ -1074,14 +1066,14 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   }
 
   void _displayExEditDialog() {
-    var index = _exercisesdataProvider.exercisesdata.exercises
+    var index = _exProvider.exercisesdata.exercises
         .indexWhere((element) => element.name == _exercise.name);
     var _exOnermController = TextEditingController(
-        text: _exercisesdataProvider.exercisesdata.exercises[index].onerm
+        text: _exProvider.exercisesdata.exercises[index].onerm
             .toStringAsFixed(1));
     var _exGoalController = TextEditingController(
-        text: _exercisesdataProvider.exercisesdata.exercises[index].goal
-            .toStringAsFixed(1));
+        text:
+            _exProvider.exercisesdata.exercises[index].goal.toStringAsFixed(1));
     showDialog(
         context: context,
         builder: (context) {
@@ -1125,8 +1117,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             color: Theme.of(context).primaryColor, width: 3),
                       ),
                       labelText: "1RM (" +
-                          _exercisesdataProvider
-                              .exercisesdata.exercises[index].name +
+                          _exProvider.exercisesdata.exercises[index].name +
                           ")",
                       labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
                       hintText: "1RM",
@@ -1155,8 +1146,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             color: Theme.of(context).primaryColor, width: 3),
                       ),
                       labelText: "목표 (" +
-                          _exercisesdataProvider
-                              .exercisesdata.exercises[index].name +
+                          _exProvider.exercisesdata.exercises[index].name +
                           ")",
                       labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
                       hintText: "목표",
@@ -1185,7 +1175,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   child: Text('수정하기',
                       style: TextStyle(fontSize: 20.0, color: Colors.white)),
                   onPressed: () {
-                    _exercisesdataProvider.putOnermGoalValue(
+                    _exProvider.putOnermGoalValue(
                         index,
                         double.parse(_exOnermController.text),
                         double.parse(_exGoalController.text));
@@ -1201,7 +1191,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
 
   void _workoutOnermCheck(Sets _sets, ueindex) {
     var _onerm;
-    var _exercise = _exercisesdataProvider.exercisesdata.exercises[ueindex];
+    var _exercise = _exProvider.exercisesdata.exercises[ueindex];
     print("onerm");
     if (_sets.reps != 1) {
       _onerm = (_sets.weight * (1 + _sets.reps / 30));
@@ -1224,11 +1214,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   }
 
   Widget _bodyexercisedetailWidget(pindex) {
-    int ueindex = _exercisesdataProvider.exercisesdata.exercises.indexWhere(
-        (element) =>
-            element.name ==
-            _workoutdataProvider.workoutdata.routinedatas[widget.rindex]
-                .exercises[pindex].name);
+    int ueindex = _exProvider.exercisesdata.exercises.indexWhere((element) =>
+        element.name ==
+        _workoutProvider
+            .workoutdata.routinedatas[widget.rindex].exercises[pindex].name);
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
         MaterialState.pressed,
@@ -1326,7 +1315,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               onTap: () {
                                 _routinetimeProvider.restcheck();
                                 _routinetimeProvider.resttimecheck(
-                                    _workoutdataProvider
+                                    _workoutProvider
                                         .workoutdata
                                         .routinedatas[widget.rindex]
                                         .exercises[pindex]
@@ -1436,7 +1425,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                         return isKeyboardVisible
                             ? Container()
                             : Text(
-                                "Best 1RM: ${_info.onerm.toStringAsFixed(1)}/${_info.goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
+                                "Best 1RM: ${_info.onerm.toStringAsFixed(1)}/${_info.goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
                                 style: TextStyle(
                                     color: Color(0xFF717171), fontSize: 21),
                               );
@@ -1581,7 +1570,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                 onChanged: (newvalue) {
                                                   _routinetimeProvider.isstarted
                                                       ? [
-                                                          _workoutdataProvider
+                                                          _workoutProvider
                                                               .boolcheck(
                                                                   widget.rindex,
                                                                   pindex,
@@ -1605,7 +1594,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                           _sets.length -
                                                                               1
                                                                       ? [
-                                                                          _workoutdataProvider.setsplus(
+                                                                          _workoutProvider.setsplus(
                                                                               widget.rindex,
                                                                               pindex),
                                                                           _isSetChanged =
@@ -1641,7 +1630,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               onOpen: () {
                                                 _routinetimeProvider.isstarted
                                                     ? [
-                                                        _workoutdataProvider
+                                                        _workoutProvider
                                                             .boolcheck(
                                                                 widget.rindex,
                                                                 pindex,
@@ -1662,7 +1651,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                         index ==
                                                                 _sets.length - 1
                                                             ? [
-                                                                _workoutdataProvider
+                                                                _workoutProvider
                                                                     .setsplus(
                                                                         widget
                                                                             .rindex,
@@ -1775,12 +1764,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                     changereps =
                                                         int.parse(text);
                                                   }
-                                                  _workoutdataProvider
-                                                      .repscheck(
-                                                          widget.rindex,
-                                                          pindex,
-                                                          index,
-                                                          changereps);
+                                                  _workoutProvider.repscheck(
+                                                      widget.rindex,
+                                                      pindex,
+                                                      index,
+                                                      changereps);
                                                 },
                                               ),
                                             ),
@@ -1837,7 +1825,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           children: [
                             IconButton(
                                 onPressed: () {
-                                  _workoutdataProvider.setsminus(
+                                  _workoutProvider.setsminus(
                                       widget.rindex, pindex);
                                   weightController[pindex]
                                       .controllerlist
@@ -1854,7 +1842,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             IconButton(
                                 onPressed: () {
                                   _isSetChanged = true;
-                                  _workoutdataProvider.setsplus(
+                                  _workoutProvider.setsplus(
                                       widget.rindex, pindex);
                                   weightController[pindex].controllerlist.add(
                                       new TextEditingController(
@@ -1950,7 +1938,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                         else
                                           {
                                             _routinetimeProvider.resettimer(
-                                                _workoutdataProvider
+                                                _workoutProvider
                                                     .workoutdata
                                                     .routinedatas[widget.rindex]
                                                     .exercises[pindex]
@@ -1968,7 +1956,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           })),
                           Container(
                               child: pindex !=
-                                      _workoutdataProvider
+                                      _workoutProvider
                                               .workoutdata
                                               .routinedatas[widget.rindex]
                                               .exercises
@@ -2035,11 +2023,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   }
 
   Widget _cardioexercisedetailWidget(pindex) {
-    int ueindex = _exercisesdataProvider.exercisesdata.exercises.indexWhere(
-        (element) =>
-            element.name ==
-            _workoutdataProvider.workoutdata.routinedatas[widget.rindex]
-                .exercises[pindex].name);
+    int ueindex = _exProvider.exercisesdata.exercises.indexWhere((element) =>
+        element.name ==
+        _workoutProvider
+            .workoutdata.routinedatas[widget.rindex].exercises[pindex].name);
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
         MaterialState.pressed,
@@ -2137,7 +2124,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               onTap: () {
                                 _routinetimeProvider.restcheck();
                                 _routinetimeProvider.resttimecheck(
-                                    _workoutdataProvider
+                                    _workoutProvider
                                         .workoutdata
                                         .routinedatas[widget.rindex]
                                         .exercises[pindex]
@@ -2247,7 +2234,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                         return isKeyboardVisible
                             ? Container()
                             : Text(
-                                "Best 1RM: ${_info.onerm.toStringAsFixed(1)}/${_info.goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
+                                "Best 1RM: ${_info.onerm.toStringAsFixed(1)}/${_info.goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
                                 style: TextStyle(
                                     color: Color(0xFF717171), fontSize: 21),
                               );
@@ -2371,7 +2358,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                       _routinetimeProvider
                                                               .isstarted
                                                           ? [
-                                                              _workoutdataProvider
+                                                              _workoutProvider
                                                                   .boolcheck(
                                                                       widget
                                                                           .rindex,
@@ -2394,7 +2381,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                       index ==
                                                                               _sets.length - 1
                                                                           ? [
-                                                                              _workoutdataProvider.setsplus(widget.rindex, pindex),
+                                                                              _workoutProvider.setsplus(widget.rindex, pindex),
                                                                               _isSetChanged = true,
                                                                               print("jjjjjjjjjjjjjj"),
                                                                               weightController[pindex].controllerlist.add(new TextEditingController(text: provider2.userdata.bodyStats.last.weight.toString())),
@@ -2422,7 +2409,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                     _routinetimeProvider
                                                             .isstarted
                                                         ? [
-                                                            _workoutdataProvider
+                                                            _workoutProvider
                                                                 .boolcheck(
                                                                     widget
                                                                         .rindex,
@@ -2445,7 +2432,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                     _sets.length -
                                                                         1
                                                                 ? [
-                                                                    _workoutdataProvider.setsplus(
+                                                                    _workoutProvider.setsplus(
                                                                         widget
                                                                             .rindex,
                                                                         pindex),
@@ -2543,7 +2530,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                           _routinetimeProvider
                                                                   .isstarted
                                                               ? [
-                                                                  _workoutdataProvider
+                                                                  _workoutProvider
                                                                       .boolcheck(
                                                                           widget
                                                                               .rindex,
@@ -2571,7 +2558,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                           _sets.length -
                                                                               1
                                                                       ? [
-                                                                          _workoutdataProvider.setsplus(
+                                                                          _workoutProvider.setsplus(
                                                                               widget.rindex,
                                                                               pindex),
                                                                           _isSetChanged =
@@ -2734,7 +2721,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           children: [
                             IconButton(
                                 onPressed: () {
-                                  _workoutdataProvider.setsminus(
+                                  _workoutProvider.setsminus(
                                       widget.rindex, pindex);
                                   weightController[pindex]
                                       .controllerlist
@@ -2751,7 +2738,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             IconButton(
                                 onPressed: () {
                                   _isSetChanged = true;
-                                  _workoutdataProvider.setsplus(
+                                  _workoutProvider.setsplus(
                                       widget.rindex, pindex);
                                   weightController[pindex].controllerlist.add(
                                       new TextEditingController(
@@ -2847,7 +2834,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                         else
                                           {
                                             _routinetimeProvider.resettimer(
-                                                _workoutdataProvider
+                                                _workoutProvider
                                                     .workoutdata
                                                     .routinedatas[widget.rindex]
                                                     .exercises[pindex]
@@ -2865,7 +2852,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           })),
                           Container(
                               child: pindex !=
-                                      _workoutdataProvider
+                                      _workoutProvider
                                               .workoutdata
                                               .routinedatas[widget.rindex]
                                               .exercises
@@ -2957,8 +2944,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     _controllerCenter =
         ConfettiController(duration: const Duration(seconds: 3));
     _controllerCenter.play();
-    _exercisesdataProvider.putOnermValue(
-        _exercisesdataProvider.exercisesdata.exercises
+    _exProvider.putOnermValue(
+        _exProvider.exercisesdata.exercises
             .indexWhere((element) => element.name == _exercise.name),
         _onerm);
     showDialog(
@@ -3003,7 +2990,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                       Center(
                         child: Text(
                             _onerm.toStringAsFixed(1) +
-                                _userdataProvider.userdata.weight_unit,
+                                _userProvider.userdata.weight_unit,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
@@ -3019,7 +3006,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               width: 120,
                               child: Center(
                                   child: Text(
-                                "${_sets.weight}${_userdataProvider.userdata.weight_unit}",
+                                "${_sets.weight}${_userProvider.userdata.weight_unit}",
                                 style: TextStyle(
                                   fontSize: 21,
                                   color: Colors.grey,
@@ -3226,7 +3213,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   child: Text('휴식 시간 설정하기',
                       style: TextStyle(fontSize: 20.0, color: Colors.white)),
                   onPressed: () {
-                    _workoutdataProvider.resttimecheck(
+                    _workoutProvider.resttimecheck(
                         widget.rindex, pindex, _routinetimeProvider.changetime);
                     _editWorkoutwCheck();
                     _resttimectrl.clear();
@@ -3240,14 +3227,14 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   }
 
   void _displaySetWeightAlert(pindex, eindex) {
-    double input = _workoutdataProvider.workoutdata.routinedatas[widget.rindex]
+    double input = _workoutProvider.workoutdata.routinedatas[widget.rindex]
         .exercises[pindex].sets[eindex].weight
         .abs();
-    _additionalweightctrl.text = _workoutdataProvider.workoutdata
+    _additionalweightctrl.text = _workoutProvider.workoutdata
         .routinedatas[widget.rindex].exercises[pindex].sets[eindex].weight
         .abs()
         .toString();
-    _routinemenuProvider.boolchangeto(_workoutdataProvider
+    _routinemenuProvider.boolchangeto(_workoutProvider
                 .workoutdata
                 .routinedatas[widget.rindex]
                 .exercises[pindex]
@@ -3351,10 +3338,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   child: Text('중량 추가/제거 하기',
                       style: TextStyle(fontSize: 20.0, color: Colors.white)),
                   onPressed: () {
-                    _workoutdataProvider.weightcheck(
-                        widget.rindex,
-                        pindex,
-                        eindex,
+                    _workoutProvider.weightcheck(widget.rindex, pindex, eindex,
                         _routinemenuProvider.ispositive ? input : -input);
                     _editWorkoutwCheck();
                     _additionalweightctrl.clear();
@@ -3424,13 +3408,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   }
 
   Widget _StartConfirmButton(pindex, index, newvalue) {
-    var _sets = _workoutdataProvider
+    var _sets = _workoutProvider
         .workoutdata.routinedatas[widget.rindex].exercises[pindex].sets;
-    int ueindex = _exercisesdataProvider.exercisesdata.exercises.indexWhere(
-        (element) =>
-            element.name ==
-            _workoutdataProvider.workoutdata.routinedatas[widget.rindex]
-                .exercises[pindex].name);
+    int ueindex = _exProvider.exercisesdata.exercises.indexWhere((element) =>
+        element.name ==
+        _workoutProvider
+            .workoutdata.routinedatas[widget.rindex].exercises[pindex].name);
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: TextButton(
@@ -3447,30 +3430,30 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
               padding: EdgeInsets.all(12.0),
             ),
             onPressed: () {
-              _routinetimeProvider.resettimer(_workoutdataProvider.workoutdata
+              _routinetimeProvider.resettimer(_workoutProvider.workoutdata
                   .routinedatas[widget.rindex].exercises[pindex].rest);
               _routinetimeProvider.routinecheck(widget.rindex);
 
-              _workoutdataProvider.boolcheck(
+              _workoutProvider.boolcheck(
                   widget.rindex, pindex, index, newvalue);
               _editWorkoutwCheck();
               Navigator.of(context, rootNavigator: true).pop();
               _workoutOnermCheck(_sets[index], ueindex);
 
-              _exercisesdataProvider
-                  .exercisesdata
-                  .exercises[_exercisesdataProvider
-                  .exercisesdata.exercises
-                  .indexWhere((element) =>
-              element.name ==
-                  _workoutdataProvider
-                      .workoutdata
-                      .routinedatas[widget.rindex]
-                      .exercises[pindex]
-                      .name)]
-                  .category ==
-                  '유산소'
-                  ? _countcontroller[index].start() : null;
+              _exProvider
+                          .exercisesdata
+                          .exercises[_exProvider.exercisesdata.exercises
+                              .indexWhere((element) =>
+                                  element.name ==
+                                  _workoutProvider
+                                      .workoutdata
+                                      .routinedatas[widget.rindex]
+                                      .exercises[pindex]
+                                      .name)]
+                          .category ==
+                      '유산소'
+                  ? _countcontroller[index].start()
+                  : null;
             },
             child: Text("운동 시작 하기",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
@@ -3478,7 +3461,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
 
   void recordExercise() {
     var exercise_all =
-        _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises;
+        _workoutProvider.workoutdata.routinedatas[widget.rindex].exercises;
     for (int n = 0; n < exercise_all.length; n++) {
       var recordedsets = exercise_all[n].sets.where((sets) {
         return (sets.ischecked as bool);
@@ -3515,11 +3498,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   void _editHistoryCheck() async {
     if (!exerciseList.isEmpty) {
       HistoryPost(
-              user_email: _userdataProvider.userdata.email,
+              user_email: _userProvider.userdata.email,
               exercises: exerciseList,
               new_record: _routinetimeProvider.routineNewRecord,
               workout_time: _routinetimeProvider.routineTime,
-              nickname: _userdataProvider.userdata.nickname)
+              nickname: _userProvider.userdata.nickname)
           .postHistory()
           .then((data) => data["user_email"] != null
               ? {
@@ -3532,10 +3515,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               sdbdata: hisdata.SDBdata.fromJson(data)),
                           transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
                   _routinetimeProvider.routinecheck(widget.rindex),
-                  _prefsProvider.lastplan(_workoutdataProvider
+                  _prefsProvider.lastplan(_workoutProvider
                       .workoutdata.routinedatas[widget.rindex].name),
-                  _historydataProvider.getdata(),
-                  _historydataProvider.getHistorydataAll(),
+                  _hisProvider.getdata(),
+                  _hisProvider.getHistorydataAll(),
                   exerciseList = []
                 }
               : showToast("입력을 확인해주세요"));
@@ -3551,20 +3534,18 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
 
   void _postExerciseCheck() async {
     ExerciseEdit(
-            user_email: _userdataProvider.userdata.email, exercises: _exercises)
+            user_email: _userProvider.userdata.email, exercises: _exercises)
         .editExercise()
         .then((data) => data["user_email"] != null
-            ? {showToast("수정 완료"), _exercisesdataProvider.getdata()}
+            ? {showToast("수정 완료"), _exProvider.getdata()}
             : showToast("입력을 확인해주세요"));
   }
 
   @override
   Widget build(BuildContext context) {
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _historydataProvider =
-        Provider.of<HistorydataProvider>(context, listen: false);
-    _workoutdataProvider =
-        Provider.of<WorkoutdataProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
+    _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
     _routinemenuProvider =
@@ -3572,9 +3553,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
 
     _chartIndex = Provider.of<ChartIndexProvider>(context, listen: false);
 
-    _exercisesdataProvider =
-        Provider.of<ExercisesdataProvider>(context, listen: false);
-    _exercises = _exercisesdataProvider.exercisesdata.exercises;
+    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
+    _exercises = _exProvider.exercisesdata.exercises;
     _staticPageState = Provider.of<StaticPageProvider>(context, listen: false);
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
     _prefsProvider = Provider.of<PrefsProvider>(context, listen: false);

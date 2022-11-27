@@ -40,7 +40,7 @@ class FeedCard extends StatefulWidget {
 
 class _FeedCardState extends State<FeedCard> {
   var _historyCommentCtrl;
-  var _userdataProvider;
+  var _userProvider;
   var _historyProvider;
   var _commentListbyId;
   var _tapPosition;
@@ -78,9 +78,9 @@ class _FeedCardState extends State<FeedCard> {
   }
 
   Widget _feedCard(SDBdata, index) {
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _historyProvider = Provider.of<HistorydataProvider>(context, listen: false);
-    User user = _userdataProvider.userFriendsAll.userdatas
+    User user = _userProvider.userFriendsAll.userdatas
         .where((user) => user.email == SDBdata.user_email)
         .toList()[0];
     if (_historyProvider.commentAll != null) {
@@ -97,7 +97,7 @@ class _FeedCardState extends State<FeedCard> {
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
           child: Consumer2<HistorydataProvider, UserdataProvider>(
               builder: (builder, provider, provider2, child) {
-            return _userdataProvider.userdata.dislike.contains(user.email)
+            return _userProvider.userdata.dislike.contains(user.email)
                 ? Container(
                     child: Padding(
                         padding: const EdgeInsets.only(left: 4.0),
@@ -181,8 +181,7 @@ class _FeedCardState extends State<FeedCard> {
                                         onTapDown: _storePosition,
                                         onTap: () {
                                           SDBdata.user_email ==
-                                                  _userdataProvider
-                                                      .userdata.email
+                                                  _userProvider.userdata.email
                                               ? showMenu(
                                                   context: context,
                                                   position:
@@ -608,10 +607,10 @@ class _FeedCardState extends State<FeedCard> {
   }
 
   Widget _commentContentCore(Comment) {
-    User user = _userdataProvider.userFriendsAll.userdatas
+    User user = _userProvider.userFriendsAll.userdatas
         .where((user) => user.email == Comment.writer_email)
         .toList()[0];
-    return _userdataProvider.userdata.dislike.contains(Comment.writer_email)
+    return _userProvider.userdata.dislike.contains(Comment.writer_email)
         ? Container(
             child: Padding(
                 padding: const EdgeInsets.only(left: 4.0),
@@ -680,7 +679,7 @@ class _FeedCardState extends State<FeedCard> {
                 ),
                 onTapDown: _storePosition,
                 onTap: () {
-                  _userdataProvider.userdata.email == Comment.writer_email
+                  _userProvider.userdata.email == Comment.writer_email
                       ? showMenu(
                           context: context,
                           position: RelativeRect.fromRect(
@@ -816,7 +815,7 @@ class _FeedCardState extends State<FeedCard> {
                   ? null
                   : HistoryCommentEdit(
                           history_id: SDBdata.id,
-                          user_email: _userdataProvider.userdata.email,
+                          user_email: _userProvider.userdata.email,
                           comment: _historyCommentCtrl.text)
                       .patchHistoryComment();
               _historyProvider.patchHistoryCommentdata(
@@ -971,7 +970,7 @@ class _FeedCardState extends State<FeedCard> {
   }
 
   bool onIsLikedCheck(SDBdata) {
-    if (SDBdata.like.contains(_userdataProvider.userdata.email)) {
+    if (SDBdata.like.contains(_userProvider.userdata.email)) {
       return true;
     } else {
       return false;
@@ -982,22 +981,22 @@ class _FeedCardState extends State<FeedCard> {
     if (isLiked == true) {
       HistoryLike(
               history_id: SDBdata.id,
-              user_email: _userdataProvider.userdata.email,
+              user_email: _userProvider.userdata.email,
               status: "remove",
               disorlike: "like")
           .patchHistoryLike();
       _historyProvider.patchHistoryLikedata(
-          SDBdata, _userdataProvider.userdata.email, "remove");
+          SDBdata, _userProvider.userdata.email, "remove");
       return false;
     } else {
       HistoryLike(
               history_id: SDBdata.id,
-              user_email: _userdataProvider.userdata.email,
+              user_email: _userProvider.userdata.email,
               status: "append",
               disorlike: "like")
           .patchHistoryLike();
       _historyProvider.patchHistoryLikedata(
-          SDBdata, _userdataProvider.userdata.email, "append");
+          SDBdata, _userProvider.userdata.email, "append");
       return !isLiked;
     }
   }
@@ -1021,11 +1020,11 @@ class _FeedCardState extends State<FeedCard> {
             onPressed: () {
               var user = UserLike(
                       liked_email: email,
-                      user_email: _userdataProvider.userdata.email,
+                      user_email: _userProvider.userdata.email,
                       status: "append",
                       disorlike: "dislike")
                   .patchUserLike();
-              _userdataProvider.patchUserDislikedata(email, "append");
+              _userProvider.patchUserDislikedata(email, "append");
 
               Navigator.of(context, rootNavigator: true).pop();
             },
@@ -1101,14 +1100,14 @@ class _FeedCardState extends State<FeedCard> {
               _historyProvider.addCommentAll(hisdata.Comment(
                   history_id: SDBdata.id,
                   reply_id: 0,
-                  writer_email: _userdataProvider.userdata.email,
-                  writer_nickname: _userdataProvider.userdata.nickname,
+                  writer_email: _userProvider.userdata.email,
+                  writer_nickname: _userProvider.userdata.nickname,
                   content: _commentInputCtrl.text));
               CommentCreate(
                       history_id: SDBdata.id,
                       reply_id: 0,
-                      writer_email: _userdataProvider.userdata.email,
-                      writer_nickname: _userdataProvider.userdata.nickname,
+                      writer_email: _userProvider.userdata.email,
+                      writer_nickname: _userProvider.userdata.nickname,
                       content: _commentInputCtrl.text)
                   .postComment();
               _commentInputCtrl.clear();

@@ -34,10 +34,10 @@ class EachWorkoutDetails extends StatefulWidget {
 }
 
 class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
-  var _historydataProvider;
+  var _hisProvider;
   var _routinetimeProvider;
-  var _userdataProvider;
-  var _workoutdataProvider;
+  var _userProvider;
+  var _workoutProvider;
   var _famousdataProvider;
   var backupwddata;
   var _PopProvider;
@@ -47,7 +47,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   TextEditingController _workoutNameCtrl = TextEditingController(text: "");
   TextEditingController _exSearchCtrl = TextEditingController(text: "");
   TextEditingController _customExNameCtrl = TextEditingController(text: "");
-  var _exercisesdataProvider;
+  var _exProvider;
   var _testdata0;
   late var _testdata = _testdata0;
   late List<hisdata.Exercises> exerciseList = [];
@@ -266,7 +266,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 key: keyPlus,
                 icon: SvgPicture.asset("assets/svg/add_white.svg"),
                 onPressed: () {
-                  _workoutdataProvider.dataBU(widget.rindex);
+                  _workoutProvider.dataBU(widget.rindex);
 
                   setState(() {
                     _isexsearch = !_isexsearch;
@@ -288,7 +288,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   }
 
   void _editWorkoutwoCheck() async {
-    var routinedatas_all = _workoutdataProvider.workoutdata.routinedatas;
+    var routinedatas_all = _workoutProvider.workoutdata.routinedatas;
     for (int n = 0; n < routinedatas_all[widget.rindex].exercises.length; n++) {
       for (int i = 0;
           i < routinedatas_all[widget.rindex].exercises[n].sets.length;
@@ -297,8 +297,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
       }
     }
     WorkoutEdit(
-            id: _workoutdataProvider.workoutdata.id,
-            user_email: _userdataProvider.userdata.email,
+            id: _workoutProvider.workoutdata.id,
+            user_email: _userProvider.userdata.email,
             routinedatas: routinedatas_all)
         .editWorkout()
         .then((data) => data["user_email"] != null
@@ -416,7 +416,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               padding: EdgeInsets.all(12.0),
             ),
             onPressed: () {
-              _workoutdataProvider.changebudata(widget.rindex);
+              _workoutProvider.changebudata(widget.rindex);
               _workoutNameCtrl.clear();
               _exSearchCtrl.clear();
               searchExercise(_exSearchCtrl.text);
@@ -431,7 +431,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
 
   void recordExercise() {
     var exercise_all =
-        _workoutdataProvider.workoutdata.routinedatas[widget.rindex].exercises;
+        _workoutProvider.workoutdata.routinedatas[widget.rindex].exercises;
     for (int n = 0; n < exercise_all.length; n++) {
       var recordedsets = exercise_all[n].sets.where((sets) {
         return (sets.ischecked as bool && sets.weight != 0);
@@ -468,11 +468,11 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   void _editHistoryCheck() async {
     if (!exerciseList.isEmpty) {
       HistoryPost(
-              user_email: _userdataProvider.userdata.email,
+              user_email: _userProvider.userdata.email,
               exercises: exerciseList,
               new_record: _routinetimeProvider.routineNewRecord,
               workout_time: _routinetimeProvider.routineTime,
-              nickname: _userdataProvider.userdata.nickname)
+              nickname: _userProvider.userdata.nickname)
           .postHistory()
           .then((data) => data["user_email"] != null
               ? {
@@ -485,8 +485,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                               sdbdata: hisdata.SDBdata.fromJson(data)),
                           transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
                   _routinetimeProvider.routinecheck(widget.rindex),
-                  _historydataProvider.getdata(),
-                  _historydataProvider.getHistorydataAll(),
+                  _hisProvider.getdata(),
+                  _hisProvider.getHistorydataAll(),
                   exerciseList = []
                 }
               : showToast("입력을 확인해주세요"));
@@ -502,10 +502,10 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
 
   void _postExerciseCheck() async {
     ExerciseEdit(
-            user_email: _userdataProvider.userdata.email, exercises: _exercises)
+            user_email: _userProvider.userdata.email, exercises: _exercises)
         .editExercise()
         .then((data) => data["user_email"] != null
-            ? {showToast("수정 완료"), _exercisesdataProvider.getdata()}
+            ? {showToast("수정 완료"), _exProvider.getdata()}
             : showToast("입력을 확인해주세요"));
   }
 
@@ -536,7 +536,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 SizedBox(height: 20),
                 TextField(
                   onChanged: (value) {
-                    _workoutdataProvider.workoutdata.routinedatas
+                    _workoutProvider.workoutdata.routinedatas
                         .indexWhere((routine) {
                       if (routine.name == _workoutNameCtrl.text) {
                         setState(() {
@@ -649,9 +649,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
         builder: (BuildContext context) {
-          List<String> options = [..._exercisesdataProvider.options];
+          List<String> options = [..._exProvider.options];
           options.remove('All');
-          List<String> options2 = [..._exercisesdataProvider.options2];
+          List<String> options2 = [..._exProvider.options2];
           options2.remove('All');
           return SingleChildScrollView(
             child: StatefulBuilder(
@@ -685,7 +685,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                           SizedBox(height: 20),
                           TextField(
                             onChanged: (value) {
-                              _exercisesdataProvider.exercisesdata.exercises
+                              _exProvider.exercisesdata.exercises
                                   .indexWhere((exercise) {
                                 if (exercise.name == _customExNameCtrl.text) {
                                   mystate(() {
@@ -835,7 +835,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             ),
             onPressed: () {
               if (_customExUsed == false && _customExNameCtrl.text != "") {
-                _exercisesdataProvider.addExdata(Exercises(
+                _exProvider.addExdata(Exercises(
                     name: _customExNameCtrl.text,
                     onerm: 0,
                     goal: 0,
@@ -857,26 +857,26 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   }
 
   void _editWorkoutNameCheck(newname) async {
-    _workoutdataProvider.namechange(widget.rindex, newname);
+    _workoutProvider.namechange(widget.rindex, newname);
 
     WorkoutEdit(
-            user_email: _userdataProvider.userdata.email,
-            id: _workoutdataProvider.workoutdata.id,
-            routinedatas: _workoutdataProvider.workoutdata.routinedatas)
+            user_email: _userProvider.userdata.email,
+            id: _workoutProvider.workoutdata.id,
+            routinedatas: _workoutProvider.workoutdata.routinedatas)
         .editWorkout()
         .then((data) => data["user_email"] != null
-            ? {showToast("done!"), _workoutdataProvider.getdata()}
+            ? {showToast("done!"), _workoutProvider.getdata()}
             : showToast("입력을 확인해주세요"));
   }
 
   void _editWorkoutCheck() async {
     WorkoutEdit(
-            user_email: _userdataProvider.userdata.email,
-            id: _workoutdataProvider.workoutdata.id,
-            routinedatas: _workoutdataProvider.workoutdata.routinedatas)
+            user_email: _userProvider.userdata.email,
+            id: _workoutProvider.workoutdata.id,
+            routinedatas: _workoutProvider.workoutdata.routinedatas)
         .editWorkout()
         .then((data) => data["user_email"] != null
-            ? [showToast("done!"), _workoutdataProvider.getdata()]
+            ? [showToast("done!"), _workoutProvider.getdata()]
             : showToast("입력을 확인해주세요"));
   }
 
@@ -892,7 +892,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             return (unique.name == exlist[i].name);
           }).toList();
           if (filter.isEmpty) {
-            _workoutdataProvider.removeexAt(widget.rindex, i);
+            _workoutProvider.removeexAt(widget.rindex, i);
             showToast('더 이상 존재하지 않는 운동은 삭제되요');
           }
         }
@@ -932,10 +932,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                   key: Key('$index'),
                   onTap: () {
                     _isexsearch
-                        ? [
-                            _workoutdataProvider.removeexAt(
-                                widget.rindex, index)
-                          ]
+                        ? [_workoutProvider.removeexAt(widget.rindex, index)]
                         : [
                             _PopProvider.exstackup(2),
                             Navigator.push(
@@ -958,8 +955,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                         children: [
                           SlidableAction(
                             onPressed: (_) {
-                              _workoutdataProvider.removeexAt(
-                                  widget.rindex, index);
+                              _workoutProvider.removeexAt(widget.rindex, index);
                               _editWorkoutCheck();
                             },
                             backgroundColor: Color(0xFFFE4A49),
@@ -1003,7 +999,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                                   fontSize: 13,
                                                   color: Color(0xFF717171))),
                                           Text(
-                                              "1RM: ${exinfo[0].onerm.toStringAsFixed(1)}/${exinfo[0].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
+                                              "1RM: ${exinfo[0].onerm.toStringAsFixed(1)}/${exinfo[0].goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
                                               style: TextStyle(
                                                   fontSize: 13,
                                                   color: Color(0xFF717171))),
@@ -1110,7 +1106,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                   : Container()
               : GestureDetector(
                   onTap: () {
-                    _workoutdataProvider.dataBU(widget.rindex);
+                    _workoutProvider.dataBU(widget.rindex);
                     setState(() {
                       _isexsearch = !_isexsearch;
                     });
@@ -1333,7 +1329,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 return GestureDetector(
                   onTap: () {
                     setState(() {
-                      _workoutdataProvider.addexAt(
+                      _workoutProvider.addexAt(
                           widget.rindex,
                           new wod.Exercises(
                               name: exuniq[index].name,
@@ -1399,17 +1395,14 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
 
   @override
   Widget build(BuildContext context) {
-    _historydataProvider =
-        Provider.of<HistorydataProvider>(context, listen: false);
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _famousdataProvider =
         Provider.of<FamousdataProvider>(context, listen: false);
-    _workoutdataProvider =
-        Provider.of<WorkoutdataProvider>(context, listen: false);
-    _exercisesdataProvider =
-        Provider.of<ExercisesdataProvider>(context, listen: false);
-    _exercises = _exercisesdataProvider.exercisesdata.exercises;
-    _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
+    _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
+    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
+    _exercises = _exProvider.exercisesdata.exercises;
+    _testdata0 = _exProvider.exercisesdata.exercises;
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
@@ -1462,7 +1455,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                         key: keyPlus,
                         icon: SvgPicture.asset("assets/svg/add_white.svg"),
                         onPressed: () {
-                          _workoutdataProvider.dataBU(widget.rindex);
+                          _workoutProvider.dataBU(widget.rindex);
 
                           setState(() {
                             _isexsearch = !_isexsearch;

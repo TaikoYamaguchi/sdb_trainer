@@ -34,9 +34,9 @@ class ProgramUpload extends StatefulWidget {
 }
 
 class _ProgramUploadState extends State<ProgramUpload> {
-  var _userdataProvider;
+  var _userProvider;
   var _famousdataProvider;
-  var _workoutdataProvider;
+  var _workoutProvider;
   var _routinetimeProvider;
   var _btnDisabled;
   TextEditingController _famousimageCtrl = TextEditingController(text: "");
@@ -83,7 +83,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
       _image = File(selectImage.path);
       // dynamic sendData = selectImage.path;
       // UserImageEdit(file: sendData).patchUserImage().then((data) {
-      //    _userdataProvider.setUserdata(data);
+      //    _userProvider.setUserdata(data);
       // });
     }
   }
@@ -512,7 +512,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
                     routine_time: _programcommentCtrl.text,
                   ),
                   type: 0,
-                  user_email: _userdataProvider.userdata.email,
+                  user_email: _userProvider.userdata.email,
                   level: item_map[selectedItem],
                   category: _famousdataProvider.tags,
                 ).postProgram().then((data) => {
@@ -593,11 +593,10 @@ class _ProgramUploadState extends State<ProgramUpload> {
 
   @override
   Widget build(BuildContext context) {
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _famousdataProvider =
         Provider.of<FamousdataProvider>(context, listen: false);
-    _workoutdataProvider =
-        Provider.of<WorkoutdataProvider>(context, listen: false);
+    _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
     return Scaffold(

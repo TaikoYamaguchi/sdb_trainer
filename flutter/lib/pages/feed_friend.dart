@@ -28,9 +28,9 @@ class FeedFriend extends StatefulWidget {
 class _FeedFriendState extends State<FeedFriend> {
   var _testdata0;
   late var _testdata = _testdata0;
-  var _exercisesdataProvider;
+  var _exProvider;
   var _usersdata;
-  var _userdataProvider;
+  var _userProvider;
   var friendsInputSwitch = false;
   var btnDisabled;
 
@@ -193,30 +193,29 @@ class _FeedFriendState extends State<FeedFriend> {
     if (isLiked == true) {
       UserLike(
               liked_email: User.email,
-              user_email: _userdataProvider.userdata.email,
+              user_email: _userProvider.userdata.email,
               status: "remove",
               disorlike: "like")
           .patchUserLike();
-      _userdataProvider.patchUserLikedata(User, "remove");
+      _userProvider.patchUserLikedata(User, "remove");
       return false;
     } else {
       UserLike(
               liked_email: User.email,
-              user_email: _userdataProvider.userdata.email,
+              user_email: _userProvider.userdata.email,
               status: "append",
               disorlike: "like")
           .patchUserLike();
-      _userdataProvider.patchUserLikedata(User, "append");
+      _userProvider.patchUserLikedata(User, "append");
       return !isLiked;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    _exercisesdataProvider =
-        Provider.of<ExercisesdataProvider>(context, listen: false);
-    _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
+    _testdata0 = _exProvider.exercisesdata.exercises;
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
 
     return Scaffold(
       appBar: _appbarWidget(),

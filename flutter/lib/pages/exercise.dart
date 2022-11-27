@@ -38,9 +38,9 @@ class Exercise extends StatefulWidget {
 
 class ExerciseState extends State<Exercise> {
   TextEditingController _workoutNameCtrl = TextEditingController(text: "");
-  var _userdataProvider;
-  var _exercisesdataProvider;
-  var _workoutdataProvider;
+  var _userProvider;
+  var _exProvider;
+  var _workoutProvider;
   var _famousdataProvider;
   var _routinetimeProvider;
   var _RoutineMenuProvider;
@@ -555,7 +555,7 @@ class ExerciseState extends State<Exercise> {
               padding: EdgeInsets.all(12.0),
             ),
             onPressed: () {
-              _workoutdataProvider.removeroutineAt(rindex);
+              _workoutProvider.removeroutineAt(rindex);
               _editWorkoutCheck();
               Navigator.of(context, rootNavigator: true).pop();
             },
@@ -564,8 +564,7 @@ class ExerciseState extends State<Exercise> {
   }
 
   void filterExercise(List query) {
-    final suggestions =
-        _exercisesdataProvider.exercisesdata.exercises.where((exercise) {
+    final suggestions = _exProvider.exercisesdata.exercises.where((exercise) {
       if (query[0] == 'All') {
         return true;
       } else {
@@ -574,7 +573,7 @@ class ExerciseState extends State<Exercise> {
         return (query_s.intersection(extarget).isNotEmpty) as bool;
       }
     }).toList();
-    _exercisesdataProvider.settestdata_f1(suggestions);
+    _exProvider.settestdata_f1(suggestions);
   }
 
   Widget group_by_target() {
@@ -591,9 +590,9 @@ class ExerciseState extends State<Exercise> {
           return GestureDetector(
             onTap: () {
               _PopProvider.exstackup(1);
-              _exercisesdataProvider.inittestdata();
-              _exercisesdataProvider.settags([key_list[index].toString()]);
-              filterExercise(_exercisesdataProvider.tags);
+              _exProvider.inittestdata();
+              _exProvider.settags([key_list[index].toString()]);
+              filterExercise(_exProvider.tags);
               Navigator.push(
                   context,
                   Transition(
@@ -698,7 +697,7 @@ class ExerciseState extends State<Exercise> {
                   SizedBox(height: 20),
                   TextField(
                     onChanged: (value) {
-                      _workoutdataProvider.workoutdata.routinedatas
+                      _workoutProvider.workoutdata.routinedatas
                           .indexWhere((routine) {
                         if (routine.name == _workoutNameCtrl.text) {
                           setState(() {
@@ -790,7 +789,7 @@ class ExerciseState extends State<Exercise> {
             ),
             onPressed: () {
               if (!_customExUsed && _workoutNameCtrl.text != "") {
-                _workoutdataProvider.addroutine(new Routinedatas(
+                _workoutProvider.addroutine(new Routinedatas(
                     name: _workoutNameCtrl.text,
                     mode: _RoutineMenuProvider.ismodechecked ? 1 : 0,
                     exercises: _RoutineMenuProvider.ismodechecked
@@ -812,22 +811,22 @@ class ExerciseState extends State<Exercise> {
 
   void _editWorkoutCheck() async {
     WorkoutEdit(
-            user_email: _userdataProvider.userdata.email,
-            id: _workoutdataProvider.workoutdata.id,
-            routinedatas: _workoutdataProvider.workoutdata.routinedatas)
+            user_email: _userProvider.userdata.email,
+            id: _workoutProvider.workoutdata.id,
+            routinedatas: _workoutProvider.workoutdata.routinedatas)
         .editWorkout()
         .then((data) => data["user_email"] != null
-            ? [showToast("done!"), _workoutdataProvider.getdata()]
+            ? [showToast("done!"), _workoutProvider.getdata()]
             : showToast("입력을 확인해주세요"));
   }
 
   void _postWorkoutCheck() async {
     WorkoutPost(
-            user_email: _userdataProvider.userdata.email,
-            routinedatas: _workoutdataProvider.routinedatas)
+            user_email: _userProvider.userdata.email,
+            routinedatas: _workoutProvider.routinedatas)
         .postWorkout()
         .then((data) => data["user_email"] != null
-            ? _workoutdataProvider.getdata()
+            ? _workoutProvider.getdata()
             : showToast("입력을 확인해주세요"));
   }
 
@@ -858,7 +857,7 @@ class ExerciseState extends State<Exercise> {
                 SizedBox(height: 20),
                 TextField(
                   onChanged: (value) {
-                    _workoutdataProvider.workoutdata.routinedatas
+                    _workoutProvider.workoutdata.routinedatas
                         .indexWhere((routine) {
                       if (routine.name == _workoutNameCtrl.text) {
                         setState(() {
@@ -934,25 +933,23 @@ class ExerciseState extends State<Exercise> {
   }
 
   void _editWorkoutNameCheck(newname, index) async {
-    _workoutdataProvider.namechange(index, newname);
+    _workoutProvider.namechange(index, newname);
 
     WorkoutEdit(
-            user_email: _userdataProvider.userdata.email,
-            id: _workoutdataProvider.workoutdata.id,
-            routinedatas: _workoutdataProvider.workoutdata.routinedatas)
+            user_email: _userProvider.userdata.email,
+            id: _workoutProvider.workoutdata.id,
+            routinedatas: _workoutProvider.workoutdata.routinedatas)
         .editWorkout()
         .then((data) => data["user_email"] != null
-            ? {showToast("done!"), _workoutdataProvider.getdata()}
+            ? {showToast("done!"), _workoutProvider.getdata()}
             : showToast("입력을 확인해주세요"));
   }
 
   @override
   Widget build(BuildContext context) {
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _exercisesdataProvider =
-        Provider.of<ExercisesdataProvider>(context, listen: false);
-    _workoutdataProvider =
-        Provider.of<WorkoutdataProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
+    _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
 
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
     _famousdataProvider =
@@ -980,12 +977,12 @@ class ExerciseState extends State<Exercise> {
           : [
               provider.exstackup(0),
               Future.delayed(Duration.zero, () async {
-                int grindex = _workoutdataProvider.workoutdata.routinedatas
+                int grindex = _workoutProvider.workoutdata.routinedatas
                     .indexWhere((routine) =>
                         routine.name ==
                         _PrefsProvider.prefs.getString('lastroutine'));
                 Navigator.of(context).popUntil((route) => route.isFirst);
-                if (_workoutdataProvider.workoutdata
+                if (_workoutProvider.workoutdata
                         .routinedatas[_routinetimeProvider.nowonrindex].mode ==
                     0) {
                   Navigator.push(
@@ -999,11 +996,10 @@ class ExerciseState extends State<Exercise> {
                       context,
                       Transition(
                           child: EachExerciseDetails(
-                            ueindex: _exercisesdataProvider
-                                .exercisesdata.exercises
+                            ueindex: _exProvider.exercisesdata.exercises
                                 .indexWhere((element) =>
                                     element.name ==
-                                    _workoutdataProvider
+                                    _workoutProvider
                                         .workoutdata
                                         .routinedatas[
                                             _routinetimeProvider.nowonrindex]
@@ -1034,13 +1030,12 @@ class ExerciseState extends State<Exercise> {
           : [
               provider.exstackup(0),
               Future.delayed(Duration.zero, () async {
-                int grindex = _workoutdataProvider.workoutdata.routinedatas
+                int grindex = _workoutProvider.workoutdata.routinedatas
                     .indexWhere((routine) =>
                         routine.name ==
                         _PrefsProvider.prefs.getString('lastroutine'));
                 Navigator.of(context).popUntil((route) => route.isFirst);
-                if (_workoutdataProvider
-                        .workoutdata.routinedatas[grindex].mode ==
+                if (_workoutProvider.workoutdata.routinedatas[grindex].mode ==
                     1) {
                   Navigator.push(
                       context,

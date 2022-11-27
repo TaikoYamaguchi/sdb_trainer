@@ -29,8 +29,8 @@ class StaticsExerciseDetails extends StatefulWidget {
 }
 
 class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
-  var _userdataProvider;
-  var _historydataProvider;
+  var _userProvider;
+  var _hisProvider;
   var _originExercise;
   double top = 0;
   double bottom = 0;
@@ -118,7 +118,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                             style: TextStyle(color: Colors.white, fontSize: 32),
                           ),
                     Text(
-                      "Best 1RM: ${widget.exercise.onerm!.toStringAsFixed(1)}/${widget.exercise.goal!.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
+                      "Best 1RM: ${widget.exercise.onerm!.toStringAsFixed(1)}/${widget.exercise.goal!.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
                       style: TextStyle(color: Color(0xFF717171), fontSize: 21),
                     )
                   ],
@@ -145,7 +145,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                     Container(
                         width: 70,
                         child: Text(
-                          "Weight(${_userdataProvider.userdata.weight_unit})",
+                          "Weight(${_userProvider.userdata.weight_unit})",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 14,
@@ -449,7 +449,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
         .isEmpty) {
       HistoryExercisesEdit(
               history_id: widget.history_id,
-              user_email: _userdataProvider.userdata.email,
+              user_email: _userProvider.userdata.email,
               exercises: widget.origin_exercises)
           .patchHistoryExercises()
           .then((data) => data["user_email"] != null
@@ -461,18 +461,18 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
   }
 
   void _deleteExerciseCheck() async {
-    _historydataProvider.deleteExercisedata(widget.history_id, widget.index);
+    _hisProvider.deleteExercisedata(widget.history_id, widget.index);
     if (!widget.origin_exercises.isEmpty) {
       HistoryExercisesEdit(
               history_id: widget.history_id,
-              user_email: _userdataProvider.userdata.email,
+              user_email: _userProvider.userdata.email,
               exercises: widget.origin_exercises)
           .patchHistoryExercises()
           .then((data) => data["user_email"] != null
               ? {showToast("수정 완료"), Navigator.of(context).pop()}
               : showToast("입력을 확인해주세요"));
     } else {
-      _historydataProvider.deleteHistorydata(widget.history_id);
+      _hisProvider.deleteHistorydata(widget.history_id);
       HistoryDelete(history_id: widget.history_id).deleteHistory().then(
           (data) => data["user_email"] != null
               ? {showToast("수정 완료"), Navigator.of(context).pop()}
@@ -482,9 +482,8 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
 
   @override
   Widget build(BuildContext context) {
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _historydataProvider =
-        Provider.of<HistorydataProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
     return Scaffold(
       appBar: _appbarWidget(),
       body: _exercisedetailWidget(),

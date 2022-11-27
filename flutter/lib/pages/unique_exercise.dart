@@ -23,10 +23,10 @@ class UniqueExerciseDetails extends StatefulWidget {
 }
 
 class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
-  var _userdataProvider;
-  var _historydataProvider;
-  var _exercisesdataProvider;
-  var _workoutdataProvider;
+  var _userProvider;
+  var _hisProvider;
+  var _exProvider;
+  var _workoutProvider;
   var _routinetimeProvider;
   var _exercise;
   var _uniqinfo;
@@ -142,8 +142,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
 
   Widget _exercisedetailWidget() {
     _exampleex = new wod.Exercises(
-        name:
-            _exercisesdataProvider.exercisesdata.exercises[widget.ueindex].name,
+        name: _exProvider.exercisesdata.exercises[widget.ueindex].name,
         sets: _sets,
         rest: 0);
     Color getColor(Set<MaterialState> states) {
@@ -226,7 +225,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                       var _info =
                           provider.exercisesdata.exercises[widget.ueindex];
                       return Text(
-                        "Best 1RM: ${_info.onerm}/${_info.goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
+                        "Best 1RM: ${_info.onerm}/${_info.goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
                         style:
                             TextStyle(color: Color(0xFF717171), fontSize: 21),
                       );
@@ -255,7 +254,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                     Container(
                         width: 70,
                         child: Text(
-                          "Weight(${_userdataProvider.userdata.weight_unit})",
+                          "Weight(${_userProvider.userdata.weight_unit})",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 14,
@@ -554,16 +553,16 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
   void _editHistoryCheck() async {
     if (!exerciseList.isEmpty) {
       HistoryPost(
-              user_email: _userdataProvider.userdata.email,
+              user_email: _userProvider.userdata.email,
               exercises: exerciseList,
               new_record: _routinetimeProvider.routineNewRecord,
               workout_time: _routinetimeProvider.routineTime,
-              nickname: _userdataProvider.userdata.nickname)
+              nickname: _userProvider.userdata.nickname)
           .postHistory()
           .then((data) => data["user_email"] != null
               ? {
-                  _historydataProvider.getdata(),
-                  _historydataProvider.getHistorydataAll(),
+                  _hisProvider.getdata(),
+                  _hisProvider.getHistorydataAll(),
                   exerciseList = []
                 }
               : showToast("입력을 확인해주세요"));
@@ -576,11 +575,10 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
   }
 
   void _postExerciseCheck() async {
-    ExerciseEdit(
-            user_email: _userdataProvider.userdata.email, exercises: _exercise)
+    ExerciseEdit(user_email: _userProvider.userdata.email, exercises: _exercise)
         .editExercise()
         .then((data) => data["user_email"] != null
-            ? {showToast("수정 완료"), _exercisesdataProvider.getdata()}
+            ? {showToast("수정 완료"), _exProvider.getdata()}
             : showToast("입력을 확인해주세요"));
   }
 
@@ -731,16 +729,13 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
 
   @override
   Widget build(BuildContext context) {
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _historydataProvider =
-        Provider.of<HistorydataProvider>(context, listen: false);
-    _workoutdataProvider =
-        Provider.of<WorkoutdataProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
+    _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
-    _exercisesdataProvider =
-        Provider.of<ExercisesdataProvider>(context, listen: false);
-    _exercise = _exercisesdataProvider.exercisesdata.exercises;
+    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
+    _exercise = _exProvider.exercisesdata.exercises;
 
     return Scaffold(
       appBar: _appbarWidget(),

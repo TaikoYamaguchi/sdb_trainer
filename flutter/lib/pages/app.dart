@@ -42,16 +42,16 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  var _historydataProvider;
+  var _hisProvider;
   var _exProvider;
   var _exercises;
   var _routinetimeProvider;
   var _PopProvider;
   late List<hisdata.Exercises> exerciseList = [];
-  var _workoutdataProvider;
+  var _workoutProvider;
   var _bodyStater;
   var _loginState;
-  var _userdataProvider;
+  var _userProvider;
   int updatecount = 0;
   bool _updateCheck = false;
   @override
@@ -114,17 +114,17 @@ class _AppState extends State<App> {
 
   void _editWorkoutCheck() async {
     WorkoutEdit(
-            user_email: _userdataProvider.userdata.email,
-            id: _workoutdataProvider.workoutdata.id,
-            routinedatas: _workoutdataProvider.workoutdata.routinedatas)
+            user_email: _userProvider.userdata.email,
+            id: _workoutProvider.workoutdata.id,
+            routinedatas: _workoutProvider.workoutdata.routinedatas)
         .editWorkout()
         .then((data) => data["user_email"] != null
-            ? [showToast("done!"), _workoutdataProvider.getdata()]
+            ? [showToast("done!"), _workoutProvider.getdata()]
             : showToast("입력을 확인해주세요"));
   }
 
   void _editWorkoutwoCheck() async {
-    var routinedatas_all = _workoutdataProvider.workoutdata.routinedatas;
+    var routinedatas_all = _workoutProvider.workoutdata.routinedatas;
     for (int n = 0;
         n < routinedatas_all[_routinetimeProvider.nowonrindex].exercises.length;
         n++) {
@@ -142,8 +142,8 @@ class _AppState extends State<App> {
       }
     }
     WorkoutEdit(
-            id: _workoutdataProvider.workoutdata.id,
-            user_email: _userdataProvider.userdata.email,
+            id: _workoutProvider.workoutdata.id,
+            user_email: _userProvider.userdata.email,
             routinedatas: routinedatas_all)
         .editWorkout()
         .then((data) => data["user_email"] != null
@@ -202,7 +202,7 @@ class _AppState extends State<App> {
               padding: EdgeInsets.all(12.0),
             ),
             onPressed: () {
-              if (_workoutdataProvider.workoutdata
+              if (_workoutProvider.workoutdata
                       .routinedatas[_routinetimeProvider.nowonrindex].mode ==
                   1) {
                 recordExercise_plan();
@@ -220,11 +220,11 @@ class _AppState extends State<App> {
   }
 
   void recordExercise_plan() {
-    var exercise_all = _workoutdataProvider
+    var exercise_all = _workoutProvider
         .workoutdata
         .routinedatas[_routinetimeProvider.nowonrindex]
         .exercises[0]
-        .plans[_workoutdataProvider
+        .plans[_workoutProvider
             .workoutdata
             .routinedatas[_routinetimeProvider.nowonrindex]
             .exercises[0]
@@ -264,7 +264,7 @@ class _AppState extends State<App> {
   }
 
   void recordExercise() {
-    var exercise_all = _workoutdataProvider
+    var exercise_all = _workoutProvider
         .workoutdata.routinedatas[_routinetimeProvider.nowonrindex].exercises;
     for (int n = 0; n < exercise_all.length; n++) {
       var recordedsets = exercise_all[n].sets.where((sets) {
@@ -361,11 +361,11 @@ class _AppState extends State<App> {
   void _editHistoryCheck() async {
     if (!exerciseList.isEmpty) {
       HistoryPost(
-              user_email: _userdataProvider.userdata.email,
+              user_email: _userProvider.userdata.email,
               exercises: exerciseList,
               new_record: _routinetimeProvider.routineNewRecord,
               workout_time: _routinetimeProvider.routineTime,
-              nickname: _userdataProvider.userdata.nickname)
+              nickname: _userProvider.userdata.nickname)
           .postHistory()
           .then((data) => data["user_email"] != null
               ? {
@@ -378,10 +378,10 @@ class _AppState extends State<App> {
                               sdbdata: hisdata.SDBdata.fromJson(data)),
                           transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
                   _routinetimeProvider.routinecheck(0),
-                  _routinetimeProvider.getprefs(_workoutdataProvider.workoutdata
+                  _routinetimeProvider.getprefs(_workoutProvider.workoutdata
                       .routinedatas[_routinetimeProvider.nowonrindex].name),
-                  _historydataProvider.getdata(),
-                  _historydataProvider.getHistorydataAll(),
+                  _hisProvider.getdata(),
+                  _hisProvider.getHistorydataAll(),
                   exerciseList = []
                 }
               : showToast("입력을 확인해주세요"));
@@ -400,7 +400,7 @@ class _AppState extends State<App> {
 
   void _postExerciseCheck() async {
     ExerciseEdit(
-            user_email: _userdataProvider.userdata.email,
+            user_email: _userProvider.userdata.email,
             exercises: _exProvider.exercisesdata.exercises)
         .editExercise()
         .then((data) => data["user_email"] != null
@@ -442,16 +442,14 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
     _loginState = Provider.of<LoginPageProvider>(context, listen: false);
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _workoutdataProvider =
-        Provider.of<WorkoutdataProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
     _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
-    _historydataProvider =
-        Provider.of<HistorydataProvider>(context, listen: false);
-    _userdataProvider.getUsersFriendsAll();
+    _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
+    _userProvider.getUsersFriendsAll();
 
     return Consumer2<BodyStater, LoginPageProvider>(
         builder: (builder, provider1, provider2, child) {

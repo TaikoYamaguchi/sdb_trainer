@@ -23,9 +23,9 @@ class ExerciseFilter extends StatefulWidget {
 }
 
 class _ExerciseFilterState extends State<ExerciseFilter> {
-  var _exercisesdataProvider;
+  var _exProvider;
   var _famousdataProvider;
-  var _userdataProvider;
+  var _userProvider;
   var _PopProvider;
   var _exercises;
   TextEditingController _exSearchCtrl = TextEditingController(text: "");
@@ -83,8 +83,8 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                     ),
                   ),
                   onChanged: (text) {
-                    filterTotal(_exSearchCtrl.text, _exercisesdataProvider.tags,
-                        _exercisesdataProvider.tags2);
+                    filterTotal(_exSearchCtrl.text, _exProvider.tags,
+                        _exProvider.tags2);
                   }),
             ),
           ),
@@ -100,8 +100,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
   }
 
   filterTotal(String query, List tags, List tags2) {
-    final suggestions =
-        _exercisesdataProvider.exercisesdata.exercises.where((exercise) {
+    final suggestions = _exProvider.exercisesdata.exercises.where((exercise) {
       if (query == '') {
         return true;
       } else {
@@ -110,8 +109,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
       }
     }).toList();
 
-    final suggestions2 =
-        _exercisesdataProvider.exercisesdata.exercises.where((exercise) {
+    final suggestions2 = _exProvider.exercisesdata.exercises.where((exercise) {
       if (tags[0] == 'All') {
         return true;
       } else {
@@ -121,8 +119,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
       }
     }).toList();
 
-    final suggestions3 =
-        _exercisesdataProvider.exercisesdata.exercises.where((exercise) {
+    final suggestions3 = _exProvider.exercisesdata.exercises.where((exercise) {
       if (tags2[0] == 'All') {
         return true;
       } else {
@@ -130,23 +127,20 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
         return (tags2.contains(excate)) as bool;
       }
     }).toList();
-    _exercisesdataProvider.settesttotal(
-        suggestions, suggestions2, suggestions3);
+    _exProvider.settesttotal(suggestions, suggestions2, suggestions3);
   }
 
   void searchExercise(String query) {
-    final suggestions =
-        _exercisesdataProvider.exercisesdata.exercises.map((exercise) {
+    final suggestions = _exProvider.exercisesdata.exercises.map((exercise) {
       final exTitle = exercise.name;
       return (exTitle.contains(query)) as bool;
     }).toList();
-    _exercisesdataProvider.settestdata_s(suggestions);
+    _exProvider.settestdata_s(suggestions);
   }
 
   void filterExercise(List query) {
     //List<bool> suggestions = [];
-    final suggestions =
-        _exercisesdataProvider.exercisesdata.exercises.map((exercise) {
+    final suggestions = _exProvider.exercisesdata.exercises.map((exercise) {
       if (query[0] == 'All') {
         return true;
       } else {
@@ -157,12 +151,11 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
       }
     }).toList();
 
-    _exercisesdataProvider.settestdata_f1(suggestions);
+    _exProvider.settestdata_f1(suggestions);
   }
 
   void filterExercise2(List query) {
-    final suggestions =
-        _exercisesdataProvider.exercisesdata.exercises.map((exercise) {
+    final suggestions = _exProvider.exercisesdata.exercises.map((exercise) {
       if (query[0] == 'All') {
         return true;
       } else {
@@ -170,7 +163,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
         return (query.contains(excate)) as bool;
       }
     }).toList();
-    _exercisesdataProvider.settestdata_f2(suggestions);
+    _exProvider.settestdata_f2(suggestions);
   }
 
   Widget _exercises_searchWidget() {
@@ -286,9 +279,9 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
         builder: (BuildContext context) {
-          List<String> options = [..._exercisesdataProvider.options];
+          List<String> options = [..._exProvider.options];
           options.remove('All');
-          List<String> options2 = [..._exercisesdataProvider.options2];
+          List<String> options2 = [..._exProvider.options2];
           options2.remove('All');
           return SingleChildScrollView(
             child: StatefulBuilder(
@@ -322,7 +315,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                           SizedBox(height: 20),
                           TextField(
                             onChanged: (value) {
-                              _exercisesdataProvider.exercisesdata.exercises
+                              _exProvider.exercisesdata.exercises
                                   .indexWhere((exercise) {
                                 if (exercise.name == _customExNameCtrl.text) {
                                   mystate(() {
@@ -453,8 +446,8 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
 
   void _postExerciseCheck() async {
     ExerciseEdit(
-            user_email: _userdataProvider.userdata.email,
-            exercises: _exercisesdataProvider.exercisesdata.exercises)
+            user_email: _userProvider.userdata.email,
+            exercises: _exProvider.exercisesdata.exercises)
         .editExercise()
         .then((data) => data["user_email"] != null
             ? {showToast("수정 완료")}
@@ -482,7 +475,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
             ),
             onPressed: () {
               if (_customExUsed == false && _customExNameCtrl.text != "") {
-                _exercisesdataProvider.addExdata(Exercises(
+                _exProvider.addExdata(Exercises(
                     name: _customExNameCtrl.text,
                     onerm: 0,
                     goal: 0,
@@ -494,8 +487,8 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                 _postExerciseCheck();
                 _customExNameCtrl.clear();
 
-                filterTotal(_exSearchCtrl.text, _exercisesdataProvider.tags,
-                    _exercisesdataProvider.tags2);
+                filterTotal(
+                    _exSearchCtrl.text, _exProvider.tags, _exProvider.tags2);
 
                 Navigator.of(context).pop();
               }
@@ -532,8 +525,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                     context,
                     Transition(
                         child: ExerciseGuide(
-                            eindex: _exercisesdataProvider
-                                .exercisesdata.exercises
+                            eindex: _exProvider.exercisesdata.exercises
                                 .indexWhere(
                                     (ex) => ex.name == exuniq[index].name)),
                         transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
@@ -561,7 +553,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                           ),
                           Expanded(child: SizedBox()),
                           Text(
-                              "1RM: ${exuniq[index].onerm.toStringAsFixed(0)}/${exuniq[index].goal.toStringAsFixed(0)}${_userdataProvider.userdata.weight_unit}",
+                              "1RM: ${exuniq[index].onerm.toStringAsFixed(0)}/${exuniq[index].goal.toStringAsFixed(0)}${_userProvider.userdata.weight_unit}",
                               style:
                                   TextStyle(fontSize: 13, color: Colors.white)),
                         ],
@@ -606,8 +598,8 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                     val.remove('All'),
                     provider.settags(val),
                   ];
-            filterTotal(_exSearchCtrl.text, _exercisesdataProvider.tags,
-                _exercisesdataProvider.tags2);
+            filterTotal(
+                _exSearchCtrl.text, _exProvider.tags, _exProvider.tags2);
           },
           choiceItems: C2Choice.listFrom<String, String>(
             source: provider.options,
@@ -644,8 +636,8 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                     val.remove('All'),
                     provider.settags2(val),
                   ];
-            filterTotal(_exSearchCtrl.text, _exercisesdataProvider.tags,
-                _exercisesdataProvider.tags2);
+            filterTotal(
+                _exSearchCtrl.text, _exProvider.tags, _exProvider.tags2);
           },
           choiceItems: C2Choice.listFrom<String, String>(
             source: provider.options2,
@@ -669,11 +661,10 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
 
   @override
   Widget build(BuildContext context) {
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _famousdataProvider =
         Provider.of<FamousdataProvider>(context, listen: false);
-    _exercisesdataProvider =
-        Provider.of<ExercisesdataProvider>(context, listen: false);
+    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
 
     return Consumer<PopProvider>(builder: (builder, provider, child) {

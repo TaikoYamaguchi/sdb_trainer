@@ -32,10 +32,10 @@ class ProgramDownload extends StatefulWidget {
 }
 
 class _ProgramDownloadState extends State<ProgramDownload> {
-  var _userdataProvider;
+  var _userProvider;
   var _famousdataProvider;
-  var _workoutdataProvider;
-  var _exercisesdataProvider;
+  var _workoutProvider;
+  var _exProvider;
   var _PopProvider;
   var _routinetimeProvider;
   var _btnDisabled;
@@ -618,7 +618,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
   }
 
   bool onIsLikedCheck() {
-    if (widget.program.like.contains(_userdataProvider.userdata.email)) {
+    if (widget.program.like.contains(_userProvider.userdata.email)) {
       return true;
     } else {
       return false;
@@ -631,22 +631,22 @@ class _ProgramDownloadState extends State<ProgramDownload> {
     if (isLiked == true) {
       FamousLike(
               famous_id: widget.program.id,
-              user_email: _userdataProvider.userdata.email,
+              user_email: _userProvider.userdata.email,
               status: "remove",
               disorlike: "like")
           .patchFamousLike();
       _famousdataProvider.patchFamousLikedata(
-          widget.program, _userdataProvider.userdata.email, "remove");
+          widget.program, _userProvider.userdata.email, "remove");
       return false;
     } else {
       FamousLike(
               famous_id: widget.program.id,
-              user_email: _userdataProvider.userdata.email,
+              user_email: _userProvider.userdata.email,
               status: "append",
               disorlike: "like")
           .patchFamousLike();
       _famousdataProvider.patchFamousLikedata(
-          widget.program, _userdataProvider.userdata.email, "append");
+          widget.program, _userProvider.userdata.email, "append");
       return !isLiked;
     }
   }
@@ -685,10 +685,10 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                   }
                 }
                 for (int s = 0;
-                    s < _exercisesdataProvider.exercisesdata.exercises.length;
+                    s < _exProvider.exercisesdata.exercises.length;
                     s++) {
-                  exercise_names.add(
-                      _exercisesdataProvider.exercisesdata.exercises[s].name);
+                  exercise_names
+                      .add(_exProvider.exercisesdata.exercises[s].name);
                 }
                 ref_exercise = ref_exercise.toSet().toList();
                 do_exercise = do_exercise.toSet().toList();
@@ -696,7 +696,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                   exercise_names.contains(do_exercise[i])
                       ? null
                       : [
-                          _exercisesdataProvider.addExdata(uex.Exercises(
+                          _exProvider.addExdata(uex.Exercises(
                               name: do_exercise[i],
                               onerm: 0,
                               goal: 0,
@@ -711,7 +711,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                 for (int i = 0; i < ref_exercise.length; i++) {
                   exercise_names.contains(ref_exercise[i])
                       ? null
-                      : _exercisesdataProvider.addExdata(uex.Exercises(
+                      : _exProvider.addExdata(uex.Exercises(
                           name: ref_exercise[i],
                           onerm: 0,
                           goal: 0,
@@ -720,8 +720,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                           target: ['custom'],
                           custom: true,
                           note: ''));
-                  ref_exercise_index.add(
-                      _exercisesdataProvider.exercisesdata.exercises.indexWhere(
+                  ref_exercise_index.add(_exProvider.exercisesdata.exercises
+                      .indexWhere(
                           (element) => element.name == ref_exercise[i]));
                 }
                 _postExerciseCheck();
@@ -736,11 +736,11 @@ class _ProgramDownloadState extends State<ProgramDownload> {
 
   void _postExerciseCheck() async {
     ExerciseEdit(
-            user_email: _userdataProvider.userdata.email,
-            exercises: _exercisesdataProvider.exercisesdata.exercises)
+            user_email: _userProvider.userdata.email,
+            exercises: _exProvider.exercisesdata.exercises)
         .editExercise()
         .then((data) => data["user_email"] != null
-            ? {showToast("수정 완료"), _exercisesdataProvider.getdata()}
+            ? {showToast("수정 완료"), _exProvider.getdata()}
             : showToast("입력을 확인해주세요"));
   }
 
@@ -905,7 +905,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                 SizedBox(height: 20),
                 TextField(
                   onChanged: (value) {
-                    _workoutdataProvider.workoutdata.routinedatas
+                    _workoutProvider.workoutdata.routinedatas
                         .indexWhere((routine) {
                       if (routine.name == _workoutNameCtrl.text) {
                         state(() {
@@ -971,7 +971,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
             onPressed: () {
               if (_customRuUsed == false || _workoutNameCtrl.text == "") {
                 _famousdataProvider.weekchange(0);
-                _workoutdataProvider.addroutine(new Routinedatas(
+                _workoutProvider.addroutine(new Routinedatas(
                     name: _workoutNameCtrl.text,
                     mode: 3,
                     exercises: widget.program.routinedata.exercises,
@@ -995,7 +995,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
         itemBuilder: (BuildContext _context, int index) {
           return Center(
               child: _exerciseWidget(
-                  _exercisesdataProvider
+                  _exProvider
                       .exercisesdata.exercises[ref_exercise_index[index]],
                   index));
         },
@@ -1056,7 +1056,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                           changeweight = double.parse(text);
                         }
                         setState(() {
-                          _exercisesdataProvider
+                          _exProvider
                               .exercisesdata
                               .exercises[ref_exercise_index[index]]
                               .onerm = changeweight;
@@ -1101,10 +1101,9 @@ class _ProgramDownloadState extends State<ProgramDownload> {
             onPressed: () {
               List rname = [];
               for (int i = 0;
-                  i < _workoutdataProvider.workoutdata.routinedatas.length;
+                  i < _workoutProvider.workoutdata.routinedatas.length;
                   i++) {
-                rname
-                    .add(_workoutdataProvider.workoutdata.routinedatas[i].name);
+                rname.add(_workoutProvider.workoutdata.routinedatas[i].name);
               }
               if (rname.contains(widget.program.routinedata.name)) {
                 _customRuUsed = true;
@@ -1118,46 +1117,42 @@ class _ProgramDownloadState extends State<ProgramDownload> {
 
   void _editWorkoutCheck() async {
     WorkoutEdit(
-            user_email: _userdataProvider.userdata.email,
-            id: _workoutdataProvider.workoutdata.id,
-            routinedatas: _workoutdataProvider.workoutdata.routinedatas)
+            user_email: _userProvider.userdata.email,
+            id: _workoutProvider.workoutdata.id,
+            routinedatas: _workoutProvider.workoutdata.routinedatas)
         .editWorkout()
         .then((data) => data["user_email"] != null
-            ? [showToast("done!"), _workoutdataProvider.getdata()]
+            ? [showToast("done!"), _workoutProvider.getdata()]
             : showToast("입력을 확인해주세요"));
   }
 
   @override
   Widget build(BuildContext context) {
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _famousdataProvider =
         Provider.of<FamousdataProvider>(context, listen: false);
-    _workoutdataProvider =
-        Provider.of<WorkoutdataProvider>(context, listen: false);
-    _exercisesdataProvider =
-        Provider.of<ExercisesdataProvider>(context, listen: false);
+    _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
+    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
 
-    return Consumer<PopProvider>(
-      builder: (builder, provider, child) {
-        bool _popable = provider.isstacking;
-        _popable == false
-            ? null
-            : [
-          provider.exstackdown(),
-          provider.popoff(),
-          Future.delayed(Duration.zero, () async {
-            Navigator.of(context).pop();
-          })
-        ];
-        return Scaffold(
-            resizeToAvoidBottomInset: false,
-            appBar: _appbarWidget(),
-            body: _programDownloadWidget(),
-            backgroundColor: Color(0xFF101012));
-      }
-    );
+    return Consumer<PopProvider>(builder: (builder, provider, child) {
+      bool _popable = provider.isstacking;
+      _popable == false
+          ? null
+          : [
+              provider.exstackdown(),
+              provider.popoff(),
+              Future.delayed(Duration.zero, () async {
+                Navigator.of(context).pop();
+              })
+            ];
+      return Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: _appbarWidget(),
+          body: _programDownloadWidget(),
+          backgroundColor: Color(0xFF101012));
+    });
   }
 }

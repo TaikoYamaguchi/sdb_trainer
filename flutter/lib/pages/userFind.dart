@@ -13,7 +13,7 @@ class UserFindPage extends StatefulWidget {
 
 class _UserFindPageState extends State<UserFindPage> {
   bool isLoading = false;
-  var _userdataProvider;
+  var _userProvider;
   bool _isPhoneEmpty = false;
   bool _isVerification = false;
   var user;

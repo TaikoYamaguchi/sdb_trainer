@@ -13,7 +13,7 @@ class ProfileBody extends StatefulWidget {
 
 class _ProfileBodyState extends State<ProfileBody> {
   bool isLoading = false;
-  var _userdataProvider;
+  var _userProvider;
   var _userWeightUnitCtrl = "lb";
   var _userHeightUnitCtrl = "cm";
   var _userHeightCtrl;
@@ -45,15 +45,15 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   @override
   Widget build(BuildContext context) {
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    TextEditingController(text: _userdataProvider.userdata.nickname);
-    _userWeightUnitCtrl = _userdataProvider.userdata.weight_unit;
-    _userHeightUnitCtrl = _userdataProvider.userdata.height_unit;
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    TextEditingController(text: _userProvider.userdata.nickname);
+    _userWeightUnitCtrl = _userProvider.userdata.weight_unit;
+    _userHeightUnitCtrl = _userProvider.userdata.height_unit;
 
-    _userHeightCtrl = TextEditingController(
-        text: _userdataProvider.userdata.height.toString());
+    _userHeightCtrl =
+        TextEditingController(text: _userProvider.userdata.height.toString());
     _userWeightCtrl = TextEditingController(
-        text: _userdataProvider.userdata.bodyStats.last.weight.toString());
+        text: _userProvider.userdata.bodyStats.last.weight.toString());
 
     _userHeightCtrl.selection = TextSelection.fromPosition(
         TextPosition(offset: _userHeightCtrl.text.length));
@@ -227,10 +227,10 @@ class _ProfileBodyState extends State<ProfileBody> {
               padding: EdgeInsets.all(8.0),
             ),
             onPressed: () {
-              _userdataProvider.setUserWeightAdd(
+              _userProvider.setUserWeightAdd(
                   _toDay.toString(),
                   double.parse(_userWeightCtrl.text),
-                  _userdataProvider.userdata.bodyStats.last.weight);
+                  _userProvider.userdata.bodyStats.last.weight);
             },
             child: Text(isLoading ? 'loggin in.....' : "프로필 수정",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
@@ -239,20 +239,20 @@ class _ProfileBodyState extends State<ProfileBody> {
   void _editCheck() async {
     if (_userHeightCtrl.text != "" && _userWeightCtrl.text != "") {
       UserEdit(
-              userEmail: _userdataProvider.userdata.email,
-              userName: _userdataProvider.userdata.username,
-              userNickname: _userdataProvider.userdata.nickname,
+              userEmail: _userProvider.userdata.email,
+              userName: _userProvider.userdata.username,
+              userNickname: _userProvider.userdata.nickname,
               userHeight: _userHeightCtrl.text.toString(),
               userWeight: _userWeightCtrl.text.toString(),
               userHeightUnit: _userHeightUnitCtrl,
               userWeightUnit: _userWeightUnitCtrl,
-              userImage: _userdataProvider.userdata.image,
-              userFavorExercise: _userdataProvider.userdata.favor_exercise)
+              userImage: _userProvider.userdata.image,
+              userFavorExercise: _userProvider.userdata.favor_exercise)
           .editUser()
           .then((data) => data["username"] != null
               ? {
                   showToast("수정 완료"),
-                  _userdataProvider.getdata(),
+                  _userProvider.getdata(),
                   Navigator.pop(context)
                 }
               : showToast("수정할 수 없습니다"));

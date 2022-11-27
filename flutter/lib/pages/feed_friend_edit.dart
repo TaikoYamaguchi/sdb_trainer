@@ -28,9 +28,9 @@ class FeedFriendEdit extends StatefulWidget {
 class _FeedFriendEditState extends State<FeedFriendEdit> {
   var _testdata0;
   late var _testdata = _testdata0;
-  var _exercisesdataProvider;
+  var _exProvider;
   var _usersdata;
-  var _userdataProvider;
+  var _userProvider;
   var friendsInputSwitch = false;
   var btnDisabled;
 
@@ -100,8 +100,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
                   onChanged: (text) {
                     if (text.toString() == "") {
                       friendsInputSwitch = false;
-                      setState(
-                          () => _usersdata = _userdataProvider.userFriendsAll);
+                      setState(() => _usersdata = _userProvider.userFriendsAll);
                     } else {
                       searchFriend(text.toString());
                       friendsInputSwitch = true;
@@ -195,7 +194,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
           dotSecondaryColor: Color(0xff0099cc),
         ),
         likeBuilder: (bool isLiked) {
-          return User.email == _userdataProvider.userdata.email
+          return User.email == _userProvider.userdata.email
               ? Container()
               : Icon(
                   Icons.favorite,
@@ -211,7 +210,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
   }
 
   bool onIsLikedCheck(User) {
-    if (_userdataProvider.userdata.like.contains(User.email)) {
+    if (_userProvider.userdata.like.contains(User.email)) {
       return true;
     } else {
       return false;
@@ -222,32 +221,31 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
     if (isLiked == true) {
       var user = UserLike(
               liked_email: User.email,
-              user_email: _userdataProvider.userdata.email,
+              user_email: _userProvider.userdata.email,
               status: "remove",
               disorlike: "like")
           .patchUserLike();
-      _userdataProvider.patchUserLikedata(User, "remove");
+      _userProvider.patchUserLikedata(User, "remove");
       return false;
     } else {
       var user = UserLike(
               liked_email: User.email,
-              user_email: _userdataProvider.userdata.email,
+              user_email: _userProvider.userdata.email,
               status: "append",
               disorlike: "like")
           .patchUserLike();
-      _userdataProvider.patchUserLikedata(User, "append");
+      _userProvider.patchUserLikedata(User, "append");
       return !isLiked;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    _exercisesdataProvider =
-        Provider.of<ExercisesdataProvider>(context, listen: false);
-    _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
+    _testdata0 = _exProvider.exercisesdata.exercises;
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     if (friendsInputSwitch == false) {
-      _usersdata = _userdataProvider.userFriendsAll;
+      _usersdata = _userProvider.userFriendsAll;
     }
 
     return WillPopScope(

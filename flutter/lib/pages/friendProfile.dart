@@ -26,8 +26,8 @@ class FriendProfile extends StatefulWidget {
 }
 
 class _FriendProfileState extends State<FriendProfile> {
-  var _userdataProvider;
-  var _historydataProvider;
+  var _userProvider;
+  var _hisProvider;
   var btnDisabled;
   @override
   void initState() {
@@ -60,7 +60,7 @@ class _FriendProfileState extends State<FriendProfile> {
   }
 
   Widget _userProfileWidget() {
-    _historydataProvider.getUserEmailHistorydata(widget.user.email);
+    _hisProvider.getUserEmailHistorydata(widget.user.email);
     return SingleChildScrollView(
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -203,29 +203,28 @@ class _FriendProfileState extends State<FriendProfile> {
     if (isLiked == true) {
       UserLike(
               liked_email: User.email,
-              user_email: _userdataProvider.userdata.email,
+              user_email: _userProvider.userdata.email,
               status: "remove",
               disorlike: "like")
           .patchUserLike();
-      _userdataProvider.patchUserLikedata(User, "remove");
+      _userProvider.patchUserLikedata(User, "remove");
       return false;
     } else {
       UserLike(
               liked_email: User.email,
-              user_email: _userdataProvider.userdata.email,
+              user_email: _userProvider.userdata.email,
               status: "append",
               disorlike: "like")
           .patchUserLike();
-      _userdataProvider.patchUserLikedata(User, "append");
+      _userProvider.patchUserLikedata(User, "append");
       return !isLiked;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    _historydataProvider =
-        Provider.of<HistorydataProvider>(context, listen: false);
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     return Scaffold(
         appBar: _appbarWidget(),
         body: _userProfileWidget(),

@@ -41,9 +41,9 @@ class _FeedState extends State<Feed> {
         padding: const EdgeInsets.all(5.0))
   };
 
-  var _historydataAll;
+  var _hisProvider;
   var _historydata;
-  var _userdataProvider;
+  var _userProvider;
   var _historyCommentCtrl;
   final _pageController = ScrollController();
   var _final_history_id;
@@ -75,7 +75,7 @@ class _FeedState extends State<Feed> {
               .then((data) => {
                     if (data.sdbdatas.isEmpty != true)
                       {
-                        _historydataAll.addHistorydataPage(data),
+                        _hisProvider.addHistorydataPage(data),
                         if (context != null)
                           {
                             for (var history in data.sdbdatas)
@@ -108,8 +108,8 @@ class _FeedState extends State<Feed> {
 
   @override
   Widget build(BuildContext context) {
-    _historydataAll = Provider.of<HistorydataProvider>(context, listen: false);
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
 
     return Scaffold(
       backgroundColor: Color(0xFF101012),
@@ -137,17 +137,17 @@ class _FeedState extends State<Feed> {
                 ],
               ),
               backgroundColor: Color(0xFF101012))),
-      body: _userdataProvider.userdata != null
+      body: _userProvider.userdata != null
           ? Center(child: _feedCardList(context))
           : Center(child: CircularProgressIndicator()),
     );
   }
 
   Future<void> _onRefresh() {
-    _historydataAll.getFriendsHistorydata();
-    _historydataAll.getdata();
-    _historydataAll.getCommentAll();
-    _historydataAll.getHistorydataAll();
+    _hisProvider.getFriendsHistorydata();
+    _hisProvider.getdata();
+    _hisProvider.getCommentAll();
+    _hisProvider.getHistorydataAll();
     return Future<void>.value();
   }
 
@@ -244,8 +244,7 @@ class _FeedState extends State<Feed> {
 
   void _feedController(_feedListCtrl) {
     if (_feedListCtrl == 2) {
-      _historydata =
-          _historydataAll.historydataFriends.sdbdatas.where((sdbdata) {
+      _historydata = _hisProvider.historydataFriends.sdbdatas.where((sdbdata) {
         if (sdbdata.isVisible == true) {
           return true;
         } else {
@@ -253,7 +252,7 @@ class _FeedState extends State<Feed> {
         }
       }).toList();
     } else if (_feedListCtrl == 1) {
-      _historydata = _historydataAll.historydataAll.sdbdatas.where((sdbdata) {
+      _historydata = _hisProvider.historydataAll.sdbdatas.where((sdbdata) {
         if (sdbdata.isVisible == true) {
           return true;
         } else {
@@ -261,7 +260,7 @@ class _FeedState extends State<Feed> {
         }
       }).toList();
     } else if (_feedListCtrl == 3) {
-      _historydata = _historydataAll.historydata.sdbdatas;
+      _historydata = _hisProvider.historydata.sdbdatas;
     }
   }
 

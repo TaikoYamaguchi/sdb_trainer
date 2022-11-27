@@ -33,14 +33,14 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
   var btnDisabled;
   var _tapPosition;
   late Map<DateTime, List<historyModel.SDBdata>> selectedEvents;
-  var _userdataProvider;
-  var _exercisesdataProvider;
+  var _userProvider;
+  var _exProvider;
   var _PopProvider;
-  var _workoutdataProvider;
+  var _workoutProvider;
   TextEditingController _exercisenoteCtrl = TextEditingController(text: '');
   bool editing = false;
   var _exercises;
-  var _historydataProvider;
+  var _hisProvider;
   var selectedItem = '기타';
   var selectedItem2 = '기타';
   var _customExUsed = false;
@@ -168,7 +168,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                         width: MediaQuery.of(context).size.width / 5,
                         child: Center(
                           child: Text(
-                              '${provier.exercisesdata.exercises[widget.eindex].onerm.toStringAsFixed(0)}${_userdataProvider.userdata.weight_unit}',
+                              '${provier.exercisesdata.exercises[widget.eindex].onerm.toStringAsFixed(0)}${_userProvider.userdata.weight_unit}',
                               style: TextStyle(color: Colors.white)),
                         ),
                       ),
@@ -189,7 +189,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                         width: MediaQuery.of(context).size.width / 5,
                         child: Center(
                           child: Text(
-                              '${provier.exercisesdata.exercises[widget.eindex].goal.toStringAsFixed(0)}${_userdataProvider.userdata.weight_unit}',
+                              '${provier.exercisesdata.exercises[widget.eindex].goal.toStringAsFixed(0)}${_userProvider.userdata.weight_unit}',
                               style: TextStyle(color: Colors.white)),
                         ),
                       ),
@@ -230,7 +230,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                               ? Container(
                                   child: IconButton(
                                     onPressed: () {
-                                      _exercisesdataProvider
+                                      _exProvider
                                           .exercisesdata
                                           .exercises[widget.eindex]
                                           .note = _exercisenoteCtrl.text;
@@ -286,8 +286,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
 
   void _postExerciseCheck() async {
     ExerciseEdit(
-            user_email: _userdataProvider.userdata.email,
-            exercises: _exercisesdataProvider.exercisesdata.exercises)
+            user_email: _userProvider.userdata.email,
+            exercises: _exProvider.exercisesdata.exercises)
         .editExercise()
         .then((data) => data["user_email"] != null
             ? {showToast("수정 완료")}
@@ -300,19 +300,19 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
         builder: (BuildContext context) {
-          List<String> options = [..._exercisesdataProvider.options];
+          List<String> options = [..._exProvider.options];
           options.remove('All');
-          List<String> options2 = [..._exercisesdataProvider.options2];
+          List<String> options2 = [..._exProvider.options2];
           options2.remove('All');
           return SingleChildScrollView(
             child: StatefulBuilder(
                 builder: (BuildContext context, StateSetter mystate) {
-              _customExNameCtrl.text = _exercisesdataProvider
-                  .exercisesdata.exercises[widget.eindex].name;
-              selectedItem = _exercisesdataProvider
-                  .exercisesdata.exercises[widget.eindex].target;
-              selectedItem2 = _exercisesdataProvider
-                  .exercisesdata.exercises[widget.eindex].category;
+              _customExNameCtrl.text =
+                  _exProvider.exercisesdata.exercises[widget.eindex].name;
+              selectedItem =
+                  _exProvider.exercisesdata.exercises[widget.eindex].target;
+              selectedItem2 =
+                  _exProvider.exercisesdata.exercises[widget.eindex].category;
               return Container(
                 padding: EdgeInsets.all(12.0),
                 height: 390,
@@ -336,7 +336,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                     SizedBox(height: 20),
                     TextField(
                       onChanged: (value) {
-                        _exercisesdataProvider.exercisesdata.exercises
+                        _exProvider.exercisesdata.exercises
                             .indexWhere((exercise) {
                           if (exercise.name == _customExNameCtrl.text) {
                             mystate(() {
@@ -513,7 +513,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
             ),
             onPressed: () {
               if (_customExUsed == false && _customExNameCtrl.text != "") {
-                _exercisesdataProvider.addExdata(Exercises(
+                _exProvider.addExdata(Exercises(
                     name: _customExNameCtrl.text,
                     onerm: 0,
                     goal: 0,
@@ -534,8 +534,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
 
   Widget _commentWidget() {
     _exercisenoteCtrl.text =
-        _exercisesdataProvider.exercisesdata.exercises[widget.eindex].note ??
-            '';
+        _exProvider.exercisesdata.exercises[widget.eindex].note ?? '';
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: TextFormField(
@@ -623,9 +622,9 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
 
   void _editWorkoutCheck() async {
     WorkoutEdit(
-            user_email: _userdataProvider.userdata.email,
-            id: _workoutdataProvider.workoutdata.id,
-            routinedatas: _workoutdataProvider.workoutdata.routinedatas)
+            user_email: _userProvider.userdata.email,
+            id: _workoutProvider.workoutdata.id,
+            routinedatas: _workoutProvider.workoutdata.routinedatas)
         .editWorkout()
         .then((data) => data["user_email"] != null
             ? [showToast("done!")]
@@ -672,11 +671,11 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                 itemBuilder: (BuildContext _context, int index) {
                   return GestureDetector(
                     onTap: () {
-                      _workoutdataProvider.addexAt(
+                      _workoutProvider.addexAt(
                           provider.workoutdata.routinedatas.indexWhere(
                               (e) => e.name == routinelist[index].name),
                           new wod.Exercises(
-                              name: _exercisesdataProvider
+                              name: _exProvider
                                   .exercisesdata.exercises[widget.eindex].name,
                               sets: wod.Setslist().setslist,
                               rest: 90));
@@ -862,7 +861,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                   SizedBox(height: 20),
                   TextField(
                     onChanged: (value) {
-                      _workoutdataProvider.workoutdata.routinedatas
+                      _workoutProvider.workoutdata.routinedatas
                           .indexWhere((routine) {
                         if (routine.name == _workoutNameCtrl.text) {
                           setState(() {
@@ -927,7 +926,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
             ),
             onPressed: () {
               if (!_customExUsed && _workoutNameCtrl.text != "") {
-                _workoutdataProvider.addroutine(new wod.Routinedatas(
+                _workoutProvider.addroutine(new wod.Routinedatas(
                     name: _workoutNameCtrl.text,
                     mode: 0,
                     exercises: [],
@@ -944,14 +943,13 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
 
   void _getChartSourcefromDay() async {
     _sdbChartData = [];
-    if (_historydataProvider.historydata == null) {
+    if (_hisProvider.historydata == null) {
       await initialHistorydataGet();
     }
-    var _sdbChartDataExample = _historydataProvider.historydata.sdbdatas
+    var _sdbChartDataExample = _hisProvider.historydata.sdbdatas
         .map((name) => name.exercises
             .where((name) => name.name ==
-                    _exercisesdataProvider
-                        .exercisesdata!.exercises[widget.eindex].name
+                    _exProvider.exercisesdata!.exercises[widget.eindex].name
                 ? true
                 : false)
             .toList())
@@ -998,9 +996,9 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                 _delete = !_delete;
               });
 
-              _exercisesdataProvider.removeExdata(widget.eindex);
+              _exProvider.removeExdata(widget.eindex);
               _postExerciseCheck();
-              _exercisesdataProvider.settestdata_d();
+              _exProvider.settestdata_d();
 
               Navigator.of(context, rootNavigator: true).pop();
               Navigator.of(context).pop();
@@ -1111,7 +1109,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
     return ListView.separated(
         itemBuilder: (BuildContext _context, int index) {
           return _onechartExerciseWidget(
-              exercises[index], 0, _userdataProvider.userdata, true, index);
+              exercises[index], 0, _userProvider.userdata, true, index);
         },
         separatorBuilder: (BuildContext _context, int index) {
           return Container(
@@ -1225,7 +1223,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                   Container(
                       width: 70,
                       child: Text(
-                        "Weight(${_userdataProvider.userdata.weight_unit})",
+                        "Weight(${_userProvider.userdata.weight_unit})",
                         style: TextStyle(
                           color: Colors.grey,
                           fontSize: 14,
@@ -1354,14 +1352,11 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
 
   @override
   Widget build(BuildContext context) {
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _exercisesdataProvider =
-        Provider.of<ExercisesdataProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     _chartIndex = Provider.of<ChartIndexProvider>(context, listen: false);
-    _workoutdataProvider =
-        Provider.of<WorkoutdataProvider>(context, listen: false);
-    _historydataProvider =
-        Provider.of<HistorydataProvider>(context, listen: false);
+    _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
+    _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
     _getChartSourcefromDay();
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
 
@@ -1385,8 +1380,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                   floating: false,
                   pinned: true,
                   actions: [
-                    _exercisesdataProvider.exercisesdata
-                                .exercises[widget.eindex].custom &&
+                    _exProvider.exercisesdata.exercises[widget.eindex].custom &&
                             !widget.isroutine
                         ? Container(
                             child: IconButton(
@@ -1425,7 +1419,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                       children: [
                         Container(
                             child: Text(
-                          _exercisesdataProvider
+                          _exProvider
                               .exercisesdata.exercises[widget.eindex].name,
                           style: TextStyle(color: Colors.white, fontSize: 30),
                         )),

@@ -23,12 +23,12 @@ class RoutineBank extends StatefulWidget {
 
 class _RoutineBankState extends State<RoutineBank> {
   var _famousdataProvider;
-  var _workoutdataProvider;
-  var _historydataProvider;
+  var _workoutProvider;
+  var _hisProvider;
   var _routinetimeProvider;
   var _PopProvider;
-  var _userdataProvider;
-  var _exercisesdataProvider;
+  var _userProvider;
+  var _exProvider;
 
   Widget famous_pg() {
     return Column(
@@ -407,7 +407,7 @@ class _RoutineBankState extends State<RoutineBank> {
   }
 
   bool onIsLikedCheck(program) {
-    if (program.like.contains(_userdataProvider.userdata.email)) {
+    if (program.like.contains(_userProvider.userdata.email)) {
       return true;
     } else {
       return false;
@@ -418,35 +418,33 @@ class _RoutineBankState extends State<RoutineBank> {
     if (isLiked == true) {
       FamousLike(
               famous_id: program.id,
-              user_email: _userdataProvider.userdata.email,
+              user_email: _userProvider.userdata.email,
               status: "remove",
               disorlike: "like")
           .patchFamousLike();
       _famousdataProvider.patchFamousLikedata(
-          program, _userdataProvider.userdata.email, "remove");
+          program, _userProvider.userdata.email, "remove");
       return false;
     } else {
       FamousLike(
               famous_id: program.id,
-              user_email: _userdataProvider.userdata.email,
+              user_email: _userProvider.userdata.email,
               status: "append",
               disorlike: "like")
           .patchFamousLike();
       _famousdataProvider.patchFamousLikedata(
-          program, _userdataProvider.userdata.email, "append");
+          program, _userProvider.userdata.email, "append");
       return !isLiked;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _famousdataProvider =
         Provider.of<FamousdataProvider>(context, listen: false);
-    _workoutdataProvider =
-        Provider.of<WorkoutdataProvider>(context, listen: false);
-    _exercisesdataProvider =
-        Provider.of<ExercisesdataProvider>(context, listen: false);
+    _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
+    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
     return famous_body();
   }

@@ -27,9 +27,9 @@ class FeedFriendDislikeEdit extends StatefulWidget {
 class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
   var _testdata0;
   late var _testdata = _testdata0;
-  var _exercisesdataProvider;
+  var _exProvider;
   var _usersdata;
-  var _userdataProvider;
+  var _userProvider;
   var friendsInputSwitch = false;
   var btnDisabled;
 
@@ -68,7 +68,7 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
         child: Column(children: [
           Consumer<UserdataProvider>(builder: (builder, provider, child) {
             return Expanded(
-              child: _userdataProvider.userdata.dislike.isEmpty
+              child: _userProvider.userdata.dislike.isEmpty
                   ? Container(
                       color: Color(0xFF101012),
                       child: Center(
@@ -79,7 +79,7 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
                   : ListView.separated(
                       itemBuilder: (BuildContext _context, int index) {
                         return _dislikeListWidget(
-                            _userdataProvider.userdata.dislike[index]);
+                            _userProvider.userdata.dislike[index]);
                       },
                       separatorBuilder: (BuildContext _context, int index) {
                         return Container(
@@ -94,7 +94,7 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
                           ),
                         );
                       },
-                      itemCount: _userdataProvider.userdata.dislike.length,
+                      itemCount: _userProvider.userdata.dislike.length,
                     ),
             );
           }),
@@ -102,7 +102,7 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
   }
 
   Widget _dislikeListWidget(email) {
-    User user = _userdataProvider.userFriendsAll.userdatas
+    User user = _userProvider.userFriendsAll.userdatas
         .where((user) => user.email == email)
         .toList()[0];
     return Container(
@@ -171,7 +171,7 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
   }
 
   bool onIsLikedCheck(User) {
-    if (_userdataProvider.userdata.dislike.contains(User.email)) {
+    if (_userProvider.userdata.dislike.contains(User.email)) {
       return true;
     } else {
       return false;
@@ -182,32 +182,31 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
     if (isLiked == true) {
       var user = UserLike(
               liked_email: User.email,
-              user_email: _userdataProvider.userdata.email,
+              user_email: _userProvider.userdata.email,
               status: "remove",
               disorlike: "dislike")
           .patchUserLike();
-      _userdataProvider.patchUserDislikedata(User.email, "remove");
+      _userProvider.patchUserDislikedata(User.email, "remove");
       return false;
     } else {
       var user = UserLike(
               liked_email: User.email,
-              user_email: _userdataProvider.userdata.email,
+              user_email: _userProvider.userdata.email,
               status: "append",
               disorlike: "dislike")
           .patchUserLike();
-      _userdataProvider.patchUserDislikedata(User.email, "append");
+      _userProvider.patchUserDislikedata(User.email, "append");
       return !isLiked;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    _exercisesdataProvider =
-        Provider.of<ExercisesdataProvider>(context, listen: false);
-    _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
+    _testdata0 = _exProvider.exercisesdata.exercises;
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     if (friendsInputSwitch == false) {
-      _usersdata = _userdataProvider.userFriendsAll;
+      _usersdata = _userProvider.userFriendsAll;
     }
 
     return WillPopScope(

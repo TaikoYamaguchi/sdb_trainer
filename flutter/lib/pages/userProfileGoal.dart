@@ -16,8 +16,8 @@ class ProfileGoal extends StatefulWidget {
 
 class _ProfileGoalState extends State<ProfileGoal> {
   bool isLoading = false;
-  var _userdataProvider;
-  var _exercisesdataProvider;
+  var _userProvider;
+  var _exProvider;
   var _userNicknameCtrl;
   var _exerciseList;
 
@@ -31,10 +31,9 @@ class _ProfileGoalState extends State<ProfileGoal> {
 
   @override
   Widget build(BuildContext context) {
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _exercisesdataProvider =
-        Provider.of<ExercisesdataProvider>(context, listen: false);
-    _exerciseList = _exercisesdataProvider.exercisesdata.exercises;
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
+    _exerciseList = _exProvider.exercisesdata.exercises;
 
     return Consumer<PopProvider>(builder: (Builder, provider, child) {
       bool _popable = provider.isprostacking;
@@ -245,13 +244,12 @@ class _ProfileGoalState extends State<ProfileGoal> {
 
   void _postExerciseCheck() async {
     ExerciseEdit(
-            user_email: _userdataProvider.userdata.email,
-            exercises: _exerciseList)
+            user_email: _userProvider.userdata.email, exercises: _exerciseList)
         .editExercise()
         .then((data) => data["user_email"] != null
             ? {
                 showToast("수정 완료"),
-                _exercisesdataProvider.getdata(),
+                _exProvider.getdata(),
                 Navigator.pop(context)
               }
             : showToast("입력을 확인해주세요"));

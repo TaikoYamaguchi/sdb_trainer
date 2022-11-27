@@ -13,8 +13,8 @@ class ProfileNickname extends StatefulWidget {
 
 class _ProfileNicknameState extends State<ProfileNickname> {
   bool isLoading = false;
-  var _userdataProvider;
-  var _historydataProvider;
+  var _userProvider;
+  var _hisProvider;
   bool _isNickNameused = false;
   TextEditingController _userNicknameCtrl = TextEditingController(text: "");
 
@@ -25,9 +25,8 @@ class _ProfileNicknameState extends State<ProfileNickname> {
 
   @override
   Widget build(BuildContext context) {
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _historydataProvider =
-        Provider.of<HistorydataProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
     return Scaffold(appBar: _appbarWidget(), body: _signupProfileWidget());
   }
 
@@ -86,7 +85,7 @@ class _ProfileNicknameState extends State<ProfileNickname> {
   Widget _nicknameWidget() {
     return TextFormField(
       onChanged: (text) {
-        if (_userdataProvider.userFriendsAll.userdatas
+        if (_userProvider.userFriendsAll.userdatas
                 .where((user) {
                   if (user.nickname == text.toString()) {
                     return true;
@@ -109,7 +108,7 @@ class _ProfileNicknameState extends State<ProfileNickname> {
       style: TextStyle(color: Colors.white),
       autofocus: true,
       decoration: InputDecoration(
-        hintText: _userdataProvider.userdata.nickname,
+        hintText: _userProvider.userdata.nickname,
         hintStyle: TextStyle(color: Colors.white),
         labelText: _isNickNameused == false ? "닉네임" : "사용 불가 닉네임",
         labelStyle: TextStyle(
@@ -154,23 +153,23 @@ class _ProfileNicknameState extends State<ProfileNickname> {
   void _editCheck() async {
     if (_userNicknameCtrl.text != "" && _isNickNameused == false) {
       UserEdit(
-              userEmail: _userdataProvider.userdata.email,
-              userName: _userdataProvider.userdata.username,
+              userEmail: _userProvider.userdata.email,
+              userName: _userProvider.userdata.username,
               userNickname: _userNicknameCtrl.text,
-              userHeight: _userdataProvider.userdata.height.toString(),
-              userWeight: _userdataProvider.userdata.weight.toString(),
-              userHeightUnit: _userdataProvider.userdata.height_unit,
-              userWeightUnit: _userdataProvider.userdata.weight_unit,
-              userImage: _userdataProvider.userdata.image,
-              userFavorExercise: _userdataProvider.userdata.favor_exercise)
+              userHeight: _userProvider.userdata.height.toString(),
+              userWeight: _userProvider.userdata.weight.toString(),
+              userHeightUnit: _userProvider.userdata.height_unit,
+              userWeightUnit: _userProvider.userdata.weight_unit,
+              userImage: _userProvider.userdata.image,
+              userFavorExercise: _userProvider.userdata.favor_exercise)
           .editUser()
           .then((data) => data["username"] != null
               ? {
                   showToast("수정 완료"),
-                  _userdataProvider.getdata(),
-                  _historydataProvider.getdata(),
-                  _historydataProvider.getHistorydataAll(),
-                  _historydataProvider.getCommentAll(),
+                  _userProvider.getdata(),
+                  _hisProvider.getdata(),
+                  _hisProvider.getHistorydataAll(),
+                  _hisProvider.getCommentAll(),
                   Navigator.pop(context)
                 }
               : showToast("수정할 수 없습니다"));

@@ -30,7 +30,7 @@ class _ProfileState extends State<Profile> {
   final ImagePicker _picker = ImagePicker();
   var _selectImage;
   File? _image;
-  var _userdataProvider;
+  var _userProvider;
   var _PopProvider;
   var _loginState;
   var _PrefsProvider;
@@ -39,7 +39,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     _loginState = Provider.of<LoginPageProvider>(context, listen: false);
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
     _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
@@ -70,7 +70,7 @@ class _ProfileState extends State<Profile> {
                             style: TextStyle(color: Colors.white))))
               ],
               backgroundColor: Color(0xFF101012))),
-      body: _userdataProvider.userdata != null
+      body: _userProvider.userdata != null
           ? _profile(context)
           : Center(child: CircularProgressIndicator()),
       backgroundColor: Color(0xFF101012),
@@ -83,7 +83,7 @@ class _ProfileState extends State<Profile> {
     if (selectImage != null) {
       dynamic sendData = selectImage.path;
       UserImageEdit(file: sendData).patchUserImage().then((data) {
-        _userdataProvider.setUserdata(data);
+        _userProvider.setUserdata(data);
       });
     }
   }
@@ -94,7 +94,7 @@ class _ProfileState extends State<Profile> {
     if (_selectImage != null) {
       dynamic sendData = _selectImage.path;
       UserImageEdit(file: sendData).patchUserImage().then((data) {
-        _userdataProvider.setUserdata(data);
+        _userProvider.setUserdata(data);
       });
     }
 
@@ -218,7 +218,7 @@ class _ProfileState extends State<Profile> {
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(_userdataProvider.userdata.nickname,
+                          Text(_userProvider.userdata.nickname,
                               style: TextStyle(color: Colors.white)),
                           Icon(Icons.chevron_right, color: Colors.white),
                         ]));
@@ -263,7 +263,7 @@ class _ProfileState extends State<Profile> {
               onTap: () {
                 _displayPhotoDialog();
               },
-              child: _userdataProvider.userdata.image == ""
+              child: _userProvider.userdata.image == ""
                   ? Icon(
                       Icons.account_circle,
                       color: Colors.grey,
@@ -272,7 +272,7 @@ class _ProfileState extends State<Profile> {
                   : Consumer<UserdataProvider>(
                       builder: (builder, rpovider, child) {
                       return CachedNetworkImage(
-                        imageUrl: _userdataProvider.userdata.image,
+                        imageUrl: _userProvider.userdata.image,
                         imageBuilder: (context, imageProivder) => Container(
                           height: 200,
                           width: 200,
@@ -325,10 +325,10 @@ class _ProfileState extends State<Profile> {
 
   void _userLogOut() {
     print("loggggggout");
-    _userdataProvider.setUserKakaoEmail(null);
-    _userdataProvider.setUserKakaoName(null);
-    _userdataProvider.setUserKakaoImageUrl(null);
-    _userdataProvider.setUserKakaoGender(null);
+    _userProvider.setUserKakaoEmail(null);
+    _userProvider.setUserKakaoName(null);
+    _userProvider.setUserKakaoImageUrl(null);
+    _userProvider.setUserKakaoGender(null);
     UserLogOut.logOut();
     _loginState.change(false);
     _loginState.changeSignup(false);

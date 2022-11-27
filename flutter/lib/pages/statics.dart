@@ -37,14 +37,14 @@ class _CalendarState extends State<Calendar> {
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
-  var _userdataProvider;
+  var _userProvider;
   var _chartIndex;
   late TooltipBehavior _tooltipBehavior;
   late ZoomPanBehavior _zoomPanBehavior;
   PageController? _isPageController;
   var _tapPosition;
-  var _historydataProvider;
-  var _exercisesdataProvider;
+  var _hisProvider;
+  var _exProvider;
   var _exSearchCtrlBool = false;
   var _exCalendarSearchCtrlBool = false;
   TextEditingController _exSearchCtrl = TextEditingController(text: "");
@@ -135,7 +135,7 @@ class _CalendarState extends State<Calendar> {
 
     final _initExercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
-    final _workoutdataProvider =
+    final _initworkoutProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
 
     await [
@@ -143,7 +143,7 @@ class _CalendarState extends State<Calendar> {
       _initUserdataProvider.getUsersFriendsAll(),
       _initHistorydataProvider.getdata(),
       _famousdataProvider.getdata(),
-      _workoutdataProvider.getdata(),
+      _initworkoutProvider.getdata(),
       _initExercisesdataProvider.getdata(),
     ];
     _initHistorydataProvider.getFriendsHistorydata();
@@ -163,37 +163,27 @@ class _CalendarState extends State<Calendar> {
   List<SDBdata> _getEventsfromDay(DateTime date) {
     String date_calendar = DateFormat('yyyy-MM-dd').format(date);
     selectedEvents = {};
-    if (_historydataProvider.historydata != null &&
-        _chartIndex.staticIndex == 0) {
-      for (int i = 0;
-          i < _historydataProvider.historydata!.sdbdatas.length;
-          i++) {
-        if (_historydataProvider.historydata!.sdbdatas[i].date!
-                .substring(0, 10) ==
+    if (_hisProvider.historydata != null && _chartIndex.staticIndex == 0) {
+      for (int i = 0; i < _hisProvider.historydata!.sdbdatas.length; i++) {
+        if (_hisProvider.historydata!.sdbdatas[i].date!.substring(0, 10) ==
             date_calendar) {
           if (selectedEvents[date] != null) {
-            selectedEvents[date]!
-                .add(_historydataProvider.historydata!.sdbdatas[i]);
+            selectedEvents[date]!.add(_hisProvider.historydata!.sdbdatas[i]);
           } else {
-            selectedEvents[date] = [
-              _historydataProvider.historydata!.sdbdatas[i]
-            ];
+            selectedEvents[date] = [_hisProvider.historydata!.sdbdatas[i]];
           }
         }
       }
-    } else if (_historydataProvider.historydata != null &&
+    } else if (_hisProvider.historydata != null &&
         _chartIndex.staticIndex != 0) {
-      for (int i = 0;
-          i < _historydataProvider.historydata!.sdbdatas.length;
-          i++) {
-        if (_historydataProvider.historydata!.sdbdatas[i].date!
-                .substring(0, 10) ==
+      for (int i = 0; i < _hisProvider.historydata!.sdbdatas.length; i++) {
+        if (_hisProvider.historydata!.sdbdatas[i].date!.substring(0, 10) ==
             date_calendar) {
           if (selectedEvents[date] != null) {
-            if (_historydataProvider.historydata!.sdbdatas[i].exercises
+            if (_hisProvider.historydata!.sdbdatas[i].exercises
                     .indexWhere((exercise) {
                   if (exercise.name ==
-                      _exercisesdataProvider.exercisesdata!
+                      _exProvider.exercisesdata!
                           .exercises[_chartIndex.staticIndex - 1].name) {
                     return true;
                   } else {
@@ -201,14 +191,13 @@ class _CalendarState extends State<Calendar> {
                   }
                 }) !=
                 -1) {
-              selectedEvents[date]!
-                  .add(_historydataProvider.historydata!.sdbdatas[i]);
+              selectedEvents[date]!.add(_hisProvider.historydata!.sdbdatas[i]);
             }
           } else {
-            if (_historydataProvider.historydata!.sdbdatas[i].exercises
+            if (_hisProvider.historydata!.sdbdatas[i].exercises
                     .indexWhere((exercise) {
                   if (exercise.name ==
-                      _exercisesdataProvider.exercisesdata!
+                      _exProvider.exercisesdata!
                           .exercises[_chartIndex.staticIndex - 1].name) {
                     return true;
                   } else {
@@ -216,9 +205,7 @@ class _CalendarState extends State<Calendar> {
                   }
                 }) !=
                 -1) {
-              selectedEvents[date] = [
-                _historydataProvider.historydata!.sdbdatas[i]
-              ];
+              selectedEvents[date] = [_hisProvider.historydata!.sdbdatas[i]];
             }
           }
         }
@@ -229,13 +216,13 @@ class _CalendarState extends State<Calendar> {
 
   void _getChartSourcefromDay() async {
     _sdbChartData = [];
-    if (_historydataProvider.historydata == null) {
+    if (_hisProvider.historydata == null) {
       await initialHistorydataGet();
     }
-    var _sdbChartDataExample = _historydataProvider.historydata.sdbdatas
+    var _sdbChartDataExample = _hisProvider.historydata.sdbdatas
         .map((name) => name.exercises
             .where((name) => name.name ==
-                    _exercisesdataProvider
+                    _exProvider
                         .exercisesdata!.exercises[_chartIndex.chartIndex].name
                 ? true
                 : false)
@@ -403,15 +390,14 @@ class _CalendarState extends State<Calendar> {
                       axisLine: const AxisLine(width: 0),
                       majorTickLines: const MajorTickLines(size: 0),
                       majorGridLines: const MajorGridLines(width: 0),
-                      minimum: _userdataProvider.userdata.bodyStats!.length == 0
+                      minimum: _userProvider.userdata.bodyStats!.length == 0
                           ? 0
-                          : _userdataProvider.userdata.bodyStats!.length > 1
-                              ? _userdataProvider.userdata.bodyStats!
+                          : _userProvider.userdata.bodyStats!.length > 1
+                              ? _userProvider.userdata.bodyStats!
                                   .reduce((BodyStat curr, BodyStat next) =>
                                       curr.weight! < next.weight! ? curr : next)
                                   .weight
-                              : _userdataProvider
-                                  .userdata.bodyStats![0].weight),
+                              : _userProvider.userdata.bodyStats![0].weight),
                   tooltipBehavior: _tooltipBehavior,
                   zoomPanBehavior: _zoomPanBehavior,
                   legend: Legend(
@@ -423,7 +409,7 @@ class _CalendarState extends State<Calendar> {
                       isVisibleInLegend: true,
                       color: Colors.white54,
                       name: "목표",
-                      dataSource: _userdataProvider.userdata.bodyStats!,
+                      dataSource: _userProvider.userdata.bodyStats!,
                       xValueMapper: (BodyStat sales, _) =>
                           DateTime.parse(sales.date!),
                       yValueMapper: (BodyStat sales, _) => sales.weight_goal!,
@@ -445,14 +431,14 @@ class _CalendarState extends State<Calendar> {
                       name: "몸무게",
                       color: Theme.of(context).primaryColor,
                       width: 5,
-                      dataSource: _userdataProvider.userdata.bodyStats!,
+                      dataSource: _userProvider.userdata.bodyStats!,
                       xValueMapper: (BodyStat sales, _) =>
                           DateTime.parse(sales.date!),
                       yValueMapper: (BodyStat sales, _) => sales.weight!,
                     ),
                   ])),
           SizedBox(height: 12),
-          _bodyWeightListWidget(_userdataProvider.userdata.bodyStats)
+          _bodyWeightListWidget(_userProvider.userdata.bodyStats)
         ],
       ));
     });
@@ -460,9 +446,9 @@ class _CalendarState extends State<Calendar> {
 
   void _displayBodyWeightDialog() {
     var _userWeightController = TextEditingController(
-        text: _userdataProvider.userdata.bodyStats.last.weight.toString());
+        text: _userProvider.userdata.bodyStats.last.weight.toString());
     var _userWeightGoalController = TextEditingController(
-        text: _userdataProvider.userdata.bodyStats.last.weight_goal.toString());
+        text: _userProvider.userdata.bodyStats.last.weight_goal.toString());
 
     DateTime _toDay = DateTime.now();
     showDialog(
@@ -566,7 +552,7 @@ class _CalendarState extends State<Calendar> {
                     _displayBodyWeightPushDialog(
                         double.parse(_userWeightController.text),
                         double.parse(_userWeightGoalController.text));
-                    _userdataProvider.setUserWeightAdd(
+                    _userProvider.setUserWeightAdd(
                         _toDay.toString(),
                         double.parse(_userWeightController.text),
                         double.parse(_userWeightGoalController.text));
@@ -580,10 +566,9 @@ class _CalendarState extends State<Calendar> {
 
   void _displayEditBodyWeightDialog(index) {
     var _userWeightController = TextEditingController(
-        text: _userdataProvider.userdata.bodyStats[index].weight.toString());
+        text: _userProvider.userdata.bodyStats[index].weight.toString());
     var _userWeightGoalController = TextEditingController(
-        text:
-            _userdataProvider.userdata.bodyStats[index].weight_goal.toString());
+        text: _userProvider.userdata.bodyStats[index].weight_goal.toString());
 
     DateTime _toDay = DateTime.now();
     showDialog(
@@ -684,7 +669,7 @@ class _CalendarState extends State<Calendar> {
                       style: TextStyle(fontSize: 20.0, color: Colors.white)),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
-                    _userdataProvider.setUserWeightEdit(
+                    _userProvider.setUserWeightEdit(
                         index,
                         double.parse(_userWeightController.text),
                         double.parse(_userWeightGoalController.text));
@@ -699,48 +684,47 @@ class _CalendarState extends State<Calendar> {
   void _displayBodyWeightPushDialog(_userWeight, _userGoal) {
     var _weightChange = "";
     var _weightSuccess = "";
-    if ((_userWeight - _userdataProvider.userdata.bodyStats.last.weight) > 0) {
+    if ((_userWeight - _userProvider.userdata.bodyStats.last.weight) > 0) {
       _weightChange = "+" +
-          (_userWeight - _userdataProvider.userdata.bodyStats.last.weight)
+          (_userWeight - _userProvider.userdata.bodyStats.last.weight)
               .toStringAsFixed(1) +
           "kg 증가했어요";
-      if (_userdataProvider.userdata.bodyStats.last.weight >
-          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+      if (_userProvider.userdata.bodyStats.last.weight >
+          _userProvider.userdata.bodyStats.last.weight_goal) {
         _weightSuccess = "감량에 분발이 필요해요";
-      } else if (_userdataProvider.userdata.bodyStats.last.weight <
-          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+      } else if (_userProvider.userdata.bodyStats.last.weight <
+          _userProvider.userdata.bodyStats.last.weight_goal) {
         _weightSuccess = "증량이 성공중 이에요";
-      } else if (_userdataProvider.userdata.bodyStats.last.weight ==
-          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+      } else if (_userProvider.userdata.bodyStats.last.weight ==
+          _userProvider.userdata.bodyStats.last.weight_goal) {
         _weightSuccess = "현재 몸무게를 유지해주세요";
       }
-    } else if ((_userWeight -
-            _userdataProvider.userdata.bodyStats.last.weight) <
+    } else if ((_userWeight - _userProvider.userdata.bodyStats.last.weight) <
         0) {
       _weightChange = "" +
-          (_userWeight - _userdataProvider.userdata.bodyStats.last.weight)
+          (_userWeight - _userProvider.userdata.bodyStats.last.weight)
               .toStringAsFixed(1) +
           "kg 감소했어요";
-      if (_userdataProvider.userdata.bodyStats.last.weight >
-          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+      if (_userProvider.userdata.bodyStats.last.weight >
+          _userProvider.userdata.bodyStats.last.weight_goal) {
         _weightSuccess = "감량에 성공중 이에요";
-      } else if (_userdataProvider.userdata.bodyStats.last.weight <
-          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+      } else if (_userProvider.userdata.bodyStats.last.weight <
+          _userProvider.userdata.bodyStats.last.weight_goal) {
         _weightSuccess = "증량에 분발이 필요해요";
-      } else if (_userdataProvider.userdata.bodyStats.last.weight ==
-          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+      } else if (_userProvider.userdata.bodyStats.last.weight ==
+          _userProvider.userdata.bodyStats.last.weight_goal) {
         _weightSuccess = "현재 몸무게를 유지해주세요";
       }
     } else {
       _weightChange = "몸무게가 유지 되었어요";
-      if (_userdataProvider.userdata.bodyStats.last.weight >
-          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+      if (_userProvider.userdata.bodyStats.last.weight >
+          _userProvider.userdata.bodyStats.last.weight_goal) {
         _weightSuccess = "감량에 분발이 필요해요";
-      } else if (_userdataProvider.userdata.bodyStats.last.weight <
-          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+      } else if (_userProvider.userdata.bodyStats.last.weight <
+          _userProvider.userdata.bodyStats.last.weight_goal) {
         _weightSuccess = "증량에 분발이 필요해요";
-      } else if (_userdataProvider.userdata.bodyStats.last.weight ==
-          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+      } else if (_userProvider.userdata.bodyStats.last.weight ==
+          _userProvider.userdata.bodyStats.last.weight_goal) {
         _weightSuccess = "현재 몸무게를 유지해주세요";
       }
     }
@@ -832,14 +816,14 @@ class _CalendarState extends State<Calendar> {
                   axisLine: const AxisLine(width: 0),
                   majorTickLines: const MajorTickLines(size: 0),
                   majorGridLines: const MajorGridLines(width: 0),
-                  minimum: _userdataProvider.userdata.bodyStats!.length == 0
+                  minimum: _userProvider.userdata.bodyStats!.length == 0
                       ? 0
-                      : _userdataProvider.userdata.bodyStats!.length > 1
-                          ? _userdataProvider.userdata.bodyStats!
+                      : _userProvider.userdata.bodyStats!.length > 1
+                          ? _userProvider.userdata.bodyStats!
                               .reduce((BodyStat curr, BodyStat next) =>
                                   curr.weight! < next.weight! ? curr : next)
                               .weight
-                          : _userdataProvider.userdata.bodyStats![0].weight),
+                          : _userProvider.userdata.bodyStats![0].weight),
               tooltipBehavior: _tooltipBehavior,
               zoomPanBehavior: _zoomPanBehavior,
               legend: Legend(
@@ -851,7 +835,7 @@ class _CalendarState extends State<Calendar> {
                   isVisibleInLegend: true,
                   color: Colors.white54,
                   name: "목표",
-                  dataSource: _userdataProvider.userdata.bodyStats!,
+                  dataSource: _userProvider.userdata.bodyStats!,
                   xValueMapper: (BodyStat sales, _) =>
                       DateTime.parse(sales.date!),
                   yValueMapper: (BodyStat sales, _) => sales.weight_goal!,
@@ -873,7 +857,7 @@ class _CalendarState extends State<Calendar> {
                   name: "몸무게",
                   color: Theme.of(context).primaryColor,
                   width: 5,
-                  dataSource: _userdataProvider.userdata.bodyStats!,
+                  dataSource: _userProvider.userdata.bodyStats!,
                   xValueMapper: (BodyStat sales, _) =>
                       DateTime.parse(sales.date!),
                   yValueMapper: (BodyStat sales, _) => sales.weight!,
@@ -1037,7 +1021,7 @@ class _CalendarState extends State<Calendar> {
         child: ListView.separated(
             itemBuilder: (BuildContext _context, int index) {
               return _chartExercisesWidget(exercises[index].exercises,
-                  exercises[index].id, _userdataProvider.userdata, true, index);
+                  exercises[index].id, _userProvider.userdata, true, index);
             },
             separatorBuilder: (BuildContext _context, int index) {
               return Container(
@@ -1062,7 +1046,7 @@ class _CalendarState extends State<Calendar> {
       child: ListView.separated(
           itemBuilder: (BuildContext _context, int index) {
             return _onechartExerciseWidget(
-                exercises[index], 0, _userdataProvider.userdata, true, index);
+                exercises[index], 0, _userProvider.userdata, true, index);
           },
           separatorBuilder: (BuildContext _context, int index) {
             return Container(
@@ -1150,7 +1134,7 @@ class _CalendarState extends State<Calendar> {
                 itemBuilder: (BuildContext _context, int index) {
                   return _bodyWeightListItemWidget(
                       List.from(bodyStats.reversed)[index],
-                      _userdataProvider.userdata,
+                      _userProvider.userdata,
                       true,
                       bodyStats.length - index - 1);
                 },
@@ -1262,7 +1246,7 @@ class _CalendarState extends State<Calendar> {
                                     onTap: () {
                                       Future<void>.delayed(
                                           const Duration(), // OR const Duration(milliseconds: 500),
-                                          () => _userdataProvider
+                                          () => _userProvider
                                               .setUserWeightDelete(index));
                                       ;
                                     },
@@ -1515,7 +1499,7 @@ class _CalendarState extends State<Calendar> {
                   Container(
                       width: 70,
                       child: Text(
-                        "Weight(${_userdataProvider.userdata.weight_unit})",
+                        "Weight(${_userProvider.userdata.weight_unit})",
                         style: TextStyle(
                           color: Colors.grey,
                           fontSize: 14,
@@ -1733,7 +1717,7 @@ class _CalendarState extends State<Calendar> {
                       bottomLeft: Radius.circular(20))),
               child: SfCartesianChart(
                   title: ChartTitle(
-                      text: _exercisesdataProvider.exercisesdata!
+                      text: _exProvider.exercisesdata!
                           .exercises[_chartIndex.chartIndex].name,
                       textStyle: TextStyle(color: Colors.white)),
                   plotAreaBorderWidth: 0,
@@ -1806,16 +1790,12 @@ class _CalendarState extends State<Calendar> {
 
   List<Widget> techChips() {
     List<Widget> chips = [];
-    if (_exercisesdataProvider.exercisesdata != null &&
-        _exSearchCtrl.text == "") {
-      for (int i = 0;
-          i < _exercisesdataProvider.exercisesdata!.exercises.length;
-          i++) {
+    if (_exProvider.exercisesdata != null && _exSearchCtrl.text == "") {
+      for (int i = 0; i < _exProvider.exercisesdata!.exercises.length; i++) {
         Widget item = Padding(
           padding: const EdgeInsets.only(left: 3, right: 3),
           child: ChoiceChip(
-            label:
-                Text(_exercisesdataProvider.exercisesdata!.exercises[i].name),
+            label: Text(_exProvider.exercisesdata!.exercises[i].name),
             labelStyle: TextStyle(color: Colors.white),
             selected: _chartIndex.chartIndex == i,
             selectedColor: Theme.of(context).primaryColor,
@@ -1828,16 +1808,12 @@ class _CalendarState extends State<Calendar> {
         );
         chips.add(item);
       }
-    } else if (_exercisesdataProvider.exercisesdata != null &&
-        _exSearchCtrl.text != "") {
-      for (int i = 0;
-          i < _exercisesdataProvider.exercisesdata!.exercises.length;
-          i++) {
+    } else if (_exProvider.exercisesdata != null && _exSearchCtrl.text != "") {
+      for (int i = 0; i < _exProvider.exercisesdata!.exercises.length; i++) {
         Widget item = Padding(
           padding: const EdgeInsets.only(left: 3, right: 3),
           child: ChoiceChip(
-            label:
-                Text(_exercisesdataProvider.exercisesdata!.exercises[i].name),
+            label: Text(_exProvider.exercisesdata!.exercises[i].name),
             labelStyle: TextStyle(color: Colors.white),
             selected: _chartIndex.chartIndex == i,
             selectedColor: Theme.of(context).primaryColor,
@@ -1848,13 +1824,13 @@ class _CalendarState extends State<Calendar> {
             },
           ),
         );
-        if (_exercisesdataProvider.exercisesdata!.exercises[i].name
+        if (_exProvider.exercisesdata!.exercises[i].name
             .contains(_exSearchCtrl.text)) {
           chips.add(item);
         }
       }
     } else {
-      _exercisesdataProvider.getdata();
+      _exProvider.getdata();
     }
     return chips;
   }
@@ -1876,16 +1852,14 @@ class _CalendarState extends State<Calendar> {
         ),
       )
     ];
-    if (_exercisesdataProvider.exercisesdata != null &&
-        _exCalendarSearchCtrl.text == "") {
+    if (_exProvider.exercisesdata != null && _exCalendarSearchCtrl.text == "") {
       for (int i = 1;
-          i < _exercisesdataProvider.exercisesdata!.exercises.length + 1;
+          i < _exProvider.exercisesdata!.exercises.length + 1;
           i++) {
         Widget item = Padding(
           padding: const EdgeInsets.only(left: 3, right: 3),
           child: ChoiceChip(
-            label: Text(
-                _exercisesdataProvider.exercisesdata!.exercises[i - 1].name),
+            label: Text(_exProvider.exercisesdata!.exercises[i - 1].name),
             labelStyle: TextStyle(color: Colors.white),
             selected: _chartIndex.staticIndex == i,
             selectedColor: Theme.of(context).primaryColor,
@@ -1898,16 +1872,15 @@ class _CalendarState extends State<Calendar> {
         );
         chips.add(item);
       }
-    } else if (_exercisesdataProvider.exercisesdata != null &&
+    } else if (_exProvider.exercisesdata != null &&
         _exCalendarSearchCtrl.text != "") {
       for (int i = 1;
-          i < _exercisesdataProvider.exercisesdata!.exercises.length + 1;
+          i < _exProvider.exercisesdata!.exercises.length + 1;
           i++) {
         Widget item = Padding(
           padding: const EdgeInsets.only(left: 10, right: 5),
           child: ChoiceChip(
-            label: Text(
-                _exercisesdataProvider.exercisesdata!.exercises[i - 1].name),
+            label: Text(_exProvider.exercisesdata!.exercises[i - 1].name),
             labelStyle: TextStyle(color: Colors.white),
             selected: _chartIndex.staticIndex == i,
             selectedColor: Theme.of(context).primaryColor,
@@ -1918,13 +1891,13 @@ class _CalendarState extends State<Calendar> {
             },
           ),
         );
-        if (_exercisesdataProvider.exercisesdata!.exercises[i - 1].name
+        if (_exProvider.exercisesdata!.exercises[i - 1].name
             .contains(_exCalendarSearchCtrl.text)) {
           chips.add(item);
         }
       }
     } else {
-      _exercisesdataProvider.getdata();
+      _exProvider.getdata();
     }
     return chips;
   }
@@ -1980,7 +1953,7 @@ class _CalendarState extends State<Calendar> {
               padding: EdgeInsets.all(8.0),
             ),
             onPressed: () {
-              _historydataProvider.deleteHistorydata(history_id);
+              _hisProvider.deleteHistorydata(history_id);
               HistoryDelete(history_id: history_id).deleteHistory();
               Navigator.of(context, rootNavigator: true).pop();
             },
@@ -1990,13 +1963,11 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     initializeDateFormatting('pt_BR', null);
     _chartIndex = Provider.of<ChartIndexProvider>(context, listen: false);
-    _historydataProvider =
-        Provider.of<HistorydataProvider>(context, listen: false);
-    _exercisesdataProvider =
-        Provider.of<ExercisesdataProvider>(context, listen: false);
+    _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
+    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     _getChartSourcefromDay();
     return Scaffold(
         appBar: _appbarWidget(),

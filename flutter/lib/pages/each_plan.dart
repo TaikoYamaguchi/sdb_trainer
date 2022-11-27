@@ -31,12 +31,12 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
   TextEditingController _workoutNameCtrl = TextEditingController(text: "");
   TextEditingController _weightctrl = TextEditingController(text: "");
   TextEditingController _repsctrl = TextEditingController(text: "");
-  var _workoutdataProvider;
-  var _historydataProvider;
+  var _workoutProvider;
+  var _hisProvider;
   var _routinetimeProvider;
   var _PopProvider;
-  var _userdataProvider;
-  var _exercisesdataProvider;
+  var _userProvider;
+  var _exProvider;
   var _testdata0;
   var _customRuUsed = false;
   late var _testdata = _testdata0;
@@ -97,7 +97,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
           actions: [
             IconButton(
                 onPressed: () {
-                  _workoutdataProvider
+                  _workoutProvider
                               .workoutdata.routinedatas[widget.rindex].mode ==
                           3
                       ? showToast("다운받은 루틴은 업로드 할 수 없어요")
@@ -105,7 +105,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                           context,
                           Transition(
                               child: ProgramUpload(
-                                program: _workoutdataProvider
+                                program: _workoutProvider
                                     .workoutdata.routinedatas[widget.rindex],
                               ),
                               transitionEffect:
@@ -206,7 +206,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                 SizedBox(height: 20),
                 TextField(
                   onChanged: (value) {
-                    _workoutdataProvider.workoutdata.routinedatas
+                    _workoutProvider.workoutdata.routinedatas
                         .indexWhere((routine) {
                       if (routine.name == _workoutNameCtrl.text) {
                         setState(() {
@@ -280,15 +280,15 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
   }
 
   void _editWorkoutNameCheck(newname) async {
-    _workoutdataProvider.namechange(widget.rindex, newname);
+    _workoutProvider.namechange(widget.rindex, newname);
 
     WorkoutEdit(
-            user_email: _userdataProvider.userdata.email,
-            id: _workoutdataProvider.workoutdata.id,
-            routinedatas: _workoutdataProvider.workoutdata.routinedatas)
+            user_email: _userProvider.userdata.email,
+            id: _workoutProvider.workoutdata.id,
+            routinedatas: _workoutProvider.workoutdata.routinedatas)
         .editWorkout()
         .then((data) => data["user_email"] != null
-            ? {showToast("done!"), _workoutdataProvider.getdata()}
+            ? {showToast("done!"), _workoutProvider.getdata()}
             : showToast("입력을 확인해주세요"));
   }
 
@@ -317,10 +317,10 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       constraints: BoxConstraints(),
                       onPressed: () {
                         if (plandata.progress == 0) {
-                          _workoutdataProvider.setplanprogress(
+                          _workoutProvider.setplanprogress(
                               widget.rindex, plandata.plans.length - 1);
                         } else {
-                          _workoutdataProvider.setplanprogress(
+                          _workoutProvider.setplanprogress(
                               widget.rindex, plandata.progress - 1);
                         }
                         _editWorkoutCheck();
@@ -347,10 +347,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       constraints: BoxConstraints(),
                       onPressed: () {
                         if (plandata.progress == plandata.plans.length - 1) {
-                          _workoutdataProvider.setplanprogress(
-                              widget.rindex, 0);
+                          _workoutProvider.setplanprogress(widget.rindex, 0);
                         } else {
-                          _workoutdataProvider.setplanprogress(
+                          _workoutProvider.setplanprogress(
                               widget.rindex, plandata.progress + 1);
                         }
                         _editWorkoutCheck();
@@ -370,9 +369,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                         constraints: BoxConstraints(),
                         onPressed: () {
                           if (plandata.plans.length != 1) {
-                            _workoutdataProvider.removeplanAt(widget.rindex);
+                            _workoutProvider.removeplanAt(widget.rindex);
                             if (plandata.progress != 0) {
-                              _workoutdataProvider.setplanprogress(
+                              _workoutProvider.setplanprogress(
                                   widget.rindex, plandata.progress - 1);
                             }
                             _editWorkoutCheck();
@@ -396,8 +395,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                         padding: EdgeInsets.all(5),
                         constraints: BoxConstraints(),
                         onPressed: () {
-                          _workoutdataProvider.addplanAt(widget.rindex, sample);
-                          _workoutdataProvider.setplanprogress(
+                          _workoutProvider.addplanAt(widget.rindex, sample);
+                          _workoutProvider.setplanprogress(
                               widget.rindex, plandata.progress + 1);
                           _editWorkoutCheck();
                         },
@@ -1062,7 +1061,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       _addexinput = exuniq[index].name;
                       Navigator.pop(context);
                     } else {
-                      _workoutdataProvider.planaddexAt(
+                      _workoutProvider.planaddexAt(
                           widget.rindex,
                           new Plan_Exercises(
                               name: _addexinput,
@@ -1080,12 +1079,12 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       _editWorkoutCheck();
                     }
                   } else if (isex) {
-                    _workoutdataProvider.planchangeexnameAt(
+                    _workoutProvider.planchangeexnameAt(
                         widget.rindex, where, exuniq[index].name);
                     Navigator.pop(context);
                     _editWorkoutCheck();
                   } else {
-                    _workoutdataProvider.planchangeexrefnameAt(
+                    _workoutProvider.planchangeexrefnameAt(
                         widget.rindex, where, exuniq[index].name);
                     Navigator.pop(context);
                     _editWorkoutCheck();
@@ -1120,7 +1119,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                       fontSize: 13, color: Color(0xFF717171))),
                               Expanded(child: SizedBox()),
                               Text(
-                                  "1RM: ${exuniq[index].onerm.toStringAsFixed(1)}/${exuniq[index].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
+                                  "1RM: ${exuniq[index].onerm.toStringAsFixed(1)}/${exuniq[index].goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
                                   style: TextStyle(
                                       fontSize: 13, color: Color(0xFF717171))),
                             ],
@@ -1153,11 +1152,11 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
   }
 
   void recordExercise() {
-    var exercise_all = _workoutdataProvider
+    var exercise_all = _workoutProvider
         .workoutdata
         .routinedatas[widget.rindex]
         .exercises[0]
-        .plans[_workoutdataProvider
+        .plans[_workoutProvider
             .workoutdata.routinedatas[widget.rindex].exercises[0].progress]
         .exercises;
     for (int n = 0; n < exercise_all.length; n++) {
@@ -1195,11 +1194,11 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
   void _editHistoryCheck() async {
     if (!exerciseList.isEmpty) {
       HistoryPost(
-              user_email: _userdataProvider.userdata.email,
+              user_email: _userProvider.userdata.email,
               exercises: exerciseList,
               new_record: _routinetimeProvider.routineNewRecord,
               workout_time: _routinetimeProvider.routineTime,
-              nickname: _userdataProvider.userdata.nickname)
+              nickname: _userProvider.userdata.nickname)
           .postHistory()
           .then((data) => data["user_email"] != null
               ? {
@@ -1212,10 +1211,10 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                               sdbdata: hisdata.SDBdata.fromJson(data)),
                           transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
                   _routinetimeProvider.routinecheck(widget.rindex),
-                  _routinetimeProvider.getprefs(_workoutdataProvider
+                  _routinetimeProvider.getprefs(_workoutProvider
                       .workoutdata.routinedatas[widget.rindex].name),
-                  _historydataProvider.getdata(),
-                  _historydataProvider.getHistorydataAll(),
+                  _hisProvider.getdata(),
+                  _hisProvider.getHistorydataAll(),
                   exerciseList = []
                 }
               : showToast("입력을 확인해주세요"));
@@ -1231,33 +1230,31 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
 
   void _postExerciseCheck() async {
     ExerciseEdit(
-            user_email: _userdataProvider.userdata.email, exercises: _exercises)
+            user_email: _userProvider.userdata.email, exercises: _exercises)
         .editExercise()
         .then((data) => data["user_email"] != null
-            ? {showToast("수정 완료"), _exercisesdataProvider.getdata()}
+            ? {showToast("수정 완료"), _exProvider.getdata()}
             : showToast("입력을 확인해주세요"));
   }
 
   void _editWorkoutCheck() async {
     WorkoutEdit(
-            user_email: _userdataProvider.userdata.email,
-            id: _workoutdataProvider.workoutdata.id,
-            routinedatas: _workoutdataProvider.workoutdata.routinedatas)
+            user_email: _userProvider.userdata.email,
+            id: _workoutProvider.workoutdata.id,
+            routinedatas: _workoutProvider.workoutdata.routinedatas)
         .editWorkout()
         .then((data) => data["user_email"] != null
-            ? [showToast("done!"), _workoutdataProvider.getdata()]
+            ? [showToast("done!"), _workoutProvider.getdata()]
             : showToast("입력을 확인해주세요"));
   }
 
   @override
   Widget build(BuildContext context) {
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _workoutdataProvider =
-        Provider.of<WorkoutdataProvider>(context, listen: false);
-    _exercisesdataProvider =
-        Provider.of<ExercisesdataProvider>(context, listen: false);
-    _exercises = _exercisesdataProvider.exercisesdata.exercises;
-    _testdata0 = _exercisesdataProvider.exercisesdata.exercises;
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
+    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
+    _exercises = _exProvider.exercisesdata.exercises;
+    _testdata0 = _exProvider.exercisesdata.exercises;
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);

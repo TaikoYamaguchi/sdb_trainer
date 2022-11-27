@@ -23,7 +23,7 @@ class FriendHistory extends StatefulWidget {
 }
 
 class _FriendHistoryState extends State<FriendHistory> {
-  var _userdataProvider;
+  var _userProvider;
   var btnDisabled;
   @override
   void initState() {
@@ -69,7 +69,7 @@ class _FriendHistoryState extends State<FriendHistory> {
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext _context, int index) {
           return _onechartExerciseWidget(
-              exercises[index], 0, _userdataProvider.userdata, true, index);
+              exercises[index], 0, _userProvider.userdata, true, index);
         },
         separatorBuilder: (BuildContext _context, int index) {
           return Container(
@@ -183,7 +183,7 @@ class _FriendHistoryState extends State<FriendHistory> {
                   Container(
                       width: 70,
                       child: Text(
-                        "Weight(${_userdataProvider.userdata.weight_unit})",
+                        "Weight(${_userProvider.userdata.weight_unit})",
                         style: TextStyle(
                           color: Colors.grey,
                           fontSize: 12,
@@ -310,7 +310,7 @@ class _FriendHistoryState extends State<FriendHistory> {
 
   @override
   Widget build(BuildContext context) {
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     return Scaffold(
         appBar: _appbarWidget(),
         body: _friendHistoryWidget(),

@@ -33,9 +33,9 @@ class ExerciseDone extends StatefulWidget {
 }
 
 class _ExerciseDoneState extends State<ExerciseDone> {
-  var _userdataProvider;
-  var _historydataProvider;
-  var _workoutdataProvider;
+  var _userProvider;
+  var _hisProvider;
+  var _workoutProvider;
   var _routinetimeProvider;
   var _btnDisabled;
   TextEditingController _exerciseCommentCtrl = TextEditingController(text: "");
@@ -63,7 +63,7 @@ class _ExerciseDoneState extends State<ExerciseDone> {
       _image = File(selectImage.path);
       // dynamic sendData = selectImage.path;
       // UserImageEdit(file: sendData).patchUserImage().then((data) {
-      //    _userdataProvider.setUserdata(data);
+      //    _userProvider.setUserdata(data);
       // });
     }
   }
@@ -340,18 +340,18 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                           file: _selectImage.path)
                       .patchHistoryImage()
                       .then((data) => {
-                            _historydataProvider.getdata(),
-                            _historydataProvider.getHistorydataAll()
+                            _hisProvider.getdata(),
+                            _hisProvider.getHistorydataAll()
                           });
                 }
                 ;
                 if (_exerciseCommentCtrl.text != "") {
                   HistoryCommentEdit(
                           history_id: widget.sdbdata.id,
-                          user_email: _userdataProvider.userdata.email,
+                          user_email: _userProvider.userdata.email,
                           comment: _exerciseCommentCtrl.text)
                       .patchHistoryComment();
-                  _historydataProvider.patchHistoryCommentdata(
+                  _hisProvider.patchHistoryCommentdata(
                       widget.sdbdata, _exerciseCommentCtrl.text);
                 }
                 ;
@@ -387,11 +387,9 @@ class _ExerciseDoneState extends State<ExerciseDone> {
 
   @override
   Widget build(BuildContext context) {
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _historydataProvider =
-        Provider.of<HistorydataProvider>(context, listen: false);
-    _workoutdataProvider =
-        Provider.of<WorkoutdataProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
+    _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
     return Scaffold(

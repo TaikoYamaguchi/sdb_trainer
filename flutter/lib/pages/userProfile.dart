@@ -21,7 +21,7 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
-  var _userdataProvider;
+  var _userProvider;
   var _PopProvider;
   var _selectImage;
   File? _image;
@@ -37,7 +37,7 @@ class _UserProfileState extends State<UserProfile> {
     if (selectImage != null) {
       dynamic sendData = selectImage.path;
       UserImageEdit(file: sendData).patchUserImage().then((data) {
-        _userdataProvider.setUserdata(data);
+        _userProvider.setUserdata(data);
       });
     }
   }
@@ -60,7 +60,7 @@ class _UserProfileState extends State<UserProfile> {
     if (_selectImage != null) {
       dynamic sendData = _selectImage.path;
       UserImageEdit(file: sendData).patchUserImage().then((data) {
-        _userdataProvider.setUserdata(data);
+        _userProvider.setUserdata(data);
       });
     }
 
@@ -183,7 +183,7 @@ class _UserProfileState extends State<UserProfile> {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(_userdataProvider.userdata.nickname,
+                      Text(_userProvider.userdata.nickname,
                           style: TextStyle(color: Colors.white)),
                       Icon(Icons.chevron_right, color: Colors.white),
                     ]));
@@ -208,12 +208,12 @@ class _UserProfileState extends State<UserProfile> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                        _userdataProvider.userdata.height.toString() +
-                            _userdataProvider.userdata.height_unit +
+                        _userProvider.userdata.height.toString() +
+                            _userProvider.userdata.height_unit +
                             "/" +
-                            _userdataProvider.userdata.bodyStats.last.weight
+                            _userProvider.userdata.bodyStats.last.weight
                                 .toString() +
-                            _userdataProvider.userdata.weight_unit,
+                            _userProvider.userdata.weight_unit,
                         style: TextStyle(color: Colors.white)),
                     Icon(Icons.chevron_right, color: Colors.white),
                   ])),
@@ -229,7 +229,7 @@ class _UserProfileState extends State<UserProfile> {
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(_userdataProvider.userdata.isMan ? "남성" : "여성",
+                    Text(_userProvider.userdata.isMan ? "남성" : "여성",
                         style: TextStyle(color: Colors.white)),
                     Container(),
                   ])),
@@ -239,7 +239,7 @@ class _UserProfileState extends State<UserProfile> {
             onTap: () {
               _displayPhotoDialog();
             },
-            child: _userdataProvider.userdata.image == ""
+            child: _userProvider.userdata.image == ""
                 ? Icon(
                     Icons.account_circle,
                     color: Colors.grey,
@@ -248,7 +248,7 @@ class _UserProfileState extends State<UserProfile> {
                 : Consumer<UserdataProvider>(
                     builder: (builder, rpovider, child) {
                     return CachedNetworkImage(
-                      imageUrl: _userdataProvider.userdata.image,
+                      imageUrl: _userProvider.userdata.image,
                       imageBuilder: (context, imageProivder) => Container(
                         height: 200,
                         width: 200,
@@ -272,7 +272,7 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
     return Consumer<PopProvider>(builder: (Builder, provider, child) {
       bool _popable = provider.isprostacking;

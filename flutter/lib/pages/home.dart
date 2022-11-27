@@ -39,13 +39,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  var _exercisesdataProvider;
+  var _exProvider;
   var _PopProvider;
-  var _userdataProvider;
+  var _userProvider;
   var _bodyStater;
   var _staticPageState;
   var _chartIndex;
-  var _historydataProvider;
+  var _hisProvider;
   var _testdata0;
   var allEntries;
   var _historydata;
@@ -117,7 +117,7 @@ class _HomeState extends State<Home> {
   }
 
   PreferredSizeWidget _appbarWidget() {
-    //if (_userdataProvider.userdata != null) {
+    //if (_userProvider.userdata != null) {
     return PreferredSize(
         preferredSize: Size.fromHeight(40.0), // here the desired height
         child: AppBar(
@@ -275,10 +275,9 @@ class _HomeState extends State<Home> {
     DateTime _fourWeekDay = DateTime(
         _toDay.year, _toDay.month, _toDay.day - (21 + 1 + _toDayKrInt()));
 
-    if (_historydataProvider.historydata != null) {
+    if (_hisProvider.historydata != null) {
       if (_dateCtrl == 1) {
-        _historydata =
-            await _historydataProvider.historydata.sdbdatas.where((sdbdata) {
+        _historydata = await _hisProvider.historydata.sdbdatas.where((sdbdata) {
           if (_toDay
                   .difference(DateTime.parse(sdbdata.date.substring(0, 10)))
                   .inDays <=
@@ -289,8 +288,7 @@ class _HomeState extends State<Home> {
           }
         }).toList();
       } else if (_dateCtrl == 2) {
-        _historydata =
-            await _historydataProvider.historydata.sdbdatas.where((sdbdata) {
+        _historydata = await _hisProvider.historydata.sdbdatas.where((sdbdata) {
           if (_toDay
                   .difference(DateTime.parse(sdbdata.date.substring(0, 10)))
                   .inDays <=
@@ -301,8 +299,7 @@ class _HomeState extends State<Home> {
           }
         }).toList();
       } else if (_dateCtrl == 3) {
-        _historydata =
-            await _historydataProvider.historydata.sdbdatas.where((sdbdata) {
+        _historydata = await _hisProvider.historydata.sdbdatas.where((sdbdata) {
           if (getMonthSizeBetweenDates(
                   DateTime.parse(sdbdata.date.substring(0, 10)), _toDay) <=
               6) {
@@ -312,8 +309,7 @@ class _HomeState extends State<Home> {
           }
         }).toList();
       } else if (_dateCtrl == 4) {
-        _historydata =
-            await _historydataProvider.historydata.sdbdatas.where((sdbdata) {
+        _historydata = await _hisProvider.historydata.sdbdatas.where((sdbdata) {
           if (_toDay
                   .difference(DateTime.parse(sdbdata.date.substring(0, 10)))
                   .inDays <=
@@ -324,7 +320,7 @@ class _HomeState extends State<Home> {
           }
         }).toList();
       } else if (_dateCtrl == 5) {
-        _historydata = await _historydataProvider.historydata.sdbdatas;
+        _historydata = await _hisProvider.historydata.sdbdatas;
       }
     }
   }
@@ -352,9 +348,9 @@ class _HomeState extends State<Home> {
                 //               fontSize: 54,
                 //               fontWeight: FontWeight.w600)),
                 //       Text(
-                //           (_exercisesdataProvider
+                //           (_exProvider
                 //                       .exercisesdata
-                //                       .exercises[(_exercisesdataProvider
+                //                       .exercises[(_exProvider
                 //                           .exercisesdata.exercises
                 //                           .indexWhere((exercise) {
                 //                     if (exercise.name == "스쿼트") {
@@ -364,9 +360,9 @@ class _HomeState extends State<Home> {
                 //                     }
                 //                   }))]
                 //                       .onerm +
-                //                   _exercisesdataProvider
+                //                   _exProvider
                 //                       .exercisesdata
-                //                       .exercises[(_exercisesdataProvider
+                //                       .exercises[(_exProvider
                 //                           .exercisesdata.exercises
                 //                           .indexWhere((exercise) {
                 //                     if (exercise.name == "데드리프트") {
@@ -376,9 +372,9 @@ class _HomeState extends State<Home> {
                 //                     }
                 //                   }))]
                 //                       .onerm +
-                //                   _exercisesdataProvider
+                //                   _exProvider
                 //                       .exercisesdata
-                //                       .exercises[(_exercisesdataProvider
+                //                       .exercises[(_exProvider
                 //                           .exercisesdata.exercises
                 //                           .indexWhere((exercise) {
                 //                     if (exercise.name == "벤치프레스") {
@@ -396,9 +392,9 @@ class _HomeState extends State<Home> {
                 //               fontWeight: FontWeight.w800)),
                 //       Text(
                 //           "/" +
-                //               (_exercisesdataProvider
+                //               (_exProvider
                 //                           .exercisesdata
-                //                           .exercises[(_exercisesdataProvider
+                //                           .exercises[(_exProvider
                 //                               .exercisesdata.exercises
                 //                               .indexWhere((exercise) {
                 //                         if (exercise.name == "스쿼트") {
@@ -408,9 +404,9 @@ class _HomeState extends State<Home> {
                 //                         }
                 //                       }))]
                 //                           .goal +
-                //                       _exercisesdataProvider
+                //                       _exProvider
                 //                           .exercisesdata
-                //                           .exercises[(_exercisesdataProvider
+                //                           .exercises[(_exProvider
                 //                               .exercisesdata.exercises
                 //                               .indexWhere((exercise) {
                 //                         if (exercise.name == "데드리프트") {
@@ -420,9 +416,9 @@ class _HomeState extends State<Home> {
                 //                         }
                 //                       }))]
                 //                           .goal +
-                //                       _exercisesdataProvider
+                //                       _exProvider
                 //                           .exercisesdata
-                //                           .exercises[(_exercisesdataProvider
+                //                           .exercises[(_exProvider
                 //                               .exercisesdata.exercises
                 //                               .indexWhere((exercise) {
                 //                         if (exercise.name == "벤치프레스") {
@@ -587,7 +583,7 @@ class _HomeState extends State<Home> {
                                       "(" +
                                           DateFormat('MM/dd')
                                               .format(DateTime.parse(
-                                                  _userdataProvider.userdata
+                                                  _userProvider.userdata
                                                       .bodyStats.last.date))
                                               .toString() +
                                           ")",
@@ -604,10 +600,9 @@ class _HomeState extends State<Home> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                    _userdataProvider
-                                            .userdata.bodyStats.last.weight
+                                    _userProvider.userdata.bodyStats.last.weight
                                             .toString() +
-                                        _userdataProvider.userdata.weight_unit,
+                                        _userProvider.userdata.weight_unit,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         color: Color(0xFffc60a8),
@@ -618,10 +613,10 @@ class _HomeState extends State<Home> {
                             padding: const EdgeInsets.only(top: 6.0),
                             child: Text(
                                 "목표 " +
-                                    _userdataProvider
+                                    _userProvider
                                         .userdata.bodyStats.last.weight_goal
                                         .toString() +
-                                    _userdataProvider.userdata.weight_unit,
+                                    _userProvider.userdata.weight_unit,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: Color(0xFF717171),
@@ -679,8 +674,7 @@ class _HomeState extends State<Home> {
                             }
                             storage.write(
                                 key: 'sdb_HomeExList',
-                                value: jsonEncode(
-                                    (_exercisesdataProvider.homeExList)));
+                                value: jsonEncode((_exProvider.homeExList)));
                           },
                           itemBuilder: (BuildContext _context, int index) {
                             return Slidable(
@@ -695,8 +689,7 @@ class _HomeState extends State<Home> {
                                           storage.write(
                                               key: 'sdb_HomeExList',
                                               value: jsonEncode(
-                                                  (_exercisesdataProvider
-                                                      .homeExList)));
+                                                  (_exProvider.homeExList)));
                                         },
                                         backgroundColor: Color(0xFFFE4A49),
                                         foregroundColor: Colors.white,
@@ -708,7 +701,7 @@ class _HomeState extends State<Home> {
                                     _homeProgressiveBarChart(index, context));
                           },
                           shrinkWrap: true,
-                          itemCount: _exercisesdataProvider.homeExList.length);
+                          itemCount: _exProvider.homeExList.length);
                     }),
                   ]),
                 ),
@@ -1925,7 +1918,7 @@ class _HomeState extends State<Home> {
     return _countHistoryCardCore(
         context,
         _dateStringCase(_dateCtrl),
-        _historyWeight.toString() + _userdataProvider.userdata.weight_unit,
+        _historyWeight.toString() + _userProvider.userdata.weight_unit,
         " 들었어요!",
         2,
         40,
@@ -2362,10 +2355,9 @@ class _HomeState extends State<Home> {
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercise in sdbdata.exercises) {
-          for (String target in _exercisesdataProvider
+          for (String target in _exProvider
               .exercisesdata
-              .exercises[_exercisesdataProvider.exercisesdata.exercises
-                  .indexWhere((ex) {
+              .exercises[_exProvider.exercisesdata.exercises.indexWhere((ex) {
             if (ex.name == exercise.name) {
               return true;
             } else {
@@ -2449,10 +2441,9 @@ class _HomeState extends State<Home> {
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercise in sdbdata.exercises) {
-          for (String target in _exercisesdataProvider
+          for (String target in _exProvider
               .exercisesdata
-              .exercises[_exercisesdataProvider.exercisesdata.exercises
-                  .indexWhere((ex) {
+              .exercises[_exProvider.exercisesdata.exercises.indexWhere((ex) {
             if (ex.name == exercise.name) {
               return true;
             } else {
@@ -2533,10 +2524,9 @@ class _HomeState extends State<Home> {
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercise in sdbdata.exercises) {
-          for (String target in _exercisesdataProvider
+          for (String target in _exProvider
               .exercisesdata
-              .exercises[_exercisesdataProvider.exercisesdata.exercises
-                  .indexWhere((ex) {
+              .exercises[_exProvider.exercisesdata.exercises.indexWhere((ex) {
             if (ex.name == exercise.name) {
               return true;
             } else {
@@ -2780,8 +2770,7 @@ class _HomeState extends State<Home> {
 
   void searchExercise(String query, StateSetter updateState) {
     setState(() {});
-    final suggestions =
-        _exercisesdataProvider.exercisesdata.exercises.where((exercise) {
+    final suggestions = _exProvider.exercisesdata.exercises.where((exercise) {
       final exTitle = exercise.name;
       return (exTitle.contains(query)) as bool;
     }).toList();
@@ -2813,10 +2802,10 @@ class _HomeState extends State<Home> {
               final storage = FlutterSecureStorage();
               return GestureDetector(
                 onTap: () {
-                  _exercisesdataProvider.addHomeExList(exuniq[index].name);
+                  _exProvider.addHomeExList(exuniq[index].name);
                   storage.write(
                       key: 'sdb_HomeExList',
-                      value: jsonEncode((_exercisesdataProvider.homeExList)));
+                      value: jsonEncode((_exProvider.homeExList)));
                   Navigator.of(context).pop();
                 },
                 child: Container(
@@ -2843,7 +2832,7 @@ class _HomeState extends State<Home> {
                                   TextStyle(fontSize: 21, color: Colors.white),
                             ),
                             Text(
-                                "1RM: ${exuniq[index].onerm.toStringAsFixed(1)}/${exuniq[index].goal.toStringAsFixed(1)}${_userdataProvider.userdata.weight_unit}",
+                                "1RM: ${exuniq[index].onerm.toStringAsFixed(1)}/${exuniq[index].goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
                                 style: TextStyle(
                                     fontSize: 13, color: Color(0xFF717171))),
                           ],
@@ -2875,17 +2864,15 @@ class _HomeState extends State<Home> {
   }
 
   Widget _homeProgressiveBarChart(index, context) {
-    return _exercisesdataProvider.homeExList.length > index
+    return _exProvider.homeExList.length > index
         ? Padding(
             key: Key('$index'),
             padding: const EdgeInsets.symmetric(vertical: 3),
             child: GestureDetector(
               onTap: () => {
-                _chartIndex.change(_exercisesdataProvider
-                    .exercisesdata.exercises
-                    .indexWhere((exercise) {
-                  if (exercise.name ==
-                      _exercisesdataProvider.homeExList[index]) {
+                _chartIndex.change(
+                    _exProvider.exercisesdata.exercises.indexWhere((exercise) {
+                  if (exercise.name == _exProvider.homeExList[index]) {
                     return true;
                   } else {
                     return false;
@@ -2899,7 +2886,7 @@ class _HomeState extends State<Home> {
                 children: [
                   Container(
                       width: MediaQuery.of(context).size.width / 3 - 10,
-                      child: Text(_exercisesdataProvider.homeExList[index],
+                      child: Text(_exProvider.homeExList[index],
                           style: TextStyle(
                               fontSize: 12,
                               color: Colors.white,
@@ -2909,26 +2896,24 @@ class _HomeState extends State<Home> {
                     width: MediaQuery.of(context).size.width / 3 - 20,
                     height: 16,
                     child: LiquidLinearProgressIndicator(
-                      value: _exercisesdataProvider
+                      value: _exProvider
                               .exercisesdata
-                              .exercises[(_exercisesdataProvider
-                                  .exercisesdata.exercises
+                              .exercises[(_exProvider.exercisesdata.exercises
                                   .indexWhere((exercise) {
                             if (exercise.name ==
-                                _exercisesdataProvider.homeExList[index]) {
+                                _exProvider.homeExList[index]) {
                               return true;
                             } else {
                               return false;
                             }
                           }))]
                               .onerm /
-                          _exercisesdataProvider
+                          _exProvider
                               .exercisesdata
-                              .exercises[(_exercisesdataProvider
-                                  .exercisesdata.exercises
+                              .exercises[(_exProvider.exercisesdata.exercises
                                   .indexWhere((exercise) {
                             if (exercise.name ==
-                                _exercisesdataProvider.homeExList[index]) {
+                                _exProvider.homeExList[index]) {
                               return true;
                             } else {
                               return false;
@@ -2945,14 +2930,13 @@ class _HomeState extends State<Home> {
                           .horizontal, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
                       center: Center(
                         child: Text(
-                            _exercisesdataProvider
+                            _exProvider
                                     .exercisesdata
-                                    .exercises[(_exercisesdataProvider
+                                    .exercises[(_exProvider
                                         .exercisesdata.exercises
                                         .indexWhere((exercise) {
                                   if (exercise.name ==
-                                      _exercisesdataProvider
-                                          .homeExList[index]) {
+                                      _exProvider.homeExList[index]) {
                                     return true;
                                   } else {
                                     return false;
@@ -2962,14 +2946,13 @@ class _HomeState extends State<Home> {
                                     .floor()
                                     .toString() +
                                 "/" +
-                                _exercisesdataProvider
+                                _exProvider
                                     .exercisesdata
-                                    .exercises[(_exercisesdataProvider
+                                    .exercises[(_exProvider
                                         .exercisesdata.exercises
                                         .indexWhere((exercise) {
                                   if (exercise.name ==
-                                      _exercisesdataProvider
-                                          .homeExList[index]) {
+                                      _exProvider.homeExList[index]) {
                                     return true;
                                   } else {
                                     return false;
@@ -2995,9 +2978,9 @@ class _HomeState extends State<Home> {
 
   void _displayBodyWeightDialog() {
     _userWeightController = TextEditingController(
-        text: _userdataProvider.userdata.bodyStats.last.weight.toString());
+        text: _userProvider.userdata.bodyStats.last.weight.toString());
     _userWeightGoalController = TextEditingController(
-        text: _userdataProvider.userdata.bodyStats.last.weight_goal.toString());
+        text: _userProvider.userdata.bodyStats.last.weight_goal.toString());
     showDialog(
         context: context,
         builder: (context) {
@@ -3099,7 +3082,7 @@ class _HomeState extends State<Home> {
                     _displayBodyWeightPushDialog(
                         double.parse(_userWeightController.text),
                         double.parse(_userWeightGoalController.text));
-                    _userdataProvider.setUserWeightAdd(
+                    _userProvider.setUserWeightAdd(
                         _toDay.toString(),
                         double.parse(_userWeightController.text),
                         double.parse(_userWeightGoalController.text));
@@ -3114,48 +3097,47 @@ class _HomeState extends State<Home> {
   void _displayBodyWeightPushDialog(_userWeight, _userGoal) {
     var _weightChange = "";
     var _weightSuccess = "";
-    if ((_userWeight - _userdataProvider.userdata.bodyStats.last.weight) > 0) {
+    if ((_userWeight - _userProvider.userdata.bodyStats.last.weight) > 0) {
       _weightChange = "+" +
-          (_userWeight - _userdataProvider.userdata.bodyStats.last.weight)
+          (_userWeight - _userProvider.userdata.bodyStats.last.weight)
               .toStringAsFixed(1) +
           "kg 증가했어요";
-      if (_userdataProvider.userdata.bodyStats.last.weight >
-          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+      if (_userProvider.userdata.bodyStats.last.weight >
+          _userProvider.userdata.bodyStats.last.weight_goal) {
         _weightSuccess = "감량에 분발이 필요해요";
-      } else if (_userdataProvider.userdata.bodyStats.last.weight <
-          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+      } else if (_userProvider.userdata.bodyStats.last.weight <
+          _userProvider.userdata.bodyStats.last.weight_goal) {
         _weightSuccess = "증량이 성공중 이에요";
-      } else if (_userdataProvider.userdata.bodyStats.last.weight ==
-          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+      } else if (_userProvider.userdata.bodyStats.last.weight ==
+          _userProvider.userdata.bodyStats.last.weight_goal) {
         _weightSuccess = "현재 몸무게를 유지해주세요";
       }
-    } else if ((_userWeight -
-            _userdataProvider.userdata.bodyStats.last.weight) <
+    } else if ((_userWeight - _userProvider.userdata.bodyStats.last.weight) <
         0) {
       _weightChange = "" +
-          (_userWeight - _userdataProvider.userdata.bodyStats.last.weight)
+          (_userWeight - _userProvider.userdata.bodyStats.last.weight)
               .toStringAsFixed(1) +
           "kg 감소했어요";
-      if (_userdataProvider.userdata.bodyStats.last.weight >
-          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+      if (_userProvider.userdata.bodyStats.last.weight >
+          _userProvider.userdata.bodyStats.last.weight_goal) {
         _weightSuccess = "감량에 성공중 이에요";
-      } else if (_userdataProvider.userdata.bodyStats.last.weight <
-          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+      } else if (_userProvider.userdata.bodyStats.last.weight <
+          _userProvider.userdata.bodyStats.last.weight_goal) {
         _weightSuccess = "증량에 분발이 필요해요";
-      } else if (_userdataProvider.userdata.bodyStats.last.weight ==
-          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+      } else if (_userProvider.userdata.bodyStats.last.weight ==
+          _userProvider.userdata.bodyStats.last.weight_goal) {
         _weightSuccess = "현재 몸무게를 유지해주세요";
       }
     } else {
       _weightChange = "몸무게가 유지 되었어요";
-      if (_userdataProvider.userdata.bodyStats.last.weight >
-          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+      if (_userProvider.userdata.bodyStats.last.weight >
+          _userProvider.userdata.bodyStats.last.weight_goal) {
         _weightSuccess = "감량에 분발이 필요해요";
-      } else if (_userdataProvider.userdata.bodyStats.last.weight <
-          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+      } else if (_userProvider.userdata.bodyStats.last.weight <
+          _userProvider.userdata.bodyStats.last.weight_goal) {
         _weightSuccess = "증량에 분발이 필요해요";
-      } else if (_userdataProvider.userdata.bodyStats.last.weight ==
-          _userdataProvider.userdata.bodyStats.last.weight_goal) {
+      } else if (_userProvider.userdata.bodyStats.last.weight ==
+          _userProvider.userdata.bodyStats.last.weight_goal) {
         _weightSuccess = "현재 몸무게를 유지해주세요";
       }
     }
@@ -3247,14 +3229,14 @@ class _HomeState extends State<Home> {
                   axisLine: const AxisLine(width: 0),
                   majorTickLines: const MajorTickLines(size: 0),
                   majorGridLines: const MajorGridLines(width: 0),
-                  minimum: _userdataProvider.userdata.bodyStats!.length == 0
+                  minimum: _userProvider.userdata.bodyStats!.length == 0
                       ? 0
-                      : _userdataProvider.userdata.bodyStats!.length > 1
-                          ? _userdataProvider.userdata.bodyStats!
+                      : _userProvider.userdata.bodyStats!.length > 1
+                          ? _userProvider.userdata.bodyStats!
                               .reduce((BodyStat curr, BodyStat next) =>
                                   curr.weight! < next.weight! ? curr : next)
                               .weight
-                          : _userdataProvider.userdata.bodyStats![0].weight),
+                          : _userProvider.userdata.bodyStats![0].weight),
               tooltipBehavior: _tooltipBehavior,
               zoomPanBehavior: _zoomPanBehavior,
               legend: Legend(
@@ -3266,7 +3248,7 @@ class _HomeState extends State<Home> {
                   isVisibleInLegend: true,
                   color: Colors.white54,
                   name: "목표",
-                  dataSource: _userdataProvider.userdata.bodyStats!,
+                  dataSource: _userProvider.userdata.bodyStats!,
                   xValueMapper: (BodyStat sales, _) =>
                       DateTime.parse(sales.date!),
                   yValueMapper: (BodyStat sales, _) => sales.weight_goal!,
@@ -3288,7 +3270,7 @@ class _HomeState extends State<Home> {
                   name: "몸무게",
                   color: Theme.of(context).primaryColor,
                   width: 5,
-                  dataSource: _userdataProvider.userdata.bodyStats!,
+                  dataSource: _userProvider.userdata.bodyStats!,
                   xValueMapper: (BodyStat sales, _) =>
                       DateTime.parse(sales.date!),
                   yValueMapper: (BodyStat sales, _) => sales.weight!,
@@ -3356,12 +3338,10 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    _historydataProvider =
-        Provider.of<HistorydataProvider>(context, listen: false);
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
-    _exercisesdataProvider =
-        Provider.of<ExercisesdataProvider>(context, listen: false);
+    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
     _staticPageState = Provider.of<StaticPageProvider>(context, listen: false);
     _chartIndex = Provider.of<ChartIndexProvider>(context, listen: false);
