@@ -28,14 +28,14 @@ class FriendProfile extends StatefulWidget {
 class _FriendProfileState extends State<FriendProfile> {
   var _userProvider;
   var _hisProvider;
-  var btnDisabled;
+  var _btnDisabled;
   @override
   void initState() {
     super.initState();
   }
 
   PreferredSizeWidget _appbarWidget() {
-    btnDisabled = false;
+    _btnDisabled = false;
     return PreferredSize(
         preferredSize: Size.fromHeight(40.0), // here the desired height
         child: AppBar(
@@ -43,10 +43,10 @@ class _FriendProfileState extends State<FriendProfile> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_outlined),
             onPressed: () {
-              btnDisabled == true
+              _btnDisabled == true
                   ? null
                   : [
-                      btnDisabled = true,
+                      _btnDisabled = true,
                       Navigator.of(context).pop(),
                     ];
             },

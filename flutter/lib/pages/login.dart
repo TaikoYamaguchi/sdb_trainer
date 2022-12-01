@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:sdb_trainer/main.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
-import 'package:sdb_trainer/pages/home.dart';
 import 'package:sdb_trainer/pages/userFind.dart';
-import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
-import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:provider/provider.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -34,9 +30,7 @@ class LoginPage extends StatefulWidget {
 class LoginPageState extends State<LoginPage> {
   var _bodyStater;
   var _loginState;
-  var _signUpState;
   var _userProvider;
-  var _exProvider;
   bool isLoading = false;
   bool _isEmailLogin = false;
   bool _isiOS = false;
@@ -60,7 +54,6 @@ class LoginPageState extends State<LoginPage> {
     _loginState = Provider.of<LoginPageProvider>(context, listen: false);
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _isiOS = foundation.defaultTargetPlatform == foundation.TargetPlatform.iOS;
-    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
 
     return Scaffold(
       key: _scaffoldKey,

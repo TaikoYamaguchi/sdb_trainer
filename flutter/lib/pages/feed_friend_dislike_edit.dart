@@ -1,20 +1,10 @@
-import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
-import 'package:sdb_trainer/providers/routinetime.dart';
-import 'package:sdb_trainer/providers/workoutdata.dart';
-import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:like_button/like_button.dart';
-import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:provider/provider.dart';
-import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
-import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
-import 'package:sdb_trainer/src/model/workoutdata.dart' as wod;
-import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/src/model/userdata.dart';
 
 class FeedFriendDislikeEdit extends StatefulWidget {
@@ -25,13 +15,9 @@ class FeedFriendDislikeEdit extends StatefulWidget {
 }
 
 class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
-  var _testdata0;
-  late var _testdata = _testdata0;
-  var _exProvider;
-  var _usersdata;
   var _userProvider;
   var friendsInputSwitch = false;
-  var btnDisabled;
+  var _btnDisabled;
 
   @override
   void initState() {
@@ -46,10 +32,10 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_outlined),
             onPressed: () {
-              btnDisabled == true
+              _btnDisabled == true
                   ? null
                   : [
-                      btnDisabled = true,
+                      _btnDisabled = true,
                       Navigator.of(context).pop(),
                     ];
             },
@@ -202,12 +188,7 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
 
   @override
   Widget build(BuildContext context) {
-    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
-    _testdata0 = _exProvider.exercisesdata.exercises;
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
-    if (friendsInputSwitch == false) {
-      _usersdata = _userProvider.userFriendsAll;
-    }
 
     return WillPopScope(
       child: Scaffold(

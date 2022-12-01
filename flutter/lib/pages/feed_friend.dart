@@ -1,22 +1,12 @@
-import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:transition/transition.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
-import 'package:sdb_trainer/providers/routinetime.dart';
-import 'package:sdb_trainer/providers/workoutdata.dart';
-import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/pages/feed_friend_edit.dart';
 import 'package:like_button/like_button.dart';
-import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:provider/provider.dart';
-import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
-import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
-import 'package:sdb_trainer/src/model/workoutdata.dart' as wod;
-import 'package:sdb_trainer/providers/exercisesdata.dart';
 
 class FeedFriend extends StatefulWidget {
   FeedFriend({Key? key}) : super(key: key);
@@ -26,13 +16,10 @@ class FeedFriend extends StatefulWidget {
 }
 
 class _FeedFriendState extends State<FeedFriend> {
-  var _testdata0;
-  late var _testdata = _testdata0;
   var _exProvider;
-  var _usersdata;
   var _userProvider;
+  var _btnDisabled;
   var friendsInputSwitch = false;
-  var btnDisabled;
 
   @override
   void initState() {
@@ -40,7 +27,7 @@ class _FeedFriendState extends State<FeedFriend> {
   }
 
   PreferredSizeWidget _appbarWidget() {
-    btnDisabled = false;
+    _btnDisabled = false;
     return PreferredSize(
         preferredSize: Size.fromHeight(40.0), // here the desired height
         child: AppBar(
@@ -48,10 +35,10 @@ class _FeedFriendState extends State<FeedFriend> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_outlined),
             onPressed: () {
-              btnDisabled == true
+              _btnDisabled == true
                   ? null
                   : [
-                      btnDisabled = true,
+                      _btnDisabled = true,
                       Navigator.of(context).pop(),
                     ];
             },
@@ -214,7 +201,6 @@ class _FeedFriendState extends State<FeedFriend> {
   @override
   Widget build(BuildContext context) {
     _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
-    _testdata0 = _exProvider.exercisesdata.exercises;
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
 
     return Scaffold(

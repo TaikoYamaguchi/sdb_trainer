@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/friendProfile.dart';
 import 'package:sdb_trainer/pages/friendHistory.dart';
@@ -7,18 +6,11 @@ import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/repository/comment_repository.dart';
-import 'package:sdb_trainer/providers/loginState.dart';
-import 'package:sdb_trainer/pages/userProfile.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:transition/transition.dart';
-import 'package:sdb_trainer/pages/userProfileGoal.dart';
-import 'package:sdb_trainer/pages/feed_friend.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:like_button/like_button.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'package:sdb_trainer/src/model/userdata.dart';
-import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:image_picker/image_picker.dart';

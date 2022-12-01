@@ -2,17 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:provider/provider.dart';
-import 'package:sdb_trainer/repository/user_repository.dart';
-import 'package:sdb_trainer/src/model/userdata.dart';
 import 'package:sdb_trainer/src/model/historydata.dart';
-import 'package:transition/transition.dart';
-import 'package:sdb_trainer/pages/userProfileNickname.dart';
-import 'package:sdb_trainer/pages/userProfileBody.dart';
-import 'package:sdb_trainer/pages/userProfileGoal.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:like_button/like_button.dart';
-import 'dart:io';
-import 'dart:async';
 
 class FriendHistory extends StatefulWidget {
   SDBdata sdbdata;
@@ -24,14 +14,14 @@ class FriendHistory extends StatefulWidget {
 
 class _FriendHistoryState extends State<FriendHistory> {
   var _userProvider;
-  var btnDisabled;
+  var _btnDisabled;
   @override
   void initState() {
     super.initState();
   }
 
   PreferredSizeWidget _appbarWidget() {
-    btnDisabled = false;
+    _btnDisabled = false;
     return PreferredSize(
         preferredSize: Size.fromHeight(40.0), // here the desired height
         child: AppBar(
@@ -39,10 +29,10 @@ class _FriendHistoryState extends State<FriendHistory> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_outlined),
             onPressed: () {
-              btnDisabled == true
+              _btnDisabled == true
                   ? null
                   : [
-                      btnDisabled = true,
+                      _btnDisabled = true,
                       Navigator.of(context).pop(),
                     ];
             },

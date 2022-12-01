@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
-import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
-import 'package:sdb_trainer/providers/loginState.dart';
-import 'package:sdb_trainer/pages/userProfile.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:transition/transition.dart';
-import 'package:sdb_trainer/pages/userProfileGoal.dart';
 import 'package:sdb_trainer/pages/feed_friend.dart';
 import 'package:sdb_trainer/pages/feedCard.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:like_button/like_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class Feed extends StatefulWidget {
@@ -44,7 +37,6 @@ class _FeedState extends State<Feed> {
   var _hisProvider;
   var _historydata;
   var _userProvider;
-  var _historyCommentCtrl;
   final _pageController = ScrollController();
   var _final_history_id;
   var _hasMore = true;
@@ -68,7 +60,6 @@ class _FeedState extends State<Feed> {
 
   Future _fetchHistoryPage(context) async {
     try {
-      print("111111111");
       var nextPage =
           await HistorydataPagination(final_history_id: _final_history_id)
               .loadSDBdataPagination()
@@ -233,7 +224,6 @@ class _FeedState extends State<Feed> {
             onValueChanged: (i) {
               setState(() {
                 _feedListCtrl = i as int;
-
                 _isPageController.jumpToPage(4241 + i);
                 _feedController(_feedListCtrl);
               });
