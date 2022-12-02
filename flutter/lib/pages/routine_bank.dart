@@ -7,10 +7,7 @@ import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:sdb_trainer/repository/famous_repository.dart';
-import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:transition/transition.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 

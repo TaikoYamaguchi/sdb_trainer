@@ -1,8 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:sdb_trainer/pages/static_exercise.dart';
+import 'package:sdb_trainer/src/utils/static_exercise.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/src/model/userdata.dart';

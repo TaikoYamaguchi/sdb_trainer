@@ -5,7 +5,7 @@ import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/feed_friend.dart';
-import 'package:sdb_trainer/pages/feedCard.dart';
+import 'package:sdb_trainer/src/utils/feedCard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 

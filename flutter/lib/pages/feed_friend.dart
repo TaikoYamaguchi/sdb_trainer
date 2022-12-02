@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:transition/transition.dart';
-import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/pages/feed_friend_edit.dart';
 import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
@@ -16,18 +15,24 @@ class FeedFriend extends StatefulWidget {
 }
 
 class _FeedFriendState extends State<FeedFriend> {
-  var _exProvider;
   var _userProvider;
-  var _btnDisabled;
-  var friendsInputSwitch = false;
 
   @override
   void initState() {
     super.initState();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    return Scaffold(
+      appBar: _appbarWidget(),
+      body: _friend_searchWidget(),
+    );
+  }
+
   PreferredSizeWidget _appbarWidget() {
-    _btnDisabled = false;
+    bool btnDisabled = false;
     return PreferredSize(
         preferredSize: Size.fromHeight(40.0), // here the desired height
         child: AppBar(
@@ -35,10 +40,10 @@ class _FeedFriendState extends State<FeedFriend> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_outlined),
             onPressed: () {
-              _btnDisabled == true
+              btnDisabled == true
                   ? null
                   : [
-                      _btnDisabled = true,
+                      btnDisabled = true,
                       Navigator.of(context).pop(),
                     ];
             },
@@ -196,17 +201,6 @@ class _FeedFriendState extends State<FeedFriend> {
       _userProvider.patchUserLikedata(User, "append");
       return !isLiked;
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
-    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
-
-    return Scaffold(
-      appBar: _appbarWidget(),
-      body: _friend_searchWidget(),
-    );
   }
 
   @override

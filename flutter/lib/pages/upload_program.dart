@@ -1,24 +1,13 @@
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
-import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/repository/famous_repository.dart';
-import 'package:sdb_trainer/repository/history_repository.dart';
-import 'package:sdb_trainer/repository/user_repository.dart';
-import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
-import 'package:transition/transition.dart';
-import 'package:sdb_trainer/pages/userProfileNickname.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
-import 'package:sdb_trainer/pages/userProfileBody.dart';
-import 'package:sdb_trainer/pages/userProfileGoal.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'dart:io';
 import 'dart:async';
 

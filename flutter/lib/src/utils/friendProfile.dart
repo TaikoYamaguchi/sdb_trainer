@@ -1,21 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sdb_trainer/pages/feedCard.dart';
+import 'package:sdb_trainer/src/utils/feedCard.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/src/model/userdata.dart';
-import 'package:transition/transition.dart';
-import 'package:sdb_trainer/pages/userProfileNickname.dart';
-import 'package:sdb_trainer/pages/userProfileBody.dart';
-import 'package:sdb_trainer/pages/userProfileGoal.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:like_button/like_button.dart';
-import 'dart:io';
-import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
-import 'package:sdb_trainer/repository/history_repository.dart';
 
 class FriendProfile extends StatefulWidget {
   User user;
@@ -28,14 +18,23 @@ class FriendProfile extends StatefulWidget {
 class _FriendProfileState extends State<FriendProfile> {
   var _userProvider;
   var _hisProvider;
-  var _btnDisabled;
   @override
   void initState() {
     super.initState();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    return Scaffold(
+        appBar: _appbarWidget(),
+        body: _userProfileWidget(),
+        backgroundColor: Color(0xFF101012));
+  }
+
   PreferredSizeWidget _appbarWidget() {
-    _btnDisabled = false;
+    bool btnDisabled = false;
     return PreferredSize(
         preferredSize: Size.fromHeight(40.0), // here the desired height
         child: AppBar(
@@ -43,10 +42,10 @@ class _FriendProfileState extends State<FriendProfile> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_outlined),
             onPressed: () {
-              _btnDisabled == true
+              btnDisabled == true
                   ? null
                   : [
-                      _btnDisabled = true,
+                      btnDisabled = true,
                       Navigator.of(context).pop(),
                     ];
             },
@@ -219,16 +218,6 @@ class _FriendProfileState extends State<FriendProfile> {
       _userProvider.patchUserLikedata(User, "append");
       return !isLiked;
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
-    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
-    return Scaffold(
-        appBar: _appbarWidget(),
-        body: _userProfileWidget(),
-        backgroundColor: Color(0xFF101012));
   }
 }
 

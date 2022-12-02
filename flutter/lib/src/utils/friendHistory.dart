@@ -14,14 +14,13 @@ class FriendHistory extends StatefulWidget {
 
 class _FriendHistoryState extends State<FriendHistory> {
   var _userProvider;
-  var _btnDisabled;
   @override
   void initState() {
     super.initState();
   }
 
   PreferredSizeWidget _appbarWidget() {
-    _btnDisabled = false;
+    bool btnDisabled = false;
     return PreferredSize(
         preferredSize: Size.fromHeight(40.0), // here the desired height
         child: AppBar(
@@ -29,10 +28,10 @@ class _FriendHistoryState extends State<FriendHistory> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_outlined),
             onPressed: () {
-              _btnDisabled == true
+              btnDisabled == true
                   ? null
                   : [
-                      _btnDisabled = true,
+                      btnDisabled = true,
                       Navigator.of(context).pop(),
                     ];
             },

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sdb_trainer/pages/friendProfile.dart';
-import 'package:sdb_trainer/pages/friendHistory.dart';
+import 'package:sdb_trainer/src/utils/friendProfile.dart';
+import 'package:sdb_trainer/src/utils/friendHistory.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
@@ -48,20 +48,6 @@ class _FeedCardState extends State<FeedCard> {
   void initState() {
     _tapPosition = Offset(0.0, 0.0);
     super.initState();
-  }
-
-  Future<void> _pickImg(SDBdata) async {
-    final XFile? selectImage =
-        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 10);
-    if (selectImage != null) {
-      dynamic sendData = selectImage.path;
-      HistoryImageEdit(file: sendData, history_id: SDBdata.id)
-          .patchHistoryImage()
-          .then((data) {
-        _historyProvider.getdata();
-        _historyProvider.getHistorydataAll();
-      });
-    }
   }
 
   @override
@@ -174,187 +160,8 @@ class _FeedCardState extends State<FeedCard> {
                                         onTap: () {
                                           SDBdata.user_email ==
                                                   _userProvider.userdata.email
-                                              ? showMenu(
-                                                  context: context,
-                                                  position:
-                                                      RelativeRect.fromRect(
-                                                          _tapPosition &
-                                                              Size(30, 30),
-                                                          Offset.zero &
-                                                              Size(0, 0)),
-                                                  items: [
-                                                    PopupMenuItem(
-                                                        child: ListTile(
-                                                            contentPadding:
-                                                                EdgeInsets.symmetric(
-                                                                    horizontal:
-                                                                        4.0,
-                                                                    vertical:
-                                                                        0.0),
-                                                            leading: Icon(
-                                                                Icons.mode_edit,
-                                                                color: Colors
-                                                                    .white),
-                                                            title: Text("코멘트",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white))),
-                                                        onTap: () {
-                                                          _historyCommentCtrl =
-                                                              TextEditingController(
-                                                                  text: SDBdata
-                                                                      .comment);
-                                                          Future<void>.delayed(
-                                                              const Duration(), // OR const Duration(milliseconds: 500),
-                                                              () =>
-                                                                  _displayTextInputDialog(
-                                                                      context,
-                                                                      SDBdata));
-                                                        }),
-                                                    PopupMenuItem(
-                                                        child: ListTile(
-                                                            contentPadding:
-                                                                EdgeInsets.symmetric(
-                                                                    horizontal:
-                                                                        4.0,
-                                                                    vertical:
-                                                                        0.0),
-                                                            leading: Icon(
-                                                                Icons
-                                                                    .add_photo_alternate,
-                                                                color: Colors
-                                                                    .white),
-                                                            title: Text("사진추가",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white))),
-                                                        onTap: () {
-                                                          _pickImg(SDBdata);
-                                                        }),
-                                                    PopupMenuItem(
-                                                        child: ListTile(
-                                                            contentPadding:
-                                                                EdgeInsets.symmetric(
-                                                                    horizontal:
-                                                                        4.0,
-                                                                    vertical:
-                                                                        0.0),
-                                                            leading: Icon(
-                                                                Icons
-                                                                    .no_photography,
-                                                                color: Colors
-                                                                    .white),
-                                                            title: Text("사진삭제",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white))),
-                                                        onTap: () {
-                                                          if (SDBdata.image
-                                                                  .length !=
-                                                              0) {
-                                                            HistoryImageDelete(
-                                                                    history_id:
-                                                                        SDBdata
-                                                                            .id)
-                                                                .deleteHistoryIamge()
-                                                                .then((value) {
-                                                              _historyProvider
-                                                                  .getdata();
-                                                              _historyProvider
-                                                                  .getHistorydataAll();
-                                                            });
-                                                          }
-                                                        }),
-                                                    PopupMenuItem(
-                                                        child: ListTile(
-                                                            contentPadding: EdgeInsets.symmetric(
-                                                                horizontal: 4.0,
-                                                                vertical: 0.0),
-                                                            leading: SDBdata
-                                                                    .isVisible
-                                                                ? Icon(Icons.filter_list_off,
-                                                                    color: Colors
-                                                                        .white)
-                                                                : Icon(Icons.filter_list,
-                                                                    color: Colors
-                                                                        .white),
-                                                            title: SDBdata.isVisible
-                                                                ? Text("숨김",
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .white))
-                                                                : Text("보임",
-                                                                    style: TextStyle(
-                                                                        color: Colors.white))),
-                                                        onTap: () {
-                                                          if (SDBdata
-                                                              .isVisible) {
-                                                            _historyProvider
-                                                                .patchHistoryVisible(
-                                                                    SDBdata,
-                                                                    false);
-                                                            HistoryVisibleEdit(
-                                                                    history_id:
-                                                                        SDBdata
-                                                                            .id,
-                                                                    status:
-                                                                        "false")
-                                                                .patchHistoryVisible();
-                                                          } else {
-                                                            _historyProvider
-                                                                .patchHistoryVisible(
-                                                                    SDBdata,
-                                                                    true);
-                                                            HistoryVisibleEdit(
-                                                                    history_id:
-                                                                        SDBdata
-                                                                            .id,
-                                                                    status:
-                                                                        "true")
-                                                                .patchHistoryVisible();
-                                                          }
-                                                        }),
-                                                  ],
-                                                )
-                                              : showMenu(
-                                                  context: context,
-                                                  position:
-                                                      RelativeRect.fromRect(
-                                                          _tapPosition &
-                                                              Size(30, 30),
-                                                          Offset.zero &
-                                                              Size(0, 0)),
-                                                  items: [
-                                                    PopupMenuItem(
-                                                        child: ListTile(
-                                                            contentPadding:
-                                                                EdgeInsets.symmetric(
-                                                                    horizontal:
-                                                                        4.0,
-                                                                    vertical:
-                                                                        0.0),
-                                                            leading: Icon(
-                                                                Icons
-                                                                    .remove_circle_outlined,
-                                                                color: Colors
-                                                                    .white),
-                                                            title: Text("신고",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white))),
-                                                        onTap: () {
-                                                          _historyCommentCtrl =
-                                                              TextEditingController(
-                                                                  text: SDBdata
-                                                                      .comment);
-                                                          Future<void>.delayed(
-                                                              const Duration(), // OR const Duration(milliseconds: 500),
-                                                              () => _displayDislikeAlert(
-                                                                  SDBdata
-                                                                      .user_email));
-                                                        }),
-                                                  ],
-                                                );
+                                              ? _myFeedMenu(SDBdata)
+                                              : _otherFeedMenu(SDBdata);
                                         },
                                         child: Icon(Icons.more_vert,
                                             color: Colors.grey, size: 18.0))
@@ -496,6 +303,113 @@ class _FeedCardState extends State<FeedCard> {
         ),
       ),
     );
+  }
+
+  Future<dynamic> _myFeedMenu(SDBdata) {
+    return showMenu(
+      context: context,
+      position: RelativeRect.fromRect(
+          _tapPosition & Size(30, 30), Offset.zero & Size(0, 0)),
+      items: [
+        PopupMenuItem(
+            child: ListTile(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+                leading: Icon(Icons.mode_edit, color: Colors.white),
+                title: Text("코멘트", style: TextStyle(color: Colors.white))),
+            onTap: () {
+              _historyCommentCtrl =
+                  TextEditingController(text: SDBdata.comment);
+              Future<void>.delayed(
+                  const Duration(), // OR const Duration(milliseconds: 500),
+                  () => _displayTextInputDialog(context, SDBdata));
+            }),
+        PopupMenuItem(
+            child: ListTile(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+                leading: Icon(Icons.add_photo_alternate, color: Colors.white),
+                title: Text("사진추가", style: TextStyle(color: Colors.white))),
+            onTap: () {
+              _pickImg(SDBdata);
+            }),
+        PopupMenuItem(
+            child: ListTile(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+                leading: Icon(Icons.no_photography, color: Colors.white),
+                title: Text("사진삭제", style: TextStyle(color: Colors.white))),
+            onTap: () {
+              if (SDBdata.image.length != 0) {
+                HistoryImageDelete(history_id: SDBdata.id)
+                    .deleteHistoryIamge()
+                    .then((value) {
+                  _historyProvider.getdata();
+                  _historyProvider.getHistorydataAll();
+                });
+              }
+            }),
+        PopupMenuItem(
+            child: ListTile(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+                leading: SDBdata.isVisible
+                    ? Icon(Icons.filter_list_off, color: Colors.white)
+                    : Icon(Icons.filter_list, color: Colors.white),
+                title: SDBdata.isVisible
+                    ? Text("숨김", style: TextStyle(color: Colors.white))
+                    : Text("보임", style: TextStyle(color: Colors.white))),
+            onTap: () {
+              if (SDBdata.isVisible) {
+                _historyProvider.patchHistoryVisible(SDBdata, false);
+                HistoryVisibleEdit(history_id: SDBdata.id, status: "false")
+                    .patchHistoryVisible();
+              } else {
+                _historyProvider.patchHistoryVisible(SDBdata, true);
+                HistoryVisibleEdit(history_id: SDBdata.id, status: "true")
+                    .patchHistoryVisible();
+              }
+            }),
+      ],
+    );
+  }
+
+  Future<dynamic> _otherFeedMenu(SDBdata) {
+    return showMenu(
+      context: context,
+      position: RelativeRect.fromRect(
+          _tapPosition & Size(30, 30), Offset.zero & Size(0, 0)),
+      items: [
+        PopupMenuItem(
+            child: ListTile(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+                leading:
+                    Icon(Icons.remove_circle_outlined, color: Colors.white),
+                title: Text("신고", style: TextStyle(color: Colors.white))),
+            onTap: () {
+              _historyCommentCtrl =
+                  TextEditingController(text: SDBdata.comment);
+              Future<void>.delayed(
+                  const Duration(), // OR const Duration(milliseconds: 500),
+                  () => _displayDislikeAlert(SDBdata.user_email));
+            }),
+      ],
+    );
+  }
+
+  Future<void> _pickImg(SDBdata) async {
+    final XFile? selectImage =
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 10);
+    if (selectImage != null) {
+      dynamic sendData = selectImage.path;
+      HistoryImageEdit(file: sendData, history_id: SDBdata.id)
+          .patchHistoryImage()
+          .then((data) {
+        _historyProvider.getdata();
+        _historyProvider.getHistorydataAll();
+      });
+    }
   }
 
   Widget _imageContent(SDBdata) {

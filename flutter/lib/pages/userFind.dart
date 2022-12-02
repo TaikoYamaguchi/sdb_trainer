@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import 'package:sdb_trainer/repository/user_repository.dart';
-import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
-import 'package:transition/transition.dart';
 
 class UserFindPage extends StatefulWidget {
   @override
@@ -13,7 +9,6 @@ class UserFindPage extends StatefulWidget {
 
 class _UserFindPageState extends State<UserFindPage> {
   bool isLoading = false;
-  var _userProvider;
   bool _isPhoneEmpty = false;
   bool _isVerification = false;
   var user;

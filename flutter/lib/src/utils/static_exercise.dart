@@ -52,6 +52,16 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
     super.initState();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
+    return Scaffold(
+      appBar: _appbarWidget(),
+      body: _exercisedetailWidget(),
+    );
+  }
+
   PreferredSizeWidget _appbarWidget() {
     return PreferredSize(
         preferredSize: Size.fromHeight(40.0), // here the desired height
@@ -478,16 +488,6 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
               ? {showToast("수정 완료"), Navigator.of(context).pop()}
               : showToast("입력을 확인해주세요"));
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
-    return Scaffold(
-      appBar: _appbarWidget(),
-      body: _exercisedetailWidget(),
-    );
   }
 
   @override

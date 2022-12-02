@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
@@ -19,14 +18,32 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
   var _usersdata;
   var _userProvider;
   var friendsInputSwitch = false;
-  var _btnDisabled;
 
   @override
   void initState() {
     super.initState();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    if (friendsInputSwitch == false) {
+      _usersdata = _userProvider.userFriendsAll;
+    }
+
+    return WillPopScope(
+      child: Scaffold(
+        appBar: _appbarWidget(),
+        body: _friend_searchWidget(),
+      ),
+      onWillPop: () async {
+        return true;
+      },
+    );
+  }
+
   PreferredSizeWidget _appbarWidget() {
+    bool btnDisabled = false;
     return PreferredSize(
         preferredSize: Size.fromHeight(40.0), // here the desired height
         child: AppBar(
@@ -34,10 +51,10 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_outlined),
             onPressed: () {
-              _btnDisabled == true
+              btnDisabled == true
                   ? null
                   : [
-                      _btnDisabled = true,
+                      btnDisabled = true,
                       Navigator.of(context).pop(),
                     ];
             },
@@ -224,24 +241,6 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
       _userProvider.patchUserLikedata(User, "append");
       return !isLiked;
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
-    if (friendsInputSwitch == false) {
-      _usersdata = _userProvider.userFriendsAll;
-    }
-
-    return WillPopScope(
-      child: Scaffold(
-        appBar: _appbarWidget(),
-        body: _friend_searchWidget(),
-      ),
-      onWillPop: () async {
-        return true;
-      },
-    );
   }
 
   @override

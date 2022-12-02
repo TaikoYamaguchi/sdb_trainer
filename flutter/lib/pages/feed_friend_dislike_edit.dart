@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
@@ -16,15 +15,29 @@ class FeedFriendDislikeEdit extends StatefulWidget {
 
 class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
   var _userProvider;
-  var friendsInputSwitch = false;
-  var _btnDisabled;
 
   @override
   void initState() {
     super.initState();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+
+    return WillPopScope(
+      child: Scaffold(
+        appBar: _appbarWidget(),
+        body: _dislikeEditWidget(),
+      ),
+      onWillPop: () async {
+        return true;
+      },
+    );
+  }
+
   PreferredSizeWidget _appbarWidget() {
+    bool btnDisabled = false;
     return PreferredSize(
         preferredSize: Size.fromHeight(40.0), // here the desired height
         child: AppBar(
@@ -32,10 +45,10 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_outlined),
             onPressed: () {
-              _btnDisabled == true
+              btnDisabled == true
                   ? null
                   : [
-                      _btnDisabled = true,
+                      btnDisabled = true,
                       Navigator.of(context).pop(),
                     ];
             },
@@ -129,13 +142,13 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
     ));
   }
 
-  Widget _dislikeEditButton(User) {
+  Widget _dislikeEditButton(User user) {
     var buttonSize = 28.0;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: LikeButton(
         size: buttonSize,
-        isLiked: onIsLikedCheck(User),
+        isLiked: onIsLikedCheck(user),
         circleColor:
             CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
         bubblesColor: BubblesColor(
@@ -150,14 +163,14 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
           );
         },
         onTap: (bool isLiked) async {
-          return onLikeButtonTapped(isLiked, User);
+          return onLikeButtonTapped(isLiked, user);
         },
       ),
     );
   }
 
-  bool onIsLikedCheck(User) {
-    if (_userProvider.userdata.dislike.contains(User.email)) {
+  bool onIsLikedCheck(User user) {
+    if (_userProvider.userdata.dislike.contains(user.email)) {
       return true;
     } else {
       return false;
@@ -166,7 +179,7 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
 
   bool onLikeButtonTapped(bool isLiked, User) {
     if (isLiked == true) {
-      var user = UserLike(
+      UserLike(
               liked_email: User.email,
               user_email: _userProvider.userdata.email,
               status: "remove",
@@ -175,7 +188,7 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
       _userProvider.patchUserDislikedata(User.email, "remove");
       return false;
     } else {
-      var user = UserLike(
+      UserLike(
               liked_email: User.email,
               user_email: _userProvider.userdata.email,
               status: "append",
@@ -184,21 +197,6 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
       _userProvider.patchUserDislikedata(User.email, "append");
       return !isLiked;
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
-
-    return WillPopScope(
-      child: Scaffold(
-        appBar: _appbarWidget(),
-        body: _dislikeEditWidget(),
-      ),
-      onWillPop: () async {
-        return true;
-      },
-    );
   }
 
   @override
