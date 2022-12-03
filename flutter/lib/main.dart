@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -25,6 +26,7 @@ import 'package:sdb_trainer/src/utils/notification.dart';
 void main() {
   KakaoSdk.init(nativeAppKey: "54b807de5757a704a372c2d0539a67da");
   WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp();
   initLocalNotificationPlugin();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (BuildContext context) => BodyStater()),

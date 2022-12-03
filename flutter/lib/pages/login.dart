@@ -21,6 +21,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:flutter/foundation.dart' as foundation;
+import 'package:firebase_auth/firebase_auth.dart' as firebase;
 
 class LoginPage extends StatefulWidget {
   @override
@@ -337,14 +338,30 @@ class LoginPageState extends State<LoginPage> {
         AppleIDAuthorizationScopes.fullName,
       ],
     );
-    try {
-      print(credential);
-      if (credential.authorizationCode != null) {
-        try {
-          _userEmailCtrl.text = credential.email!;
-          _userProvider.setUserKakaoEmail(credential.email);
-          _userProvider.setUserKakaoName(credential.givenName);
+    print(credential);
+    print("identityToken");
+    print(credential.identityToken);
+    print("authorizationCode");
+    print(credential.authorizationCode);
 
+    final oauthCredential = firebase.OAuthProvider("apple.com").credential(
+      idToken: credential.identityToken,
+      accessToken: credential.authorizationCode,
+    );
+    print("oauthCredential");
+    print(oauthCredential);
+    var user = await firebase.FirebaseAuth.instance
+        .signInWithCredential(oauthCredential);
+    print("user");
+    print(user);
+    print("usergogogog");
+    print(user.user!.providerData[0].email);
+    try {
+      if (user.user!.providerData[0].email != null) {
+        try {
+          _userEmailCtrl.text = user.user!.providerData[0].email!;
+          _userProvider.setUserKakaoEmail(user.user!.providerData[0].email);
+          _userProvider.setUserKakaoName(credential.givenName);
           _loginkakaoCheck();
         } catch (error) {
           print('사용자 정보 요청 실패 $error');
