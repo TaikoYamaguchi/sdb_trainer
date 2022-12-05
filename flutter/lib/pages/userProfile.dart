@@ -4,6 +4,7 @@ import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
+import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/userProfileNickname.dart';
 import 'package:sdb_trainer/pages/userProfileBody.dart';
@@ -29,6 +30,29 @@ class _UserProfileState extends State<UserProfile> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _PopProvider = Provider.of<PopProvider>(context, listen: false);
+    return Consumer<PopProvider>(builder: (Builder, provider, child) {
+      bool _popable = provider.isprostacking;
+      _popable == false
+          ? null
+          : [
+              provider.profilestackdown(),
+              provider.propopoff(),
+              Future.delayed(Duration.zero, () async {
+                Navigator.of(context).pop();
+              })
+            ];
+      return Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: _appbarWidget(),
+          body: _userProfileWidget(),
+          backgroundColor: Color(0xFF101012));
+    });
   }
 
   Future<void> _pickImg() async {
@@ -160,6 +184,117 @@ class _UserProfileState extends State<UserProfile> {
         });
   }
 
+  void _displayUserDeleteAlert() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            backgroundColor: Theme.of(context).cardColor,
+            title: Text('정말 탈퇴 하시나요?',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 24)),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('더 많은 기능을 준비 중 이에요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                Text('데이터를 지우면 복구 할 수 없어요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+              ],
+            ),
+            actions: <Widget>[
+              _DeleteConfirmButton(),
+            ],
+          );
+        });
+  }
+
+  void _displayUserLogoutAfterDeleteAlert() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return WillPopScope(
+              onWillPop: () => Future.value(false),
+              child: AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                backgroundColor: Theme.of(context).cardColor,
+                title: Text('탈퇴가 완료되었어요',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 24)),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('더 나은 모습으로 발전할게요',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.grey, fontSize: 12)),
+                  ],
+                ),
+                actions: <Widget>[
+                  _LogOutAfterDeleteButton(),
+                ],
+              ));
+        });
+  }
+
+  Widget _DeleteConfirmButton() {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              backgroundColor: Color(0xFF101012),
+              foregroundColor: Color(0xFF101012),
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
+            ),
+            onPressed: () {
+              UserDelete().deleteUser().then((data) {
+                if (data!.email != "") {
+                  Navigator.of(context, rootNavigator: true).pop();
+                  _displayUserLogoutAfterDeleteAlert();
+                }
+              });
+            },
+            child: Text("탈퇴",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+  }
+
+  Widget _LogOutAfterDeleteButton() {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              backgroundColor: Color(0xFF101012),
+              foregroundColor: Color(0xFF101012),
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
+            ),
+            onPressed: () {
+              userLogOut(context);
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            child: Text("로그아웃",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+  }
+
   Widget _userProfileWidget() {
     return SingleChildScrollView(
       child: Column(children: [
@@ -230,11 +365,28 @@ class _UserProfileState extends State<UserProfile> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(_userProvider.userdata.isMan ? "남성" : "여성",
-                        style: TextStyle(color: Colors.white)),
+                        style: const TextStyle(color: Colors.white)),
                     Container(),
                   ])),
         ),
-        SizedBox(height: 30),
+        ElevatedButton(
+          onPressed: () {
+            _displayUserDeleteAlert();
+          },
+          style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all(Theme.of(context).cardColor)),
+          child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const [
+                    Text("회원탈퇴", style: TextStyle(color: Colors.grey)),
+                    Icon(Icons.chevron_right, color: Colors.white),
+                  ])),
+        ),
+        const SizedBox(height: 30),
         GestureDetector(
             onTap: () {
               _displayPhotoDialog();
@@ -268,28 +420,5 @@ class _UserProfileState extends State<UserProfile> {
             child: Text("사진 편집", style: TextStyle(color: Colors.white)))
       ]),
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _PopProvider = Provider.of<PopProvider>(context, listen: false);
-    return Consumer<PopProvider>(builder: (Builder, provider, child) {
-      bool _popable = provider.isprostacking;
-      _popable == false
-          ? null
-          : [
-              provider.profilestackdown(),
-              provider.propopoff(),
-              Future.delayed(Duration.zero, () async {
-                Navigator.of(context).pop();
-              })
-            ];
-      return Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: _appbarWidget(),
-          body: _userProfileWidget(),
-          backgroundColor: Color(0xFF101012));
-    });
   }
 }

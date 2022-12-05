@@ -7,6 +7,7 @@ import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:sdb_trainer/pages/userProfile.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
+import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/userProfileGoal.dart';
 import 'package:image_picker/image_picker.dart';
@@ -240,7 +241,7 @@ class _ProfileState extends State<Profile> {
                         Icon(Icons.chevron_right, color: Colors.white),
                       ]))),
           ElevatedButton(
-              onPressed: () => _userLogOut(),
+              onPressed: () => userLogOut(context),
               style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all(Theme.of(context).cardColor)),

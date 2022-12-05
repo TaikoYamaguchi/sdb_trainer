@@ -187,7 +187,18 @@ def edit_user_body_stat(db: Session, body_stats:schemas.UserBodyStatIn, user:sch
     db.commit()
     db.refresh(db_user)
 
-
-
-
-
+def delete_user(db: Session, user:schemas.UserBase):
+    db_user = db.query(models.User).filter(models.User.email == user.email).first()
+    if user.is_superuser == True :
+        db.delete(db_user)
+        db.commit()
+    else :
+        if user.email == db_user.email:
+                db.delete(db_user)
+                db.commit()
+        else :
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="작성자가 아닙니다",
+            )
+    return db_user
