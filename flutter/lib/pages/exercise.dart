@@ -697,20 +697,29 @@ class ExerciseState extends State<Exercise> {
                   SizedBox(height: 20),
                   TextField(
                     onChanged: (value) {
-                      _workoutProvider.workoutdata.routinedatas
-                          .indexWhere((routine) {
-                        if (routine.name == _workoutNameCtrl.text) {
-                          setState(() {
-                            _customExUsed = true;
-                          });
-                          return true;
-                        } else {
-                          setState(() {
-                            _customExUsed = false;
-                          });
-                          return false;
-                        }
-                      });
+                      if (_workoutProvider.workoutdata.routinedatas.isEmpty ==
+                          true) {
+                        setState(() {
+                          _customExUsed = false;
+                        });
+                      } else {
+                        _workoutProvider.workoutdata.routinedatas
+                            .indexWhere((routine) {
+                          if (routine.name == _workoutNameCtrl.text) {
+                            print("true");
+                            setState(() {
+                              _customExUsed = true;
+                            });
+                            return true;
+                          } else {
+                            print("false");
+                            setState(() {
+                              _customExUsed = false;
+                            });
+                            return false;
+                          }
+                        });
+                      }
                     },
                     style: TextStyle(fontSize: 24.0, color: Colors.white),
                     textAlign: TextAlign.center,
@@ -776,7 +785,6 @@ class ExerciseState extends State<Exercise> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              foregroundColor: Theme.of(context).primaryColor,
               backgroundColor:
                   _workoutNameCtrl.text == "" || _customExUsed == true
                       ? Color(0xFF212121)
@@ -784,21 +792,21 @@ class ExerciseState extends State<Exercise> {
               textStyle: TextStyle(
                 color: Colors.white,
               ),
-              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
             ),
             onPressed: () {
               if (!_customExUsed && _workoutNameCtrl.text != "") {
-                _workoutProvider.addroutine(new Routinedatas(
+                print("gogogogogo");
+                _workoutProvider.addroutine(Routinedatas(
                     name: _workoutNameCtrl.text,
                     mode: _RoutineMenuProvider.ismodechecked ? 1 : 0,
                     exercises: _RoutineMenuProvider.ismodechecked
                         ? [
-                            new Program(
-                                progress: 0, plans: [new Plans(exercises: [])])
+                            Program(progress: 0, plans: [Plans(exercises: [])])
                           ]
                         : [],
                     routine_time: 0));
+                print("gogogogogo123");
                 _editWorkoutCheck();
                 _workoutNameCtrl.clear();
                 Navigator.of(context, rootNavigator: true).pop();

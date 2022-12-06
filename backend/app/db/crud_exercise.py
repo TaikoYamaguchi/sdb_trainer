@@ -32,6 +32,13 @@ def get_exercise_by_email(db: Session, email: str) -> schemas.ExercisesOut:
     exercise = db.query(models.Exercises).filter(models.Exercises.user_email == email).first()
     return exercise
 
+def delete_all_exercises_by_email(db: Session, email: str):
+    try:
+        exercise = db.query(models.Exercises).filter(models.Exercises.user_email == email).delete()
+        db.commit()
+    except:
+        db.rollback()
+
 def edit_exercise(db:Session, exercise:schemas.ExercisesCreate):
     db_exercise = get_exercise_by_email(db, exercise.user_email)
     if not db_exercise:

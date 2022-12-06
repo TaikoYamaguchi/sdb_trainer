@@ -1,4 +1,3 @@
-from app.db.crud import get_user_by_email
 import datetime
 from pytz import timezone
 from fastapi import HTTPException, status
@@ -39,10 +38,21 @@ def create_history(db: Session, history: schemas.HistoryCreate, ip:str):
         db.refresh((db_user))
     return db_history
 
+def get_user_by_email(db: Session, email: str) -> schemas.UserBase:
+    user=db.query(models.User).filter(models.User.email == email).first()
+    return user
+
 def get_histories_by_email(db: Session, email: str) -> t.List[schemas.HistoryOut]:
     
     histories = db.query(models.History).filter(models.History.user_email == email).order_by(models.History.id.desc()).all()
     return histories
+
+def delete_all_histories_by_email(db: Session, email: str):
+    try:
+        histories = db.query(models.History).filter(models.History.user_email == email).delete()
+        db.commit()
+    except:
+        db.rollback()
 
 def get_histories(db: Session, skip, limit) -> t.List[schemas.HistoryOut]:
     histories = db.query(models.History).order_by(models.History.id.desc()).offset(skip).limit(limit).all()

@@ -2,17 +2,16 @@ import json
 from sqlalchemy.sql.elements import Null
 from app.core.sms import verification_user
 import datetime
-
 from pytz import timezone
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 import typing as t
-
 from sqlalchemy.sql import func
-
 from . import models, schemas
+from app.db.crud_exercise import delete_all_exercises_by_email
+from app.db.crud_history import delete_all_histories_by_email
+from app.db.crud_workout import delete_all_workouts_by_email
 from app.core.security import get_password_hash
-
 
 def get_user(db: Session, user_id: int):
     user = db.query(models.User).filter(models.User.id == user_id).first()
@@ -192,10 +191,16 @@ def delete_user(db: Session, user:schemas.UserBase):
     if user.is_superuser == True :
         db.delete(db_user)
         db.commit()
+        delete_all_workouts_by_email(db,user.email)
+        delete_all_exercises_by_email(db,user.email)
+        delete_all_histories_by_email(db,user.email)
     else :
         if user.email == db_user.email:
                 db.delete(db_user)
                 db.commit()
+                delete_all_workouts_by_email(db,user.email)
+                delete_all_exercises_by_email(db,user.email)
+                delete_all_histories_by_email(db,user.email)
         else :
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
