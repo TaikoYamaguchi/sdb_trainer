@@ -93,7 +93,8 @@ class LoginPageState extends State<LoginPage> {
                       : _isiOS
                           ? _loginSocialButton("apple", context)
                           : Container(),
-                  _emailLoginButton(context),
+                  //_emailLoginButton(context),
+                  SizedBox(height: 42),
                   _isEmailLogin ? _findUser(context) : Container()
                 ]),
           ))),

@@ -15,10 +15,12 @@ import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
+import 'package:sdb_trainer/src/model/workoutdata.dart' as routine;
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -57,16 +59,17 @@ class _SignUpPageState extends State<SignUpPage> {
 
   final Map<bool, Widget> _genderList = const <bool, Widget>{
     true: Padding(
-      child: Text("남성", style: TextStyle(color: Colors.white, fontSize: 32)),
+      child: Text("남성", style: TextStyle(color: Colors.white, fontSize: 28)),
       padding: const EdgeInsets.all(20.0),
     ),
     false: Padding(
-        child: Text("여성", style: TextStyle(color: Colors.white, fontSize: 32)),
+        child: Text("여성", style: TextStyle(color: Colors.white, fontSize: 28)),
         padding: const EdgeInsets.all(20.0))
   };
 
   TextEditingController _userEmailCtrl = TextEditingController(text: "");
-  TextEditingController _userPasswordCtrl = TextEditingController(text: "");
+  TextEditingController _userPasswordCtrl =
+      TextEditingController(text: "unkown!@#");
   TextEditingController _userNameCtrl = TextEditingController(text: "unknown");
   TextEditingController _userNicknameCtrl = TextEditingController(text: "");
   TextEditingController _userImageCtrl = TextEditingController(text: "");
@@ -104,6 +107,8 @@ class _SignUpPageState extends State<SignUpPage> {
         category: "바벨",
         note: ''),
   ];
+
+  List<routine.Routinedatas> routinedatas = [];
 
   List<Exercises> extra_Ex = [
     Exercises(
@@ -484,6 +489,15 @@ class _SignUpPageState extends State<SignUpPage> {
         target: ["삼두"],
         category: "덤벨",
         note: ''),
+    Exercises(
+        goal: 0.0,
+        name: "러닝",
+        image: null,
+        onerm: 0.0,
+        custom: false,
+        target: ["유산소"],
+        category: "유산소",
+        note: ''),
   ];
 
   List<TextEditingController> _onermController = [];
@@ -495,7 +509,7 @@ class _SignUpPageState extends State<SignUpPage> {
   void initState() {
     super.initState();
     _userEmailCtrl = TextEditingController(text: "");
-    _userPasswordCtrl = TextEditingController(text: "");
+    _userPasswordCtrl = TextEditingController(text: "unkown!@#");
   }
 
   @override
@@ -525,6 +539,7 @@ class _SignUpPageState extends State<SignUpPage> {
       color: Color(0xFF101012),
       child: Column(
         children: [
+          SizedBox(height: 60),
           KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
             return Container(
               width: MediaQuery.of(context).size.width / 3,
@@ -532,8 +547,28 @@ class _SignUpPageState extends State<SignUpPage> {
               child:
                   Column(mainAxisAlignment: MainAxisAlignment.end, children: [
                 StepProgressIndicator(
-                  totalSteps: 4,
+                  totalSteps: 5,
                   size: 10,
+                  onTap: (index) {
+                    if (_isSignupIndex > index && _isSignupIndex <= 2) {
+                      return () {
+                        setState(() {
+                          _isSignupIndex = index;
+                        });
+                        print(index);
+                      };
+                    } else if (_isSignupIndex > 2) {
+                      return () {
+                        showToast("회원가입이 완료되어 추후 변경가능합니다!");
+                        print(-1);
+                      };
+                    } else {
+                      return () {
+                        showToast("버튼을 눌러 넘어 갈 수 있어요!");
+                        print(-1);
+                      };
+                    }
+                  },
                   roundedEdges: Radius.circular(10),
                   currentStep: _isSignupIndex + 1,
                   selectedColor: Theme.of(context).primaryColor,
@@ -564,6 +599,8 @@ class _SignUpPageState extends State<SignUpPage> {
       case 2:
         return _signupSettingWidget();
       case 3:
+        return _signupImageWidget();
+      case 4:
         return _signupExerciseWidget();
     }
     return Container();
@@ -579,28 +616,24 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text("회원가입을 시작할게요",
-                          style: TextStyle(color: Colors.white, fontSize: 32)),
-                      Text("회원가입 후 운동을 시작 할 수 있어요",
+                      Text("회원가입을 진행할게요",
+                          style: TextStyle(color: Colors.white, fontSize: 28)),
+                      Text("어떻게 불러드릴까요?",
                           style: TextStyle(color: Colors.grey, fontSize: 16)),
                       SizedBox(
                         height: 16,
-                      ),
-                      _emailWidget(),
-                      SizedBox(
-                        height: 12,
                       ),
                       _nicknameWidget(),
                       SizedBox(
                         height: 12,
                       ),
-                      _passwordWidget(),
+                      _phoneNumberWidget(),
                       SizedBox(
                         height: 12,
                       ),
-                      _phoneNumberWidget(),
+                      _emailWidget(),
                       SizedBox(
-                        height: 36,
+                        height: 72,
                       ),
                       _signUpButton(context),
                       _loginButton(context),
@@ -623,7 +656,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: SizedBox(),
                     ),
                     Text("성별을 선택해주세요",
-                        style: TextStyle(color: Colors.white, fontSize: 32)),
+                        style: TextStyle(color: Colors.white, fontSize: 28)),
                     Text("성별에 따라 추천 무게가 달라져요",
                         style: TextStyle(color: Colors.grey, fontSize: 16)),
                     SizedBox(
@@ -657,7 +690,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: SizedBox(),
                     ),
                     Text("키, 몸무게를 입력해주세요",
-                        style: TextStyle(color: Colors.white, fontSize: 32)),
+                        style: TextStyle(color: Colors.white, fontSize: 28)),
                     Text("신체에 따라 추천 프로그램이 달라져요",
                         style: TextStyle(color: Colors.grey, fontSize: 16)),
                     SizedBox(
@@ -696,6 +729,64 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
+  Widget _signupImageWidget() {
+    return Container(
+      color: Color(0xFF101012),
+      child: Center(
+          child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 3,
+                      child: SizedBox(),
+                    ),
+                    Text("사진을 설정해주세요",
+                        style: TextStyle(color: Colors.white, fontSize: 28)),
+                    Text("사진을 클릭하면 변경 할 수 있어요",
+                        style: TextStyle(color: Colors.grey, fontSize: 16)),
+                    SizedBox(
+                      height: 34,
+                    ),
+                    GestureDetector(
+                        onTap: () {
+                          displayPhotoDialog(context);
+                        },
+                        child: _userProvider.userdata.image == ""
+                            ? Icon(
+                                Icons.account_circle,
+                                color: Colors.grey,
+                                size: 200.0,
+                              )
+                            : Consumer<UserdataProvider>(
+                                builder: (builder, rpovider, child) {
+                                return CachedNetworkImage(
+                                  imageUrl: _userProvider.userdata.image,
+                                  imageBuilder: (context, imageProivder) =>
+                                      Container(
+                                    height: 200,
+                                    width: 200,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(50)),
+                                        image: DecorationImage(
+                                          image: imageProivder,
+                                          fit: BoxFit.cover,
+                                        )),
+                                  ),
+                                );
+                              })),
+                    Expanded(
+                      flex: 3,
+                      child: SizedBox(),
+                    ),
+                    _signUpButton(context),
+                    _loginButton(context),
+                  ]))),
+    );
+  }
+
   Widget _signupExerciseWidget() {
     return Container(
       color: Color(0xFF101012),
@@ -710,7 +801,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: SizedBox(),
                     ),
                     Text("회원가입 완료!",
-                        style: TextStyle(color: Colors.white, fontSize: 32)),
+                        style: TextStyle(color: Colors.white, fontSize: 28)),
                     Text("1rm과 목표치를 설정해보세요",
                         style: TextStyle(color: Colors.grey, fontSize: 16)),
                     SizedBox(
@@ -751,29 +842,28 @@ class _SignUpPageState extends State<SignUpPage> {
                         ],
                       ),
                     ),
-                    Expanded(
-                      flex: 10,
-                      child: ListView.separated(
-                          itemBuilder: (BuildContext _context, int index) {
-                            return Center(
-                                child: _exerciseWidget(
-                                    exerciseList[index], index));
-                          },
-                          separatorBuilder: (BuildContext _context, int index) {
-                            return Container(
+                    ListView.separated(
+                        itemBuilder: (BuildContext _context, int index) {
+                          return Center(
+                              child:
+                                  _exerciseWidget(exerciseList[index], index));
+                        },
+                        separatorBuilder: (BuildContext _context, int index) {
+                          return Container(
+                            alignment: Alignment.center,
+                            height: 1,
+                            color: Color(0xFF101012),
+                            child: Container(
                               alignment: Alignment.center,
+                              margin: EdgeInsets.symmetric(horizontal: 10),
                               height: 1,
-                              color: Color(0xFF101012),
-                              child: Container(
-                                alignment: Alignment.center,
-                                margin: EdgeInsets.symmetric(horizontal: 10),
-                                height: 1,
-                                color: Color(0xFF717171),
-                              ),
-                            );
-                          },
-                          itemCount: exerciseList.length),
-                    ),
+                              color: Color(0xFF717171),
+                            ),
+                          );
+                        },
+                        shrinkWrap: true,
+                        itemCount: exerciseList.length),
+
                     Expanded(
                       flex: 2,
                       child: SizedBox(),
@@ -786,7 +876,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _emailWidget() {
     return TextFormField(
-      autofocus: true,
       onChanged: (text) {
         if (_userProvider.userFriendsAll.userdatas
                 .where((user) {
@@ -807,12 +896,13 @@ class _SignUpPageState extends State<SignUpPage> {
             _isEmailused = true;
           });
       },
+      enabled: false,
       controller: _userEmailCtrl,
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(color: Colors.grey),
       decoration: InputDecoration(
         labelText: _isEmailused == false ? "이메일" : "사용 불가 이메일",
         labelStyle:
-            TextStyle(color: _isEmailused == false ? Colors.white : Colors.red),
+            TextStyle(color: _isEmailused == false ? Colors.grey : Colors.red),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
               color: _isEmailused == false
@@ -823,7 +913,7 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-              color: _isEmailused == false ? Colors.white : Colors.red,
+              color: _isEmailused == false ? Colors.grey : Colors.red,
               width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
@@ -911,6 +1001,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _nicknameWidget() {
     return TextFormField(
+      autofocus: true,
       onChanged: (text) {
         if (_userProvider.userFriendsAll.userdatas
                 .where((user) {
@@ -1033,6 +1124,8 @@ class _SignUpPageState extends State<SignUpPage> {
         backgroundColor: Color(0xFF101012),
         thumbColor: Theme.of(context).primaryColor,
         onValueChanged: (i) {
+          print(i);
+          _userProvider.setUserKakaoGender(i as bool);
           setState(() {
             _userGenderCtrl = i as bool;
           });
@@ -1137,15 +1230,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       }
                     });
                   })
-                : _isSignupIndex == 1
+                : _isSignupIndex == 3
                     ? setState(() {
                         _PrefProvider.getprefs();
-                        _signUpProfileCheck().then((value) {
-                          if (value) {
-                            setState(() {
-                              _isSignupIndex = 2;
-                            });
-                          }
+                        setState(() {
+                          _isSignupIndex = 4;
                         });
                       })
                     : {
@@ -1161,7 +1250,14 @@ class _SignUpPageState extends State<SignUpPage> {
                           });
                         })
                       },
-            child: Text(isLoading ? 'loggin in.....' : "회원가입",
+            child: Text(
+                isLoading
+                    ? 'loggin in.....'
+                    : _isSignupIndex == 0
+                        ? "다음"
+                        : _isSignupIndex == 3
+                            ? "다음"
+                            : "회원가입 완료",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
@@ -1182,8 +1278,14 @@ class _SignUpPageState extends State<SignUpPage> {
               padding: EdgeInsets.all(8.0),
             ),
             onPressed: () => _postExerciseCheck(context),
-            child: Text(isLoading ? 'loggin in.....' : "운동 정보 제출",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+            child: Column(
+              children: [
+                Text(isLoading ? 'loggin in.....' : "운동 정보 제출",
+                    style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                Text("추천 운동을 운동탭에서 확인해보세요",
+                    style: TextStyle(color: Colors.grey, fontSize: 14)),
+              ],
+            )));
   }
 
   Widget _signUpGenderButton(context) {
@@ -1237,16 +1339,17 @@ class _SignUpPageState extends State<SignUpPage> {
         .then((data) => data["username"] != null
             ? {
                 _initialGoalCheck(),
-                setState(() {
-                  _isSignupIndex = 3;
-                }),
                 UserLogin(
                         userEmail: _userEmailCtrl.text,
                         password: _userPasswordCtrl.text)
                     .loginUser()
                     .then((token) {
                   token["access_token"] != null
-                      ? {}
+                      ? {
+                          setState(() {
+                            _isSignupIndex = 3;
+                          }),
+                        }
                       : showToast("아이디와 비밀번호를 확인해주세요");
                 }),
                 _postWorkoutCheck()
@@ -1268,7 +1371,106 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   void _postWorkoutCheck() async {
-    WorkoutPost(user_email: _userEmailCtrl.text, routinedatas: [])
+    routinedatas = [
+      routine.Routinedatas(
+          name: "운동A",
+          mode: 0,
+          exercises: [
+            routine.Exercises(
+                name: "스쿼트",
+                sets: [
+                  routine.Sets(
+                      index: 0,
+                      weight: exerciseList[0].goal! * 0.5,
+                      reps: 10,
+                      ischecked: false),
+                  routine.Sets(
+                      index: 1,
+                      weight: exerciseList[0].goal! * 0.5,
+                      reps: 10,
+                      ischecked: false),
+                  routine.Sets(
+                      index: 2,
+                      weight: exerciseList[0].goal! * 0.5,
+                      reps: 10,
+                      ischecked: false)
+                ],
+                rest: 90),
+            routine.Exercises(
+                name: "데드리프트",
+                sets: [
+                  routine.Sets(
+                      index: 0,
+                      weight: exerciseList[1].goal! * 0.5,
+                      reps: 10,
+                      ischecked: false),
+                  routine.Sets(
+                      index: 1,
+                      weight: exerciseList[1].goal! * 0.5,
+                      reps: 10,
+                      ischecked: false),
+                  routine.Sets(
+                      index: 2,
+                      weight: exerciseList[1].goal! * 0.5,
+                      reps: 10,
+                      ischecked: false)
+                ],
+                rest: 90),
+            routine.Exercises(
+                name: "벤치프레스",
+                sets: [
+                  routine.Sets(
+                      index: 0,
+                      weight: exerciseList[2].goal! * 0.5,
+                      reps: 10,
+                      ischecked: false),
+                  routine.Sets(
+                      index: 1,
+                      weight: exerciseList[2].goal! * 0.5,
+                      reps: 10,
+                      ischecked: false),
+                  routine.Sets(
+                      index: 2,
+                      weight: exerciseList[2].goal! * 0.5,
+                      reps: 10,
+                      ischecked: false)
+                ],
+                rest: 90),
+            routine.Exercises(
+                name: "풀업",
+                sets: [
+                  routine.Sets(
+                      index: double.parse(_userWeightCtrl.text),
+                      weight: double.parse(_userWeightCtrl.text) * -0.3,
+                      reps: 5,
+                      ischecked: false),
+                  routine.Sets(
+                      index: double.parse(_userWeightCtrl.text),
+                      weight: double.parse(_userWeightCtrl.text) * -0.3,
+                      reps: 5,
+                      ischecked: false),
+                  routine.Sets(
+                      index: double.parse(_userWeightCtrl.text),
+                      weight: double.parse(_userWeightCtrl.text) * -0.3,
+                      reps: 5,
+                      ischecked: false),
+                ],
+                rest: 90),
+            routine.Exercises(
+                name: "러닝",
+                sets: [
+                  routine.Sets(
+                      index: double.parse(_userWeightCtrl.text),
+                      weight: 0.0,
+                      reps: 1000,
+                      ischecked: false),
+                ],
+                rest: 90),
+          ],
+          routine_time: 0.0)
+    ];
+
+    WorkoutPost(user_email: _userEmailCtrl.text, routinedatas: routinedatas)
         .postWorkout()
         .then((data) => data["user_email"] != null
             ? showToast("Workout 생성 완료")
@@ -1277,26 +1479,27 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Future<bool> _signUpProfileCheck() async {
     if (_isSignupIndex == 0) {
-      if (_userEmailCtrl.text != "" &&
-          _userNicknameCtrl.text != "" &&
-          _userPasswordCtrl.text != "" &&
-          _userPhoneNumberCtrl.text != "") {
+      if (_userEmailCtrl.text != "" && _userNicknameCtrl.text != "") {
         if (_isEmailused == true || _isNickNameused == true) {
           showToast("이메일 및 닉네임 확인해주세요");
           return false;
         } else {
           showToast("회원정보 확인 후 이동해드릴게요");
-          var user =
-              await UserPhoneCheck(userPhoneNumber: _userPhoneNumberCtrl.text)
-                  .getUserByPhoneNumber();
-          if (user == null) {
-            return true;
+          if (_userPhoneNumberCtrl.text != "") {
+            var user =
+                await UserPhoneCheck(userPhoneNumber: _userPhoneNumberCtrl.text)
+                    .getUserByPhoneNumber();
+            if (user == null) {
+              return true;
+            } else {
+              setState(() {
+                _isPhoneNumberused = true;
+              });
+              showToast("중복된 폰번호 입니다.");
+              return false;
+            }
           } else {
-            setState(() {
-              _isPhoneNumberused = true;
-            });
-            showToast("중복된 폰번호 입니다.");
-            return false;
+            return true;
           }
         }
       } else {

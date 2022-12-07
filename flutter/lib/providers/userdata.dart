@@ -100,6 +100,10 @@ class UserdataProvider extends ChangeNotifier {
       _userKakaoGender = true;
     } else if (state == null) {
       _userKakaoGender = null;
+    } else if (state == true) {
+      _userKakaoGender = true;
+    } else if (state == false) {
+      _userKakaoGender = false;
     } else {
       _userKakaoGender = false;
     }
