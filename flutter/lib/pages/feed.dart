@@ -160,42 +160,47 @@ class _FeedState extends State<Feed> {
                   itemBuilder: (_, page) {
                     return RefreshIndicator(
                         onRefresh: _onRefresh,
-                        child: ListView.separated(
-                            controller: _pageController,
-                            itemBuilder: (BuildContext _context, int index) {
-                              if (index < _historydata.length) {
-                                return Center(
-                                    child: FeedCard(
-                                        sdbdata: _historydata[index],
-                                        index: index,
-                                        feedListCtrl: _feedListCtrl));
-                              } else {
-                                _final_history_id = _historydata[index - 1].id;
-                                return Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 16),
-                                  child: Center(
-                                      child: _hasMore
-                                          ? CircularProgressIndicator()
-                                          : Text("데이터 없음",
-                                              style: TextStyle(
-                                                  color: Colors.white))),
-                                );
-                              }
-                            },
-                            separatorBuilder:
-                                (BuildContext _context, int index) {
-                              return Container(
-                                alignment: Alignment.center,
-                                height: 0,
-                                color: Color(0xFF101012),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 0,
-                                  color: Color(0xFF717171),
-                                ),
-                              );
-                            },
-                            itemCount: _historydata.length + 1));
+                        child: _historydata.isEmpty
+                            ? Container()
+                            : ListView.separated(
+                                controller: _pageController,
+                                itemBuilder:
+                                    (BuildContext _context, int index) {
+                                  if (index < _historydata.length) {
+                                    return Center(
+                                        child: FeedCard(
+                                            sdbdata: _historydata[index],
+                                            index: index,
+                                            feedListCtrl: _feedListCtrl));
+                                  } else {
+                                    _final_history_id =
+                                        _historydata[index - 1].id;
+                                    return Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 16),
+                                      child: Center(
+                                          child: _hasMore
+                                              ? CircularProgressIndicator()
+                                              : Text("데이터 없음",
+                                                  style: TextStyle(
+                                                      color: Colors.white))),
+                                    );
+                                  }
+                                },
+                                separatorBuilder:
+                                    (BuildContext _context, int index) {
+                                  return Container(
+                                    alignment: Alignment.center,
+                                    height: 0,
+                                    color: Color(0xFF101012),
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      height: 0,
+                                      color: Color(0xFF717171),
+                                    ),
+                                  );
+                                },
+                                itemCount: _historydata.length + 1));
                   },
                   onPageChanged: (page) {
                     setState(() {

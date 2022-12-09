@@ -52,7 +52,6 @@ class _ProfileState extends State<Profile> {
                     child: ElevatedButton(
                         onPressed: () {
                           _PopProvider.tutorpopon();
-
                           Future.delayed(Duration(milliseconds: 400))
                               .then((value) {
                             _bodyStater.change(1);
@@ -68,7 +67,12 @@ class _ProfileState extends State<Profile> {
               backgroundColor: Color(0xFF101012))),
       body: _userProvider.userdata != null
           ? _profile(context)
-          : Center(child: CircularProgressIndicator()),
+          : Center(
+              child: Column(
+              children: [
+                CircularProgressIndicator(),
+              ],
+            )),
       backgroundColor: Color(0xFF101012),
     );
   }
@@ -190,6 +194,30 @@ class _ProfileState extends State<Profile> {
         });
   }
 
+  Widget _errorLogoutButton(context) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width / 4,
+        child: TextButton(
+          style: TextButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            foregroundColor: Theme.of(context).primaryColor,
+            backgroundColor: Theme.of(context).primaryColor,
+            textStyle: TextStyle(
+              color: Colors.white,
+            ),
+            disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+            padding: EdgeInsets.all(12.0),
+          ),
+          onPressed: () {
+            userLogOut(context);
+          },
+          child:
+              Text('로그아웃', style: TextStyle(fontSize: 16, color: Colors.white)),
+        ));
+  }
+
   Widget _profile(context) {
     return Container(
       child: SingleChildScrollView(
@@ -214,8 +242,7 @@ class _ProfileState extends State<Profile> {
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(_userProvider.userdata.nickname,
-                              style: TextStyle(color: Colors.white)),
+                          Text("프로필 정보", style: TextStyle(color: Colors.white)),
                           Icon(Icons.chevron_right, color: Colors.white),
                         ]));
               })),
@@ -317,16 +344,5 @@ class _ProfileState extends State<Profile> {
         ]),
       ),
     );
-  }
-
-  void _userLogOut() {
-    print("loggggggout");
-    _userProvider.setUserKakaoEmail(null);
-    _userProvider.setUserKakaoName(null);
-    _userProvider.setUserKakaoImageUrl(null);
-    _userProvider.setUserKakaoGender(null);
-    UserLogOut.logOut();
-    _loginState.change(false);
-    _loginState.changeSignup(false);
   }
 }

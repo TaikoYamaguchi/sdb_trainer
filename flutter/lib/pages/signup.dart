@@ -760,9 +760,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                 size: 200.0,
                               )
                             : Consumer<UserdataProvider>(
-                                builder: (builder, rpovider, child) {
+                                builder: (builder, provider, child) {
+                                print(provider.userdata.image);
                                 return CachedNetworkImage(
-                                  imageUrl: _userProvider.userdata.image,
+                                  imageUrl: provider.userdata.image,
                                   imageBuilder: (context, imageProivder) =>
                                       Container(
                                     height: 200,
@@ -795,9 +796,10 @@ class _SignUpPageState extends State<SignUpPage> {
               padding: const EdgeInsets.all(20.0),
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Expanded(
-                      flex: 3,
+                      flex: 1,
                       child: SizedBox(),
                     ),
                     Text("회원가입 완료!",
@@ -863,9 +865,8 @@ class _SignUpPageState extends State<SignUpPage> {
                         },
                         shrinkWrap: true,
                         itemCount: exerciseList.length),
-
                     Expanded(
-                      flex: 2,
+                      flex: 3,
                       child: SizedBox(),
                     ),
                     _weightSubmitButton(context),
@@ -1349,10 +1350,11 @@ class _SignUpPageState extends State<SignUpPage> {
                           setState(() {
                             _isSignupIndex = 3;
                           }),
+                          _userProvider.getdata(),
+                          _postWorkoutCheck()
                         }
                       : showToast("아이디와 비밀번호를 확인해주세요");
                 }),
-                _postWorkoutCheck()
               }
             : showToast("회원가입을 할 수 없습니다"));
   }
