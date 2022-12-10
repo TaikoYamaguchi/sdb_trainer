@@ -40,32 +40,17 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _isPhoneNumberused = false;
 
   final Map<String, Widget> _heightUnitList = const <String, Widget>{
-    "cm": Padding(
-      child: Text("cm", style: TextStyle(color: Colors.white, fontSize: 24)),
-      padding: const EdgeInsets.all(14.0),
-    ),
-    "inch": Padding(
-      child: Text("inch", style: TextStyle(color: Colors.white, fontSize: 24)),
-      padding: const EdgeInsets.all(14.0),
-    )
+    "cm": Text("cm", style: TextStyle(color: Colors.white, fontSize: 24)),
+    "inch": Text("inch", style: TextStyle(color: Colors.white, fontSize: 24)),
   };
   final Map<String, Widget> _weightUnitList = const <String, Widget>{
-    "kg": Padding(
-        child: Text("kg", style: TextStyle(color: Colors.white, fontSize: 24)),
-        padding: const EdgeInsets.all(14.0)),
-    "lb": Padding(
-        child: Text("lb", style: TextStyle(color: Colors.white, fontSize: 24)),
-        padding: const EdgeInsets.all(14.0))
+    "kg": Text("kg", style: TextStyle(color: Colors.white, fontSize: 24)),
+    "lb": Text("lb", style: TextStyle(color: Colors.white, fontSize: 24)),
   };
 
   final Map<bool, Widget> _genderList = const <bool, Widget>{
-    true: Padding(
-      child: Text("남성", style: TextStyle(color: Colors.white, fontSize: 28)),
-      padding: const EdgeInsets.all(20.0),
-    ),
-    false: Padding(
-        child: Text("여성", style: TextStyle(color: Colors.white, fontSize: 28)),
-        padding: const EdgeInsets.all(20.0))
+    true: Text("남성", style: TextStyle(color: Colors.white, fontSize: 28)),
+    false: Text("여성", style: TextStyle(color: Colors.white, fontSize: 28)),
   };
 
   TextEditingController _userEmailCtrl = TextEditingController(text: "");
@@ -544,7 +529,7 @@ class _SignUpPageState extends State<SignUpPage> {
           },
           child: Column(
             children: [
-              SizedBox(height: 60),
+              SizedBox(height: 24),
               KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
                 return Container(
                   width: MediaQuery.of(context).size.width / 3,
@@ -614,43 +599,45 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _signupProfileWidget() {
     return Container(
-      height: MediaQuery.of(context).size.height,
       color: Color(0xFF101012),
       child: Center(
           child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: SingleChildScrollView(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Text("회원가입을 진행할게요",
-                          style: TextStyle(color: Colors.white, fontSize: 28)),
-                      Text("어떻게 불러드릴까요?",
-                          style: TextStyle(color: Colors.grey, fontSize: 16)),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      _nicknameWidget(),
-                      SizedBox(
-                        height: 12,
-                      ),
-                      _phoneNumberWidget(),
-                      SizedBox(
-                        height: 12,
-                      ),
-                      _emailWidget(),
-                      SizedBox(
-                        height: 72,
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          _signUpButton(context),
-                          _loginButton(context),
-                        ],
-                      ),
-                    ]),
-              ))),
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Expanded(
+                flex: 3,
+                child: SizedBox(),
+              ),
+              Text("회원가입을 진행할게요",
+                  style: TextStyle(color: Colors.white, fontSize: 28)),
+              Text("어떻게 불러드릴까요?",
+                  style: TextStyle(color: Colors.grey, fontSize: 16)),
+              SizedBox(
+                height: 4,
+              ),
+              _nicknameWidget(),
+              SizedBox(
+                height: 4,
+              ),
+              _phoneNumberWidget(),
+              Expanded(
+                flex: 3,
+                child: SizedBox(),
+              ),
+              SizedBox(
+                height: 12,
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _signUpButton(context),
+                  _loginButton(context),
+                ],
+              ),
+            ]),
+      )),
     );
   }
 
@@ -667,16 +654,16 @@ class _SignUpPageState extends State<SignUpPage> {
                       flex: 3,
                       child: SizedBox(),
                     ),
-                    Text("성별을 선택해주세요",
+                    const Text("성별을 선택해주세요",
                         style: TextStyle(color: Colors.white, fontSize: 28)),
-                    Text("성별에 따라 추천 무게가 달라져요",
+                    const Text("성별에 따라 추천 무게가 달라져요",
                         style: TextStyle(color: Colors.grey, fontSize: 16)),
                     SizedBox(
-                      height: 34,
+                      height: 24,
                     ),
                     _genderWidget(),
                     SizedBox(
-                      height: 8,
+                      height: 20,
                     ),
                     Expanded(
                       flex: 3,
@@ -706,27 +693,29 @@ class _SignUpPageState extends State<SignUpPage> {
                     Text("신체에 따라 추천 프로그램이 달라져요",
                         style: TextStyle(color: Colors.grey, fontSize: 16)),
                     SizedBox(
-                      height: 34,
+                      height: 4,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Expanded(child: _heightWidget()),
                         SizedBox(
-                          width: 8,
+                          width: 16,
                         ),
                         Expanded(child: _heightUnitWidget())
                       ],
                     ),
                     SizedBox(
-                      height: 8,
+                      height: 4,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Expanded(child: _weightWidget()),
                         SizedBox(
-                          width: 8,
+                          width: 16,
                         ),
                         Expanded(child: _weightUnitWidget())
                       ],
@@ -734,6 +723,9 @@ class _SignUpPageState extends State<SignUpPage> {
                     Expanded(
                       flex: 3,
                       child: SizedBox(),
+                    ),
+                    SizedBox(
+                      height: 12,
                     ),
                     _signUpButton(context),
                     _loginButton(context),
@@ -763,32 +755,33 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     Consumer<UserdataProvider>(
                         builder: (builder, provider, child) {
-                      print(provider.userdata.image);
-                      return GestureDetector(
-                          onTap: () {
-                            displayPhotoDialog(context);
-                          },
-                          child: _userProvider.userdata.image == ""
-                              ? Icon(
-                                  Icons.account_circle,
-                                  color: Colors.grey,
-                                  size: 200.0,
-                                )
-                              : CachedNetworkImage(
-                                  imageUrl: provider.userdata.image,
-                                  imageBuilder: (context, imageProivder) =>
-                                      Container(
-                                    height: 200,
-                                    width: 200,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(50)),
-                                        image: DecorationImage(
-                                          image: imageProivder,
-                                          fit: BoxFit.cover,
-                                        )),
-                                  ),
-                                ));
+                      return provider.userdata == null
+                          ? CircularProgressIndicator()
+                          : GestureDetector(
+                              onTap: () {
+                                displayPhotoDialog(context);
+                              },
+                              child: _userProvider.userdata.image == ""
+                                  ? Icon(
+                                      Icons.account_circle,
+                                      color: Colors.grey,
+                                      size: 200.0,
+                                    )
+                                  : CachedNetworkImage(
+                                      imageUrl: provider.userdata.image,
+                                      imageBuilder: (context, imageProivder) =>
+                                          Container(
+                                        height: 200,
+                                        width: 200,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(50)),
+                                            image: DecorationImage(
+                                              image: imageProivder,
+                                              fit: BoxFit.cover,
+                                            )),
+                                      ),
+                                    ));
                     }),
                     Expanded(
                       flex: 3,
@@ -811,7 +804,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Expanded(
-                      flex: 1,
+                      flex: 3,
                       child: SizedBox(),
                     ),
                     Text("회원가입 완료!",
@@ -819,7 +812,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     Text("1rm과 목표치를 설정해보세요",
                         style: TextStyle(color: Colors.grey, fontSize: 16)),
                     SizedBox(
-                      height: 40,
+                      height: 24,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -856,32 +849,38 @@ class _SignUpPageState extends State<SignUpPage> {
                         ],
                       ),
                     ),
-                    ListView.separated(
-                        itemBuilder: (BuildContext _context, int index) {
-                          return Center(
-                              child:
-                                  _exerciseWidget(exerciseList[index], index));
-                        },
-                        separatorBuilder: (BuildContext _context, int index) {
-                          return Container(
-                            alignment: Alignment.center,
-                            height: 1,
-                            color: Color(0xFF101012),
-                            child: Container(
-                              alignment: Alignment.center,
-                              margin: EdgeInsets.symmetric(horizontal: 10),
-                              height: 1,
-                              color: Color(0xFF717171),
-                            ),
-                          );
-                        },
-                        shrinkWrap: true,
-                        itemCount: exerciseList.length),
+                    MediaQuery.removePadding(
+                        context: context,
+                        removeTop: true,
+                        child: ListView.separated(
+                            itemBuilder: (BuildContext _context, int index) {
+                              return Center(
+                                  child: _exerciseWidget(
+                                      exerciseList[index], index));
+                            },
+                            separatorBuilder:
+                                (BuildContext _context, int index) {
+                              return Container(
+                                alignment: Alignment.center,
+                                height: 1,
+                                color: Color(0xFF101012),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.symmetric(horizontal: 10),
+                                  height: 1,
+                                  color: Color(0xFF717171),
+                                ),
+                              );
+                            },
+                            shrinkWrap: true,
+                            itemCount: exerciseList.length)),
+
                     Expanded(
                       flex: 3,
                       child: SizedBox(),
                     ),
                     _weightSubmitButton(context),
+                    SizedBox(height: 8)
                     //_loginButton(context),
                   ]))),
     );
@@ -1041,7 +1040,7 @@ class _SignUpPageState extends State<SignUpPage> {
         filled: true,
         labelText: _isNickNameused == false ? "닉네임" : "사용 불가 닉네임",
         labelStyle: TextStyle(
-            color: _isNickNameused == false ? Colors.white : Colors.red),
+            color: _isNickNameused == false ? Colors.grey : Colors.red),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
               color: _isNickNameused == false
@@ -1065,17 +1064,18 @@ class _SignUpPageState extends State<SignUpPage> {
       autofocus: true,
       controller: _userHeightCtrl,
       keyboardType:
-          TextInputType.numberWithOptions(signed: true, decimal: true),
+          TextInputType.numberWithOptions(signed: false, decimal: true),
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
+        filled: true,
         labelText: "키",
-        labelStyle: TextStyle(color: Colors.white),
-        focusedBorder: OutlineInputBorder(
+        labelStyle: TextStyle(color: Colors.grey),
+        focusedBorder: UnderlineInputBorder(
           borderSide:
-              BorderSide(color: Theme.of(context).primaryColor, width: 2.0),
+              BorderSide(color: Theme.of(context).primaryColor, width: 3.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
-        enabledBorder: OutlineInputBorder(
+        enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.white, width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
@@ -1086,18 +1086,20 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget _weightWidget() {
     return TextFormField(
       controller: _userWeightCtrl,
-      keyboardType: TextInputType.number,
+      keyboardType:
+          TextInputType.numberWithOptions(signed: false, decimal: true),
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
+        filled: true,
         labelText: "몸무게",
-        labelStyle: TextStyle(color: Colors.white),
-        focusedBorder: OutlineInputBorder(
+        labelStyle: TextStyle(color: Colors.grey),
+        focusedBorder: UnderlineInputBorder(
           borderSide:
-              BorderSide(color: Theme.of(context).primaryColor, width: 2.0),
+              BorderSide(color: Theme.of(context).primaryColor, width: 3.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2.0),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.white, width: 3.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
       ),
@@ -1105,11 +1107,18 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _weightUnitWidget() {
-    return CupertinoSlidingSegmentedControl(
-        groupValue: _userWeightUnitCtrl,
+    return CustomSlidingSegmentedControl(
+        isStretch: true,
+        height: 48.0,
         children: _weightUnitList,
-        backgroundColor: Color(0xFF101012),
-        thumbColor: Theme.of(context).primaryColor,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Theme.of(context).cardColor,
+        ),
+        innerPadding: const EdgeInsets.all(4),
+        thumbDecoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Theme.of(context).primaryColor),
         onValueChanged: (i) {
           setState(() {
             _userWeightUnitCtrl = i as String;
@@ -1118,11 +1127,18 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _heightUnitWidget() {
-    return CupertinoSlidingSegmentedControl(
-        groupValue: _userHeightUnitCtrl,
+    return CustomSlidingSegmentedControl(
+        isStretch: true,
+        height: 48.0,
         children: _heightUnitList,
-        backgroundColor: Color(0xFF101012),
-        thumbColor: Theme.of(context).primaryColor,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Theme.of(context).cardColor,
+        ),
+        innerPadding: const EdgeInsets.all(4),
+        thumbDecoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Theme.of(context).primaryColor),
         onValueChanged: (i) {
           setState(() {
             _userHeightUnitCtrl = i as String;
@@ -1131,20 +1147,25 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _genderWidget() {
-    return Container(
-      color: Theme.of(context).cardColor,
-      child: CustomSlidingSegmentedControl(
-          initialValue: true,
-          children: _genderList,
-          thumbDecoration: BoxDecoration(color: Theme.of(context).primaryColor),
-          onValueChanged: (i) {
-            print(i);
-            _userProvider.setUserKakaoGender(i as bool);
-            setState(() {
-              _userGenderCtrl = i as bool;
-            });
-          }),
-    );
+    return CustomSlidingSegmentedControl(
+        padding: 40.0,
+        height: 64.0,
+        children: _genderList,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Theme.of(context).cardColor,
+        ),
+        innerPadding: const EdgeInsets.all(4),
+        thumbDecoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Theme.of(context).primaryColor),
+        onValueChanged: (i) {
+          print(i);
+          _userProvider.setUserKakaoGender(i as bool);
+          setState(() {
+            _userGenderCtrl = i as bool;
+          });
+        });
   }
 
   Widget _phoneNumberWidget() {
@@ -1161,7 +1182,7 @@ class _SignUpPageState extends State<SignUpPage> {
         filled: true,
         labelText: _isPhoneNumberused == false ? "휴대폰(-없이)" : "중복된 전화번호",
         labelStyle: TextStyle(
-            color: _isPhoneNumberused == false ? Colors.white : Colors.red),
+            color: _isPhoneNumberused == false ? Colors.grey : Colors.red),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
               color: _isPhoneNumberused == false
@@ -1222,6 +1243,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget _signUpButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
+        height: 56,
         child: TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
@@ -1280,6 +1302,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget _weightSubmitButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
+        height: 64,
         child: TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
@@ -1306,6 +1329,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _signUpGenderButton(context) {
     return SizedBox(
+        height: 56,
         width: MediaQuery.of(context).size.width,
         child: TextButton(
             style: TextButton.styleFrom(
@@ -1329,7 +1353,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
   void _signUpCheck() async {
     showToast("회원가입이 완료 중이니 기다려주세요");
-
     DateTime _toDay = DateTime.now();
     UserSignUp(
             userEmail: _userEmailCtrl.text,
@@ -1381,7 +1404,7 @@ class _SignUpPageState extends State<SignUpPage> {
         .postExercise()
         .then((data) => data["user_email"] != null
             ? {
-                _bodyStater.change(0),
+                _bodyStater.change(1),
                 _loginState.change(true),
                 LoginPageState().initialProviderGet(context)
               }

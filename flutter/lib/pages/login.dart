@@ -313,19 +313,20 @@ class LoginPageState extends State<LoginPage> {
     try {
       await _googleSignIn.signIn();
       GoogleSignInAccount? user = _googleSignIn.currentUser;
+      print(user);
       if (user != null) {
         try {
           _userEmailCtrl.text = user.email;
           _userProvider.setUserKakaoEmail(user.email);
           _userProvider.setUserKakaoImageUrl(user.photoUrl);
           _userProvider.setUserKakaoName(user.displayName);
-
           _loginkakaoCheck();
         } catch (error) {
+          showToast("구글 권한을 확인 해주세요");
           print('사용자 정보 요청 실패 $error');
         }
       } else {
-        _loginkakaoCheck();
+        showToast("구글 권한을 확인 해주세요");
       }
     } catch (error) {
       print(error);
@@ -368,7 +369,7 @@ class LoginPageState extends State<LoginPage> {
           print('사용자 정보 요청 실패 $error');
         }
       } else {
-        _loginkakaoCheck();
+        showToast("애플 권한을 확인 해주세요");
       }
     } catch (error) {
       print(error);
