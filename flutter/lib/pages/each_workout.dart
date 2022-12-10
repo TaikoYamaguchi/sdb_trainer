@@ -18,6 +18,7 @@ import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'package:sdb_trainer/src/model/workoutdata.dart' as wod;
+import 'package:sdb_trainer/src/utils/change_name.dart';
 import 'package:sdb_trainer/src/utils/my_flexible_space_bar.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -1495,7 +1496,11 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                           end: EdgeInsets.only(left: 60.0, bottom: 8)),
                       title: GestureDetector(
                         onTap: () {
-                          _displayTextInputDialog();
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return ChangeName(rindex: widget.rindex);
+                              });
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
