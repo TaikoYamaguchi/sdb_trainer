@@ -80,6 +80,8 @@ dependencies:
   confetti: ^0.7.0
   sign_in_with_apple: ^4.2.0
   firebase_auth: ^4.1.5
+  custom_sliding_segmented_control: ^1.7.3
+
 
 
 dev_dependencies:
