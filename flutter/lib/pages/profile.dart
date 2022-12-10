@@ -242,7 +242,7 @@ class _ProfileState extends State<Profile> {
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("프로필 정보", style: TextStyle(color: Colors.white)),
+                          Text("프로필", style: TextStyle(color: Colors.white)),
                           Icon(Icons.chevron_right, color: Colors.white),
                         ]));
               })),

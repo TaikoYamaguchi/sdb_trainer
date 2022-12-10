@@ -749,20 +749,20 @@ class _SignUpPageState extends State<SignUpPage> {
                     SizedBox(
                       height: 34,
                     ),
-                    GestureDetector(
-                        onTap: () {
-                          displayPhotoDialog(context);
-                        },
-                        child: _userProvider.userdata.image == ""
-                            ? Icon(
-                                Icons.account_circle,
-                                color: Colors.grey,
-                                size: 200.0,
-                              )
-                            : Consumer<UserdataProvider>(
-                                builder: (builder, provider, child) {
-                                print(provider.userdata.image);
-                                return CachedNetworkImage(
+                    Consumer<UserdataProvider>(
+                        builder: (builder, provider, child) {
+                      print(provider.userdata.image);
+                      return GestureDetector(
+                          onTap: () {
+                            displayPhotoDialog(context);
+                          },
+                          child: _userProvider.userdata.image == ""
+                              ? Icon(
+                                  Icons.account_circle,
+                                  color: Colors.grey,
+                                  size: 200.0,
+                                )
+                              : CachedNetworkImage(
                                   imageUrl: provider.userdata.image,
                                   imageBuilder: (context, imageProivder) =>
                                       Container(
@@ -776,8 +776,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                           fit: BoxFit.cover,
                                         )),
                                   ),
-                                );
-                              })),
+                                ));
+                    }),
                     Expanded(
                       flex: 3,
                       child: SizedBox(),
@@ -1347,11 +1347,12 @@ class _SignUpPageState extends State<SignUpPage> {
                     .then((token) {
                   token["access_token"] != null
                       ? {
+                          _userProvider.getdata(),
+                          _postWorkoutCheck(),
+                          print(_userProvider.userdata),
                           setState(() {
                             _isSignupIndex = 3;
                           }),
-                          _userProvider.getdata(),
-                          _postWorkoutCheck()
                         }
                       : showToast("아이디와 비밀번호를 확인해주세요");
                 }),
