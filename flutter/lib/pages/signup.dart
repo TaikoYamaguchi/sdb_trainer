@@ -21,6 +21,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -537,52 +538,57 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
         body: Container(
       color: Color(0xFF101012),
-      child: Column(
-        children: [
-          SizedBox(height: 60),
-          KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
-            return Container(
-              width: MediaQuery.of(context).size.width / 3,
-              height: 40,
-              child:
-                  Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-                StepProgressIndicator(
-                  totalSteps: 5,
-                  size: 10,
-                  onTap: (index) {
-                    if (_isSignupIndex > index && _isSignupIndex <= 2) {
-                      return () {
-                        setState(() {
-                          _isSignupIndex = index;
-                        });
-                        print(index);
-                      };
-                    } else if (_isSignupIndex > 2) {
-                      return () {
-                        showToast("회원가입이 완료되어 추후 변경가능합니다!");
-                        print(-1);
-                      };
-                    } else {
-                      return () {
-                        showToast("버튼을 눌러 넘어 갈 수 있어요!");
-                        print(-1);
-                      };
-                    }
-                  },
-                  roundedEdges: Radius.circular(10),
-                  currentStep: _isSignupIndex + 1,
-                  selectedColor: Theme.of(context).primaryColor,
-                  unselectedColor: Theme.of(context).cardColor,
-                  customColor: (index) => index == _isSignupIndex
-                      ? Theme.of(context).primaryColor
-                      : Theme.of(context).cardColor,
-                ),
-              ]),
-            );
-          }),
-          Expanded(child: _signupWidget()),
-        ],
-      ),
+      child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Column(
+            children: [
+              SizedBox(height: 60),
+              KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
+                return Container(
+                  width: MediaQuery.of(context).size.width / 3,
+                  height: 40,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        StepProgressIndicator(
+                          totalSteps: 5,
+                          size: 10,
+                          onTap: (index) {
+                            if (_isSignupIndex > index && _isSignupIndex <= 2) {
+                              return () {
+                                setState(() {
+                                  _isSignupIndex = index;
+                                });
+                                print(index);
+                              };
+                            } else if (_isSignupIndex > 2) {
+                              return () {
+                                showToast("회원가입이 완료되어 추후 변경가능합니다!");
+                                print(-1);
+                              };
+                            } else {
+                              return () {
+                                showToast("버튼을 눌러 넘어 갈 수 있어요!");
+                                print(-1);
+                              };
+                            }
+                          },
+                          roundedEdges: Radius.circular(10),
+                          currentStep: _isSignupIndex + 1,
+                          selectedColor: Theme.of(context).primaryColor,
+                          unselectedColor: Theme.of(context).cardColor,
+                          customColor: (index) => index == _isSignupIndex
+                              ? Theme.of(context).primaryColor
+                              : Theme.of(context).cardColor,
+                        ),
+                      ]),
+                );
+              }),
+              Expanded(child: _signupWidget()),
+            ],
+          )),
     ));
   }
 
@@ -608,13 +614,14 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _signupProfileWidget() {
     return Container(
+      height: MediaQuery.of(context).size.height,
       color: Color(0xFF101012),
       child: Center(
           child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: SingleChildScrollView(
                 child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Text("회원가입을 진행할게요",
                           style: TextStyle(color: Colors.white, fontSize: 28)),
@@ -635,8 +642,13 @@ class _SignUpPageState extends State<SignUpPage> {
                       SizedBox(
                         height: 72,
                       ),
-                      _signUpButton(context),
-                      _loginButton(context),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _signUpButton(context),
+                          _loginButton(context),
+                        ],
+                      ),
                     ]),
               ))),
     );
@@ -1026,22 +1038,23 @@ class _SignUpPageState extends State<SignUpPage> {
       controller: _userNicknameCtrl,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
+        filled: true,
         labelText: _isNickNameused == false ? "닉네임" : "사용 불가 닉네임",
         labelStyle: TextStyle(
             color: _isNickNameused == false ? Colors.white : Colors.red),
-        focusedBorder: OutlineInputBorder(
+        focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
               color: _isNickNameused == false
                   ? Theme.of(context).primaryColor
                   : Colors.red,
-              width: 2.0),
-          borderRadius: BorderRadius.circular(5.0),
+              width: 3.0),
+          borderRadius: BorderRadius.circular(8.0),
         ),
-        enabledBorder: OutlineInputBorder(
+        enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
               color: _isNickNameused == false ? Colors.white : Colors.red,
-              width: 2.0),
-          borderRadius: BorderRadius.circular(5.0),
+              width: 3.0),
+          borderRadius: BorderRadius.circular(8.0),
         ),
       ),
     );
@@ -1118,19 +1131,20 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _genderWidget() {
-    return CupertinoSlidingSegmentedControl(
-        groupValue: _userGenderCtrl,
-        children: _genderList,
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        backgroundColor: Color(0xFF101012),
-        thumbColor: Theme.of(context).primaryColor,
-        onValueChanged: (i) {
-          print(i);
-          _userProvider.setUserKakaoGender(i as bool);
-          setState(() {
-            _userGenderCtrl = i as bool;
-          });
-        });
+    return Container(
+      color: Theme.of(context).cardColor,
+      child: CustomSlidingSegmentedControl(
+          initialValue: true,
+          children: _genderList,
+          thumbDecoration: BoxDecoration(color: Theme.of(context).primaryColor),
+          onValueChanged: (i) {
+            print(i);
+            _userProvider.setUserKakaoGender(i as bool);
+            setState(() {
+              _userGenderCtrl = i as bool;
+            });
+          }),
+    );
   }
 
   Widget _phoneNumberWidget() {
@@ -1144,22 +1158,23 @@ class _SignUpPageState extends State<SignUpPage> {
       keyboardType: TextInputType.number,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
+        filled: true,
         labelText: _isPhoneNumberused == false ? "휴대폰(-없이)" : "중복된 전화번호",
         labelStyle: TextStyle(
             color: _isPhoneNumberused == false ? Colors.white : Colors.red),
-        focusedBorder: OutlineInputBorder(
+        focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
               color: _isPhoneNumberused == false
                   ? Theme.of(context).primaryColor
                   : Colors.red,
-              width: 2.0),
-          borderRadius: BorderRadius.circular(5.0),
+              width: 3.0),
+          borderRadius: BorderRadius.circular(8.0),
         ),
-        enabledBorder: OutlineInputBorder(
+        enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
               color: _isPhoneNumberused == false ? Colors.white : Colors.red,
-              width: 2.0),
-          borderRadius: BorderRadius.circular(5.0),
+              width: 3.0),
+          borderRadius: BorderRadius.circular(8.0),
         ),
       ),
     );
