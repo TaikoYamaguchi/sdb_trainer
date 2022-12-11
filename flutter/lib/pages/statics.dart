@@ -47,6 +47,8 @@ class _CalendarState extends State<Calendar> {
   var _exProvider;
   var _exSearchCtrlBool = false;
   var _exCalendarSearchCtrlBool = false;
+  bool _bodyWeightChartIsOpen = true;
+  bool _bodyExChartIsOpen = true;
   TextEditingController _exSearchCtrl = TextEditingController(text: "");
   TextEditingController _exCalendarSearchCtrl = TextEditingController(text: "");
 
@@ -74,7 +76,6 @@ class _CalendarState extends State<Calendar> {
       if (visible == false) {
         FocusScope.of(context).unfocus();
       }
-      ;
     });
     // TODO: implement initState
     _tapPosition = Offset(0.0, 0.0);
@@ -260,7 +261,7 @@ class _CalendarState extends State<Calendar> {
                 child: PageView(
                   controller: provider1.isPageController,
                   children: [
-                    _chartWidget(context),
+                    _chartWidget(),
                     _calendarWidget(),
                     _weightWidget()
                   ],
@@ -383,10 +384,11 @@ class _CalendarState extends State<Calendar> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 16.0),
-                        child: Text("몸무게",
+                        padding: const EdgeInsets.only(
+                            left: 24.0, top: 4.0, bottom: 4.0),
+                        child: Text("몸무게 차트",
                             style:
-                                TextStyle(color: Colors.white, fontSize: 24)),
+                                TextStyle(color: Colors.white, fontSize: 20)),
                       ),
                       Container(
                         width: 100,
@@ -400,94 +402,105 @@ class _CalendarState extends State<Calendar> {
                             },
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
-                              color: Theme.of(context).cardColor,
+                              color: Color(0xFF101012),
                             ),
                             innerPadding: const EdgeInsets.all(4),
                             thumbDecoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
                                 color: Theme.of(context).primaryColor),
-                            onValueChanged: (i) {
-                              setState(() {});
+                            onValueChanged: (bool value) {
+                              setState(() {
+                                _bodyWeightChartIsOpen = value;
+                              });
                             }),
                       )
                     ],
                   ),
-                  Container(
-                      width: double.infinity,
-                      height: 250,
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).cardColor,
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(20),
-                              bottomRight: Radius.circular(20),
-                              topLeft: Radius.circular(20),
-                              bottomLeft: Radius.circular(20))),
-                      child: SfCartesianChart(
-                          plotAreaBorderWidth: 0,
-                          primaryXAxis: DateTimeAxis(
-                            majorGridLines: const MajorGridLines(width: 0),
-                            majorTickLines: const MajorTickLines(size: 0),
-                            axisLine: const AxisLine(width: 0),
-                          ),
-                          primaryYAxis: NumericAxis(
-                              axisLine: const AxisLine(width: 0),
-                              majorTickLines: const MajorTickLines(size: 0),
-                              majorGridLines: const MajorGridLines(width: 0),
-                              minimum: _userProvider
-                                          .userdata.bodyStats!.length ==
-                                      0
-                                  ? 0
-                                  : _userProvider.userdata.bodyStats!.length > 1
-                                      ? _userProvider.userdata.bodyStats!
-                                          .reduce(
-                                              (BodyStat curr, BodyStat next) =>
+                  _bodyWeightChartIsOpen
+                      ? Container(
+                          width: double.infinity,
+                          height: 250,
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).cardColor,
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(20),
+                                  bottomRight: Radius.circular(20),
+                                  topLeft: Radius.circular(20),
+                                  bottomLeft: Radius.circular(20))),
+                          child: SfCartesianChart(
+                              plotAreaBorderWidth: 0,
+                              primaryXAxis: DateTimeAxis(
+                                majorGridLines: const MajorGridLines(width: 0),
+                                majorTickLines: const MajorTickLines(size: 0),
+                                axisLine: const AxisLine(width: 0),
+                              ),
+                              primaryYAxis: NumericAxis(
+                                  axisLine: const AxisLine(width: 0),
+                                  majorTickLines: const MajorTickLines(size: 0),
+                                  majorGridLines:
+                                      const MajorGridLines(width: 0),
+                                  minimum: _userProvider
+                                              .userdata.bodyStats!.length ==
+                                          0
+                                      ? 0
+                                      : _userProvider
+                                                  .userdata.bodyStats!.length >
+                                              1
+                                          ? _userProvider.userdata.bodyStats!
+                                              .reduce((BodyStat curr,
+                                                      BodyStat next) =>
                                                   curr.weight! < next.weight!
                                                       ? curr
                                                       : next)
-                                          .weight
-                                      : _userProvider
-                                          .userdata.bodyStats![0].weight),
-                          tooltipBehavior: _tooltipBehavior,
-                          zoomPanBehavior: _zoomPanBehavior,
-                          legend: Legend(
-                              isVisible: true,
-                              position: LegendPosition.bottom,
-                              textStyle: TextStyle(color: Colors.white)),
-                          series: [
-                            LineSeries<BodyStat, DateTime>(
-                              isVisibleInLegend: true,
-                              color: Colors.white54,
-                              name: "목표",
-                              dataSource: _userProvider.userdata.bodyStats!,
-                              xValueMapper: (BodyStat sales, _) =>
-                                  DateTime.parse(sales.date!),
-                              yValueMapper: (BodyStat sales, _) =>
-                                  sales.weight_goal!,
-                            ),
-                            // Renders line chart
-                            LineSeries<BodyStat, DateTime>(
-                              isVisibleInLegend: true,
-                              onCreateShader: (ShaderDetails details) {
-                                return ui.Gradient.linear(details.rect.topRight,
-                                    details.rect.bottomLeft, color, stops);
-                              },
-                              markerSettings: MarkerSettings(
+                                              .weight
+                                          : _userProvider
+                                              .userdata.bodyStats![0].weight),
+                              tooltipBehavior: _tooltipBehavior,
+                              zoomPanBehavior: _zoomPanBehavior,
+                              legend: Legend(
                                   isVisible: true,
-                                  height: 6,
-                                  width: 6,
-                                  borderWidth: 3,
+                                  position: LegendPosition.bottom,
+                                  textStyle: TextStyle(color: Colors.white)),
+                              series: [
+                                LineSeries<BodyStat, DateTime>(
+                                  isVisibleInLegend: true,
+                                  color: Colors.white54,
+                                  name: "목표",
+                                  dataSource: _userProvider.userdata.bodyStats!,
+                                  xValueMapper: (BodyStat sales, _) =>
+                                      DateTime.parse(sales.date!),
+                                  yValueMapper: (BodyStat sales, _) =>
+                                      sales.weight_goal!,
+                                ),
+                                // Renders line chart
+                                LineSeries<BodyStat, DateTime>(
+                                  isVisibleInLegend: true,
+                                  onCreateShader: (ShaderDetails details) {
+                                    return ui.Gradient.linear(
+                                        details.rect.topRight,
+                                        details.rect.bottomLeft,
+                                        color,
+                                        stops);
+                                  },
+                                  markerSettings: MarkerSettings(
+                                      isVisible: true,
+                                      height: 6,
+                                      width: 6,
+                                      borderWidth: 3,
+                                      color: Theme.of(context).primaryColor,
+                                      borderColor:
+                                          Theme.of(context).primaryColor),
+                                  name: "몸무게",
                                   color: Theme.of(context).primaryColor,
-                                  borderColor: Theme.of(context).primaryColor),
-                              name: "몸무게",
-                              color: Theme.of(context).primaryColor,
-                              width: 5,
-                              dataSource: _userProvider.userdata.bodyStats!,
-                              xValueMapper: (BodyStat sales, _) =>
-                                  DateTime.parse(sales.date!),
-                              yValueMapper: (BodyStat sales, _) =>
-                                  sales.weight!,
-                            ),
-                          ])),
+                                  width: 5,
+                                  dataSource: _userProvider.userdata.bodyStats!,
+                                  xValueMapper: (BodyStat sales, _) =>
+                                      DateTime.parse(sales.date!),
+                                  yValueMapper: (BodyStat sales, _) =>
+                                      sales.weight!,
+                                ),
+                              ]))
+                      : Container(),
                 ],
               )),
           SizedBox(height: 12),
@@ -1679,7 +1692,7 @@ class _CalendarState extends State<Calendar> {
     );
   }
 
-  Widget _chartWidget(context) {
+  Widget _chartWidget() {
     final List<Color> color = <Color>[];
     color.add(Color(0xFffc60a8).withOpacity(0.7));
     color.add(Theme.of(context).primaryColor.withOpacity(0.9));
@@ -1760,7 +1773,7 @@ class _CalendarState extends State<Calendar> {
           ),
           SizedBox(height: 5),
           Container(
-              height: 250,
+              width: double.infinity,
               decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.only(
@@ -1768,72 +1781,125 @@ class _CalendarState extends State<Calendar> {
                       bottomRight: Radius.circular(20),
                       topLeft: Radius.circular(20),
                       bottomLeft: Radius.circular(20))),
-              child: SfCartesianChart(
-                  title: ChartTitle(
-                      text: _exProvider.exercisesdata!
-                          .exercises[_chartIndex.chartIndex].name,
-                      textStyle: TextStyle(color: Colors.white)),
-                  plotAreaBorderWidth: 0,
-                  primaryXAxis: DateTimeAxis(
-                    majorGridLines: const MajorGridLines(width: 0),
-                    majorTickLines: const MajorTickLines(size: 0),
-                    axisLine: const AxisLine(width: 0),
-                  ),
-                  primaryYAxis: NumericAxis(
-                      axisLine: const AxisLine(width: 0),
-                      majorTickLines: const MajorTickLines(size: 0),
-                      majorGridLines: const MajorGridLines(width: 0),
-                      minimum: _sdbChartData!.length == 0
-                          ? 0
-                          : _sdbChartData!.length > 1
-                              ? _sdbChartData!
-                                      .reduce((curr, next) =>
-                                          curr.onerm! < next.onerm!
-                                              ? curr
-                                              : next)
-                                      .onerm! *
-                                  0.9
-                              : _sdbChartData![0].onerm),
-                  tooltipBehavior: _tooltipBehavior,
-                  zoomPanBehavior: _zoomPanBehavior,
-                  legend: Legend(
-                      isVisible: true,
-                      position: LegendPosition.bottom,
-                      textStyle: TextStyle(color: Colors.white)),
-                  series: [
-                    // Renders line chart
-                    LineSeries<Exercises, DateTime>(
-                      isVisibleInLegend: true,
-                      color: Colors.white54,
-                      name: "goal",
-                      dataSource: _sdbChartData!,
-                      xValueMapper: (Exercises sales, _) =>
-                          DateTime.parse(sales.date!),
-                      yValueMapper: (Exercises sales, _) => sales.goal,
+              child: Column(children: [
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 24.0, top: 4.0, bottom: 4.0),
+                      child: Text(
+                          _exProvider.exercisesdata!
+                              .exercises[_chartIndex.chartIndex].name,
+                          style: TextStyle(color: Colors.white, fontSize: 20)),
                     ),
+                    Container(
+                      width: 100,
+                      child: CustomSlidingSegmentedControl(
+                          height: 24.0,
+                          children: {
+                            true: Text("on",
+                                style: TextStyle(color: Colors.white)),
+                            false: Text("off",
+                                style: TextStyle(color: Colors.white))
+                          },
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Color(0xFF101012),
+                          ),
+                          innerPadding: const EdgeInsets.all(4),
+                          thumbDecoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: Theme.of(context).primaryColor),
+                          onValueChanged: (bool value) {
+                            setState(() {
+                              _bodyExChartIsOpen = value;
+                            });
+                          }),
+                    )
+                  ],
+                ),
+                _bodyExChartIsOpen
+                    ? Container(
+                        height: 250,
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).cardColor,
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                                topLeft: Radius.circular(20),
+                                bottomLeft: Radius.circular(20))),
+                        child: SfCartesianChart(
+                            plotAreaBorderWidth: 0,
+                            primaryXAxis: DateTimeAxis(
+                              majorGridLines: const MajorGridLines(width: 0),
+                              majorTickLines: const MajorTickLines(size: 0),
+                              axisLine: const AxisLine(width: 0),
+                            ),
+                            primaryYAxis: NumericAxis(
+                                axisLine: const AxisLine(width: 0),
+                                majorTickLines: const MajorTickLines(size: 0),
+                                majorGridLines: const MajorGridLines(width: 0),
+                                minimum: _sdbChartData!.length == 0
+                                    ? 0
+                                    : _sdbChartData!.length > 1
+                                        ? _sdbChartData!
+                                                .reduce((curr, next) =>
+                                                    curr.onerm! < next.onerm!
+                                                        ? curr
+                                                        : next)
+                                                .onerm! *
+                                            0.9
+                                        : _sdbChartData![0].onerm),
+                            tooltipBehavior: _tooltipBehavior,
+                            zoomPanBehavior: _zoomPanBehavior,
+                            legend: Legend(
+                                isVisible: true,
+                                position: LegendPosition.bottom,
+                                textStyle: TextStyle(color: Colors.white)),
+                            series: [
+                              // Renders line chart
+                              LineSeries<Exercises, DateTime>(
+                                isVisibleInLegend: true,
+                                color: Colors.white54,
+                                name: "goal",
+                                dataSource: _sdbChartData!,
+                                xValueMapper: (Exercises sales, _) =>
+                                    DateTime.parse(sales.date!),
+                                yValueMapper: (Exercises sales, _) =>
+                                    sales.goal,
+                              ),
 
-                    LineSeries<Exercises, DateTime>(
-                      isVisibleInLegend: true,
-                      onCreateShader: (ShaderDetails details) {
-                        return ui.Gradient.linear(details.rect.topRight,
-                            details.rect.bottomLeft, color, stops);
-                      },
-                      markerSettings: MarkerSettings(
-                          isVisible: true,
-                          height: 6,
-                          width: 6,
-                          borderWidth: 3,
-                          color: Theme.of(context).primaryColor,
-                          borderColor: Theme.of(context).primaryColor),
-                      name: "1rm",
-                      color: Theme.of(context).primaryColor,
-                      width: 5,
-                      dataSource: _sdbChartData!,
-                      xValueMapper: (Exercises sales, _) =>
-                          DateTime.parse(sales.date!),
-                      yValueMapper: (Exercises sales, _) => sales.onerm,
-                    ),
-                  ])),
+                              LineSeries<Exercises, DateTime>(
+                                isVisibleInLegend: true,
+                                onCreateShader: (ShaderDetails details) {
+                                  return ui.Gradient.linear(
+                                      details.rect.topRight,
+                                      details.rect.bottomLeft,
+                                      color,
+                                      stops);
+                                },
+                                markerSettings: MarkerSettings(
+                                    isVisible: true,
+                                    height: 6,
+                                    width: 6,
+                                    borderWidth: 3,
+                                    color: Theme.of(context).primaryColor,
+                                    borderColor:
+                                        Theme.of(context).primaryColor),
+                                name: "1rm",
+                                color: Theme.of(context).primaryColor,
+                                width: 5,
+                                dataSource: _sdbChartData!,
+                                xValueMapper: (Exercises sales, _) =>
+                                    DateTime.parse(sales.date!),
+                                yValueMapper: (Exercises sales, _) =>
+                                    sales.onerm,
+                              ),
+                            ]))
+                    : Container()
+              ])),
           SizedBox(height: 12),
           _onechartExercisesWidget(_sdbChartData)
         ],

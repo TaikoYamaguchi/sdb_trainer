@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sdb_trainer/src/utils/friendProfile.dart';
+import 'package:sdb_trainer/pages/friendProfile.dart';
 import 'package:sdb_trainer/src/utils/friendHistory.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';

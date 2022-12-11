@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
@@ -63,7 +62,7 @@ class _ProfileNicknameState extends State<ProfileNickname> {
                             fontWeight: FontWeight.w600)),
                     Text("닉네임을 수정 할 수 있어요",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.grey,
                           fontSize: 16,
                         )),
                     SizedBox(
@@ -108,21 +107,22 @@ class _ProfileNicknameState extends State<ProfileNickname> {
       style: TextStyle(color: Colors.white),
       autofocus: true,
       decoration: InputDecoration(
+        filled: true,
         hintText: _userProvider.userdata.nickname,
         hintStyle: TextStyle(color: Colors.white),
         labelText: _isNickNameused == false ? "닉네임" : "사용 불가 닉네임",
         labelStyle: TextStyle(
             color: _isNickNameused == false ? Colors.white : Colors.red),
-        focusedBorder: OutlineInputBorder(
+        focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
               color: _isNickNameused == false ? Colors.white : Colors.red,
-              width: 2.0),
+              width: 3.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
-        enabledBorder: OutlineInputBorder(
+        enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
               color: _isNickNameused == false ? Colors.white : Colors.red,
-              width: 2.0),
+              width: 3.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
       ),
@@ -131,6 +131,7 @@ class _ProfileNicknameState extends State<ProfileNickname> {
 
   Widget _editButton(context) {
     return SizedBox(
+        height: 56,
         width: MediaQuery.of(context).size.width,
         child: TextButton(
             style: TextButton.styleFrom(

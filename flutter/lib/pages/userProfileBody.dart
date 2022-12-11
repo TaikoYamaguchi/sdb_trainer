@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 
 class ProfileBody extends StatefulWidget {
   @override
@@ -19,25 +19,15 @@ class _ProfileBodyState extends State<ProfileBody> {
   var _userHeightCtrl;
   var _userWeightCtrl;
   DateTime _toDay = DateTime.now();
-
   final Map<String, Widget> _heightUnitList = const <String, Widget>{
-    "cm": Padding(
-      child: Text("cm", style: TextStyle(color: Colors.white, fontSize: 24)),
-      padding: const EdgeInsets.all(14.0),
-    ),
-    "inch": Padding(
-      child: Text("inch", style: TextStyle(color: Colors.white, fontSize: 24)),
-      padding: const EdgeInsets.all(14.0),
-    )
+    "cm": Text("cm", style: TextStyle(color: Colors.white, fontSize: 24)),
+    "inch": Text("inch", style: TextStyle(color: Colors.white, fontSize: 24)),
   };
   final Map<String, Widget> _weightUnitList = const <String, Widget>{
-    "kg": Padding(
-        child: Text("kg", style: TextStyle(color: Colors.white, fontSize: 24)),
-        padding: const EdgeInsets.all(14.0)),
-    "lb": Padding(
-        child: Text("lb", style: TextStyle(color: Colors.white, fontSize: 24)),
-        padding: const EdgeInsets.all(14.0))
+    "kg": Text("kg", style: TextStyle(color: Colors.white, fontSize: 24)),
+    "lb": Text("lb", style: TextStyle(color: Colors.white, fontSize: 24)),
   };
+
   @override
   void initState() {
     super.initState();
@@ -90,7 +80,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Expanded(
-                      flex: 2,
+                      flex: 3,
                       child: SizedBox(),
                     ),
                     Text("키, 몸무게 수정",
@@ -100,7 +90,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                             fontWeight: FontWeight.w600)),
                     Text("체형을 입력 할 수 있어요",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.grey,
                           fontSize: 16,
                         )),
                     SizedBox(
@@ -108,6 +98,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Expanded(child: _heightWidget()),
                         SizedBox(
@@ -121,6 +112,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Expanded(child: _weightWidget()),
                         SizedBox(
@@ -140,23 +132,21 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   Widget _heightWidget() {
     return TextFormField(
-      controller: _userHeightCtrl,
       autofocus: true,
+      controller: _userHeightCtrl,
       keyboardType:
-          TextInputType.numberWithOptions(signed: true, decimal: true),
+          TextInputType.numberWithOptions(signed: false, decimal: true),
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
+        filled: true,
         labelText: "키",
-        labelStyle: TextStyle(color: Colors.white),
-        border: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.white, width: 2.0),
+        labelStyle: TextStyle(color: Colors.grey),
+        focusedBorder: UnderlineInputBorder(
+          borderSide:
+              BorderSide(color: Theme.of(context).primaryColor, width: 3.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2.0),
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        focusedBorder: OutlineInputBorder(
+        enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.white, width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
@@ -167,21 +157,20 @@ class _ProfileBodyState extends State<ProfileBody> {
   Widget _weightWidget() {
     return TextFormField(
       controller: _userWeightCtrl,
-      keyboardType: TextInputType.number,
+      keyboardType:
+          TextInputType.numberWithOptions(signed: false, decimal: true),
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
+        filled: true,
         labelText: "몸무게",
-        labelStyle: TextStyle(color: Colors.white),
-        border: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.white, width: 2.0),
+        labelStyle: TextStyle(color: Colors.grey),
+        focusedBorder: UnderlineInputBorder(
+          borderSide:
+              BorderSide(color: Theme.of(context).primaryColor, width: 3.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2.0),
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2.0),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.white, width: 3.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
       ),
@@ -189,29 +178,48 @@ class _ProfileBodyState extends State<ProfileBody> {
   }
 
   Widget _weightUnitWidget() {
-    return CupertinoSlidingSegmentedControl(
-        groupValue: _userWeightUnitCtrl,
+    return CustomSlidingSegmentedControl(
+        isStretch: true,
+        height: 48.0,
         children: _weightUnitList,
-        backgroundColor: Color(0xFF101012),
-        thumbColor: Theme.of(context).primaryColor,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Theme.of(context).cardColor,
+        ),
+        innerPadding: const EdgeInsets.all(4),
+        thumbDecoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Theme.of(context).primaryColor),
         onValueChanged: (i) {
-          _userWeightUnitCtrl = i as String;
+          setState(() {
+            _userWeightUnitCtrl = i as String;
+          });
         });
   }
 
   Widget _heightUnitWidget() {
-    return CupertinoSlidingSegmentedControl(
-        groupValue: _userHeightUnitCtrl,
+    return CustomSlidingSegmentedControl(
+        isStretch: true,
+        height: 48.0,
         children: _heightUnitList,
-        backgroundColor: Color(0xFF101012),
-        thumbColor: Theme.of(context).primaryColor,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Theme.of(context).cardColor,
+        ),
+        innerPadding: const EdgeInsets.all(4),
+        thumbDecoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Theme.of(context).primaryColor),
         onValueChanged: (i) {
-          _userHeightUnitCtrl = i as String;
+          setState(() {
+            _userHeightUnitCtrl = i as String;
+          });
         });
   }
 
   Widget _editButton(context) {
     return SizedBox(
+        height: 56,
         width: MediaQuery.of(context).size.width,
         child: TextButton(
             style: TextButton.styleFrom(

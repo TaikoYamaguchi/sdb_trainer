@@ -80,7 +80,8 @@ class _AppState extends State<App> {
   Widget _bottomNavigationBarwidget() {
     var width = MediaQuery.of(context).size.width;
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
+        color: Color(0xFF212121),
         borderRadius: BorderRadius.only(
             topRight: Radius.circular(30), topLeft: Radius.circular(30)),
       ),
@@ -89,50 +90,61 @@ class _AppState extends State<App> {
           topLeft: Radius.circular(30.0),
           topRight: Radius.circular(30.0),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            BottomNavigationBar(
-              backgroundColor: Color(0xFF212121),
-              type: BottomNavigationBarType.fixed,
-              selectedItemColor: Colors.white,
-              selectedFontSize: 16,
-              unselectedItemColor: Color(0xFF717171),
-              unselectedFontSize: 16,
-              onTap: (int index) {
-                _bodyStater.change(index);
-              },
-              selectedLabelStyle: TextStyle(fontWeight: FontWeight.w500),
-              currentIndex: _bodyStater.bodystate,
-              items: [
-                _bottomNavigationBarItem("home", "홈"),
-                _bottomNavigationBarItem("dumbel", "운동"),
-                _bottomNavigationBarItem("feed", "피드"),
-                _bottomNavigationBarItem("calendar", "기록"),
-                _bottomNavigationBarItem("profile", "프로필"),
-              ],
-            ),
-            Center(
-              child: Container(
-                width: _bodyStater.bodystate == 0 || _bodyStater.bodystate == 4
-                    ? width
-                    : width * 0.6,
-                child: Align(
-                  alignment:
-                      _bodyStater.bodystate == 0 || _bodyStater.bodystate == 1
-                          ? Alignment.bottomLeft
-                          : _bodyStater.bodystate == 2
-                              ? Alignment.bottomCenter
-                              : Alignment.bottomRight,
-                  child: Container(
-                    height: 2,
-                    color: Theme.of(context).primaryColor,
-                    width: width * 0.2,
+        child: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              BottomNavigationBar(
+                backgroundColor: const Color(0xFF212121),
+                type: BottomNavigationBarType.fixed,
+                selectedItemColor: Colors.white,
+                selectedFontSize: 16,
+                unselectedItemColor: Color(0xFF717171),
+                unselectedFontSize: 16,
+                elevation: 0.0,
+                onTap: (int index) {
+                  _bodyStater.change(index);
+                },
+                selectedLabelStyle: TextStyle(
+                  fontWeight: FontWeight.w500,
+                ),
+                currentIndex: _bodyStater.bodystate,
+                items: [
+                  _bottomNavigationBarItem("home", "홈"),
+                  _bottomNavigationBarItem("dumbel", "운동"),
+                  _bottomNavigationBarItem("feed", "피드"),
+                  _bottomNavigationBarItem("calendar", "기록"),
+                  _bottomNavigationBarItem("profile", "프로필"),
+                ],
+              ),
+              Center(
+                child: Container(
+                  width:
+                      _bodyStater.bodystate == 0 || _bodyStater.bodystate == 4
+                          ? width
+                          : width * 0.6,
+                  child: Align(
+                    alignment:
+                        _bodyStater.bodystate == 0 || _bodyStater.bodystate == 1
+                            ? Alignment.bottomLeft
+                            : _bodyStater.bodystate == 2
+                                ? Alignment.bottomCenter
+                                : Alignment.bottomRight,
+                    child: Container(
+                      height: 2,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(30),
+                            topLeft: Radius.circular(30)),
+                      ),
+                      width: width * 0.2,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -241,7 +241,7 @@ Widget _feedCardList(context) {
                       return Padding(
                         padding: EdgeInsets.symmetric(vertical: 16),
                         child: Center(
-                            child: Text("데이터 없음",
+                            child: Text("운동을 시작해보고 있어요",
                                 style: TextStyle(color: Colors.white))),
                       );
                     }
@@ -261,7 +261,12 @@ Widget _feedCardList(context) {
                   },
                   shrinkWrap: true,
                   itemCount: provider.historydataUserEmail.sdbdatas.length + 1)
-              : CircularProgressIndicator();
+              : Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: Center(
+                      child: Text("운동을 시작해보고 있어요",
+                          style: TextStyle(color: Colors.white))),
+                );
         } catch (e) {
           return CircularProgressIndicator();
         }

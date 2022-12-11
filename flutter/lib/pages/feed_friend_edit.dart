@@ -4,6 +4,7 @@ import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
+import 'package:sdb_trainer/pages/friendProfile.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/feed_friend_dislike_edit.dart';
 
@@ -95,7 +96,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
                     hintText: "닉네임 검색",
                     hintStyle:
                         TextStyle(fontSize: 20.0, color: Color(0xFF717171)),
-                    enabledBorder: OutlineInputBorder(
+                    enabledBorder: UnderlineInputBorder(
                       borderSide:
                           BorderSide(width: 3, color: Color(0xFF717171)),
                       borderRadius: BorderRadius.circular(15),
@@ -152,32 +153,41 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 12),
-              child: user.image == ""
-                  ? Icon(
-                      Icons.account_circle,
-                      color: Colors.grey,
-                      size: 28.0,
-                    )
-                  : CachedNetworkImage(
-                      imageUrl: user.image,
-                      imageBuilder: (context, imageProivder) => Container(
-                        height: 28,
-                        width: 28,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(50)),
-                            image: DecorationImage(
-                              image: imageProivder,
-                              fit: BoxFit.cover,
-                            )),
-                      ),
-                    ),
-            ),
-            Text(user.nickname,
-                style: TextStyle(color: Colors.white, fontSize: 18.0)),
-          ]),
+          GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    Transition(
+                        child: FriendProfile(user: user),
+                        transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+              },
+              child: Row(children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 12),
+                  child: user.image == ""
+                      ? Icon(
+                          Icons.account_circle,
+                          color: Colors.grey,
+                          size: 28.0,
+                        )
+                      : CachedNetworkImage(
+                          imageUrl: user.image,
+                          imageBuilder: (context, imageProivder) => Container(
+                            height: 28,
+                            width: 28,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(50)),
+                                image: DecorationImage(
+                                  image: imageProivder,
+                                  fit: BoxFit.cover,
+                                )),
+                          ),
+                        ),
+                ),
+                Text(user.nickname,
+                    style: TextStyle(color: Colors.white, fontSize: 18.0)),
+              ])),
           _feedLikeButton(user)
         ],
       ),
