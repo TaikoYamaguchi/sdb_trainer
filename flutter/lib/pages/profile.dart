@@ -220,9 +220,10 @@ class _ProfileState extends State<Profile> {
   }
 
   void _sendEmail() async {
+    String body = await _getEmailBody();
     var _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     final Email email = Email(
-      body: '',
+      body: body,
       subject: '[Supero 문의]',
       recipients: ['supero.corp@gmail.com'],
       cc: [],
@@ -248,11 +249,12 @@ class _ProfileState extends State<Profile> {
 
     String body = "";
 
+    body += "\n";
     body += "==============\n";
-    body += "아래 내용을 함께 보내주시면 큰 도움이 됩니다 🧅\n";
+    body += "아래 내용과 오류 스크린샷을 보내주시면 큰 도움이 됩니다🙏\n";
 
-    body += "email: ${_userProvider.userdata.email}\n";
-    body += "nickane: ${_userProvider.userdata.nickname}\n";
+    body += "이메일: ${_userProvider.userdata.email}\n";
+    body += "닉네임: ${_userProvider.userdata.nickname}\n";
 
     appInfo.forEach((key, value) {
       body += "$key: $value\n";

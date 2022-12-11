@@ -23,6 +23,7 @@ import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'dart:ui' as ui;
+import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 
 class Calendar extends StatefulWidget {
   @override
@@ -368,7 +369,6 @@ class _CalendarState extends State<Calendar> {
           ),
           Container(
               width: double.infinity,
-              height: 250,
               decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.only(
@@ -376,66 +376,120 @@ class _CalendarState extends State<Calendar> {
                       bottomRight: Radius.circular(20),
                       topLeft: Radius.circular(20),
                       bottomLeft: Radius.circular(20))),
-              child: SfCartesianChart(
-                  title: ChartTitle(
-                      text: "몸무게", textStyle: TextStyle(color: Colors.white)),
-                  plotAreaBorderWidth: 0,
-                  primaryXAxis: DateTimeAxis(
-                    majorGridLines: const MajorGridLines(width: 0),
-                    majorTickLines: const MajorTickLines(size: 0),
-                    axisLine: const AxisLine(width: 0),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0),
+                        child: Text("몸무게",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 24)),
+                      ),
+                      Container(
+                        width: 100,
+                        child: CustomSlidingSegmentedControl(
+                            height: 24.0,
+                            children: {
+                              true: Text("on",
+                                  style: TextStyle(color: Colors.white)),
+                              false: Text("off",
+                                  style: TextStyle(color: Colors.white))
+                            },
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: Theme.of(context).cardColor,
+                            ),
+                            innerPadding: const EdgeInsets.all(4),
+                            thumbDecoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: Theme.of(context).primaryColor),
+                            onValueChanged: (i) {
+                              setState(() {});
+                            }),
+                      )
+                    ],
                   ),
-                  primaryYAxis: NumericAxis(
-                      axisLine: const AxisLine(width: 0),
-                      majorTickLines: const MajorTickLines(size: 0),
-                      majorGridLines: const MajorGridLines(width: 0),
-                      minimum: _userProvider.userdata.bodyStats!.length == 0
-                          ? 0
-                          : _userProvider.userdata.bodyStats!.length > 1
-                              ? _userProvider.userdata.bodyStats!
-                                  .reduce((BodyStat curr, BodyStat next) =>
-                                      curr.weight! < next.weight! ? curr : next)
-                                  .weight
-                              : _userProvider.userdata.bodyStats![0].weight),
-                  tooltipBehavior: _tooltipBehavior,
-                  zoomPanBehavior: _zoomPanBehavior,
-                  legend: Legend(
-                      isVisible: true,
-                      position: LegendPosition.bottom,
-                      textStyle: TextStyle(color: Colors.white)),
-                  series: [
-                    LineSeries<BodyStat, DateTime>(
-                      isVisibleInLegend: true,
-                      color: Colors.white54,
-                      name: "목표",
-                      dataSource: _userProvider.userdata.bodyStats!,
-                      xValueMapper: (BodyStat sales, _) =>
-                          DateTime.parse(sales.date!),
-                      yValueMapper: (BodyStat sales, _) => sales.weight_goal!,
-                    ),
-                    // Renders line chart
-                    LineSeries<BodyStat, DateTime>(
-                      isVisibleInLegend: true,
-                      onCreateShader: (ShaderDetails details) {
-                        return ui.Gradient.linear(details.rect.topRight,
-                            details.rect.bottomLeft, color, stops);
-                      },
-                      markerSettings: MarkerSettings(
-                          isVisible: true,
-                          height: 6,
-                          width: 6,
-                          borderWidth: 3,
-                          color: Theme.of(context).primaryColor,
-                          borderColor: Theme.of(context).primaryColor),
-                      name: "몸무게",
-                      color: Theme.of(context).primaryColor,
-                      width: 5,
-                      dataSource: _userProvider.userdata.bodyStats!,
-                      xValueMapper: (BodyStat sales, _) =>
-                          DateTime.parse(sales.date!),
-                      yValueMapper: (BodyStat sales, _) => sales.weight!,
-                    ),
-                  ])),
+                  Container(
+                      width: double.infinity,
+                      height: 250,
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).cardColor,
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(20),
+                              bottomRight: Radius.circular(20),
+                              topLeft: Radius.circular(20),
+                              bottomLeft: Radius.circular(20))),
+                      child: SfCartesianChart(
+                          plotAreaBorderWidth: 0,
+                          primaryXAxis: DateTimeAxis(
+                            majorGridLines: const MajorGridLines(width: 0),
+                            majorTickLines: const MajorTickLines(size: 0),
+                            axisLine: const AxisLine(width: 0),
+                          ),
+                          primaryYAxis: NumericAxis(
+                              axisLine: const AxisLine(width: 0),
+                              majorTickLines: const MajorTickLines(size: 0),
+                              majorGridLines: const MajorGridLines(width: 0),
+                              minimum: _userProvider
+                                          .userdata.bodyStats!.length ==
+                                      0
+                                  ? 0
+                                  : _userProvider.userdata.bodyStats!.length > 1
+                                      ? _userProvider.userdata.bodyStats!
+                                          .reduce(
+                                              (BodyStat curr, BodyStat next) =>
+                                                  curr.weight! < next.weight!
+                                                      ? curr
+                                                      : next)
+                                          .weight
+                                      : _userProvider
+                                          .userdata.bodyStats![0].weight),
+                          tooltipBehavior: _tooltipBehavior,
+                          zoomPanBehavior: _zoomPanBehavior,
+                          legend: Legend(
+                              isVisible: true,
+                              position: LegendPosition.bottom,
+                              textStyle: TextStyle(color: Colors.white)),
+                          series: [
+                            LineSeries<BodyStat, DateTime>(
+                              isVisibleInLegend: true,
+                              color: Colors.white54,
+                              name: "목표",
+                              dataSource: _userProvider.userdata.bodyStats!,
+                              xValueMapper: (BodyStat sales, _) =>
+                                  DateTime.parse(sales.date!),
+                              yValueMapper: (BodyStat sales, _) =>
+                                  sales.weight_goal!,
+                            ),
+                            // Renders line chart
+                            LineSeries<BodyStat, DateTime>(
+                              isVisibleInLegend: true,
+                              onCreateShader: (ShaderDetails details) {
+                                return ui.Gradient.linear(details.rect.topRight,
+                                    details.rect.bottomLeft, color, stops);
+                              },
+                              markerSettings: MarkerSettings(
+                                  isVisible: true,
+                                  height: 6,
+                                  width: 6,
+                                  borderWidth: 3,
+                                  color: Theme.of(context).primaryColor,
+                                  borderColor: Theme.of(context).primaryColor),
+                              name: "몸무게",
+                              color: Theme.of(context).primaryColor,
+                              width: 5,
+                              dataSource: _userProvider.userdata.bodyStats!,
+                              xValueMapper: (BodyStat sales, _) =>
+                                  DateTime.parse(sales.date!),
+                              yValueMapper: (BodyStat sales, _) =>
+                                  sales.weight!,
+                            ),
+                          ])),
+                ],
+              )),
           SizedBox(height: 12),
           _bodyWeightListWidget(_userProvider.userdata.bodyStats)
         ],

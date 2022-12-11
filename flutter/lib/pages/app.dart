@@ -72,12 +72,13 @@ class _AppState extends State<App> {
     return BottomNavigationBarItem(
       icon: SvgPicture.asset("assets/svg/${iconName}_off.svg"),
       activeIcon: SvgPicture.asset("assets/svg/${iconName}_on.svg",
-          color: Theme.of(context).primaryColor),
+          color: Colors.white),
       label: label,
     );
   }
 
   Widget _bottomNavigationBarwidget() {
+    var width = MediaQuery.of(context).size.width;
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
@@ -88,24 +89,49 @@ class _AppState extends State<App> {
           topLeft: Radius.circular(30.0),
           topRight: Radius.circular(30.0),
         ),
-        child: BottomNavigationBar(
-          backgroundColor: Color(0xFF212121),
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: Theme.of(context).primaryColor,
-          selectedFontSize: 16,
-          unselectedItemColor: Color(0xFF717171),
-          unselectedFontSize: 16,
-          onTap: (int index) {
-            _bodyStater.change(index);
-          },
-          selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-          currentIndex: _bodyStater.bodystate,
-          items: [
-            _bottomNavigationBarItem("home", "홈"),
-            _bottomNavigationBarItem("dumbel", "운동"),
-            _bottomNavigationBarItem("feed", "피드"),
-            _bottomNavigationBarItem("calendar", "기록"),
-            _bottomNavigationBarItem("profile", "프로필"),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            BottomNavigationBar(
+              backgroundColor: Color(0xFF212121),
+              type: BottomNavigationBarType.fixed,
+              selectedItemColor: Colors.white,
+              selectedFontSize: 16,
+              unselectedItemColor: Color(0xFF717171),
+              unselectedFontSize: 16,
+              onTap: (int index) {
+                _bodyStater.change(index);
+              },
+              selectedLabelStyle: TextStyle(fontWeight: FontWeight.w500),
+              currentIndex: _bodyStater.bodystate,
+              items: [
+                _bottomNavigationBarItem("home", "홈"),
+                _bottomNavigationBarItem("dumbel", "운동"),
+                _bottomNavigationBarItem("feed", "피드"),
+                _bottomNavigationBarItem("calendar", "기록"),
+                _bottomNavigationBarItem("profile", "프로필"),
+              ],
+            ),
+            Center(
+              child: Container(
+                width: _bodyStater.bodystate == 0 || _bodyStater.bodystate == 4
+                    ? width
+                    : width * 0.6,
+                child: Align(
+                  alignment:
+                      _bodyStater.bodystate == 0 || _bodyStater.bodystate == 1
+                          ? Alignment.bottomLeft
+                          : _bodyStater.bodystate == 2
+                              ? Alignment.bottomCenter
+                              : Alignment.bottomRight,
+                  child: Container(
+                    height: 2,
+                    color: Theme.of(context).primaryColor,
+                    width: width * 0.2,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

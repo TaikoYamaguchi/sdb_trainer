@@ -34,6 +34,7 @@ void userLogOut(context) {
   UserLogOut.logOut();
   _loginState.change(false);
   _loginState.changeSignup(false);
+  _userProvider.getUsersFriendsAll();
 }
 
 Future _getUserImage(ImageSource imageSource, context) async {
