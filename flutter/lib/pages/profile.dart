@@ -14,6 +14,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 class Profile extends StatefulWidget {
   Profile({Key? key}) : super(key: key);
@@ -218,6 +219,54 @@ class _ProfileState extends State<Profile> {
         ));
   }
 
+  void _sendEmail() async {
+    var _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    final Email email = Email(
+      body: '',
+      subject: '[Supero 문의]',
+      recipients: ['supero.corp@gmail.com'],
+      cc: [],
+      bcc: [],
+      attachmentPaths: [],
+      isHTML: false,
+    );
+
+    try {
+      await FlutterEmailSender.send(email);
+    } catch (error) {
+      String title =
+          "${_userProvider.userdata.nickname}님 죄송합니다😭 \n\n기본 메일 앱을 사용할 수 없기 때문에 앱에서 바로 문의를 전송하기 어려운 상황입니다";
+      String message =
+          "아래 이메일로 연락주시면 친절하게 답변해드릴게요 :)\n\n- 이메일 : supero.corp@gmail.com";
+      displayErrorAlert(context, title, message);
+    }
+  }
+
+  Future<String> _getEmailBody() async {
+    Map<String, dynamic> appInfo = await getAppInfo();
+    Map<String, dynamic> deviceInfo = await getDeviceInfo();
+
+    String body = "";
+
+    body += "==============\n";
+    body += "아래 내용을 함께 보내주시면 큰 도움이 됩니다 🧅\n";
+
+    body += "email: ${_userProvider.userdata.email}\n";
+    body += "nickane: ${_userProvider.userdata.nickname}\n";
+
+    appInfo.forEach((key, value) {
+      body += "$key: $value\n";
+    });
+
+    deviceInfo.forEach((key, value) {
+      body += "$key: $value\n";
+    });
+
+    body += "==============\n";
+
+    return body;
+  }
+
   Widget _profile(context) {
     return Container(
       child: SingleChildScrollView(
@@ -267,6 +316,23 @@ class _ProfileState extends State<Profile> {
                         Text("목표설정", style: TextStyle(color: Colors.white)),
                         Icon(Icons.chevron_right, color: Colors.white),
                       ]))),
+          ElevatedButton(
+              onPressed: () {
+                _sendEmail();
+              },
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(Theme.of(context).cardColor)),
+              child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("오류 알려주기", style: TextStyle(color: Colors.white)),
+                        Icon(Icons.chevron_right, color: Colors.white),
+                      ]))),
+
           ElevatedButton(
               onPressed: () => userLogOut(context),
               style: ButtonStyle(
