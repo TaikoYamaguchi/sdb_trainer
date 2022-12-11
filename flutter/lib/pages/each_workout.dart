@@ -236,7 +236,12 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    _displayTextInputDialog();
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ChangeName(rindex: widget.rindex);
+                      },
+                    );
                   },
                   child: Container(
                     child: Consumer<WorkoutdataProvider>(
