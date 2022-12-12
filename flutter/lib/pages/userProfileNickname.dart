@@ -115,13 +115,17 @@ class _ProfileNicknameState extends State<ProfileNickname> {
             color: _isNickNameused == false ? Colors.white : Colors.red),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-              color: _isNickNameused == false ? Colors.white : Colors.red,
+              color: _isNickNameused == false
+                  ? Theme.of(context).primaryColor
+                  : Colors.red,
               width: 3.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-              color: _isNickNameused == false ? Colors.white : Colors.red,
+              color: _isNickNameused == false
+                  ? Theme.of(context).primaryColor
+                  : Colors.red,
               width: 3.0),
           borderRadius: BorderRadius.circular(5.0),
         ),

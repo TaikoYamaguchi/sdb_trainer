@@ -51,6 +51,11 @@
 		<string>kakao54b807de5757a704a372c2d0539a67da</string>
 		<string>kakaolink</string>
 		<string>storykompassauth</string>
+        <string>sms</string>
+        <string>tel</string>
+        <string>https</string>
+        <string>itms-beta</string>
+        <string>itms</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

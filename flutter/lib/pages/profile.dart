@@ -15,6 +15,7 @@ import 'dart:io';
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:in_app_review/in_app_review.dart';
 
 class Profile extends StatefulWidget {
   Profile({Key? key}) : super(key: key);
@@ -315,7 +316,7 @@ class _ProfileState extends State<Profile> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("목표설정", style: TextStyle(color: Colors.white)),
+                        Text("목표 설정하기", style: TextStyle(color: Colors.white)),
                         Icon(Icons.chevron_right, color: Colors.white),
                       ]))),
           ElevatedButton(
@@ -333,6 +334,52 @@ class _ProfileState extends State<Profile> {
                       children: [
                         Text("오류 알려주기", style: TextStyle(color: Colors.white)),
                         Icon(Icons.chevron_right, color: Colors.white),
+                      ]))),
+          ElevatedButton(
+              onPressed: () {
+                final _appStoreURL =
+                    "https://apps.apple.com/kr/app/supero/id6444859542";
+                final _playStoreURL =
+                    "https://play.google.com/store/apps/details?id=com.tk_lck.supero";
+
+                displayShareAlert(
+                    context,
+                    "Supero에서 같이 운동해요💪\n\n운동과 기록도 하고 무게도 올리고 공유 할 수 있어요😁\n\n아래 눌러서 설치해요",
+                    "- PlayStore : ${_playStoreURL} \n\n- AppStore : ${_appStoreURL}");
+              },
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(Theme.of(context).cardColor)),
+              child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("친구와 운동하기", style: TextStyle(color: Colors.white)),
+                        Icon(Icons.chevron_right, color: Colors.white),
+                      ]))),
+          ElevatedButton(
+              onPressed: () async {
+                final InAppReview inAppReview = InAppReview.instance;
+                print("gogo?");
+
+                print(await inAppReview.isAvailable());
+                inAppReview.openStoreListing(
+                  appStoreId: '6444859542',
+                );
+              },
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(Theme.of(context).cardColor)),
+              child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("평점 남기기🙏", style: TextStyle(color: Colors.white)),
+                        Icon(Icons.open_in_new, color: Colors.white),
                       ]))),
 
           ElevatedButton(

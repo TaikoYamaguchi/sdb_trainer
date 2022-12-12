@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'dart:io';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:share_plus/share_plus.dart';
 
 const USER_NICK_NAME = "USER_NICK_NAME";
 const STATUS_LOGIN = 'STATUS_LOGIN';
@@ -189,6 +190,69 @@ Widget _DeleteConfirmButton(context) {
             Navigator.of(context, rootNavigator: true).pop();
           },
           child: Text("확인",
+              style: TextStyle(fontSize: 20.0, color: Colors.white))));
+}
+
+void displayShareAlert(context, title, message) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          backgroundColor: Theme.of(context).cardColor,
+          title: Text(title,
+              textAlign: TextAlign.left,
+              style: TextStyle(color: Colors.white, fontSize: 14)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(message,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Colors.white, fontSize: 14)),
+            ],
+          ),
+          actions: <Widget>[
+            Builder(builder: (BuildContext context) {
+              return _shareConfirmButton(context);
+            })
+          ],
+        );
+      });
+}
+
+Widget _shareConfirmButton(context) {
+  return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: TextButton(
+          style: TextButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            backgroundColor: Theme.of(context).primaryColor,
+            foregroundColor: Theme.of(context).primaryColor,
+            textStyle: TextStyle(
+              color: Colors.white,
+            ),
+            disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+            padding: EdgeInsets.all(12.0),
+          ),
+          onPressed: () async {
+// _onShare method:
+            final box = context.findRenderObject() as RenderBox?;
+
+            final _appStoreURL =
+                "https://apps.apple.com/kr/app/supero/id6444859542";
+            final _playStoreURL =
+                "https://play.google.com/store/apps/details?id=com.tk_lck.supero";
+            await Share.share(
+                "Supero에서 같이 운동해요💪\n\n운동과 기록도 하고 무게도 올리고 공유 할 수 있어요😁\n\n아래 눌러서 설치해요\n\n- PlayStore : ${_playStoreURL}\n\n- AppStore : ${_appStoreURL}",
+                sharePositionOrigin:
+                    box!.localToGlobal(Offset.zero) & box.size);
+            Navigator.of(context, rootNavigator: true).pop();
+          },
+          child: Text("공유하기",
               style: TextStyle(fontSize: 20.0, color: Colors.white))));
 }
 

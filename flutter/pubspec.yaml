@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 
 
-version: 1.0.2+62
+version: 1.0.3+65
 
 
 
@@ -84,6 +84,8 @@ dependencies:
   flutter_email_sender: ^5.2.0
   device_info_plus: ^8.0.0
   package_info_plus: ^1.4.3+1
+  share_plus: ^6.3.0
+  in_app_review: ^2.0.6
 
 
 

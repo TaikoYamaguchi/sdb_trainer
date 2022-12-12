@@ -30,6 +30,7 @@ import 'dart:math' as math;
 import 'package:launch_review/launch_review.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/exercise_done.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'statics.dart';
 import 'package:sdb_trainer/src/utils/notification.dart';
@@ -366,7 +367,7 @@ class _AppState extends State<App> {
                 ),
               ),
               actions: <Widget>[
-                new SizedBox(
+                SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: TextButton(
                         style: TextButton.styleFrom(
@@ -385,11 +386,11 @@ class _AppState extends State<App> {
                         child: new Text("업데이트 하러가기",
                             style:
                                 TextStyle(fontSize: 20.0, color: Colors.white)),
-                        onPressed: () => {
-                              LaunchReview.launch(
-                                  androidAppId: "com.tk_lck.supero"),
-                              exit(0),
-                            })),
+                        onPressed: () {
+                          LaunchReview.launch(
+                              androidAppId: "com.tk_lck.supero",
+                              iOSAppId: "6444859542");
+                        })),
               ],
             ));
       },
