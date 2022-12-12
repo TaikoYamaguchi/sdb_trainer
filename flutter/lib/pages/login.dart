@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
+import 'package:sdb_trainer/src/model/exercisesdata.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:sdb_trainer/pages/userFind.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
@@ -520,14 +521,27 @@ class LoginPageState extends State<LoginPage> {
       print(storageExerciseList);
       if (storageExerciseList == null || storageExerciseList == "") {
         print("storage nooooooooooooo");
-        List<String> listViewerBuilderString = ['스쿼트', '데드리프트', '벤치프레스'];
+        List<String> listViewerBuilderString = ['스쿼트', '데드리프트', '벤치 프레스'];
         await storage.write(
             key: 'sdb_HomeExList', value: jsonEncode(listViewerBuilderString));
         _initExercisesdataProvider.putHomeExList(listViewerBuilderString);
       } else {
+        List homeexlist = jsonDecode(storageExerciseList);
+        print(homeexlist);
+        for (int n = 0; n < homeexlist.length; n++) {
+          if (namechange[homeexlist[n]] != null) {
+            homeexlist[n] = namechange[homeexlist[n]];
+          }
+        }
+        ;
+        print(homeexlist);
+
+        await storage.write(
+            key: 'sdb_HomeExList', value: jsonEncode(homeexlist));
+        _initExercisesdataProvider.putHomeExList(homeexlist);
+
         print("storage yessssssssss");
-        _initExercisesdataProvider
-            .putHomeExList(jsonDecode(storageExerciseList));
+        //_initExercisesdataProvider.putHomeExList(jsonDecode(storageExerciseList));
       }
     } catch (e) {
       List<String> listViewerBuilderString = ['스쿼트', '데드리프트', '벤치프레스'];

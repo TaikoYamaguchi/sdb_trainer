@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
@@ -260,12 +261,16 @@ class _UserProfileState extends State<UserProfile> {
               padding: EdgeInsets.all(12.0),
             ),
             onPressed: () {
+              final storage = FlutterSecureStorage();
+
               UserDelete().deleteUser().then((data) {
                 if (data!.email != "") {
                   Navigator.of(context, rootNavigator: true).pop();
                   _displayUserLogoutAfterDeleteAlert();
                 }
               });
+              storage.deleteAll();
+              print('storage delete ok');
             },
             child: Text("탈퇴",
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));

@@ -67,21 +67,21 @@ class _HomeState extends State<Home> {
   Map<String, int> _exerciseCountMap = {
     "스쿼트": 0,
     "데드리프트": 0,
-    "벤치프레스": 0,
-    "밀리터리프레스": 0
+    "벤치 프레스": 0,
+    "밀리터리 프레스": 0
   };
 
   Map<String, int> _exerciseCountMapOdd = {
     "스쿼트": 0,
     "데드리프트": 0,
-    "벤치프레스": 0,
-    "밀리터리프레스": 0
+    "벤치 프레스": 0,
+    "밀리터리 프레스": 0
   };
   Map<String, int> _exerciseCountMapThird = {
     "스쿼트": 0,
     "데드리프트": 0,
-    "벤치프레스": 0,
-    "밀리터리프레스": 0
+    "벤치 프레스": 0,
+    "밀리터리 프레스": 0
   };
 
   late TooltipBehavior _tooltipBehavior;
@@ -2135,7 +2135,7 @@ class _HomeState extends State<Home> {
     var thevalue = 0;
     var thekey = "운동을 시작해봐요";
     _isbottomTitleEx = true;
-    _exerciseCountMap = {"스쿼트": 0, "데드리프트": 0, "벤치프레스": 0, "밀리터리프레스": 0};
+    _exerciseCountMap = {"스쿼트": 0, "데드리프트": 0, "벤치 프레스": 0, "밀리터리 프레스": 0};
 
     _dateController(_dateCtrl);
     double deviceWidth = MediaQuery.of(context).size.width;
@@ -2201,7 +2201,7 @@ class _HomeState extends State<Home> {
     var thevalue = 0;
     var thekey = "운동을 시작해봐요";
     _isbottomTitleEx = true;
-    _exerciseCountMapOdd = {"스쿼트": 0, "데드리프트": 0, "벤치프레스": 0, "밀리터리프레스": 0};
+    _exerciseCountMapOdd = {"스쿼트": 0, "데드리프트": 0, "벤치 프레스": 0, "밀리터리 프레스": 0};
 
     _dateController(_dateCtrl);
     double deviceWidth = MediaQuery.of(context).size.width;
@@ -2273,7 +2273,7 @@ class _HomeState extends State<Home> {
     var thevalue = 0;
     var thekey = "운동을 시작해봐요";
     _isbottomTitleEx = true;
-    _exerciseCountMapThird = {"스쿼트": 0, "데드리프트": 0, "벤치프레스": 0, "밀리터리프레스": 0};
+    _exerciseCountMapThird = {"스쿼트": 0, "데드리프트": 0, "벤치 프레스": 0, "밀리터리 프레스": 0};
 
     _dateController(_dateCtrl);
     double deviceWidth = MediaQuery.of(context).size.width;
