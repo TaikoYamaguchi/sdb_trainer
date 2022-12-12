@@ -231,9 +231,17 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                 : _routine.exercises[i].sets[s].reps.toStringAsFixed(0)));
       }
     }
+    bool btnDisabled = false;
     return GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
+        },
+        onPanUpdate: (details) {
+          if (details.delta.dx > 0 && btnDisabled == false) {
+            btnDisabled = true;
+            Navigator.of(context).pop();
+            print("Dragging in +X direction");
+          }
         },
         child: PageView.builder(
           onPageChanged: (value) {
@@ -736,8 +744,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               controller:
                                                   weightController[pindex]
                                                       .controllerlist[index],
-                                              keyboardType:
-                                                  TextInputType.number,
+                                              keyboardType: TextInputType
+                                                  .numberWithOptions(
+                                                      signed: false,
+                                                      decimal: true),
                                               style: TextStyle(
                                                 fontSize: 21,
                                                 color: Colors.white,
@@ -1084,7 +1094,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                 SizedBox(height: 20),
                 TextField(
                   controller: _exOnermController,
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.numberWithOptions(
+                      signed: false, decimal: true),
                   style: TextStyle(
                     fontSize: 21,
                     color: Colors.white,
@@ -1113,7 +1124,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                 ),
                 TextField(
                   controller: _exGoalController,
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.numberWithOptions(
+                      signed: false, decimal: true),
                   style: TextStyle(
                     fontSize: 21,
                     color: Colors.white,
@@ -3258,7 +3270,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                       builder: (context, provider, provider2, child) {
                     return TextField(
                       controller: _additionalweightctrl,
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.numberWithOptions(
+                          signed: false, decimal: true),
                       style: TextStyle(
                         fontSize: 21,
                         color: provider.ispositive ? Colors.white : Colors.red,

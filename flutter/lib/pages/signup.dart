@@ -965,7 +965,8 @@ class _SignUpPageState extends State<SignUpPage> {
               width: 70,
               child: TextFormField(
                   controller: _onermController[index],
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.numberWithOptions(
+                      signed: false, decimal: true),
                   style: TextStyle(fontSize: 18, color: Colors.white),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
@@ -987,7 +988,8 @@ class _SignUpPageState extends State<SignUpPage> {
               width: 80,
               child: TextFormField(
                   controller: _goalController[index],
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.numberWithOptions(
+                      signed: false, decimal: true),
                   style: TextStyle(fontSize: 18, color: Colors.white),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(

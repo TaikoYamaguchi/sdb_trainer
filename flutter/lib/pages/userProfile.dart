@@ -296,129 +296,142 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   Widget _userProfileWidget() {
-    return SingleChildScrollView(
-      child: Column(children: [
-        ElevatedButton(
-          onPressed: () {
-            _PopProvider.profilestackup();
-            Navigator.push(
-                context,
-                Transition(
-                    child: ProfileNickname(),
-                    transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-          },
-          style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(Theme.of(context).cardColor)),
-          child:
-              Consumer<UserdataProvider>(builder: (builder, rpovider, child) {
-            return SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 50,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(_userProvider.userdata.nickname,
-                          style: TextStyle(color: Colors.white)),
-                      Icon(Icons.chevron_right, color: Colors.white),
-                    ]));
-          }),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            _PopProvider.profilestackup();
-            Navigator.push(
-                context,
-                Transition(
-                    child: ProfileBody(),
-                    transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-          },
-          style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(Theme.of(context).cardColor)),
-          child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 50,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                        _userProvider.userdata.height.toString() +
-                            _userProvider.userdata.height_unit +
-                            "/" +
-                            _userProvider.userdata.bodyStats.last.weight
-                                .toString() +
-                            _userProvider.userdata.weight_unit,
-                        style: TextStyle(color: Colors.white)),
-                    Icon(Icons.chevron_right, color: Colors.white),
-                  ])),
-        ),
-        ElevatedButton(
-          onPressed: () {},
-          style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(Theme.of(context).cardColor)),
-          child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 50,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(_userProvider.userdata.isMan ? "남성" : "여성",
-                        style: const TextStyle(color: Colors.white)),
-                    Container(),
-                  ])),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            _displayUserDeleteAlert();
-          },
-          style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(Theme.of(context).cardColor)),
-          child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 50,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text("회원탈퇴", style: TextStyle(color: Colors.grey)),
-                    Icon(Icons.chevron_right, color: Colors.white),
-                  ])),
-        ),
-        const SizedBox(height: 30),
-        GestureDetector(
-            onTap: () {
-              _displayPhotoDialog();
-            },
-            child: _userProvider.userdata.image == ""
-                ? Icon(
-                    Icons.account_circle,
-                    color: Colors.grey,
-                    size: 200.0,
-                  )
-                : Consumer<UserdataProvider>(
-                    builder: (builder, rpovider, child) {
-                    return CachedNetworkImage(
-                      imageUrl: _userProvider.userdata.image,
-                      imageBuilder: (context, imageProivder) => Container(
-                        height: 200,
-                        width: 200,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(50)),
-                            image: DecorationImage(
-                              image: imageProivder,
-                              fit: BoxFit.cover,
-                            )),
-                      ),
-                    );
-                  })),
-        TextButton(
-            onPressed: () {
-              _displayPhotoDialog();
-            },
-            child: Text("사진 편집", style: TextStyle(color: Colors.white)))
-      ]),
-    );
+    bool btnDisabled = false;
+    return GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        onPanUpdate: (details) {
+          if (details.delta.dx > 0 && btnDisabled == false) {
+            btnDisabled = true;
+            Navigator.of(context).pop();
+            print("Dragging in +X direction");
+          }
+        },
+        child: SingleChildScrollView(
+          child: Column(children: [
+            ElevatedButton(
+              onPressed: () {
+                _PopProvider.profilestackup();
+                Navigator.push(
+                    context,
+                    Transition(
+                        child: ProfileNickname(),
+                        transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+              },
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(Theme.of(context).cardColor)),
+              child: Consumer<UserdataProvider>(
+                  builder: (builder, rpovider, child) {
+                return SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(_userProvider.userdata.nickname,
+                              style: TextStyle(color: Colors.white)),
+                          Icon(Icons.chevron_right, color: Colors.white),
+                        ]));
+              }),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _PopProvider.profilestackup();
+                Navigator.push(
+                    context,
+                    Transition(
+                        child: ProfileBody(),
+                        transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+              },
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(Theme.of(context).cardColor)),
+              child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                            _userProvider.userdata.height.toString() +
+                                _userProvider.userdata.height_unit +
+                                "/" +
+                                _userProvider.userdata.bodyStats.last.weight
+                                    .toString() +
+                                _userProvider.userdata.weight_unit,
+                            style: TextStyle(color: Colors.white)),
+                        Icon(Icons.chevron_right, color: Colors.white),
+                      ])),
+            ),
+            ElevatedButton(
+              onPressed: () {},
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(Theme.of(context).cardColor)),
+              child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(_userProvider.userdata.isMan ? "남성" : "여성",
+                            style: const TextStyle(color: Colors.white)),
+                        Container(),
+                      ])),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _displayUserDeleteAlert();
+              },
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(Theme.of(context).cardColor)),
+              child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Text("회원탈퇴", style: TextStyle(color: Colors.grey)),
+                        Icon(Icons.chevron_right, color: Colors.white),
+                      ])),
+            ),
+            const SizedBox(height: 30),
+            GestureDetector(
+                onTap: () {
+                  _displayPhotoDialog();
+                },
+                child: _userProvider.userdata.image == ""
+                    ? Icon(
+                        Icons.account_circle,
+                        color: Colors.grey,
+                        size: 200.0,
+                      )
+                    : Consumer<UserdataProvider>(
+                        builder: (builder, rpovider, child) {
+                        return CachedNetworkImage(
+                          imageUrl: _userProvider.userdata.image,
+                          imageBuilder: (context, imageProivder) => Container(
+                            height: 200,
+                            width: 200,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(50)),
+                                image: DecorationImage(
+                                  image: imageProivder,
+                                  fit: BoxFit.cover,
+                                )),
+                          ),
+                        );
+                      })),
+            TextButton(
+                onPressed: () {
+                  _displayPhotoDialog();
+                },
+                child: Text("사진 편집", style: TextStyle(color: Colors.white)))
+          ]),
+        ));
   }
 }

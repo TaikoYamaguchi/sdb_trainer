@@ -64,93 +64,108 @@ class _ProfileGoalState extends State<ProfileGoal> {
   }
 
   Widget _signupExerciseWidget() {
-    return Container(
-      color: Color(0xFF101012),
-      child: Center(
-          child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: SizedBox(),
-                    ),
-                    Text("운동 정보 수정",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 32,
-                            fontWeight: FontWeight.w600)),
-                    Text("목표치와 1rm을 설정해보세요",
-                        style: TextStyle(color: Colors.white, fontSize: 16)),
-                    SizedBox(
-                      height: 40,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                              width: 120,
-                              child: Text(
-                                "운동",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                ),
-                              )),
-                          Container(
-                              width: 70,
-                              child: Text("1rm",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
+    bool btnDisabled = false;
+    return GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        onPanUpdate: (details) {
+          if (details.delta.dx > 0 && btnDisabled == false) {
+            btnDisabled = true;
+            Navigator.of(context).pop();
+            print("Dragging in +X direction");
+          }
+        },
+        child: Container(
+          color: Color(0xFF101012),
+          child: Center(
+              child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 1,
+                          child: SizedBox(),
+                        ),
+                        Text("운동 정보 수정",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 32,
+                                fontWeight: FontWeight.w600)),
+                        Text("목표치와 1rm을 설정해보세요",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 16)),
+                        SizedBox(
+                          height: 40,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                  width: 120,
+                                  child: Text(
+                                    "운동",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                    ),
+                                  )),
+                              Container(
+                                  width: 70,
+                                  child: Text("1rm",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                      ),
+                                      textAlign: TextAlign.center)),
+                              Container(
+                                  width: 80,
+                                  child: Text("목표",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                      ),
+                                      textAlign: TextAlign.center))
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 10,
+                          child: ListView.separated(
+                              itemBuilder: (BuildContext _context, int index) {
+                                return Center(
+                                    child: _exerciseWidget(
+                                        _exerciseList[index], index));
+                              },
+                              separatorBuilder:
+                                  (BuildContext _context, int index) {
+                                return Container(
+                                  alignment: Alignment.center,
+                                  height: 1,
+                                  color: Color(0xFF101012),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    height: 1,
+                                    color: Color(0xFF717171),
                                   ),
-                                  textAlign: TextAlign.center)),
-                          Container(
-                              width: 80,
-                              child: Text("목표",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                  ),
-                                  textAlign: TextAlign.center))
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 10,
-                      child: ListView.separated(
-                          itemBuilder: (BuildContext _context, int index) {
-                            return Center(
-                                child: _exerciseWidget(
-                                    _exerciseList[index], index));
-                          },
-                          separatorBuilder: (BuildContext _context, int index) {
-                            return Container(
-                              alignment: Alignment.center,
-                              height: 1,
-                              color: Color(0xFF101012),
-                              child: Container(
-                                alignment: Alignment.center,
-                                margin: EdgeInsets.symmetric(horizontal: 10),
-                                height: 1,
-                                color: Color(0xFF717171),
-                              ),
-                            );
-                          },
-                          itemCount: _exerciseList.length),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: SizedBox(),
-                    ),
-                    _weightSubmitButton(context),
-                  ]))),
-    );
+                                );
+                              },
+                              itemCount: _exerciseList.length),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: SizedBox(),
+                        ),
+                        _weightSubmitButton(context),
+                      ]))),
+        ));
   }
 
   Widget _exerciseWidget(Exercises, index) {
@@ -175,7 +190,8 @@ class _ProfileGoalState extends State<ProfileGoal> {
               width: 70,
               child: TextFormField(
                   controller: _onermController[index],
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.numberWithOptions(
+                      signed: false, decimal: true),
                   style: TextStyle(fontSize: 18, color: Colors.white),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
@@ -197,7 +213,8 @@ class _ProfileGoalState extends State<ProfileGoal> {
               width: 80,
               child: TextFormField(
                   controller: _goalController[index],
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.numberWithOptions(
+                      signed: false, decimal: true),
                   style: TextStyle(fontSize: 18, color: Colors.white),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(

@@ -62,42 +62,63 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
   }
 
   Widget _dislikeEditWidget() {
-    return Container(
-        color: Color(0xFF101012),
-        child: Column(children: [
-          Consumer<UserdataProvider>(builder: (builder, provider, child) {
-            return Expanded(
-              child: _userProvider.userdata.dislike.isEmpty
-                  ? Container(
-                      color: Color(0xFF101012),
-                      child: Center(
-                        child: Text("차단 친구가 없네요",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 16)),
-                      ))
-                  : ListView.separated(
-                      itemBuilder: (BuildContext _context, int index) {
-                        return _dislikeListWidget(
-                            _userProvider.userdata.dislike[index]);
-                      },
-                      separatorBuilder: (BuildContext _context, int index) {
-                        return Container(
-                          alignment: Alignment.center,
-                          height: 1,
+    bool btnDisabled = false;
+    return GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        onPanUpdate: (details) {
+          if (details.delta.dx > 0 && btnDisabled == false) {
+            btnDisabled = true;
+            Navigator.of(context).pop();
+            print("Dragging in +X direction");
+          }
+        },
+        child: Container(
+            color: Color(0xFF101012),
+            child: Column(children: [
+              Consumer<UserdataProvider>(builder: (builder, provider, child) {
+                return Expanded(
+                  child: _userProvider.userdata.dislike.isEmpty
+                      ? Container(
                           color: Color(0xFF101012),
-                          child: Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.symmetric(horizontal: 10),
-                            height: 1,
-                            color: Color(0xFF717171),
-                          ),
-                        );
-                      },
-                      itemCount: _userProvider.userdata.dislike.length,
-                    ),
-            );
-          }),
-        ]));
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("차단 친구가 없어요",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 24)),
+                                Text("차단 친구는 여기서 관리 해요",
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontSize: 16))
+                              ],
+                            ),
+                          ))
+                      : ListView.separated(
+                          itemBuilder: (BuildContext _context, int index) {
+                            return _dislikeListWidget(
+                                _userProvider.userdata.dislike[index]);
+                          },
+                          separatorBuilder: (BuildContext _context, int index) {
+                            return Container(
+                              alignment: Alignment.center,
+                              height: 1,
+                              color: Color(0xFF101012),
+                              child: Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                height: 1,
+                                color: Color(0xFF717171),
+                              ),
+                            );
+                          },
+                          itemCount: _userProvider.userdata.dislike.length,
+                        ),
+                );
+              }),
+            ])));
   }
 
   Widget _dislikeListWidget(email) {

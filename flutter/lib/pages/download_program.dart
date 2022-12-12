@@ -1028,7 +1028,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                 child: Center(
                   child: TextFormField(
                       controller: _onermController[index],
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.numberWithOptions(
+                          signed: false, decimal: true),
                       style: TextStyle(fontSize: 18, color: Colors.white),
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(

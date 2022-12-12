@@ -3005,7 +3005,8 @@ class _HomeState extends State<Home> {
                 SizedBox(height: 20),
                 TextField(
                   controller: _userWeightController,
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.numberWithOptions(
+                      signed: false, decimal: true),
                   style: TextStyle(
                     fontSize: 21,
                     color: Colors.white,
@@ -3032,7 +3033,8 @@ class _HomeState extends State<Home> {
                 ),
                 TextField(
                   controller: _userWeightGoalController,
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.numberWithOptions(
+                      signed: false, decimal: true),
                   style: TextStyle(
                     fontSize: 21,
                     color: Colors.white,

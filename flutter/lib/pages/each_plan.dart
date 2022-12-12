@@ -868,7 +868,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                   child: Center(
                     child: TextField(
                       controller: _weightctrl,
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.numberWithOptions(
+                          signed: false, decimal: true),
                       style: TextStyle(
                         fontSize: 21,
                         color: Theme.of(context).primaryColor,

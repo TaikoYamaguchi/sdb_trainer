@@ -260,7 +260,9 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                                     width: 70,
                                     child: TextField(
                                       controller: weightController[index],
-                                      keyboardType: TextInputType.number,
+                                      keyboardType:
+                                          TextInputType.numberWithOptions(
+                                              signed: false, decimal: true),
                                       style: TextStyle(
                                         fontSize: 21,
                                         color: Colors.white,

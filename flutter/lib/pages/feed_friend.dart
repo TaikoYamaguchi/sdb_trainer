@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:sdb_trainer/pages/friendProfile.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/feed_friend_edit.dart';
 import 'package:like_button/like_button.dart';
@@ -68,82 +69,126 @@ class _FeedFriendState extends State<FeedFriend> {
   }
 
   Widget _friend_searchWidget() {
-    return Container(
-        color: Color(0xFF101012),
-        child: Column(children: [
-          Expanded(
-            child:
-                Consumer<UserdataProvider>(builder: (builder, provider, child) {
-              return provider.userFriends.userdatas.isEmpty
-                  ? Container(
-                      color: Color(0xFF101012),
-                      child: Center(
-                        child: Text("친구를 찾고 추가해 보세요",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 16)),
-                      ))
-                  : ListView.separated(
-                      itemBuilder: (BuildContext _context, int index) {
-                        return _friend_listWidget(
-                            provider, provider.userFriends.userdatas[index]);
-                      },
-                      separatorBuilder: (BuildContext _context, int index) {
-                        return Container(
-                          alignment: Alignment.center,
-                          height: 1,
+    bool btnDisabled = false;
+    return GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        onPanUpdate: (details) {
+          if (details.delta.dx > 0 && btnDisabled == false) {
+            btnDisabled = true;
+            Navigator.of(context).pop();
+            print("Dragging in +X direction");
+          }
+        },
+        child: Container(
+            color: Color(0xFF101012),
+            child: Column(children: [
+              Expanded(
+                child: Consumer<UserdataProvider>(
+                    builder: (builder, provider, child) {
+                  return provider.userFriends.userdatas.isEmpty
+                      ? Container(
                           color: Color(0xFF101012),
-                          child: Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.symmetric(horizontal: 10),
-                            height: 1,
-                            color: Color(0xFF717171),
-                          ),
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("친구를 찾고 추가해 보세요",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 24)),
+                                Text("오른쪽 위 친구찾기를 클릭하세요",
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontSize: 16)),
+                                SizedBox(height: 60)
+                              ],
+                            ),
+                          ))
+                      : ListView.separated(
+                          itemBuilder: (BuildContext _context, int index) {
+                            return _friend_listWidget(provider,
+                                provider.userFriends.userdatas[index]);
+                          },
+                          separatorBuilder: (BuildContext _context, int index) {
+                            return Container(
+                              alignment: Alignment.center,
+                              height: 1,
+                              color: Color(0xFF101012),
+                              child: Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                height: 1,
+                                color: Color(0xFF717171),
+                              ),
+                            );
+                          },
+                          itemCount: provider.userFriends.userdatas.length,
                         );
-                      },
-                      itemCount: provider.userFriends.userdatas.length,
-                    );
-            }),
-          )
-        ]));
+                }),
+              )
+            ])));
   }
 
   Widget _friend_listWidget(provider, user) {
-    return Container(
-        child: Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 12),
-              child: user.image == ""
-                  ? Icon(
-                      Icons.account_circle,
-                      color: Colors.grey,
-                      size: 28.0,
-                    )
-                  : CachedNetworkImage(
-                      imageUrl: user.image,
-                      imageBuilder: (context, imageProivder) => Container(
-                        height: 28,
-                        width: 28,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(50)),
-                            image: DecorationImage(
-                              image: imageProivder,
-                              fit: BoxFit.cover,
-                            )),
-                      ),
+    bool btnDisabled = false;
+    return GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        onPanUpdate: (details) {
+          if (details.delta.dx > 0 && btnDisabled == false) {
+            btnDisabled = true;
+            Navigator.of(context).pop();
+            print("Dragging in +X direction");
+          }
+        },
+        child: Container(
+            child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        Transition(
+                            child: FriendProfile(user: user),
+                            transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+                  },
+                  child: Row(children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 12),
+                      child: user.image == ""
+                          ? Icon(
+                              Icons.account_circle,
+                              color: Colors.grey,
+                              size: 28.0,
+                            )
+                          : CachedNetworkImage(
+                              imageUrl: user.image,
+                              imageBuilder: (context, imageProivder) =>
+                                  Container(
+                                height: 28,
+                                width: 28,
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(50)),
+                                    image: DecorationImage(
+                                      image: imageProivder,
+                                      fit: BoxFit.cover,
+                                    )),
+                              ),
+                            ),
                     ),
-            ),
-            Text(user.nickname,
-                style: TextStyle(color: Colors.white, fontSize: 18.0)),
-          ]),
-          _feedLikeButton(provider, user)
-        ],
-      ),
-    ));
+                    Text(user.nickname,
+                        style: TextStyle(color: Colors.white, fontSize: 18.0)),
+                  ])),
+              _feedLikeButton(provider, user)
+            ],
+          ),
+        )));
   }
 
   Widget _feedLikeButton(provider, User) {

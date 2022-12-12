@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/pages/feed_friend_edit.dart';
+import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
@@ -18,21 +20,6 @@ class Feed extends StatefulWidget {
 
 class _FeedState extends State<Feed> {
   var _feedListCtrl = 1;
-
-  final Map<int, Widget> _feedList = const <int, Widget>{
-    1: Padding(
-      child: Text("모두 보기", style: TextStyle(color: Colors.white, fontSize: 16)),
-      padding: const EdgeInsets.all(5.0),
-    ),
-    2: Padding(
-        child:
-            Text("친구 보기", style: TextStyle(color: Colors.white, fontSize: 16)),
-        padding: const EdgeInsets.all(5.0)),
-    3: Padding(
-        child:
-            Text("내 피드", style: TextStyle(color: Colors.white, fontSize: 16)),
-        padding: const EdgeInsets.all(5.0))
-  };
 
   var _hisProvider;
   var _historydata;
@@ -161,7 +148,9 @@ class _FeedState extends State<Feed> {
                     return RefreshIndicator(
                         onRefresh: _onRefresh,
                         child: _historydata.isEmpty
-                            ? Container()
+                            ? _feedListCtrl == 2
+                                ? feedEmptySearchFriend()
+                                : feedEmptyMyEx()
                             : ListView.separated(
                                 controller: _pageController,
                                 itemBuilder:
@@ -216,6 +205,27 @@ class _FeedState extends State<Feed> {
   }
 
   Widget _feedControllerWidget() {
+    Map<int, Widget> _feedList = <int, Widget>{
+      1: Padding(
+        child: Text("모두 보기",
+            style: TextStyle(
+                color: _feedListCtrl == 1 ? Colors.white : Colors.grey,
+                fontSize: 16)),
+        padding: const EdgeInsets.all(5.0),
+      ),
+      2: Padding(
+          child: Text("친구 보기",
+              style: TextStyle(
+                  color: _feedListCtrl == 2 ? Colors.white : Colors.grey,
+                  fontSize: 16)),
+          padding: const EdgeInsets.all(5.0)),
+      3: Padding(
+          child: Text("내 피드",
+              style: TextStyle(
+                  color: _feedListCtrl == 3 ? Colors.white : Colors.grey,
+                  fontSize: 16)),
+          padding: const EdgeInsets.all(5.0))
+    };
     return SizedBox(
       width: double.infinity,
       child: Container(
@@ -235,6 +245,85 @@ class _FeedState extends State<Feed> {
             }),
       ),
     );
+  }
+
+  Widget feedEmptySearchFriend() {
+    return Container(
+        child: Center(
+      child: SizedBox(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text(
+              "친구를 추가 할 수 있어요",
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            Text("아래를 눌러 친구를 추가해보세요",
+                style: TextStyle(color: Colors.grey, fontSize: 16)),
+            SizedBox(height: 24),
+            SizedBox(
+                width: MediaQuery.of(context).size.width * 2 / 3,
+                child: TextButton(
+                    style: TextButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      foregroundColor: Theme.of(context).primaryColor,
+                      backgroundColor: Theme.of(context).primaryColor,
+                      textStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                      padding: EdgeInsets.all(12.0),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          Transition(
+                              child: FeedFriendEdit(),
+                              transitionEffect:
+                                  TransitionEffect.RIGHT_TO_LEFT));
+                    },
+                    child: Text("친구 찾기",
+                        style: TextStyle(fontSize: 20.0, color: Colors.white))))
+          ]),
+        ),
+      ),
+    ));
+  }
+
+  Widget feedEmptyMyEx() {
+    var _bodyStater = Provider.of<BodyStater>(context, listen: false);
+    return Container(
+        child: Center(
+      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Text(
+          "첫 운동을 시작해보세요",
+          style: TextStyle(color: Colors.white, fontSize: 24),
+        ),
+        Text("아래를 눌러서 운동 할 수 있어요",
+            style: TextStyle(color: Colors.grey, fontSize: 16)),
+        SizedBox(height: 24),
+        SizedBox(
+            width: MediaQuery.of(context).size.width * 2 / 3,
+            child: TextButton(
+                style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  foregroundColor: Theme.of(context).primaryColor,
+                  backgroundColor: Theme.of(context).primaryColor,
+                  textStyle: TextStyle(
+                    color: Colors.white,
+                  ),
+                  padding: EdgeInsets.all(12.0),
+                ),
+                onPressed: () {
+                  _bodyStater.change(1);
+                },
+                child: Text("첫 운동 하기",
+                    style: TextStyle(fontSize: 20.0, color: Colors.white))))
+      ]),
+    ));
   }
 
   void _feedController(_feedListCtrl) {

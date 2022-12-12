@@ -80,63 +80,78 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
   }
 
   Widget _friend_searchWidget() {
-    return Container(
-        color: Color(0xFF101012),
-        child: Column(children: [
-          Consumer<UserdataProvider>(builder: (builder, provider, child) {
-            return Container(
-              margin: const EdgeInsets.fromLTRB(10, 16, 10, 16),
-              child: TextField(
-                  style: TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.search,
-                      color: Color(0xFF717171),
+    bool btnDisabled = false;
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      onPanUpdate: (details) {
+        if (details.delta.dx > 0 && btnDisabled == false) {
+          btnDisabled = true;
+          Navigator.of(context).pop();
+          print("Dragging in +X direction");
+        }
+      },
+      child: Container(
+          color: Color(0xFF101012),
+          child: Column(children: [
+            Consumer<UserdataProvider>(builder: (builder, provider, child) {
+              return Container(
+                margin: const EdgeInsets.fromLTRB(10, 16, 10, 16),
+                child: TextField(
+                    autofocus: true,
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: Color(0xFF717171),
+                      ),
+                      hintText: "닉네임 검색",
+                      hintStyle:
+                          TextStyle(fontSize: 20.0, color: Color(0xFF717171)),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(width: 3, color: Color(0xFF717171)),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
                     ),
-                    hintText: "닉네임 검색",
-                    hintStyle:
-                        TextStyle(fontSize: 20.0, color: Color(0xFF717171)),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide:
-                          BorderSide(width: 3, color: Color(0xFF717171)),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                  onChanged: (text) {
-                    if (text.toString() == "") {
-                      friendsInputSwitch = false;
-                      setState(() => _usersdata = _userProvider.userFriendsAll);
-                    } else {
-                      searchFriend(text.toString());
-                      friendsInputSwitch = true;
-                    }
-                  }),
-            );
-          }),
-          Expanded(
-            child: _usersdata == null
-                ? Container()
-                : ListView.separated(
-                    itemBuilder: (BuildContext _context, int index) {
-                      return _friend_listWidget(_usersdata.userdatas[index]);
-                    },
-                    separatorBuilder: (BuildContext _context, int index) {
-                      return Container(
-                        alignment: Alignment.center,
-                        height: 1,
-                        color: Color(0xFF101012),
-                        child: Container(
+                    onChanged: (text) {
+                      if (text.toString() == "") {
+                        friendsInputSwitch = false;
+                        setState(
+                            () => _usersdata = _userProvider.userFriendsAll);
+                      } else {
+                        searchFriend(text.toString());
+                        friendsInputSwitch = true;
+                      }
+                    }),
+              );
+            }),
+            Expanded(
+              child: _usersdata == null
+                  ? Container()
+                  : ListView.separated(
+                      itemBuilder: (BuildContext _context, int index) {
+                        return _friend_listWidget(_usersdata.userdatas[index]);
+                      },
+                      separatorBuilder: (BuildContext _context, int index) {
+                        return Container(
                           alignment: Alignment.center,
-                          margin: EdgeInsets.symmetric(horizontal: 10),
                           height: 1,
-                          color: Color(0xFF717171),
-                        ),
-                      );
-                    },
-                    itemCount: _usersdata.userdatas.length,
-                  ),
-          )
-        ]));
+                          color: Color(0xFF101012),
+                          child: Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.symmetric(horizontal: 10),
+                            height: 1,
+                            color: Color(0xFF717171),
+                          ),
+                        );
+                      },
+                      itemCount: _usersdata.userdatas.length,
+                    ),
+            )
+          ])),
+    );
   }
 
   void searchFriend(String query) async {

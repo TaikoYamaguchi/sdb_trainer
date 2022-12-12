@@ -89,7 +89,8 @@ def get_user_by_nickname(db: Session, nickname: str) -> schemas.UserBase:
     return db.query(models.User).filter(models.User.nickname == nickname).first()
 
 def get_users_by_nickname(db: Session, nickname: str) -> t.List[schemas.UserOut]:
-    return db.query(models.User).filter(models.User.nickname.contains(nickname)).all()
+    return db.query(models.User).filter(models.User.nickname.lower(
+    ).contains(nickname.lower())).all()
 
 
 def get_user_by_phone_number(db: Session, phone_number: str) -> schemas.UserBase:

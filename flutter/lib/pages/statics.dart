@@ -54,18 +54,6 @@ class _CalendarState extends State<Calendar> {
 
   TextEditingController _eventController = TextEditingController();
 
-  final Map<int, Widget> _staticList = const <int, Widget>{
-    0: Padding(
-      child: Text("운동", style: TextStyle(color: Colors.white, fontSize: 16)),
-      padding: const EdgeInsets.all(5.0),
-    ),
-    1: Padding(
-        child: Text("달력", style: TextStyle(color: Colors.white, fontSize: 16)),
-        padding: const EdgeInsets.all(5.0)),
-    2: Padding(
-        child: Text("몸무게", style: TextStyle(color: Colors.white, fontSize: 16)),
-        padding: const EdgeInsets.all(5.0)),
-  };
   late StreamSubscription<bool> keyboardSubscription;
 
   @override
@@ -98,17 +86,41 @@ class _CalendarState extends State<Calendar> {
     return SizedBox(
       width: double.infinity,
       child: Consumer<ChartIndexProvider>(builder: (builder, provider, child) {
+        var page = provider.isPageController.hasClients
+            ? provider.isPageController.page
+            : provider.isPageController.initialPage;
+
+        Map<int, Widget> _staticList = <int, Widget>{
+          0: Padding(
+            child: Text("운동",
+                style: TextStyle(
+                    color: page == 0 ? Colors.white : Colors.grey,
+                    fontSize: 16)),
+            padding: const EdgeInsets.all(5.0),
+          ),
+          1: Padding(
+              child: Text("달력",
+                  style: TextStyle(
+                      color: page == 1 ? Colors.white : Colors.grey,
+                      fontSize: 16)),
+              padding: const EdgeInsets.all(5.0)),
+          2: Padding(
+              child: Text("몸무게",
+                  style: TextStyle(
+                      color: page == 2 ? Colors.white : Colors.grey,
+                      fontSize: 16)),
+              padding: const EdgeInsets.all(5.0)),
+        };
         return Container(
           color: Color(0xFF101012),
           child: CupertinoSlidingSegmentedControl(
-              groupValue: provider.isPageController.hasClients
-                  ? provider.isPageController.page
-                  : provider.isPageController.initialPage,
+              groupValue: page,
               children: _staticList,
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
               backgroundColor: Color(0xFF101012),
               thumbColor: Theme.of(context).primaryColor,
               onValueChanged: (i) {
+                print(i);
                 provider.changePageController(i as int);
               }),
         );
@@ -541,7 +553,8 @@ class _CalendarState extends State<Calendar> {
                 SizedBox(height: 20),
                 TextField(
                   controller: _userWeightController,
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.numberWithOptions(
+                      signed: false, decimal: true),
                   style: TextStyle(
                     fontSize: 21,
                     color: Colors.white,
@@ -568,7 +581,8 @@ class _CalendarState extends State<Calendar> {
                 ),
                 TextField(
                   controller: _userWeightGoalController,
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.numberWithOptions(
+                      signed: false, decimal: true),
                   style: TextStyle(
                     fontSize: 21,
                     color: Colors.white,
@@ -661,7 +675,8 @@ class _CalendarState extends State<Calendar> {
                 SizedBox(height: 20),
                 TextField(
                   controller: _userWeightController,
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.numberWithOptions(
+                      signed: false, decimal: true),
                   style: TextStyle(
                     fontSize: 21,
                     color: Colors.white,
@@ -688,7 +703,8 @@ class _CalendarState extends State<Calendar> {
                 ),
                 TextField(
                   controller: _userWeightGoalController,
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.numberWithOptions(
+                      signed: false, decimal: true),
                   style: TextStyle(
                     fontSize: 21,
                     color: Colors.white,
@@ -1912,19 +1928,20 @@ class _CalendarState extends State<Calendar> {
     if (_exProvider.exercisesdata != null && _exSearchCtrl.text == "") {
       for (int i = 0; i < _exProvider.exercisesdata!.exercises.length; i++) {
         Widget item = Padding(
-          padding: const EdgeInsets.only(left: 3, right: 3),
-          child: ChoiceChip(
-            label: Text(_exProvider.exercisesdata!.exercises[i].name),
-            labelStyle: TextStyle(color: Colors.white),
-            selected: _chartIndex.chartIndex == i,
-            selectedColor: Theme.of(context).primaryColor,
-            backgroundColor: Theme.of(context).cardColor,
-            onSelected: (bool value) {
-              _chartIndex.change(i);
-              _getChartSourcefromDay();
-            },
-          ),
-        );
+            padding: const EdgeInsets.only(left: 3, right: 3),
+            child: ChoiceChip(
+              label: Text(_exProvider.exercisesdata!.exercises[i].name),
+              labelStyle: TextStyle(color: Colors.white),
+              selected: _chartIndex.chartIndex == i,
+              selectedColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).cardColor,
+              onSelected: (bool value) {
+                _chartIndex.change(i);
+                _getChartSourcefromDay();
+
+                FocusScope.of(context).unfocus();
+              },
+            ));
         chips.add(item);
       }
     } else if (_exProvider.exercisesdata != null && _exSearchCtrl.text != "") {
@@ -1967,6 +1984,7 @@ class _CalendarState extends State<Calendar> {
           onSelected: (bool value) {
             _chartIndex.changeStaticIndex(0);
             _getChartSourcefromDay();
+            FocusScope.of(context).unfocus();
           },
         ),
       )
@@ -1986,6 +2004,7 @@ class _CalendarState extends State<Calendar> {
             onSelected: (bool value) {
               _chartIndex.changeStaticIndex(i);
               _getChartSourcefromDay();
+              FocusScope.of(context).unfocus();
             },
           ),
         );

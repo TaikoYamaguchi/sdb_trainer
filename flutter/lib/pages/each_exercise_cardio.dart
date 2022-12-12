@@ -681,8 +681,10 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                                 controller:
                                                     weightController[pindex]
                                                         .controllerlist[index],
-                                                keyboardType:
-                                                    TextInputType.number,
+                                                keyboardType: TextInputType
+                                                    .numberWithOptions(
+                                                        signed: false,
+                                                        decimal: true),
                                                 style: TextStyle(
                                                   fontSize: 21,
                                                   color: Colors.white,

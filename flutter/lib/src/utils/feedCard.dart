@@ -174,20 +174,22 @@ class _FeedCardState extends State<FeedCard> {
                             : Container(),
                         Padding(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 0),
+                              horizontal: 10, vertical: 0),
                           child: Row(
+                            mainAxisSize: MainAxisSize.max,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
-                                  width: 200,
-                                  child: Text(
-                                    "운동",
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 14,
-                                    ),
-                                  )),
+                              Expanded(
+                                child: Container(
+                                    child: Text(
+                                  "운동",
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 14,
+                                  ),
+                                )),
+                              ),
                               Container(
                                   width: 50,
                                   child: Text("세트",
@@ -1027,22 +1029,23 @@ class _FeedCardState extends State<FeedCard> {
   Widget _exerciseWidget(Exercises, index) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              width: 200,
-              child: Text(
-                Exercises.name,
-                style: TextStyle(fontSize: 18, color: Colors.white),
+            Expanded(
+              child: Container(
+                child: Text(
+                  Exercises.name,
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                ),
               ),
             ),
             Container(
               width: 50,
               child: Text(
                 Exercises.sets.length.toString(),
-                style: TextStyle(fontSize: 18, color: Colors.white),
+                style: TextStyle(fontSize: 16, color: Colors.white),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -1050,7 +1053,7 @@ class _FeedCardState extends State<FeedCard> {
               width: 70,
               child: Text(
                 Exercises.onerm.toStringAsFixed(1),
-                style: TextStyle(fontSize: 18, color: Colors.white),
+                style: TextStyle(fontSize: 16, color: Colors.white),
                 textAlign: TextAlign.center,
               ),
             ),

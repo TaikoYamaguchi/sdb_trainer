@@ -232,11 +232,14 @@ Widget _feedCardList(context) {
                   itemBuilder: (BuildContext _context, int index) {
                     if (index < provider.historydataUserEmail.sdbdatas.length) {
                       return Center(
-                          child: FeedCard(
-                              sdbdata:
-                                  provider.historydataUserEmail.sdbdatas[index],
-                              index: index,
-                              feedListCtrl: 0));
+                          child: provider.historydataUserEmail.sdbdatas[index]
+                                  .isVisible
+                              ? FeedCard(
+                                  sdbdata: provider
+                                      .historydataUserEmail.sdbdatas[index],
+                                  index: index,
+                                  feedListCtrl: 0)
+                              : Container());
                     } else {
                       return Padding(
                         padding: EdgeInsets.symmetric(vertical: 16),

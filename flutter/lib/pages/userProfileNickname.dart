@@ -43,42 +43,54 @@ class _ProfileNicknameState extends State<ProfileNickname> {
   }
 
   Widget _signupProfileWidget() {
-    return Container(
-      color: Color(0xFF101012),
-      child: Center(
-          child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Expanded(
-                      flex: 2,
-                      child: SizedBox(),
-                    ),
-                    Text("닉네임 변경",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 32,
-                            fontWeight: FontWeight.w600)),
-                    Text("닉네임을 수정 할 수 있어요",
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16,
-                        )),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    _nicknameWidget(),
-                    Expanded(
-                      flex: 3,
-                      child: SizedBox(),
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    _editButton(context),
-                  ]))),
-    );
+    bool btnDisabled = false;
+    return GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        onPanUpdate: (details) {
+          if (details.delta.dx > 0 && btnDisabled == false) {
+            btnDisabled = true;
+            Navigator.of(context).pop();
+            print("Dragging in +X direction");
+          }
+        },
+        child: Container(
+          color: Color(0xFF101012),
+          child: Center(
+              child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 2,
+                          child: SizedBox(),
+                        ),
+                        Text("닉네임 변경",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 32,
+                                fontWeight: FontWeight.w600)),
+                        Text("닉네임을 수정 할 수 있어요",
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 16,
+                            )),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        _nicknameWidget(),
+                        Expanded(
+                          flex: 3,
+                          child: SizedBox(),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        _editButton(context),
+                      ]))),
+        ));
   }
 
   Widget _nicknameWidget() {
