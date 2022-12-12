@@ -184,7 +184,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: Container(
-                        height: 80,
+                        height: 90,
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                             //color: Theme.of(context).cardColor,

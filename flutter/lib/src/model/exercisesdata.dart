@@ -231,7 +231,9 @@ class Exercises {
 
   factory Exercises.fromJson(Map<String, dynamic> parsedJson) {
     return Exercises(
-      name: namechange[parsedJson["name"]],
+      name: parsedJson["custom"] == false
+          ? namechange[parsedJson["name"]]
+          : parsedJson["name"],
       onerm: parsedJson["onerm"].toDouble(),
       goal: parsedJson["goal"].toDouble(),
       custom: parsedJson["custom"],

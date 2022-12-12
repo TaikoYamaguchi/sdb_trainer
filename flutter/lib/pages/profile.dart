@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
+import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
+import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:sdb_trainer/pages/userProfile.dart';
@@ -426,36 +428,34 @@ class _ProfileState extends State<Profile> {
                     })),
 
           //ex back end 바꾸는 코드임 절대 지우지 말것
-          /*
 
-
-          Consumer<ExercisesdataProvider>(
-            builder: (builder, provider, child) {
-              return ElevatedButton(
-                  onPressed: () {
-                    provider.getdata_all().then((value){print(provider.exercisesdatas.exercisedatas[10].exercises[1].target[0]);});
-
-                  },
-                  onLongPress: (){
-                    ExerciseEditAll(exercisedatas: provider.exercisesdatas.exercisedatas).editExercise();
-                  },
-                  style: ButtonStyle(
-                      backgroundColor:
-                      MaterialStateProperty.all(Theme.of(context).cardColor)),
-                  child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: 50,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("exercise_change", style: TextStyle(color: Colors.white)),
-                            Icon(Icons.chevron_right, color: Colors.white),
-                          ])));
-
-            }
-          ),
-
-           */
+          Consumer<ExercisesdataProvider>(builder: (builder, provider, child) {
+            return ElevatedButton(
+                onPressed: () {
+                  provider.getdata_all().then((value) {
+                    print(provider.exercisesdatas.exercisedatas[10].exercises[1]
+                        .target[0]);
+                  });
+                },
+                onLongPress: () {
+                  ExerciseEditAll(
+                          exercisedatas: provider.exercisesdatas.exercisedatas)
+                      .editExercise();
+                },
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(Theme.of(context).cardColor)),
+                child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("exercise_change",
+                              style: TextStyle(color: Colors.white)),
+                          Icon(Icons.chevron_right, color: Colors.white),
+                        ])));
+          }),
         ]),
       ),
     );
