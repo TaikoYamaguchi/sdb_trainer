@@ -540,23 +540,28 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                           bottomRight: Radius.circular(bottom),
                           topLeft: Radius.circular(top),
                           bottomLeft: Radius.circular(bottom))),
-                  height: 52,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Text(
-                            exuniq[index].name,
-                            style: TextStyle(fontSize: 21, color: Colors.white),
-                          ),
-                          Expanded(child: SizedBox()),
-                          Text(
-                              "1RM: ${exuniq[index].onerm.toStringAsFixed(0)}/${exuniq[index].goal.toStringAsFixed(0)}${_userProvider.userdata.weight_unit}",
-                              style:
-                                  TextStyle(fontSize: 13, color: Colors.white)),
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12.0, horizontal: 4.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                exuniq[index].name,
+                                style: TextStyle(
+                                    fontSize: 21, color: Colors.white),
+                              ),
+                            ),
+                            Text(
+                                "1RM: ${exuniq[index].onerm.toStringAsFixed(0)}/${exuniq[index].goal.toStringAsFixed(0)}${_userProvider.userdata.weight_unit}",
+                                style: TextStyle(
+                                    fontSize: 13, color: Colors.white)),
+                          ],
+                        ),
                       ),
                     ],
                   ),

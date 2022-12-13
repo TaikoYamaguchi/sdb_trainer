@@ -59,102 +59,116 @@ class _FriendProfileState extends State<FriendProfile> {
   }
 
   Widget _userProfileWidget() {
+    bool btnDisabled = false;
     _hisProvider.getUserEmailHistorydata(widget.user.email);
-    return SingleChildScrollView(
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        color: Color(0xFF101012),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              GestureDetector(
-                  onTap: () {},
-                  child: widget.user.image == ""
-                      ? Icon(
-                          Icons.account_circle,
-                          color: Colors.grey,
-                          size: 160.0,
-                        )
-                      : CachedNetworkImage(
-                          imageUrl: widget.user.image,
-                          imageBuilder: (context, imageProivder) => Container(
-                            height: 160.0,
-                            width: 160.0,
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(50)),
-                                image: DecorationImage(
-                                  image: imageProivder,
-                                  fit: BoxFit.cover,
-                                )),
-                          ),
-                        )),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return GestureDetector(
+        onPanUpdate: (details) {
+          if (details.delta.dx > 0 && btnDisabled == false) {
+            btnDisabled = true;
+            Navigator.of(context).pop();
+            print("Dragging in +X direction");
+          }
+        },
+        child: SingleChildScrollView(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            color: Color(0xFF101012),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(
-                    width: 70,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          widget.user.liked.length.toString(),
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 24,
-                          ),
+                  GestureDetector(
+                      onTap: () {},
+                      child: widget.user.image == ""
+                          ? Icon(
+                              Icons.account_circle,
+                              color: Colors.grey,
+                              size: 160.0,
+                            )
+                          : CachedNetworkImage(
+                              imageUrl: widget.user.image,
+                              imageBuilder: (context, imageProivder) =>
+                                  Container(
+                                height: 160.0,
+                                width: 160.0,
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(50)),
+                                    image: DecorationImage(
+                                      image: imageProivder,
+                                      fit: BoxFit.cover,
+                                    )),
+                              ),
+                            )),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        width: 70,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              widget.user.liked.length.toString(),
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 24,
+                              ),
+                            ),
+                            Text("팔로워",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16))
+                          ],
                         ),
-                        Text("팔로워",
-                            style: TextStyle(color: Colors.white, fontSize: 16))
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                        width: 70,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              widget.user.like.length.toString(),
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 24,
+                              ),
+                            ),
+                            Text("팔로잉",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16))
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 70,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              widget.user.history_cnt.toString(),
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 24,
+                              ),
+                            ),
+                            Text("운동기록",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16))
+                          ],
+                        ),
+                      )
+                    ],
                   ),
-                  SizedBox(
-                    width: 70,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          widget.user.like.length.toString(),
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 24,
-                          ),
-                        ),
-                        Text("팔로잉",
-                            style: TextStyle(color: Colors.white, fontSize: 16))
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: 70,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          widget.user.history_cnt.toString(),
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 24,
-                          ),
-                        ),
-                        Text("운동기록",
-                            style: TextStyle(color: Colors.white, fontSize: 16))
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(height: 32),
-              Consumer<UserdataProvider>(builder: (builder, provider, child) {
-                return _feedLikeButton(provider, widget.user);
-              }),
-              _feedCardList(context),
-            ]),
-      ),
-    );
+                  SizedBox(height: 32),
+                  Consumer<UserdataProvider>(
+                      builder: (builder, provider, child) {
+                    return _feedLikeButton(provider, widget.user);
+                  }),
+                  _feedCardList(context),
+                ]),
+          ),
+        ));
   }
 
   Widget _feedLikeButton(provider, User) {

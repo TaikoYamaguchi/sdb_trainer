@@ -45,11 +45,21 @@ class _FriendHistoryState extends State<FriendHistory> {
   }
 
   Widget _friendHistoryWidget() {
-    return SingleChildScrollView(
-      child: Container(
-          width: MediaQuery.of(context).size.width,
-          color: Color(0xFF101012),
-          child: _onechartExercisesWidget(widget.sdbdata.exercises)),
+    bool btnDisabled = false;
+    return GestureDetector(
+      onPanUpdate: (details) {
+        if (details.delta.dx > 0 && btnDisabled == false) {
+          btnDisabled = true;
+          Navigator.of(context).pop();
+          print("Dragging in +X direction");
+        }
+      },
+      child: SingleChildScrollView(
+        child: Container(
+            width: MediaQuery.of(context).size.width,
+            color: Color(0xFF101012),
+            child: _onechartExercisesWidget(widget.sdbdata.exercises)),
+      ),
     );
   }
 
