@@ -430,7 +430,7 @@ class _ProfileState extends State<Profile> {
                     })),
 
           //ex back end 바꾸는 코드임 절대 지우지 말것
-
+          /*
           Consumer<ExercisesdataProvider>(builder: (builder, provider, child) {
             return ElevatedButton(
                 onPressed: () {
@@ -486,6 +486,7 @@ class _ProfileState extends State<Profile> {
                           Icon(Icons.chevron_right, color: Colors.white),
                         ])));
           }),
+          */
         ]),
       ),
     );

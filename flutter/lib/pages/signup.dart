@@ -67,7 +67,7 @@ class _SignUpPageState extends State<SignUpPage> {
   List<Exercises> exerciseList = [
     Exercises(
         goal: 0.0,
-        name: "스쿼트",
+        name: "바벨 스쿼트",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -76,7 +76,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "데드리프트",
+        name: "바벨 데드리프트",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -85,7 +85,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "벤치프레스",
+        name: "바벨 벤치 프레스",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -99,7 +99,7 @@ class _SignUpPageState extends State<SignUpPage> {
   List<Exercises> extra_Ex = [
     Exercises(
         goal: 0.0,
-        name: "밀리터리프레스",
+        name: "밀리터리 프레스",
         image: null,
         onerm: 48,
         custom: false,
@@ -108,7 +108,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "체스트프레스",
+        name: "체스트 프레스",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -117,7 +117,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "오버헤드프레스",
+        name: "바벨 숄더 프레스",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -126,7 +126,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "벤트오버바벨로우",
+        name: "벤트 오버 바벨로우",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -144,7 +144,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "바벨컬",
+        name: "바벨 컬",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -153,7 +153,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "덤벨컬",
+        name: "덤벨 컬",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -162,7 +162,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "카프레이즈",
+        name: "스탠딩 카프 레이즈",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -171,7 +171,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "치닝",
+        name: "친업",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -189,7 +189,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "디클라인벤치프레스",
+        name: "디클라인 바벨 벤치 프레스",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -198,7 +198,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "인클라인벤치프레스",
+        name: "인클라인 바벨 벤치 프레스",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -207,7 +207,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "랫풀다운",
+        name: "랫 풀다운",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -216,7 +216,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "레그프레스",
+        name: "레그 프레스",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -225,7 +225,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "파워레그프레스",
+        name: "파워 레그 프레스",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -234,7 +234,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "레그컬",
+        name: "레그 컬",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -243,7 +243,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "레그익스텐션",
+        name: "레그 익스텐션",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -252,7 +252,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "행잉레그레이즈",
+        name: "행잉 레그레이즈",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -261,7 +261,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "덤벨로우",
+        name: "벤트 오버 덤벨 로우",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -270,7 +270,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "사이드래터럴레이즈",
+        name: "덤벨 사이드 래터럴 레이즈",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -279,7 +279,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "프론트래터럴레이즈",
+        name: "덤벨 프론트 래터럴 레이즈",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -288,7 +288,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "리어델토이드플라이",
+        name: "리어 델트 플라이",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -297,7 +297,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "체스트플라이",
+        name: "체스트 플라이",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -306,7 +306,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "뎀벨플라이",
+        name: "뎀벨 플라이",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -315,7 +315,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "프론트스쿼트",
+        name: "바벨 프론트 스쿼트",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -324,7 +324,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "숄더프레스",
+        name: "덤벨 숄더 프레스",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -333,7 +333,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "케이블플라이",
+        name: "케이블 플라이",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -342,7 +342,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "케이블풀다운",
+        name: "케이블 스트레이트 암 풀다운",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -351,7 +351,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "케이블바이셉스컬",
+        name: "케이블 컬",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -360,7 +360,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "케이블푸시다운",
+        name: "트라이셉스 다운",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -369,7 +369,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "케이블로우",
+        name: "시티드 케이블 로우",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -378,7 +378,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "백익스텐션",
+        name: "백 익스텐션",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -396,7 +396,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "티바로우",
+        name: "T바 로우",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -405,7 +405,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "펜들레이로우",
+        name: "펜들레이 로우",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -414,7 +414,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "덤벨프레스",
+        name: "덤벨 벤치 프레스",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -423,7 +423,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "인클라인덤벨프레스",
+        name: "인클라인 덤벨 벤치 프레스",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -441,7 +441,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "디클라인덤벨프레스",
+        name: "디클라인 덤벨 벤치 프레스",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -450,7 +450,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "인클라인체스트프레스",
+        name: "인클라인 체스트 프레스",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -459,7 +459,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "디클라인체스트프레스",
+        name: "디클라인 체스트 프레스",
         image: null,
         onerm: 0.0,
         custom: false,
@@ -468,7 +468,7 @@ class _SignUpPageState extends State<SignUpPage> {
         note: ''),
     Exercises(
         goal: 0.0,
-        name: "덤벨킥백",
+        name: "덤벨 킥 백",
         image: null,
         onerm: 0.0,
         custom: false,
