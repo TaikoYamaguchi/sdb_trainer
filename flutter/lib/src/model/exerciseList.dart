@@ -57,7 +57,7 @@ List<Exercises> old_Ex = [
       note: ''),
   Exercises(
       goal: 0.0,
-      name: "벤트 오버 바벨로우",
+      name: "벤트 오버 바벨 로우",
       image: null,
       onerm: 0.0,
       custom: false,
@@ -291,7 +291,7 @@ List<Exercises> old_Ex = [
       note: ''),
   Exercises(
       goal: 0.0,
-      name: "트라이셉스 다운",
+      name: "트라이셉스 푸쉬 다운",
       image: null,
       onerm: 0.0,
       custom: false,
@@ -426,6 +426,15 @@ List<Exercises> extra_completely_new_Ex = [
       custom: false,
       target: ["복근"],
       category: "맨몸",
+      note: ''),
+  Exercises(
+      goal: 0.0,
+      name: "밀리터리 프레스",
+      image: null,
+      onerm: 0.0,
+      custom: false,
+      target: ["어깨", "삼두"],
+      category: "바벨",
       note: ''),
   Exercises(
       goal: 0.0,
@@ -1572,15 +1581,6 @@ List<Exercises> extra_completely_new_Ex = [
       note: ''),
   Exercises(
       goal: 0.0,
-      name: '바벨 벤치 프레스',
-      image: null,
-      onerm: 0.0,
-      custom: false,
-      target: ["가슴", "삼두"],
-      category: "바벨",
-      note: ''),
-  Exercises(
-      goal: 0.0,
       name: '디클라인 바벨 벤치 프레스',
       image: null,
       onerm: 0.0,
@@ -1977,15 +1977,6 @@ List<Exercises> extra_completely_new_Ex = [
       note: ''),
   Exercises(
       goal: 0.0,
-      name: '바벨 데드리프트',
-      image: null,
-      onerm: 0.0,
-      custom: false,
-      target: ["다리", "둔근", "허리", "등"],
-      category: "바벨",
-      note: ''),
-  Exercises(
-      goal: 0.0,
       name: '덤벨 데드리프트',
       image: null,
       onerm: 0.0,
@@ -2131,15 +2122,6 @@ List<Exercises> extra_completely_new_Ex = [
   Exercises(
       goal: 0.0,
       name: '바벨 스플릿 스쿼트',
-      image: null,
-      onerm: 0.0,
-      custom: false,
-      target: ["다리", "둔근"],
-      category: "바벨",
-      note: ''),
-  Exercises(
-      goal: 0.0,
-      name: '바벨 스쿼트',
       image: null,
       onerm: 0.0,
       custom: false,
