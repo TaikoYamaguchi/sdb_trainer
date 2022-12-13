@@ -11,6 +11,7 @@ import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:sdb_trainer/pages/userProfile.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
+import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/userProfileGoal.dart';
@@ -430,7 +431,7 @@ class _ProfileState extends State<Profile> {
                     })),
 
           //ex back end 바꾸는 코드임 절대 지우지 말것
-
+          /*
           Consumer<ExercisesdataProvider>(builder: (builder, provider, child) {
             return ElevatedButton(
                 onPressed: () {
@@ -486,6 +487,48 @@ class _ProfileState extends State<Profile> {
                           Icon(Icons.chevron_right, color: Colors.white),
                         ])));
           }),
+
+          Consumer<ExercisesdataProvider>(builder: (builder, provider, child) {
+            return ElevatedButton(
+                onPressed: () {
+                  print('fuck3');
+                  for (int n = 0; n < old_Ex.length; n++) {
+                    extra_completely_new_Ex.removeWhere(
+                        (element) => element.name == old_Ex[n].name);
+                    print(extra_completely_new_Ex.length);
+                  }
+
+                  provider.getdata_all().then((value) {
+                    print(provider.exercisesdatas.exercisedatas[0].exercises[1]
+                        .target[0]);
+                    for (int n = 0;
+                        n < provider.exercisesdatas.exercisedatas.length;
+                        n++) {
+                      provider.exercisesdatas.exercisedatas[n].exercises
+                          .addAll(extra_completely_new_Ex);
+                    }
+                  });
+                },
+                onLongPress: () {
+                  ExerciseEditAll(
+                          exercisedatas: provider.exercisesdatas.exercisedatas)
+                      .editExercise();
+                },
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(Theme.of(context).cardColor)),
+                child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("exercise_add",
+                              style: TextStyle(color: Colors.white)),
+                          Icon(Icons.chevron_right, color: Colors.white),
+                        ])));
+          }),
+          */
         ]),
       ),
     );
