@@ -462,3 +462,34 @@ class HistoryImageDelete {
     return (jsonResponse);
   }
 }
+
+class HistoryEditAll {
+  final List<SDBdata> sdbdatas;
+  HistoryEditAll({
+    required this.sdbdatas,
+  });
+  Future<String> _historyEditFromServer() async {
+    var formData = new Map<String, dynamic>();
+    formData["sdbdatas"] = jsonEncode(sdbdatas);
+    print(formData);
+
+    var url = Uri.parse(LocalHost.getLocalHost() + "/api/history/all");
+    var response = await http.put(url, body: json.encode(formData));
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      String jsonString = utf8.decode(response.bodyBytes);
+      final jsonResponse = json.decode(jsonString);
+
+      return utf8.decode(response.bodyBytes);
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<List<dynamic>> editHistory() async {
+    String jsonString = await _historyEditFromServer();
+    final jsonResponse = json.decode(jsonString);
+    return (jsonResponse);
+  }
+}

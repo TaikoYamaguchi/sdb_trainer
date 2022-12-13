@@ -6,6 +6,7 @@ import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
+import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:sdb_trainer/pages/userProfile.dart';
@@ -467,9 +468,9 @@ class _ProfileState extends State<Profile> {
                   });
                 },
                 onLongPress: () {
-                  //ExerciseEditAll(
-                  //        exercisedatas: provider.exercisesdatas.exercisedatas)
-                  //    .editExercise();
+                  HistoryEditAll(
+                          sdbdatas: provider.historydataAllforChange.sdbdatas)
+                      .editHistory();
                 },
                 style: ButtonStyle(
                     backgroundColor:

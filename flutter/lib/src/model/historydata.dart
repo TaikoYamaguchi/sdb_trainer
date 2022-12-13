@@ -30,6 +30,21 @@ class SDBdata {
       required this.comment_length,
       required this.isVisible});
 
+  Map toJson() => {
+        "id": id,
+        "user_email": user_email,
+        "exercises": exercises,
+        "date": date,
+        "new_record": new_record,
+        "workout_time": workout_time,
+        "like": like,
+        "image": image,
+        "comment": comment,
+        "nickname": nickname,
+        "comment_length": comment_length,
+        "isVisible": isVisible,
+      };
+
   factory SDBdata.fromJson(Map<String, dynamic> parsedJson) {
     var list = parsedJson['exercises'].runtimeType == String
         ? json.decode(parsedJson['exercises']) as List

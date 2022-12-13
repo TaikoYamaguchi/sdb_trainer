@@ -1,4 +1,4 @@
-from app.db.crud_history import create_history, delete_auth_history, edit_comment_by_id, edit_exercies_by_id, get_friends_histories, get_histories_all, get_histories_by_email, get_histories, get_histories_by_page, manage_like_by_history_id, visible_auth_history
+from app.db.crud_history import create_history, delete_auth_history, edit_comment_by_id, edit_exercies_by_id, get_friends_histories, get_histories_all, get_histories_by_email, get_histories, get_histories_by_page, manage_like_by_history_id, visible_auth_history, edit_history_all
 from fastapi import APIRouter, Request, Depends, Response, encoders
 import typing as t
 

@@ -4,6 +4,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 import typing as t
 from sqlakeyset import get_page
+import json
 
 from sqlalchemy.sql import func
 
@@ -164,7 +165,7 @@ def remove_image_by_history_id(db: Session,user:schemas.User,history_id:int) -> 
 
 
 def edit_history_all(db:Session, historys: schemas.HistoryAll):
-    db_history = get_histories_allget_history_all(db)
+    db_history = get_histories_all(db)
     if not db_history:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User not found")
 
