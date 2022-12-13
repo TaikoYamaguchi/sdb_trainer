@@ -433,12 +433,15 @@ class _ProfileState extends State<Profile> {
           Consumer<ExercisesdataProvider>(builder: (builder, provider, child) {
             return ElevatedButton(
                 onPressed: () {
+                  print('fuck');
                   provider.getdata_all().then((value) {
-                    print(provider.exercisesdatas);
+                    print(provider.exercisesdatas.exercisedatas[10].exercises[1]
+                        .target[0]);
                   });
                 },
                 onLongPress: () {
-                  ExerciseEditAll(exercisedatas: provider.exercisesdatas)
+                  ExerciseEditAll(
+                          exercisedatas: provider.exercisesdatas.exercisedatas)
                       .editExercise();
                 },
                 style: ButtonStyle(
@@ -458,6 +461,7 @@ class _ProfileState extends State<Profile> {
           Consumer<HistorydataProvider>(builder: (builder, provider, child) {
             return ElevatedButton(
                 onPressed: () {
+                  print('fuck2');
                   provider.getHistorydataAllforChange().then((value) {
                     print(provider.historydataAllforChange.sdbdatas.length);
                   });

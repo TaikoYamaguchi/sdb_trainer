@@ -73,7 +73,7 @@ class HistorydataAllGetforChange {
     }
   }
 
-  static Future<SDBdataList> loadSDBdataAllchage() async {
+  static Future<SDBdataList> loadSDBdataAllchange() async {
     String jsonString = await _loadSDBdataFromServer();
     final jsonResponse = json.decode(jsonString);
     SDBdataList sdbdata = SDBdataList.fromJson(jsonResponse);

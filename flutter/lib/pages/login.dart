@@ -521,7 +521,11 @@ class LoginPageState extends State<LoginPage> {
       print(storageExerciseList);
       if (storageExerciseList == null || storageExerciseList == "") {
         print("storage nooooooooooooo");
-        List<String> listViewerBuilderString = ['스쿼트', '데드리프트', '벤치 프레스'];
+        List<String> listViewerBuilderString = [
+          '바벨 스쿼트',
+          '바벨 데드리프트',
+          '바벨 벤치 프레스'
+        ];
         await storage.write(
             key: 'sdb_HomeExList', value: jsonEncode(listViewerBuilderString));
         _initExercisesdataProvider.putHomeExList(listViewerBuilderString);

@@ -47,8 +47,8 @@ class HistorydataProvider extends ChangeNotifier {
     });
   }
 
-  getHistorydataAllforChange() {
-    HistorydataAll.loadSDBdataAll().then((value) {
+  getHistorydataAllforChange() async {
+    await HistorydataAllGetforChange.loadSDBdataAllchange().then((value) {
       _historydataAllforChange = value;
 
       notifyListeners();
