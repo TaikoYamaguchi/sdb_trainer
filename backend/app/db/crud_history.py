@@ -163,4 +163,27 @@ def remove_image_by_history_id(db: Session,user:schemas.User,history_id:int) -> 
     return db_history
 
 
+def edit_history_all(db:Session, historys: schemas.HistoryAll):
+    db_history = get_histories_allget_history_all(db)
+    if not db_history:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    historys = historys.dict(exclude_unset=True)['sdbdatas']
+    historys = json.loads(historys)
+
+    for x in historys:
+        print(x)
+        for y in db_history:
+            if x['id'] == y.id:
+                for key,value in x.items():
+                    setattr(y, key, value)
+
+    db.add_all(db_history)
+    db.commit()
+    db.expire_all()
+    return db_history
+
+    
+
+
 

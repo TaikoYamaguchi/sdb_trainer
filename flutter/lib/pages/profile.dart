@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
+import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
@@ -452,6 +453,32 @@ class _ProfileState extends State<Profile> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("exercise_change",
+                              style: TextStyle(color: Colors.white)),
+                          Icon(Icons.chevron_right, color: Colors.white),
+                        ])));
+          }),
+          Consumer<HistorydataProvider>(builder: (builder, provider, child) {
+            return ElevatedButton(
+                onPressed: () {
+                  provider.getHistorydataAllforChange().then((value) {
+                    print(provider.historydataAllforChange.sdbdatas.length);
+                  });
+                },
+                onLongPress: () {
+                  //ExerciseEditAll(
+                  //        exercisedatas: provider.exercisesdatas.exercisedatas)
+                  //    .editExercise();
+                },
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(Theme.of(context).cardColor)),
+                child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("history_change",
                               style: TextStyle(color: Colors.white)),
                           Icon(Icons.chevron_right, color: Colors.white),
                         ])));

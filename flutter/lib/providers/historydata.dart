@@ -6,11 +6,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 class HistorydataProvider extends ChangeNotifier {
   var _historydata;
   var _historydataAll;
+  var _historydataAllforChange;
   var _historydataFriends;
   var _historydataUserEmail;
   var _commentAll;
   get historydata => _historydata;
   get historydataAll => _historydataAll;
+  get historydataAllforChange => _historydataAllforChange;
+
   get historydataFriends => _historydataFriends;
   get historydataUserEmail => _historydataUserEmail;
   get commentAll => _commentAll;
@@ -41,6 +44,15 @@ class HistorydataProvider extends ChangeNotifier {
         }
       });
       notifyListeners();
+    });
+  }
+
+  getHistorydataAllforChange() {
+    HistorydataAll.loadSDBdataAll().then((value) {
+      _historydataAllforChange = value;
+
+      notifyListeners();
+      return _historydataAllforChange;
     });
   }
 

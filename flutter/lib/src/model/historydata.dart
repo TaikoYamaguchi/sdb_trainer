@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:sdb_trainer/src/model/exercisesdata.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
 
 class SDBdata {
@@ -107,7 +108,9 @@ class Exercises {
     var list = parsedJson["sets"] as List;
     List<Sets> setList = list.map((i) => Sets.fromJson(i)).toList();
     return Exercises(
-        name: parsedJson["name"],
+        name: namechange[parsedJson["name"]] != null
+            ? namechange[parsedJson["name"]]
+            : parsedJson["name"],
         sets: setList,
         onerm: parsedJson["onerm"],
         goal: parsedJson["goal"],

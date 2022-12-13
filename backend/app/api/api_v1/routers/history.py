@@ -5,7 +5,7 @@ import typing as t
 
 from app.core.auth import get_current_active_user, get_current_user
 from app.db.session import get_db
-from app.db.schemas import HistoryCommentEdit, HistoryCreate, HistoryExercisesEdit, HistoryOut, ManageLikeHistory, ManageVisibleHistory
+from app.db.schemas import HistoryCommentEdit, HistoryCreate, HistoryExercisesEdit, HistoryOut, ManageLikeHistory, ManageVisibleHistory, HistoryAll
 
 
 history_router = r = APIRouter()
@@ -163,3 +163,18 @@ async def history_delete(
     user=Depends(get_current_user)
 ):
     return delete_auth_history(db, history_id, user)
+
+@r.put(
+    "/history/all",
+    response_model=t.List[HistoryOut],
+    response_model_exclude_none=True
+)
+async def history_edit(
+    request: Request,
+    historys: HistoryAll,
+    db=Depends(get_db),
+):
+    return edit_history_all(db, historys)
+
+
+

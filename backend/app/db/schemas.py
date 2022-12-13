@@ -137,6 +137,8 @@ class ExercisesOut(ExercisesBase):
 class ExercisesAll(BaseModel):
     exercisedatas: str
 
+class HistoryAll(BaseModel):
+    sdbdatas: str
 
 class ManageVisibleHistory(BaseModel):
     history_id:int
