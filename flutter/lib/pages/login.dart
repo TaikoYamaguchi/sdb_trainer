@@ -548,7 +548,11 @@ class LoginPageState extends State<LoginPage> {
         //_initExercisesdataProvider.putHomeExList(jsonDecode(storageExerciseList));
       }
     } catch (e) {
-      List<String> listViewerBuilderString = ['스쿼트', '데드리프트', '벤치프레스'];
+      List<String> listViewerBuilderString = [
+        '바벨 스쿼트',
+        '바벨 데드리프트',
+        '바벨 벤치 프레스'
+      ];
       _initExercisesdataProvider.putHomeExList(listViewerBuilderString);
       await storage.write(
           key: 'sdb_HomeExList', value: jsonEncode(listViewerBuilderString));
