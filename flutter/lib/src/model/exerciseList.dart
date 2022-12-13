@@ -2748,7 +2748,7 @@ List<Exercises> extra_completely_new_Ex = [
       note: ''),
   Exercises(
       goal: 0.0,
-      name: '로잉',
+      name: '스텝 머신',
       image: null,
       onerm: 0.0,
       custom: false,
@@ -2757,7 +2757,7 @@ List<Exercises> extra_completely_new_Ex = [
       note: ''),
   Exercises(
       goal: 0.0,
-      name: '스텝 머신',
+      name: '로잉',
       image: null,
       onerm: 0.0,
       custom: false,
