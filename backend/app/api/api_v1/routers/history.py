@@ -53,7 +53,7 @@ async def histories_list(
     response_model=t.List[HistoryOut],
     response_model_exclude_none=True,
 )
-async def histories_list(
+async def histories_all_list(
     response: Response,
     db=Depends(get_db),
 ):
