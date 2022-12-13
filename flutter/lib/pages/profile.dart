@@ -434,13 +434,11 @@ class _ProfileState extends State<Profile> {
             return ElevatedButton(
                 onPressed: () {
                   provider.getdata_all().then((value) {
-                    print(provider.exercisesdatas.exercisedatas[10].exercises[1]
-                        .target[0]);
+                    print(provider.exercisesdatas);
                   });
                 },
                 onLongPress: () {
-                  ExerciseEditAll(
-                          exercisedatas: provider.exercisesdatas.exercisedatas)
+                  ExerciseEditAll(exercisedatas: provider.exercisesdatas)
                       .editExercise();
                 },
                 style: ButtonStyle(
