@@ -1420,7 +1420,7 @@ class _SignUpPageState extends State<SignUpPage> {
           mode: 0,
           exercises: [
             routine.Exercises(
-                name: "스쿼트",
+                name: "바벨 스쿼트",
                 sets: [
                   routine.Sets(
                       index: 0,
@@ -1440,7 +1440,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ],
                 rest: 90),
             routine.Exercises(
-                name: "데드리프트",
+                name: "바벨 데드리프트",
                 sets: [
                   routine.Sets(
                       index: 0,
@@ -1460,7 +1460,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ],
                 rest: 90),
             routine.Exercises(
-                name: "벤치프레스",
+                name: "바벨 벤치 프레스",
                 sets: [
                   routine.Sets(
                       index: 0,

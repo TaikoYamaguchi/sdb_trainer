@@ -38,7 +38,6 @@ def get_users(
             db.add(users[i])
             db.commit()
             db.refresh((users[i]))
-    print(users)
     return db.query(models.User).all()
 
 def create_user(db: Session, user: schemas.UserCreate):
@@ -103,7 +102,6 @@ def get_user_by_sms_verifiaction(db: Session, sms:schemas.FindUserCode) -> schem
 
 def get_friends_by_email(db: Session, email: str) -> t.List[schemas.UserBase]:
     user = db.query(models.User).filter(models.User.email==email).first()
-    print(user.email)
     return db.query(models.User).filter(models.User.email.in_(user.like)).all()
 
 def edit_user(
