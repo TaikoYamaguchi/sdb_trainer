@@ -60,6 +60,27 @@ class HistorydataAll {
   }
 }
 
+class HistorydataAllGetforChange {
+  static Future<String> _loadSDBdataFromServer() async {
+    var url = Uri.parse(LocalHost.getLocalHost() + "/api/historyallget");
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      return utf8.decode(response.bodyBytes);
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to load post');
+    }
+  }
+
+  static Future<SDBdataList> loadSDBdataAllchage() async {
+    String jsonString = await _loadSDBdataFromServer();
+    final jsonResponse = json.decode(jsonString);
+    SDBdataList sdbdata = SDBdataList.fromJson(jsonResponse);
+    return (sdbdata);
+  }
+}
+
 class HistorydataPagination {
   final int final_history_id;
   HistorydataPagination({
