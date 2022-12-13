@@ -1,4 +1,4 @@
-from app.db.crud_history import create_history, delete_auth_history, edit_comment_by_id, edit_exercies_by_id, get_friends_histories, get_histories_by_email, get_histories, get_histories_by_page, manage_like_by_history_id, visible_auth_history
+from app.db.crud_history import create_history, delete_auth_history, edit_comment_by_id, edit_exercies_by_id, get_friends_histories, get_histories_all, get_histories_by_email, get_histories, get_histories_by_page, manage_like_by_history_id, visible_auth_history
 from fastapi import APIRouter, Request, Depends, Response, encoders
 import typing as t
 
@@ -47,6 +47,22 @@ async def histories_list(
     histories = get_histories(db,skip,limit)
     # This is necessary for react-admin to work
     return histories
+
+@r.get(
+    "/historyallget",
+    response_model=t.List[HistoryOut],
+    response_model_exclude_none=True,
+)
+async def histories_list(
+    response: Response,
+    db=Depends(get_db),
+):
+
+    histories = get_histories_all(db)
+    # This is necessary for react-admin to work
+    return histories
+
+
 
 @r.get(
     "/histories/{history_id}",

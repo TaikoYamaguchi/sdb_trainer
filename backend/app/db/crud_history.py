@@ -58,6 +58,10 @@ def get_histories(db: Session, skip, limit) -> t.List[schemas.HistoryOut]:
     histories = db.query(models.History).order_by(models.History.id.desc()).offset(skip).limit(limit).all()
     return histories
 
+def get_histories_all(db: Session) -> t.List[schemas.HistoryOut]:
+    histories = db.query(models.History).order_by(models.History.id.desc()).all()
+    return histories
+
 def get_histories_by_page(db: Session, page, id) -> t.List[schemas.HistoryOut]:
     histories = db.query(models.History).order_by(models.History.id.desc())
     print(histories)
