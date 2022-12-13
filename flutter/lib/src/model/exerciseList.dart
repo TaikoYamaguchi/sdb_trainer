@@ -507,7 +507,7 @@ List<Exercises> extra_completely_new_Ex = [
       note: ''),
   Exercises(
       goal: 0.0,
-      name: '팬들레이 로우',
+      name: '펜들레이 로우',
       image: null,
       onerm: 0.0,
       custom: false,
