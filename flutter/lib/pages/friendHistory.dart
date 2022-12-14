@@ -45,6 +45,7 @@ class _FriendHistoryState extends State<FriendHistory> {
   }
 
   Widget _friendHistoryWidget() {
+    print("yrds");
     bool btnDisabled = false;
     return GestureDetector(
       onPanUpdate: (details) {
@@ -57,6 +58,7 @@ class _FriendHistoryState extends State<FriendHistory> {
       child: SingleChildScrollView(
         child: Container(
             width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
             color: Color(0xFF101012),
             child: _onechartExercisesWidget(widget.sdbdata.exercises)),
       ),

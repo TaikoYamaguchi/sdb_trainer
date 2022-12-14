@@ -36,6 +36,7 @@ class _FeedState extends State<Feed> {
     super.initState();
     binding.addPostFrameCallback((_) async {
       BuildContext context = binding.renderViewElement!;
+      _fetchHistoryPage(context);
       _pageController.addListener(() {
         if (_pageController.position.maxScrollExtent ==
             _pageController.offset) {
@@ -73,12 +74,14 @@ class _FeedState extends State<Feed> {
                     else
                       {
                         setState(() {
+                          print("noooo");
                           _hasMore = false;
                         })
                       }
                   });
     } catch (e) {
       setState(() {
+        print("noooo");
         _hasMore = false;
       });
     }

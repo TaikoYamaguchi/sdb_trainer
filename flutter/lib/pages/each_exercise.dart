@@ -3004,7 +3004,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               width: 120,
                               child: Center(
                                   child: Text(
-                                "${_sets.weight}${_userProvider.userdata.weight_unit}",
+                                "${_sets.weight.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
                                 style: TextStyle(
                                   fontSize: 21,
                                   color: Colors.grey,
