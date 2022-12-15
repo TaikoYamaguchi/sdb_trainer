@@ -1,10 +1,5 @@
-import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:sdb_trainer/pages/each_exercise.dart';
-import 'package:sdb_trainer/pages/exercise_done.dart';
-import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
@@ -12,18 +7,8 @@ import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
-import 'package:sdb_trainer/repository/exercises_repository.dart';
-import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
-import 'package:sdb_trainer/src/model/exercisesdata.dart';
-import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
-import 'package:sdb_trainer/src/model/workoutdata.dart' as wod;
-import 'package:sdb_trainer/src/utils/my_flexible_space_bar.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:transition/transition.dart';
-import 'package:tutorial/tutorial.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ChangeName extends StatefulWidget {
   int rindex;
