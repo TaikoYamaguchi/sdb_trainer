@@ -6,7 +6,7 @@ import 'package:sdb_trainer/src/model/workoutdata.dart';
 class SDBdata {
   final int id;
   final String user_email;
-  final List<Exercises> exercises;
+  List<Exercises> exercises;
   final String? date;
   final int new_record;
   final int workout_time;

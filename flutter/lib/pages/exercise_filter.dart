@@ -104,8 +104,9 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
       if (query == '') {
         return true;
       } else {
-        final exTitle = exercise.name;
-        return (exTitle.contains(query)) as bool;
+        final exTitle = exercise.name.toLowerCase().replaceAll(' ', '');
+        return (exTitle.contains(query.toLowerCase().replaceAll(' ', '')))
+            as bool;
       }
     }).toList();
 
@@ -132,8 +133,9 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
 
   void searchExercise(String query) {
     final suggestions = _exProvider.exercisesdata.exercises.map((exercise) {
-      final exTitle = exercise.name;
-      return (exTitle.contains(query)) as bool;
+      final exTitle = exercise.name.toLowerCase().replaceAll(' ', '');
+      return (exTitle.contains(query.toLowerCase().replaceAll(' ', '')))
+          as bool;
     }).toList();
     _exProvider.settestdata_s(suggestions);
   }

@@ -32,6 +32,7 @@ import 'package:sdb_trainer/providers/chartIndexState.dart';
 import 'package:sdb_trainer/providers/staticPageState.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:confetti/confetti.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class EachExerciseDetails extends StatefulWidget {
   int ueindex;

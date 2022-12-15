@@ -116,6 +116,40 @@ class _HomeState extends State<Home> {
     });
   }
 
+  @override
+  Widget build(BuildContext context) {
+    _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _PopProvider = Provider.of<PopProvider>(context, listen: false);
+    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
+    _bodyStater = Provider.of<BodyStater>(context, listen: false);
+    _staticPageState = Provider.of<StaticPageProvider>(context, listen: false);
+    _chartIndex = Provider.of<ChartIndexProvider>(context, listen: false);
+    _testdata0 = Provider.of<ExercisesdataProvider>(context, listen: false)
+        .exercisesdata;
+    _barsGradient = LinearGradient(
+      colors: [
+        Color(0xFffc60a8),
+        Theme.of(context).primaryColor,
+      ],
+      begin: Alignment.bottomCenter,
+      end: Alignment.topCenter,
+    );
+
+    return Scaffold(
+        appBar: _appbarWidget(),
+        body: Consumer<ExercisesdataProvider>(
+            builder: (context, provider, widget) {
+          if (provider.exercisesdata != null) {
+            return _homeWidget(provider.exercisesdata, context);
+          }
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }),
+        backgroundColor: Color(0xFF101012));
+  }
+
   PreferredSizeWidget _appbarWidget() {
     //if (_userProvider.userdata != null) {
     return PreferredSize(
@@ -3007,7 +3041,7 @@ class _HomeState extends State<Home> {
             backgroundColor: Theme.of(context).cardColor,
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
-              '몸무게를 기록 할 수 있어요',
+              '몸무게를 기록 할게요',
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white, fontSize: 24),
             ),
@@ -3351,40 +3385,6 @@ class _HomeState extends State<Home> {
             ),
           )
         : Container();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
-    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _PopProvider = Provider.of<PopProvider>(context, listen: false);
-    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
-    _bodyStater = Provider.of<BodyStater>(context, listen: false);
-    _staticPageState = Provider.of<StaticPageProvider>(context, listen: false);
-    _chartIndex = Provider.of<ChartIndexProvider>(context, listen: false);
-    _testdata0 = Provider.of<ExercisesdataProvider>(context, listen: false)
-        .exercisesdata;
-    _barsGradient = LinearGradient(
-      colors: [
-        Color(0xFffc60a8),
-        Theme.of(context).primaryColor,
-      ],
-      begin: Alignment.bottomCenter,
-      end: Alignment.topCenter,
-    );
-
-    return Scaffold(
-        appBar: _appbarWidget(),
-        body: Consumer<ExercisesdataProvider>(
-            builder: (context, provider, widget) {
-          if (provider.exercisesdata != null) {
-            return _homeWidget(provider.exercisesdata, context);
-          }
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }),
-        backgroundColor: Color(0xFF101012));
   }
 
   @override

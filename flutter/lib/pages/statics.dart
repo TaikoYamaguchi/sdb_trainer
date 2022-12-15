@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:sdb_trainer/src/utils/static_exercise.dart';
+import 'package:sdb_trainer/pages/static_exercise.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/src/model/userdata.dart';
@@ -540,7 +540,7 @@ class _CalendarState extends State<Calendar> {
             backgroundColor: Theme.of(context).cardColor,
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
-              '몸무게를 기록 할 수 있어요',
+              '몸무게를 기록 할게요',
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white, fontSize: 24),
             ),
@@ -662,7 +662,7 @@ class _CalendarState extends State<Calendar> {
             backgroundColor: Theme.of(context).cardColor,
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
-              '몸무게를 수정 할 수 있어요',
+              '몸무게를 수정 할게요',
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white, fontSize: 24),
             ),

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/src/model/historydata.dart';
+import 'package:transition/transition.dart';
+import 'package:sdb_trainer/pages/static_exercise.dart';
 
 class FriendHistory extends StatefulWidget {
   SDBdata sdbdata;
@@ -45,32 +48,44 @@ class _FriendHistoryState extends State<FriendHistory> {
   }
 
   Widget _friendHistoryWidget() {
-    print("yrds");
     bool btnDisabled = false;
     return GestureDetector(
       onPanUpdate: (details) {
         if (details.delta.dx > 0 && btnDisabled == false) {
           btnDisabled = true;
           Navigator.of(context).pop();
-          print("Dragging in +X direction");
         }
       },
       child: SingleChildScrollView(
-        child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            color: Color(0xFF101012),
-            child: _onechartExercisesWidget(widget.sdbdata.exercises)),
-      ),
+          child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              color: Color(0xFF101012),
+              child: Consumer<HistorydataProvider>(
+                  builder: (builder, provider, child) {
+                var exercises = provider
+                    .historydata
+                    .sdbdatas[
+                        provider.historydata.sdbdatas.indexWhere((sdbdata) {
+                  if (sdbdata.id == widget.sdbdata.id) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                })]
+                    .exercises;
+                return _onechartExercisesWidget(exercises);
+              }))),
     );
   }
 
   Widget _onechartExercisesWidget(exercises) {
+    print(widget.sdbdata.id);
     return ListView.separated(
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext _context, int index) {
-          return _onechartExerciseWidget(
-              exercises[index], 0, _userProvider.userdata, true, index);
+          return _onechartExerciseWidget(exercises, widget.sdbdata.id,
+              _userProvider.userdata, true, index);
         },
         separatorBuilder: (BuildContext _context, int index) {
           return Container(
@@ -100,12 +115,35 @@ class _FriendHistoryState extends State<FriendHistory> {
         child: Column(
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text(exuniq.name,
+                  child: Text(exuniq[index].name,
                       style: TextStyle(fontSize: 16, color: Colors.white)),
                 ),
+                widget.sdbdata.user_email == userdata.email
+                    ? GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              Transition(
+                                  child: StaticsExerciseDetails(
+                                      exercise: exuniq[index],
+                                      index: index,
+                                      origin_exercises: exuniq,
+                                      history_id: history_id),
+                                  transitionEffect:
+                                      TransitionEffect.RIGHT_TO_LEFT));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Icon(
+                            Icons.settings,
+                            color: Colors.white,
+                          ),
+                        ))
+                    : Container()
               ],
             ),
             GestureDetector(
@@ -123,7 +161,7 @@ class _FriendHistoryState extends State<FriendHistory> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _chartExerciseSetsWidget(exuniq.sets),
+                    _chartExerciseSetsWidget(exuniq[index].sets),
                     Container(
                       child: Row(
                         //mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -134,8 +172,8 @@ class _FriendHistoryState extends State<FriendHistory> {
                           Expanded(child: SizedBox()),
                           Text(
                               "1RM: " +
-                                  exuniq.onerm.toStringAsFixed(1) +
-                                  "/${exuniq.goal.toStringAsFixed(1)}${userdata.weight_unit}",
+                                  exuniq[index].onerm.toStringAsFixed(1) +
+                                  "/${exuniq[index].goal.toStringAsFixed(1)}${userdata.weight_unit}",
                               style: TextStyle(
                                   fontSize: 13, color: Color(0xFF717171))),
                         ],

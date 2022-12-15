@@ -355,6 +355,21 @@ class _FeedCardState extends State<FeedCard> {
             child: ListTile(
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+                leading: Icon(Icons.details, color: Colors.white),
+                title: Text("운동수정", style: TextStyle(color: Colors.white))),
+            onTap: () async {
+              final navigator = Navigator.of(context);
+              await Future.delayed(Duration.zero);
+              Navigator.push(
+                  context,
+                  Transition(
+                      child: FriendHistory(sdbdata: SDBdata),
+                      transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+            }),
+        PopupMenuItem(
+            child: ListTile(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
                 leading: SDBdata.isVisible
                     ? Icon(Icons.filter_list_off, color: Colors.white)
                     : Icon(Icons.filter_list, color: Colors.white),

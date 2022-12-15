@@ -681,7 +681,7 @@ class ExerciseState extends State<Exercise> {
               backgroundColor: Theme.of(context).cardColor,
               contentPadding: EdgeInsets.all(12.0),
               title: Text(
-                '운동 루틴을 추가 해볼게요',
+                '운동 루틴을 추가 할게요',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white, fontSize: 24),
               ),

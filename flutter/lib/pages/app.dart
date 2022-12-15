@@ -62,7 +62,7 @@ class _AppState extends State<App> {
       if (data == _appUpdateVersion) {
         _updateCheck = true;
       } else {
-        _showUpdateVersion();
+        _showUpdateVersion(_appUpdateVersion);
       }
     });
     super.initState();
@@ -339,7 +339,8 @@ class _AppState extends State<App> {
     _postExerciseCheck();
   }
 
-  Future<dynamic> _showUpdateVersion() {
+  Future<dynamic> _showUpdateVersion(_appUpdateVersion) {
+    var type = _appUpdateVersion[_appUpdateVersion.length - 1];
     return showDialog(
       barrierDismissible: false,
       context: context,
@@ -351,46 +352,135 @@ class _AppState extends State<App> {
                 borderRadius: BorderRadius.circular(8.0),
               ),
               backgroundColor: Theme.of(context).cardColor,
-              title: new Text("앱이 업데이트 되었어요",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontSize: 24)),
+              title: type == "r"
+                  ? new Text("긴급 점검 중 입니다",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 24))
+                  : new Text("앱이 업데이트 되었어요",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 24)),
               content: new SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Text("더 좋은 서비스를 제공해 드리기 위해",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white, fontSize: 16)),
-                    Text("앱을 업데이트 해주세요",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white, fontSize: 16)),
-                  ],
-                ),
+                child: type == "r"
+                    ? Column(
+                        children: [
+                          Text("빨리 점검을 끝내겠습니다",
+                              textAlign: TextAlign.center,
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16)),
+                          Text("양해 부탁드립니다",
+                              textAlign: TextAlign.center,
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16)),
+                        ],
+                      )
+                    : Column(
+                        children: [
+                          Text("더 좋은 서비스를 제공해 드리기 위해",
+                              textAlign: TextAlign.center,
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16)),
+                          Text("앱을 업데이트 해주세요",
+                              textAlign: TextAlign.center,
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16)),
+                        ],
+                      ),
               ),
               actions: <Widget>[
-                SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: TextButton(
-                        style: TextButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
+                type == "r"
+                    ? Container()
+                    : type == "b"
+                        ? SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: TextButton(
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  foregroundColor:
+                                      Theme.of(context).primaryColor,
+                                  backgroundColor:
+                                      Theme.of(context).primaryColor,
+                                  textStyle: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                  disabledForegroundColor:
+                                      Color.fromRGBO(246, 58, 64, 20),
+                                  padding: EdgeInsets.all(12.0),
+                                ),
+                                child: new Text("업데이트 하러가기",
+                                    style: TextStyle(
+                                        fontSize: 20.0, color: Colors.white)),
+                                onPressed: () {
+                                  LaunchReview.launch(
+                                      androidAppId: "com.tk_lck.supero",
+                                      iOSAppId: "6444859542");
+                                }))
+                        : Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              SizedBox(
+                                  width: type == "b"
+                                      ? MediaQuery.of(context).size.width
+                                      : MediaQuery.of(context).size.width / 2,
+                                  child: TextButton(
+                                      style: TextButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                        ),
+                                        foregroundColor:
+                                            Theme.of(context).primaryColor,
+                                        backgroundColor:
+                                            Theme.of(context).primaryColor,
+                                        textStyle: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                        disabledForegroundColor:
+                                            Color.fromRGBO(246, 58, 64, 20),
+                                        padding: EdgeInsets.all(12.0),
+                                      ),
+                                      child: new Text("업데이트 하러가기",
+                                          style: TextStyle(
+                                              fontSize: 20.0,
+                                              color: Colors.white)),
+                                      onPressed: () {
+                                        LaunchReview.launch(
+                                            androidAppId: "com.tk_lck.supero",
+                                            iOSAppId: "6444859542");
+                                      })),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 4.0),
+                                child: SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 5,
+                                    child: TextButton(
+                                        style: TextButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          foregroundColor: Color(0xFF101012),
+                                          backgroundColor: Color(0xFF101012),
+                                          textStyle: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                          disabledForegroundColor:
+                                              Color(0xFF101012),
+                                          padding: EdgeInsets.all(12.0),
+                                        ),
+                                        child: new Text("시작",
+                                            style: TextStyle(
+                                                fontSize: 20.0,
+                                                color: Colors.white)),
+                                        onPressed: () {
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .pop(false);
+                                        })),
+                              )
+                            ],
                           ),
-                          foregroundColor: Theme.of(context).primaryColor,
-                          backgroundColor: Theme.of(context).primaryColor,
-                          textStyle: TextStyle(
-                            color: Colors.white,
-                          ),
-                          disabledForegroundColor:
-                              Color.fromRGBO(246, 58, 64, 20),
-                          padding: EdgeInsets.all(12.0),
-                        ),
-                        child: new Text("업데이트 하러가기",
-                            style:
-                                TextStyle(fontSize: 20.0, color: Colors.white)),
-                        onPressed: () {
-                          LaunchReview.launch(
-                              androidAppId: "com.tk_lck.supero",
-                              iOSAppId: "6444859542");
-                        })),
               ],
             ));
       },
@@ -477,6 +567,54 @@ class _AppState extends State<App> {
     );
   }
 
+  Widget _initialLoginWidget() {
+    return Container(
+        child: Center(
+      child: Column(
+        children: [
+          SafeArea(
+            child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+              GestureDetector(
+                onTap: () {
+                  userLogOut(context);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("로그아웃",
+                      style: TextStyle(color: Colors.grey, fontSize: 12)),
+                ),
+              )
+            ]),
+          ),
+          Expanded(flex: 3, child: SizedBox(height: 6)),
+          Text("SUPERO",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 54,
+                  fontWeight: FontWeight.w800)),
+          Text("우리의 운동 극복 스토리",
+              style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500)),
+          Expanded(flex: 4, child: SizedBox(height: 6)),
+          SizedBox(
+            height: 20,
+            width: 20,
+            child: CircularProgressIndicator(),
+          ),
+          SizedBox(height: 12),
+          Text("전세계 운동인들과 연결중...",
+              style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500)),
+          Expanded(flex: 1, child: SizedBox(height: 6)),
+        ],
+      ),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
@@ -490,8 +628,9 @@ class _AppState extends State<App> {
     _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
     _userProvider.getUsersFriendsAll();
 
-    return Consumer2<BodyStater, LoginPageProvider>(
-        builder: (builder, provider1, provider2, child) {
+    return Consumer3<BodyStater, LoginPageProvider, UserdataProvider>(
+        builder: (builder, provider1, provider2, provider3, child) {
+      print(_userProvider.userdata);
       return WillPopScope(
         onWillPop: () async {
           final shouldPop;
@@ -509,85 +648,91 @@ class _AppState extends State<App> {
           return shouldPop!;
         },
         child: Scaffold(
-          body: _loginState.isLogin
-              ? IndexedStack(index: _bodyStater.bodystate, children: <Widget>[
-                  Home(),
-                  TabNavigator(),
-                  Feed(),
-                  Calendar(),
-                  TabProfileNavigator()
-                ])
-              : _loginState.isSignUp
-                  ? SignUpPage()
-                  : LoginPage(),
-          floatingActionButton: Consumer<RoutineTimeProvider>(
-              builder: (builder, provider, child) {
-            return Container(
-              child: (provider.isstarted && _bodyStater.bodystate != 1)
-                  ? ExpandableFab(
-                      distance: 105,
-                      children: [
-                        SizedBox(
-                            width: 100,
-                            height: 40,
-                            child: TextButton(
-                                style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8.0),
+            body: _loginState.isLogin
+                ? _userProvider.userdata == null
+                    ? _initialLoginWidget()
+                    : IndexedStack(
+                        index: _bodyStater.bodystate,
+                        children: <Widget>[
+                            Home(),
+                            TabNavigator(),
+                            Feed(),
+                            Calendar(),
+                            TabProfileNavigator()
+                          ])
+                : _loginState.isSignUp
+                    ? SignUpPage()
+                    : LoginPage(),
+            floatingActionButton: Consumer<RoutineTimeProvider>(
+                builder: (builder, provider, child) {
+              return Container(
+                child: (provider.isstarted && _bodyStater.bodystate != 1)
+                    ? ExpandableFab(
+                        distance: 105,
+                        children: [
+                          SizedBox(
+                              width: 100,
+                              height: 40,
+                              child: TextButton(
+                                  style: TextButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    foregroundColor:
+                                        Theme.of(context).primaryColor,
+                                    backgroundColor:
+                                        Theme.of(context).primaryColor,
+                                    textStyle: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                    disabledForegroundColor:
+                                        Color.fromRGBO(246, 58, 64, 20),
+                                    padding: EdgeInsets.all(12.0),
                                   ),
-                                  foregroundColor:
-                                      Theme.of(context).primaryColor,
-                                  backgroundColor:
-                                      Theme.of(context).primaryColor,
-                                  textStyle: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                  disabledForegroundColor:
-                                      Color.fromRGBO(246, 58, 64, 20),
-                                  padding: EdgeInsets.all(12.0),
-                                ),
+                                  onPressed: () {
+                                    provider.restcheck();
+                                  },
+                                  child: Text(
+                                      provider.userest
+                                          ? provider.timeron < 0
+                                              ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
+                                              : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
+                                          : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                                      style: TextStyle(
+                                          color: (provider.userest &&
+                                                  provider.timeron < 0)
+                                              ? Colors.red
+                                              : Colors.white)))),
+                          Row(
+                            children: [
+                              ActionButton(
                                 onPressed: () {
-                                  provider.restcheck();
+                                  _PopProvider.gotoon();
+                                  _bodyStater.change(1);
                                 },
-                                child: Text(
-                                    provider.userest
-                                        ? provider.timeron < 0
-                                            ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
-                                            : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
-                                        : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
-                                    style: TextStyle(
-                                        color: (provider.userest &&
-                                                provider.timeron < 0)
-                                            ? Colors.red
-                                            : Colors.white)))),
-                        Row(
-                          children: [
-                            ActionButton(
-                              onPressed: () {
-                                _PopProvider.gotoon();
-                                _bodyStater.change(1);
-                              },
-                              icon: Icon(Icons.play_arrow),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            ActionButton(
-                              onPressed: _displayFinishAlert,
-                              icon: Icon(Icons.stop),
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
-                  : null,
-            );
-          }),
-          extendBody: false,
-          backgroundColor: Color(0xFF101012),
-          bottomNavigationBar:
-              _loginState.isLogin ? _bottomNavigationBarwidget() : null,
-        ),
+                                icon: Icon(Icons.play_arrow),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              ActionButton(
+                                onPressed: _displayFinishAlert,
+                                icon: Icon(Icons.stop),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )
+                    : null,
+              );
+            }),
+            extendBody: false,
+            backgroundColor: Color(0xFF101012),
+            bottomNavigationBar: _loginState.isLogin
+                ? _userProvider.userdata == null
+                    ? null
+                    : _bottomNavigationBarwidget()
+                : null),
       );
     });
   }

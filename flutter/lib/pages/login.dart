@@ -73,6 +73,11 @@ class LoginPageState extends State<LoginPage> {
                           color: Colors.white,
                           fontSize: 54,
                           fontWeight: FontWeight.w800)),
+                  Text("우리의 운동 극복 스토리",
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500)),
                   Expanded(flex: 3, child: SizedBox(height: 6)),
                   _isEmailLogin ? _emailWidget() : Container(),
                   SizedBox(height: 8),

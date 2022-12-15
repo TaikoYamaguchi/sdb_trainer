@@ -217,6 +217,28 @@ class HistorydataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  patchHistoryExdata(history_id, exercises) {
+    _historydata.sdbdatas.indexWhere((sdbdata) {
+      if (sdbdata.id == history_id) {
+        sdbdata.exercises = exercises;
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    _historydataAll.sdbdatas.indexWhere((sdbdata) {
+      if (sdbdata.id == history_id) {
+        sdbdata.exercises = exercises;
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    notifyListeners();
+  }
+
   patchHistoryVisible(SDBdata, bool status) {
     _historydataFriends.sdbdatas.indexWhere((sdbdata) {
       if (sdbdata.id == SDBdata.id) {

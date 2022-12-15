@@ -1290,8 +1290,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
 
   void searchExercise(String query) {
     final suggestions = _testdata0.where((exercise) {
-      final exTitle = exercise.name;
-      return (exTitle.contains(query)) as bool;
+      final exTitle = exercise.name.toLowerCase().replaceAll(' ', '');
+      return (exTitle.contains(query.toLowerCase().replaceAll(' ', '')))
+          as bool;
     }).toList();
 
     setState(() => _testdata = suggestions);
