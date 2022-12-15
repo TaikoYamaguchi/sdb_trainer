@@ -125,7 +125,7 @@ class _NameInputDialogState extends State<NameInputDialog> {
   }
 
   Widget NameInput() {
-    String title = widget.rindex == -1 ? '운동 루틴을 추가 해볼게요' : '루틴 이름을 수정 해보세요';
+    String title = widget.rindex == -1 ? '운동 루틴을 추가 할게요' : '루틴 이름을 수정 해보세요';
 
     return StatefulBuilder(builder: (context, setState) {
       return AlertDialog(
