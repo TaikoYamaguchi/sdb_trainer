@@ -80,7 +80,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return ChangeName(rindex: widget.rindex);
+                        return NameInputDialog(rindex: widget.rindex);
                       });
                 },
                 child: Container(

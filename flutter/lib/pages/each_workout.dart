@@ -239,7 +239,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return ChangeName(rindex: widget.rindex);
+                        return NameInputDialog(rindex: widget.rindex);
                       },
                     );
                   },
@@ -1402,7 +1402,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return ChangeName(rindex: widget.rindex);
+                                return NameInputDialog(rindex: widget.rindex);
                               });
                         },
                         child: Row(

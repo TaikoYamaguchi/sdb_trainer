@@ -22,6 +22,7 @@ import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
 import 'package:sdb_trainer/src/model/userdata.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
+import 'package:sdb_trainer/src/utils/change_name.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
@@ -159,66 +160,6 @@ class ExerciseState extends State<Exercise> {
               child: Consumer<RoutineMenuStater>(
                   builder: (builder, provider, child) {
                 return _ExerciseControllerWidget();
-                /*
-                  Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    GestureDetector(
-                        onTap: () {
-                          controller!.animateToPage(0,
-                              duration: const Duration(milliseconds: 200),
-                              curve: Curves.easeInOut);
-                          provider.change(0);
-                        },
-                        child: Text(
-                          '개별 운동',
-                          style: TextStyle(
-                            //decoration: provider.menustate == 0 ? TextDecoration.underline : null,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: provider.menustate == 0
-                                  ? Theme.of(context).primaryColor
-                                  : Color(0xFF717171)),
-                        )),
-                    GestureDetector(
-                        onTap: () {
-                          controller!.animateToPage(1,
-                              duration: const Duration(milliseconds: 200),
-                              curve: Curves.easeInOut);
-                          provider.change(1);
-                        },
-                        child: Text(
-                          '나의 루틴',
-                          style: TextStyle(
-                              //decoration: provider.menustate == 0 ? TextDecoration.underline : null,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: provider.menustate == 1
-                                  ? Theme.of(context).primaryColor
-                                  : Color(0xFF717171)),
-                        )),
-                    GestureDetector(
-                        onTap: () {
-                          controller!.animateToPage(2,
-                              duration: const Duration(milliseconds: 200),
-                              curve: Curves.easeInOut);
-                          provider.change(2);
-                        },
-                        child: Text(
-                          '루틴 찾기',
-                          style: TextStyle(
-                              //decoration: provider.menustate == 1 ? TextDecoration.underline : null,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: provider.menustate == 2
-                                  ? Theme.of(context).primaryColor
-                                  : Color(0xFF717171)),
-                        ))
-                  ],
-                );
-
-                   */
               }),
             ),
           ),
@@ -379,7 +320,13 @@ class ExerciseState extends State<Exercise> {
                                     children: [
                                       SlidableAction(
                                         onPressed: (_) {
-                                          _displayRoutineNameEditDialog(index);
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return NameInputDialog(
+                                                  rindex: index);
+                                            },
+                                          );
                                         },
                                         backgroundColor:
                                             Theme.of(context).primaryColor,
@@ -460,11 +407,11 @@ class ExerciseState extends State<Exercise> {
                                         children: [
                                           routinelist[index].mode == 0
                                               ? Text(
-                                                  "${routinelist[index].exercises.length}개 운동",
+                                                  "리스트 모드 - ${routinelist[index].exercises.length}개 운동",
                                                   style: TextStyle(
                                                       fontSize: 13,
                                                       color: Colors.white30))
-                                              : Text("루틴 모드",
+                                              : Text("플랜 모드",
                                                   style: TextStyle(
                                                       fontSize: 13,
                                                       color: Colors.white30)),
@@ -495,7 +442,12 @@ class ExerciseState extends State<Exercise> {
                   padding: const EdgeInsets.all(1.0),
                   child: GestureDetector(
                     onTap: () {
-                      _displayTextInputDialog();
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return NameInputDialog(rindex: -1);
+                        },
+                      );
                     },
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -646,177 +598,6 @@ class ExerciseState extends State<Exercise> {
     );
   }
 
-  Widget _bodyWidget() {
-    switch (swap) {
-      case 1:
-        return _workoutWidget();
-
-      case -1:
-        return group_by_target();
-    }
-    return Container();
-  }
-
-  void _displayTextInputDialog() {
-    _RoutineMenuProvider.modereset();
-    showDialog(
-        context: context,
-        builder: (context) {
-          Color getColor(Set<MaterialState> states) {
-            const Set<MaterialState> interactiveStates = <MaterialState>{
-              MaterialState.pressed,
-            };
-            if (states.any(interactiveStates.contains)) {
-              return Theme.of(context).primaryColor;
-            }
-            return Color(0xFF101012);
-          }
-
-          return StatefulBuilder(builder: (context, setState) {
-            return AlertDialog(
-              buttonPadding: EdgeInsets.all(12.0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              backgroundColor: Theme.of(context).cardColor,
-              contentPadding: EdgeInsets.all(12.0),
-              title: Text(
-                '운동 루틴을 추가 해볼게요',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 24),
-              ),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('운동 루틴의 이름을 입력해 주세요',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 16)),
-                  Text('외부를 터치하면 취소 할 수 있어요',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.grey, fontSize: 12)),
-                  SizedBox(height: 20),
-                  TextField(
-                    onChanged: (value) {
-                      if (_workoutProvider.workoutdata.routinedatas.isEmpty ==
-                          true) {
-                        setState(() {
-                          _customExUsed = false;
-                        });
-                      } else {
-                        _workoutProvider.workoutdata.routinedatas
-                            .indexWhere((routine) {
-                          if (routine.name == _workoutNameCtrl.text) {
-                            print("true");
-                            setState(() {
-                              _customExUsed = true;
-                            });
-                            return true;
-                          } else {
-                            print("false");
-                            setState(() {
-                              _customExUsed = false;
-                            });
-                            return false;
-                          }
-                        });
-                      }
-                    },
-                    style: TextStyle(fontSize: 24.0, color: Colors.white),
-                    textAlign: TextAlign.center,
-                    controller: _workoutNameCtrl,
-                    decoration: InputDecoration(
-                        filled: true,
-                        enabledBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).primaryColor, width: 3),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).primaryColor, width: 3),
-                        ),
-                        hintText: "운동 루틴 이름",
-                        hintStyle:
-                            TextStyle(fontSize: 24.0, color: Colors.white)),
-                  ),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          'Program 모드',
-                          style: TextStyle(fontSize: 12.0, color: Colors.white),
-                        ),
-                        Transform.scale(
-                            scale: 1,
-                            child: Consumer<RoutineMenuStater>(
-                                builder: (builder, provider, child) {
-                              return Theme(
-                                  data: ThemeData(
-                                      unselectedWidgetColor: Colors.white),
-                                  child: Checkbox(
-                                      checkColor: Colors.white,
-                                      activeColor:
-                                          Theme.of(context).primaryColor,
-                                      value: provider.ismodechecked,
-                                      onChanged: (newvalue) {
-                                        provider.modecheck();
-                                      }));
-                            })),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              actions: <Widget>[
-                _workoutSubmitButton(context),
-              ],
-            );
-          });
-        });
-  }
-
-  Widget _workoutSubmitButton(context) {
-    return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: TextButton(
-            style: TextButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              backgroundColor:
-                  _workoutNameCtrl.text == "" || _customExUsed == true
-                      ? Color(0xFF212121)
-                      : Theme.of(context).primaryColor,
-              textStyle: TextStyle(
-                color: Colors.white,
-              ),
-              padding: EdgeInsets.all(12.0),
-            ),
-            onPressed: () {
-              if (!_customExUsed && _workoutNameCtrl.text != "") {
-                print("gogogogogo");
-                _workoutProvider.addroutine(Routinedatas(
-                    name: _workoutNameCtrl.text,
-                    mode: _RoutineMenuProvider.ismodechecked ? 1 : 0,
-                    exercises: _RoutineMenuProvider.ismodechecked
-                        ? [
-                            Program(progress: 0, plans: [Plans(exercises: [])])
-                          ]
-                        : [],
-                    routine_time: 0));
-                print("gogogogogo123");
-                _editWorkoutCheck();
-                _workoutNameCtrl.clear();
-                Navigator.of(context, rootNavigator: true).pop();
-              }
-              ;
-            },
-            child: Text(_customExUsed == true ? "존재하는 루틴 이름" : "새 루틴 추가",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
-  }
-
   void _editWorkoutCheck() async {
     WorkoutEdit(
             user_email: _userProvider.userdata.email,
@@ -825,131 +606,6 @@ class ExerciseState extends State<Exercise> {
         .editWorkout()
         .then((data) => data["user_email"] != null
             ? [showToast("done!"), _workoutProvider.getdata()]
-            : showToast("입력을 확인해주세요"));
-  }
-
-  void _postWorkoutCheck() async {
-    WorkoutPost(
-            user_email: _userProvider.userdata.email,
-            routinedatas: _workoutProvider.routinedatas)
-        .postWorkout()
-        .then((data) => data["user_email"] != null
-            ? _workoutProvider.getdata()
-            : showToast("입력을 확인해주세요"));
-  }
-
-  void _displayRoutineNameEditDialog(index) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return StatefulBuilder(builder: (context, setState) {
-            return AlertDialog(
-              buttonPadding: EdgeInsets.all(12.0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              backgroundColor: Theme.of(context).cardColor,
-              contentPadding: EdgeInsets.all(12.0),
-              title: Text(
-                '루틴 이름을 수정 해보세요',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 24),
-              ),
-              content: Column(mainAxisSize: MainAxisSize.min, children: [
-                Text('운동 루틴의 이름을 입력해 주세요',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
-                Text('외부를 터치하면 취소 할 수 있어요',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 12)),
-                SizedBox(height: 20),
-                TextField(
-                  onChanged: (value) {
-                    _workoutProvider.workoutdata.routinedatas
-                        .indexWhere((routine) {
-                      if (routine.name == _workoutNameCtrl.text) {
-                        setState(() {
-                          _customExUsed = true;
-                        });
-                        return true;
-                      } else {
-                        setState(() {
-                          _customExUsed = false;
-                        });
-                        return false;
-                      }
-                    });
-                  },
-                  style: TextStyle(fontSize: 24.0, color: Colors.white),
-                  textAlign: TextAlign.center,
-                  controller: _workoutNameCtrl,
-                  decoration: InputDecoration(
-                      filled: true,
-                      enabledBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor, width: 3),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor, width: 3),
-                      ),
-                      hintText: "운동 루틴 이름",
-                      hintStyle:
-                          TextStyle(fontSize: 24.0, color: Colors.white)),
-                ),
-              ]),
-              actions: <Widget>[
-                _routineNameEditSubmitButton(context, index),
-              ],
-            );
-          });
-        });
-  }
-
-  Widget _routineNameEditSubmitButton(context, index) {
-    return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: TextButton(
-            style: TextButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              foregroundColor: Theme.of(context).primaryColor,
-              backgroundColor:
-                  _workoutNameCtrl.text == "" || _customExUsed == true
-                      ? Color(0xFF212121)
-                      : Theme.of(context).primaryColor,
-              textStyle: TextStyle(
-                color: Colors.white,
-              ),
-              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-              padding: EdgeInsets.all(12.0),
-            ),
-            onPressed: () {
-              !_customExUsed && _workoutNameCtrl.text != ""
-                  ? [
-                      _editWorkoutNameCheck(_workoutNameCtrl.text, index),
-                      _workoutNameCtrl.clear(),
-                      Navigator.of(context, rootNavigator: true).pop()
-                    ]
-                  : null;
-            },
-            child: Text(_customExUsed == true ? "존재하는 루틴 이름" : "루틴 이름 수정",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
-  }
-
-  void _editWorkoutNameCheck(newname, index) async {
-    _workoutProvider.namechange(index, newname);
-
-    WorkoutEdit(
-            user_email: _userProvider.userdata.email,
-            id: _workoutProvider.workoutdata.id,
-            routinedatas: _workoutProvider.workoutdata.routinedatas)
-        .editWorkout()
-        .then((data) => data["user_email"] != null
-            ? {showToast("done!"), _workoutProvider.getdata()}
             : showToast("입력을 확인해주세요"));
   }
 
@@ -1072,7 +728,7 @@ class ExerciseState extends State<Exercise> {
           body: Consumer2<ExercisesdataProvider, WorkoutdataProvider>(
               builder: (context, provider1, provider2, widget) {
             if (provider2.workoutdata != null) {
-              return _bodyWidget();
+              return _workoutWidget();
             }
             return Container(
               color: Color(0xFF101012),
