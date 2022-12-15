@@ -422,7 +422,7 @@ class _AppState extends State<App> {
                               SizedBox(
                                   width: type == "b"
                                       ? MediaQuery.of(context).size.width
-                                      : MediaQuery.of(context).size.width / 2,
+                                      : MediaQuery.of(context).size.width / 2.3,
                                   child: TextButton(
                                       style: TextButton.styleFrom(
                                         shape: RoundedRectangleBorder(
@@ -440,7 +440,7 @@ class _AppState extends State<App> {
                                             Color.fromRGBO(246, 58, 64, 20),
                                         padding: EdgeInsets.all(12.0),
                                       ),
-                                      child: new Text("업데이트 하러가기",
+                                      child: new Text("업데이트 하기",
                                           style: TextStyle(
                                               fontSize: 20.0,
                                               color: Colors.white)),
@@ -453,7 +453,7 @@ class _AppState extends State<App> {
                                 padding: const EdgeInsets.only(left: 4.0),
                                 child: SizedBox(
                                     width:
-                                        MediaQuery.of(context).size.width / 5,
+                                        MediaQuery.of(context).size.width / 3.5,
                                     child: TextButton(
                                         style: TextButton.styleFrom(
                                           shape: RoundedRectangleBorder(
@@ -469,7 +469,7 @@ class _AppState extends State<App> {
                                               Color(0xFF101012),
                                           padding: EdgeInsets.all(12.0),
                                         ),
-                                        child: new Text("시작",
+                                        child: new Text("다음에",
                                             style: TextStyle(
                                                 fontSize: 20.0,
                                                 color: Colors.white)),
