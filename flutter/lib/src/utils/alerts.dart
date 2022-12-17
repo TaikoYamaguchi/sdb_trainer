@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:launch_review/launch_review.dart';
+import 'package:provider/provider.dart';
+import 'package:sdb_trainer/providers/userdata.dart';
+import 'package:sdb_trainer/providers/workoutdata.dart';
+import 'package:sdb_trainer/repository/workout_repository.dart';
+import 'package:sdb_trainer/src/utils/util.dart';
+
 
 Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
   var type = _appUpdateVersion[_appUpdateVersion.length - 1];
@@ -146,3 +152,72 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
     },
   );
 }
+
+Future<dynamic> showsimpleAlerts(layer ,rindex, eindex, context) {
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          backgroundColor: Theme.of(context).cardColor,
+          title: Text('루틴을 지울 수 있어요',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 24)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('정말로 루틴을 지우시나요?',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white, fontSize: 16)),
+              Text('루틴을 지우면 복구 할 수 없어요',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.grey, fontSize: 12)),
+            ],
+          ),
+          actions: <Widget>[
+            _DeleteConfirmButton(rindex, context),
+          ],
+        );
+      });
+}
+
+Widget _DeleteConfirmButton(rindex, context) {
+  var _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
+  var _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+  void _editWorkoutCheck() async {
+    WorkoutEdit(
+        user_email: _userProvider.userdata.email,
+        id: _workoutProvider.workoutdata.id,
+        routinedatas: _workoutProvider.workoutdata.routinedatas)
+        .editWorkout()
+        .then((data) => data["user_email"] != null
+        ? [showToast("done!"), _workoutProvider.getdata()]
+        : showToast("입력을 확인해주세요"));
+  }
+
+  return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: TextButton(
+          style: TextButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            backgroundColor: Theme.of(context).primaryColor,
+            foregroundColor: Theme.of(context).primaryColor,
+            textStyle: TextStyle(
+              color: Colors.white,
+            ),
+            disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+            padding: EdgeInsets.all(12.0),
+          ),
+          onPressed: () {
+            _workoutProvider.removeroutineAt(rindex);
+            _editWorkoutCheck();
+            Navigator.of(context, rootNavigator: true).pop();
+          },
+          child: Text("삭제",
+              style: TextStyle(fontSize: 20.0, color: Colors.white))));
+}
+

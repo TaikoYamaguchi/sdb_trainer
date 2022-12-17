@@ -22,6 +22,7 @@ import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
 import 'package:sdb_trainer/src/model/userdata.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
+import 'package:sdb_trainer/src/utils/alerts.dart';
 import 'package:sdb_trainer/src/utils/change_name.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:transition/transition.dart';
@@ -171,35 +172,6 @@ class ExerciseState extends State<Exercise> {
     );
   }
 
-  void _displayDeleteAlert(rindex) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            backgroundColor: Theme.of(context).cardColor,
-            title: Text('루틴을 지울 수 있어요',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 24)),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('정말로 루틴을 지우시나요?',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
-                Text('루틴을 지우면 복구 할 수 없어요',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 12)),
-              ],
-            ),
-            actions: <Widget>[
-              _DeleteConfirmButton(rindex),
-            ],
-          );
-        });
-  }
 
   Widget _ExerciseControllerWidget() {
     return SizedBox(
@@ -338,7 +310,7 @@ class ExerciseState extends State<Exercise> {
                                         onPressed: (_) {
                                           _routinetimeProvider.isstarted
                                               ? showToast("운동중엔 루틴제거는 불가능 해요")
-                                              : _displayDeleteAlert(index);
+                                              : showsimpleAlerts(1,index,-1,context);
                                         },
                                         backgroundColor: Color(0xFFFE4A49),
                                         foregroundColor: Colors.white,
@@ -490,30 +462,6 @@ class ExerciseState extends State<Exercise> {
     );
   }
 
-  Widget _DeleteConfirmButton(rindex) {
-    return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: TextButton(
-            style: TextButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              backgroundColor: Theme.of(context).primaryColor,
-              foregroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(
-                color: Colors.white,
-              ),
-              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-              padding: EdgeInsets.all(12.0),
-            ),
-            onPressed: () {
-              _workoutProvider.removeroutineAt(rindex);
-              _editWorkoutCheck();
-              Navigator.of(context, rootNavigator: true).pop();
-            },
-            child: Text("삭제",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
-  }
 
   void filterExercise(List query) {
     final suggestions = _exProvider.exercisesdata.exercises.where((exercise) {
