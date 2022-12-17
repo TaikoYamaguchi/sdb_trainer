@@ -59,14 +59,13 @@ class _FriendHistoryState extends State<FriendHistory> {
       child: SingleChildScrollView(
           child: Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
               color: Color(0xFF101012),
               child: Consumer<HistorydataProvider>(
                   builder: (builder, provider, child) {
                 var exercises = provider
-                    .historydata
+                    .historydataAll
                     .sdbdatas[
-                        provider.historydata.sdbdatas.indexWhere((sdbdata) {
+                        provider.historydataAll.sdbdatas.indexWhere((sdbdata) {
                   if (sdbdata.id == widget.sdbdata.id) {
                     return true;
                   } else {
