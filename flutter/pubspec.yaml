@@ -79,7 +79,7 @@ dependencies:
   circular_countdown_timer: ^0.2.3
   confetti: ^0.7.0
   sign_in_with_apple: ^4.2.0
-  firebase_auth: ^4.1.5
+  firebase_auth: ^4.2.1
   custom_sliding_segmented_control: ^1.7.3
   flutter_email_sender: ^5.2.0
   device_info_plus: ^8.0.0
