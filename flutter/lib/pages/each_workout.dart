@@ -18,6 +18,7 @@ import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'package:sdb_trainer/src/model/workoutdata.dart' as wod;
+import 'package:sdb_trainer/src/utils/alerts.dart';
 import 'package:sdb_trainer/src/utils/change_name.dart';
 import 'package:sdb_trainer/src/utils/my_flexible_space_bar.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
@@ -175,6 +176,28 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
     super.initState();
   }
 
+  _showMyDialog() async {
+    var result = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return showsimpleAlerts(
+              layer: 2,
+              rindex: widget.rindex,
+              eindex: 0,
+              );
+        }
+    );
+    if (result == true) {
+      _workoutProvider.changebudata(widget.rindex);
+      _workoutNameCtrl.clear();
+      _exSearchCtrl.clear();
+      searchExercise(_exSearchCtrl.text);
+      setState(() {
+        _isexsearch = !_isexsearch;
+      });
+    }
+  }
+
   PreferredSizeWidget _appbarWidget() {
     btnDisabled = false;
     return AppBar(
@@ -185,7 +208,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               child: GestureDetector(
                 child: Icon(Icons.arrow_back_ios_outlined),
                 onTap: () {
-                  _displayexSearchOutAlert();
+                  _showMyDialog();
                 },
               ),
             )

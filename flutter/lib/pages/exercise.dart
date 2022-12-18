@@ -310,7 +310,16 @@ class ExerciseState extends State<Exercise> {
                                         onPressed: (_) {
                                           _routinetimeProvider.isstarted
                                               ? showToast("운동중엔 루틴제거는 불가능 해요")
-                                              : showsimpleAlerts(1,index,-1,context);
+                                              : showDialog(
+                                            context: context,
+                                                builder: (BuildContext context) {
+                                                  return showsimpleAlerts(
+                                                  layer: 1,
+                                                  rindex: index,
+                                                  eindex: -1,
+                                          );
+                                                }
+                                              );
                                         },
                                         backgroundColor: Color(0xFFFE4A49),
                                         foregroundColor: Colors.white,

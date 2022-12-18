@@ -153,51 +153,61 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
   );
 }
 
-Future<dynamic> showsimpleAlerts(layer ,rindex, eindex, context) {
+class showsimpleAlerts extends StatefulWidget {
+  showsimpleAlerts({Key? key,  required this.layer,required this.rindex, required this.eindex}) : super(key: key);
+  int layer;
+  int rindex;
+  int eindex;
+  @override
+  _showsimpleAlertsState createState() => _showsimpleAlertsState();
+}
+class _showsimpleAlertsState extends State<showsimpleAlerts> {
   // layer 1: delete, 2: add ex cancel
   String title= '';
   String subtitle= '';
   String comment= '';
-  switch (layer){
-    case 1:
-      title = "루틴을 지울 수 있어요";
-      subtitle = '정말로 루틴을 지우시나요?';
-      comment = '루틴을 지우면 복구 할 수 없어요';
-      break;
-    case 2:
-      title = "편집이 저장되지 않아요";
-      subtitle = '루틴 편집을 종료하시겠나요?';
-      comment = '오른쪽 위를 클릭하면 저장할 수 있어요';
-      break;
-  };
 
-  return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          backgroundColor: Theme.of(context).cardColor,
-          title: Text(title,
+  @override
+  Widget build(BuildContext context) {
+    switch (widget.layer){
+      case 1:
+        title = "루틴을 지울 수 있어요";
+        subtitle = '정말로 루틴을 지우시나요?';
+        comment = '루틴을 지우면 복구 할 수 없어요';
+        break;
+      case 2:
+        title = "편집이 저장되지 않아요";
+        subtitle = '루틴 편집을 종료하시겠나요?';
+        comment = '오른쪽 위를 클릭하면 저장할 수 있어요';
+        break;
+    };
+
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      backgroundColor: Theme
+          .of(context)
+          .cardColor,
+      title: Text(title,
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white, fontSize: 24)),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(subtitle,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 24)),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(subtitle,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontSize: 16)),
-              Text(comment,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey, fontSize: 12)),
-            ],
-          ),
-          actions: <Widget>[
-            _DeleteConfirmButton_r(rindex, context),
-          ],
-        );
-      });
+              style: TextStyle(color: Colors.white, fontSize: 16)),
+          Text(comment,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey, fontSize: 12)),
+        ],
+      ),
+      actions: <Widget>[
+        widget.layer == 1 ? _DeleteConfirmButton_r(widget.rindex, context) : ExsearchOutButton(context: context, rindex: widget.rindex),
+      ],
+    );
+  }
 }
 
 Widget _DeleteConfirmButton_r (rindex, context) {
@@ -238,34 +248,45 @@ Widget _DeleteConfirmButton_r (rindex, context) {
               style: TextStyle(fontSize: 20.0, color: Colors.white))));
 }
 
-Widget _ExsearchOutButton(context) {
-  var _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
-  var _userProvider = Provider.of<UserdataProvider>(context, listen: false);
-  return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: TextButton(
-          style: TextButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            backgroundColor: Theme.of(context).primaryColor,
-            textStyle: TextStyle(
-              color: Colors.white,
-            ),
-            disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-            padding: EdgeInsets.all(12.0),
-          ),
-          onPressed: () {
-            //_workoutProvider.changebudata(widget.rindex);
-            //_workoutNameCtrl.clear();
-            //_exSearchCtrl.clear();
-            //searchExercise(_exSearchCtrl.text);
-            //setState(() {
-            //  _isexsearch = !_isexsearch;
-            //});
-            Navigator.of(context, rootNavigator: true).pop();
-          },
-          child: Text("편집 취소 하기",
-              style: TextStyle(fontSize: 20.0, color: Colors.white))));
+class ExsearchOutButton extends StatefulWidget {
+  ExsearchOutButton({Key? key,  required this.context,required this.rindex}) : super(key: key);
+  int rindex;
+  BuildContext context;
+  @override
+  _ExsearchOutButtonState createState() => _ExsearchOutButtonState();
 }
+class _ExsearchOutButtonState extends State<ExsearchOutButton> {
+  var _workoutProvider;
+  var _userProvider;
 
+  Widget exoutbutton(){
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
+            ),
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop(true);
+            },
+            child: Text("편집 취소 하기",
+                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
+
+    return exoutbutton();
+  }
+}
