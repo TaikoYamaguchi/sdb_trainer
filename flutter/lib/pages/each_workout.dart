@@ -395,69 +395,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
-  void _displayexSearchOutAlert() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            buttonPadding: EdgeInsets.all(12.0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            backgroundColor: Theme.of(context).cardColor,
-            contentPadding: EdgeInsets.all(12.0),
-            title: Text(
-              '편집이 저장되지 않아요',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 24),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('루틴 편집을 종료하시겠나요?',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
-                Text('오른쪽 위를 클릭하면 저장할 수 있어요',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 12)),
-              ],
-            ),
-            actions: <Widget>[
-              _isExsearchOutButton(),
-            ],
-          );
-        });
-  }
-
-  Widget _isExsearchOutButton() {
-    return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: TextButton(
-            style: TextButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              backgroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(
-                color: Colors.white,
-              ),
-              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-              padding: EdgeInsets.all(12.0),
-            ),
-            onPressed: () {
-              _workoutProvider.changebudata(widget.rindex);
-              _workoutNameCtrl.clear();
-              _exSearchCtrl.clear();
-              searchExercise(_exSearchCtrl.text);
-              setState(() {
-                _isexsearch = !_isexsearch;
-              });
-              Navigator.of(context, rootNavigator: true).pop();
-            },
-            child: Text("편집 취소 하기",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
-  }
-
   void recordExercise() {
     var exercise_all =
         _workoutProvider.workoutdata.routinedatas[widget.rindex].exercises;
