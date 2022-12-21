@@ -718,9 +718,12 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                               height:
                                   _appbarWidget().preferredSize.height * 2 / 3,
                               child: Center(
-                                child: Text("운동부위",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 18)),
+                                child: Text(
+                                  '운동부위: ${provider.tags.toString().replaceAll('[', '').replaceAll(']', '')}',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ),
                           ),
@@ -739,9 +742,12 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                               height:
                                   _appbarWidget().preferredSize.height * 2 / 3,
                               child: Center(
-                                child: Text("운동유형",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 18)),
+                                child: Text(
+                                  '운동유형: ${provider.tags2.toString().replaceAll('[', '').replaceAll(']', '')}',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ),
                           ),
