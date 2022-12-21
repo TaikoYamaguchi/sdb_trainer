@@ -6,7 +6,6 @@ import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 
-
 Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
   var type = _appUpdateVersion[_appUpdateVersion.length - 1];
   return showDialog(
@@ -154,22 +153,28 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
 }
 
 class showsimpleAlerts extends StatefulWidget {
-  showsimpleAlerts({Key? key,  required this.layer,required this.rindex, required this.eindex}) : super(key: key);
+  showsimpleAlerts(
+      {Key? key,
+      required this.layer,
+      required this.rindex,
+      required this.eindex})
+      : super(key: key);
   int layer;
   int rindex;
   int eindex;
   @override
   _showsimpleAlertsState createState() => _showsimpleAlertsState();
 }
+
 class _showsimpleAlertsState extends State<showsimpleAlerts> {
   // layer 1: delete, 2: add ex cancel
-  String title= '';
-  String subtitle= '';
-  String comment= '';
+  String title = '';
+  String subtitle = '';
+  String comment = '';
 
   @override
   Widget build(BuildContext context) {
-    switch (widget.layer){
+    switch (widget.layer) {
       case 1:
         title = "루틴을 지울 수 있어요";
         subtitle = '정말로 루틴을 지우시나요?';
@@ -180,15 +185,19 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
         subtitle = '루틴 편집을 종료하시겠나요?';
         comment = '오른쪽 위를 클릭하면 저장할 수 있어요';
         break;
-    };
+      case 3:
+        title = "운동을 시작 할 수 있어요";
+        subtitle = '운동을 시작 할까요?';
+        comment = '외부를 터치하면 취소 할 수 있어요';
+        break;
+    }
+    ;
 
     return AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8.0),
       ),
-      backgroundColor: Theme
-          .of(context)
-          .cardColor,
+      backgroundColor: Theme.of(context).cardColor,
       title: Text(title,
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.white, fontSize: 24)),
@@ -204,24 +213,29 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
         ],
       ),
       actions: <Widget>[
-        widget.layer == 1 ? _DeleteConfirmButton_r(widget.rindex, context) : ExsearchOutButton(context: context, rindex: widget.rindex),
+        widget.layer == 1
+            ? _DeleteConfirmButton_r(widget.rindex, context)
+            : widget.layer == 2
+                ? ExsearchOutButton(context: context, rindex: widget.rindex)
+                : _StartConfirmButton(context),
       ],
     );
   }
 }
 
-Widget _DeleteConfirmButton_r (rindex, context) {
-  var _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
+Widget _DeleteConfirmButton_r(rindex, context) {
+  var _workoutProvider =
+      Provider.of<WorkoutdataProvider>(context, listen: false);
   var _userProvider = Provider.of<UserdataProvider>(context, listen: false);
   void _editWorkoutCheck() async {
     WorkoutEdit(
-        user_email: _userProvider.userdata.email,
-        id: _workoutProvider.workoutdata.id,
-        routinedatas: _workoutProvider.workoutdata.routinedatas)
+            user_email: _userProvider.userdata.email,
+            id: _workoutProvider.workoutdata.id,
+            routinedatas: _workoutProvider.workoutdata.routinedatas)
         .editWorkout()
         .then((data) => data["user_email"] != null
-        ? [showToast("done!"), _workoutProvider.getdata()]
-        : showToast("입력을 확인해주세요"));
+            ? [showToast("done!"), _workoutProvider.getdata()]
+            : showToast("입력을 확인해주세요"));
   }
 
   return SizedBox(
@@ -249,17 +263,19 @@ Widget _DeleteConfirmButton_r (rindex, context) {
 }
 
 class ExsearchOutButton extends StatefulWidget {
-  ExsearchOutButton({Key? key,  required this.context,required this.rindex}) : super(key: key);
+  ExsearchOutButton({Key? key, required this.context, required this.rindex})
+      : super(key: key);
   int rindex;
   BuildContext context;
   @override
   _ExsearchOutButtonState createState() => _ExsearchOutButtonState();
 }
+
 class _ExsearchOutButtonState extends State<ExsearchOutButton> {
   var _workoutProvider;
   var _userProvider;
 
-  Widget exoutbutton(){
+  Widget exoutbutton() {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: TextButton(
@@ -281,7 +297,6 @@ class _ExsearchOutButtonState extends State<ExsearchOutButton> {
                 style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
-
   @override
   Widget build(BuildContext context) {
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
@@ -289,4 +304,27 @@ class _ExsearchOutButtonState extends State<ExsearchOutButton> {
 
     return exoutbutton();
   }
+}
+
+Widget _StartConfirmButton(context) {
+  return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: TextButton(
+          style: TextButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            foregroundColor: Theme.of(context).primaryColor,
+            backgroundColor: Theme.of(context).primaryColor,
+            textStyle: TextStyle(
+              color: Colors.white,
+            ),
+            disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+            padding: EdgeInsets.all(12.0),
+          ),
+          onPressed: () {
+            Navigator.of(context, rootNavigator: true).pop(true);
+          },
+          child: Text("운동 시작 하기",
+              style: TextStyle(fontSize: 20.0, color: Colors.white))));
 }

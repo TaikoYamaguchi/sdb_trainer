@@ -16,6 +16,7 @@ import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
+import 'package:sdb_trainer/src/utils/alerts.dart';
 import 'package:sdb_trainer/src/utils/hhmmss.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:provider/provider.dart';
@@ -651,7 +652,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                             : null,
                                                         _editWorkoutwCheck()
                                                       ]
-                                                    : _displayStartAlert(pindex,
+                                                    : _showMyDialog(pindex,
                                                         index, newvalue);
                                               }),
                                         )),
@@ -707,7 +708,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                           : null,
                                                       _editWorkoutwCheck()
                                                     ]
-                                                  : _displayStartAlert(
+                                                  : _showMyDialog(
                                                       pindex, index, true);
                                             },
                                             onClose: () {},
@@ -1060,6 +1061,48 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         ),
       );
     });
+  }
+
+  _showMyDialog(pindex, index, newvalue) async {
+    var _sets = _workoutProvider
+        .workoutdata.routinedatas[widget.rindex].exercises[pindex].sets;
+    int ueindex = _exProvider.exercisesdata.exercises.indexWhere((element) =>
+        element.name ==
+        _workoutProvider
+            .workoutdata.routinedatas[widget.rindex].exercises[pindex].name);
+
+    var result = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return showsimpleAlerts(
+            layer: 3,
+            rindex: widget.rindex,
+            eindex: 0,
+          );
+        });
+    if (result == true) {
+      _routinetimeProvider.resettimer(_workoutProvider
+          .workoutdata.routinedatas[widget.rindex].exercises[pindex].rest);
+      _routinetimeProvider.routinecheck(widget.rindex);
+
+      _workoutProvider.boolcheck(widget.rindex, pindex, index, newvalue);
+      _editWorkoutwCheck();
+      _workoutOnermCheck(_sets[index], ueindex);
+      _exProvider
+                  .exercisesdata
+                  .exercises[_exProvider.exercisesdata.exercises.indexWhere(
+                      (element) =>
+                          element.name ==
+                          _workoutProvider
+                              .workoutdata
+                              .routinedatas[widget.rindex]
+                              .exercises[pindex]
+                              .name)]
+                  .category ==
+              '유산소'
+          ? _countcontroller[index].start()
+          : null;
+    }
   }
 
   void _displayExEditDialog() {
@@ -1614,10 +1657,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                               : null,
                                                           _editWorkoutwCheck()
                                                         ]
-                                                      : _displayStartAlert(
-                                                          pindex,
-                                                          index,
-                                                          newvalue);
+                                                      : _showMyDialog(pindex,
+                                                          index, newvalue);
                                                 }),
                                           )),
                                     ),
@@ -1679,7 +1720,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                             : null,
                                                         _editWorkoutwCheck()
                                                       ]
-                                                    : _displayStartAlert(
+                                                    : _showMyDialog(
                                                         pindex, index, true);
                                               },
                                               onClose: () {},
@@ -2392,7 +2433,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                   : null,
                                                               _editWorkoutwCheck()
                                                             ]
-                                                          : _displayStartAlert(
+                                                          : _showMyDialog(
                                                               pindex,
                                                               index,
                                                               newvalue);
@@ -2456,10 +2497,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                 : null,
                                                             _editWorkoutwCheck()
                                                           ]
-                                                        : _displayStartAlert(
-                                                            pindex,
-                                                            index,
-                                                            true);
+                                                        : _showMyDialog(pindex,
+                                                            index, true);
                                                   },
                                                   onClose: () {},
                                                   motionWidget: StretchMotion(),
@@ -2574,7 +2613,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                                       : null,
                                                                   _editWorkoutwCheck()
                                                                 ]
-                                                              : _displayStartAlert(
+                                                              : _showMyDialog(
                                                                   pindex,
                                                                   index,
                                                                   true);
@@ -3371,92 +3410,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
         );
       }),
     );
-  }
-
-  void _displayStartAlert(pindex, index, newvalue) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            buttonPadding: EdgeInsets.all(12.0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            backgroundColor: Theme.of(context).cardColor,
-            contentPadding: EdgeInsets.all(12.0),
-            title: Text(
-              '운동을 시작 할 수 있어요',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 24),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('운동을 시작 할까요?',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
-                Text('외부를 터치하면 취소 할 수 있어요',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 12)),
-              ],
-            ),
-            actions: <Widget>[
-              _StartConfirmButton(pindex, index, newvalue),
-            ],
-          );
-        });
-  }
-
-  Widget _StartConfirmButton(pindex, index, newvalue) {
-    var _sets = _workoutProvider
-        .workoutdata.routinedatas[widget.rindex].exercises[pindex].sets;
-    int ueindex = _exProvider.exercisesdata.exercises.indexWhere((element) =>
-        element.name ==
-        _workoutProvider
-            .workoutdata.routinedatas[widget.rindex].exercises[pindex].name);
-    return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: TextButton(
-            style: TextButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              foregroundColor: Theme.of(context).primaryColor,
-              backgroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(
-                color: Colors.white,
-              ),
-              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-              padding: EdgeInsets.all(12.0),
-            ),
-            onPressed: () {
-              _routinetimeProvider.resettimer(_workoutProvider.workoutdata
-                  .routinedatas[widget.rindex].exercises[pindex].rest);
-              _routinetimeProvider.routinecheck(widget.rindex);
-
-              _workoutProvider.boolcheck(
-                  widget.rindex, pindex, index, newvalue);
-              _editWorkoutwCheck();
-              Navigator.of(context, rootNavigator: true).pop();
-              _workoutOnermCheck(_sets[index], ueindex);
-
-              _exProvider
-                          .exercisesdata
-                          .exercises[_exProvider.exercisesdata.exercises
-                              .indexWhere((element) =>
-                                  element.name ==
-                                  _workoutProvider
-                                      .workoutdata
-                                      .routinedatas[widget.rindex]
-                                      .exercises[pindex]
-                                      .name)]
-                          .category ==
-                      '유산소'
-                  ? _countcontroller[index].start()
-                  : null;
-            },
-            child: Text("운동 시작 하기",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
   }
 
   void recordExercise() {
