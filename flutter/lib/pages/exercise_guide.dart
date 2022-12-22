@@ -9,6 +9,7 @@ import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
+import 'package:sdb_trainer/src/utils/alerts.dart';
 import '../src/model/historydata.dart' as historyModel;
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart' as wod;
@@ -681,6 +682,17 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                               rest: 90));
                       _editWorkoutCheck();
                       Navigator.of(context).pop();
+
+                      print("checkcccc");
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return showsimpleAlerts(
+                              layer: 4,
+                              rindex: 0,
+                              eindex: 0,
+                            );
+                          });
                     },
                     child: Container(
                       child: Column(

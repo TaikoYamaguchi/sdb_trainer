@@ -1154,11 +1154,13 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width / 2 - 1,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 4.0, left: 1.0),
-                        child: _exercisesWidget(false, true),
+                    SingleChildScrollView(
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 2 - 1,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 4.0, left: 1.0),
+                          child: _exercisesWidget(true, true),
+                        ),
                       ),
                     ),
                     VerticalDivider(

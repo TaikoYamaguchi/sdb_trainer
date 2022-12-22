@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/providers/routinemenu.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
@@ -190,6 +191,11 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
         subtitle = '운동을 시작 할까요?';
         comment = '외부를 터치하면 취소 할 수 있어요';
         break;
+      case 4:
+        title = "운동을 추가했어요!";
+        subtitle = '바로 운동을 시작 할까요?';
+        comment = '외부를 터치하면 취소 할 수 있어요';
+        break;
     }
     ;
 
@@ -217,10 +223,39 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
             ? _DeleteConfirmButton_r(widget.rindex, context)
             : widget.layer == 2
                 ? ExsearchOutButton(context: context, rindex: widget.rindex)
-                : _StartConfirmButton(context),
+                : widget.layer == 3
+                    ? _StartConfirmButton(context)
+                    : _moveToExButton(context),
       ],
     );
   }
+}
+
+Widget _moveToExButton(context) {
+  var _routineMenuProvider =
+      Provider.of<RoutineMenuStater>(context, listen: false);
+  return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: TextButton(
+          style: TextButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            backgroundColor: Theme.of(context).primaryColor,
+            foregroundColor: Theme.of(context).primaryColor,
+            textStyle: TextStyle(
+              color: Colors.white,
+            ),
+            disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+            padding: EdgeInsets.all(12.0),
+          ),
+          onPressed: () {
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+            _routineMenuProvider.change(1);
+          },
+          child: Text("바로 운동 하기",
+              style: TextStyle(fontSize: 20.0, color: Colors.white))));
 }
 
 Widget _DeleteConfirmButton_r(rindex, context) {
