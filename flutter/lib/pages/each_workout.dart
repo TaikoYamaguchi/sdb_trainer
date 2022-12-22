@@ -1,5 +1,6 @@
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/each_exercise.dart';
@@ -26,6 +27,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:transition/transition.dart';
 import 'package:tutorial/tutorial.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:expandable/expandable.dart';
 
 class EachWorkoutDetails extends StatefulWidget {
   int rindex;
@@ -50,10 +52,10 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   TextEditingController _exSearchCtrl = TextEditingController(text: "");
   TextEditingController _customExNameCtrl = TextEditingController(text: "");
   var _exProvider;
-  var _testdata0;
-  late var _testdata = _testdata0;
   late List<hisdata.Exercises> exerciseList = [];
   bool _inittutor = true;
+  ExpandableController _menucontroller =
+      ExpandableController(initialExpanded: true);
 
   List<Map<String, dynamic>> datas = [];
   double top = 0;
@@ -181,12 +183,11 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
         context: context,
         builder: (BuildContext context) {
           return showsimpleAlerts(
-              layer: 2,
-              rindex: widget.rindex,
-              eindex: 0,
-              );
-        }
-    );
+            layer: 2,
+            rindex: widget.rindex,
+            eindex: 0,
+          );
+        });
     if (result == true) {
       _workoutProvider.changebudata(widget.rindex);
       _workoutNameCtrl.clear();
@@ -251,7 +252,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                       ),
                     ),
                     onChanged: (text) {
-                      searchExercise(_exSearchCtrl.text);
+                      filterTotal(_exSearchCtrl.text, _exProvider.tags,
+                          _exProvider.tags2);
                     }),
               ),
             )
@@ -710,9 +712,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                     note: ''));
                 _postExerciseCheck();
                 _customExNameCtrl.clear();
-
-                _testdata = provider.exercisesdata.exercises;
-
                 Navigator.of(context).pop();
               }
             },
@@ -1035,6 +1034,85 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
       color: Color(0xFF101012),
       child: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 4.0),
+            child: Container(
+              child: Consumer<ExercisesdataProvider>(
+                  builder: (context, provider, child) {
+                return ExpandablePanel(
+                  controller: _menucontroller,
+                  theme: const ExpandableThemeData(
+                    headerAlignment: ExpandablePanelHeaderAlignment.center,
+                    hasIcon: false,
+                    iconColor: Colors.white,
+                  ),
+                  header: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          provider.setfiltmenu(1);
+                          _menucontroller.expanded = true;
+                        },
+                        child: Card(
+                          color: provider.filtmenu == 1
+                              ? Theme.of(context).primaryColor
+                              : Colors.white30,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width / 2 - 10,
+                            height:
+                                _appbarWidget().preferredSize.height * 2 / 3,
+                            child: Center(
+                              child: Text(
+                                provider.tags.indexOf("All") != -1
+                                    ? "운동부위"
+                                    : '${provider.tags.toString().replaceAll('[', '').replaceAll(']', '')}',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          provider.setfiltmenu(2);
+                          _menucontroller.expanded = true;
+                        },
+                        child: Card(
+                          color: provider.filtmenu == 2
+                              ? Theme.of(context).primaryColor
+                              : Colors.white30,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width / 2 - 10,
+                            height:
+                                _appbarWidget().preferredSize.height * 2 / 3,
+                            child: Center(
+                              child: Text(
+                                provider.tags2.indexOf("All") != -1
+                                    ? "운동유형"
+                                    : '${provider.tags2.toString().replaceAll('[', '').replaceAll(']', '')}',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  collapsed: Container(),
+                  expanded: provider.filtmenu == 1
+                      ? exp1()
+                      : provider.filtmenu == 2
+                          ? exp2()
+                          : Container(),
+                );
+              }),
+            ),
+          ),
           Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1057,110 +1135,130 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 )
               ]),
           Expanded(
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width / 2 - 1,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 4.0, left: 1.0),
-                      child: _exercisesWidget(false, true),
-                    ),
-                  ),
-                  VerticalDivider(
-                      color: Theme.of(context).primaryColor,
-                      thickness: 2,
-                      width: 2),
-                  Consumer<ExercisesdataProvider>(
-                      builder: (builder, provider, child) {
-                    return Container(
+            child: NotificationListener<ScrollNotification>(
+              onNotification: (ScrollNotification notification) {
+                if (notification is UserScrollNotification) {
+                  if (notification.direction == ScrollDirection.forward) {
+                    //_menucontroller.expanded = true;
+                  } else if (notification.direction ==
+                      ScrollDirection.reverse) {
+                    _menucontroller.expanded = false;
+                  }
+                }
+
+                // Returning null (or false) to
+                // "allow the notification to continue to be dispatched to further ancestors".
+                return false;
+              },
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
                       width: MediaQuery.of(context).size.width / 2 - 1,
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 4.0, right: 1.0),
-                        child: Column(
-                          children: [
-                            exercisesWidget(_testdata, true),
-                            GestureDetector(
-                                onTap: () {
-                                  _displayCustomExInputDialog(provider);
-                                },
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 2, right: 2),
-                                  child: Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Container(
-                                      height: 100,
-                                      width: MediaQuery.of(context).size.width,
-                                      decoration: BoxDecoration(
-                                          color: Theme.of(context).cardColor,
-                                          borderRadius:
-                                              BorderRadius.circular(15.0)),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Container(
-                                                    width: 48,
-                                                    height: 48,
-                                                    decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        color: Theme.of(context)
-                                                            .primaryColor),
-                                                    child: Icon(
-                                                      Icons.add,
-                                                      size: 28.0,
+                        padding: const EdgeInsets.only(top: 4.0, left: 1.0),
+                        child: _exercisesWidget(false, true),
+                      ),
+                    ),
+                    VerticalDivider(
+                        color: Theme.of(context).primaryColor,
+                        thickness: 2,
+                        width: 2),
+                    Consumer<ExercisesdataProvider>(
+                        builder: (builder, provider, child) {
+                      return Container(
+                        width: MediaQuery.of(context).size.width / 2 - 1,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 4.0, right: 1.0),
+                          child: Column(
+                            children: [
+                              exercisesWidget(true),
+                              GestureDetector(
+                                  onTap: () {
+                                    _displayCustomExInputDialog(provider);
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 2, right: 2),
+                                    child: Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Container(
+                                        height: 100,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        decoration: BoxDecoration(
+                                            color: Theme.of(context).cardColor,
+                                            borderRadius:
+                                                BorderRadius.circular(15.0)),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Container(
+                                                      width: 48,
+                                                      height: 48,
+                                                      decoration: BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .primaryColor),
+                                                      child: Icon(
+                                                        Icons.add,
+                                                        size: 28.0,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              16.0),
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text("커스텀 운동",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      18)),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ]),
+                                              Text("개인 운동을 추가 할 수 있어요",
+                                                  style: TextStyle(
                                                       color: Colors.white,
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            16.0),
-                                                    child: Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text("커스텀 운동",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 18)),
-                                                      ],
-                                                    ),
-                                                  )
-                                                ]),
-                                            Text("개인 운동을 추가 할 수 있어요",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 12)),
-                                          ],
+                                                      fontSize: 12)),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ))
-                          ],
+                                  ))
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  })
-                ]),
+                      );
+                    })
+                  ]),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget exercisesWidget(exuniq, bool shirink) {
+  Widget exercisesWidget(bool shirink) {
     double top = 0;
     double bottom = 0;
     return Expanded(
@@ -1171,6 +1269,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
           List exlist =
               provider.workoutdata.routinedatas[widget.rindex].exercises;
           List existlist = [];
+          final exuniq = _exProvider.testdata;
           for (int i = 0; i < exlist.length; i++) {
             existlist.add(exlist[i].name);
           }
@@ -1249,13 +1348,126 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   }
 
   void searchExercise(String query) {
-    final suggestions = _testdata0.where((exercise) {
+    final suggestions = _exProvider.exercisesdata.exercises.map((exercise) {
       final exTitle = exercise.name.toLowerCase().replaceAll(' ', '');
       return (exTitle.contains(query.toLowerCase().replaceAll(' ', '')))
           as bool;
     }).toList();
+    _exProvider.settestdata_s(suggestions);
+  }
 
-    setState(() => _testdata = suggestions);
+  Widget exp1() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      color: Color(0xFF101012),
+      child:
+          Consumer<ExercisesdataProvider>(builder: (context, provider, child) {
+        return ChipsChoice<String>.multiple(
+          value: provider.tags,
+          onChanged: (val) {
+            val.indexOf('All') == val.length - 1
+                ? {
+                    provider.settags(['All']),
+                    _menucontroller.expanded = false
+                  }
+                : [
+                    val.remove('All'),
+                    provider.settags(val),
+                  ];
+            filterTotal(
+                _exSearchCtrl.text, _exProvider.tags, _exProvider.tags2);
+          },
+          choiceItems: C2Choice.listFrom<String, String>(
+            source: provider.options,
+            value: (i, v) => v,
+            label: (i, v) => v,
+            tooltip: (i, v) => v,
+          ),
+          wrapped: true,
+          choiceStyle: const C2ChoiceStyle(
+            color: Color(0xff40434e),
+            appearance: C2ChipType.elevated,
+          ),
+          choiceActiveStyle: const C2ChoiceStyle(
+            color: Color(0xff7a28cb),
+            appearance: C2ChipType.elevated,
+          ),
+        );
+      }),
+    );
+  }
+
+  Widget exp2() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      color: Color(0xFF101012),
+      child:
+          Consumer<ExercisesdataProvider>(builder: (context, provider, child) {
+        return ChipsChoice<String>.multiple(
+          value: provider.tags2,
+          onChanged: (val) {
+            val.indexOf('All') == val.length - 1
+                ? {
+                    provider.settags2(['All']),
+                    _menucontroller.expanded = false
+                  }
+                : [
+                    val.remove('All'),
+                    provider.settags2(val),
+                  ];
+            filterTotal(
+                _exSearchCtrl.text, _exProvider.tags, _exProvider.tags2);
+          },
+          choiceItems: C2Choice.listFrom<String, String>(
+            source: provider.options2,
+            value: (i, v) => v,
+            label: (i, v) => v,
+            tooltip: (i, v) => v,
+          ),
+          wrapped: true,
+          choiceStyle: const C2ChoiceStyle(
+            color: Color(0xff40434e),
+            appearance: C2ChipType.elevated,
+          ),
+          choiceActiveStyle: const C2ChoiceStyle(
+            color: Color(0xff7a28cb),
+            appearance: C2ChipType.elevated,
+          ),
+        );
+      }),
+    );
+  }
+
+  filterTotal(String query, List tags, List tags2) {
+    final suggestions = _exProvider.exercisesdata.exercises.where((exercise) {
+      if (query == '') {
+        return true;
+      } else {
+        final exTitle = exercise.name.toLowerCase().replaceAll(' ', '');
+        return (exTitle.contains(query.toLowerCase().replaceAll(' ', '')))
+            as bool;
+      }
+    }).toList();
+
+    final suggestions2 = _exProvider.exercisesdata.exercises.where((exercise) {
+      if (tags[0] == 'All') {
+        return true;
+      } else {
+        final extarget = Set.from(exercise.target);
+        final query_s = Set.from(tags);
+        return (query_s.intersection(extarget).isNotEmpty) as bool;
+      }
+    }).toList();
+
+    final suggestions3 = _exProvider.exercisesdata.exercises.where((exercise) {
+      if (tags2[0] == 'All') {
+        return true;
+      } else {
+        final excate = exercise.category;
+        return (tags2.contains(excate)) as bool;
+      }
+    }).toList();
+    _exProvider.settesttotal(suggestions, suggestions2, suggestions3);
   }
 
   @override
@@ -1267,7 +1479,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
     _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
     _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     _exercises = _exProvider.exercisesdata.exercises;
-    _testdata0 = _exProvider.exercisesdata.exercises;
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);

@@ -600,7 +600,10 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
           value: provider.tags,
           onChanged: (val) {
             val.indexOf('All') == val.length - 1
-                ? provider.settags(['All'])
+                ? {
+                    provider.settags(['All']),
+                    _menucontroller.expanded = false
+                  }
                 : [
                     val.remove('All'),
                     provider.settags(val),
@@ -638,7 +641,10 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
           value: provider.tags2,
           onChanged: (val) {
             val.indexOf('All') == val.length - 1
-                ? provider.settags2(['All'])
+                ? {
+                    provider.settags2(['All']),
+                    _menucontroller.expanded = false
+                  }
                 : [
                     val.remove('All'),
                     provider.settags2(val),
@@ -719,7 +725,9 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                   _appbarWidget().preferredSize.height * 2 / 3,
                               child: Center(
                                 child: Text(
-                                  '운동부위: ${provider.tags.toString().replaceAll('[', '').replaceAll(']', '')}',
+                                  provider.tags.indexOf("All") != -1
+                                      ? "운동부위"
+                                      : '${provider.tags.toString().replaceAll('[', '').replaceAll(']', '')}',
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 18),
                                   overflow: TextOverflow.ellipsis,
@@ -743,7 +751,9 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                   _appbarWidget().preferredSize.height * 2 / 3,
                               child: Center(
                                 child: Text(
-                                  '운동유형: ${provider.tags2.toString().replaceAll('[', '').replaceAll(']', '')}',
+                                  provider.tags2.indexOf("All") != -1
+                                      ? "운동유형"
+                                      : '${provider.tags2.toString().replaceAll('[', '').replaceAll(']', '')}',
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 18),
                                   overflow: TextOverflow.ellipsis,
