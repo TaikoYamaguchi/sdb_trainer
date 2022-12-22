@@ -1092,10 +1092,10 @@ class _HomeState extends State<Home> {
     List<double> _chartData = [];
     var _chartDataBest;
     List<BarChartGroupData> _barChartGroupData = [];
+    double deviceWidth = MediaQuery.of(context).size.width;
 
     _dateController(_dateCtrl);
     if (_historydata != null) {
-      double deviceWidth = MediaQuery.of(context).size.width;
       for (var sdbdata in _historydata) {
         _historyDate.add(sdbdata);
       }
@@ -2727,30 +2727,31 @@ class _HomeState extends State<Home> {
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                          width: deviceWidth - 80,
-                          height: 110,
-                          child: BarChart(BarChartData(
-                            barGroups: _barChartGroupData,
-                            barTouchData: barTouchData,
-                            titlesData: FlTitlesData(
-                                leftTitles: AxisTitles(
-                                  sideTitles: SideTitles(showTitles: false),
-                                ),
-                                topTitles: AxisTitles(
-                                  sideTitles: SideTitles(showTitles: false),
-                                ),
-                                rightTitles: AxisTitles(
-                                  sideTitles: SideTitles(showTitles: false),
-                                ),
-                                bottomTitles: AxisTitles(
-                                    sideTitles: _isbottomTitleEx
-                                        ? _bottomExTitles(_realIndex)
-                                        : _bottomTitles())),
-                            alignment: BarChartAlignment.spaceAround,
-                            borderData: FlBorderData(show: false),
-                            gridData: FlGridData(show: false),
-                          ))),
+                      Expanded(
+                        child: Container(
+                            height: 110,
+                            child: BarChart(BarChartData(
+                              barGroups: _barChartGroupData,
+                              barTouchData: barTouchData,
+                              titlesData: FlTitlesData(
+                                  leftTitles: AxisTitles(
+                                    sideTitles: SideTitles(showTitles: false),
+                                  ),
+                                  topTitles: AxisTitles(
+                                    sideTitles: SideTitles(showTitles: false),
+                                  ),
+                                  rightTitles: AxisTitles(
+                                    sideTitles: SideTitles(showTitles: false),
+                                  ),
+                                  bottomTitles: AxisTitles(
+                                      sideTitles: _isbottomTitleEx
+                                          ? _bottomExTitles(_realIndex)
+                                          : _bottomTitles())),
+                              alignment: BarChartAlignment.spaceAround,
+                              borderData: FlBorderData(show: false),
+                              gridData: FlGridData(show: false),
+                            ))),
+                      ),
                     ],
                   )
                 : Container()
@@ -2941,80 +2942,81 @@ class _HomeState extends State<Home> {
                               color: Colors.white,
                               fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center)),
-                  Container(
-                    width: MediaQuery.of(context).size.width / 3 - 20,
-                    height: 16,
-                    child: LiquidLinearProgressIndicator(
-                      value: _exProvider
-                              .exercisesdata
-                              .exercises[(_exProvider.exercisesdata.exercises
-                                  .indexWhere((exercise) {
-                            if (exercise.name ==
-                                _exProvider.homeExList[index]) {
-                              return true;
-                            } else {
-                              return false;
-                            }
-                          }))]
-                              .onerm /
-                          _exProvider
-                              .exercisesdata
-                              .exercises[(_exProvider.exercisesdata.exercises
-                                  .indexWhere((exercise) {
-                            if (exercise.name ==
-                                _exProvider.homeExList[index]) {
-                              return true;
-                            } else {
-                              return false;
-                            }
-                          }))]
-                              .goal, // Defaults to 0.5.
-                      borderColor: Theme.of(context).primaryColor,
-                      valueColor: AlwaysStoppedAnimation(
-                          Theme.of(context).primaryColor),
-                      backgroundColor: Colors.grey,
-                      borderWidth: 0.0,
-                      borderRadius: 15.0,
-                      direction: Axis
-                          .horizontal, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
-                      center: Center(
-                        child: Text(
+                  Expanded(
+                    child: Container(
+                      height: 16,
+                      child: LiquidLinearProgressIndicator(
+                        value: _exProvider
+                                .exercisesdata
+                                .exercises[(_exProvider.exercisesdata.exercises
+                                    .indexWhere((exercise) {
+                              if (exercise.name ==
+                                  _exProvider.homeExList[index]) {
+                                return true;
+                              } else {
+                                return false;
+                              }
+                            }))]
+                                .onerm /
                             _exProvider
-                                    .exercisesdata
-                                    .exercises[(_exProvider
-                                        .exercisesdata.exercises
-                                        .indexWhere((exercise) {
-                                  if (exercise.name ==
-                                      _exProvider.homeExList[index]) {
-                                    return true;
-                                  } else {
-                                    return false;
-                                  }
-                                }))]
-                                    .onerm
-                                    .floor()
-                                    .toString() +
-                                "/" +
-                                _exProvider
-                                    .exercisesdata
-                                    .exercises[(_exProvider
-                                        .exercisesdata.exercises
-                                        .indexWhere((exercise) {
-                                  if (exercise.name ==
-                                      _exProvider.homeExList[index]) {
-                                    return true;
-                                  } else {
-                                    return false;
-                                  }
-                                }))]
-                                    .goal
-                                    .floor()
-                                    .toString(),
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center),
+                                .exercisesdata
+                                .exercises[(_exProvider.exercisesdata.exercises
+                                    .indexWhere((exercise) {
+                              if (exercise.name ==
+                                  _exProvider.homeExList[index]) {
+                                return true;
+                              } else {
+                                return false;
+                              }
+                            }))]
+                                .goal, // Defaults to 0.5.
+                        borderColor: Theme.of(context).primaryColor,
+                        valueColor: AlwaysStoppedAnimation(
+                            Theme.of(context).primaryColor),
+                        backgroundColor: Colors.grey,
+                        borderWidth: 0.0,
+                        borderRadius: 15.0,
+                        direction: Axis
+                            .horizontal, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
+                        center: Center(
+                          child: Text(
+                              _exProvider
+                                      .exercisesdata
+                                      .exercises[(_exProvider
+                                          .exercisesdata.exercises
+                                          .indexWhere((exercise) {
+                                    if (exercise.name ==
+                                        _exProvider.homeExList[index]) {
+                                      return true;
+                                    } else {
+                                      return false;
+                                    }
+                                  }))]
+                                      .onerm
+                                      .floor()
+                                      .toString() +
+                                  "/" +
+                                  _exProvider
+                                      .exercisesdata
+                                      .exercises[(_exProvider
+                                          .exercisesdata.exercises
+                                          .indexWhere((exercise) {
+                                    if (exercise.name ==
+                                        _exProvider.homeExList[index]) {
+                                      return true;
+                                    } else {
+                                      return false;
+                                    }
+                                  }))]
+                                      .goal
+                                      .floor()
+                                      .toString(),
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center),
+                        ),
                       ),
                     ),
                   ),
