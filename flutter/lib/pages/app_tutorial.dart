@@ -25,6 +25,7 @@ class _app_tutorialState extends State<app_tutorial> {
           children: [
             Text(
               "Ali é nosso menu , você consegue ver varias coisas nele",
+              textScaleFactor: 1.7,
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
             SizedBox(
@@ -47,6 +48,7 @@ class _app_tutorialState extends State<app_tutorial> {
         children: [
           Text(
             "Qualquer duvida que aparecer , entre no nosso chat , estamos prontos para ajudar",
+            textScaleFactor: 1.7,
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
           SizedBox(
@@ -70,6 +72,7 @@ class _app_tutorialState extends State<app_tutorial> {
         children: [
           Text(
             "Nessa sessão você vai ter acesso a todas as  Rasteirinhas",
+            textScaleFactor: 1.7,
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
           SizedBox(

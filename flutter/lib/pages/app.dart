@@ -94,9 +94,7 @@ class _AppState extends State<App> {
                 backgroundColor: const Color(0xFF212121),
                 type: BottomNavigationBarType.fixed,
                 selectedItemColor: Colors.white,
-                selectedFontSize: 16,
                 unselectedItemColor: Color(0xFF717171),
-                unselectedFontSize: 16,
                 elevation: 0.0,
                 onTap: (int index) {
                   _bodyStater.change(index);

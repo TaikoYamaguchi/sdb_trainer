@@ -87,9 +87,9 @@ class _ProgramDownloadState extends State<ProgramDownload> {
           ),
           title: Text(
             "",
+            textScaleFactor: 2.7,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 30,
             ),
           ),
           backgroundColor: Color(0xFF101012),
@@ -126,13 +126,13 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(widget.program.category.toString(),
+                                textScaleFactor: 1.2,
                                 style: TextStyle(
-                                    fontSize: 15.0,
                                     color: Theme.of(context).primaryColor,
                                     fontWeight: FontWeight.bold)),
                             Text(widget.program.routinedata.name,
+                                textScaleFactor: 2.0,
                                 style: TextStyle(
-                                    fontSize: 25.0,
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold)),
                           ],
@@ -220,8 +220,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                     child: Center(
                                         child: Text(
                                             " ${widget.program.subscribe.toString()}",
+                                            textScaleFactor: 1.3,
                                             style: TextStyle(
-                                                fontSize: 16,
                                                 color: Colors.white)))),
                               ],
                             ),
@@ -236,19 +236,17 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                 padding: const EdgeInsets.all(12.0),
                 alignment: Alignment.centerLeft,
                 child: Text("Program 설명",
+                    textScaleFactor: 2.0,
                     style: TextStyle(
-                        fontSize: 25.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold)),
+                        color: Colors.white, fontWeight: FontWeight.bold)),
               ),
               Container(
                 padding: const EdgeInsets.all(12.0),
                 alignment: Alignment.centerLeft,
                 child: Text(widget.program.routinedata.routine_time,
+                    textScaleFactor: 1.7,
                     style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold)),
+                        color: Colors.white, fontWeight: FontWeight.bold)),
               ),
               Container(
                 height: 10,
@@ -257,10 +255,9 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                 padding: const EdgeInsets.all(12.0),
                 alignment: Alignment.centerLeft,
                 child: Text("세부사항",
+                    textScaleFactor: 2.0,
                     style: TextStyle(
-                        fontSize: 25.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold)),
+                        color: Colors.white, fontWeight: FontWeight.bold)),
               ),
               Consumer<FamousdataProvider>(builder: (builder, provider, child) {
                 return Column(
@@ -326,7 +323,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                   Container(
                     child: Text(
                       'Day ${plandata.progress % 7 + 1}',
-                      style: TextStyle(color: Colors.white, fontSize: 24),
+                      textScaleFactor: 2.0,
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                   Container(
@@ -382,8 +380,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                           ),
                           Text(
                             '오늘은 휴식데이!',
+                            textScaleFactor: 2.0,
                             style: TextStyle(
-                                fontSize: 25,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -424,9 +422,9 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                           children: [
                                             Text(
                                               inplandata[index].name,
+                                              textScaleFactor: 1.7,
                                               style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20),
+                                                  color: Colors.white),
                                             ),
                                             Container(
                                               width: 10,
@@ -435,11 +433,11 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                               child: Container(
                                                 child: Text(
                                                   '기준: ${inplandata[index].ref_name}',
+                                                  textScaleFactor: 1.1,
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style: TextStyle(
                                                       color: Colors.grey,
-                                                      fontSize: 15,
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
@@ -493,9 +491,10 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                                     Container(
                                                       child: Text(
                                                         '기준 1rm   X   ${(inplandata[index].sets[setindex].weight).toStringAsFixed(0)}%    X    ${inplandata[index].sets[setindex].reps}reps',
+                                                        textScaleFactor: 1.7,
                                                         style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 20),
+                                                          color: Colors.white,
+                                                        ),
                                                       ),
                                                     ),
                                                   ],
@@ -603,13 +602,14 @@ class _ProgramDownloadState extends State<ProgramDownload> {
           if (count == 0) {
             result = Text(
               text,
-              style: TextStyle(color: color, fontSize: 16.0),
+              textScaleFactor: 1.3,
+              style: TextStyle(color: color),
             );
           } else
             result = Text(
               text,
-              style: TextStyle(
-                  color: color, fontSize: 16.0, fontWeight: FontWeight.bold),
+              textScaleFactor: 1.3,
+              style: TextStyle(color: color, fontWeight: FontWeight.bold),
             );
           return result;
         },
@@ -730,7 +730,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                 _displayStartAlert();
               },
               child: Text("시작하기",
-                  style: TextStyle(fontSize: 20.0, color: Colors.white)))),
+                  textScaleFactor: 1.7,
+                  style: TextStyle(color: Colors.white)))),
     );
   }
 
@@ -757,18 +758,21 @@ class _ProgramDownloadState extends State<ProgramDownload> {
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
               '운동을 시작 할 수 있어요',
+              textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 24),
+              style: TextStyle(color: Colors.white),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('운동을 시작 할까요?',
+                    textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                    style: TextStyle(color: Colors.white)),
                 Text('외부를 터치하면 취소 할 수 있어요',
+                    textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+                    style: TextStyle(color: Colors.grey)),
               ],
             ),
             actions: <Widget>[
@@ -799,7 +803,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               setSetting();
             },
             child: Text("운동 시작 하기",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   void setSetting() {
@@ -820,19 +824,22 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               Container(
                 child: Text(
                   '본인의 1rm이 맞나요? ',
+                  textScaleFactor: 2.0,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontSize: 24),
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
               Container(
                 child: Text('아니라면 값을 수정 해주세요',
+                    textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                    style: TextStyle(color: Colors.white)),
               ),
               Container(
                 child: Text('외부를 터치하면 취소 할 수 있어요',
+                    textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+                    style: TextStyle(color: Colors.grey)),
               ),
               Container(
                 child: Row(
@@ -844,9 +851,9 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                         child: Center(
                           child: Text(
                             "운동",
+                            textScaleFactor: 1.5,
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 18,
                                 fontWeight: FontWeight.bold),
                           ),
                         )),
@@ -855,9 +862,9 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                         width: MediaQuery.of(context).size.width * 1 / 4,
                         child: Center(
                           child: Text("1rm",
+                              textScaleFactor: 1.5,
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 18,
                                   fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center),
                         )),
@@ -893,14 +900,16 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                 Container(
                   child: Text(
                     '프로그램 이름을 정해주세요',
+                    textScaleFactor: 2.0,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 24),
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
                 Container(
                   child: Text('외부를 터치하면 취소 할 수 있어요',
+                      textScaleFactor: 1.0,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.grey, fontSize: 12)),
+                      style: TextStyle(color: Colors.grey)),
                 ),
                 SizedBox(height: 20),
                 TextField(
@@ -986,7 +995,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               }
             },
             child: Text(_customRuUsed == true ? "존재하는 이름" : "이 이름으로 저장",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   Widget _neededlist() {
@@ -1019,7 +1028,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                 child: Center(
                   child: Text(
                     Exercises.name,
-                    style: TextStyle(fontSize: 18, color: Colors.white),
+                    textScaleFactor: 1.5,
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
@@ -1113,7 +1123,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               titleSetting();
             },
             child: Text("1rm 확인",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   void _editWorkoutCheck() async {

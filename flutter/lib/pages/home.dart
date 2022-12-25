@@ -185,34 +185,39 @@ class _HomeState extends State<Home> {
             children: <int, Widget>{
               1: Padding(
                 child: Text("1주",
+                    textScaleFactor: 1.1,
                     style: TextStyle(
-                        color: _dateCtrl == 1 ? Colors.white : Colors.grey,
-                        fontSize: 14)),
+                      color: _dateCtrl == 1 ? Colors.white : Colors.grey,
+                    )),
                 padding: const EdgeInsets.all(4.0),
               ),
               2: Padding(
                   child: Text("1달",
+                      textScaleFactor: 1.1,
                       style: TextStyle(
-                          color: _dateCtrl == 2 ? Colors.white : Colors.grey,
-                          fontSize: 14)),
+                        color: _dateCtrl == 2 ? Colors.white : Colors.grey,
+                      )),
                   padding: const EdgeInsets.all(4.0)),
               3: Padding(
                   child: Text("6달",
+                      textScaleFactor: 1.1,
                       style: TextStyle(
-                          color: _dateCtrl == 3 ? Colors.white : Colors.grey,
-                          fontSize: 14)),
+                        color: _dateCtrl == 3 ? Colors.white : Colors.grey,
+                      )),
                   padding: const EdgeInsets.all(4.0)),
               4: Padding(
                   child: Text("1년",
+                      textScaleFactor: 1.1,
                       style: TextStyle(
-                          color: _dateCtrl == 4 ? Colors.white : Colors.grey,
-                          fontSize: 14)),
+                        color: _dateCtrl == 4 ? Colors.white : Colors.grey,
+                      )),
                   padding: const EdgeInsets.all(4.0)),
               5: Padding(
                   child: Text("모두",
+                      textScaleFactor: 1.1,
                       style: TextStyle(
-                          color: _dateCtrl == 5 ? Colors.white : Colors.grey,
-                          fontSize: 14)),
+                        color: _dateCtrl == 5 ? Colors.white : Colors.grey,
+                      )),
                   padding: const EdgeInsets.all(4.0))
             },
             padding: EdgeInsets.symmetric(horizontal: 6),
@@ -521,17 +526,16 @@ class _HomeState extends State<Home> {
                           provider.prefs.getString('lastroutine') == ''
                               ? "수행 한 루틴이 없어요"
                               : '''최근 진행한 루틴은''',
+                          textScaleFactor:
+                              provider.prefs.getString('lastroutine') == null
+                                  ? 1.0
+                                  : 1.5,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: provider.prefs.getString('lastroutine') ==
                                       null
                                   ? Colors.grey
                                   : Colors.white,
-                              fontSize:
-                                  provider.prefs.getString('lastroutine') ==
-                                          null
-                                      ? 12
-                                      : 18,
                               fontWeight: FontWeight.w600)),
                     ),
                     GestureDetector(
@@ -552,13 +556,13 @@ class _HomeState extends State<Home> {
                                 provider.prefs.getString('lastroutine') == ''
                                     ? '눌러서 루틴을 수행 해보세요!'
                                     : '${provider.prefs.getString('lastroutine')}',
+                                textScaleFactor:
+                                    provider.prefs.getString('lastroutine') ==
+                                            null
+                                        ? 1.5
+                                        : 2.0,
                                 style: TextStyle(
                                     color: Color(0xFffc60a8),
-                                    fontSize: provider.prefs
-                                                .getString('lastroutine') ==
-                                            ''
-                                        ? 18
-                                        : 24,
                                     fontWeight: FontWeight.w600)),
                           ],
                         ),
@@ -588,7 +592,7 @@ class _HomeState extends State<Home> {
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Consumer<UserdataProvider>(builder: (builder, provider, child) {
                   return GestureDetector(
@@ -606,10 +610,10 @@ class _HomeState extends State<Home> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text("몸무게",
+                                    textScaleFactor: 1.3,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 16,
                                         fontWeight: FontWeight.w600)),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 4.0),
@@ -621,10 +625,10 @@ class _HomeState extends State<Home> {
                                                       .bodyStats.last.date))
                                               .toString() +
                                           ")",
+                                      textScaleFactor: 0.8,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           color: Color(0xFF717171),
-                                          fontSize: 10,
                                           fontWeight: FontWeight.w600)),
                                 ),
                               ],
@@ -637,10 +641,10 @@ class _HomeState extends State<Home> {
                                     _userProvider.userdata.bodyStats.last.weight
                                             .toString() +
                                         _userProvider.userdata.weight_unit,
+                                    textScaleFactor: 2.0,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         color: Color(0xFffc60a8),
-                                        fontSize: 24,
                                         fontWeight: FontWeight.w600)),
                               ]),
                           Padding(
@@ -651,10 +655,10 @@ class _HomeState extends State<Home> {
                                         .userdata.bodyStats.last.weight_goal
                                         .toString() +
                                     _userProvider.userdata.weight_unit,
+                                textScaleFactor: 1.2,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: Color(0xFF717171),
-                                    fontSize: 14,
                                     fontWeight: FontWeight.w600)),
                           ),
                         ],
@@ -674,9 +678,9 @@ class _HomeState extends State<Home> {
                               padding:
                                   const EdgeInsets.only(left: 12.0, top: 4.0),
                               child: Text('''Lifting Stats''',
+                                  textScaleFactor: 1.5,
                                   style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 18,
                                       fontWeight: FontWeight.w600)),
                             ),
                           ),
@@ -874,7 +878,7 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                style: TextStyle(fontSize: 12, color: Colors.grey));
+                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
           case 2:
             switch (value.toInt()) {
               case 0:
@@ -891,7 +895,7 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                style: TextStyle(fontSize: 12, color: Colors.grey));
+                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
           case 3:
             switch (value.toInt()) {
               case 0:
@@ -924,7 +928,7 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                style: TextStyle(fontSize: 12, color: Colors.grey));
+                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
           case 4:
             switch (value.toInt()) {
               case 0:
@@ -945,7 +949,7 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                style: TextStyle(fontSize: 12, color: Colors.grey));
+                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
           case 5:
             switch (value.toInt()) {
               case 0:
@@ -955,7 +959,7 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                style: TextStyle(fontSize: 12, color: Colors.grey));
+                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
 
           default:
             switch (value.toInt()) {
@@ -989,7 +993,7 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                style: TextStyle(fontSize: 12, color: Colors.grey));
+                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
         }
       },
     );
@@ -1016,7 +1020,7 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                style: TextStyle(fontSize: 12, color: Colors.grey));
+                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
           });
     } else if (_realIndex == 6 || _realIndex == 9) {
       return SideTitles(
@@ -1038,7 +1042,7 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                style: TextStyle(fontSize: 12, color: Colors.grey));
+                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
           });
     } else if (_realIndex == 7 || _realIndex == 10) {
       return SideTitles(
@@ -1060,7 +1064,7 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                style: TextStyle(fontSize: 12, color: Colors.grey));
+                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
           });
     } else {
       return SideTitles(
@@ -1082,7 +1086,7 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                style: TextStyle(fontSize: 12, color: Colors.grey));
+                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
           });
     }
   }
@@ -2688,10 +2692,10 @@ class _HomeState extends State<Home> {
                           right: deviceWidth / _devicePaddingWidth -
                               _devicePaddingWidthAdd),
                       child: Text(_historyDateCore,
+                          textScaleFactor: 1.7,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 20,
                               fontWeight: FontWeight.w600)),
                     ),
                   ),
@@ -2706,16 +2710,16 @@ class _HomeState extends State<Home> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(_historyTextCore,
+                        textScaleFactor: 2.2,
                         style: TextStyle(
                             color: Color(0xFffc60a8),
-                            fontSize: 28,
                             fontWeight: FontWeight.w600)),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 4),
                       child: Text(_histroySideText,
+                          textScaleFactor: 1.6,
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 20,
                               fontWeight: FontWeight.w600)),
                     ),
                   ],
@@ -2791,10 +2795,8 @@ class _HomeState extends State<Home> {
         Container(
           child: Text(
             isex ? '운동을 선택해주세요' : '1RM 기준 운동을 선택해주세요',
-            style: TextStyle(
-                fontSize: 24.0,
-                color: Colors.white,
-                fontWeight: FontWeight.bold),
+            textScaleFactor: 2.0,
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ),
         Container(
@@ -2878,13 +2880,13 @@ class _HomeState extends State<Home> {
                           children: [
                             Text(
                               exuniq[index].name,
-                              style:
-                                  TextStyle(fontSize: 21, color: Colors.white),
+                              textScaleFactor: 1.7,
+                              style: TextStyle(color: Colors.white),
                             ),
                             Text(
                                 "1RM: ${exuniq[index].onerm.toStringAsFixed(1)}/${exuniq[index].goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
-                                style: TextStyle(
-                                    fontSize: 13, color: Color(0xFF717171))),
+                                textScaleFactor: 1.1,
+                                style: TextStyle(color: Color(0xFF717171))),
                           ],
                         ),
                       ],
@@ -2937,10 +2939,9 @@ class _HomeState extends State<Home> {
                   Container(
                       width: MediaQuery.of(context).size.width / 3 - 10,
                       child: Text(_exProvider.homeExList[index],
+                          textScaleFactor: 1.0,
                           style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
+                              color: Colors.white, fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center)),
                   Expanded(
                     child: Container(
@@ -3011,8 +3012,8 @@ class _HomeState extends State<Home> {
                                       .goal
                                       .floor()
                                       .toString(),
+                              textScaleFactor: 1.0,
                               style: TextStyle(
-                                  fontSize: 12,
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center),
@@ -3044,15 +3045,17 @@ class _HomeState extends State<Home> {
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
               '몸무게를 기록 할게요',
+              textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 24),
+              style: TextStyle(color: Colors.white),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('몸무게와 목표치를 바꿔보세요',
+                    textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 16)),
+                    style: TextStyle(color: Colors.grey)),
                 SizedBox(height: 20),
                 TextField(
                   controller: _userWeightController,
@@ -3129,7 +3132,8 @@ class _HomeState extends State<Home> {
                     padding: EdgeInsets.all(12.0),
                   ),
                   child: Text('오늘 몸무게 기록하기',
-                      style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                      textScaleFactor: 1.7,
+                      style: TextStyle(color: Colors.white)),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                     _displayBodyWeightPushDialog(
@@ -3207,15 +3211,17 @@ class _HomeState extends State<Home> {
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
               _weightChange,
+              textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 24),
+              style: TextStyle(color: Colors.white),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(_weightSuccess,
+                    textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 16)),
+                    style: TextStyle(color: Colors.grey)),
                 _chartWidget(context),
               ],
             ),
@@ -3236,7 +3242,8 @@ class _HomeState extends State<Home> {
                     padding: EdgeInsets.all(12.0),
                   ),
                   child: Text('닫기',
-                      style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                      textScaleFactor: 1.7,
+                      style: TextStyle(color: Colors.white)),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
@@ -3361,8 +3368,8 @@ class _HomeState extends State<Home> {
                           widget: Container(
                               child: Column(children: <Widget>[
                             Text(_exunique.exercises[index].name,
+                                textScaleFactor: 1.3,
                                 style: TextStyle(
-                                    fontSize: 16,
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold)),
                             Text(
@@ -3373,8 +3380,8 @@ class _HomeState extends State<Home> {
                                     _exunique.exercises[index].goal
                                         .floor()
                                         .toString(),
+                                textScaleFactor: 1.3,
                                 style: TextStyle(
-                                    fontSize: 16,
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold))
                           ])),

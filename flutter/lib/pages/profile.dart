@@ -4,6 +4,7 @@ import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
+import 'package:sdb_trainer/providers/themeMode.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
@@ -21,6 +22,7 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:in_app_review/in_app_review.dart';
+import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 
 class Profile extends StatefulWidget {
   Profile({Key? key}) : super(key: key);
@@ -38,6 +40,7 @@ class _ProfileState extends State<Profile> {
   var _loginState;
   var _PrefsProvider;
   var _bodyStater;
+  var _themeProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +49,7 @@ class _ProfileState extends State<Profile> {
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
     _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
+    _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(40.0), // here the desired height
@@ -367,9 +371,6 @@ class _ProfileState extends State<Profile> {
           ElevatedButton(
               onPressed: () async {
                 final InAppReview inAppReview = InAppReview.instance;
-                print("gogo?");
-
-                print(await inAppReview.isAvailable());
                 inAppReview.openStoreListing(
                   appStoreId: '6444859542',
                 );
@@ -386,6 +387,66 @@ class _ProfileState extends State<Profile> {
                         Text("평점 남기기🙏", style: TextStyle(color: Colors.white)),
                         Icon(Icons.open_in_new, color: Colors.white),
                       ]))),
+          Column(
+            children: [
+              Container(
+                  color: Theme.of(context).cardColor,
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16.0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("글자 크기 변경",
+                              style: TextStyle(color: Colors.white)),
+                        ]),
+                  )),
+              Container(
+                  color: Theme.of(context).cardColor,
+                  width: MediaQuery.of(context).size.width,
+                  height: 30,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                    child: Center(
+                      child: CustomSlidingSegmentedControl(
+                          height: 50.0,
+                          isStretch: true,
+                          initialValue: _themeProvider.userFontSize,
+                          children: {
+                            0.6: Text("가",
+                                style: TextStyle(
+                                    fontSize: 10.0, color: Colors.white)),
+                            0.7: Text("가",
+                                style: TextStyle(
+                                    fontSize: 12.0, color: Colors.white)),
+                            0.8: Text("가",
+                                style: TextStyle(
+                                    fontSize: 14.0, color: Colors.white)),
+                            0.9: Text("가",
+                                style: TextStyle(
+                                    fontSize: 16.0, color: Colors.white)),
+                            1.0: Text("가",
+                                style: TextStyle(
+                                    fontSize: 18.0, color: Colors.white)),
+                          },
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Color(0xFF101012),
+                          ),
+                          innerPadding: const EdgeInsets.all(4),
+                          thumbDecoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: Theme.of(context).primaryColor),
+                          onValueChanged: (value) {
+                            setState(() {
+                              _themeProvider.setUserFontsize(value);
+                            });
+                          }),
+                    ),
+                  )),
+            ],
+          ),
 
           ElevatedButton(
               onPressed: () => userLogOut(context),

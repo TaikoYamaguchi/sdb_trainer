@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/src/model/userdata.dart';
 
@@ -11,6 +12,7 @@ class UserdataProvider extends ChangeNotifier {
   var _userFriends;
   var _userFriendsAll;
   var _userFeedData;
+  var _userFontSize;
   get userdata => _userdata;
   get userKakaoEmail => _userKakaoEmail;
   get userKakaoName => _userKakaoName;
@@ -19,6 +21,7 @@ class UserdataProvider extends ChangeNotifier {
   get userFriends => _userFriends;
   get userFriendsAll => _userFriendsAll;
   get userFeedData => _userFeedData;
+  get userFontSize => _userFontSize;
 
   getdata() async {
     await UserService.loadUserdata().then((value) {
@@ -138,5 +141,39 @@ class UserdataProvider extends ChangeNotifier {
       _userdata.dislike.add(email);
       notifyListeners();
     }
+  }
+
+  Future<double> getUserFontsize() async {
+    final storage = new FlutterSecureStorage();
+    _userFontSize = 1.0;
+    try {
+      var _fontsize = await storage.read(key: "sdb_fontSize");
+      if (_fontsize != null && _fontsize != "") {
+        _userFontSize = double.parse(_fontsize);
+        print(_fontsize);
+        notifyListeners();
+        return double.parse(_fontsize);
+      } else {
+        _userFontSize = 1.0;
+        notifyListeners();
+        return 1.0;
+      }
+    } catch (e) {
+      _userFontSize = 1.0;
+      notifyListeners();
+      return 1.0;
+    }
+  }
+
+  setUserFontsize(double fontSize) async {
+    final storage = new FlutterSecureStorage();
+    try {
+      var _userFontsize = await storage.write(
+          key: "sdb_fontSize", value: fontSize.toStringAsFixed(1));
+      _userFontSize = fontSize;
+    } catch (e) {
+      _userFontSize = fontSize;
+    }
+    notifyListeners();
   }
 }

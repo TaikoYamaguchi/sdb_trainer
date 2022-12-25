@@ -78,7 +78,6 @@ class _CalendarState extends State<Calendar> {
         selectionRectColor: Colors.grey,
         enablePanning: true,
         maximumZoomLevel: 0.7);
-    initialProviderGet();
     super.initState();
   }
 

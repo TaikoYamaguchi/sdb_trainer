@@ -17,6 +17,7 @@ import 'package:sdb_trainer/providers/chartIndexState.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
+import 'package:sdb_trainer/providers/themeMode.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:sdb_trainer/src/utils/firebase_fcm.dart';
@@ -51,6 +52,7 @@ void main() {
         create: (BuildContext context) => RoutineMenuStater()),
     ChangeNotifierProvider(
         create: (BuildContext context) => FamousdataProvider()),
+    ChangeNotifierProvider(create: (BuildContext context) => ThemeProvider()),
   ], child: MyApp()));
 }
 
@@ -59,23 +61,32 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          primaryColor: const Color(0xff7a28cb),
-          cardColor: const Color(0xff25272c),
-          canvasColor: Colors.transparent,
-          textSelectionTheme: TextSelectionThemeData(
-            cursorColor: const Color(0xff7a28cb),
-            selectionColor: const Color(0xff7a28cb),
-            selectionHandleColor: const Color(0xff7a28cb),
-          ),
-          colorScheme: ThemeData().colorScheme.copyWith(
-                primary: const Color(0xff7a28cb),
+    var _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    _themeProvider.getUserFontsize();
+    return Center(
+      child: Consumer<ThemeProvider>(builder: (context, provider, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+              textTheme: Theme.of(context).textTheme.apply(
+                    fontSizeFactor: _themeProvider.userFontSize,
+                  ),
+              primaryColor: const Color(0xff7a28cb),
+              cardColor: const Color(0xff25272c),
+              canvasColor: Colors.transparent,
+              textSelectionTheme: TextSelectionThemeData(
+                cursorColor: const Color(0xff7a28cb),
+                selectionColor: const Color(0xff7a28cb),
+                selectionHandleColor: const Color(0xff7a28cb),
               ),
-          fontFamily: 'Noto_Sans_KR'),
-      title: 'Flutter Demo',
-      home: App(),
+              colorScheme: ThemeData().colorScheme.copyWith(
+                    primary: const Color(0xff7a28cb),
+                  ),
+              fontFamily: 'Noto_Sans_KR'),
+          title: 'Flutter Demo',
+          home: App(),
+        );
+      }),
     );
   }
 }

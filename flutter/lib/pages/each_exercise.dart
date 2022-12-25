@@ -68,12 +68,13 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   List<CountDownController> _countcontroller = [];
   final Map<int, Widget> _menuList = const <int, Widget>{
     0: Padding(
-      child: Text("중량 추가", style: TextStyle(color: Colors.white, fontSize: 16)),
+      child: Text("중량 추가",
+          textScaleFactor: 1.3, style: TextStyle(color: Colors.white)),
       padding: const EdgeInsets.all(5.0),
     ),
     1: Padding(
-        child:
-            Text("중량 제거", style: TextStyle(color: Colors.white, fontSize: 16)),
+        child: Text("중량 제거",
+            textScaleFactor: 1.3, style: TextStyle(color: Colors.white)),
         padding: const EdgeInsets.all(5.0)),
   };
   JustTheController tooltipController = new JustTheController();
@@ -121,7 +122,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
           ),
           title: Text(
             "",
-            style: TextStyle(color: Colors.white, fontSize: 30),
+            textScaleFactor: 2.7,
+            style: TextStyle(color: Colors.white),
           ),
           actions: [
             GestureDetector(
@@ -316,9 +318,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                         Container(
                           child: Text(
                             'Timer: ',
+                            textScaleFactor: 1.7,
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 21,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -331,8 +333,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                       ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
                                       : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
                                   : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                              textScaleFactor: 1.7,
                               style: TextStyle(
-                                  fontSize: 21,
                                   fontWeight: FontWeight.bold,
                                   color:
                                       (provider.userest && provider.timeron < 0)
@@ -355,9 +357,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               Container(
                                 child: Text(
                                   '  Timer: ',
+                                  textScaleFactor: 1.7,
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 21,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -370,8 +372,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                             ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
                                             : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
                                         : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                                    textScaleFactor: 1.7,
                                     style: TextStyle(
-                                        fontSize: 21,
                                         fontWeight: FontWeight.bold,
                                         color: (provider.userest &&
                                                 provider.timeron < 0)
@@ -396,11 +398,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 provider.userest
                                     ? 'Rest Timer on'
                                     : 'Rest Timer off',
+                                textScaleFactor: 1.7,
                                 style: TextStyle(
                                   color: provider.userest
                                       ? Colors.white
                                       : Color(0xFF717171),
-                                  fontSize: 21,
                                   fontWeight: FontWeight.bold,
                                 ),
                               );
@@ -418,9 +420,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               .routinedatas[widget.rindex].exercises[pindex];
                           return Text(
                             "Rest: ${_exercise.rest}",
+                            textScaleFactor: 1.7,
                             style: TextStyle(
                               color: Color(0xFF717171),
-                              fontSize: 21,
                               fontWeight: FontWeight.bold,
                             ),
                           );
@@ -454,22 +456,23 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             isKeyboardVisible
                                 ? Text(
                                     _exercise.name,
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 24),
+                                    textScaleFactor: 2.0,
+                                    style: TextStyle(color: Colors.white),
                                   )
                                 : _exercise.name.length < 8
                                     ? Text(
                                         _exercise.name,
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 48),
+                                        textScaleFactor: 4.0,
+                                        style: TextStyle(color: Colors.white),
                                       )
                                     : Flexible(
                                         child: Text(
                                           _exercise.name,
+                                          textScaleFactor: 3.2,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 38),
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
                             Column(
@@ -498,8 +501,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               },
                               child: Text(
                                 "Best 1RM: ${_info.onerm.toStringAsFixed(1)}/${_info.goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
-                                style: TextStyle(
-                                    color: Color(0xFF717171), fontSize: 21),
+                                textScaleFactor: 1.7,
+                                style: TextStyle(color: Color(0xFF717171)),
                               ),
                             );
                     }),
@@ -517,9 +520,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                         padding: EdgeInsets.only(right: 4),
                         child: Text(
                           "Set",
+                          textScaleFactor: 1.1,
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.right,
@@ -528,9 +531,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                         width: 70,
                         child: Text(
                           "Weight(${_userProvider.userdata.weight_unit})",
+                          textScaleFactor: 1.1,
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
@@ -540,9 +543,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                         width: 40,
                         child: Text(
                           "Reps",
+                          textScaleFactor: 1.1,
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
@@ -551,9 +554,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                         width: 70,
                         child: Text(
                           "1RM",
+                          textScaleFactor: 1.1,
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
@@ -733,8 +736,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                             width: 25,
                                             child: Text(
                                               "${index + 1}",
+                                              textScaleFactor: 1.7,
                                               style: TextStyle(
-                                                fontSize: 21,
                                                 color: Colors.white,
                                               ),
                                               textAlign: TextAlign.center,
@@ -825,16 +828,16 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               child: (_sets[index].reps != 1)
                                                   ? Text(
                                                       "${(_sets[index].weight * (1 + _sets[index].reps / 30)).toStringAsFixed(1)}",
+                                                      textScaleFactor: 1.7,
                                                       style: TextStyle(
-                                                          fontSize: 21,
                                                           color: Colors.white),
                                                       textAlign:
                                                           TextAlign.center,
                                                     )
                                                   : Text(
                                                       "${_sets[index].weight}",
+                                                      textScaleFactor: 1.7,
                                                       style: TextStyle(
-                                                          fontSize: 21,
                                                           color: Colors.white),
                                                       textAlign:
                                                           TextAlign.center,
@@ -1126,15 +1129,17 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
               '목표를 달성하셨나요?',
+              textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 24),
+              style: TextStyle(color: Colors.white),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text("더 높은 목표를 설정해보세요!",
+                    textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 16)),
+                    style: TextStyle(color: Colors.grey)),
                 SizedBox(height: 20),
                 TextField(
                   controller: _exOnermController,
@@ -1215,7 +1220,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                     padding: EdgeInsets.all(12.0),
                   ),
                   child: Text('수정하기',
-                      style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                      textScaleFactor: 1.7,
+                      style: TextStyle(color: Colors.white)),
                   onPressed: () {
                     _exProvider.putOnermGoalValue(
                         index,
@@ -1289,9 +1295,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           Container(
                             child: Text(
                               'Timer: ',
+                              textScaleFactor: 1.7,
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 21,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -1304,8 +1310,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                         ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
                                         : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
                                     : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                                textScaleFactor: 1.7,
                                 style: TextStyle(
-                                    fontSize: 21,
                                     fontWeight: FontWeight.bold,
                                     color: (provider.userest &&
                                             provider.timeron < 0)
@@ -1328,9 +1334,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 Container(
                                   child: Text(
                                     '  Timer: ',
+                                    textScaleFactor: 1.7,
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 21,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -1343,8 +1349,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
                                               : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
                                           : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                                      textScaleFactor: 1.7,
                                       style: TextStyle(
-                                          fontSize: 21,
                                           fontWeight: FontWeight.bold,
                                           color: (provider.userest &&
                                                   provider.timeron < 0)
@@ -1369,11 +1375,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                   provider.userest
                                       ? 'Rest Timer on'
                                       : 'Rest Timer off',
+                                  textScaleFactor: 1.7,
                                   style: TextStyle(
                                     color: provider.userest
                                         ? Colors.white
                                         : Color(0xFF717171),
-                                    fontSize: 21,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 );
@@ -1391,9 +1397,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 .routinedatas[widget.rindex].exercises[pindex];
                             return Text(
                               "Rest: ${_exercise.rest}",
+                              textScaleFactor: 1.7,
                               style: TextStyle(
                                 color: Color(0xFF717171),
-                                fontSize: 21,
                                 fontWeight: FontWeight.bold,
                               ),
                             );
@@ -1427,23 +1433,25 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               isKeyboardVisible
                                   ? Text(
                                       _exercise.name,
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 24),
+                                      textScaleFactor: 2.0,
+                                      style: TextStyle(color: Colors.white),
                                     )
                                   : _exercise.name.length < 8
                                       ? Text(
                                           _exercise.name,
+                                          textScaleFactor: 4.0,
                                           style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 48),
+                                            color: Colors.white,
+                                          ),
                                         )
                                       : Flexible(
                                           child: Text(
                                             _exercise.name,
+                                            textScaleFactor: 3.2,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 38),
+                                              color: Colors.white,
+                                            ),
                                           ),
                                         ),
                               Column(
@@ -1468,8 +1476,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             ? Container()
                             : Text(
                                 "Best 1RM: ${_info.onerm.toStringAsFixed(1)}/${_info.goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
-                                style: TextStyle(
-                                    color: Color(0xFF717171), fontSize: 21),
+                                textScaleFactor: 1.7,
+                                style: TextStyle(color: Color(0xFF717171)),
                               );
                       }),
                     ],
@@ -1486,9 +1494,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           padding: EdgeInsets.only(right: 4),
                           child: Text(
                             "Set",
+                            textScaleFactor: 1.1,
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.right,
@@ -1499,9 +1507,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             children: [
                               Text(
                                 "Weight",
+                                textScaleFactor: 1.1,
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 14,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 textAlign: TextAlign.center,
@@ -1536,9 +1544,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           width: 40,
                           child: Text(
                             "Reps",
+                            textScaleFactor: 1.1,
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.center,
@@ -1547,9 +1555,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           width: 70,
                           child: Text(
                             "1RM",
+                            textScaleFactor: 1.1,
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.center,
@@ -1746,8 +1754,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               width: 25,
                                               child: Text(
                                                 "${index + 1}",
+                                                textScaleFactor: 1.7,
                                                 style: TextStyle(
-                                                  fontSize: 21,
                                                   color: Colors.white,
                                                 ),
                                                 textAlign: TextAlign.center,
@@ -1763,8 +1771,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                   child: Center(
                                                     child: Text(
                                                         "${_sets[index].index + _sets[index].weight}",
+                                                        textScaleFactor: 1.7,
                                                         style: TextStyle(
-                                                          fontSize: 21,
                                                           color: Colors.white,
                                                         )),
                                                   ),
@@ -1817,8 +1825,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                 child: (_sets[index].reps != 1)
                                                     ? Text(
                                                         "${((_sets[index].weight + _sets[index].index) * (1 + _sets[index].reps / 30)).toStringAsFixed(1)}",
+                                                        textScaleFactor: 1.7,
                                                         style: TextStyle(
-                                                            fontSize: 21,
                                                             color:
                                                                 Colors.white),
                                                         textAlign:
@@ -1826,8 +1834,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                       )
                                                     : Text(
                                                         "${_sets[index].weight + _sets[index].index}",
+                                                        textScaleFactor: 1.7,
                                                         style: TextStyle(
-                                                            fontSize: 21,
                                                             color:
                                                                 Colors.white),
                                                         textAlign:
@@ -2096,9 +2104,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           Container(
                             child: Text(
                               'Timer: ',
+                              textScaleFactor: 1.7,
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 21,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -2111,8 +2119,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                         ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
                                         : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
                                     : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                                textScaleFactor: 1.7,
                                 style: TextStyle(
-                                    fontSize: 21,
                                     fontWeight: FontWeight.bold,
                                     color: (provider.userest &&
                                             provider.timeron < 0)
@@ -2135,9 +2143,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 Container(
                                   child: Text(
                                     '  Timer: ',
+                                    textScaleFactor: 1.7,
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 21,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -2150,8 +2158,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
                                               : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
                                           : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                                      textScaleFactor: 1.7,
                                       style: TextStyle(
-                                          fontSize: 21,
                                           fontWeight: FontWeight.bold,
                                           color: (provider.userest &&
                                                   provider.timeron < 0)
@@ -2176,11 +2184,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                   provider.userest
                                       ? 'Rest Timer on'
                                       : 'Rest Timer off',
+                                  textScaleFactor: 1.7,
                                   style: TextStyle(
                                     color: provider.userest
                                         ? Colors.white
                                         : Color(0xFF717171),
-                                    fontSize: 21,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 );
@@ -2198,9 +2206,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 .routinedatas[widget.rindex].exercises[pindex];
                             return Text(
                               "Rest: ${_exercise.rest}",
+                              textScaleFactor: 1.7,
                               style: TextStyle(
                                 color: Color(0xFF717171),
-                                fontSize: 21,
                                 fontWeight: FontWeight.bold,
                               ),
                             );
@@ -2234,23 +2242,24 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               isKeyboardVisible
                                   ? Text(
                                       _exercise.name,
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 24),
+                                      textScaleFactor: 2.0,
+                                      style: TextStyle(color: Colors.white),
                                     )
                                   : _exercise.name.length < 8
                                       ? Text(
                                           _exercise.name,
+                                          textScaleFactor: 4.0,
                                           style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 48),
+                                            color: Colors.white,
+                                          ),
                                         )
                                       : Flexible(
                                           child: Text(
                                             _exercise.name,
+                                            textScaleFactor: 3.2,
                                             overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 38),
+                                            style:
+                                                TextStyle(color: Colors.white),
                                           ),
                                         ),
                               Column(
@@ -2275,8 +2284,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             ? Container()
                             : Text(
                                 "Best 1RM: ${_info.onerm.toStringAsFixed(1)}/${_info.goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
-                                style: TextStyle(
-                                    color: Color(0xFF717171), fontSize: 21),
+                                textScaleFactor: 1.7,
+                                style: TextStyle(color: Color(0xFF717171)),
                               );
                       }),
                     ],
@@ -2293,9 +2302,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           padding: EdgeInsets.only(right: 4),
                           child: Text(
                             "Set",
+                            textScaleFactor: 1.1,
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.right,
@@ -2308,9 +2317,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           width: 80,
                           child: Text(
                             "Distance",
+                            textScaleFactor: 4.0,
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.center,
@@ -2319,9 +2328,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           width: 140,
                           child: Text(
                             "Duration(hh:mm:ss)",
+                            textScaleFactor: 4.0,
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.center,
@@ -2525,8 +2534,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                   width: 25,
                                                   child: Text(
                                                     "${index + 1}",
+                                                    textScaleFactor: 1.7,
                                                     style: TextStyle(
-                                                      fontSize: 21,
                                                       color: Colors.white,
                                                     ),
                                                     textAlign: TextAlign.center,
@@ -2635,8 +2644,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                       child: Center(
                                                         child: Text(
                                                             "${_sets[index].weight}",
+                                                            textScaleFactor:
+                                                                1.7,
                                                             style: TextStyle(
-                                                              fontSize: 21,
                                                               color:
                                                                   Colors.white,
                                                             )),
@@ -2998,8 +3008,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
               '신기록을 달성했어요!',
+              textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 24),
+              style: TextStyle(color: Colors.white),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -3010,30 +3021,31 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                       _exercise.name.length < 8
                           ? Text(
                               _exercise.name,
+                              textScaleFactor: 2.5,
                               style: TextStyle(
                                   fontWeight: FontWeight.w600,
-                                  color: Color(0xFffc60a8),
-                                  fontSize: 28),
+                                  color: Color(0xFffc60a8)),
                             )
                           : Flexible(
                               child: Text(
                                 _exercise.name,
+                                textScaleFactor: 1.3,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600,
-                                    color: Color(0xFffc60a8),
-                                    fontSize: 16),
+                                    color: Color(0xFffc60a8)),
                               ),
                             ),
                       Center(
                         child: Text(
                             _onerm.toStringAsFixed(1) +
                                 _userProvider.userdata.weight_unit,
+                            textScaleFactor: 2.7,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFffc60a8),
-                                fontSize: 32)),
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFffc60a8),
+                            )),
                       ),
                       SizedBox(height: 10),
                       Row(
@@ -3045,8 +3057,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               child: Center(
                                   child: Text(
                                 "${_sets.weight.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
+                                textScaleFactor: 1.7,
                                 style: TextStyle(
-                                  fontSize: 21,
                                   color: Colors.grey,
                                 ),
                               ))),
@@ -3059,8 +3071,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               child: Center(
                                   child: Text(
                                 "${_sets.reps}회",
+                                textScaleFactor: 1.7,
                                 style: TextStyle(
-                                  fontSize: 21,
                                   color: Colors.grey,
                                 ),
                               )))
@@ -3115,7 +3127,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
               Navigator.of(context, rootNavigator: true).pop();
             },
             child: Text("계속 운동 하기",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   void _displayFinishAlert() {
@@ -3131,18 +3143,21 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
               '운동을 종료 할 수 있어요',
+              textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 24),
+              style: TextStyle(color: Colors.white),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('운동을 종료 하시겠나요?',
+                    textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                    style: TextStyle(color: Colors.white)),
                 Text('외부를 터치하면 취소 할 수 있어요',
+                    textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+                    style: TextStyle(color: Colors.grey)),
               ],
             ),
             actions: <Widget>[
@@ -3175,7 +3190,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
               Navigator.of(context, rootNavigator: true).pop();
             },
             child: Text("운동 종료 하기",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   void _displaySetRestAlert(pindex) {
@@ -3191,15 +3206,17 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
               '휴식 시간을 설정 해볼게요',
+              textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 24),
+              style: TextStyle(color: Colors.white),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('세트당 휴식 시간을 입력해주세요',
+                    textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                    style: TextStyle(color: Colors.white)),
                 SizedBox(height: 20),
                 TextField(
                   controller: _resttimectrl,
@@ -3249,7 +3266,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                     padding: EdgeInsets.all(12.0),
                   ),
                   child: Text('휴식 시간 설정하기',
-                      style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                      textScaleFactor: 1.7,
+                      style: TextStyle(color: Colors.white)),
                   onPressed: () {
                     _workoutProvider.resttimecheck(
                         widget.rindex, pindex, _routinetimeProvider.changetime);
@@ -3293,15 +3311,17 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
               '중량 추가/제거가 가능해요',
+              textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 24),
+              style: TextStyle(color: Colors.white),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('추가/제거할 중량을 입력해주세요',
+                    textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                    style: TextStyle(color: Colors.white)),
                 SizedBox(height: 20),
                 _posnegControllerWidget(),
                 SizedBox(
@@ -3375,7 +3395,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                     padding: EdgeInsets.all(12.0),
                   ),
                   child: Text('중량 추가/제거 하기',
-                      style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                      textScaleFactor: 1.7,
+                      style: TextStyle(color: Colors.white)),
                   onPressed: () {
                     _workoutProvider.weightcheck(widget.rindex, pindex, eindex,
                         _routinemenuProvider.ispositive ? input : -input);
