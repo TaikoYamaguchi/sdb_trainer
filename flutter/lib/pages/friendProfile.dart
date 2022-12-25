@@ -52,7 +52,8 @@ class _FriendProfileState extends State<FriendProfile> {
           ),
           title: Text(
             widget.user.nickname,
-            style: TextStyle(color: Colors.white, fontSize: 30),
+            textScaleFactor: 2.7,
+            style: TextStyle(color: Colors.white),
           ),
           backgroundColor: Color(0xFF101012),
         ));
@@ -111,14 +112,14 @@ class _FriendProfileState extends State<FriendProfile> {
                           children: [
                             Text(
                               widget.user.liked.length.toString(),
+                              textScaleFactor: 2.0,
                               style: TextStyle(
                                 color: Theme.of(context).primaryColor,
-                                fontSize: 24,
                               ),
                             ),
                             Text("팔로워",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16))
+                                textScaleFactor: 1.3,
+                                style: TextStyle(color: Colors.white))
                           ],
                         ),
                       ),
@@ -129,14 +130,14 @@ class _FriendProfileState extends State<FriendProfile> {
                           children: [
                             Text(
                               widget.user.like.length.toString(),
+                              textScaleFactor: 2.0,
                               style: TextStyle(
                                 color: Theme.of(context).primaryColor,
-                                fontSize: 24,
                               ),
                             ),
                             Text("팔로잉",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16))
+                                textScaleFactor: 1.3,
+                                style: TextStyle(color: Colors.white))
                           ],
                         ),
                       ),
@@ -147,14 +148,14 @@ class _FriendProfileState extends State<FriendProfile> {
                           children: [
                             Text(
                               widget.user.history_cnt.toString(),
+                              textScaleFactor: 2.0,
                               style: TextStyle(
                                 color: Theme.of(context).primaryColor,
-                                fontSize: 24,
                               ),
                             ),
                             Text("운동기록",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16))
+                                textScaleFactor: 1.3,
+                                style: TextStyle(color: Colors.white))
                           ],
                         ),
                       )
@@ -191,7 +192,8 @@ class _FriendProfileState extends State<FriendProfile> {
                       : isLiked
                           ? "팔로잉 중 "
                           : "팔로우 하기 ",
-                  style: TextStyle(color: Colors.white, fontSize: 16)),
+                  textScaleFactor: 1.3,
+                  style: TextStyle(color: Colors.white)),
             ],
           ),
         ),

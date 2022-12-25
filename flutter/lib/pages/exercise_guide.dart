@@ -222,8 +222,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                             padding: const EdgeInsets.all(12.0),
                             alignment: Alignment.centerLeft,
                             child: Text("나만의 운동 노트",
+                                textScaleFactor: 1.5,
                                 style: TextStyle(
-                                    fontSize: 18.0,
                                     color: Colors.grey,
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -274,8 +274,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                     provier.exercisesdata
                                             .exercises[widget.eindex].note ??
                                         '나만의 운동노트를 적어주세요',
+                                    textScaleFactor: 1.3,
                                     style: TextStyle(
-                                        fontSize: 16.0,
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold));
                               }),
@@ -325,15 +325,18 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                   children: [
                     Text(
                       '커스텀 운동을 수정해보세요',
+                      textScaleFactor: 2.0,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 24),
+                      style: TextStyle(color: Colors.white),
                     ),
                     Text('운동의 정보를 입력해 주세요',
+                        textScaleFactor: 1.3,
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white, fontSize: 16)),
+                        style: TextStyle(color: Colors.white)),
                     Text('외부를 터치하면 취소 할 수 있어요',
+                        textScaleFactor: 1.0,
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.grey, fontSize: 12)),
+                        style: TextStyle(color: Colors.grey)),
                     SizedBox(height: 20),
                     TextField(
                       onChanged: (value) {
@@ -380,8 +383,9 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                         Container(
                           child: Text(
                             '운동부위:',
+                            textScaleFactor: 2.0,
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 24),
+                            style: TextStyle(color: Colors.white),
                           ),
                         ),
                         SizedBox(width: 20),
@@ -435,8 +439,9 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                         Container(
                           child: Text(
                             '카테고리:',
+                            textScaleFactor: 2.0,
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 24),
+                            style: TextStyle(color: Colors.white),
                           ),
                         ),
                         SizedBox(width: 20),
@@ -530,7 +535,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
               }
             },
             child: Text(_customExUsed == true ? "존재하는 운동" : "커스텀 운동 추가",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   Widget _commentWidget() {
@@ -574,18 +579,21 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
               '커스텀운동을 삭제 할 수 있어요',
+              textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 24),
+              style: TextStyle(color: Colors.white),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('커스텀운동을 삭제 하시겠나요?',
+                    textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                    style: TextStyle(color: Colors.white)),
                 Text('외부를 터치하면 취소 할 수 있어요',
+                    textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+                    style: TextStyle(color: Colors.grey)),
               ],
             ),
             actions: <Widget>[
@@ -617,7 +625,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                 planlist();
               },
               child: Text("플랜에 운동 추가하기",
-                  style: TextStyle(fontSize: 20.0, color: Colors.white)))),
+                  textScaleFactor: 1.7,
+                  style: TextStyle(color: Colors.white)))),
     );
   }
 
@@ -647,15 +656,15 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
           Center(
             child: Text(
               '추가할 플랜을 선택하세요',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold),
+              textScaleFactor: 2.0,
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
           ),
           Text('외부를 터치하면 취소 할 수 있어요',
+              textScaleFactor: 1.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey, fontSize: 12)),
+              style: TextStyle(color: Colors.grey)),
           Container(
             height: 10,
           ),
@@ -731,9 +740,9 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                     )),
                                 title: Text(
                                   routinelist[index].name,
+                                  textScaleFactor: 1.5,
                                   style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 18,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 subtitle: Row(
@@ -741,12 +750,12 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                     routinelist[index].mode == 0
                                         ? Text(
                                             "${routinelist[index].exercises.length}개 운동",
+                                            textScaleFactor: 1.0,
                                             style: TextStyle(
-                                                fontSize: 13,
                                                 color: Colors.white30))
                                         : Text("루틴 모드",
+                                            textScaleFactor: 1.0,
                                             style: TextStyle(
-                                                fontSize: 13,
                                                 color: Colors.white30)),
                                   ],
                                 ),
@@ -798,11 +807,11 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("운동 플랜을 만들어 보세요",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 18)),
+                                    textScaleFactor: 1.5,
+                                    style: TextStyle(color: Colors.white)),
                                 Text("원하는 이름, 종류의 플랜을 만들 수 있어요",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 14)),
+                                    textScaleFactor: 1.1,
+                                    style: TextStyle(color: Colors.grey)),
                               ],
                             ),
                           )
@@ -858,18 +867,21 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
               contentPadding: EdgeInsets.all(12.0),
               title: Text(
                 '운동 루틴을 추가 할게요',
+                textScaleFactor: 2.0,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 24),
+                style: TextStyle(color: Colors.white),
               ),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text('운동 루틴의 이름을 입력해 주세요',
+                      textScaleFactor: 1.3,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 16)),
+                      style: TextStyle(color: Colors.white)),
                   Text('외부를 터치하면 취소 할 수 있어요',
+                      textScaleFactor: 1.0,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.grey, fontSize: 12)),
+                      style: TextStyle(color: Colors.grey)),
                   SizedBox(height: 20),
                   TextField(
                     onChanged: (value) {
@@ -950,7 +962,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
               ;
             },
             child: Text(_customExUsed == true ? "존재하는 루틴 이름" : "새 루틴 추가",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   void _getChartSourcefromDay() async {
@@ -1016,7 +1028,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
               Navigator.of(context).pop();
             },
             child: Text("커스텀 운동 삭제 하기",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   Widget _chartWidget(context) {
@@ -1155,7 +1167,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(exuniq.date,
-                    style: TextStyle(fontSize: 18, color: Colors.white)),
+                    textScaleFactor: 1.5,
+                    style: TextStyle(color: Colors.white)),
               ),
             ],
           ),
@@ -1180,15 +1193,15 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                       //mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text("",
-                            style: TextStyle(
-                                fontSize: 13, color: Color(0xFF717171))),
+                            textScaleFactor: 1.0,
+                            style: TextStyle(color: Color(0xFF717171))),
                         Expanded(child: SizedBox()),
                         Text(
                             "1RM: " +
                                 exuniq.onerm.toStringAsFixed(1) +
                                 "/${exuniq.goal.toStringAsFixed(1)}${userdata.weight_unit}",
-                            style: TextStyle(
-                                fontSize: 13, color: Color(0xFF717171))),
+                            textScaleFactor: 1.0,
+                            style: TextStyle(color: Color(0xFF717171))),
                       ],
                     ),
                   )
@@ -1221,8 +1234,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                           width: 25,
                           child: Text(
                             "Set",
+                            textScaleFactor: 1.1,
                             style: TextStyle(
-                              fontSize: 14,
                               color: Colors.grey,
                               fontWeight: FontWeight.bold,
                             ),
@@ -1236,9 +1249,9 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                       width: 70,
                       child: Text(
                         "Weight(${_userProvider.userdata.weight_unit})",
+                        textScaleFactor: 1.1,
                         style: TextStyle(
                           color: Colors.grey,
-                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
@@ -1248,9 +1261,9 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                       width: 40,
                       child: Text(
                         "Reps",
+                        textScaleFactor: 1.1,
                         style: TextStyle(
                           color: Colors.grey,
-                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
@@ -1259,9 +1272,9 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                       width: 70,
                       child: Text(
                         "1RM",
+                        textScaleFactor: 1.1,
                         style: TextStyle(
                           color: Colors.grey,
-                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
@@ -1285,8 +1298,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                 width: 25,
                                 child: Text(
                                   "${index + 1}",
+                                  textScaleFactor: 1.7,
                                   style: TextStyle(
-                                    fontSize: 21,
                                     color: Colors.white,
                                   ),
                                   textAlign: TextAlign.center,
@@ -1299,8 +1312,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                           width: 70,
                           child: Text(
                             sets[index].weight.toStringAsFixed(1),
+                            textScaleFactor: 1.7,
                             style: TextStyle(
-                              fontSize: 21,
                               color: Colors.white,
                             ),
                             textAlign: TextAlign.center,
@@ -1314,8 +1327,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                           width: 40,
                           child: Text(
                             sets[index].reps.toString(),
+                            textScaleFactor: 1.7,
                             style: TextStyle(
-                              fontSize: 21,
                               color: Colors.white,
                             ),
                             textAlign: TextAlign.center,
@@ -1326,14 +1339,14 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                             child: (sets[index].reps != 1)
                                 ? Text(
                                     "${(sets[index].weight * (1 + sets[index].reps / 30)).toStringAsFixed(1)}",
-                                    style: TextStyle(
-                                        fontSize: 21, color: Colors.white),
+                                    textScaleFactor: 1.7,
+                                    style: TextStyle(color: Colors.white),
                                     textAlign: TextAlign.center,
                                   )
                                 : Text(
                                     "${sets[index].weight}",
-                                    style: TextStyle(
-                                        fontSize: 21, color: Colors.white),
+                                    textScaleFactor: 1.7,
+                                    style: TextStyle(color: Colors.white),
                                     textAlign: TextAlign.center,
                                   )),
                       ],
@@ -1433,7 +1446,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                             child: Text(
                           _exProvider
                               .exercisesdata.exercises[widget.eindex].name,
-                          style: TextStyle(color: Colors.white, fontSize: 30),
+                          textScaleFactor: 1.3,
+                          style: TextStyle(color: Colors.white),
                         )),
                       ],
                     ),

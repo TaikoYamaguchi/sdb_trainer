@@ -37,10 +37,9 @@ class _RoutineBankState extends State<RoutineBank> {
               padding: EdgeInsets.all(10),
               child: Text(
                 '유명 운동 Programs',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 23,
-                    fontWeight: FontWeight.bold),
+                textScaleFactor: 1.9,
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ),
           ],
@@ -117,9 +116,9 @@ class _RoutineBankState extends State<RoutineBank> {
                                         child: Text(
                                           user_famous[index].routinedata.name,
                                           overflow: TextOverflow.ellipsis,
+                                          textScaleFactor: 1.3,
                                           style: TextStyle(
                                               color: Colors.white,
-                                              fontSize: 16,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
@@ -160,10 +159,10 @@ class _RoutineBankState extends State<RoutineBank> {
                                                   size: 18),
                                               Text(
                                                 ' ${user_famous[index].subscribe.toString()}',
+                                                textScaleFactor: 1.1,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                     color: Colors.white,
-                                                    fontSize: 14,
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),
@@ -198,10 +197,9 @@ class _RoutineBankState extends State<RoutineBank> {
               padding: EdgeInsets.all(10),
               child: Text(
                 '유저가 만든 Programs',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 23,
-                    fontWeight: FontWeight.bold),
+                textScaleFactor: 1.9,
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ),
           ],
@@ -278,10 +276,10 @@ class _RoutineBankState extends State<RoutineBank> {
                                       Expanded(
                                         child: Text(
                                           user_famous[index].routinedata.name,
+                                          textScaleFactor: 1.3,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                               color: Colors.white,
-                                              fontSize: 16,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
@@ -322,10 +320,10 @@ class _RoutineBankState extends State<RoutineBank> {
                                                   size: 18),
                                               Text(
                                                 ' ${user_famous[index].subscribe.toString()}',
+                                                textScaleFactor: 1.1,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                     color: Colors.white,
-                                                    fontSize: 14,
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),
@@ -389,13 +387,14 @@ class _RoutineBankState extends State<RoutineBank> {
           if (count == 0) {
             result = Text(
               text,
-              style: TextStyle(color: color, fontSize: 14.0),
+              textScaleFactor: 1.2,
+              style: TextStyle(color: color),
             );
           } else
             result = Text(
               text,
-              style: TextStyle(
-                  color: color, fontSize: 14.0, fontWeight: FontWeight.bold),
+              textScaleFactor: 1.1,
+              style: TextStyle(color: color, fontWeight: FontWeight.bold),
             );
           return result;
         },

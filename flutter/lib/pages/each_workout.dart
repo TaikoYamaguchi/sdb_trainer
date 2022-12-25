@@ -88,7 +88,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
           children: [
             Text(
               "+버튼을 눌러 원하는 운동을 추가 하세요",
-              style: TextStyle(color: Colors.white, fontSize: 20),
+              textScaleFactor: 1.7,
+              style: TextStyle(color: Colors.white),
             ),
             SizedBox(
               height: 100,
@@ -110,7 +111,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
         children: [
           Text(
             "이곳에 검색하여 원하는 운동을 찾고,",
-            style: TextStyle(color: Colors.white, fontSize: 20),
+            textScaleFactor: 1.7,
+            style: TextStyle(color: Colors.white),
           ),
           SizedBox(
             height: 100,
@@ -133,7 +135,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
         children: [
           Text(
             "운동을 클릭하여 원하는 운동을 추가한 뒤,",
-            style: TextStyle(color: Colors.white, fontSize: 20),
+            textScaleFactor: 1.7,
+            style: TextStyle(color: Colors.white),
           ),
           SizedBox(
             height: 100,
@@ -156,7 +159,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
         children: [
           Text(
             "이곳을 눌러 Routine 수정을 완료하세요",
-            style: TextStyle(color: Colors.white, fontSize: 20),
+            textScaleFactor: 1.7,
+            style: TextStyle(color: Colors.white),
           ),
           SizedBox(
             height: 100,
@@ -273,7 +277,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                         builder: (builder, provider, child) {
                       return Text(
                         provider.workoutdata.routinedatas[widget.rindex].name,
-                        style: TextStyle(color: Colors.white, fontSize: 30),
+                        textScaleFactor: 1.3,
+                        style: TextStyle(color: Colors.white),
                       );
                     }),
                   ),
@@ -350,18 +355,21 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
               '운동을 종료 할 수 있어요',
+              textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 24),
+              style: TextStyle(color: Colors.white),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('운동을 종료 하시겠나요?',
+                    textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                    style: TextStyle(color: Colors.white)),
                 Text('외부를 터치하면 취소 할 수 있어요',
+                    textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+                    style: TextStyle(color: Colors.grey)),
               ],
             ),
             actions: <Widget>[
@@ -394,7 +402,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               Navigator.of(context, rootNavigator: true).pop();
             },
             child: Text("운동 종료 하기",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   void recordExercise() {
@@ -537,17 +545,18 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                         children: [
                           Text(
                             '커스텀 운동을 만들어보세요',
+                            textScaleFactor: 2.0,
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 24),
+                            style: TextStyle(color: Colors.white),
                           ),
                           Text('운동의 이름을 입력해 주세요',
+                              textScaleFactor: 1.3,
                               textAlign: TextAlign.center,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16)),
+                              style: TextStyle(color: Colors.white)),
                           Text('외부를 터치하면 취소 할 수 있어요',
+                              textScaleFactor: 1.0,
                               textAlign: TextAlign.center,
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 12)),
+                              style: TextStyle(color: Colors.grey)),
                           SizedBox(height: 20),
                           TextField(
                             onChanged: (value) {
@@ -596,9 +605,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                               Container(
                                 child: Text(
                                   '운동부위:',
+                                  textScaleFactor: 2.0,
                                   textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 24),
+                                  style: TextStyle(color: Colors.white),
                                 ),
                               ),
                             ],
@@ -611,9 +620,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                               Container(
                                 child: Text(
                                   '카테고리:',
+                                  textScaleFactor: 2.0,
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 24),
+                                  style: TextStyle(color: Colors.white),
                                 ),
                               ),
                               SizedBox(width: 20),
@@ -716,7 +725,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               }
             },
             child: Text(_customExUsed == true ? "존재하는 운동" : "커스텀 운동 추가",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   void _editWorkoutNameCheck(newname) async {
@@ -846,9 +855,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                             children: [
                               Text(
                                 exlist[index].name,
-                                style: TextStyle(
-                                    fontSize: _isexsearch ? 14 : 21,
-                                    color: Colors.white),
+                                textScaleFactor: _isexsearch ? 1.1 : 1.7,
+                                style: TextStyle(color: Colors.white),
                               ),
                               _isexsearch
                                   ? Container()
@@ -858,13 +866,13 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text("Rest: ${exlist[index].rest}",
+                                              textScaleFactor: 1.0,
                                               style: TextStyle(
-                                                  fontSize: 13,
                                                   color: Color(0xFF717171))),
                                           Text(
                                               "1RM: ${exinfo[0].onerm.toStringAsFixed(1)}/${exinfo[0].goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
+                                              textScaleFactor: 1.0,
                                               style: TextStyle(
-                                                  fontSize: 13,
                                                   color: Color(0xFF717171))),
                                         ],
                                       ),
@@ -950,16 +958,17 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text("운동 추가",
+                                                  textScaleFactor: 1.5,
                                                   style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 18)),
+                                                    color: Colors.white,
+                                                  )),
                                             ],
                                           ),
                                         )
                                       ]),
                                   Text("오른쪽을 눌러서 추가 할 수 있어요",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 12)),
+                                      textScaleFactor: 1.0,
+                                      style: TextStyle(color: Colors.white)),
                                 ],
                               ),
                             ),
@@ -1009,13 +1018,15 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text("이곳을 눌러보세요",
+                                          textScaleFactor: 1.5,
                                           style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 18)),
+                                            color: Colors.white,
+                                          )),
                                       Text("운동을 추가 할 수 있어요",
+                                          textScaleFactor: 1.1,
                                           style: TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 14)),
+                                            color: Colors.grey,
+                                          )),
                                     ],
                                   ),
                                 )
@@ -1067,8 +1078,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                 provider.tags.indexOf("All") != -1
                                     ? "운동부위"
                                     : '${provider.tags.toString().replaceAll('[', '').replaceAll(']', '')}',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 18),
+                                textScaleFactor: 1.5,
+                                style: TextStyle(color: Colors.white),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -1093,8 +1104,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                 provider.tags2.indexOf("All") != -1
                                     ? "운동유형"
                                     : '${provider.tags2.toString().replaceAll('[', '').replaceAll(']', '')}',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 18),
+                                textScaleFactor: 1.5,
+                                style: TextStyle(color: Colors.white),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -1121,16 +1132,18 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                   width: MediaQuery.of(context).size.width / 2 - 1,
                   child: Center(
                     child: Text("현재 루틴",
+                        textScaleFactor: 2.5,
                         style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 28)),
+                          color: Theme.of(context).primaryColor,
+                        )),
                   ),
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width / 2 - 1,
                   child: Center(
                     child: Text("운동 종목",
-                        style: TextStyle(color: Colors.white, fontSize: 28)),
+                        textScaleFactor: 2.5,
+                        style: TextStyle(color: Colors.white)),
                   ),
                 )
               ]),
@@ -1228,19 +1241,21 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                                                 .start,
                                                         children: [
                                                           Text("커스텀 운동",
+                                                              textScaleFactor:
+                                                                  1.5,
                                                               style: TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize:
-                                                                      18)),
+                                                                color: Colors
+                                                                    .white,
+                                                              )),
                                                         ],
                                                       ),
                                                     )
                                                   ]),
                                               Text("개인 운동을 추가 할 수 있어요",
+                                                  textScaleFactor: 1.0,
                                                   style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 12)),
+                                                    color: Colors.white,
+                                                  )),
                                             ],
                                           ),
                                         ),
@@ -1320,9 +1335,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                         children: [
                           Text(
                             exuniq[index].name,
-                            style: TextStyle(
-                                fontSize: _isexsearch ? 14 : 21,
-                                color: Colors.white),
+                            textScaleFactor: _isexsearch ? 1.1 : 1.7,
+                            style: TextStyle(color: Colors.white),
                           ),
                         ],
                       ),
@@ -1588,8 +1602,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                 return Text(
                                   provider.workoutdata
                                       .routinedatas[widget.rindex].name,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 30),
+                                  textScaleFactor: 1.3,
+                                  style: TextStyle(color: Colors.white),
                                 );
                               }),
                             ),

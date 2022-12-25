@@ -41,17 +41,23 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _isPhoneNumberused = false;
 
   final Map<String, Widget> _heightUnitList = const <String, Widget>{
-    "cm": Text("cm", style: TextStyle(color: Colors.white, fontSize: 24)),
-    "inch": Text("inch", style: TextStyle(color: Colors.white, fontSize: 24)),
+    "cm":
+        Text("cm", textScaleFactor: 2.0, style: TextStyle(color: Colors.white)),
+    "inch": Text("inch",
+        textScaleFactor: 2.0, style: TextStyle(color: Colors.white)),
   };
   final Map<String, Widget> _weightUnitList = const <String, Widget>{
-    "kg": Text("kg", style: TextStyle(color: Colors.white, fontSize: 24)),
-    "lb": Text("lb", style: TextStyle(color: Colors.white, fontSize: 24)),
+    "kg":
+        Text("kg", textScaleFactor: 2.0, style: TextStyle(color: Colors.white)),
+    "lb":
+        Text("lb", textScaleFactor: 2.0, style: TextStyle(color: Colors.white)),
   };
 
   final Map<bool, Widget> _genderList = const <bool, Widget>{
-    true: Text("남성", style: TextStyle(color: Colors.white, fontSize: 28)),
-    false: Text("여성", style: TextStyle(color: Colors.white, fontSize: 28)),
+    true:
+        Text("남성", textScaleFactor: 2.5, style: TextStyle(color: Colors.white)),
+    false:
+        Text("여성", textScaleFactor: 2.5, style: TextStyle(color: Colors.white)),
   };
 
   TextEditingController _userEmailCtrl = TextEditingController(text: "");
@@ -222,9 +228,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: SizedBox(),
               ),
               Text("회원가입을 진행할게요",
-                  style: TextStyle(color: Colors.white, fontSize: 28)),
+                  textScaleFactor: 2.5, style: TextStyle(color: Colors.white)),
               Text("어떻게 불러드릴까요?",
-                  style: TextStyle(color: Colors.grey, fontSize: 16)),
+                  textScaleFactor: 1.3, style: TextStyle(color: Colors.grey)),
               SizedBox(
                 height: 4,
               ),
@@ -266,9 +272,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: SizedBox(),
                     ),
                     const Text("성별을 선택해주세요",
-                        style: TextStyle(color: Colors.white, fontSize: 28)),
+                        textScaleFactor: 2.5,
+                        style: TextStyle(color: Colors.white)),
                     const Text("성별에 따라 추천 무게가 달라져요",
-                        style: TextStyle(color: Colors.grey, fontSize: 16)),
+                        textScaleFactor: 1.3,
+                        style: TextStyle(color: Colors.grey)),
                     SizedBox(
                       height: 24,
                     ),
@@ -300,9 +308,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: SizedBox(),
                     ),
                     Text("키, 몸무게를 입력해주세요",
-                        style: TextStyle(color: Colors.white, fontSize: 28)),
+                        textScaleFactor: 2.5,
+                        style: TextStyle(color: Colors.white)),
                     Text("신체에 따라 추천 프로그램이 달라져요",
-                        style: TextStyle(color: Colors.grey, fontSize: 16)),
+                        textScaleFactor: 1.3,
+                        style: TextStyle(color: Colors.grey)),
                     SizedBox(
                       height: 4,
                     ),
@@ -358,9 +368,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: SizedBox(),
                     ),
                     Text("사진을 설정해주세요",
-                        style: TextStyle(color: Colors.white, fontSize: 28)),
+                        textScaleFactor: 2.5,
+                        style: TextStyle(color: Colors.white)),
                     Text("사진을 클릭하면 변경 할 수 있어요",
-                        style: TextStyle(color: Colors.grey, fontSize: 16)),
+                        textScaleFactor: 1.3,
+                        style: TextStyle(color: Colors.grey)),
                     SizedBox(
                       height: 34,
                     ),
@@ -419,9 +431,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: SizedBox(),
                     ),
                     Text("회원가입 완료!",
-                        style: TextStyle(color: Colors.white, fontSize: 28)),
+                        textScaleFactor: 2.5,
+                        style: TextStyle(color: Colors.white)),
                     Text("1rm과 목표치를 설정해보세요",
-                        style: TextStyle(color: Colors.grey, fontSize: 16)),
+                        textScaleFactor: 1.3,
+                        style: TextStyle(color: Colors.grey)),
                     SizedBox(
                       height: 24,
                     ),
@@ -436,25 +450,25 @@ class _SignUpPageState extends State<SignUpPage> {
                               width: 120,
                               child: Text(
                                 "운동",
+                                textScaleFactor: 1.5,
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 18,
                                 ),
                               )),
                           Container(
                               width: 70,
                               child: Text("1rm",
+                                  textScaleFactor: 1.5,
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 18,
                                   ),
                                   textAlign: TextAlign.center)),
                           Container(
                               width: 80,
                               child: Text("목표",
+                                  textScaleFactor: 1.5,
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 18,
                                   ),
                                   textAlign: TextAlign.center))
                         ],
@@ -569,7 +583,8 @@ class _SignUpPageState extends State<SignUpPage> {
               width: 120,
               child: Text(
                 Exercises.name,
-                style: TextStyle(fontSize: 18, color: Colors.white),
+                textScaleFactor: 1.5,
+                style: TextStyle(color: Colors.white),
               ),
             ),
             Container(

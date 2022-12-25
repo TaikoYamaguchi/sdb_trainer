@@ -92,22 +92,25 @@ class _CalendarState extends State<Calendar> {
         Map<int, Widget> _staticList = <int, Widget>{
           0: Padding(
             child: Text("운동",
+                textScaleFactor: 1.3,
                 style: TextStyle(
-                    color: page == 0 ? Colors.white : Colors.grey,
-                    fontSize: 16)),
+                  color: page == 0 ? Colors.white : Colors.grey,
+                )),
             padding: const EdgeInsets.all(5.0),
           ),
           1: Padding(
               child: Text("달력",
+                  textScaleFactor: 1.3,
                   style: TextStyle(
-                      color: page == 1 ? Colors.white : Colors.grey,
-                      fontSize: 16)),
+                    color: page == 1 ? Colors.white : Colors.grey,
+                  )),
               padding: const EdgeInsets.all(5.0)),
           2: Padding(
               child: Text("몸무게",
+                  textScaleFactor: 1.3,
                   style: TextStyle(
-                      color: page == 2 ? Colors.white : Colors.grey,
-                      fontSize: 16)),
+                    color: page == 2 ? Colors.white : Colors.grey,
+                  )),
               padding: const EdgeInsets.all(5.0)),
         };
         return Container(
@@ -295,7 +298,9 @@ class _CalendarState extends State<Calendar> {
               builder: (builder, provider1, provider2, child) {
             return Row(
               children: [
-                Text("기록", style: TextStyle(color: Colors.white, fontSize: 25)),
+                Text("기록",
+                    textScaleFactor: 2.1,
+                    style: TextStyle(color: Colors.white)),
               ],
             );
           }),
@@ -365,11 +370,11 @@ class _CalendarState extends State<Calendar> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("몸무게를 기록해 보세요",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 18)),
+                                    textScaleFactor: 1.5,
+                                    style: TextStyle(color: Colors.white)),
                                 Text("목표치를 기록하고 달성 할 수 있어요",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 14)),
+                                    textScaleFactor: 1.1,
+                                    style: TextStyle(color: Colors.grey)),
                               ],
                             ),
                           )
@@ -398,8 +403,8 @@ class _CalendarState extends State<Calendar> {
                         padding: const EdgeInsets.only(
                             left: 24.0, top: 4.0, bottom: 4.0),
                         child: Text("몸무게 차트",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 20)),
+                            textScaleFactor: 1.7,
+                            style: TextStyle(color: Colors.white)),
                       ),
                       Container(
                         width: 100,
@@ -540,15 +545,17 @@ class _CalendarState extends State<Calendar> {
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
               '몸무게를 기록 할게요',
+              textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 24),
+              style: TextStyle(color: Colors.white),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('몸무게와 목표치를 바꿔보세요',
+                    textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 16)),
+                    style: TextStyle(color: Colors.grey)),
                 SizedBox(height: 20),
                 TextField(
                   controller: _userWeightController,
@@ -625,7 +632,8 @@ class _CalendarState extends State<Calendar> {
                     padding: EdgeInsets.all(12.0),
                   ),
                   child: Text('오늘 몸무게 기록하기',
-                      style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                      textScaleFactor: 1.7,
+                      style: TextStyle(color: Colors.white)),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                     _displayBodyWeightPushDialog(
@@ -662,15 +670,17 @@ class _CalendarState extends State<Calendar> {
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
               '몸무게를 수정 할게요',
+              textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 24),
+              style: TextStyle(color: Colors.white),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('몸무게와 목표치를 수정해보세요',
+                    textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 16)),
+                    style: TextStyle(color: Colors.grey)),
                 SizedBox(height: 20),
                 TextField(
                   controller: _userWeightController,
@@ -747,7 +757,8 @@ class _CalendarState extends State<Calendar> {
                     padding: EdgeInsets.all(12.0),
                   ),
                   child: Text('몸무게 수정 하기',
-                      style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                      textScaleFactor: 1.7,
+                      style: TextStyle(color: Colors.white)),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                     _userProvider.setUserWeightEdit(
@@ -822,15 +833,17 @@ class _CalendarState extends State<Calendar> {
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
               _weightChange,
+              textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 24),
+              style: TextStyle(color: Colors.white),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(_weightSuccess,
+                    textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 16)),
+                    style: TextStyle(color: Colors.grey)),
                 _bodyWeightChartWidget(context),
               ],
             ),
@@ -851,7 +864,8 @@ class _CalendarState extends State<Calendar> {
                     padding: EdgeInsets.all(12.0),
                   ),
                   child: Text('닫기',
-                      style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                      textScaleFactor: 1.7,
+                      style: TextStyle(color: Colors.white)),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
@@ -1173,8 +1187,8 @@ class _CalendarState extends State<Calendar> {
                   width: deviceWidth / 3 - 20,
                   child: Text(
                     "날짜",
+                    textScaleFactor: 1.1,
                     style: TextStyle(
-                      fontSize: 14,
                       color: Colors.grey,
                       fontWeight: FontWeight.bold,
                     ),
@@ -1187,8 +1201,8 @@ class _CalendarState extends State<Calendar> {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       "몸무게",
+                      textScaleFactor: 1.1,
                       style: TextStyle(
-                        fontSize: 14,
                         color: Colors.grey,
                         fontWeight: FontWeight.bold,
                       ),
@@ -1200,8 +1214,8 @@ class _CalendarState extends State<Calendar> {
                   width: deviceWidth / 3 - 20,
                   child: Text(
                     "목표",
+                    textScaleFactor: 1.1,
                     style: TextStyle(
-                      fontSize: 14,
                       color: Colors.grey,
                       fontWeight: FontWeight.bold,
                     ),
@@ -1270,7 +1284,8 @@ class _CalendarState extends State<Calendar> {
                       Container(
                         width: deviceWidth / 3 - 20,
                         child: Text(bodyStat.date.substring(0, 10),
-                            style: TextStyle(fontSize: 18, color: Colors.grey),
+                            textScaleFactor: 1.5,
+                            style: TextStyle(color: Colors.grey),
                             textAlign: TextAlign.center),
                       ),
                       Container(
@@ -1280,8 +1295,8 @@ class _CalendarState extends State<Calendar> {
                           child: Text(
                               bodyStat.weight.toStringAsFixed(1) +
                                   "${userdata.weight_unit}",
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.white),
+                              textScaleFactor: 1.5,
+                              style: TextStyle(color: Colors.white),
                               textAlign: TextAlign.center),
                         ),
                       ),
@@ -1290,7 +1305,8 @@ class _CalendarState extends State<Calendar> {
                         child: Text(
                             bodyStat.weight_goal.toStringAsFixed(1) +
                                 "${userdata.weight_unit}",
-                            style: TextStyle(fontSize: 18, color: Colors.white),
+                            textScaleFactor: 1.5,
+                            style: TextStyle(color: Colors.white),
                             textAlign: TextAlign.center),
                       ),
                       GestureDetector(
@@ -1365,7 +1381,8 @@ class _CalendarState extends State<Calendar> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(exuniq.date,
-                    style: TextStyle(fontSize: 18, color: Colors.white)),
+                    textScaleFactor: 1.5,
+                    style: TextStyle(color: Colors.white)),
               ),
             ],
           ),
@@ -1390,15 +1407,15 @@ class _CalendarState extends State<Calendar> {
                       //mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text("",
-                            style: TextStyle(
-                                fontSize: 13, color: Color(0xFF717171))),
+                            textScaleFactor: 1.0,
+                            style: TextStyle(color: Color(0xFF717171))),
                         Expanded(child: SizedBox()),
                         Text(
                             "1RM: " +
                                 exuniq.onerm.toStringAsFixed(1) +
                                 "/${exuniq.goal.toStringAsFixed(1)}${userdata.weight_unit}",
-                            style: TextStyle(
-                                fontSize: 13, color: Color(0xFF717171))),
+                            textScaleFactor: 1.0,
+                            style: TextStyle(color: Color(0xFF717171))),
                       ],
                     ),
                   )
@@ -1425,7 +1442,8 @@ class _CalendarState extends State<Calendar> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text("훈련 " + (index + 1).toString(),
-                    style: TextStyle(fontSize: 18, color: Colors.white)),
+                    textScaleFactor: 1.5,
+                    style: TextStyle(color: Colors.white)),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -1504,7 +1522,8 @@ class _CalendarState extends State<Calendar> {
                       children: [
                         Text(
                           exuniq[index].name,
-                          style: TextStyle(fontSize: 21, color: Colors.white),
+                          textScaleFactor: 1.7,
+                          style: TextStyle(color: Colors.white),
                         ),
                         Container(
                           child: Row(
@@ -1515,8 +1534,8 @@ class _CalendarState extends State<Calendar> {
                                   "1RM: " +
                                       exuniq[index].onerm.toStringAsFixed(1) +
                                       "/${exuniq[index].goal.toStringAsFixed(1)}${userdata.weight_unit}",
-                                  style: TextStyle(
-                                      fontSize: 13, color: Color(0xFF717171))),
+                                  textScaleFactor: 1.0,
+                                  style: TextStyle(color: Color(0xFF717171))),
                             ],
                           ),
                         )
@@ -1566,8 +1585,8 @@ class _CalendarState extends State<Calendar> {
                           width: 25,
                           child: Text(
                             "Set",
+                            textScaleFactor: 1.1,
                             style: TextStyle(
-                              fontSize: 14,
                               color: Colors.grey,
                               fontWeight: FontWeight.bold,
                             ),
@@ -1581,9 +1600,9 @@ class _CalendarState extends State<Calendar> {
                       width: 70,
                       child: Text(
                         "Weight(${_userProvider.userdata.weight_unit})",
+                        textScaleFactor: 1.1,
                         style: TextStyle(
                           color: Colors.grey,
-                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
@@ -1593,9 +1612,9 @@ class _CalendarState extends State<Calendar> {
                       width: 40,
                       child: Text(
                         "Reps",
+                        textScaleFactor: 1.1,
                         style: TextStyle(
                           color: Colors.grey,
-                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
@@ -1604,9 +1623,9 @@ class _CalendarState extends State<Calendar> {
                       width: 70,
                       child: Text(
                         "1RM",
+                        textScaleFactor: 1.1,
                         style: TextStyle(
                           color: Colors.grey,
-                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
@@ -1630,8 +1649,8 @@ class _CalendarState extends State<Calendar> {
                                 width: 25,
                                 child: Text(
                                   "${index + 1}",
+                                  textScaleFactor: 1.7,
                                   style: TextStyle(
-                                    fontSize: 21,
                                     color: Colors.white,
                                   ),
                                   textAlign: TextAlign.center,
@@ -1644,8 +1663,8 @@ class _CalendarState extends State<Calendar> {
                           width: 70,
                           child: Text(
                             sets[index].weight.toStringAsFixed(1),
+                            textScaleFactor: 1.7,
                             style: TextStyle(
-                              fontSize: 21,
                               color: Colors.white,
                             ),
                             textAlign: TextAlign.center,
@@ -1659,8 +1678,8 @@ class _CalendarState extends State<Calendar> {
                           width: 40,
                           child: Text(
                             sets[index].reps.toString(),
+                            textScaleFactor: 1.7,
                             style: TextStyle(
-                              fontSize: 21,
                               color: Colors.white,
                             ),
                             textAlign: TextAlign.center,
@@ -1671,14 +1690,14 @@ class _CalendarState extends State<Calendar> {
                             child: (sets[index].reps != 1)
                                 ? Text(
                                     "${(sets[index].weight * (1 + sets[index].reps / 30)).toStringAsFixed(1)}",
-                                    style: TextStyle(
-                                        fontSize: 21, color: Colors.white),
+                                    textScaleFactor: 1.7,
+                                    style: TextStyle(color: Colors.white),
                                     textAlign: TextAlign.center,
                                   )
                                 : Text(
                                     "${sets[index].weight}",
-                                    style: TextStyle(
-                                        fontSize: 21, color: Colors.white),
+                                    textScaleFactor: 1.7,
+                                    style: TextStyle(color: Colors.white),
                                     textAlign: TextAlign.center,
                                   )),
                       ],
@@ -1807,7 +1826,8 @@ class _CalendarState extends State<Calendar> {
                       child: Text(
                           _exProvider.exercisesdata!
                               .exercises[_chartIndex.chartIndex].name,
-                          style: TextStyle(color: Colors.white, fontSize: 20)),
+                          textScaleFactor: 1.7,
+                          style: TextStyle(color: Colors.white)),
                     ),
                     Container(
                       width: 100,
@@ -2053,17 +2073,20 @@ class _CalendarState extends State<Calendar> {
             ),
             backgroundColor: Theme.of(context).cardColor,
             title: Text('운동을 삭제 할 수 있어요',
+                textScaleFactor: 2.0,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 24)),
+                style: TextStyle(color: Colors.white)),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('정말로 운동을 지우시나요?',
+                    textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                    style: TextStyle(color: Colors.white)),
                 Text('외부를 터치하면 취소 할 수 있어요',
+                    textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+                    style: TextStyle(color: Colors.grey)),
               ],
             ),
             actions: <Widget>[
@@ -2095,7 +2118,7 @@ class _CalendarState extends State<Calendar> {
               Navigator.of(context, rootNavigator: true).pop();
             },
             child: Text("삭제",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   @override

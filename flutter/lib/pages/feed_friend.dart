@@ -95,12 +95,13 @@ class _FeedFriendState extends State<FeedFriend> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text("친구를 찾고 추가해 보세요",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 24)),
+                                    textScaleFactor: 2.0,
+                                    style: TextStyle(color: Colors.white)),
                                 Text("오른쪽 위 친구찾기를 클릭하세요",
+                                    textScaleFactor: 1.3,
                                     style: TextStyle(
-                                        color: Theme.of(context).primaryColor,
-                                        fontSize: 16)),
+                                      color: Theme.of(context).primaryColor,
+                                    )),
                                 SizedBox(height: 60)
                               ],
                             ),
@@ -183,7 +184,8 @@ class _FeedFriendState extends State<FeedFriend> {
                             ),
                     ),
                     Text(user.nickname,
-                        style: TextStyle(color: Colors.white, fontSize: 18.0)),
+                        textScaleFactor: 1.5,
+                        style: TextStyle(color: Colors.white)),
                   ])),
               _feedLikeButton(provider, user)
             ],

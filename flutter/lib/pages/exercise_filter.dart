@@ -220,13 +220,15 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text("커스텀 운동을 추가 해보세요",
+                                            textScaleFactor: 1.5,
                                             style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 18)),
+                                              color: Colors.white,
+                                            )),
                                         Text("개인 운동을 추가 할 수 있어요",
+                                            textScaleFactor: 1.1,
                                             style: TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 14)),
+                                              color: Colors.grey,
+                                            )),
                                       ],
                                     ),
                                   )
@@ -303,17 +305,18 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                         children: [
                           Text(
                             '커스텀 운동을 만들어보세요',
+                            textScaleFactor: 2.0,
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 24),
+                            style: TextStyle(color: Colors.white),
                           ),
                           Text('운동의 이름을 입력해 주세요',
+                              textScaleFactor: 1.3,
                               textAlign: TextAlign.center,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16)),
+                              style: TextStyle(color: Colors.white)),
                           Text('외부를 터치하면 취소 할 수 있어요',
+                              textScaleFactor: 1.0,
                               textAlign: TextAlign.center,
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 12)),
+                              style: TextStyle(color: Colors.grey)),
                           SizedBox(height: 20),
                           TextField(
                             onChanged: (value) {
@@ -362,9 +365,9 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                               Container(
                                 child: Text(
                                   '운동부위:',
+                                  textScaleFactor: 2.0,
                                   textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 24),
+                                  style: TextStyle(color: Colors.white),
                                 ),
                               ),
                             ],
@@ -377,9 +380,9 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                               Container(
                                 child: Text(
                                   '카테고리:',
+                                  textScaleFactor: 2.0,
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 24),
+                                  style: TextStyle(color: Colors.white),
                                 ),
                               ),
                               SizedBox(width: 20),
@@ -496,7 +499,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
               }
             },
             child: Text(_customExUsed == true ? "존재하는 운동" : "커스텀 운동 추가",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   Widget exercisesWidget(aaa, bool shirink) {
@@ -554,14 +557,14 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                             Expanded(
                               child: Text(
                                 exuniq[index].name,
-                                style: TextStyle(
-                                    fontSize: 21, color: Colors.white),
+                                textScaleFactor: 1.7,
+                                style: TextStyle(color: Colors.white),
                               ),
                             ),
                             Text(
                                 "1RM: ${exuniq[index].onerm.toStringAsFixed(0)}/${exuniq[index].goal.toStringAsFixed(0)}${_userProvider.userdata.weight_unit}",
-                                style: TextStyle(
-                                    fontSize: 13, color: Colors.white)),
+                                textScaleFactor: 1.7,
+                                style: TextStyle(color: Colors.white)),
                           ],
                         ),
                       ),
@@ -728,8 +731,8 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                   provider.tags.indexOf("All") != -1
                                       ? "운동부위"
                                       : '${provider.tags.toString().replaceAll('[', '').replaceAll(']', '')}',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 18),
+                                  textScaleFactor: 1.5,
+                                  style: TextStyle(color: Colors.white),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -754,8 +757,8 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                   provider.tags2.indexOf("All") != -1
                                       ? "운동유형"
                                       : '${provider.tags2.toString().replaceAll('[', '').replaceAll(']', '')}',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 18),
+                                  textScaleFactor: 1.5,
+                                  style: TextStyle(color: Colors.white),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),

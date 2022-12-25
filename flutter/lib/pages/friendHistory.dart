@@ -41,7 +41,8 @@ class _FriendHistoryState extends State<FriendHistory> {
           ),
           title: Text(
             widget.sdbdata.nickname!,
-            style: TextStyle(color: Colors.white, fontSize: 30),
+            textScaleFactor: 2.7,
+            style: TextStyle(color: Colors.white),
           ),
           backgroundColor: Color(0xFF101012),
         ));
@@ -119,7 +120,8 @@ class _FriendHistoryState extends State<FriendHistory> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(exuniq[index].name,
-                      style: TextStyle(fontSize: 16, color: Colors.white)),
+                      textScaleFactor: 1.3,
+                      style: TextStyle(color: Colors.white)),
                 ),
                 widget.sdbdata.user_email == userdata.email
                     ? GestureDetector(
@@ -166,15 +168,15 @@ class _FriendHistoryState extends State<FriendHistory> {
                         //mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text("",
-                              style: TextStyle(
-                                  fontSize: 13, color: Color(0xFF717171))),
+                              textScaleFactor: 1.0,
+                              style: TextStyle(color: Color(0xFF717171))),
                           Expanded(child: SizedBox()),
                           Text(
                               "1RM: " +
                                   exuniq[index].onerm.toStringAsFixed(1) +
                                   "/${exuniq[index].goal.toStringAsFixed(1)}${userdata.weight_unit}",
-                              style: TextStyle(
-                                  fontSize: 13, color: Color(0xFF717171))),
+                              textScaleFactor: 1.0,
+                              style: TextStyle(color: Color(0xFF717171))),
                         ],
                       ),
                     )
@@ -208,8 +210,8 @@ class _FriendHistoryState extends State<FriendHistory> {
                           width: 25,
                           child: Text(
                             "Set",
+                            textScaleFactor: 1.0,
                             style: TextStyle(
-                              fontSize: 12,
                               color: Colors.grey,
                             ),
                             textAlign: TextAlign.center,
@@ -222,9 +224,9 @@ class _FriendHistoryState extends State<FriendHistory> {
                       width: 70,
                       child: Text(
                         "Weight(${_userProvider.userdata.weight_unit})",
+                        textScaleFactor: 1.0,
                         style: TextStyle(
                           color: Colors.grey,
-                          fontSize: 12,
                         ),
                         textAlign: TextAlign.center,
                       )),
@@ -233,9 +235,9 @@ class _FriendHistoryState extends State<FriendHistory> {
                       width: 40,
                       child: Text(
                         "Reps",
+                        textScaleFactor: 1.0,
                         style: TextStyle(
                           color: Colors.grey,
-                          fontSize: 12,
                         ),
                         textAlign: TextAlign.center,
                       )),
@@ -243,9 +245,9 @@ class _FriendHistoryState extends State<FriendHistory> {
                       width: 70,
                       child: Text(
                         "1RM",
+                        textScaleFactor: 1.0,
                         style: TextStyle(
                           color: Colors.grey,
-                          fontSize: 12,
                         ),
                         textAlign: TextAlign.center,
                       )),
@@ -270,8 +272,8 @@ class _FriendHistoryState extends State<FriendHistory> {
                                 width: 25,
                                 child: Text(
                                   "${index + 1}",
+                                  textScaleFactor: 1.7,
                                   style: TextStyle(
-                                    fontSize: 21,
                                     color: Colors.white,
                                   ),
                                   textAlign: TextAlign.center,
@@ -284,8 +286,8 @@ class _FriendHistoryState extends State<FriendHistory> {
                           width: 70,
                           child: Text(
                             sets[index].weight.toStringAsFixed(1),
+                            textScaleFactor: 1.7,
                             style: TextStyle(
-                              fontSize: 21,
                               color: Colors.white,
                             ),
                             textAlign: TextAlign.center,
@@ -299,8 +301,8 @@ class _FriendHistoryState extends State<FriendHistory> {
                           width: 40,
                           child: Text(
                             sets[index].reps.toString(),
+                            textScaleFactor: 1.7,
                             style: TextStyle(
-                              fontSize: 21,
                               color: Colors.white,
                             ),
                             textAlign: TextAlign.center,
@@ -311,14 +313,14 @@ class _FriendHistoryState extends State<FriendHistory> {
                             child: (sets[index].reps != 1)
                                 ? Text(
                                     "${(sets[index].weight * (1 + sets[index].reps / 30)).toStringAsFixed(1)}",
-                                    style: TextStyle(
-                                        fontSize: 21, color: Colors.white),
+                                    textScaleFactor: 1.7,
+                                    style: TextStyle(color: Colors.white),
                                     textAlign: TextAlign.center,
                                   )
                                 : Text(
                                     "${sets[index].weight}",
-                                    style: TextStyle(
-                                        fontSize: 21, color: Colors.white),
+                                    textScaleFactor: 1.7,
+                                    style: TextStyle(color: Colors.white),
                                     textAlign: TextAlign.center,
                                   )),
                       ],

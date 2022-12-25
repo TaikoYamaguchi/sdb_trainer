@@ -89,10 +89,11 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       builder: (builder, provider, child) {
                     return Text(
                       provider.workoutdata.routinedatas[widget.rindex].name,
+                      textScaleFactor: 2.7,
                       style: TextStyle(
-                          color: Colors.white,
-                          overflow: TextOverflow.ellipsis,
-                          fontSize: 30),
+                        color: Colors.white,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     );
                   }),
                 ),
@@ -137,18 +138,21 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
               '운동을 종료 할 수 있어요',
+              textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 24),
+              style: TextStyle(color: Colors.white),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('운동을 종료 하시겠나요?',
+                    textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                    style: TextStyle(color: Colors.white)),
                 Text('외부를 터치하면 취소 할 수 있어요',
+                    textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+                    style: TextStyle(color: Colors.grey)),
               ],
             ),
             actions: <Widget>[
@@ -181,7 +185,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
               Navigator.of(context, rootNavigator: true).pop();
             },
             child: Text("운동 종료 하기",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   Widget _Nday_RoutineWidget() {
@@ -228,7 +232,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                   Container(
                     child: Text(
                       '${plandata.progress + 1}/${plandata.plans.length}day',
-                      style: TextStyle(color: Colors.white, fontSize: 24),
+                      textScaleFactor: 2.0,
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                   Container(
@@ -278,7 +283,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                   Container(
                     child: Text(
                       ' /',
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                      textScaleFactor: 1.7,
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                   Transform.scale(
@@ -319,8 +325,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                             ),
                             Text(
                               '오늘은 휴식데이!',
+                              textScaleFactor: 2.0,
                               style: TextStyle(
-                                  fontSize: 25,
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
                             ),
@@ -329,8 +335,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                             ),
                             Text(
                               '운동을 추가 하지 않으면 휴식일입니다.',
+                              textScaleFactor: 1.2,
                               style: TextStyle(
-                                  fontSize: 15,
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
                             ),
@@ -364,11 +370,10 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                             children: [
                                               GestureDetector(
                                                 child: Text(
-                                                  inplandata[index].name,
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 20),
-                                                ),
+                                                    inplandata[index].name,
+                                                    textScaleFactor: 1.7,
+                                                    style: TextStyle(
+                                                        color: Colors.white)),
                                                 onTap: () {
                                                   exselect(false, true, index);
                                                 },
@@ -403,10 +408,10 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                       child: GestureDetector(
                                                         child: Text(
                                                           '기준: ${inplandata[index].ref_name}',
+                                                          textScaleFactor: 1.2,
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.grey,
-                                                              fontSize: 15,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold),
@@ -446,10 +451,12 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                         child: Container(
                                                           child: Text(
                                                             '${((inplandata[index].sets[setindex].weight * refinfo.onerm / 100 / 2.5).floor() * 2.5).toStringAsFixed(1)}kg  X  ${inplandata[index].sets[setindex].reps}',
+                                                            textScaleFactor:
+                                                                1.7,
                                                             style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 20),
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
                                                           ),
                                                         ),
                                                         onTap: () {
@@ -584,7 +591,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                         Container(
                             child: Text(
                           '/',
-                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          textScaleFactor: 1.7,
+                          style: TextStyle(color: Colors.white),
                         )),
                         Container(
                           width: 10,
@@ -611,7 +619,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                     child: Container(
                         child: Text(
                       '운동 제거/추가',
-                      style: TextStyle(color: Colors.grey, fontSize: 15),
+                      textScaleFactor: 1.2,
+                      style: TextStyle(color: Colors.grey),
                     )),
                   )
                 ],
@@ -626,8 +635,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                             ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
                             : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
                         : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                    textScaleFactor: 2.0,
                     style: TextStyle(
-                        fontSize: 25,
                         color: (provider.userest && provider.timeron < 0)
                             ? Colors.red
                             : Colors.white)),
@@ -706,7 +715,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
             Container(
               child: Text(
                 '기준 운동: ${uniqexinfo.name}',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                textScaleFactor: 1.7,
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
             Container(
@@ -720,7 +730,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                   child: Center(
                       child: Text(
                     '기준 1rm',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    textScaleFactor: 1.7,
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   )),
                 ),
                 Container(
@@ -728,7 +739,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                   child: Center(
                       child: Text(
                     '중량비(%)',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    textScaleFactor: 1.7,
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   )),
                 ),
                 Container(
@@ -736,7 +748,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                   child: Center(
                       child: Text(
                     '횟수',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    textScaleFactor: 1.7,
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   )),
                 ),
               ],
@@ -752,7 +765,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                   child: Center(
                       child: Text(
                     uniqexinfo.onerm.toStringAsFixed(1),
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    textScaleFactor: 1.7,
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   )),
                 ),
                 Container(
@@ -890,10 +904,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
         Container(
           child: Text(
             isex ? '운동을 선택해주세요' : '1RM 기준 운동을 선택해주세요',
+            textScaleFactor: 1.7,
             style: TextStyle(
-                fontSize: 20.0,
-                color: Color(0xFF212121),
-                fontWeight: FontWeight.bold),
+                color: Color(0xFF212121), fontWeight: FontWeight.bold),
           ),
         ),
         Container(
@@ -1001,20 +1014,21 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       children: [
                         Text(
                           exuniq[index].name,
-                          style: TextStyle(fontSize: 21, color: Colors.white),
+                          textScaleFactor: 1.7,
+                          style: TextStyle(color: Colors.white),
                         ),
                         Container(
                           child: Row(
                             //mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Text("Rest: need to set",
-                                  style: TextStyle(
-                                      fontSize: 13, color: Color(0xFF717171))),
+                                  textScaleFactor: 1.0,
+                                  style: TextStyle(color: Color(0xFF717171))),
                               Expanded(child: SizedBox()),
                               Text(
                                   "1RM: ${exuniq[index].onerm.toStringAsFixed(1)}/${exuniq[index].goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
-                                  style: TextStyle(
-                                      fontSize: 13, color: Color(0xFF717171))),
+                                  textScaleFactor: 1.0,
+                                  style: TextStyle(color: Color(0xFF717171))),
                             ],
                           ),
                         )

@@ -59,7 +59,7 @@ class _NameInputDialogState extends State<NameInputDialog> {
               }
             },
             child: Text(_customRuUsed == true ? "존재하는 루틴 이름" : "루틴 이름 수정",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   void _editWorkoutNameCheck(newname) async {
@@ -110,7 +110,7 @@ class _NameInputDialogState extends State<NameInputDialog> {
               ;
             },
             child: Text(_customRuUsed == true ? "존재하는 루틴 이름" : "새 루틴 추가",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   void _editWorkoutCheck() async {
@@ -137,16 +137,19 @@ class _NameInputDialogState extends State<NameInputDialog> {
         contentPadding: EdgeInsets.all(12.0),
         title: Text(
           title,
+          textScaleFactor: 2.0,
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white, fontSize: 24),
+          style: TextStyle(color: Colors.white),
         ),
         content: Column(mainAxisSize: MainAxisSize.min, children: [
           Text('운동 루틴의 이름을 입력해 주세요',
+              textScaleFactor: 1.3,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 16)),
+              style: TextStyle(color: Colors.white)),
           Text('외부를 터치하면 취소 할 수 있어요',
+              textScaleFactor: 1.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey, fontSize: 12)),
+              style: TextStyle(color: Colors.grey)),
           SizedBox(height: 20),
           TextField(
             onChanged: (value) {
@@ -189,7 +192,8 @@ class _NameInputDialogState extends State<NameInputDialog> {
                     children: [
                       Text(
                         '플랜 모드',
-                        style: TextStyle(fontSize: 15.0, color: Colors.white),
+                        textScaleFactor: 1.2,
+                        style: TextStyle(color: Colors.white),
                       ),
                       Transform.scale(
                           scale: 1,

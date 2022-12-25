@@ -57,7 +57,8 @@ class _ProfileGoalState extends State<ProfileGoal> {
           elevation: 0,
           title: Text(
             "",
-            style: TextStyle(color: Colors.white, fontSize: 30),
+            textScaleFactor: 2.5,
+            style: TextStyle(color: Colors.white),
           ),
           backgroundColor: Color(0xFF101012),
         ));
@@ -89,13 +90,13 @@ class _ProfileGoalState extends State<ProfileGoal> {
                           child: SizedBox(),
                         ),
                         Text("운동 정보 수정",
+                            textScaleFactor: 2.7,
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 32,
                                 fontWeight: FontWeight.w600)),
                         Text("목표치와 1rm을 설정해보세요",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 16)),
+                            textScaleFactor: 1.3,
+                            style: TextStyle(color: Colors.white)),
                         SizedBox(
                           height: 40,
                         ),
@@ -110,25 +111,25 @@ class _ProfileGoalState extends State<ProfileGoal> {
                                   width: 120,
                                   child: Text(
                                     "운동",
+                                    textScaleFactor: 1.5,
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 18,
                                     ),
                                   )),
                               Container(
                                   width: 70,
                                   child: Text("1rm",
+                                      textScaleFactor: 1.5,
                                       style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 18,
                                       ),
                                       textAlign: TextAlign.center)),
                               Container(
                                   width: 80,
                                   child: Text("목표",
+                                      textScaleFactor: 1.5,
                                       style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 18,
                                       ),
                                       textAlign: TextAlign.center))
                             ],
@@ -183,7 +184,8 @@ class _ProfileGoalState extends State<ProfileGoal> {
               width: 120,
               child: Text(
                 Exercises.name,
-                style: TextStyle(fontSize: 18, color: Colors.white),
+                textScaleFactor: 1.5,
+                style: TextStyle(color: Colors.white),
               ),
             ),
             Container(
@@ -256,7 +258,7 @@ class _ProfileGoalState extends State<ProfileGoal> {
             ),
             onPressed: () => _postExerciseCheck(),
             child: Text(isLoading ? 'loggin in.....' : "운동 정보 수정",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   void _postExerciseCheck() async {

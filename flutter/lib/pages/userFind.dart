@@ -33,7 +33,8 @@ class _UserFindPageState extends State<UserFindPage> {
           elevation: 0,
           title: Text(
             "회원 찾기",
-            style: TextStyle(color: Colors.white, fontSize: 30),
+            textScaleFactor: 2.5,
+            style: TextStyle(color: Colors.white),
           ),
           backgroundColor: Color(0xFF101012),
         ));
@@ -53,10 +54,9 @@ class _UserFindPageState extends State<UserFindPage> {
                       child: SizedBox(),
                     ),
                     Text("휴대폰으로 계정 찾기(현재 사용이 어렵습니다. 고객센터로 문의 부탁드립니다)",
+                        textScaleFactor: 2.1,
                         style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 32,
-                            fontWeight: FontWeight.w800)),
+                            color: Colors.white, fontWeight: FontWeight.w800)),
                     SizedBox(
                       height: 8,
                     ),
@@ -184,7 +184,8 @@ class _UserFindPageState extends State<UserFindPage> {
                     : _isVerification == false
                         ? "휴대폰 입력"
                         : "인증번호 입력",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Colors.white))));
   }
 
   void _phoneNumberCheck() async {

@@ -73,7 +73,8 @@ class _UserProfileState extends State<UserProfile> {
         child: AppBar(
           title: Text(
             "",
-            style: TextStyle(color: Colors.white, fontSize: 30),
+            textScaleFactor: 2.5,
+            style: TextStyle(color: Colors.white),
           ),
           backgroundColor: Color(0xFF101012),
         ));
@@ -109,8 +110,8 @@ class _UserProfileState extends State<UserProfile> {
                       padding:
                           const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
                       child: Text("사진을 올릴 방법을 고를 수 있어요",
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 16.0)),
+                          textScaleFactor: 1.3,
+                          style: TextStyle(color: Colors.white)),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -140,8 +141,8 @@ class _UserProfileState extends State<UserProfile> {
                                   Icon(Icons.camera_alt,
                                       size: 24, color: Colors.white),
                                   Text('촬영',
-                                      style: TextStyle(
-                                          fontSize: 16, color: Colors.white)),
+                                      textScaleFactor: 1.3,
+                                      style: TextStyle(color: Colors.white)),
                                 ],
                               ),
                             )),
@@ -170,8 +171,8 @@ class _UserProfileState extends State<UserProfile> {
                                   Icon(Icons.collections,
                                       size: 24, color: Colors.white),
                                   Text('갤러리',
-                                      style: TextStyle(
-                                          fontSize: 16, color: Colors.white)),
+                                      textScaleFactor: 1.3,
+                                      style: TextStyle(color: Colors.white)),
                                 ],
                               ),
                             )),
@@ -195,17 +196,20 @@ class _UserProfileState extends State<UserProfile> {
             ),
             backgroundColor: Theme.of(context).cardColor,
             title: Text('정말 탈퇴 하시나요?',
+                textScaleFactor: 2.0,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 24)),
+                style: TextStyle(color: Colors.white)),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('더 많은 기능을 준비 중 이에요',
+                    textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                    style: TextStyle(color: Colors.white)),
                 Text('데이터를 지우면 복구 할 수 없어요',
+                    textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+                    style: TextStyle(color: Colors.grey)),
               ],
             ),
             actions: <Widget>[
@@ -227,14 +231,16 @@ class _UserProfileState extends State<UserProfile> {
                 ),
                 backgroundColor: Theme.of(context).cardColor,
                 title: Text('탈퇴가 완료되었어요',
+                    textScaleFactor: 2.0,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 24)),
+                    style: TextStyle(color: Colors.white)),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text('더 나은 모습으로 발전할게요',
+                        textScaleFactor: 1.0,
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.grey, fontSize: 12)),
+                        style: TextStyle(color: Colors.grey)),
                   ],
                 ),
                 actions: <Widget>[
@@ -273,7 +279,7 @@ class _UserProfileState extends State<UserProfile> {
               print('storage delete ok');
             },
             child: Text("탈퇴",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   Widget _LogOutAfterDeleteButton() {
@@ -297,7 +303,7 @@ class _UserProfileState extends State<UserProfile> {
               Navigator.of(context, rootNavigator: true).pop();
             },
             child: Text("로그아웃",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   Widget _userProfileWidget() {

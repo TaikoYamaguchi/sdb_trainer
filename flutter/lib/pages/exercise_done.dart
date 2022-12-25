@@ -87,7 +87,8 @@ class _ExerciseDoneState extends State<ExerciseDone> {
           ),
           title: Text(
             "운동 기록",
-            style: TextStyle(color: Colors.white, fontSize: 30),
+            textScaleFactor: 2.7,
+            style: TextStyle(color: Colors.white),
           ),
           backgroundColor: Color(0xFF101012),
         ));
@@ -239,8 +240,8 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                       padding:
                           const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
                       child: Text("사진을 올릴 방법을 고를 수 있어요",
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 16.0)),
+                          textScaleFactor: 1.3,
+                          style: TextStyle(color: Colors.white)),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -270,8 +271,8 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                                   Icon(Icons.camera_alt,
                                       size: 24, color: Colors.white),
                                   Text('촬영',
-                                      style: TextStyle(
-                                          fontSize: 16, color: Colors.white)),
+                                      textScaleFactor: 1.3,
+                                      style: TextStyle(color: Colors.white)),
                                 ],
                               ),
                             )),
@@ -300,8 +301,8 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                                   Icon(Icons.collections,
                                       size: 24, color: Colors.white),
                                   Text('갤러리',
-                                      style: TextStyle(
-                                          fontSize: 16, color: Colors.white)),
+                                      textScaleFactor: 1.3,
+                                      style: TextStyle(color: Colors.white)),
                                 ],
                               ),
                             )),
@@ -359,7 +360,8 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
               child: Text("운동 완료",
-                  style: TextStyle(fontSize: 20.0, color: Colors.white)))),
+                  textScaleFactor: 1.7,
+                  style: TextStyle(color: Colors.white)))),
     );
   }
 

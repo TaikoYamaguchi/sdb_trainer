@@ -201,7 +201,8 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
                         ),
                 ),
                 Text(user.nickname,
-                    style: TextStyle(color: Colors.white, fontSize: 18.0)),
+                    textScaleFactor: 1.5,
+                    style: TextStyle(color: Colors.white)),
               ])),
           _feedLikeButton(user)
         ],

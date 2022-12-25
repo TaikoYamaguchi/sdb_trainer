@@ -65,16 +65,17 @@ class ExerciseState extends State<Exercise> {
 
   final Map<int, Widget> _menuList = const <int, Widget>{
     0: Padding(
-      child: Text("개별 운동", style: TextStyle(color: Colors.white, fontSize: 16)),
+      child: Text("개별 운동",
+          textScaleFactor: 1.3, style: TextStyle(color: Colors.white)),
       padding: const EdgeInsets.all(5.0),
     ),
     1: Padding(
-        child:
-            Text("나의 플랜", style: TextStyle(color: Colors.white, fontSize: 16)),
+        child: Text("나의 플랜",
+            textScaleFactor: 1.3, style: TextStyle(color: Colors.white)),
         padding: const EdgeInsets.all(5.0)),
     2: Padding(
-        child:
-            Text("루틴 찾기", style: TextStyle(color: Colors.white, fontSize: 16)),
+        child: Text("루틴 찾기",
+            textScaleFactor: 1.3, style: TextStyle(color: Colors.white)),
         padding: const EdgeInsets.all(5.0))
   };
 
@@ -91,7 +92,8 @@ class ExerciseState extends State<Exercise> {
           children: [
             Text(
               "+버튼을 눌러 원하는 이름의 루틴을 추가하세요",
-              style: TextStyle(color: Colors.white, fontSize: 20),
+              textScaleFactor: 1.7,
+              style: TextStyle(color: Colors.white),
             ),
             SizedBox(
               height: 100,
@@ -121,7 +123,8 @@ class ExerciseState extends State<Exercise> {
             children: [
               Text(
                 "운동",
-                style: TextStyle(color: Colors.white, fontSize: 25),
+                textScaleFactor: 2.0,
+                style: TextStyle(color: Colors.white),
               ),
             ],
           ),
@@ -171,7 +174,6 @@ class ExerciseState extends State<Exercise> {
       ),
     );
   }
-
 
   Widget _ExerciseControllerWidget() {
     return SizedBox(
@@ -311,15 +313,15 @@ class ExerciseState extends State<Exercise> {
                                           _routinetimeProvider.isstarted
                                               ? showToast("운동중엔 루틴제거는 불가능 해요")
                                               : showDialog(
-                                            context: context,
-                                                builder: (BuildContext context) {
-                                                  return showsimpleAlerts(
-                                                  layer: 1,
-                                                  rindex: index,
-                                                  eindex: -1,
-                                          );
-                                                }
-                                              );
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return showsimpleAlerts(
+                                                      layer: 1,
+                                                      rindex: index,
+                                                      eindex: -1,
+                                                    );
+                                                  });
                                         },
                                         backgroundColor: Color(0xFFFE4A49),
                                         foregroundColor: Colors.white,
@@ -368,9 +370,10 @@ class ExerciseState extends State<Exercise> {
                                                         .length,
                                                 center: new Text(
                                                   "${routinelist[index].exercises[0].progress + 1}/${routinelist[index].exercises[0].plans.length}",
+                                                  textScaleFactor: 0.8,
                                                   style: new TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 10.0),
+                                                    color: Colors.white,
+                                                  ),
                                                 ),
                                                 linearGradient: gradientColors,
                                                 circularStrokeCap:
@@ -379,9 +382,9 @@ class ExerciseState extends State<Exercise> {
                                       ),
                                       title: Text(
                                         routinelist[index].name,
+                                        textScaleFactor: 1.5,
                                         style: TextStyle(
                                             color: Colors.white,
-                                            fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       subtitle: Row(
@@ -389,12 +392,12 @@ class ExerciseState extends State<Exercise> {
                                           routinelist[index].mode == 0
                                               ? Text(
                                                   "리스트 모드 - ${routinelist[index].exercises.length}개 운동",
+                                                  textScaleFactor: 1.0,
                                                   style: TextStyle(
-                                                      fontSize: 13,
                                                       color: Colors.white30))
                                               : Text("플랜 모드",
+                                                  textScaleFactor: 1.0,
                                                   style: TextStyle(
-                                                      fontSize: 13,
                                                       color: Colors.white30)),
                                         ],
                                       ),
@@ -452,11 +455,11 @@ class ExerciseState extends State<Exercise> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("이곳을 눌러보세요",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 18)),
+                                    textScaleFactor: 1.5,
+                                    style: TextStyle(color: Colors.white)),
                                 Text("원하는 운동 플랜을 만들 수 있어요",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 14)),
+                                    textScaleFactor: 1.1,
+                                    style: TextStyle(color: Colors.grey)),
                               ],
                             ),
                           )
@@ -470,7 +473,6 @@ class ExerciseState extends State<Exercise> {
       ),
     );
   }
-
 
   void filterExercise(List query) {
     final suggestions = _exProvider.exercisesdata.exercises.where((exercise) {
@@ -539,10 +541,9 @@ class ExerciseState extends State<Exercise> {
                       alignment: Alignment.center,
                       child: Text(
                         '${key_list[index]}',
+                        textScaleFactor: 1.3,
                         style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
+                            color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],

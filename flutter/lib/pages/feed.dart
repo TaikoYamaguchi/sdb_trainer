@@ -103,7 +103,8 @@ class _FeedState extends State<Feed> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("피드",
-                      style: TextStyle(color: Colors.white, fontSize: 25)),
+                      textScaleFactor: 2.1,
+                      style: TextStyle(color: Colors.white)),
                   TextButton(
                       onPressed: () {
                         Navigator.push(
@@ -211,22 +212,25 @@ class _FeedState extends State<Feed> {
     Map<int, Widget> _feedList = <int, Widget>{
       1: Padding(
         child: Text("모두 보기",
+            textScaleFactor: 1.3,
             style: TextStyle(
-                color: _feedListCtrl == 1 ? Colors.white : Colors.grey,
-                fontSize: 16)),
+              color: _feedListCtrl == 1 ? Colors.white : Colors.grey,
+            )),
         padding: const EdgeInsets.all(5.0),
       ),
       2: Padding(
           child: Text("친구 보기",
+              textScaleFactor: 1.3,
               style: TextStyle(
-                  color: _feedListCtrl == 2 ? Colors.white : Colors.grey,
-                  fontSize: 16)),
+                color: _feedListCtrl == 2 ? Colors.white : Colors.grey,
+              )),
           padding: const EdgeInsets.all(5.0)),
       3: Padding(
           child: Text("내 피드",
+              textScaleFactor: 1.3,
               style: TextStyle(
-                  color: _feedListCtrl == 3 ? Colors.white : Colors.grey,
-                  fontSize: 16)),
+                color: _feedListCtrl == 3 ? Colors.white : Colors.grey,
+              )),
           padding: const EdgeInsets.all(5.0))
     };
     return SizedBox(
@@ -259,10 +263,11 @@ class _FeedState extends State<Feed> {
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(
               "친구를 추가 할 수 있어요",
-              style: TextStyle(color: Colors.white, fontSize: 24),
+              textScaleFactor: 2.0,
+              style: TextStyle(color: Colors.white),
             ),
             Text("아래를 눌러 친구를 추가해보세요",
-                style: TextStyle(color: Colors.grey, fontSize: 16)),
+                textScaleFactor: 1.3, style: TextStyle(color: Colors.grey)),
             SizedBox(height: 24),
             SizedBox(
                 width: MediaQuery.of(context).size.width * 2 / 3,
@@ -287,7 +292,8 @@ class _FeedState extends State<Feed> {
                                   TransitionEffect.RIGHT_TO_LEFT));
                     },
                     child: Text("친구 찾기",
-                        style: TextStyle(fontSize: 20.0, color: Colors.white))))
+                        textScaleFactor: 1.7,
+                        style: TextStyle(color: Colors.white))))
           ]),
         ),
       ),
@@ -301,10 +307,11 @@ class _FeedState extends State<Feed> {
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Text(
           "첫 운동을 시작해보세요",
-          style: TextStyle(color: Colors.white, fontSize: 24),
+          textScaleFactor: 2.0,
+          style: TextStyle(color: Colors.white),
         ),
         Text("아래를 눌러서 운동 할 수 있어요",
-            style: TextStyle(color: Colors.grey, fontSize: 16)),
+            textScaleFactor: 1.3, style: TextStyle(color: Colors.grey)),
         SizedBox(height: 24),
         SizedBox(
             width: MediaQuery.of(context).size.width * 2 / 3,
@@ -324,7 +331,8 @@ class _FeedState extends State<Feed> {
                   _bodyStater.change(1);
                 },
                 child: Text("첫 운동 하기",
-                    style: TextStyle(fontSize: 20.0, color: Colors.white))))
+                    textScaleFactor: 1.7,
+                    style: TextStyle(color: Colors.white))))
       ]),
     ));
   }

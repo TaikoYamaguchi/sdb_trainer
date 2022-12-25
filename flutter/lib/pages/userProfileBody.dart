@@ -20,12 +20,16 @@ class _ProfileBodyState extends State<ProfileBody> {
   var _userWeightCtrl;
   DateTime _toDay = DateTime.now();
   final Map<String, Widget> _heightUnitList = const <String, Widget>{
-    "cm": Text("cm", style: TextStyle(color: Colors.white, fontSize: 24)),
-    "inch": Text("inch", style: TextStyle(color: Colors.white, fontSize: 24)),
+    "cm":
+        Text("cm", textScaleFactor: 2.0, style: TextStyle(color: Colors.white)),
+    "inch": Text("inch",
+        textScaleFactor: 2.0, style: TextStyle(color: Colors.white)),
   };
   final Map<String, Widget> _weightUnitList = const <String, Widget>{
-    "kg": Text("kg", style: TextStyle(color: Colors.white, fontSize: 24)),
-    "lb": Text("lb", style: TextStyle(color: Colors.white, fontSize: 24)),
+    "kg":
+        Text("kg", textScaleFactor: 2.0, style: TextStyle(color: Colors.white)),
+    "lb":
+        Text("lb", textScaleFactor: 2.0, style: TextStyle(color: Colors.white)),
   };
 
   @override
@@ -64,7 +68,8 @@ class _ProfileBodyState extends State<ProfileBody> {
           elevation: 0,
           title: Text(
             "",
-            style: TextStyle(color: Colors.white, fontSize: 30),
+            textScaleFactor: 2.5,
+            style: TextStyle(color: Colors.white),
           ),
           backgroundColor: Color(0xFF101012),
         ));
@@ -96,14 +101,14 @@ class _ProfileBodyState extends State<ProfileBody> {
                           child: SizedBox(),
                         ),
                         Text("키, 몸무게 수정",
+                            textScaleFactor: 2.7,
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 32,
                                 fontWeight: FontWeight.w600)),
                         Text("체형을 입력 할 수 있어요",
+                            textScaleFactor: 1.3,
                             style: TextStyle(
                               color: Colors.grey,
-                              fontSize: 16,
                             )),
                         SizedBox(
                           height: 24,
@@ -253,7 +258,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                   _userProvider.userdata.bodyStats.last.weight);
             },
             child: Text(isLoading ? 'loggin in.....' : "프로필 수정",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   void _editCheck() async {

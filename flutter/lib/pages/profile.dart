@@ -56,7 +56,7 @@ class _ProfileState extends State<Profile> {
           child: AppBar(
               elevation: 0,
               title: Text("설정",
-                  style: TextStyle(color: Colors.white, fontSize: 25)),
+                  textScaleFactor: 2.1, style: TextStyle(color: Colors.white)),
               actions: [
                 Container(
                     alignment: Alignment.center,
@@ -129,8 +129,8 @@ class _ProfileState extends State<Profile> {
                       padding:
                           const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
                       child: Text("사진을 올릴 방법을 고를 수 있어요",
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 16.0)),
+                          textScaleFactor: 1.3,
+                          style: TextStyle(color: Colors.white)),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -160,8 +160,8 @@ class _ProfileState extends State<Profile> {
                                   Icon(Icons.camera_alt,
                                       size: 24, color: Colors.white),
                                   Text('촬영',
-                                      style: TextStyle(
-                                          fontSize: 16, color: Colors.white)),
+                                      textScaleFactor: 1.3,
+                                      style: TextStyle(color: Colors.white)),
                                 ],
                               ),
                             )),
@@ -190,8 +190,8 @@ class _ProfileState extends State<Profile> {
                                   Icon(Icons.collections,
                                       size: 24, color: Colors.white),
                                   Text('갤러리',
-                                      style: TextStyle(
-                                          fontSize: 16, color: Colors.white)),
+                                      textScaleFactor: 1.3,
+                                      style: TextStyle(color: Colors.white)),
                                 ],
                               ),
                             )),
@@ -224,8 +224,8 @@ class _ProfileState extends State<Profile> {
           onPressed: () {
             userLogOut(context);
           },
-          child:
-              Text('로그아웃', style: TextStyle(fontSize: 16, color: Colors.white)),
+          child: Text('로그아웃',
+              textScaleFactor: 1.3, style: TextStyle(color: Colors.white)),
         ));
   }
 
@@ -437,7 +437,7 @@ class _ProfileState extends State<Profile> {
                           innerPadding: const EdgeInsets.all(4),
                           thumbDecoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
-                              color: Theme.of(context).primaryColor),
+                              color: Theme.of(context).cardColor),
                           onValueChanged: (value) {
                             setState(() {
                               _themeProvider.setUserFontsize(value);

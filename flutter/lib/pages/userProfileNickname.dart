@@ -36,7 +36,8 @@ class _ProfileNicknameState extends State<ProfileNickname> {
           elevation: 0,
           title: Text(
             "",
-            style: TextStyle(color: Colors.white, fontSize: 30),
+            textScaleFactor: 2.5,
+            style: TextStyle(color: Colors.white),
           ),
           backgroundColor: Color(0xFF101012),
         ));
@@ -68,14 +69,14 @@ class _ProfileNicknameState extends State<ProfileNickname> {
                           child: SizedBox(),
                         ),
                         Text("닉네임 변경",
+                            textScaleFactor: 2.7,
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 32,
                                 fontWeight: FontWeight.w600)),
                         Text("닉네임을 수정 할 수 있어요",
+                            textScaleFactor: 1.3,
                             style: TextStyle(
                               color: Colors.grey,
-                              fontSize: 16,
                             )),
                         SizedBox(
                           height: 24,
@@ -164,7 +165,7 @@ class _ProfileNicknameState extends State<ProfileNickname> {
             ),
             onPressed: () => _editCheck(),
             child: Text(isLoading ? 'loggin in.....' : "닉네임 수정",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   void _editCheck() async {

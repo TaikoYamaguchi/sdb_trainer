@@ -55,7 +55,8 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
           ),
           title: Text(
             "차단 친구 관리",
-            style: TextStyle(color: Colors.white, fontSize: 30),
+            textScaleFactor: 2.7,
+            style: TextStyle(color: Colors.white),
           ),
           backgroundColor: Color(0xFF101012),
         ));
@@ -87,12 +88,13 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text("차단 친구가 없어요",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 24)),
+                                    textScaleFactor: 2.0,
+                                    style: TextStyle(color: Colors.white)),
                                 Text("차단 친구는 여기서 관리 해요",
+                                    textScaleFactor: 1.3,
                                     style: TextStyle(
-                                        color: Theme.of(context).primaryColor,
-                                        fontSize: 16))
+                                      color: Theme.of(context).primaryColor,
+                                    ))
                               ],
                             ),
                           ))
@@ -155,7 +157,7 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
                     ),
             ),
             Text(user.nickname,
-                style: TextStyle(color: Colors.white, fontSize: 18.0)),
+                textScaleFactor: 1.5, style: TextStyle(color: Colors.white)),
           ]),
           _dislikeEditButton(user)
         ],

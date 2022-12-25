@@ -96,9 +96,9 @@ class _ProgramUploadState extends State<ProgramUpload> {
           ),
           title: Text(
             "나의 Program 공유",
+            textScaleFactor: 2.5,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 30,
             ),
           ),
           backgroundColor: Color(0xFF101012),
@@ -116,10 +116,9 @@ class _ProgramUploadState extends State<ProgramUpload> {
                 padding: const EdgeInsets.all(12.0),
                 alignment: Alignment.centerLeft,
                 child: Text("Program 이름:",
+                    textScaleFactor: 2.1,
                     style: TextStyle(
-                        fontSize: 25.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold)),
+                        color: Colors.white, fontWeight: FontWeight.bold)),
               ),
               _titleWidget(),
               Container(
@@ -129,8 +128,8 @@ class _ProgramUploadState extends State<ProgramUpload> {
                   children: [
                     Container(
                       child: Text("Program 난이도:",
+                          textScaleFactor: 2.1,
                           style: TextStyle(
-                              fontSize: 25.0,
                               color: Colors.white,
                               fontWeight: FontWeight.bold)),
                     ),
@@ -182,8 +181,8 @@ class _ProgramUploadState extends State<ProgramUpload> {
                   children: [
                     Container(
                       child: Text("Program 목적:",
+                          textScaleFactor: 2.1,
                           style: TextStyle(
-                              fontSize: 25.0,
                               color: Colors.white,
                               fontWeight: FontWeight.bold)),
                     ),
@@ -237,10 +236,9 @@ class _ProgramUploadState extends State<ProgramUpload> {
                 padding: const EdgeInsets.all(12.0),
                 alignment: Alignment.centerLeft,
                 child: Text("Program 설명:",
+                    textScaleFactor: 1.7,
                     style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold)),
+                        color: Colors.white, fontWeight: FontWeight.bold)),
               ),
               _commentWidget(),
               Container(
@@ -361,8 +359,8 @@ class _ProgramUploadState extends State<ProgramUpload> {
                       padding:
                           const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
                       child: Text("사진을 올릴 방법을 고를 수 있어요",
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 16.0)),
+                          textScaleFactor: 1.3,
+                          style: TextStyle(color: Colors.white)),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -394,8 +392,8 @@ class _ProgramUploadState extends State<ProgramUpload> {
                                     color: Colors.white,
                                   ),
                                   Text('촬영',
+                                      textScaleFactor: 1.3,
                                       style: TextStyle(
-                                        fontSize: 16,
                                         color: Colors.white,
                                       )),
                                 ],
@@ -425,8 +423,8 @@ class _ProgramUploadState extends State<ProgramUpload> {
                                   Icon(Icons.collections,
                                       size: 24, color: Colors.white),
                                   Text('갤러리',
-                                      style: TextStyle(
-                                          fontSize: 16, color: Colors.white)),
+                                      textScaleFactor: 1.3,
+                                      style: TextStyle(color: Colors.white)),
                                 ],
                               ),
                             )),
@@ -525,7 +523,8 @@ class _ProgramUploadState extends State<ProgramUpload> {
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
               child: Text("운동 등록",
-                  style: TextStyle(fontSize: 20.0, color: Colors.white)))),
+                  textScaleFactor: 1.7,
+                  style: TextStyle(color: Colors.white)))),
     );
   }
 

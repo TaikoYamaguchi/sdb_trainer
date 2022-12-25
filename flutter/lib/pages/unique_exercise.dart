@@ -73,7 +73,8 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
           ),
           title: Text(
             "",
-            style: TextStyle(color: Colors.white, fontSize: 30),
+            textScaleFactor: 2.5,
+            style: TextStyle(color: Colors.white),
           ),
           backgroundColor: Color(0xFF101012),
         ));
@@ -92,18 +93,21 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
               '운동을 종료 할 수 있어요',
+              textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 24),
+              style: TextStyle(color: Colors.white),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('운동을 종료 하시겠나요?',
+                    textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                    style: TextStyle(color: Colors.white)),
                 Text('외부를 터치하면 취소 할 수 있어요',
+                    textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+                    style: TextStyle(color: Colors.grey)),
               ],
             ),
             actions: <Widget>[
@@ -137,7 +141,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
               Navigator.of(context).pop();
             },
             child: Text("운동 종료 하기",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   Widget _exercisedetailWidget() {
@@ -180,9 +184,9 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                       builder: (builder, provider, child) {
                     return Text(
                       provider.restbutton,
+                      textScaleFactor: 1.7,
                       style: TextStyle(
                         color: provider.restbuttoncolor,
-                        fontSize: 21,
                         fontWeight: FontWeight.bold,
                       ),
                     );
@@ -196,9 +200,9 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                       builder: (builder, provider, child) {
                     return Text(
                       "Rest: ${provider.changetime}",
+                      textScaleFactor: 1.7,
                       style: TextStyle(
                         color: Color(0xFF717171),
-                        fontSize: 21,
                         fontWeight: FontWeight.bold,
                       ),
                     );
@@ -214,11 +218,13 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                     _exampleex.name.length < 8
                         ? Text(
                             _exampleex.name,
-                            style: TextStyle(color: Colors.white, fontSize: 48),
+                            textScaleFactor: 4.0,
+                            style: TextStyle(color: Colors.white),
                           )
                         : Text(
                             _exampleex.name,
-                            style: TextStyle(color: Colors.white, fontSize: 40),
+                            textScaleFactor: 2.7,
+                            style: TextStyle(color: Colors.white),
                           ),
                     Consumer<ExercisesdataProvider>(
                         builder: (builder, provider, child) {
@@ -226,8 +232,8 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                           provider.exercisesdata.exercises[widget.ueindex];
                       return Text(
                         "Best 1RM: ${_info.onerm}/${_info.goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
-                        style:
-                            TextStyle(color: Color(0xFF717171), fontSize: 21),
+                        textScaleFactor: 1.7,
+                        style: TextStyle(color: Color(0xFF717171)),
                       );
                     }),
                   ],
@@ -244,9 +250,9 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                         padding: EdgeInsets.only(right: 4),
                         child: Text(
                           "Set",
+                          textScaleFactor: 1.1,
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.right,
@@ -255,9 +261,9 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                         width: 70,
                         child: Text(
                           "Weight(${_userProvider.userdata.weight_unit})",
+                          textScaleFactor: 1.1,
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
@@ -267,9 +273,9 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                         width: 40,
                         child: Text(
                           "Reps",
+                          textScaleFactor: 1.1,
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
@@ -278,9 +284,9 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                         width: 70,
                         child: Text(
                           "1RM",
+                          textScaleFactor: 1.1,
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
@@ -332,8 +338,8 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                                     width: 25,
                                     child: Text(
                                       "${index + 1}",
+                                      textScaleFactor: 1.7,
                                       style: TextStyle(
-                                        fontSize: 21,
                                         color: Colors.white,
                                       ),
                                       textAlign: TextAlign.center,
@@ -414,14 +420,14 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                                 child: (_sets[index].reps != 1)
                                     ? Text(
                                         "${(_sets[index].weight * (1 + _sets[index].reps / 30)).toStringAsFixed(1)}",
-                                        style: TextStyle(
-                                            fontSize: 21, color: Colors.white),
+                                        textScaleFactor: 1.7,
+                                        style: TextStyle(color: Colors.white),
                                         textAlign: TextAlign.center,
                                       )
                                     : Text(
                                         "${_sets[index].weight}",
-                                        style: TextStyle(
-                                            fontSize: 21, color: Colors.white),
+                                        textScaleFactor: 1.7,
+                                        style: TextStyle(color: Colors.white),
                                         textAlign: TextAlign.center,
                                       )),
                           ],
@@ -454,8 +460,8 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                                   ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
                                   : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
                               : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                          textScaleFactor: 2.1,
                           style: TextStyle(
-                              fontSize: 25,
                               color: (provider.userest && provider.timeron < 0)
                                   ? Colors.red
                                   : Colors.white));
@@ -596,18 +602,21 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
               '운동을 시작 할 수 있어요',
+              textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 24),
+              style: TextStyle(color: Colors.white),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('운동을 시작 할까요?',
+                    textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                    style: TextStyle(color: Colors.white)),
                 Text('외부를 터치하면 취소 할 수 있어요',
+                    textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+                    style: TextStyle(color: Colors.grey)),
               ],
             ),
             actions: <Widget>[
@@ -642,7 +651,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
               Navigator.of(context, rootNavigator: true).pop();
             },
             child: Text("운동 시작 하기",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   void _displaySetRestAlert() {
@@ -658,15 +667,17 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
               '휴식 시간을 설정 해볼게요',
+              textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 24),
+              style: TextStyle(color: Colors.white),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('세트당 휴식 시간을 입력해주세요',
+                    textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                    style: TextStyle(color: Colors.white)),
                 SizedBox(height: 20),
                 TextField(
                   controller: _resttimectrl,
@@ -716,7 +727,8 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                     padding: EdgeInsets.all(8.0),
                   ),
                   child: Text('휴식 시간 설정하기',
-                      style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                      textScaleFactor: 1.7,
+                      style: TextStyle(color: Colors.white)),
                   onPressed: () {
                     _resttimectrl.clear();
                     Navigator.of(context, rootNavigator: true).pop();

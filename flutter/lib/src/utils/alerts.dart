@@ -22,35 +22,37 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
             backgroundColor: Theme.of(context).cardColor,
             title: type == "r"
                 ? new Text("긴급 점검 중 입니다",
+                    textScaleFactor: 2.0,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 24))
+                    style: TextStyle(color: Colors.white))
                 : new Text("앱이 업데이트 되었어요",
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 24)),
+                    textScaleFactor: 2.0,
+                    style: TextStyle(color: Colors.white)),
             content: new SingleChildScrollView(
               child: type == "r"
                   ? Column(
                       children: [
                         Text("빨리 점검을 끝내겠습니다",
+                            textScaleFactor: 1.3,
                             textAlign: TextAlign.center,
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 16)),
+                            style: TextStyle(color: Colors.white)),
                         Text("양해 부탁드립니다",
+                            textScaleFactor: 1.3,
                             textAlign: TextAlign.center,
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 16)),
+                            style: TextStyle(color: Colors.white)),
                       ],
                     )
                   : Column(
                       children: [
                         Text("더 좋은 서비스를 제공해 드리기 위해",
+                            textScaleFactor: 1.3,
                             textAlign: TextAlign.center,
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 16)),
+                            style: TextStyle(color: Colors.white)),
                         Text("앱을 업데이트 해주세요",
+                            textScaleFactor: 1.3,
                             textAlign: TextAlign.center,
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 16)),
+                            style: TextStyle(color: Colors.white)),
                       ],
                     ),
             ),
@@ -75,8 +77,8 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
                                 padding: EdgeInsets.all(12.0),
                               ),
                               child: new Text("업데이트 하러가기",
-                                  style: TextStyle(
-                                      fontSize: 20.0, color: Colors.white)),
+                                  textScaleFactor: 1.7,
+                                  style: TextStyle(color: Colors.white)),
                               onPressed: () {
                                 LaunchReview.launch(
                                     androidAppId: "com.tk_lck.supero",
@@ -107,9 +109,8 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
                                       padding: EdgeInsets.all(12.0),
                                     ),
                                     child: new Text("업데이트 하기",
-                                        style: TextStyle(
-                                            fontSize: 20.0,
-                                            color: Colors.white)),
+                                        textScaleFactor: 1.7,
+                                        style: TextStyle(color: Colors.white)),
                                     onPressed: () {
                                       LaunchReview.launch(
                                           androidAppId: "com.tk_lck.supero",
@@ -136,9 +137,9 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
                                         padding: EdgeInsets.all(12.0),
                                       ),
                                       child: new Text("다음에",
-                                          style: TextStyle(
-                                              fontSize: 20.0,
-                                              color: Colors.white)),
+                                          textScaleFactor: 1.7,
+                                          style:
+                                              TextStyle(color: Colors.white)),
                                       onPressed: () {
                                         Navigator.of(context,
                                                 rootNavigator: true)
@@ -205,17 +206,20 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
       ),
       backgroundColor: Theme.of(context).cardColor,
       title: Text(title,
+          textScaleFactor: 2.0,
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white, fontSize: 24)),
+          style: TextStyle(color: Colors.white)),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(subtitle,
+              textScaleFactor: 1.3,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 16)),
+              style: TextStyle(color: Colors.white)),
           Text(comment,
+              textScaleFactor: 1.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey, fontSize: 12)),
+              style: TextStyle(color: Colors.grey)),
         ],
       ),
       actions: <Widget>[
@@ -255,7 +259,7 @@ Widget _moveToExButton(context) {
             _routineMenuProvider.change(1);
           },
           child: Text("바로 운동 하기",
-              style: TextStyle(fontSize: 20.0, color: Colors.white))));
+              textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
 }
 
 Widget _DeleteConfirmButton_r(rindex, context) {
@@ -294,7 +298,7 @@ Widget _DeleteConfirmButton_r(rindex, context) {
             Navigator.of(context, rootNavigator: true).pop();
           },
           child: Text("삭제",
-              style: TextStyle(fontSize: 20.0, color: Colors.white))));
+              textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
 }
 
 class ExsearchOutButton extends StatefulWidget {
@@ -329,7 +333,7 @@ class _ExsearchOutButtonState extends State<ExsearchOutButton> {
               Navigator.of(context, rootNavigator: true).pop(true);
             },
             child: Text("편집 취소 하기",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   @override
@@ -361,5 +365,5 @@ Widget _StartConfirmButton(context) {
             Navigator.of(context, rootNavigator: true).pop(true);
           },
           child: Text("운동 시작 하기",
-              style: TextStyle(fontSize: 20.0, color: Colors.white))));
+              textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
 }

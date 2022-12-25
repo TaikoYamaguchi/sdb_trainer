@@ -80,8 +80,8 @@ class _FeedCardState extends State<FeedCard> {
                     child: Padding(
                         padding: const EdgeInsets.only(left: 4.0),
                         child: Text("차단된 사용자 입니다",
-                            style:
-                                TextStyle(color: Colors.grey, fontSize: 12.0))))
+                            textScaleFactor: 1.0,
+                            style: TextStyle(color: Colors.grey))))
                 : Card(
                     color: Theme.of(context).cardColor,
                     shape: RoundedRectangleBorder(
@@ -136,9 +136,8 @@ class _FeedCardState extends State<FeedCard> {
                                             const EdgeInsets.only(left: 5.0),
                                         child: Text(
                                           SDBdata.nickname,
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.white),
+                                          textScaleFactor: 1.5,
+                                          style: TextStyle(color: Colors.white),
                                         ),
                                       ),
                                     ],
@@ -151,9 +150,8 @@ class _FeedCardState extends State<FeedCard> {
                                       padding:
                                           const EdgeInsets.only(right: 4.0),
                                       child: Text(SDBdata.date.substring(2, 10),
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.grey)),
+                                          textScaleFactor: 1.1,
+                                          style: TextStyle(color: Colors.grey)),
                                     ),
                                     GestureDetector(
                                         onTapDown: _storePosition,
@@ -184,26 +182,26 @@ class _FeedCardState extends State<FeedCard> {
                                 child: Container(
                                     child: Text(
                                   "운동",
+                                  textScaleFactor: 1.1,
                                   style: TextStyle(
                                     color: Colors.grey,
-                                    fontSize: 14,
                                   ),
                                 )),
                               ),
                               Container(
                                   width: 50,
                                   child: Text("세트",
+                                      textScaleFactor: 1.1,
                                       style: TextStyle(
                                         color: Colors.grey,
-                                        fontSize: 14,
                                       ),
                                       textAlign: TextAlign.center)),
                               Container(
                                   width: 70,
                                   child: Text("1rm",
+                                      textScaleFactor: 1.1,
                                       style: TextStyle(
                                         color: Colors.grey,
-                                        fontSize: 14,
                                       ),
                                       textAlign: TextAlign.center))
                             ],
@@ -249,8 +247,8 @@ class _FeedCardState extends State<FeedCard> {
                             children: [
                               SDBdata.isVisible == false
                                   ? Text("숨겨진 피드",
-                                      style: TextStyle(
-                                          color: Colors.grey, fontSize: 14))
+                                      textScaleFactor: 1.1,
+                                      style: TextStyle(color: Colors.grey))
                                   : Container(),
                               _feedPhotoButton(SDBdata),
                               _feedLikeButton(SDBdata),
@@ -538,7 +536,8 @@ class _FeedCardState extends State<FeedCard> {
             child: Padding(
                 padding: const EdgeInsets.only(left: 4.0),
                 child: Text("차단된 사용자 입니다",
-                    style: TextStyle(color: Colors.grey, fontSize: 12.0))))
+                    textScaleFactor: 1.0,
+                    style: TextStyle(color: Colors.grey))))
         : Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -581,11 +580,11 @@ class _FeedCardState extends State<FeedCard> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(Comment.writer_nickname,
-                                  style: TextStyle(
-                                      color: Colors.grey, fontSize: 12.0)),
+                                  textScaleFactor: 1.0,
+                                  style: TextStyle(color: Colors.grey)),
                               Text(Comment.content,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 14.0)),
+                                  textScaleFactor: 1.1,
+                                  style: TextStyle(color: Colors.white)),
                             ],
                           ),
                         ),
@@ -671,15 +670,18 @@ class _FeedCardState extends State<FeedCard> {
               backgroundColor: Theme.of(context).cardColor,
               contentPadding: EdgeInsets.all(12.0),
               title: Text('운동에 글을 남겨 보세요',
+                  textScaleFactor: 2.0,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontSize: 24)),
+                  style: TextStyle(color: Colors.white)),
               content: Column(mainAxisSize: MainAxisSize.min, children: [
                 Text('코멘트를 입력해 주세요',
+                    textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                    style: TextStyle(color: Colors.white)),
                 Text('외부를 터치하면 취소 할 수 있어요',
+                    textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+                    style: TextStyle(color: Colors.grey)),
                 SizedBox(height: 20),
                 TextField(
                   onChanged: (value) {
@@ -748,7 +750,7 @@ class _FeedCardState extends State<FeedCard> {
               Navigator.of(context, rootNavigator: true).pop();
             },
             child: Text("글 남기기",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   Widget _feedTextField(text) {
@@ -761,7 +763,7 @@ class _FeedCardState extends State<FeedCard> {
             padding:
                 const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             child: Text(text,
-                style: TextStyle(color: Colors.white, fontSize: 14.0)),
+                textScaleFactor: 1.1, style: TextStyle(color: Colors.white)),
           ),
         )
       ],
@@ -802,7 +804,7 @@ class _FeedCardState extends State<FeedCard> {
                     child:
                         Icon(Icons.message, color: Colors.white, size: 24.0)),
                 Text(_commentListbyId.length.toString(),
-                    style: TextStyle(color: Colors.white, fontSize: 16.0))
+                    textScaleFactor: 1.3, style: TextStyle(color: Colors.white))
               ],
             )));
   }
@@ -840,7 +842,7 @@ class _FeedCardState extends State<FeedCard> {
                     child: Icon(Icons.camera_alt_rounded,
                         color: Colors.white, size: 24.0)),
                 Text(SDBdata.image.length.toString(),
-                    style: TextStyle(color: Colors.white, fontSize: 16.0))
+                    textScaleFactor: 1.3, style: TextStyle(color: Colors.white))
               ],
             )));
   }
@@ -878,13 +880,14 @@ class _FeedCardState extends State<FeedCard> {
           if (count == 0) {
             result = Text(
               text,
-              style: TextStyle(color: color, fontSize: 16.0),
+              textScaleFactor: 1.3,
+              style: TextStyle(color: color),
             );
           } else
             result = Text(
               text,
-              style: TextStyle(
-                  color: color, fontSize: 16.0, fontWeight: FontWeight.bold),
+              textScaleFactor: 1.3,
+              style: TextStyle(color: color, fontWeight: FontWeight.bold),
             );
           return result;
         },
@@ -952,7 +955,7 @@ class _FeedCardState extends State<FeedCard> {
               Navigator.of(context, rootNavigator: true).pop();
             },
             child: Text("차단하기",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   void _displayDislikeAlert(email) {
@@ -965,18 +968,21 @@ class _FeedCardState extends State<FeedCard> {
             ),
             backgroundColor: Theme.of(context).cardColor,
             title: Text('사용자를 차단 할 수 있어요',
+                textScaleFactor: 2.0,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 24)),
+                style: TextStyle(color: Colors.white)),
             content: Container(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text('피드와 댓글을 모두 차단 할 수 있어요',
+                      textScaleFactor: 1.3,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 16)),
+                      style: TextStyle(color: Colors.white)),
                   Text(
                     '친구 관리에서 다시 차단 해제 할 수 있어요',
-                    style: TextStyle(color: Colors.grey, fontSize: 12),
+                    textScaleFactor: 1.0,
+                    style: TextStyle(color: Colors.grey),
                   )
                 ],
               ),
@@ -1052,7 +1058,8 @@ class _FeedCardState extends State<FeedCard> {
               child: Container(
                 child: Text(
                   Exercises.name,
-                  style: TextStyle(fontSize: 16, color: Colors.white),
+                  textScaleFactor: 1.3,
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ),
@@ -1060,7 +1067,8 @@ class _FeedCardState extends State<FeedCard> {
               width: 50,
               child: Text(
                 Exercises.sets.length.toString(),
-                style: TextStyle(fontSize: 16, color: Colors.white),
+                textScaleFactor: 1.3,
+                style: TextStyle(color: Colors.white),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -1068,7 +1076,8 @@ class _FeedCardState extends State<FeedCard> {
               width: 70,
               child: Text(
                 Exercises.onerm.toStringAsFixed(1),
-                style: TextStyle(fontSize: 16, color: Colors.white),
+                textScaleFactor: 1.3,
+                style: TextStyle(color: Colors.white),
                 textAlign: TextAlign.center,
               ),
             ),

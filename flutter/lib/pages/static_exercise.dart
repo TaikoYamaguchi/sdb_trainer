@@ -82,7 +82,8 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                   child: Padding(
                     padding: const EdgeInsets.only(right: 5),
                     child: Text("운동 삭제",
-                        style: TextStyle(color: Colors.white, fontSize: 16)),
+                        textScaleFactor: 1.3,
+                        style: TextStyle(color: Colors.white)),
                   )),
             ],
           ),
@@ -131,18 +132,18 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                       _exampleex.name.length < 8
                           ? Text(
                               _exampleex.name,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 48),
+                              textScaleFactor: 4.0,
+                              style: TextStyle(color: Colors.white),
                             )
                           : Text(
                               _exampleex.name,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 32),
+                              textScaleFactor: 2.7,
+                              style: TextStyle(color: Colors.white),
                             ),
                       Text(
                         "Best 1RM: ${widget.exercise.onerm!.toStringAsFixed(1)}/${widget.exercise.goal!.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
-                        style:
-                            TextStyle(color: Color(0xFF717171), fontSize: 21),
+                        textScaleFactor: 1.7,
+                        style: TextStyle(color: Color(0xFF717171)),
                       )
                     ],
                   )),
@@ -158,9 +159,9 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                           padding: EdgeInsets.only(right: 4),
                           child: Text(
                             "Set",
+                            textScaleFactor: 1.1,
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.right,
@@ -169,9 +170,9 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                           width: 70,
                           child: Text(
                             "Weight(${_userProvider.userdata.weight_unit})",
+                            textScaleFactor: 1.1,
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.center,
@@ -181,9 +182,9 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                           width: 40,
                           child: Text(
                             "Reps",
+                            textScaleFactor: 1.1,
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.center,
@@ -192,9 +193,9 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                           width: 70,
                           child: Text(
                             "1RM",
+                            textScaleFactor: 1.1,
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.center,
@@ -264,8 +265,8 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                                             width: 25,
                                             child: Text(
                                               "${index + 1}",
+                                              textScaleFactor: 1.7,
                                               style: TextStyle(
-                                                fontSize: 21,
                                                 color: Colors.white,
                                               ),
                                               textAlign: TextAlign.center,
@@ -353,15 +354,15 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                                                     1)
                                                 ? Text(
                                                     "${(widget.exercise.sets[index].weight * (1 + widget.exercise.sets[index].reps / 30)).toStringAsFixed(1)}",
+                                                    textScaleFactor: 1.7,
                                                     style: TextStyle(
-                                                        fontSize: 21,
                                                         color: Colors.white),
                                                     textAlign: TextAlign.center,
                                                   )
                                                 : Text(
                                                     "${widget.exercise.sets[index].weight}",
+                                                    textScaleFactor: 1.7,
                                                     style: TextStyle(
-                                                        fontSize: 21,
                                                         color: Colors.white),
                                                     textAlign: TextAlign.center,
                                                   )),
