@@ -99,9 +99,9 @@ class _AppState extends State<App> {
                 onTap: (int index) {
                   _bodyStater.change(index);
                 },
-                selectedLabelStyle: TextStyle(
-                  fontWeight: FontWeight.w500,
-                ),
+                selectedFontSize: 14,
+                unselectedFontSize: 14,
+                selectedLabelStyle: TextStyle(fontWeight: FontWeight.w500),
                 currentIndex: _bodyStater.bodystate,
                 items: [
                   _bottomNavigationBarItem("home", "홈"),
