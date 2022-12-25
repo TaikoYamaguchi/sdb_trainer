@@ -529,7 +529,7 @@ class _HomeState extends State<Home> {
                           textScaleFactor:
                               provider.prefs.getString('lastroutine') == null
                                   ? 1.0
-                                  : 1.5,
+                                  : 1.4,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: provider.prefs.getString('lastroutine') ==
@@ -559,8 +559,8 @@ class _HomeState extends State<Home> {
                                 textScaleFactor:
                                     provider.prefs.getString('lastroutine') ==
                                             null
-                                        ? 1.5
-                                        : 2.0,
+                                        ? 1.3
+                                        : 1.7,
                                 style: TextStyle(
                                     color: Color(0xFffc60a8),
                                     fontWeight: FontWeight.w600)),
@@ -2692,7 +2692,7 @@ class _HomeState extends State<Home> {
                           right: deviceWidth / _devicePaddingWidth -
                               _devicePaddingWidthAdd),
                       child: Text(_historyDateCore,
-                          textScaleFactor: 1.7,
+                          textScaleFactor: 1.5,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.white,
@@ -2710,14 +2710,14 @@ class _HomeState extends State<Home> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(_historyTextCore,
-                        textScaleFactor: 2.2,
+                        textScaleFactor: 2.0,
                         style: TextStyle(
                             color: Color(0xFffc60a8),
                             fontWeight: FontWeight.w600)),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 4),
                       child: Text(_histroySideText,
-                          textScaleFactor: 1.6,
+                          textScaleFactor: 1.4,
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w600)),

@@ -1103,7 +1103,7 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
               '휴식 시간을 설정 해볼게요',
-              textScaleFactor: 2.0,
+              textScaleFactor: 1.5,
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white),
             ),

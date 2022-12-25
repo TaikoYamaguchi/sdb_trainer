@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:sdb_trainer/src/model/historydata.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/static_exercise.dart';
+import 'package:sdb_trainer/providers/themeMode.dart';
 
 class FriendHistory extends StatefulWidget {
   SDBdata sdbdata;
@@ -17,6 +18,7 @@ class FriendHistory extends StatefulWidget {
 
 class _FriendHistoryState extends State<FriendHistory> {
   var _userProvider;
+  var _themeProvider;
   @override
   void initState() {
     super.initState();
@@ -41,7 +43,7 @@ class _FriendHistoryState extends State<FriendHistory> {
           ),
           title: Text(
             widget.sdbdata.nickname!,
-            textScaleFactor: 2.7,
+            textScaleFactor: 2.0,
             style: TextStyle(color: Colors.white),
           ),
           backgroundColor: Color(0xFF101012),
@@ -296,7 +298,9 @@ class _FriendHistoryState extends State<FriendHistory> {
                         Container(
                             width: 35,
                             child: SvgPicture.asset("assets/svg/multiply.svg",
-                                color: Colors.white, height: 19)),
+                                color: Colors.white,
+                                height:
+                                    19 * _themeProvider.userFontSize / 0.8)),
                         Container(
                           width: 40,
                           child: Text(
@@ -351,6 +355,7 @@ class _FriendHistoryState extends State<FriendHistory> {
   @override
   Widget build(BuildContext context) {
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     return Scaffold(
         appBar: _appbarWidget(),
         body: _friendHistoryWidget(),

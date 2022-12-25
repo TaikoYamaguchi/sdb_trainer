@@ -557,14 +557,14 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                             Expanded(
                               child: Text(
                                 exuniq[index].name,
-                                textScaleFactor: 1.7,
+                                textScaleFactor: 1.3,
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),
                             Text(
                                 "1RM: ${exuniq[index].onerm.toStringAsFixed(0)}/${exuniq[index].goal.toStringAsFixed(0)}${_userProvider.userdata.weight_unit}",
-                                textScaleFactor: 1.7,
-                                style: TextStyle(color: Colors.white)),
+                                textScaleFactor: 1.1,
+                                style: TextStyle(color: Colors.grey)),
                           ],
                         ),
                       ),

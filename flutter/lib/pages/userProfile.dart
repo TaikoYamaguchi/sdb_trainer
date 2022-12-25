@@ -342,6 +342,7 @@ class _UserProfileState extends State<UserProfile> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(_userProvider.userdata.nickname,
+                              textScaleFactor: 1.1,
                               style: TextStyle(color: Colors.white)),
                           Icon(Icons.chevron_right, color: Colors.white),
                         ]));
@@ -372,6 +373,7 @@ class _UserProfileState extends State<UserProfile> {
                                 _userProvider.userdata.bodyStats.last.weight
                                     .toString() +
                                 _userProvider.userdata.weight_unit,
+                            textScaleFactor: 1.1,
                             style: TextStyle(color: Colors.white)),
                         Icon(Icons.chevron_right, color: Colors.white),
                       ])),
@@ -388,6 +390,7 @@ class _UserProfileState extends State<UserProfile> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(_userProvider.userdata.isMan ? "남성" : "여성",
+                            textScaleFactor: 1.1,
                             style: const TextStyle(color: Colors.white)),
                         Container(),
                       ])),
@@ -405,7 +408,9 @@ class _UserProfileState extends State<UserProfile> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: const [
-                        Text("회원탈퇴", style: TextStyle(color: Colors.grey)),
+                        Text("회원탈퇴",
+                            textScaleFactor: 1.1,
+                            style: TextStyle(color: Colors.grey)),
                         Icon(Icons.chevron_right, color: Colors.white),
                       ])),
             ),

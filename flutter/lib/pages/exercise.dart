@@ -123,7 +123,7 @@ class ExerciseState extends State<Exercise> {
             children: [
               Text(
                 "운동",
-                textScaleFactor: 2.0,
+                textScaleFactor: 1.7,
                 style: TextStyle(color: Colors.white),
               ),
             ],

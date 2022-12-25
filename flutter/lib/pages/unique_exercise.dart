@@ -12,6 +12,7 @@ import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'package:sdb_trainer/src/model/workoutdata.dart' as wod;
+import 'package:sdb_trainer/providers/themeMode.dart';
 
 class UniqueExerciseDetails extends StatefulWidget {
   int ueindex;
@@ -32,6 +33,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
   var _uniqinfo;
   bool _isstarted = false;
   bool _isChecked = false;
+  var _themeProvider;
   double top = 0;
   double bottom = 0;
   double? weight;
@@ -355,14 +357,16 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                                 keyboardType: TextInputType.numberWithOptions(
                                     signed: false, decimal: true),
                                 style: TextStyle(
-                                  fontSize: 21,
+                                  fontSize:
+                                      21 * _themeProvider.userFontSize / 0.8,
                                   color: Colors.white,
                                 ),
                                 textAlign: TextAlign.center,
                                 decoration: InputDecoration(
                                   hintText: "${_sets[index].weight}",
                                   hintStyle: TextStyle(
-                                    fontSize: 21,
+                                    fontSize:
+                                        21 * _themeProvider.userFontSize / 0.8,
                                     color: Colors.white,
                                   ),
                                 ),
@@ -384,21 +388,25 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                                 child: SvgPicture.asset(
                                     "assets/svg/multiply.svg",
                                     color: Colors.white,
-                                    height: 19)),
+                                    height: 19 *
+                                        _themeProvider.userFontSize /
+                                        0.8)),
                             Container(
                               width: 40,
                               child: TextField(
                                 controller: repsController[index],
                                 keyboardType: TextInputType.number,
                                 style: TextStyle(
-                                  fontSize: 21,
+                                  fontSize:
+                                      21 * _themeProvider.userFontSize / 0.8,
                                   color: Colors.white,
                                 ),
                                 textAlign: TextAlign.center,
                                 decoration: InputDecoration(
                                   hintText: "${_sets[index].reps}",
                                   hintStyle: TextStyle(
-                                    fontSize: 21,
+                                    fontSize:
+                                        21 * _themeProvider.userFontSize / 0.8,
                                     color: Colors.white,
                                   ),
                                 ),
@@ -683,7 +691,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                   controller: _resttimectrl,
                   keyboardType: TextInputType.number,
                   style: TextStyle(
-                    fontSize: 21,
+                    fontSize: 21 * _themeProvider.userFontSize / 0.8,
                     color: Color(0xFF101012),
                   ),
                   textAlign: TextAlign.center,
@@ -700,8 +708,9 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                             color: Theme.of(context).primaryColor, width: 3),
                       ),
                       hintText: "휴식 시간 입력(초)",
-                      hintStyle:
-                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                      hintStyle: TextStyle(
+                          fontSize: 24.0 * _themeProvider.userFontSize / 0.8,
+                          color: Colors.white)),
                   onChanged: (text) {
                     int changetime;
                     changetime = int.parse(text);
@@ -749,6 +758,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
         Provider.of<RoutineTimeProvider>(context, listen: false);
     _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     _exercise = _exProvider.exercisesdata.exercises;
+    _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
 
     return Scaffold(
       appBar: _appbarWidget(),

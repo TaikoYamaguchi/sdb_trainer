@@ -1132,7 +1132,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                   width: MediaQuery.of(context).size.width / 2 - 1,
                   child: Center(
                     child: Text("현재 루틴",
-                        textScaleFactor: 2.5,
+                        textScaleFactor: 2.0,
                         style: TextStyle(
                           color: Theme.of(context).primaryColor,
                         )),
@@ -1142,7 +1142,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                   width: MediaQuery.of(context).size.width / 2 - 1,
                   child: Center(
                     child: Text("운동 종목",
-                        textScaleFactor: 2.5,
+                        textScaleFactor: 2.0,
                         style: TextStyle(color: Colors.white)),
                   ),
                 )
@@ -1286,6 +1286,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
           List exlist =
               provider.workoutdata.routinedatas[widget.rindex].exercises;
           List existlist = [];
+          if (_exProvider.testdata == null) {
+            _exProvider.inittestdata();
+          }
           final exuniq = _exProvider.testdata;
           for (int i = 0; i < exlist.length; i++) {
             existlist.add(exlist[i].name);
@@ -1295,17 +1298,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               padding: EdgeInsets.symmetric(horizontal: 2),
               itemBuilder: (BuildContext _context, int index) {
                 bool alreadyexist = existlist.contains(exuniq[index].name);
-                if (index == 0) {
-                  top = 15;
-                  bottom = 0;
-                } else if (index == exuniq.length - 1) {
-                  top = 0;
-                  bottom = 15;
-                } else {
-                  top = 0;
-                  bottom = 0;
-                }
-                ;
                 return GestureDetector(
                   onTap: () {
                     setState(() {

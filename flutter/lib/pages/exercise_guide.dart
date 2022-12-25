@@ -1200,7 +1200,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                             "1RM: " +
                                 exuniq.onerm.toStringAsFixed(1) +
                                 "/${exuniq.goal.toStringAsFixed(1)}${userdata.weight_unit}",
-                            textScaleFactor: 1.0,
+                            textScaleFactor: 0.8,
                             style: TextStyle(color: Color(0xFF717171))),
                       ],
                     ),

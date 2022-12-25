@@ -24,6 +24,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'dart:ui' as ui;
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
+import 'package:sdb_trainer/providers/themeMode.dart';
 
 class Calendar extends StatefulWidget {
   @override
@@ -51,6 +52,7 @@ class _CalendarState extends State<Calendar> {
   bool _bodyExChartIsOpen = true;
   TextEditingController _exSearchCtrl = TextEditingController(text: "");
   TextEditingController _exCalendarSearchCtrl = TextEditingController(text: "");
+  var _themeProvider;
 
   TextEditingController _eventController = TextEditingController();
 
@@ -299,7 +301,7 @@ class _CalendarState extends State<Calendar> {
             return Row(
               children: [
                 Text("기록",
-                    textScaleFactor: 2.1,
+                    textScaleFactor: 1.7,
                     style: TextStyle(color: Colors.white)),
               ],
             );
@@ -1284,7 +1286,7 @@ class _CalendarState extends State<Calendar> {
                       Container(
                         width: deviceWidth / 3 - 20,
                         child: Text(bodyStat.date.substring(0, 10),
-                            textScaleFactor: 1.5,
+                            textScaleFactor: 1.3,
                             style: TextStyle(color: Colors.grey),
                             textAlign: TextAlign.center),
                       ),
@@ -1295,7 +1297,7 @@ class _CalendarState extends State<Calendar> {
                           child: Text(
                               bodyStat.weight.toStringAsFixed(1) +
                                   "${userdata.weight_unit}",
-                              textScaleFactor: 1.5,
+                              textScaleFactor: 1.3,
                               style: TextStyle(color: Colors.white),
                               textAlign: TextAlign.center),
                         ),
@@ -1305,7 +1307,7 @@ class _CalendarState extends State<Calendar> {
                         child: Text(
                             bodyStat.weight_goal.toStringAsFixed(1) +
                                 "${userdata.weight_unit}",
-                            textScaleFactor: 1.5,
+                            textScaleFactor: 1.3,
                             style: TextStyle(color: Colors.white),
                             textAlign: TextAlign.center),
                       ),
@@ -1522,7 +1524,7 @@ class _CalendarState extends State<Calendar> {
                       children: [
                         Text(
                           exuniq[index].name,
-                          textScaleFactor: 1.7,
+                          textScaleFactor: 1.3,
                           style: TextStyle(color: Colors.white),
                         ),
                         Container(
@@ -1649,7 +1651,7 @@ class _CalendarState extends State<Calendar> {
                                 width: 25,
                                 child: Text(
                                   "${index + 1}",
-                                  textScaleFactor: 1.7,
+                                  textScaleFactor: 1.3,
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),
@@ -1663,7 +1665,7 @@ class _CalendarState extends State<Calendar> {
                           width: 70,
                           child: Text(
                             sets[index].weight.toStringAsFixed(1),
-                            textScaleFactor: 1.7,
+                            textScaleFactor: 1.3,
                             style: TextStyle(
                               color: Colors.white,
                             ),
@@ -1673,12 +1675,14 @@ class _CalendarState extends State<Calendar> {
                         Container(
                             width: 35,
                             child: SvgPicture.asset("assets/svg/multiply.svg",
-                                color: Colors.white, height: 19)),
+                                color: Colors.white,
+                                height:
+                                    19 * _themeProvider.userFontSize / 0.8)),
                         Container(
                           width: 40,
                           child: Text(
                             sets[index].reps.toString(),
-                            textScaleFactor: 1.7,
+                            textScaleFactor: 1.3,
                             style: TextStyle(
                               color: Colors.white,
                             ),
@@ -1690,13 +1694,13 @@ class _CalendarState extends State<Calendar> {
                             child: (sets[index].reps != 1)
                                 ? Text(
                                     "${(sets[index].weight * (1 + sets[index].reps / 30)).toStringAsFixed(1)}",
-                                    textScaleFactor: 1.7,
+                                    textScaleFactor: 1.3,
                                     style: TextStyle(color: Colors.white),
                                     textAlign: TextAlign.center,
                                   )
                                 : Text(
                                     "${sets[index].weight}",
-                                    textScaleFactor: 1.7,
+                                    textScaleFactor: 1.3,
                                     style: TextStyle(color: Colors.white),
                                     textAlign: TextAlign.center,
                                   )),
@@ -2128,6 +2132,7 @@ class _CalendarState extends State<Calendar> {
     _chartIndex = Provider.of<ChartIndexProvider>(context, listen: false);
     _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
     _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
+    _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     _getChartSourcefromDay();
     return Scaffold(
         appBar: _appbarWidget(),

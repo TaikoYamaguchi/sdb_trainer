@@ -32,6 +32,7 @@ import 'package:transition/transition.dart';
 import 'package:sdb_trainer/providers/chartIndexState.dart';
 import 'package:sdb_trainer/providers/staticPageState.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
+import 'package:sdb_trainer/providers/themeMode.dart';
 import 'package:confetti/confetti.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
@@ -54,6 +55,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   var _userProvider;
   var _hisProvider;
   var _exProvider;
+  var _themeProvider;
   var _workoutProvider;
   var _routinetimeProvider;
   var _routinemenuProvider;
@@ -462,13 +464,13 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 : _exercise.name.length < 8
                                     ? Text(
                                         _exercise.name,
-                                        textScaleFactor: 4.0,
+                                        textScaleFactor: 3.2,
                                         style: TextStyle(color: Colors.white),
                                       )
                                     : Flexible(
                                         child: Text(
                                           _exercise.name,
-                                          textScaleFactor: 3.2,
+                                          textScaleFactor: 2.4,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             color: Colors.white,
@@ -754,7 +756,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                       signed: false,
                                                       decimal: true),
                                               style: TextStyle(
-                                                fontSize: 21,
+                                                fontSize: _themeProvider
+                                                        .userFontSize *
+                                                    21 /
+                                                    0.8,
                                                 color: Colors.white,
                                               ),
                                               textAlign: TextAlign.center,
@@ -762,7 +767,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                 hintText:
                                                     "${_sets[index].weight}",
                                                 hintStyle: TextStyle(
-                                                  fontSize: 21,
+                                                  fontSize: _themeProvider
+                                                          .userFontSize *
+                                                      21 /
+                                                      0.8,
                                                   color: Colors.white,
                                                 ),
                                               ),
@@ -787,7 +795,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               child: SvgPicture.asset(
                                                   "assets/svg/multiply.svg",
                                                   color: Colors.white,
-                                                  height: 19)),
+                                                  height: 19 *
+                                                      _themeProvider
+                                                          .userFontSize /
+                                                      0.8)),
                                           Container(
                                             width: 40,
                                             child: TextField(
@@ -796,7 +807,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               keyboardType:
                                                   TextInputType.number,
                                               style: TextStyle(
-                                                fontSize: 21,
+                                                fontSize: _themeProvider
+                                                        .userFontSize *
+                                                    21 /
+                                                    0.8,
                                                 color: Colors.white,
                                               ),
                                               textAlign: TextAlign.center,
@@ -804,7 +818,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                 hintText:
                                                     "${_sets[index].reps}",
                                                 hintStyle: TextStyle(
-                                                  fontSize: 21,
+                                                  fontSize: 21 *
+                                                      _themeProvider
+                                                          .userFontSize /
+                                                      0.8,
                                                   color: Colors.white,
                                                 ),
                                               ),
@@ -1146,7 +1163,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   keyboardType: TextInputType.numberWithOptions(
                       signed: false, decimal: true),
                   style: TextStyle(
-                    fontSize: 21,
+                    fontSize: 21 * _themeProvider.userFontSize / 0.8,
                     color: Colors.white,
                   ),
                   textAlign: TextAlign.center,
@@ -1165,10 +1182,13 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                       labelText: "1RM (" +
                           _exProvider.exercisesdata.exercises[index].name +
                           ")",
-                      labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
+                      labelStyle: TextStyle(
+                          fontSize: 16.0 * _themeProvider.userFontSize / 0.8,
+                          color: Colors.grey),
                       hintText: "1RM",
-                      hintStyle:
-                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                      hintStyle: TextStyle(
+                          fontSize: 24.0 * _themeProvider.userFontSize / 0.8,
+                          color: Colors.white)),
                   onChanged: (text) {},
                 ),
                 TextField(
@@ -1176,7 +1196,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   keyboardType: TextInputType.numberWithOptions(
                       signed: false, decimal: true),
                   style: TextStyle(
-                    fontSize: 21,
+                    fontSize: 21 * _themeProvider.userFontSize / 0.8,
                     color: Colors.white,
                   ),
                   textAlign: TextAlign.center,
@@ -1195,10 +1215,13 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                       labelText: "목표 (" +
                           _exProvider.exercisesdata.exercises[index].name +
                           ")",
-                      labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
+                      labelStyle: TextStyle(
+                          fontSize: 16.0 * _themeProvider.userFontSize / 0.8,
+                          color: Colors.grey),
                       hintText: "목표",
-                      hintStyle:
-                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                      hintStyle: TextStyle(
+                          fontSize: 24.0 * _themeProvider.userFontSize / 0.8,
+                          color: Colors.white)),
                   onChanged: (text) {},
                 ),
               ],
@@ -1439,7 +1462,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                   : _exercise.name.length < 8
                                       ? Text(
                                           _exercise.name,
-                                          textScaleFactor: 4.0,
+                                          textScaleFactor: 3.2,
                                           style: TextStyle(
                                             color: Colors.white,
                                           ),
@@ -1447,7 +1470,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                       : Flexible(
                                           child: Text(
                                             _exercise.name,
-                                            textScaleFactor: 3.2,
+                                            textScaleFactor: 2.4,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               color: Colors.white,
@@ -1782,7 +1805,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                 child: SvgPicture.asset(
                                                     "assets/svg/multiply.svg",
                                                     color: Colors.white,
-                                                    height: 19)),
+                                                    height: 19 *
+                                                        _themeProvider
+                                                            .userFontSize /
+                                                        0.8)),
                                             Container(
                                               width: 40,
                                               child: TextField(
@@ -1792,7 +1818,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                 keyboardType:
                                                     TextInputType.number,
                                                 style: TextStyle(
-                                                  fontSize: 21,
+                                                  fontSize: 21 *
+                                                      _themeProvider
+                                                          .userFontSize /
+                                                      0.8,
                                                   color: Colors.white,
                                                 ),
                                                 textAlign: TextAlign.center,
@@ -1800,7 +1829,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                   hintText:
                                                       "${_sets[index].reps}",
                                                   hintStyle: TextStyle(
-                                                    fontSize: 21,
+                                                    fontSize: 21 *
+                                                        _themeProvider
+                                                            .userFontSize /
+                                                        0.8,
                                                     color: Colors.white,
                                                   ),
                                                 ),
@@ -2248,7 +2280,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                   : _exercise.name.length < 8
                                       ? Text(
                                           _exercise.name,
-                                          textScaleFactor: 4.0,
+                                          textScaleFactor: 3.2,
                                           style: TextStyle(
                                             color: Colors.white,
                                           ),
@@ -2256,7 +2288,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                       : Flexible(
                                           child: Text(
                                             _exercise.name,
-                                            textScaleFactor: 3.2,
+                                            textScaleFactor: 2.4,
                                             overflow: TextOverflow.ellipsis,
                                             style:
                                                 TextStyle(color: Colors.white),
@@ -2709,7 +2741,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                           strokeWidth: 20.0,
                                           strokeCap: StrokeCap.round,
                                           textStyle: TextStyle(
-                                              fontSize: 33.0,
+                                              fontSize: 33.0 *
+                                                  _themeProvider.userFontSize /
+                                                  0.8,
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold),
                                           textFormat:
@@ -3021,7 +3055,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                       _exercise.name.length < 8
                           ? Text(
                               _exercise.name,
-                              textScaleFactor: 2.5,
+                              textScaleFactor: 3.2,
                               style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   color: Color(0xFffc60a8)),
@@ -3029,7 +3063,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           : Flexible(
                               child: Text(
                                 _exercise.name,
-                                textScaleFactor: 1.3,
+                                textScaleFactor: 2.4,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600,
@@ -3065,7 +3099,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           Container(
                               width: 20,
                               child: SvgPicture.asset("assets/svg/multiply.svg",
-                                  color: Colors.grey, height: 19)),
+                                  color: Colors.grey,
+                                  height:
+                                      19 * _themeProvider.userFontSize / 0.8)),
                           Container(
                               width: 120,
                               child: Center(
@@ -3206,7 +3242,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
               '휴식 시간을 설정 해볼게요',
-              textScaleFactor: 2.0,
+              textScaleFactor: 1.5,
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white),
             ),
@@ -3222,7 +3258,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                   controller: _resttimectrl,
                   keyboardType: TextInputType.number,
                   style: TextStyle(
-                    fontSize: 21,
+                    fontSize: 21 * _themeProvider.userFontSize / 0.8,
                     color: Colors.white,
                   ),
                   textAlign: TextAlign.center,
@@ -3239,8 +3275,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             color: Theme.of(context).primaryColor, width: 3),
                       ),
                       hintText: "휴식 시간 입력(초)",
-                      hintStyle:
-                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                      hintStyle: TextStyle(
+                          fontSize: 24.0 * _themeProvider.userFontSize / 0.8,
+                          color: Colors.white)),
                   onChanged: (text) {
                     int changetime;
                     changetime = int.parse(text);
@@ -3266,7 +3303,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                     padding: EdgeInsets.all(12.0),
                   ),
                   child: Text('휴식 시간 설정하기',
-                      textScaleFactor: 1.7,
+                      textScaleFactor: 1.5,
                       style: TextStyle(color: Colors.white)),
                   onPressed: () {
                     _workoutProvider.resttimecheck(
@@ -3333,7 +3370,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                       keyboardType: TextInputType.numberWithOptions(
                           signed: false, decimal: true),
                       style: TextStyle(
-                        fontSize: 21,
+                        fontSize: 21 * _themeProvider.userFontSize / 0.8,
                         color: provider.ispositive ? Colors.white : Colors.red,
                       ),
                       textAlign: TextAlign.center,
@@ -3343,7 +3380,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             provider.ispositive ? "+" : "-",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 35,
+                              fontSize: 35 * _themeProvider.userFontSize / 0.8,
                               color: provider.ispositive
                                   ? Colors.white
                                   : Colors.red,
@@ -3366,7 +3403,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           ),
                           hintText: "입력",
                           hintStyle: TextStyle(
-                              fontSize: 21.0,
+                              fontSize:
+                                  21.0 * _themeProvider.userFontSize / 0.8,
                               color: provider.ispositive
                                   ? Colors.white
                                   : Colors.red)),
@@ -3531,6 +3569,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     _exercises = _exProvider.exercisesdata.exercises;
     _staticPageState = Provider.of<StaticPageProvider>(context, listen: false);
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
+    _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     _prefsProvider = Provider.of<PrefsProvider>(context, listen: false);
 
     return Scaffold(

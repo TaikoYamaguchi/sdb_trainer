@@ -56,7 +56,7 @@ class _ProfileState extends State<Profile> {
           child: AppBar(
               elevation: 0,
               title: Text("설정",
-                  textScaleFactor: 2.1, style: TextStyle(color: Colors.white)),
+                  textScaleFactor: 1.7, style: TextStyle(color: Colors.white)),
               actions: [
                 Container(
                     alignment: Alignment.center,
@@ -303,7 +303,9 @@ class _ProfileState extends State<Profile> {
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("프로필", style: TextStyle(color: Colors.white)),
+                          Text("프로필",
+                              textScaleFactor: 1.1,
+                              style: TextStyle(color: Colors.white)),
                           Icon(Icons.chevron_right, color: Colors.white),
                         ]));
               })),
@@ -325,7 +327,9 @@ class _ProfileState extends State<Profile> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("목표 설정하기", style: TextStyle(color: Colors.white)),
+                        Text("목표 설정하기",
+                            textScaleFactor: 1.1,
+                            style: TextStyle(color: Colors.white)),
                         Icon(Icons.chevron_right, color: Colors.white),
                       ]))),
           ElevatedButton(
@@ -341,7 +345,9 @@ class _ProfileState extends State<Profile> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("오류 알려주기", style: TextStyle(color: Colors.white)),
+                        Text("오류 알려주기",
+                            textScaleFactor: 1.1,
+                            style: TextStyle(color: Colors.white)),
                         Icon(Icons.chevron_right, color: Colors.white),
                       ]))),
           ElevatedButton(
@@ -365,7 +371,9 @@ class _ProfileState extends State<Profile> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("친구와 운동하기", style: TextStyle(color: Colors.white)),
+                        Text("친구와 운동하기",
+                            textScaleFactor: 1.1,
+                            style: TextStyle(color: Colors.white)),
                         Icon(Icons.chevron_right, color: Colors.white),
                       ]))),
           ElevatedButton(
@@ -384,7 +392,9 @@ class _ProfileState extends State<Profile> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("평점 남기기🙏", style: TextStyle(color: Colors.white)),
+                        Text("평점 남기기🙏",
+                            textScaleFactor: 1.1,
+                            style: TextStyle(color: Colors.white)),
                         Icon(Icons.open_in_new, color: Colors.white),
                       ]))),
           Column(
@@ -399,6 +409,7 @@ class _ProfileState extends State<Profile> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("글자 크기 변경",
+                              textScaleFactor: 1.1,
                               style: TextStyle(color: Colors.white)),
                         ]),
                   )),
@@ -459,7 +470,9 @@ class _ProfileState extends State<Profile> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("로그아웃", style: TextStyle(color: Colors.white)),
+                        Text("로그아웃",
+                            textScaleFactor: 1.1,
+                            style: TextStyle(color: Colors.white)),
                         Icon(Icons.chevron_right, color: Colors.white),
                       ]))),
           SizedBox(height: 30),

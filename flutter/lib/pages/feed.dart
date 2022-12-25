@@ -103,7 +103,7 @@ class _FeedState extends State<Feed> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("피드",
-                      textScaleFactor: 2.1,
+                      textScaleFactor: 1.7,
                       style: TextStyle(color: Colors.white)),
                   TextButton(
                       onPressed: () {

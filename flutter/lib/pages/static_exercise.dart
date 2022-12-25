@@ -9,6 +9,7 @@ import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'package:sdb_trainer/src/model/workoutdata.dart' as wod;
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:sdb_trainer/providers/themeMode.dart';
 
 class StaticsExerciseDetails extends StatefulWidget {
   hisdata.Exercises exercise;
@@ -43,6 +44,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
   late List<hisdata.Exercises> exerciseList = [];
   var _exampleex;
   var _sets = wod.Setslist().setslist;
+  var _themeProvider;
 
   @override
   void initState() {
@@ -54,6 +56,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
   Widget build(BuildContext context) {
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
+    _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     return Scaffold(
       appBar: _appbarWidget(),
       body: _exercisedetailWidget(),
@@ -283,7 +286,9 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                                             TextInputType.numberWithOptions(
                                                 signed: false, decimal: true),
                                         style: TextStyle(
-                                          fontSize: 21,
+                                          fontSize: 21 *
+                                              _themeProvider.userFontSize /
+                                              0.8,
                                           color: Colors.white,
                                         ),
                                         textAlign: TextAlign.center,
@@ -291,7 +296,9 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                                           hintText:
                                               "${widget.exercise.sets[index].weight}",
                                           hintStyle: TextStyle(
-                                            fontSize: 21,
+                                            fontSize: 21 *
+                                                _themeProvider.userFontSize /
+                                                0.8,
                                             color: Colors.white,
                                           ),
                                         ),
@@ -314,14 +321,18 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                                         child: SvgPicture.asset(
                                             "assets/svg/multiply.svg",
                                             color: Colors.white,
-                                            height: 19)),
+                                            height: 19 *
+                                                _themeProvider.userFontSize /
+                                                0.8)),
                                     Container(
                                       width: 40,
                                       child: TextField(
                                         controller: repsController[index],
                                         keyboardType: TextInputType.number,
                                         style: TextStyle(
-                                          fontSize: 21,
+                                          fontSize: 21 *
+                                              _themeProvider.userFontSize /
+                                              0.8,
                                           color: Colors.white,
                                         ),
                                         textAlign: TextAlign.center,
@@ -329,7 +340,9 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                                           hintText:
                                               "${widget.exercise.sets[index].reps}",
                                           hintStyle: TextStyle(
-                                            fontSize: 21,
+                                            fontSize: 21 *
+                                                _themeProvider.userFontSize /
+                                                0.8,
                                             color: Colors.white,
                                           ),
                                         ),

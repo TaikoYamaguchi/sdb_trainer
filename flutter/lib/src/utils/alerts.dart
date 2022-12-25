@@ -22,7 +22,7 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
             backgroundColor: Theme.of(context).cardColor,
             title: type == "r"
                 ? new Text("긴급 점검 중 입니다",
-                    textScaleFactor: 2.0,
+                    textScaleFactor: 1.5,
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white))
                 : new Text("앱이 업데이트 되었어요",
@@ -206,7 +206,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
       ),
       backgroundColor: Theme.of(context).cardColor,
       title: Text(title,
-          textScaleFactor: 2.0,
+          textScaleFactor: 1.5,
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.white)),
       content: Column(
@@ -259,7 +259,7 @@ Widget _moveToExButton(context) {
             _routineMenuProvider.change(1);
           },
           child: Text("바로 운동 하기",
-              textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+              textScaleFactor: 1.5, style: TextStyle(color: Colors.white))));
 }
 
 Widget _DeleteConfirmButton_r(rindex, context) {
@@ -298,7 +298,7 @@ Widget _DeleteConfirmButton_r(rindex, context) {
             Navigator.of(context, rootNavigator: true).pop();
           },
           child: Text("삭제",
-              textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+              textScaleFactor: 1.5, style: TextStyle(color: Colors.white))));
 }
 
 class ExsearchOutButton extends StatefulWidget {
@@ -333,7 +333,7 @@ class _ExsearchOutButtonState extends State<ExsearchOutButton> {
               Navigator.of(context, rootNavigator: true).pop(true);
             },
             child: Text("편집 취소 하기",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.5, style: TextStyle(color: Colors.white))));
   }
 
   @override
@@ -365,5 +365,5 @@ Widget _StartConfirmButton(context) {
             Navigator.of(context, rootNavigator: true).pop(true);
           },
           child: Text("운동 시작 하기",
-              textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+              textScaleFactor: 1.5, style: TextStyle(color: Colors.white))));
 }
