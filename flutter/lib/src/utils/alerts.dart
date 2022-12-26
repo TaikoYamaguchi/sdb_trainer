@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/routinemenu.dart';
+import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/themeMode.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
+import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 
@@ -307,7 +310,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
               padding: EdgeInsets.all(12.0),
             ),
             onPressed: () {
-              Navigator.of(context, rootNavigator: true).pop();
+              Navigator.of(context, rootNavigator: true).pop(true);
             },
             child: Text("운동 종료 하기",
                 textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
@@ -533,6 +536,269 @@ class _newOnermAlertsState extends State<newOnermAlerts> {
       ),
       actions: <Widget>[
         _closeNewOnermButton(context),
+      ],
+    );
+  }
+}
+
+class exGoalEditAlert extends StatefulWidget {
+  exGoalEditAlert({Key? key, required this.exercise}) : super(key: key);
+  var exercise;
+  @override
+  _exGoalEditAlertState createState() => _exGoalEditAlertState();
+}
+
+class _exGoalEditAlertState extends State<exGoalEditAlert> {
+  var _exProvider;
+  var _userProvider;
+
+  void _postExerciseCheck() async {
+    ExerciseEdit(
+            user_email: _userProvider.userdata.email,
+            exercises: _exProvider.exercisesdata.exercises)
+        .editExercise()
+        .then((data) => data["user_email"] != null
+            ? {showToast("수정 완료"), _exProvider.getdata()}
+            : showToast("입력을 확인해주세요"));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
+
+    var index = _exProvider.exercisesdata.exercises
+        .indexWhere((element) => element.name == widget.exercise.name);
+    var _exOnermController = TextEditingController(
+        text: _exProvider.exercisesdata.exercises[index].onerm
+            .toStringAsFixed(1));
+    var _exGoalController = TextEditingController(
+        text:
+            _exProvider.exercisesdata.exercises[index].goal.toStringAsFixed(1));
+
+    return AlertDialog(
+      buttonPadding: EdgeInsets.all(12.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      backgroundColor: Theme.of(context).cardColor,
+      contentPadding: EdgeInsets.all(12.0),
+      title: Text(
+        '목표를 달성하셨나요?',
+        textScaleFactor: 2.0,
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.white),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text("더 높은 목표를 설정해보세요!",
+              textScaleFactor: 1.3,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey)),
+          SizedBox(height: 20),
+          TextField(
+            controller: _exOnermController,
+            keyboardType:
+                TextInputType.numberWithOptions(signed: false, decimal: true),
+            style: TextStyle(
+              fontSize: 21 * _themeProvider.userFontSize / 0.8,
+              color: Colors.white,
+            ),
+            textAlign: TextAlign.center,
+            decoration: InputDecoration(
+                filled: true,
+                enabledBorder: UnderlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor, width: 3),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor, width: 3),
+                ),
+                labelText: "1RM (" +
+                    _exProvider.exercisesdata.exercises[index].name +
+                    ")",
+                labelStyle: TextStyle(
+                    fontSize: 16.0 * _themeProvider.userFontSize / 0.8,
+                    color: Colors.grey),
+                hintText: "1RM",
+                hintStyle: TextStyle(
+                    fontSize: 24.0 * _themeProvider.userFontSize / 0.8,
+                    color: Colors.white)),
+            onChanged: (text) {},
+          ),
+          TextField(
+            controller: _exGoalController,
+            keyboardType:
+                TextInputType.numberWithOptions(signed: false, decimal: true),
+            style: TextStyle(
+              fontSize: 21 * _themeProvider.userFontSize / 0.8,
+              color: Colors.white,
+            ),
+            textAlign: TextAlign.center,
+            decoration: InputDecoration(
+                filled: true,
+                enabledBorder: UnderlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor, width: 3),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor, width: 3),
+                ),
+                labelText: "목표 (" +
+                    _exProvider.exercisesdata.exercises[index].name +
+                    ")",
+                labelStyle: TextStyle(
+                    fontSize: 16.0 * _themeProvider.userFontSize / 0.8,
+                    color: Colors.grey),
+                hintText: "목표",
+                hintStyle: TextStyle(
+                    fontSize: 24.0 * _themeProvider.userFontSize / 0.8,
+                    color: Colors.white)),
+            onChanged: (text) {},
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
+            ),
+            child: Text('수정하기',
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white)),
+            onPressed: () {
+              _exProvider.putOnermGoalValue(
+                  index,
+                  double.parse(_exOnermController.text),
+                  double.parse(_exGoalController.text));
+              _postExerciseCheck();
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class setResttimeAlert extends StatefulWidget {
+  setResttimeAlert({Key? key, required this.rindex}) : super(key: key);
+  int rindex;
+  @override
+  _setResttimeAlertState createState() => _setResttimeAlertState();
+}
+
+class _setResttimeAlertState extends State<setResttimeAlert> {
+  var _exProvider;
+  var _userProvider;
+  var _workoutProvider;
+  var _routinetimeProvider;
+  TextEditingController _resttimectrl = TextEditingController(text: "");
+
+  @override
+  Widget build(BuildContext context) {
+    var _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
+    _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
+    _routinetimeProvider =
+        Provider.of<RoutineTimeProvider>(context, listen: false);
+
+    return AlertDialog(
+      buttonPadding: EdgeInsets.all(12.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      backgroundColor: Theme.of(context).cardColor,
+      contentPadding: EdgeInsets.all(12.0),
+      title: Text(
+        '휴식 시간을 설정 해볼게요',
+        textScaleFactor: 1.5,
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.white),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('세트당 휴식 시간을 입력해주세요',
+              textScaleFactor: 1.3,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white)),
+          SizedBox(height: 20),
+          TextField(
+            controller: _resttimectrl,
+            keyboardType: TextInputType.number,
+            style: TextStyle(
+              fontSize: 21 * _themeProvider.userFontSize / 0.8,
+              color: Colors.white,
+            ),
+            textAlign: TextAlign.center,
+            decoration: InputDecoration(
+                filled: true,
+                enabledBorder: UnderlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor, width: 3),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor, width: 3),
+                ),
+                hintText: "휴식 시간 입력(초)",
+                hintStyle: TextStyle(
+                    fontSize: 24.0 * _themeProvider.userFontSize / 0.8,
+                    color: Colors.white)),
+            onChanged: (text) {
+              int changetime;
+              changetime = int.parse(text);
+              _routinetimeProvider.resttimecheck(changetime);
+            },
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
+            ),
+            child: Text('휴식 시간 설정하기',
+                textScaleFactor: 1.5, style: TextStyle(color: Colors.white)),
+            onPressed: () {
+              _resttimectrl.clear();
+              Navigator.of(context, rootNavigator: true).pop(true);
+            },
+          ),
+        ),
       ],
     );
   }
