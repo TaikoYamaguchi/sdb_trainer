@@ -411,7 +411,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          _displaySetRestAlert(pindex);
+                          _showMyDialog_Set_Resttime(pindex);
                         },
                         child: Consumer<WorkoutdataProvider>(
                             builder: (builder, provider, child) {
@@ -1144,6 +1144,21 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     }
   }
 
+  _showMyDialog_Set_Resttime(pindex) async {
+    var result = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return setResttimeAlert(
+            rindex: widget.rindex,
+          );
+        });
+    if (result == true) {
+      _workoutProvider.resttimecheck(
+          widget.rindex, pindex, _routinetimeProvider.changetime);
+      _editWorkoutwCheck();
+    }
+  }
+
   void _workoutOnermCheck(Sets _sets, ueindex) {
     var _onerm;
     var _exercise = _exProvider.exercisesdata.exercises[ueindex];
@@ -1305,7 +1320,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            _displaySetRestAlert(pindex);
+                            _showMyDialog_Set_Resttime(pindex);
                           },
                           child: Consumer<WorkoutdataProvider>(
                               builder: (builder, provider, child) {
@@ -2123,7 +2138,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            _displaySetRestAlert(pindex);
+                            _showMyDialog_Set_Resttime(pindex);
                           },
                           child: Consumer<WorkoutdataProvider>(
                               builder: (builder, provider, child) {
@@ -2912,96 +2927,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             ));
       },
     );
-  }
-
-  void _displaySetRestAlert(pindex) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            buttonPadding: EdgeInsets.all(12.0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            backgroundColor: Theme.of(context).cardColor,
-            contentPadding: EdgeInsets.all(12.0),
-            title: Text(
-              '휴식 시간을 설정 해볼게요',
-              textScaleFactor: 1.5,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('세트당 휴식 시간을 입력해주세요',
-                    textScaleFactor: 1.3,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white)),
-                SizedBox(height: 20),
-                TextField(
-                  controller: _resttimectrl,
-                  keyboardType: TextInputType.number,
-                  style: TextStyle(
-                    fontSize: 21 * _themeProvider.userFontSize / 0.8,
-                    color: Colors.white,
-                  ),
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                      filled: true,
-                      enabledBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor, width: 3),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor, width: 3),
-                      ),
-                      hintText: "휴식 시간 입력(초)",
-                      hintStyle: TextStyle(
-                          fontSize: 24.0 * _themeProvider.userFontSize / 0.8,
-                          color: Colors.white)),
-                  onChanged: (text) {
-                    int changetime;
-                    changetime = int.parse(text);
-                    _routinetimeProvider.resttimecheck(changetime);
-                  },
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    foregroundColor: Theme.of(context).primaryColor,
-                    backgroundColor: Theme.of(context).primaryColor,
-                    textStyle: TextStyle(
-                      color: Colors.white,
-                    ),
-                    disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-                    padding: EdgeInsets.all(12.0),
-                  ),
-                  child: Text('휴식 시간 설정하기',
-                      textScaleFactor: 1.5,
-                      style: TextStyle(color: Colors.white)),
-                  onPressed: () {
-                    _workoutProvider.resttimecheck(
-                        widget.rindex, pindex, _routinetimeProvider.changetime);
-                    _editWorkoutwCheck();
-                    _resttimectrl.clear();
-                    Navigator.of(context, rootNavigator: true).pop();
-                  },
-                ),
-              ),
-            ],
-          );
-        });
   }
 
   void _displaySetWeightAlert(pindex, eindex) {
