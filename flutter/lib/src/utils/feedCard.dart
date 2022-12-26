@@ -84,6 +84,7 @@ class _FeedCardState extends State<FeedCard> {
                             style: TextStyle(color: Colors.grey))))
                 : Card(
                     color: Theme.of(context).cardColor,
+                    elevation: 0.5,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0)),
                     child: Column(

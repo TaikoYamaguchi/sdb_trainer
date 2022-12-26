@@ -76,6 +76,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
           elevation: 0,
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_outlined),
+            color: Theme.of(context).primaryColorLight,
             onPressed: () {
               _btnDisabled == true
                   ? null
@@ -148,6 +149,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                   padding: const EdgeInsets.all(8.0),
                   child: Card(
                     color: Theme.of(context).cardColor,
+                    elevation: 0.0,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 8.0),
@@ -1195,10 +1197,10 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               })
             ];
       return Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: _appbarWidget(),
-          body: _programDownloadWidget(),
-          backgroundColor: Color(0xFF101012));
+        resizeToAvoidBottomInset: false,
+        appBar: _appbarWidget(),
+        body: _programDownloadWidget(),
+      );
     });
   }
 }

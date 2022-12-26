@@ -76,6 +76,7 @@ class _ExerciseDoneState extends State<ExerciseDone> {
           elevation: 0,
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_outlined),
+            color: Theme.of(context).primaryColorLight,
             onPressed: () {
               _btnDisabled == true
                   ? null

@@ -66,6 +66,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
           elevation: 0,
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_outlined),
+            color: Theme.of(context).primaryColorLight,
             onPressed: () {
               _editWorkoutCheck();
               btnDisabled == true

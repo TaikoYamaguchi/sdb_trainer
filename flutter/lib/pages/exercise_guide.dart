@@ -78,7 +78,10 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
       titleSpacing: 0,
       leading: Center(
         child: GestureDetector(
-          child: Icon(Icons.arrow_back_ios_outlined),
+          child: Icon(
+            Icons.arrow_back_ios_outlined,
+            color: Theme.of(context).primaryColorLight,
+          ),
           onTap: () {
             btnDisabled == true
                 ? null

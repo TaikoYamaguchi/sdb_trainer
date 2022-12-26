@@ -61,6 +61,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
           elevation: 0,
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_outlined),
+            color: Theme.of(context).primaryColorLight,
             onPressed: () {
               _routinetimeProvider.isstarted
                   ? _displayFinishAlert()

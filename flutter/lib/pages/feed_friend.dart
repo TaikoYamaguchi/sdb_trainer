@@ -39,6 +39,7 @@ class _FeedFriendState extends State<FeedFriend> {
         child: AppBar(
           elevation: 0,
           leading: IconButton(
+            color: Theme.of(context).primaryColorLight,
             icon: Icon(Icons.arrow_back_ios_outlined),
             onPressed: () {
               btnDisabled == true

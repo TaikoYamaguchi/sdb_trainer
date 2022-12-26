@@ -68,9 +68,23 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   PreferredSizeWidget _appbarWidget() {
+    var _btnDisabled = false;
     return PreferredSize(
         preferredSize: Size.fromHeight(40.0), // here the desired height
         child: AppBar(
+          elevation: 0.0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios_outlined),
+            color: Theme.of(context).primaryColorLight,
+            onPressed: () {
+              _btnDisabled == true
+                  ? null
+                  : [
+                      Navigator.of(context).pop(),
+                      _btnDisabled = true,
+                    ];
+            },
+          ),
           title: Text(
             "",
             textScaleFactor: 2.5,

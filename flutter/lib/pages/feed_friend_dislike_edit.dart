@@ -44,6 +44,7 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
           elevation: 0,
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_outlined),
+            color: Theme.of(context).primaryColorLight,
             onPressed: () {
               btnDisabled == true
                   ? null

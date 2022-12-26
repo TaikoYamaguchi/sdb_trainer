@@ -80,7 +80,8 @@ class MyApp extends StatelessWidget {
               canvasColor: Colors.white,
               brightness: Brightness.light,
               primaryColorLight: Colors.black,
-              primaryColorDark: Colors.grey,
+              primaryColorDark: Color(0xFFB5B9C2),
+              indicatorColor: const Color(0xfff2f3f5),
               textSelectionTheme: TextSelectionThemeData(
                 cursorColor: const Color(0xff7a28cb),
                 selectionColor: const Color(0xff7a28cb),
@@ -98,7 +99,8 @@ class MyApp extends StatelessWidget {
               cardColor: const Color(0xff25272c),
               canvasColor: const Color(0xFF101012),
               primaryColorLight: Colors.white,
-              primaryColorDark: Colors.grey,
+              primaryColorDark: Color(0xFF717171),
+              indicatorColor: const Color(0xFF212121),
               textSelectionTheme: TextSelectionThemeData(
                 cursorColor: const Color(0xff7a28cb),
                 selectionColor: const Color(0xff7a28cb),

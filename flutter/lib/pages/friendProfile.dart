@@ -41,6 +41,7 @@ class _FriendProfileState extends State<FriendProfile> {
           elevation: 0,
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_outlined),
+            color: Theme.of(context).primaryColorLight,
             onPressed: () {
               btnDisabled == true
                   ? null
@@ -183,7 +184,7 @@ class _FriendProfileState extends State<FriendProfile> {
           width: MediaQuery.of(context).size.width,
           height: 40.0,
           decoration: BoxDecoration(
-              color: isLiked ? Colors.deepPurpleAccent : Colors.grey,
+              color: isLiked ? Theme.of(context).primaryColor : Colors.grey,
               borderRadius: BorderRadius.circular(10)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

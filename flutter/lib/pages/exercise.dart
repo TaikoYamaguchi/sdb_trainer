@@ -119,6 +119,7 @@ class ExerciseState extends State<Exercise> {
                 return IconButton(
                   iconSize: 30,
                   icon: Icon(Icons.refresh_rounded),
+                  color: Theme.of(context).primaryColorLight,
                   onPressed: () {
                     _onRefresh();
                   },
@@ -263,9 +264,9 @@ class ExerciseState extends State<Exercise> {
                         children: [
                           Card(
                               color: Theme.of(context).cardColor,
+                              elevation: 0.5,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15.0)),
-                              elevation: 8.0,
                               margin: new EdgeInsets.symmetric(
                                   horizontal: 0, vertical: 6.0),
                               child: Slidable(
@@ -504,6 +505,7 @@ class ExerciseState extends State<Exercise> {
                       transitionEffect: TransitionEffect.BOTTOM_TO_TOP));
             },
             child: Card(
+              elevation: 0.3,
               child: Container(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

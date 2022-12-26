@@ -48,7 +48,10 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
           titleSpacing: 0,
           leading: Center(
             child: GestureDetector(
-              child: Icon(Icons.arrow_back_ios_outlined),
+              child: Icon(
+                Icons.arrow_back_ios_outlined,
+                color: Theme.of(context).primaryColorLight,
+              ),
               onTap: () {
                 btnDisabled == true
                     ? null
@@ -95,7 +98,10 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                 onTap: () {
                   _menucontroller.expanded = !_menucontroller.expanded;
                 },
-                child: Icon(Icons.filter_list))
+                child: Icon(
+                  Icons.filter_list,
+                  color: Theme.of(context).primaryColorLight,
+                ))
           ],
           backgroundColor: Theme.of(context).canvasColor,
         ));

@@ -66,7 +66,8 @@ class _AppState extends State<App> {
   BottomNavigationBarItem _bottomNavigationBarItem(
       String iconName, String label) {
     return BottomNavigationBarItem(
-      icon: SvgPicture.asset("assets/svg/${iconName}_off.svg"),
+      icon: SvgPicture.asset("assets/svg/${iconName}_off.svg",
+          color: Theme.of(context).primaryColorDark),
       activeIcon: SvgPicture.asset("assets/svg/${iconName}_on.svg",
           color: Theme.of(context).primaryColorLight),
       label: label,
@@ -76,8 +77,8 @@ class _AppState extends State<App> {
   Widget _bottomNavigationBarwidget() {
     var width = MediaQuery.of(context).size.width;
     return Container(
-      decoration: const BoxDecoration(
-        color: Color(0xFF212121),
+      decoration: BoxDecoration(
+        color: Theme.of(context).indicatorColor,
         borderRadius: BorderRadius.only(
             topRight: Radius.circular(30), topLeft: Radius.circular(30)),
       ),
@@ -91,10 +92,10 @@ class _AppState extends State<App> {
             mainAxisSize: MainAxisSize.min,
             children: [
               BottomNavigationBar(
-                backgroundColor: const Color(0xFF212121),
+                backgroundColor: Theme.of(context).indicatorColor,
                 type: BottomNavigationBarType.fixed,
                 selectedItemColor: Theme.of(context).primaryColorLight,
-                unselectedItemColor: Color(0xFF717171),
+                unselectedItemColor: Theme.of(context).primaryColorDark,
                 elevation: 0.0,
                 onTap: (int index) {
                   _bodyStater.change(index);
