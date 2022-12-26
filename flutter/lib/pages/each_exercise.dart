@@ -3051,6 +3051,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
               children: [
                 Stack(children: [
                   Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       _exercise.name.length < 8
                           ? Text(
