@@ -1,7 +1,10 @@
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/routinemenu.dart';
+import 'package:sdb_trainer/providers/themeMode.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
@@ -159,11 +162,13 @@ class showsimpleAlerts extends StatefulWidget {
       {Key? key,
       required this.layer,
       required this.rindex,
-      required this.eindex})
+      required this.eindex,
+      this.specificvar})
       : super(key: key);
   int layer;
   int rindex;
   int eindex;
+  var specificvar;
   @override
   _showsimpleAlertsState createState() => _showsimpleAlertsState();
 }
@@ -233,6 +238,29 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
       ],
     );
   }
+}
+
+Widget _closeNewOnermButton(context) {
+  return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: TextButton(
+          style: TextButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            foregroundColor: Theme.of(context).primaryColor,
+            backgroundColor: Theme.of(context).primaryColor,
+            textStyle: TextStyle(
+              color: Colors.white,
+            ),
+            disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+            padding: EdgeInsets.all(12.0),
+          ),
+          onPressed: () {
+            Navigator.of(context, rootNavigator: true).pop();
+          },
+          child: Text("계속 운동 하기",
+              textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
 }
 
 Widget _moveToExButton(context) {
@@ -366,4 +394,138 @@ Widget _StartConfirmButton(context) {
           },
           child: Text("운동 시작 하기",
               textScaleFactor: 1.5, style: TextStyle(color: Colors.white))));
+}
+
+class newOnermAlerts extends StatefulWidget {
+  newOnermAlerts(
+      {Key? key,
+      required this.onerm,
+      required this.sets,
+      required this.exercise})
+      : super(key: key);
+  double onerm;
+  var sets;
+  var exercise;
+  @override
+  _newOnermAlertsState createState() => _newOnermAlertsState();
+}
+
+class _newOnermAlertsState extends State<newOnermAlerts> {
+  @override
+  Widget build(BuildContext context) {
+    var _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    var _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    late ConfettiController _controllerCenter;
+    _controllerCenter =
+        ConfettiController(duration: const Duration(seconds: 3));
+    _controllerCenter.play();
+
+    return AlertDialog(
+      buttonPadding: EdgeInsets.all(12.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      backgroundColor: Theme.of(context).cardColor,
+      contentPadding: EdgeInsets.all(12.0),
+      title: Text(
+        '신기록을 달성했어요!',
+        textScaleFactor: 2.0,
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.white),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Stack(children: [
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                widget.exercise.name.length < 8
+                    ? Text(
+                        widget.exercise.name,
+                        textScaleFactor: 3.2,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFffc60a8)),
+                      )
+                    : Flexible(
+                        child: Text(
+                          widget.exercise.name,
+                          textScaleFactor: 2.4,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFffc60a8)),
+                        ),
+                      ),
+                Center(
+                  child: Text(
+                      widget.onerm.toStringAsFixed(1) +
+                          _userProvider.userdata.weight_unit,
+                      textScaleFactor: 2.7,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFffc60a8),
+                      )),
+                ),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                        width: 120,
+                        child: Center(
+                            child: Text(
+                          "${widget.sets.weight.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
+                          textScaleFactor: 1.7,
+                          style: TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ))),
+                    Container(
+                        width: 20,
+                        child: SvgPicture.asset("assets/svg/multiply.svg",
+                            color: Colors.grey,
+                            height: 19 * _themeProvider.userFontSize / 0.8)),
+                    Container(
+                        width: 120,
+                        child: Center(
+                            child: Text(
+                          "${widget.sets.reps}회",
+                          textScaleFactor: 1.7,
+                          style: TextStyle(
+                            color: Colors.grey,
+                          ),
+                        )))
+                  ],
+                )
+              ],
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: ConfettiWidget(
+                confettiController: _controllerCenter,
+                blastDirectionality: BlastDirectionality
+                    .explosive, // don't specify a direction, blast randomly
+                shouldLoop:
+                    true, // start again as soon as the animation is finished
+                colors: const [
+                  Colors.green,
+                  Colors.blue,
+                  Colors.pink,
+                  Colors.orange,
+                  Colors.purple
+                ], // manually specify the colors to be used
+              ),
+            )
+          ])
+        ],
+      ),
+      actions: <Widget>[
+        _closeNewOnermButton(context),
+      ],
+    );
+  }
 }
