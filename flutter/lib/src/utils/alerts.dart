@@ -179,6 +179,140 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
   String subtitle = '';
   String comment = '';
 
+  Widget _moveToExButton(context) {
+    var _routineMenuProvider =
+        Provider.of<RoutineMenuStater>(context, listen: false);
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              backgroundColor: Theme.of(context).primaryColor,
+              foregroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
+            ),
+            onPressed: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/', (Route<dynamic> route) => false);
+              _routineMenuProvider.change(1);
+            },
+            child: Text("바로 운동 하기",
+                textScaleFactor: 1.5, style: TextStyle(color: Colors.white))));
+  }
+
+  Widget _DeleteConfirmButton_r(rindex, context) {
+    var _workoutProvider =
+        Provider.of<WorkoutdataProvider>(context, listen: false);
+    var _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    void _editWorkoutCheck() async {
+      WorkoutEdit(
+              user_email: _userProvider.userdata.email,
+              id: _workoutProvider.workoutdata.id,
+              routinedatas: _workoutProvider.workoutdata.routinedatas)
+          .editWorkout()
+          .then((data) => data["user_email"] != null
+              ? [showToast("done!"), _workoutProvider.getdata()]
+              : showToast("입력을 확인해주세요"));
+    }
+
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              backgroundColor: Theme.of(context).primaryColor,
+              foregroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
+            ),
+            onPressed: () {
+              _workoutProvider.removeroutineAt(rindex);
+              _editWorkoutCheck();
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            child: Text("삭제",
+                textScaleFactor: 1.5, style: TextStyle(color: Colors.white))));
+  }
+
+  Widget exSearchOutButton(context) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
+            ),
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop(true);
+            },
+            child: Text("편집 취소 하기",
+                textScaleFactor: 1.5, style: TextStyle(color: Colors.white))));
+  }
+
+  Widget _StartConfirmButton(context) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
+            ),
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop(true);
+            },
+            child: Text("운동 시작 하기",
+                textScaleFactor: 1.5, style: TextStyle(color: Colors.white))));
+  }
+
+  Widget _FinishConfirmButton(context) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
+            ),
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            child: Text("운동 종료 하기",
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+  }
+
   @override
   Widget build(BuildContext context) {
     switch (widget.layer) {
@@ -200,6 +334,11 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
       case 4:
         title = "운동을 추가했어요!";
         subtitle = '바로 운동을 시작 할까요?';
+        comment = '외부를 터치하면 취소 할 수 있어요';
+        break;
+      case 5:
+        title = "운동을 종료 할 수 있어요";
+        subtitle = '운동을 종료 하시겠나요?';
         comment = '외부를 터치하면 취소 할 수 있어요';
         break;
     }
@@ -231,169 +370,15 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
         widget.layer == 1
             ? _DeleteConfirmButton_r(widget.rindex, context)
             : widget.layer == 2
-                ? ExsearchOutButton(context: context, rindex: widget.rindex)
+                ? exSearchOutButton(context)
                 : widget.layer == 3
                     ? _StartConfirmButton(context)
-                    : _moveToExButton(context),
+                    : widget.layer == 3
+                        ? _moveToExButton(context)
+                        : _FinishConfirmButton(context),
       ],
     );
   }
-}
-
-Widget _closeNewOnermButton(context) {
-  return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: TextButton(
-          style: TextButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            foregroundColor: Theme.of(context).primaryColor,
-            backgroundColor: Theme.of(context).primaryColor,
-            textStyle: TextStyle(
-              color: Colors.white,
-            ),
-            disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-            padding: EdgeInsets.all(12.0),
-          ),
-          onPressed: () {
-            Navigator.of(context, rootNavigator: true).pop();
-          },
-          child: Text("계속 운동 하기",
-              textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
-}
-
-Widget _moveToExButton(context) {
-  var _routineMenuProvider =
-      Provider.of<RoutineMenuStater>(context, listen: false);
-  return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: TextButton(
-          style: TextButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            backgroundColor: Theme.of(context).primaryColor,
-            foregroundColor: Theme.of(context).primaryColor,
-            textStyle: TextStyle(
-              color: Colors.white,
-            ),
-            disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-            padding: EdgeInsets.all(12.0),
-          ),
-          onPressed: () {
-            Navigator.of(context)
-                .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
-            _routineMenuProvider.change(1);
-          },
-          child: Text("바로 운동 하기",
-              textScaleFactor: 1.5, style: TextStyle(color: Colors.white))));
-}
-
-Widget _DeleteConfirmButton_r(rindex, context) {
-  var _workoutProvider =
-      Provider.of<WorkoutdataProvider>(context, listen: false);
-  var _userProvider = Provider.of<UserdataProvider>(context, listen: false);
-  void _editWorkoutCheck() async {
-    WorkoutEdit(
-            user_email: _userProvider.userdata.email,
-            id: _workoutProvider.workoutdata.id,
-            routinedatas: _workoutProvider.workoutdata.routinedatas)
-        .editWorkout()
-        .then((data) => data["user_email"] != null
-            ? [showToast("done!"), _workoutProvider.getdata()]
-            : showToast("입력을 확인해주세요"));
-  }
-
-  return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: TextButton(
-          style: TextButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            backgroundColor: Theme.of(context).primaryColor,
-            foregroundColor: Theme.of(context).primaryColor,
-            textStyle: TextStyle(
-              color: Colors.white,
-            ),
-            disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-            padding: EdgeInsets.all(12.0),
-          ),
-          onPressed: () {
-            _workoutProvider.removeroutineAt(rindex);
-            _editWorkoutCheck();
-            Navigator.of(context, rootNavigator: true).pop();
-          },
-          child: Text("삭제",
-              textScaleFactor: 1.5, style: TextStyle(color: Colors.white))));
-}
-
-class ExsearchOutButton extends StatefulWidget {
-  ExsearchOutButton({Key? key, required this.context, required this.rindex})
-      : super(key: key);
-  int rindex;
-  BuildContext context;
-  @override
-  _ExsearchOutButtonState createState() => _ExsearchOutButtonState();
-}
-
-class _ExsearchOutButtonState extends State<ExsearchOutButton> {
-  var _workoutProvider;
-  var _userProvider;
-
-  Widget exoutbutton() {
-    return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: TextButton(
-            style: TextButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              backgroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(
-                color: Colors.white,
-              ),
-              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-              padding: EdgeInsets.all(12.0),
-            ),
-            onPressed: () {
-              Navigator.of(context, rootNavigator: true).pop(true);
-            },
-            child: Text("편집 취소 하기",
-                textScaleFactor: 1.5, style: TextStyle(color: Colors.white))));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
-
-    return exoutbutton();
-  }
-}
-
-Widget _StartConfirmButton(context) {
-  return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: TextButton(
-          style: TextButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            foregroundColor: Theme.of(context).primaryColor,
-            backgroundColor: Theme.of(context).primaryColor,
-            textStyle: TextStyle(
-              color: Colors.white,
-            ),
-            disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-            padding: EdgeInsets.all(12.0),
-          ),
-          onPressed: () {
-            Navigator.of(context, rootNavigator: true).pop(true);
-          },
-          child: Text("운동 시작 하기",
-              textScaleFactor: 1.5, style: TextStyle(color: Colors.white))));
 }
 
 class newOnermAlerts extends StatefulWidget {
@@ -411,6 +396,29 @@ class newOnermAlerts extends StatefulWidget {
 }
 
 class _newOnermAlertsState extends State<newOnermAlerts> {
+  Widget _closeNewOnermButton(context) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
+            ),
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            child: Text("계속 운동 하기",
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+  }
+
   @override
   Widget build(BuildContext context) {
     var _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
