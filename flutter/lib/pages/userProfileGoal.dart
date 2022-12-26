@@ -60,6 +60,7 @@ class _ProfileGoalState extends State<ProfileGoal> {
             textScaleFactor: 2.5,
             style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
+          backgroundColor: Theme.of(context).canvasColor,
         ));
   }
 

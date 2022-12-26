@@ -1444,6 +1444,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                   snap: false,
                   floating: false,
                   pinned: true,
+                  backgroundColor: Theme.of(context).canvasColor,
                   actions: [
                     _exProvider.exercisesdata.exercises[widget.eindex].custom &&
                             !widget.isroutine

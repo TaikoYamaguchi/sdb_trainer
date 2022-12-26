@@ -76,6 +76,7 @@ class _UserProfileState extends State<UserProfile> {
             textScaleFactor: 2.5,
             style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
+          backgroundColor: Theme.of(context).canvasColor,
         ));
   }
 
