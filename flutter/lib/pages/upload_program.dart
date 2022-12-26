@@ -98,10 +98,9 @@ class _ProgramUploadState extends State<ProgramUpload> {
             "나의 Program 공유",
             textScaleFactor: 2.5,
             style: TextStyle(
-              color: Colors.white,
+              color: Theme.of(context).primaryColorLight,
             ),
           ),
-          backgroundColor: Color(0xFF101012),
         ));
   }
 
@@ -118,7 +117,8 @@ class _ProgramUploadState extends State<ProgramUpload> {
                 child: Text("Program 이름:",
                     textScaleFactor: 2.1,
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold)),
+                        color: Theme.of(context).primaryColorLight,
+                        fontWeight: FontWeight.bold)),
               ),
               _titleWidget(),
               Container(
@@ -130,20 +130,20 @@ class _ProgramUploadState extends State<ProgramUpload> {
                       child: Text("Program 난이도:",
                           textScaleFactor: 2.1,
                           style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorLight,
                               fontWeight: FontWeight.bold)),
                     ),
                     SizedBox(
                         width: MediaQuery.of(context).size.width * 2 / 5,
                         child: DropdownButtonFormField(
                           isExpanded: true,
-                          dropdownColor: Color(0xFF101012),
                           decoration: InputDecoration(
                             filled: true,
                             enabledBorder: UnderlineInputBorder(
                               borderRadius: BorderRadius.circular(8.0),
-                              borderSide:
-                                  BorderSide(color: Colors.white, width: 3),
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).primaryColorLight,
+                                  width: 3),
                             ),
                             focusedBorder: UnderlineInputBorder(
                               borderRadius: BorderRadius.circular(8.0),
@@ -156,7 +156,8 @@ class _ProgramUploadState extends State<ProgramUpload> {
                               alignment: Alignment.center,
                               child: Text(
                                 '난이도',
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight),
                               )),
                           items: items
                               .map((item) => DropdownMenuItem<String>(
@@ -165,7 +166,9 @@ class _ProgramUploadState extends State<ProgramUpload> {
                                       alignment: Alignment.center,
                                       child: Text(
                                         item,
-                                        style: TextStyle(color: Colors.white),
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorLight),
                                       ))))
                               .toList(),
                           onChanged: (item) =>
@@ -183,7 +186,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
                       child: Text("Program 목적:",
                           textScaleFactor: 2.1,
                           style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorLight,
                               fontWeight: FontWeight.bold)),
                     ),
                     /*
@@ -191,13 +194,12 @@ class _ProgramUploadState extends State<ProgramUpload> {
                         width: MediaQuery.of(context).size.width * 2 / 5,
                         child: DropdownButtonFormField(
                           isExpanded: true,
-                          dropdownColor: Color(0xFF101012),
                           decoration: InputDecoration(
                             filled: true,
                             enabledBorder: UnderlineInputBorder(
                               borderRadius: BorderRadius.circular(8.0),
                               borderSide:
-                                  BorderSide(color: Colors.white, width: 3),
+                                  BorderSide(color: Theme.of(context).primaryColorLight, width: 3),
                             ),
                             focusedBorder: UnderlineInputBorder(
                               borderRadius: BorderRadius.circular(8.0),
@@ -210,7 +212,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
                               alignment: Alignment.center,
                               child: Text(
                                 '목적',
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(color: Theme.of(context).primaryColorLight),
                               )),
                           items: items2
                               .map((item) => DropdownMenuItem<String>(
@@ -219,7 +221,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
                                       alignment: Alignment.center,
                                       child: Text(
                                         item,
-                                        style: TextStyle(color: Colors.white),
+                                        style: TextStyle(color: Theme.of(context).primaryColorLight),
                                       ))))
                               .toList(),
                           onChanged: (item) =>
@@ -238,7 +240,8 @@ class _ProgramUploadState extends State<ProgramUpload> {
                 child: Text("Program 설명:",
                     textScaleFactor: 1.7,
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold)),
+                        color: Theme.of(context).primaryColorLight,
+                        fontWeight: FontWeight.bold)),
               ),
               _commentWidget(),
               Container(
@@ -263,13 +266,17 @@ class _ProgramUploadState extends State<ProgramUpload> {
                                 width: 120,
                                 child: Center(
                                     child: Icon(Icons.fitness_center,
-                                        color: Colors.white, size: 40)),
+                                        color:
+                                            Theme.of(context).primaryColorLight,
+                                        size: 40)),
                               ),
                               SizedBox(
                                   width: 120,
                                   child: Center(
                                       child: Icon(Icons.celebration,
-                                          color: Colors.white, size: 40))),
+                                          color: Theme.of(context)
+                                              .primaryColorLight,
+                                          size: 40))),
                             ],
                           ),
                           Row(
@@ -279,13 +286,17 @@ class _ProgramUploadState extends State<ProgramUpload> {
                                   width: 120,
                                   child: Center(
                                     child: Text("Program 기간",
-                                        style: TextStyle(color: Colors.white)),
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorLight)),
                                   )),
                               SizedBox(
                                   width: 120,
                                   child: Center(
                                     child: Text("신기록",
-                                        style: TextStyle(color: Colors.white)),
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorLight)),
                                   ))
                             ],
                           ),
@@ -297,15 +308,18 @@ class _ProgramUploadState extends State<ProgramUpload> {
                                 child: Center(
                                   child: Text(
                                       '${widget.program.exercises[0].plans.length.toString()}days',
-                                      style: TextStyle(color: Colors.white)),
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight)),
                                 ),
                               ),
                               SizedBox(
                                   width: 120,
                                   child: Center(
                                       child: Text("0",
-                                          style:
-                                              TextStyle(color: Colors.white)))),
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColorLight)))),
                             ],
                           ),
                         ],
@@ -327,7 +341,8 @@ class _ProgramUploadState extends State<ProgramUpload> {
                         child: GestureDetector(
                           child: _image == null
                               ? Icon(Icons.add_photo_alternate,
-                                  color: Colors.white, size: 120)
+                                  color: Theme.of(context).primaryColorLight,
+                                  size: 120)
                               : Image.file(File(_image!.path)),
                           onTap: () {
                             _displayPhotoAlert();
@@ -360,7 +375,8 @@ class _ProgramUploadState extends State<ProgramUpload> {
                           const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
                       child: Text("사진을 올릴 방법을 고를 수 있어요",
                           textScaleFactor: 1.3,
-                          style: TextStyle(color: Colors.white)),
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight)),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -375,9 +391,8 @@ class _ProgramUploadState extends State<ProgramUpload> {
                                 foregroundColor: Theme.of(context).primaryColor,
                                 backgroundColor: Theme.of(context).primaryColor,
                                 textStyle: TextStyle(
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColorLight,
                                 ),
-                                disabledForegroundColor: Color(0xFF101012),
                                 padding: EdgeInsets.all(8.0),
                               ),
                               onPressed: () {
@@ -389,12 +404,13 @@ class _ProgramUploadState extends State<ProgramUpload> {
                                   Icon(
                                     Icons.camera_alt,
                                     size: 24,
-                                    color: Colors.white,
+                                    color: Theme.of(context).primaryColorLight,
                                   ),
                                   Text('촬영',
                                       textScaleFactor: 1.3,
                                       style: TextStyle(
-                                        color: Colors.white,
+                                        color:
+                                            Theme.of(context).primaryColorLight,
                                       )),
                                 ],
                               ),
@@ -409,9 +425,8 @@ class _ProgramUploadState extends State<ProgramUpload> {
                                 foregroundColor: Theme.of(context).primaryColor,
                                 backgroundColor: Theme.of(context).primaryColor,
                                 textStyle: TextStyle(
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColorLight,
                                 ),
-                                disabledForegroundColor: Color(0xFF101012),
                                 padding: EdgeInsets.all(8.0),
                               ),
                               onPressed: () {
@@ -421,10 +436,14 @@ class _ProgramUploadState extends State<ProgramUpload> {
                               child: Column(
                                 children: [
                                   Icon(Icons.collections,
-                                      size: 24, color: Colors.white),
+                                      size: 24,
+                                      color:
+                                          Theme.of(context).primaryColorLight),
                                   Text('갤러리',
                                       textScaleFactor: 1.3,
-                                      style: TextStyle(color: Colors.white)),
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight)),
                                 ],
                               ),
                             )),
@@ -441,7 +460,6 @@ class _ProgramUploadState extends State<ProgramUpload> {
   Widget pulposechip() {
     return Container(
       width: MediaQuery.of(context).size.width,
-      color: Color(0xFF101012),
       child: Consumer<FamousdataProvider>(builder: (context, provider, child) {
         return ChipsChoice<String>.multiple(
           value: provider.tags,
@@ -481,9 +499,8 @@ class _ProgramUploadState extends State<ProgramUpload> {
                 foregroundColor: Theme.of(context).primaryColor,
                 backgroundColor: Theme.of(context).primaryColor,
                 textStyle: TextStyle(
-                  color: Colors.white,
+                  color: Theme.of(context).primaryColorLight,
                 ),
-                disabledForegroundColor: Color(0xFF101012),
                 padding: EdgeInsets.all(8.0),
               ),
               onPressed: () {
@@ -524,7 +541,8 @@ class _ProgramUploadState extends State<ProgramUpload> {
               },
               child: Text("운동 등록",
                   textScaleFactor: 1.7,
-                  style: TextStyle(color: Colors.white)))),
+                  style:
+                      TextStyle(color: Theme.of(context).primaryColorLight)))),
     );
   }
 
@@ -538,19 +556,22 @@ class _ProgramUploadState extends State<ProgramUpload> {
       child: TextFormField(
           controller: _programtitleCtrl,
           decoration: InputDecoration(
-              prefixIcon: Icon(Icons.edit, color: Colors.white),
+              prefixIcon:
+                  Icon(Icons.edit, color: Theme.of(context).primaryColorLight),
               labelText: 'Program 이름을 바꿀 수 있어요',
-              labelStyle: TextStyle(color: Colors.white),
+              labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
               border: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.white, width: 2.0),
+                borderSide: BorderSide(
+                    color: Theme.of(context).primaryColorLight, width: 2.0),
                 borderRadius: BorderRadius.circular(5.0),
               ),
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white, width: 2.0),
+                borderSide: BorderSide(
+                    color: Theme.of(context).primaryColorLight, width: 2.0),
                 borderRadius: BorderRadius.circular(5.0),
               ),
-              fillColor: Colors.white),
-          style: TextStyle(color: Colors.white)),
+              fillColor: Theme.of(context).primaryColorLight),
+          style: TextStyle(color: Theme.of(context).primaryColorLight)),
     );
   }
 
@@ -563,19 +584,22 @@ class _ProgramUploadState extends State<ProgramUpload> {
           //expands: true,
           maxLines: null,
           decoration: InputDecoration(
-              prefixIcon: Icon(Icons.edit, color: Colors.white),
+              prefixIcon:
+                  Icon(Icons.edit, color: Theme.of(context).primaryColorLight),
               labelText: 'Program을 설명해주세요',
-              labelStyle: TextStyle(color: Colors.white),
+              labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
               border: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.white, width: 2.0),
+                borderSide: BorderSide(
+                    color: Theme.of(context).primaryColorLight, width: 2.0),
                 borderRadius: BorderRadius.circular(5.0),
               ),
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white, width: 2.0),
+                borderSide: BorderSide(
+                    color: Theme.of(context).primaryColorLight, width: 2.0),
                 borderRadius: BorderRadius.circular(5.0),
               ),
-              fillColor: Colors.white),
-          style: TextStyle(color: Colors.white)),
+              fillColor: Theme.of(context).primaryColorLight),
+          style: TextStyle(color: Theme.of(context).primaryColorLight)),
     );
   }
 
@@ -588,9 +612,9 @@ class _ProgramUploadState extends State<ProgramUpload> {
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: _appbarWidget(),
-        body: _exerciseDoneWidget(),
-        backgroundColor: Color(0xFF101012));
+      resizeToAvoidBottomInset: false,
+      appBar: _appbarWidget(),
+      body: _exerciseDoneWidget(),
+    );
   }
 }

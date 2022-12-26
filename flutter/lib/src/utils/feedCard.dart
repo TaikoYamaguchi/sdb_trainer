@@ -797,7 +797,7 @@ class _FeedCardState extends State<FeedCard> {
               });
             },
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
                     padding: const EdgeInsets.only(right: 8.0, left: 8.0),

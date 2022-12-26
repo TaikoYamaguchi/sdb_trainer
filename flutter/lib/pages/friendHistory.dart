@@ -44,9 +44,8 @@ class _FriendHistoryState extends State<FriendHistory> {
           title: Text(
             widget.sdbdata.nickname!,
             textScaleFactor: 2.0,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
-          backgroundColor: Color(0xFF101012),
         ));
   }
 
@@ -62,7 +61,6 @@ class _FriendHistoryState extends State<FriendHistory> {
       child: SingleChildScrollView(
           child: Container(
               width: MediaQuery.of(context).size.width,
-              color: Color(0xFF101012),
               child: Consumer<HistorydataProvider>(
                   builder: (builder, provider, child) {
                 var exercises = provider
@@ -113,7 +111,6 @@ class _FriendHistoryState extends State<FriendHistory> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        color: Color(0xFF101012),
         child: Column(
           children: [
             Row(
@@ -123,7 +120,8 @@ class _FriendHistoryState extends State<FriendHistory> {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(exuniq[index].name,
                       textScaleFactor: 1.3,
-                      style: TextStyle(color: Colors.white)),
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColorLight)),
                 ),
                 widget.sdbdata.user_email == userdata.email
                     ? GestureDetector(
@@ -143,7 +141,7 @@ class _FriendHistoryState extends State<FriendHistory> {
                           padding: const EdgeInsets.only(right: 8.0),
                           child: Icon(
                             Icons.settings,
-                            color: Colors.white,
+                            color: Theme.of(context).primaryColorLight,
                           ),
                         ))
                     : Container()
@@ -276,7 +274,7 @@ class _FriendHistoryState extends State<FriendHistory> {
                                   "${index + 1}",
                                   textScaleFactor: 1.7,
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: Theme.of(context).primaryColorLight,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
@@ -290,7 +288,7 @@ class _FriendHistoryState extends State<FriendHistory> {
                             sets[index].weight.toStringAsFixed(1),
                             textScaleFactor: 1.7,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorLight,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -298,7 +296,7 @@ class _FriendHistoryState extends State<FriendHistory> {
                         Container(
                             width: 35,
                             child: SvgPicture.asset("assets/svg/multiply.svg",
-                                color: Colors.white,
+                                color: Theme.of(context).primaryColorLight,
                                 height:
                                     19 * _themeProvider.userFontSize / 0.8)),
                         Container(
@@ -307,7 +305,7 @@ class _FriendHistoryState extends State<FriendHistory> {
                             sets[index].reps.toString(),
                             textScaleFactor: 1.7,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorLight,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -318,13 +316,17 @@ class _FriendHistoryState extends State<FriendHistory> {
                                 ? Text(
                                     "${(sets[index].weight * (1 + sets[index].reps / 30)).toStringAsFixed(1)}",
                                     textScaleFactor: 1.7,
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .primaryColorLight),
                                     textAlign: TextAlign.center,
                                   )
                                 : Text(
                                     "${sets[index].weight}",
                                     textScaleFactor: 1.7,
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .primaryColorLight),
                                     textAlign: TextAlign.center,
                                   )),
                       ],
@@ -335,7 +337,6 @@ class _FriendHistoryState extends State<FriendHistory> {
                   return Container(
                     alignment: Alignment.center,
                     height: 0,
-                    color: Color(0xFF101012),
                     child: Container(
                       alignment: Alignment.center,
                       height: 0,
@@ -357,8 +358,8 @@ class _FriendHistoryState extends State<FriendHistory> {
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     return Scaffold(
-        appBar: _appbarWidget(),
-        body: _friendHistoryWidget(),
-        backgroundColor: Color(0xFF101012));
+      appBar: _appbarWidget(),
+      body: _friendHistoryWidget(),
+    );
   }
 }

@@ -19,19 +19,8 @@ class _ProfileBodyState extends State<ProfileBody> {
   var _userHeightCtrl;
   var _userWeightCtrl;
   DateTime _toDay = DateTime.now();
-  final Map<String, Widget> _heightUnitList = const <String, Widget>{
-    "cm":
-        Text("cm", textScaleFactor: 2.0, style: TextStyle(color: Colors.white)),
-    "inch": Text("inch",
-        textScaleFactor: 2.0, style: TextStyle(color: Colors.white)),
-  };
-  final Map<String, Widget> _weightUnitList = const <String, Widget>{
-    "kg":
-        Text("kg", textScaleFactor: 2.0, style: TextStyle(color: Colors.white)),
-    "lb":
-        Text("lb", textScaleFactor: 2.0, style: TextStyle(color: Colors.white)),
-  };
-
+  var _heightUnitList;
+  var _weightUnitList;
   @override
   void initState() {
     super.initState();
@@ -54,6 +43,22 @@ class _ProfileBodyState extends State<ProfileBody> {
 
     _userWeightCtrl.selection = TextSelection.fromPosition(
         TextPosition(offset: _userWeightCtrl.text.length));
+    _heightUnitList = <String, Widget>{
+      "cm": Text("cm",
+          textScaleFactor: 2.0,
+          style: TextStyle(color: Theme.of(context).primaryColorLight)),
+      "inch": Text("inch",
+          textScaleFactor: 2.0,
+          style: TextStyle(color: Theme.of(context).primaryColorLight)),
+    };
+    _weightUnitList = <String, Widget>{
+      "kg": Text("kg",
+          textScaleFactor: 2.0,
+          style: TextStyle(color: Theme.of(context).primaryColorLight)),
+      "lb": Text("lb",
+          textScaleFactor: 2.0,
+          style: TextStyle(color: Theme.of(context).primaryColorLight)),
+    };
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -69,9 +74,8 @@ class _ProfileBodyState extends State<ProfileBody> {
           title: Text(
             "",
             textScaleFactor: 2.5,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
-          backgroundColor: Color(0xFF101012),
         ));
   }
 
@@ -89,7 +93,6 @@ class _ProfileBodyState extends State<ProfileBody> {
           }
         },
         child: Container(
-          color: Color(0xFF101012),
           child: Center(
               child: Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -103,7 +106,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                         Text("키, 몸무게 수정",
                             textScaleFactor: 2.7,
                             style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).primaryColorLight,
                                 fontWeight: FontWeight.w600)),
                         Text("체형을 입력 할 수 있어요",
                             textScaleFactor: 1.3,
@@ -153,7 +156,7 @@ class _ProfileBodyState extends State<ProfileBody> {
       controller: _userHeightCtrl,
       keyboardType:
           TextInputType.numberWithOptions(signed: false, decimal: true),
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(color: Theme.of(context).primaryColorLight),
       decoration: InputDecoration(
         filled: true,
         labelText: "키",
@@ -164,7 +167,8 @@ class _ProfileBodyState extends State<ProfileBody> {
           borderRadius: BorderRadius.circular(5.0),
         ),
         enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2.0),
+          borderSide: BorderSide(
+              color: Theme.of(context).primaryColorLight, width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
       ),
@@ -176,7 +180,7 @@ class _ProfileBodyState extends State<ProfileBody> {
       controller: _userWeightCtrl,
       keyboardType:
           TextInputType.numberWithOptions(signed: false, decimal: true),
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(color: Theme.of(context).primaryColorLight),
       decoration: InputDecoration(
         filled: true,
         labelText: "몸무게",
@@ -187,7 +191,8 @@ class _ProfileBodyState extends State<ProfileBody> {
           borderRadius: BorderRadius.circular(5.0),
         ),
         enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 3.0),
+          borderSide: BorderSide(
+              color: Theme.of(context).primaryColorLight, width: 3.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
       ),
@@ -246,9 +251,8 @@ class _ProfileBodyState extends State<ProfileBody> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
-              disabledForegroundColor: Color(0xFF101012),
               padding: EdgeInsets.all(8.0),
             ),
             onPressed: () {
@@ -258,7 +262,8 @@ class _ProfileBodyState extends State<ProfileBody> {
                   _userProvider.userdata.bodyStats.last.weight);
             },
             child: Text(isLoading ? 'loggin in.....' : "프로필 수정",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   void _editCheck() async {

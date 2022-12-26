@@ -60,6 +60,7 @@ class _HomeState extends State<Home> {
   var _timer;
   late List<BarChartGroupData> _cardCoreBarChartGroupData;
   var _isbottomTitleEx = false;
+  var _mainFontColor;
 
   TextEditingController _userWeightController = TextEditingController(text: "");
   TextEditingController _userWeightGoalController =
@@ -127,6 +128,7 @@ class _HomeState extends State<Home> {
     _chartIndex = Provider.of<ChartIndexProvider>(context, listen: false);
     _testdata0 = Provider.of<ExercisesdataProvider>(context, listen: false)
         .exercisesdata;
+    _mainFontColor = Theme.of(context).primaryColorLight;
     _barsGradient = LinearGradient(
       colors: [
         Color(0xFffc60a8),
@@ -137,17 +139,17 @@ class _HomeState extends State<Home> {
     );
 
     return Scaffold(
-        appBar: _appbarWidget(),
-        body: Consumer<ExercisesdataProvider>(
-            builder: (context, provider, widget) {
-          if (provider.exercisesdata != null) {
-            return _homeWidget(provider.exercisesdata, context);
-          }
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }),
-        backgroundColor: Color(0xFF101012));
+      appBar: _appbarWidget(),
+      body:
+          Consumer<ExercisesdataProvider>(builder: (context, provider, widget) {
+        if (provider.exercisesdata != null) {
+          return _homeWidget(provider.exercisesdata, context);
+        }
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      }),
+    );
   }
 
   PreferredSizeWidget _appbarWidget() {
@@ -161,17 +163,16 @@ class _HomeState extends State<Home> {
             if (provider.userdata != null) {
               return Text(
                 provider.userdata.nickname + "님 반가워요",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: _mainFontColor),
               );
             } else {
               return PreferredSize(
                   preferredSize: Size.fromHeight(56.0),
                   child: Container(
-                      color: Color(0xFF101012),
                       child: Center(child: CircularProgressIndicator())));
             }
           }),
-          backgroundColor: Color(0xFF101012),
+          backgroundColor: Theme.of(context).canvasColor,
         ));
   }
 
@@ -179,7 +180,6 @@ class _HomeState extends State<Home> {
     return SizedBox(
       width: double.infinity,
       child: Container(
-        color: Color(0xFF101012),
         child: CupertinoSlidingSegmentedControl(
             groupValue: _dateCtrl,
             children: <int, Widget>{
@@ -187,7 +187,7 @@ class _HomeState extends State<Home> {
                 child: Text("1주",
                     textScaleFactor: 1.1,
                     style: TextStyle(
-                      color: _dateCtrl == 1 ? Colors.white : Colors.grey,
+                      color: _dateCtrl == 1 ? _mainFontColor : Colors.grey,
                     )),
                 padding: const EdgeInsets.all(4.0),
               ),
@@ -195,33 +195,33 @@ class _HomeState extends State<Home> {
                   child: Text("1달",
                       textScaleFactor: 1.1,
                       style: TextStyle(
-                        color: _dateCtrl == 2 ? Colors.white : Colors.grey,
+                        color: _dateCtrl == 2 ? _mainFontColor : Colors.grey,
                       )),
                   padding: const EdgeInsets.all(4.0)),
               3: Padding(
                   child: Text("6달",
                       textScaleFactor: 1.1,
                       style: TextStyle(
-                        color: _dateCtrl == 3 ? Colors.white : Colors.grey,
+                        color: _dateCtrl == 3 ? _mainFontColor : Colors.grey,
                       )),
                   padding: const EdgeInsets.all(4.0)),
               4: Padding(
                   child: Text("1년",
                       textScaleFactor: 1.1,
                       style: TextStyle(
-                        color: _dateCtrl == 4 ? Colors.white : Colors.grey,
+                        color: _dateCtrl == 4 ? _mainFontColor : Colors.grey,
                       )),
                   padding: const EdgeInsets.all(4.0)),
               5: Padding(
                   child: Text("모두",
                       textScaleFactor: 1.1,
                       style: TextStyle(
-                        color: _dateCtrl == 5 ? Colors.white : Colors.grey,
+                        color: _dateCtrl == 5 ? _mainFontColor : Colors.grey,
                       )),
                   padding: const EdgeInsets.all(4.0))
             },
             padding: EdgeInsets.symmetric(horizontal: 6),
-            backgroundColor: Color(0xFF101012),
+            backgroundColor: Theme.of(context).canvasColor,
             thumbColor: Theme.of(context).primaryColor,
             onValueChanged: (i) {
               setState(() {
@@ -366,7 +366,6 @@ class _HomeState extends State<Home> {
 
   Widget _homeWidget(_exunique, context) {
     return Container(
-      color: Color(0xFF101012),
       child: NotificationListener<OverscrollIndicatorNotification>(
           onNotification: (overscroll) {
             overscroll.disallowIndicator();
@@ -383,7 +382,7 @@ class _HomeState extends State<Home> {
                 //     children: <Widget>[
                 //       Text("SDB ",
                 //           style: TextStyle(
-                //               color: Colors.white,
+                //               color: _mainFontColor,
                 //               fontSize: 54,
                 //               fontWeight: FontWeight.w600)),
                 //       Text(
@@ -426,7 +425,7 @@ class _HomeState extends State<Home> {
                 //               .floor()
                 //               .toString(),
                 //           style: TextStyle(
-                //               color: Colors.white,
+                //               color: _mainFontColor,
                 //               fontSize: 46,
                 //               fontWeight: FontWeight.w800)),
                 //       Text(
@@ -471,7 +470,7 @@ class _HomeState extends State<Home> {
                 //                   .toString() +
                 //               "kg",
                 //           style: TextStyle(
-                //               color: Colors.white,
+                //               color: _mainFontColor,
                 //               fontSize: 24,
                 //               fontWeight: FontWeight.w600)),
                 //     ]),
@@ -535,7 +534,7 @@ class _HomeState extends State<Home> {
                               color: provider.prefs.getString('lastroutine') ==
                                       null
                                   ? Colors.grey
-                                  : Colors.white,
+                                  : _mainFontColor,
                               fontWeight: FontWeight.w600)),
                     ),
                     GestureDetector(
@@ -613,7 +612,7 @@ class _HomeState extends State<Home> {
                                     textScaleFactor: 1.3,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        color: Colors.white,
+                                        color: _mainFontColor,
                                         fontWeight: FontWeight.w600)),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 4.0),
@@ -680,7 +679,7 @@ class _HomeState extends State<Home> {
                               child: Text('''Lifting Stats''',
                                   textScaleFactor: 1.5,
                                   style: TextStyle(
-                                      color: Colors.white,
+                                      color: _mainFontColor,
                                       fontWeight: FontWeight.w600)),
                             ),
                           ),
@@ -730,7 +729,7 @@ class _HomeState extends State<Home> {
                                                   (_exProvider.homeExList)));
                                         },
                                         backgroundColor: Color(0xFFFE4A49),
-                                        foregroundColor: Colors.white,
+                                        foregroundColor: _mainFontColor,
                                         icon: Icons.delete,
                                         padding: EdgeInsets.zero,
                                       )
@@ -2656,8 +2655,8 @@ class _HomeState extends State<Home> {
           ) {
             return BarTooltipItem(
               rod.toY.round().toString(),
-              const TextStyle(
-                color: Colors.white,
+              TextStyle(
+                color: _mainFontColor,
                 fontWeight: FontWeight.bold,
               ),
             );
@@ -2675,92 +2674,97 @@ class _HomeState extends State<Home> {
       int _realIndex,
       List<BarChartGroupData> _barChartGroupData) {
     double deviceWidth = MediaQuery.of(context).size.width;
-    return Card(
-        color: Color(0xFF101012),
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Center(
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          right: deviceWidth / _devicePaddingWidth -
-                              _devicePaddingWidthAdd),
-                      child: Text(_historyDateCore,
-                          textScaleFactor: 1.5,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600)),
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Card(
+          color: Theme.of(context).canvasColor,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            right: deviceWidth / _devicePaddingWidth -
+                                _devicePaddingWidthAdd),
+                        child: Text(_historyDateCore,
+                            textScaleFactor: 1.5,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: _mainFontColor,
+                                fontWeight: FontWeight.w600)),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            Consumer<HistorydataProvider>(builder: (builder, provider, child) {
-              _dateController(_dateCtrl);
-              return Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(_historyTextCore,
-                        textScaleFactor: 2.0,
-                        style: TextStyle(
-                            color: Color(0xFffc60a8),
-                            fontWeight: FontWeight.w600)),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 4),
-                      child: Text(_histroySideText,
-                          textScaleFactor: 1.4,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600)),
-                    ),
-                  ],
-                ),
-              );
-            }),
-            SizedBox(height: 40),
-            _barChartGroupData != null
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                ],
+              ),
+              Consumer<HistorydataProvider>(
+                  builder: (builder, provider, child) {
+                _dateController(_dateCtrl);
+                return Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Expanded(
-                        child: Container(
-                            height: 110,
-                            child: BarChart(BarChartData(
-                              barGroups: _barChartGroupData,
-                              barTouchData: barTouchData,
-                              titlesData: FlTitlesData(
-                                  leftTitles: AxisTitles(
-                                    sideTitles: SideTitles(showTitles: false),
-                                  ),
-                                  topTitles: AxisTitles(
-                                    sideTitles: SideTitles(showTitles: false),
-                                  ),
-                                  rightTitles: AxisTitles(
-                                    sideTitles: SideTitles(showTitles: false),
-                                  ),
-                                  bottomTitles: AxisTitles(
-                                      sideTitles: _isbottomTitleEx
-                                          ? _bottomExTitles(_realIndex)
-                                          : _bottomTitles())),
-                              alignment: BarChartAlignment.spaceAround,
-                              borderData: FlBorderData(show: false),
-                              gridData: FlGridData(show: false),
-                            ))),
+                      Text(_historyTextCore,
+                          textScaleFactor: 2.0,
+                          style: TextStyle(
+                              color: Color(0xFffc60a8),
+                              fontWeight: FontWeight.w600)),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4),
+                        child: Text(_histroySideText,
+                            textScaleFactor: 1.4,
+                            style: TextStyle(
+                                color: _mainFontColor,
+                                fontWeight: FontWeight.w600)),
                       ),
                     ],
-                  )
-                : Container()
-          ]),
-        ));
+                  ),
+                );
+              }),
+              SizedBox(height: 40),
+              _barChartGroupData != null
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Container(
+                              height: 110,
+                              child: BarChart(BarChartData(
+                                barGroups: _barChartGroupData,
+                                barTouchData: barTouchData,
+                                titlesData: FlTitlesData(
+                                    leftTitles: AxisTitles(
+                                      sideTitles: SideTitles(showTitles: false),
+                                    ),
+                                    topTitles: AxisTitles(
+                                      sideTitles: SideTitles(showTitles: false),
+                                    ),
+                                    rightTitles: AxisTitles(
+                                      sideTitles: SideTitles(showTitles: false),
+                                    ),
+                                    bottomTitles: AxisTitles(
+                                        sideTitles: _isbottomTitleEx
+                                            ? _bottomExTitles(_realIndex)
+                                            : _bottomTitles())),
+                                alignment: BarChartAlignment.spaceAround,
+                                borderData: FlBorderData(show: false),
+                                gridData: FlGridData(show: false),
+                              ))),
+                        ),
+                      ],
+                    )
+                  : Container()
+            ]),
+          )),
+    );
   }
 
   void exselect(bool isadd, bool isex, context, [int where = 0]) {
@@ -2796,20 +2800,21 @@ class _HomeState extends State<Home> {
           child: Text(
             isex ? '운동을 선택해주세요' : '1RM 기준 운동을 선택해주세요',
             textScaleFactor: 2.0,
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style:
+                TextStyle(color: _mainFontColor, fontWeight: FontWeight.bold),
           ),
         ),
         Container(
           margin: const EdgeInsets.fromLTRB(10, 16, 10, 16),
           child: TextField(
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: _mainFontColor),
               decoration: InputDecoration(
                 prefixIcon: Icon(
                   Icons.search,
-                  color: Colors.white,
+                  color: _mainFontColor,
                 ),
                 hintText: "Exercise Name",
-                hintStyle: TextStyle(fontSize: 20.0, color: Colors.white),
+                hintStyle: TextStyle(fontSize: 20.0, color: _mainFontColor),
               ),
               onChanged: (text) {
                 searchExercise(text.toString(), state);
@@ -2835,7 +2840,6 @@ class _HomeState extends State<Home> {
     double top = 0;
     double bottom = 0;
     return Expanded(
-      //color: Color(0xFF101012),
       child: Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
         return ListView.separated(
             padding: EdgeInsets.symmetric(horizontal: 5),
@@ -2881,7 +2885,7 @@ class _HomeState extends State<Home> {
                             Text(
                               exuniq[index].name,
                               textScaleFactor: 1.7,
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: _mainFontColor),
                             ),
                             Text(
                                 "1RM: ${exuniq[index].onerm.toStringAsFixed(1)}/${exuniq[index].goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
@@ -2941,7 +2945,8 @@ class _HomeState extends State<Home> {
                       child: Text(_exProvider.homeExList[index],
                           textScaleFactor: 1.0,
                           style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+                              color: _mainFontColor,
+                              fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center)),
                   Expanded(
                     child: Container(
@@ -3014,7 +3019,7 @@ class _HomeState extends State<Home> {
                                       .toString(),
                               textScaleFactor: 1.0,
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: _mainFontColor,
                                   fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center),
                         ),
@@ -3047,7 +3052,7 @@ class _HomeState extends State<Home> {
               '몸무게를 기록 할게요',
               textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: _mainFontColor),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -3063,7 +3068,7 @@ class _HomeState extends State<Home> {
                       signed: false, decimal: true),
                   style: TextStyle(
                     fontSize: 21,
-                    color: Colors.white,
+                    color: _mainFontColor,
                   ),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
@@ -3082,7 +3087,7 @@ class _HomeState extends State<Home> {
                       labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
                       hintText: "몸무게",
                       hintStyle:
-                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                          TextStyle(fontSize: 24.0, color: _mainFontColor)),
                   onChanged: (text) {},
                 ),
                 TextField(
@@ -3091,7 +3096,7 @@ class _HomeState extends State<Home> {
                       signed: false, decimal: true),
                   style: TextStyle(
                     fontSize: 21,
-                    color: Colors.white,
+                    color: _mainFontColor,
                   ),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
@@ -3110,7 +3115,7 @@ class _HomeState extends State<Home> {
                       labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
                       hintText: "목표 몸무게",
                       hintStyle:
-                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                          TextStyle(fontSize: 24.0, color: _mainFontColor)),
                   onChanged: (text) {},
                 ),
               ],
@@ -3126,14 +3131,14 @@ class _HomeState extends State<Home> {
                     foregroundColor: Theme.of(context).primaryColor,
                     backgroundColor: Theme.of(context).primaryColor,
                     textStyle: TextStyle(
-                      color: Colors.white,
+                      color: _mainFontColor,
                     ),
                     disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
                     padding: EdgeInsets.all(12.0),
                   ),
                   child: Text('오늘 몸무게 기록하기',
                       textScaleFactor: 1.7,
-                      style: TextStyle(color: Colors.white)),
+                      style: TextStyle(color: _mainFontColor)),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                     _displayBodyWeightPushDialog(
@@ -3213,7 +3218,7 @@ class _HomeState extends State<Home> {
               _weightChange,
               textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: _mainFontColor),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -3236,14 +3241,14 @@ class _HomeState extends State<Home> {
                     foregroundColor: Theme.of(context).primaryColor,
                     backgroundColor: Theme.of(context).primaryColor,
                     textStyle: TextStyle(
-                      color: Colors.white,
+                      color: _mainFontColor,
                     ),
                     disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
                     padding: EdgeInsets.all(12.0),
                   ),
                   child: Text('닫기',
                       textScaleFactor: 1.7,
-                      style: TextStyle(color: Colors.white)),
+                      style: TextStyle(color: _mainFontColor)),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
@@ -3302,11 +3307,11 @@ class _HomeState extends State<Home> {
               legend: Legend(
                   isVisible: true,
                   position: LegendPosition.bottom,
-                  textStyle: TextStyle(color: Colors.white)),
+                  textStyle: TextStyle(color: _mainFontColor)),
               series: [
                 LineSeries<BodyStat, DateTime>(
                   isVisibleInLegend: true,
-                  color: Colors.white54,
+                  color: _mainFontColor,
                   name: "목표",
                   dataSource: _userProvider.userdata.bodyStats!,
                   xValueMapper: (BodyStat sales, _) =>
@@ -3370,7 +3375,7 @@ class _HomeState extends State<Home> {
                             Text(_exunique.exercises[index].name,
                                 textScaleFactor: 1.3,
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: _mainFontColor,
                                     fontWeight: FontWeight.bold)),
                             Text(
                                 _exunique.exercises[index].onerm
@@ -3382,7 +3387,7 @@ class _HomeState extends State<Home> {
                                         .toString(),
                                 textScaleFactor: 1.3,
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: _mainFontColor,
                                     fontWeight: FontWeight.bold))
                           ])),
                           angle: 90,

@@ -38,8 +38,9 @@ class _RoutineBankState extends State<RoutineBank> {
               child: Text(
                 '유명 운동 Programs',
                 textScaleFactor: 1.9,
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: Theme.of(context).primaryColorLight,
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ],
@@ -71,7 +72,6 @@ class _RoutineBankState extends State<RoutineBank> {
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width / 2,
                       child: Card(
-                        color: Color(0xFF101012),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -118,7 +118,8 @@ class _RoutineBankState extends State<RoutineBank> {
                                           overflow: TextOverflow.ellipsis,
                                           textScaleFactor: 1.3,
                                           style: TextStyle(
-                                              color: Colors.white,
+                                              color: Theme.of(context)
+                                                  .primaryColorLight,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
@@ -155,14 +156,16 @@ class _RoutineBankState extends State<RoutineBank> {
                                               Icon(
                                                   Icons
                                                       .supervised_user_circle_sharp,
-                                                  color: Colors.white,
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight,
                                                   size: 18),
                                               Text(
                                                 ' ${user_famous[index].subscribe.toString()}',
                                                 textScaleFactor: 1.1,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
-                                                    color: Colors.white,
+                                                    color: Theme.of(context)
+                                                        .primaryColorLight,
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),
@@ -198,8 +201,9 @@ class _RoutineBankState extends State<RoutineBank> {
               child: Text(
                 '유저가 만든 Programs',
                 textScaleFactor: 1.9,
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: Theme.of(context).primaryColorLight,
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ],
@@ -231,7 +235,6 @@ class _RoutineBankState extends State<RoutineBank> {
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width / 2,
                       child: Card(
-                        color: Color(0xFF101012),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -279,7 +282,8 @@ class _RoutineBankState extends State<RoutineBank> {
                                           textScaleFactor: 1.3,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
-                                              color: Colors.white,
+                                              color: Theme.of(context)
+                                                  .primaryColorLight,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
@@ -316,14 +320,16 @@ class _RoutineBankState extends State<RoutineBank> {
                                               Icon(
                                                   Icons
                                                       .supervised_user_circle_sharp,
-                                                  color: Colors.white,
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight,
                                                   size: 18),
                                               Text(
                                                 ' ${user_famous[index].subscribe.toString()}',
                                                 textScaleFactor: 1.1,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
-                                                    color: Colors.white,
+                                                    color: Theme.of(context)
+                                                        .primaryColorLight,
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),
@@ -372,7 +378,9 @@ class _RoutineBankState extends State<RoutineBank> {
             padding: const EdgeInsets.only(right: 4.0),
             child: Icon(
               Icons.thumb_up_off_alt_rounded,
-              color: isLiked ? Theme.of(context).primaryColor : Colors.white,
+              color: isLiked
+                  ? Theme.of(context).primaryColor
+                  : Theme.of(context).primaryColorLight,
               size: buttonSize,
             ),
           );
@@ -382,7 +390,9 @@ class _RoutineBankState extends State<RoutineBank> {
         },
         likeCount: program.like.length,
         countBuilder: (int? count, bool isLiked, String text) {
-          var color = isLiked ? Theme.of(context).primaryColor : Colors.white;
+          var color = isLiked
+              ? Theme.of(context).primaryColor
+              : Theme.of(context).primaryColorLight;
           Widget result;
           if (count == 0) {
             result = Text(

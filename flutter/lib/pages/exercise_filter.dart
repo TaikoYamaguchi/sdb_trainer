@@ -62,7 +62,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
               padding: const EdgeInsets.fromLTRB(10, 16, 10, 16),
               child: TextField(
                   controller: _exSearchCtrl,
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Theme.of(context).primaryColorLight),
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(0),
                     prefixIcon: Icon(
@@ -70,7 +70,9 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                       color: Theme.of(context).primaryColor,
                     ),
                     hintText: "운동 검색",
-                    hintStyle: TextStyle(fontSize: 20.0, color: Colors.white),
+                    hintStyle: TextStyle(
+                        fontSize: 20.0,
+                        color: Theme.of(context).primaryColorLight),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                           width: 2, color: Theme.of(context).cardColor),
@@ -95,7 +97,6 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                 },
                 child: Icon(Icons.filter_list))
           ],
-          backgroundColor: Color(0xFF101012),
         ));
   }
 
@@ -170,7 +171,6 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
 
   Widget _exercises_searchWidget() {
     return Container(
-      color: Color(0xFF101012),
       child:
           Consumer<ExercisesdataProvider>(builder: (builder, provider, child) {
         return Container(
@@ -209,7 +209,8 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                     child: Icon(
                                       Icons.add,
                                       size: 28.0,
-                                      color: Colors.white,
+                                      color:
+                                          Theme.of(context).primaryColorLight,
                                     ),
                                   ),
                                   Padding(
@@ -222,7 +223,8 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                         Text("커스텀 운동을 추가 해보세요",
                                             textScaleFactor: 1.5,
                                             style: TextStyle(
-                                              color: Colors.white,
+                                              color: Theme.of(context)
+                                                  .primaryColorLight,
                                             )),
                                         Text("개인 운동을 추가 할 수 있어요",
                                             textScaleFactor: 1.1,
@@ -307,12 +309,14 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                             '커스텀 운동을 만들어보세요',
                             textScaleFactor: 2.0,
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight),
                           ),
                           Text('운동의 이름을 입력해 주세요',
                               textScaleFactor: 1.3,
                               textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.white)),
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
                           Text('외부를 터치하면 취소 할 수 있어요',
                               textScaleFactor: 1.0,
                               textAlign: TextAlign.center,
@@ -335,8 +339,9 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                 }
                               });
                             },
-                            style:
-                                TextStyle(fontSize: 24.0, color: Colors.white),
+                            style: TextStyle(
+                                fontSize: 24.0,
+                                color: Theme.of(context).primaryColorLight),
                             textAlign: TextAlign.center,
                             controller: _customExNameCtrl,
                             decoration: InputDecoration(
@@ -355,7 +360,9 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                 ),
                                 hintText: "커스텀 운동 이름",
                                 hintStyle: TextStyle(
-                                    fontSize: 24.0, color: Colors.white)),
+                                    fontSize: 24.0,
+                                    color:
+                                        Theme.of(context).primaryColorLight)),
                           ),
                           SizedBox(height: 20),
                           Row(
@@ -367,7 +374,9 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                   '운동부위:',
                                   textScaleFactor: 2.0,
                                   textAlign: TextAlign.start,
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).primaryColorLight),
                                 ),
                               ),
                             ],
@@ -382,7 +391,9 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                   '카테고리:',
                                   textScaleFactor: 2.0,
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).primaryColorLight),
                                 ),
                               ),
                               SizedBox(width: 20),
@@ -393,14 +404,15 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                         5,
                                     child: DropdownButtonFormField(
                                       isExpanded: true,
-                                      dropdownColor: Color(0xFF101012),
                                       decoration: InputDecoration(
                                         filled: true,
                                         enabledBorder: UnderlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(8.0),
                                           borderSide: BorderSide(
-                                              color: Colors.white, width: 3),
+                                              color: Theme.of(context)
+                                                  .primaryColorLight,
+                                              width: 3),
                                         ),
                                         focusedBorder: UnderlineInputBorder(
                                           borderRadius:
@@ -415,8 +427,9 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                           alignment: Alignment.center,
                                           child: Text(
                                             '기타',
-                                            style:
-                                                TextStyle(color: Colors.white),
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColorLight),
                                           )),
                                       items: options2
                                           .map((item) => DropdownMenuItem<
@@ -427,7 +440,8 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                                   child: Text(
                                                     item,
                                                     style: TextStyle(
-                                                        color: Colors.white),
+                                                        color: Theme.of(context)
+                                                            .primaryColorLight),
                                                   ))))
                                           .toList(),
                                       onChanged: (item) => setState(
@@ -473,7 +487,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                       ? Color(0xFF212121)
                       : Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
@@ -499,7 +513,8 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
               }
             },
             child: Text(_customExUsed == true ? "존재하는 운동" : "커스텀 운동 추가",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   Widget exercisesWidget(aaa, bool shirink) {
@@ -558,7 +573,8 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                               child: Text(
                                 exuniq[index].name,
                                 textScaleFactor: 1.3,
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight),
                               ),
                             ),
                             Text(
@@ -596,7 +612,6 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
   Widget exp1() {
     return Container(
       width: MediaQuery.of(context).size.width,
-      color: Color(0xFF101012),
       child:
           Consumer<ExercisesdataProvider>(builder: (context, provider, child) {
         return ChipsChoice<String>.multiple(
@@ -637,7 +652,6 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
   Widget exp2() {
     return Container(
       width: MediaQuery.of(context).size.width,
-      color: Color(0xFF101012),
       child:
           Consumer<ExercisesdataProvider>(builder: (context, provider, child) {
         return ChipsChoice<String>.multiple(
@@ -705,10 +719,10 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                     builder: (context, provider, child) {
                   return ExpandablePanel(
                     controller: _menucontroller,
-                    theme: const ExpandableThemeData(
+                    theme: ExpandableThemeData(
                       headerAlignment: ExpandablePanelHeaderAlignment.center,
                       hasIcon: false,
-                      iconColor: Colors.white,
+                      iconColor: Theme.of(context).primaryColorLight,
                     ),
                     header: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -721,7 +735,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                           child: Card(
                             color: provider.filtmenu == 1
                                 ? Theme.of(context).primaryColor
-                                : Colors.white30,
+                                : Theme.of(context).primaryColorLight,
                             child: Container(
                               width: MediaQuery.of(context).size.width / 2 - 10,
                               height:
@@ -732,7 +746,9 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                       ? "운동부위"
                                       : '${provider.tags.toString().replaceAll('[', '').replaceAll(']', '')}',
                                   textScaleFactor: 1.5,
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).primaryColorLight),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -747,7 +763,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                           child: Card(
                             color: provider.filtmenu == 2
                                 ? Theme.of(context).primaryColor
-                                : Colors.white30,
+                                : Theme.of(context).primaryColorLight,
                             child: Container(
                               width: MediaQuery.of(context).size.width / 2 - 10,
                               height:
@@ -758,7 +774,9 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                       ? "운동유형"
                                       : '${provider.tags2.toString().replaceAll('[', '').replaceAll(']', '')}',
                                   textScaleFactor: 1.5,
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).primaryColorLight),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -796,7 +814,6 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                     child: _exercises_searchWidget())),
           ],
         ),
-        backgroundColor: Color(0xFF101012),
       );
     });
   }

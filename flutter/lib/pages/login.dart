@@ -60,50 +60,47 @@ class LoginPageState extends State<LoginPage> {
     return Scaffold(
       key: _scaffoldKey,
       body: Container(
-          color: Color(0xFF101012),
           child: Center(
               child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(flex: 3, child: SizedBox(height: 6)),
-                  Text("SUPERO",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 54,
-                          fontWeight: FontWeight.w800)),
-                  Text("우리의 운동 극복 스토리",
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500)),
-                  Expanded(flex: 3, child: SizedBox(height: 6)),
-                  _isEmailLogin ? _emailWidget() : Container(),
-                  SizedBox(height: 8),
-                  _isEmailLogin ? _passwordWidget() : Container(),
-                  SizedBox(height: 14),
-                  _isEmailLogin ? _signInUpButton("로그인", context) : Container(),
-                  SizedBox(height: 14),
-                  _isEmailLogin
-                      ? _signInUpButton("회원가입", context)
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Expanded(flex: 3, child: SizedBox(height: 6)),
+              Text("SUPERO",
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColorLight,
+                      fontSize: 54,
+                      fontWeight: FontWeight.w800)),
+              Text("우리의 운동 극복 스토리",
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500)),
+              Expanded(flex: 3, child: SizedBox(height: 6)),
+              _isEmailLogin ? _emailWidget() : Container(),
+              SizedBox(height: 8),
+              _isEmailLogin ? _passwordWidget() : Container(),
+              SizedBox(height: 14),
+              _isEmailLogin ? _signInUpButton("로그인", context) : Container(),
+              SizedBox(height: 14),
+              _isEmailLogin ? _signInUpButton("회원가입", context) : Container(),
+              _isEmailLogin
+                  ? Container()
+                  : _loginSocialButton("kakao", context),
+              _isEmailLogin
+                  ? Container()
+                  : _loginSocialButton("google", context),
+              _isEmailLogin
+                  ? Container()
+                  : _isiOS
+                      ? _loginSocialButton("apple", context)
                       : Container(),
-                  _isEmailLogin
-                      ? Container()
-                      : _loginSocialButton("kakao", context),
-                  _isEmailLogin
-                      ? Container()
-                      : _loginSocialButton("google", context),
-                  _isEmailLogin
-                      ? Container()
-                      : _isiOS
-                          ? _loginSocialButton("apple", context)
-                          : Container(),
-                  //_emailLoginButton(context),
-                  SizedBox(height: 42),
-                  _isEmailLogin ? _findUser(context) : Container()
-                ]),
-          ))),
+              //_emailLoginButton(context),
+              SizedBox(height: 42),
+              _isEmailLogin ? _findUser(context) : Container()
+            ]),
+      ))),
     );
   }
 
@@ -145,9 +142,8 @@ class LoginPageState extends State<LoginPage> {
         child: TextButton(
             style: TextButton.styleFrom(
               foregroundColor: Colors.blueAccent,
-              backgroundColor: Color(0xFF101012),
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color(0xFF101012),
               padding: EdgeInsets.all(8.0),
@@ -191,19 +187,22 @@ class LoginPageState extends State<LoginPage> {
       child: TextFormField(
           controller: _userEmailCtrl,
           decoration: InputDecoration(
-              prefixIcon: Icon(Icons.email, color: Colors.white),
+              prefixIcon:
+                  Icon(Icons.email, color: Theme.of(context).primaryColorLight),
               labelText: "이메일",
-              labelStyle: TextStyle(color: Colors.white),
+              labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
               border: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.white, width: 2.0),
+                borderSide: BorderSide(
+                    color: Theme.of(context).primaryColorLight, width: 2.0),
                 borderRadius: BorderRadius.circular(5.0),
               ),
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white, width: 2.0),
+                borderSide: BorderSide(
+                    color: Theme.of(context).primaryColorLight, width: 2.0),
                 borderRadius: BorderRadius.circular(5.0),
               ),
-              fillColor: Colors.white),
-          style: TextStyle(color: Colors.white)),
+              fillColor: Theme.of(context).primaryColorLight),
+          style: TextStyle(color: Theme.of(context).primaryColorLight)),
     );
   }
 
@@ -217,19 +216,22 @@ class LoginPageState extends State<LoginPage> {
           autocorrect: false,
           obscuringCharacter: "*",
           decoration: InputDecoration(
-              prefixIcon: Icon(Icons.vpn_key_rounded, color: Colors.white),
+              prefixIcon: Icon(Icons.vpn_key_rounded,
+                  color: Theme.of(context).primaryColorLight),
               labelText: "비밀번호",
-              labelStyle: TextStyle(color: Colors.white),
+              labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
               border: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.white, width: 2.0),
+                borderSide: BorderSide(
+                    color: Theme.of(context).primaryColorLight, width: 2.0),
                 borderRadius: BorderRadius.circular(5.0),
               ),
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white, width: 2.0),
+                borderSide: BorderSide(
+                    color: Theme.of(context).primaryColorLight, width: 2.0),
                 borderRadius: BorderRadius.circular(5.0),
               ),
-              fillColor: Colors.white),
-          style: TextStyle(color: Colors.white)),
+              fillColor: Theme.of(context).primaryColorLight),
+          style: TextStyle(color: Theme.of(context).primaryColorLight)),
     );
   }
 
@@ -398,7 +400,7 @@ class LoginPageState extends State<LoginPage> {
                 foregroundColor: _loginColor[content],
                 backgroundColor: _loginColor[content],
                 textStyle: TextStyle(
-                  color: Colors.white,
+                  color: Theme.of(context).primaryColorLight,
                 ),
                 disabledForegroundColor: _loginColor[content],
                 padding: EdgeInsets.all(8.0),
@@ -411,7 +413,7 @@ class LoginPageState extends State<LoginPage> {
               child: Text(isLoading ? 'loggin in.....' : content,
                   style: TextStyle(
                       fontSize: 20.0,
-                      color: Colors.white,
+                      color: Theme.of(context).primaryColorLight,
                       fontWeight: FontWeight.w400))),
         ));
   }

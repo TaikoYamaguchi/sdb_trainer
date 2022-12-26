@@ -62,22 +62,7 @@ class ExerciseState extends State<Exercise> {
   var keyCheck = GlobalKey();
   var keySearch = GlobalKey();
   var keySelect = GlobalKey();
-
-  final Map<int, Widget> _menuList = const <int, Widget>{
-    0: Padding(
-      child: Text("개별 운동",
-          textScaleFactor: 1.3, style: TextStyle(color: Colors.white)),
-      padding: const EdgeInsets.all(5.0),
-    ),
-    1: Padding(
-        child: Text("나의 플랜",
-            textScaleFactor: 1.3, style: TextStyle(color: Colors.white)),
-        padding: const EdgeInsets.all(5.0)),
-    2: Padding(
-        child: Text("루틴 찾기",
-            textScaleFactor: 1.3, style: TextStyle(color: Colors.white)),
-        padding: const EdgeInsets.all(5.0))
-  };
+  var _menuList;
 
   List<TutorialItem> itens = [];
 
@@ -93,7 +78,7 @@ class ExerciseState extends State<Exercise> {
             Text(
               "+버튼을 눌러 원하는 이름의 루틴을 추가하세요",
               textScaleFactor: 1.7,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Theme.of(context).primaryColorLight),
             ),
             SizedBox(
               height: 100,
@@ -124,7 +109,7 @@ class ExerciseState extends State<Exercise> {
               Text(
                 "운동",
                 textScaleFactor: 1.7,
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Theme.of(context).primaryColorLight),
               ),
             ],
           ),
@@ -143,7 +128,6 @@ class ExerciseState extends State<Exercise> {
               }
             })
           ],
-          backgroundColor: Color(0xFF101012),
         ));
   }
 
@@ -159,7 +143,6 @@ class ExerciseState extends State<Exercise> {
           Container(
             height: 40,
             alignment: Alignment.center,
-            color: Color(0xFF101012),
             child: Center(
               child: Consumer<RoutineMenuStater>(
                   builder: (builder, provider, child) {
@@ -180,12 +163,10 @@ class ExerciseState extends State<Exercise> {
       width: double.infinity,
       child: Consumer<RoutineMenuStater>(builder: (context, provider, child) {
         return Container(
-          color: Color(0xFF101012),
           child: CupertinoSlidingSegmentedControl(
               groupValue: provider.menustate,
               children: _menuList,
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-              backgroundColor: Color(0xFF101012),
               thumbColor: Theme.of(context).primaryColor,
               onValueChanged: (i) {
                 controller!.animateToPage(i as int,
@@ -218,7 +199,6 @@ class ExerciseState extends State<Exercise> {
   Widget _MyWorkout() {
     return Container(
       //padding: const EdgeInsets.symmetric(vertical: 8.0),
-      color: Color(0xFF101012),
       child: ListView(
         shrinkWrap: true,
         children: [
@@ -304,7 +284,8 @@ class ExerciseState extends State<Exercise> {
                                         },
                                         backgroundColor:
                                             Theme.of(context).primaryColor,
-                                        foregroundColor: Colors.white,
+                                        foregroundColor:
+                                            Theme.of(context).primaryColorLight,
                                         icon: Icons.edit,
                                         label: '수정',
                                       ),
@@ -324,7 +305,8 @@ class ExerciseState extends State<Exercise> {
                                                   });
                                         },
                                         backgroundColor: Color(0xFFFE4A49),
-                                        foregroundColor: Colors.white,
+                                        foregroundColor:
+                                            Theme.of(context).primaryColorLight,
                                         icon: Icons.delete,
                                         label: '삭제',
                                       )
@@ -344,7 +326,8 @@ class ExerciseState extends State<Exercise> {
                                             border: new Border(
                                                 right: new BorderSide(
                                                     width: 1.0,
-                                                    color: Colors.white24))),
+                                                    color: Theme.of(context)
+                                                        .primaryColorLight))),
                                         child: routinelist[index].mode == 0
                                             ? Container(
                                                 padding: EdgeInsets.symmetric(
@@ -353,7 +336,8 @@ class ExerciseState extends State<Exercise> {
                                                   width: 25,
                                                   child: SvgPicture.asset(
                                                       "assets/svg/dumbel_on.svg",
-                                                      color: Colors.white30),
+                                                      color: Theme.of(context)
+                                                          .primaryColorLight),
                                                 ),
                                               )
                                             : CircularPercentIndicator(
@@ -372,7 +356,8 @@ class ExerciseState extends State<Exercise> {
                                                   "${routinelist[index].exercises[0].progress + 1}/${routinelist[index].exercises[0].plans.length}",
                                                   textScaleFactor: 0.8,
                                                   style: new TextStyle(
-                                                    color: Colors.white,
+                                                    color: Theme.of(context)
+                                                        .primaryColorLight,
                                                   ),
                                                 ),
                                                 linearGradient: gradientColors,
@@ -384,7 +369,8 @@ class ExerciseState extends State<Exercise> {
                                         routinelist[index].name,
                                         textScaleFactor: 1.5,
                                         style: TextStyle(
-                                            color: Colors.white,
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       subtitle: Row(
@@ -394,15 +380,19 @@ class ExerciseState extends State<Exercise> {
                                                   "리스트 모드 - ${routinelist[index].exercises.length}개 운동",
                                                   textScaleFactor: 1.0,
                                                   style: TextStyle(
-                                                      color: Colors.white30))
+                                                      color: Theme.of(context)
+                                                          .primaryColorLight))
                                               : Text("플랜 모드",
                                                   textScaleFactor: 1.0,
                                                   style: TextStyle(
-                                                      color: Colors.white30)),
+                                                      color: Theme.of(context)
+                                                          .primaryColorLight)),
                                         ],
                                       ),
                                       trailing: Icon(Icons.keyboard_arrow_right,
-                                          color: Colors.white30, size: 30.0)),
+                                          color: Theme.of(context)
+                                              .primaryColorLight,
+                                          size: 30.0)),
                                 ),
                               )),
                         ],
@@ -445,7 +435,7 @@ class ExerciseState extends State<Exercise> {
                             child: Icon(
                               Icons.add,
                               size: 28.0,
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorLight,
                             ),
                           ),
                           Padding(
@@ -456,7 +446,9 @@ class ExerciseState extends State<Exercise> {
                               children: [
                                 Text("이곳을 눌러보세요",
                                     textScaleFactor: 1.5,
-                                    style: TextStyle(color: Colors.white)),
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .primaryColorLight)),
                                 Text("원하는 운동 플랜을 만들 수 있어요",
                                     textScaleFactor: 1.1,
                                     style: TextStyle(color: Colors.grey)),
@@ -511,7 +503,6 @@ class ExerciseState extends State<Exercise> {
                       transitionEffect: TransitionEffect.BOTTOM_TO_TOP));
             },
             child: Card(
-              color: Color(0xFF101012),
               child: Container(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -531,7 +522,7 @@ class ExerciseState extends State<Exercise> {
                                     fit: BoxFit.cover,
                                   )))
                           : Container(
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorLight,
                               child: Icon(
                                 Icons.image_not_supported,
                                 size: 100,
@@ -543,7 +534,8 @@ class ExerciseState extends State<Exercise> {
                         '${key_list[index]}',
                         textScaleFactor: 1.3,
                         style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
+                            color: Theme.of(context).primaryColorLight,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],
@@ -581,6 +573,25 @@ class ExerciseState extends State<Exercise> {
     _RoutineMenuProvider =
         Provider.of<RoutineMenuStater>(context, listen: false);
     _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
+    _menuList = <int, Widget>{
+      0: Padding(
+        child: Text("개별 운동",
+            textScaleFactor: 1.3,
+            style: TextStyle(color: Theme.of(context).primaryColorLight)),
+        padding: const EdgeInsets.all(5.0),
+      ),
+      1: Padding(
+          child: Text("나의 플랜",
+              textScaleFactor: 1.3,
+              style: TextStyle(color: Theme.of(context).primaryColorLight)),
+          padding: const EdgeInsets.all(5.0)),
+      2: Padding(
+          child: Text("루틴 찾기",
+              textScaleFactor: 1.3,
+              style: TextStyle(color: Theme.of(context).primaryColorLight)),
+          padding: const EdgeInsets.all(5.0))
+    };
+
     _PrefsProvider.eachworkouttutor
         ? _PrefsProvider.stepone
             ? [
@@ -682,20 +693,19 @@ class ExerciseState extends State<Exercise> {
               }),
             ];
       return Scaffold(
-          appBar: _appbarWidget(),
-          body: Consumer2<ExercisesdataProvider, WorkoutdataProvider>(
-              builder: (context, provider1, provider2, widget) {
-            if (provider2.workoutdata != null) {
-              return _workoutWidget();
-            }
-            return Container(
-              color: Color(0xFF101012),
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }),
-          backgroundColor: Color(0xFF101012));
+        appBar: _appbarWidget(),
+        body: Consumer2<ExercisesdataProvider, WorkoutdataProvider>(
+            builder: (context, provider1, provider2, widget) {
+          if (provider2.workoutdata != null) {
+            return _workoutWidget();
+          }
+          return Container(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }),
+      );
     });
   }
 }

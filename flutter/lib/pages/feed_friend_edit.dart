@@ -63,7 +63,8 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("친구 찾기", style: TextStyle(color: Colors.white)),
+              Text("친구 찾기",
+                  style: TextStyle(color: Theme.of(context).primaryColorLight)),
               TextButton(
                   onPressed: () {
                     Navigator.push(
@@ -72,10 +73,11 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
                             child: FeedFriendDislikeEdit(),
                             transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
                   },
-                  child: Text("차단친구", style: TextStyle(color: Colors.white))),
+                  child: Text("차단친구",
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColorLight))),
             ],
           ),
-          backgroundColor: Color(0xFF101012),
         ));
   }
 
@@ -93,64 +95,60 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
         }
       },
       child: Container(
-          color: Color(0xFF101012),
           child: Column(children: [
-            Consumer<UserdataProvider>(builder: (builder, provider, child) {
-              return Container(
-                margin: const EdgeInsets.fromLTRB(10, 16, 10, 16),
-                child: TextField(
-                    autofocus: true,
-                    style: TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.search,
+        Consumer<UserdataProvider>(builder: (builder, provider, child) {
+          return Container(
+            margin: const EdgeInsets.fromLTRB(10, 16, 10, 16),
+            child: TextField(
+                autofocus: true,
+                style: TextStyle(color: Theme.of(context).primaryColorLight),
+                decoration: InputDecoration(
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Color(0xFF717171),
+                  ),
+                  hintText: "닉네임 검색",
+                  hintStyle:
+                      TextStyle(fontSize: 20.0, color: Color(0xFF717171)),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(width: 3, color: Color(0xFF717171)),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+                onChanged: (text) {
+                  if (text.toString() == "") {
+                    friendsInputSwitch = false;
+                    setState(() => _usersdata = _userProvider.userFriendsAll);
+                  } else {
+                    searchFriend(text.toString());
+                    friendsInputSwitch = true;
+                  }
+                }),
+          );
+        }),
+        Expanded(
+          child: _usersdata == null
+              ? Container()
+              : ListView.separated(
+                  itemBuilder: (BuildContext _context, int index) {
+                    return _friend_listWidget(_usersdata.userdatas[index]);
+                  },
+                  separatorBuilder: (BuildContext _context, int index) {
+                    return Container(
+                      alignment: Alignment.center,
+                      height: 1,
+                      child: Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        height: 1,
                         color: Color(0xFF717171),
                       ),
-                      hintText: "닉네임 검색",
-                      hintStyle:
-                          TextStyle(fontSize: 20.0, color: Color(0xFF717171)),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide:
-                            BorderSide(width: 3, color: Color(0xFF717171)),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                    ),
-                    onChanged: (text) {
-                      if (text.toString() == "") {
-                        friendsInputSwitch = false;
-                        setState(
-                            () => _usersdata = _userProvider.userFriendsAll);
-                      } else {
-                        searchFriend(text.toString());
-                        friendsInputSwitch = true;
-                      }
-                    }),
-              );
-            }),
-            Expanded(
-              child: _usersdata == null
-                  ? Container()
-                  : ListView.separated(
-                      itemBuilder: (BuildContext _context, int index) {
-                        return _friend_listWidget(_usersdata.userdatas[index]);
-                      },
-                      separatorBuilder: (BuildContext _context, int index) {
-                        return Container(
-                          alignment: Alignment.center,
-                          height: 1,
-                          color: Color(0xFF101012),
-                          child: Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.symmetric(horizontal: 10),
-                            height: 1,
-                            color: Color(0xFF717171),
-                          ),
-                        );
-                      },
-                      itemCount: _usersdata.userdatas.length,
-                    ),
-            )
-          ])),
+                    );
+                  },
+                  itemCount: _usersdata.userdatas.length,
+                ),
+        )
+      ])),
     );
   }
 
@@ -202,7 +200,8 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
                 ),
                 Text(user.nickname,
                     textScaleFactor: 1.5,
-                    style: TextStyle(color: Colors.white)),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
               ])),
           _feedLikeButton(user)
         ],

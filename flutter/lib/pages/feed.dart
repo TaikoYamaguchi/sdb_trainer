@@ -93,32 +93,33 @@ class _FeedState extends State<Feed> {
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
 
     return Scaffold(
-      backgroundColor: Color(0xFF101012),
       extendBody: true,
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(40.0), // here the desired height
           child: AppBar(
-              elevation: 0,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("피드",
-                      textScaleFactor: 1.7,
-                      style: TextStyle(color: Colors.white)),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            Transition(
-                                child: FeedFriend(),
-                                transitionEffect:
-                                    TransitionEffect.RIGHT_TO_LEFT));
-                      },
-                      child:
-                          Text("친구관리", style: TextStyle(color: Colors.white))),
-                ],
-              ),
-              backgroundColor: Color(0xFF101012))),
+            elevation: 0,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("피드",
+                    textScaleFactor: 1.7,
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          Transition(
+                              child: FeedFriend(),
+                              transitionEffect:
+                                  TransitionEffect.RIGHT_TO_LEFT));
+                    },
+                    child: Text("친구관리",
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorLight))),
+              ],
+            ),
+          )),
       body: _userProvider.userdata != null
           ? Center(child: _feedCardList(context))
           : Center(child: CircularProgressIndicator()),
@@ -135,7 +136,6 @@ class _FeedState extends State<Feed> {
 
   Widget _feedCardList(context) {
     return Container(
-      color: Color(0xFF101012),
       child: Column(
         children: [
           Container(
@@ -176,7 +176,8 @@ class _FeedState extends State<Feed> {
                                               ? CircularProgressIndicator()
                                               : Text("데이터 없음",
                                                   style: TextStyle(
-                                                      color: Colors.white))),
+                                                      color: Theme.of(context)
+                                                          .primaryColorLight))),
                                     );
                                   }
                                 },
@@ -185,7 +186,6 @@ class _FeedState extends State<Feed> {
                                   return Container(
                                     alignment: Alignment.center,
                                     height: 0,
-                                    color: Color(0xFF101012),
                                     child: Container(
                                       alignment: Alignment.center,
                                       height: 0,
@@ -214,7 +214,9 @@ class _FeedState extends State<Feed> {
         child: Text("모두 보기",
             textScaleFactor: 1.3,
             style: TextStyle(
-              color: _feedListCtrl == 1 ? Colors.white : Colors.grey,
+              color: _feedListCtrl == 1
+                  ? Theme.of(context).primaryColorLight
+                  : Colors.grey,
             )),
         padding: const EdgeInsets.all(5.0),
       ),
@@ -222,26 +224,28 @@ class _FeedState extends State<Feed> {
           child: Text("친구 보기",
               textScaleFactor: 1.3,
               style: TextStyle(
-                color: _feedListCtrl == 2 ? Colors.white : Colors.grey,
+                color: _feedListCtrl == 2
+                    ? Theme.of(context).primaryColorLight
+                    : Colors.grey,
               )),
           padding: const EdgeInsets.all(5.0)),
       3: Padding(
           child: Text("내 피드",
               textScaleFactor: 1.3,
               style: TextStyle(
-                color: _feedListCtrl == 3 ? Colors.white : Colors.grey,
+                color: _feedListCtrl == 3
+                    ? Theme.of(context).primaryColorLight
+                    : Colors.grey,
               )),
           padding: const EdgeInsets.all(5.0))
     };
     return SizedBox(
       width: double.infinity,
       child: Container(
-        color: Color(0xFF101012),
         child: CupertinoSlidingSegmentedControl(
             groupValue: _feedListCtrl,
             children: _feedList,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-            backgroundColor: Color(0xFF101012),
             thumbColor: Theme.of(context).primaryColor,
             onValueChanged: (i) {
               setState(() {
@@ -264,7 +268,7 @@ class _FeedState extends State<Feed> {
             Text(
               "친구를 추가 할 수 있어요",
               textScaleFactor: 2.0,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Theme.of(context).primaryColorLight),
             ),
             Text("아래를 눌러 친구를 추가해보세요",
                 textScaleFactor: 1.3, style: TextStyle(color: Colors.grey)),
@@ -279,7 +283,7 @@ class _FeedState extends State<Feed> {
                       foregroundColor: Theme.of(context).primaryColor,
                       backgroundColor: Theme.of(context).primaryColor,
                       textStyle: TextStyle(
-                        color: Colors.white,
+                        color: Theme.of(context).primaryColorLight,
                       ),
                       padding: EdgeInsets.all(12.0),
                     ),
@@ -293,7 +297,8 @@ class _FeedState extends State<Feed> {
                     },
                     child: Text("친구 찾기",
                         textScaleFactor: 1.7,
-                        style: TextStyle(color: Colors.white))))
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorLight))))
           ]),
         ),
       ),
@@ -308,7 +313,7 @@ class _FeedState extends State<Feed> {
         Text(
           "첫 운동을 시작해보세요",
           textScaleFactor: 2.0,
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Theme.of(context).primaryColorLight),
         ),
         Text("아래를 눌러서 운동 할 수 있어요",
             textScaleFactor: 1.3, style: TextStyle(color: Colors.grey)),
@@ -323,7 +328,7 @@ class _FeedState extends State<Feed> {
                   foregroundColor: Theme.of(context).primaryColor,
                   backgroundColor: Theme.of(context).primaryColor,
                   textStyle: TextStyle(
-                    color: Colors.white,
+                    color: Theme.of(context).primaryColorLight,
                   ),
                   padding: EdgeInsets.all(12.0),
                 ),
@@ -332,7 +337,8 @@ class _FeedState extends State<Feed> {
                 },
                 child: Text("첫 운동 하기",
                     textScaleFactor: 1.7,
-                    style: TextStyle(color: Colors.white))))
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight))))
       ]),
     ));
   }

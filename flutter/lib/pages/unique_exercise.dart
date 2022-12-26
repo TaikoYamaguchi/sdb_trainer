@@ -76,9 +76,8 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
           title: Text(
             "",
             textScaleFactor: 2.5,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
-          backgroundColor: Color(0xFF101012),
         ));
   }
 
@@ -97,7 +96,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
               '운동을 종료 할 수 있어요',
               textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Theme.of(context).primaryColorLight),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -105,7 +104,8 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                 Text('운동을 종료 하시겠나요?',
                     textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white)),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
                 Text('외부를 터치하면 취소 할 수 있어요',
                     textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
@@ -130,9 +130,8 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
-              disabledForegroundColor: Color(0xFF101012),
               padding: EdgeInsets.all(12.0),
             ),
             onPressed: () {
@@ -143,7 +142,8 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
               Navigator.of(context).pop();
             },
             child: Text("운동 종료 하기",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   Widget _exercisedetailWidget() {
@@ -158,12 +158,11 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
       if (states.any(interactiveStates.contains)) {
         return Theme.of(context).primaryColor;
       }
-      return Colors.white;
+      return Theme.of(context).primaryColorLight;
     }
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 5),
-      color: Color(0xFF101012),
       child: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -221,12 +220,14 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                         ? Text(
                             _exampleex.name,
                             textScaleFactor: 4.0,
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight),
                           )
                         : Text(
                             _exampleex.name,
                             textScaleFactor: 2.7,
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight),
                           ),
                     Consumer<ExercisesdataProvider>(
                         builder: (builder, provider, child) {
@@ -254,7 +255,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                           "Set",
                           textScaleFactor: 1.1,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Theme.of(context).primaryColorLight,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.right,
@@ -265,7 +266,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                           "Weight(${_userProvider.userdata.weight_unit})",
                           textScaleFactor: 1.1,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Theme.of(context).primaryColorLight,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
@@ -277,7 +278,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                           "Reps",
                           textScaleFactor: 1.1,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Theme.of(context).primaryColorLight,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
@@ -288,7 +289,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                           "1RM",
                           textScaleFactor: 1.1,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Theme.of(context).primaryColorLight,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
@@ -314,7 +315,6 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                                   Transform.scale(
                                       scale: 1.2,
                                       child: Checkbox(
-                                          checkColor: Color(0xFF101012),
                                           fillColor:
                                               MaterialStateProperty.resolveWith(
                                                   getColor),
@@ -342,7 +342,8 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                                       "${index + 1}",
                                       textScaleFactor: 1.7,
                                       style: TextStyle(
-                                        color: Colors.white,
+                                        color:
+                                            Theme.of(context).primaryColorLight,
                                       ),
                                       textAlign: TextAlign.center,
                                     ),
@@ -359,7 +360,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                                 style: TextStyle(
                                   fontSize:
                                       21 * _themeProvider.userFontSize / 0.8,
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColorLight,
                                 ),
                                 textAlign: TextAlign.center,
                                 decoration: InputDecoration(
@@ -367,7 +368,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                                   hintStyle: TextStyle(
                                     fontSize:
                                         21 * _themeProvider.userFontSize / 0.8,
-                                    color: Colors.white,
+                                    color: Theme.of(context).primaryColorLight,
                                   ),
                                 ),
                                 onChanged: (text) {
@@ -387,7 +388,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                                 width: 35,
                                 child: SvgPicture.asset(
                                     "assets/svg/multiply.svg",
-                                    color: Colors.white,
+                                    color: Theme.of(context).primaryColorLight,
                                     height: 19 *
                                         _themeProvider.userFontSize /
                                         0.8)),
@@ -399,7 +400,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                                 style: TextStyle(
                                   fontSize:
                                       21 * _themeProvider.userFontSize / 0.8,
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColorLight,
                                 ),
                                 textAlign: TextAlign.center,
                                 decoration: InputDecoration(
@@ -407,7 +408,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                                   hintStyle: TextStyle(
                                     fontSize:
                                         21 * _themeProvider.userFontSize / 0.8,
-                                    color: Colors.white,
+                                    color: Theme.of(context).primaryColorLight,
                                   ),
                                 ),
                                 onChanged: (text) {
@@ -429,13 +430,17 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                                     ? Text(
                                         "${(_sets[index].weight * (1 + _sets[index].reps / 30)).toStringAsFixed(1)}",
                                         textScaleFactor: 1.7,
-                                        style: TextStyle(color: Colors.white),
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorLight),
                                         textAlign: TextAlign.center,
                                       )
                                     : Text(
                                         "${_sets[index].weight}",
                                         textScaleFactor: 1.7,
-                                        style: TextStyle(color: Colors.white),
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorLight),
                                         textAlign: TextAlign.center,
                                       )),
                           ],
@@ -446,7 +451,6 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                       return Container(
                         alignment: Alignment.center,
                         height: 1,
-                        color: Color(0xFF101012),
                         child: Container(
                           alignment: Alignment.center,
                           margin: EdgeInsets.symmetric(horizontal: 10),
@@ -472,7 +476,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                           style: TextStyle(
                               color: (provider.userest && provider.timeron < 0)
                                   ? Colors.red
-                                  : Colors.white));
+                                  : Theme.of(context).primaryColorLight));
                     })),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -486,7 +490,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                               },
                               icon: Icon(
                                 Icons.remove,
-                                color: Colors.white,
+                                color: Theme.of(context).primaryColorLight,
                                 size: 40,
                               )),
                         ),
@@ -522,7 +526,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                               },
                               icon: Icon(
                                 Icons.add,
-                                color: Colors.white,
+                                color: Theme.of(context).primaryColorLight,
                                 size: 40,
                               )),
                         )
@@ -612,7 +616,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
               '운동을 시작 할 수 있어요',
               textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Theme.of(context).primaryColorLight),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -620,7 +624,8 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                 Text('운동을 시작 할까요?',
                     textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white)),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
                 Text('외부를 터치하면 취소 할 수 있어요',
                     textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
@@ -645,9 +650,8 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
-              disabledForegroundColor: Color(0xFF101012),
               padding: EdgeInsets.all(12.0),
             ),
             onPressed: () {
@@ -659,7 +663,8 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
               Navigator.of(context, rootNavigator: true).pop();
             },
             child: Text("운동 시작 하기",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   void _displaySetRestAlert() {
@@ -677,7 +682,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
               '휴식 시간을 설정 해볼게요',
               textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Theme.of(context).primaryColorLight),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -685,14 +690,14 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                 Text('세트당 휴식 시간을 입력해주세요',
                     textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white)),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
                 SizedBox(height: 20),
                 TextField(
                   controller: _resttimectrl,
                   keyboardType: TextInputType.number,
                   style: TextStyle(
                     fontSize: 21 * _themeProvider.userFontSize / 0.8,
-                    color: Color(0xFF101012),
                   ),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
@@ -710,7 +715,7 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                       hintText: "휴식 시간 입력(초)",
                       hintStyle: TextStyle(
                           fontSize: 24.0 * _themeProvider.userFontSize / 0.8,
-                          color: Colors.white)),
+                          color: Theme.of(context).primaryColorLight)),
                   onChanged: (text) {
                     int changetime;
                     changetime = int.parse(text);
@@ -730,14 +735,14 @@ class _UniqueExerciseDetailsState extends State<UniqueExerciseDetails> {
                     foregroundColor: Theme.of(context).primaryColor,
                     backgroundColor: Theme.of(context).primaryColor,
                     textStyle: TextStyle(
-                      color: Colors.white,
+                      color: Theme.of(context).primaryColorLight,
                     ),
-                    disabledForegroundColor: Color(0xFF101012),
                     padding: EdgeInsets.all(8.0),
                   ),
                   child: Text('휴식 시간 설정하기',
                       textScaleFactor: 1.7,
-                      style: TextStyle(color: Colors.white)),
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColorLight)),
                   onPressed: () {
                     _resttimectrl.clear();
                     Navigator.of(context, rootNavigator: true).pop();

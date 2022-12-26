@@ -37,9 +37,8 @@ class _ProfileNicknameState extends State<ProfileNickname> {
           title: Text(
             "",
             textScaleFactor: 2.5,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
-          backgroundColor: Color(0xFF101012),
         ));
   }
 
@@ -57,7 +56,6 @@ class _ProfileNicknameState extends State<ProfileNickname> {
           }
         },
         child: Container(
-          color: Color(0xFF101012),
           child: Center(
               child: Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -71,7 +69,7 @@ class _ProfileNicknameState extends State<ProfileNickname> {
                         Text("닉네임 변경",
                             textScaleFactor: 2.7,
                             style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).primaryColorLight,
                                 fontWeight: FontWeight.w600)),
                         Text("닉네임을 수정 할 수 있어요",
                             textScaleFactor: 1.3,
@@ -117,15 +115,17 @@ class _ProfileNicknameState extends State<ProfileNickname> {
           });
       },
       controller: _userNicknameCtrl,
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(color: Theme.of(context).primaryColorLight),
       autofocus: true,
       decoration: InputDecoration(
         filled: true,
         hintText: _userProvider.userdata.nickname,
-        hintStyle: TextStyle(color: Colors.white),
+        hintStyle: TextStyle(color: Theme.of(context).primaryColorLight),
         labelText: _isNickNameused == false ? "닉네임" : "사용 불가 닉네임",
         labelStyle: TextStyle(
-            color: _isNickNameused == false ? Colors.white : Colors.red),
+            color: _isNickNameused == false
+                ? Theme.of(context).primaryColorLight
+                : Colors.red),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
               color: _isNickNameused == false
@@ -158,14 +158,14 @@ class _ProfileNicknameState extends State<ProfileNickname> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
-              disabledForegroundColor: Color(0xFF101012),
               padding: EdgeInsets.all(8.0),
             ),
             onPressed: () => _editCheck(),
             child: Text(isLoading ? 'loggin in.....' : "닉네임 수정",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   void _editCheck() async {

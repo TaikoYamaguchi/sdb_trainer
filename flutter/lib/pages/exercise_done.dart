@@ -88,9 +88,8 @@ class _ExerciseDoneState extends State<ExerciseDone> {
           title: Text(
             "운동 기록",
             textScaleFactor: 2.7,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
-          backgroundColor: Color(0xFF101012),
         ));
   }
 
@@ -127,19 +126,22 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                           width: 60,
                           child: Center(
                               child: Icon(Icons.fitness_center,
-                                  color: Colors.white, size: 40)),
+                                  color: Theme.of(context).primaryColorLight,
+                                  size: 40)),
                         ),
                         SizedBox(
                           width: 120,
                           child: Center(
                               child: Icon(Icons.access_time,
-                                  color: Colors.white, size: 40)),
+                                  color: Theme.of(context).primaryColorLight,
+                                  size: 40)),
                         ),
                         SizedBox(
                             width: 60,
                             child: Center(
                                 child: Icon(Icons.celebration,
-                                    color: Colors.white, size: 40))),
+                                    color: Theme.of(context).primaryColorLight,
+                                    size: 40))),
                       ],
                     ),
                     Row(
@@ -149,19 +151,25 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                             width: 60,
                             child: Center(
                               child: Text("운동 갯수",
-                                  style: TextStyle(color: Colors.white)),
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).primaryColorLight)),
                             )),
                         SizedBox(
                             width: 120,
                             child: Center(
                               child: Text("운동 시간",
-                                  style: TextStyle(color: Colors.white)),
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).primaryColorLight)),
                             )),
                         SizedBox(
                             width: 60,
                             child: Center(
                               child: Text("신기록",
-                                  style: TextStyle(color: Colors.white)),
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).primaryColorLight)),
                             ))
                       ],
                     ),
@@ -172,7 +180,9 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                           width: 60,
                           child: Center(
                             child: Text(widget.exerciseList.length.toString(),
-                                style: TextStyle(color: Colors.white)),
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).primaryColorLight)),
                           ),
                         ),
                         SizedBox(
@@ -180,7 +190,9 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                           child: Center(
                             child: Text(
                                 "${time_hour}시 ${time_min}분 ${time_sec}초",
-                                style: TextStyle(color: Colors.white)),
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).primaryColorLight)),
                           ),
                         ),
                         SizedBox(
@@ -188,7 +200,9 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                             child: Center(
                                 child: Text(
                                     widget.sdbdata.new_record.toString(),
-                                    style: TextStyle(color: Colors.white)))),
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .primaryColorLight)))),
                       ],
                     ),
                   ],
@@ -210,7 +224,8 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                   child: GestureDetector(
                     child: _image == null
                         ? Icon(Icons.add_photo_alternate,
-                            color: Colors.white, size: 120)
+                            color: Theme.of(context).primaryColorLight,
+                            size: 120)
                         : Image.file(File(_image!.path)),
                     onTap: () {
                       _displayPhotoAlert();
@@ -241,7 +256,8 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                           const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
                       child: Text("사진을 올릴 방법을 고를 수 있어요",
                           textScaleFactor: 1.3,
-                          style: TextStyle(color: Colors.white)),
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight)),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -256,7 +272,7 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                                 foregroundColor: Theme.of(context).primaryColor,
                                 backgroundColor: Theme.of(context).primaryColor,
                                 textStyle: TextStyle(
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColorLight,
                                 ),
                                 disabledForegroundColor:
                                     Color.fromRGBO(246, 58, 64, 20),
@@ -269,10 +285,14 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                               child: Column(
                                 children: [
                                   Icon(Icons.camera_alt,
-                                      size: 24, color: Colors.white),
+                                      size: 24,
+                                      color:
+                                          Theme.of(context).primaryColorLight),
                                   Text('촬영',
                                       textScaleFactor: 1.3,
-                                      style: TextStyle(color: Colors.white)),
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight)),
                                 ],
                               ),
                             )),
@@ -286,7 +306,7 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                                 foregroundColor: Theme.of(context).primaryColor,
                                 backgroundColor: Theme.of(context).primaryColor,
                                 textStyle: TextStyle(
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColorLight,
                                 ),
                                 disabledForegroundColor:
                                     Color.fromRGBO(246, 58, 64, 20),
@@ -299,10 +319,14 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                               child: Column(
                                 children: [
                                   Icon(Icons.collections,
-                                      size: 24, color: Colors.white),
+                                      size: 24,
+                                      color:
+                                          Theme.of(context).primaryColorLight),
                                   Text('갤러리',
                                       textScaleFactor: 1.3,
-                                      style: TextStyle(color: Colors.white)),
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight)),
                                 ],
                               ),
                             )),
@@ -329,7 +353,7 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                 foregroundColor: Theme.of(context).primaryColor,
                 backgroundColor: Theme.of(context).primaryColor,
                 textStyle: TextStyle(
-                  color: Colors.white,
+                  color: Theme.of(context).primaryColorLight,
                 ),
                 disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
                 padding: EdgeInsets.all(12.0),
@@ -361,7 +385,8 @@ class _ExerciseDoneState extends State<ExerciseDone> {
               },
               child: Text("운동 완료",
                   textScaleFactor: 1.7,
-                  style: TextStyle(color: Colors.white)))),
+                  style:
+                      TextStyle(color: Theme.of(context).primaryColorLight)))),
     );
   }
 
@@ -371,19 +396,22 @@ class _ExerciseDoneState extends State<ExerciseDone> {
       child: TextFormField(
           controller: _exerciseCommentCtrl,
           decoration: InputDecoration(
-              prefixIcon: Icon(Icons.message, color: Colors.white),
+              prefixIcon: Icon(Icons.message,
+                  color: Theme.of(context).primaryColorLight),
               labelText: "운동에 대해 입력 할 수 있어요",
-              labelStyle: TextStyle(color: Colors.white),
+              labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
               border: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.white, width: 2.0),
+                borderSide: BorderSide(
+                    color: Theme.of(context).primaryColorLight, width: 2.0),
                 borderRadius: BorderRadius.circular(5.0),
               ),
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white, width: 2.0),
+                borderSide: BorderSide(
+                    color: Theme.of(context).primaryColorLight, width: 2.0),
                 borderRadius: BorderRadius.circular(5.0),
               ),
-              fillColor: Colors.white),
-          style: TextStyle(color: Colors.white)),
+              fillColor: Theme.of(context).primaryColorLight),
+          style: TextStyle(color: Theme.of(context).primaryColorLight)),
     );
   }
 
@@ -395,9 +423,9 @@ class _ExerciseDoneState extends State<ExerciseDone> {
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: _appbarWidget(),
-        body: _exerciseDoneWidget(),
-        backgroundColor: Color(0xFF101012));
+      resizeToAvoidBottomInset: false,
+      appBar: _appbarWidget(),
+      body: _exerciseDoneWidget(),
+    );
   }
 }

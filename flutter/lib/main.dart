@@ -67,13 +67,36 @@ class MyApp extends StatelessWidget {
       child: Consumer<ThemeProvider>(builder: (context, provider, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
+          themeMode: ThemeMode.light,
           theme: ThemeData(
               textTheme: Theme.of(context).textTheme.apply(
                     fontSizeFactor: _themeProvider.userFontSize,
                   ),
               primaryColor: const Color(0xff7a28cb),
+              primaryColorBrightness: Brightness.light,
+              cardColor: const Color(0xfff2f3f5),
+              canvasColor: Colors.white,
+              brightness: Brightness.light,
+              primaryColorLight: Colors.black,
+              primaryColorDark: Colors.grey,
+              textSelectionTheme: TextSelectionThemeData(
+                cursorColor: const Color(0xff7a28cb),
+                selectionColor: const Color(0xff7a28cb),
+                selectionHandleColor: const Color(0xff7a28cb),
+              ),
+              colorScheme: ThemeData().colorScheme.copyWith(
+                    primary: const Color(0xff7a28cb),
+                  ),
+              fontFamily: 'Noto_Sans_KR'),
+          darkTheme: ThemeData(
+              textTheme: Theme.of(context).textTheme.apply(
+                    fontSizeFactor: _themeProvider.userFontSize,
+                  ),
+              primaryColor: const Color(0xff7a28cb),
               cardColor: const Color(0xff25272c),
-              canvasColor: Colors.transparent,
+              canvasColor: const Color(0xFF101012),
+              primaryColorLight: Colors.white,
+              primaryColorDark: Colors.grey,
               textSelectionTheme: TextSelectionThemeData(
                 cursorColor: const Color(0xff7a28cb),
                 selectionColor: const Color(0xff7a28cb),

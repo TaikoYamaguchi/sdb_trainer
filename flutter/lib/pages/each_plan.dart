@@ -91,7 +91,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       provider.workoutdata.routinedatas[widget.rindex].name,
                       textScaleFactor: 2.7,
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Theme.of(context).primaryColorLight,
                         overflow: TextOverflow.ellipsis,
                       ),
                     );
@@ -121,7 +121,6 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                   Icons.cloud_upload_rounded,
                 ))
           ],
-          backgroundColor: Color(0xFF101012),
         ));
   }
 
@@ -140,7 +139,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
               '운동을 종료 할 수 있어요',
               textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Theme.of(context).primaryColorLight),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -148,7 +147,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                 Text('운동을 종료 하시겠나요?',
                     textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white)),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
                 Text('외부를 터치하면 취소 할 수 있어요',
                     textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
@@ -173,7 +173,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
@@ -185,7 +185,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
               Navigator.of(context, rootNavigator: true).pop();
             },
             child: Text("운동 종료 하기",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   Widget _Nday_RoutineWidget() {
@@ -197,7 +198,6 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
       var uniqexinfo = exinfo.exercisesdata.exercises;
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 5),
-        color: Color(0xFF101012),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -223,7 +223,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       },
                       icon: Icon(
                         Icons.arrow_back_ios_outlined,
-                        color: Colors.white,
+                        color: Theme.of(context).primaryColorLight,
                         size: 20,
                       )),
                   Container(
@@ -233,7 +233,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                     child: Text(
                       '${plandata.progress + 1}/${plandata.plans.length}day',
                       textScaleFactor: 2.0,
-                      style: TextStyle(color: Colors.white),
+                      style:
+                          TextStyle(color: Theme.of(context).primaryColorLight),
                     ),
                   ),
                   Container(
@@ -253,7 +254,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       },
                       icon: Icon(
                         Icons.arrow_forward_ios_outlined,
-                        color: Colors.white,
+                        color: Theme.of(context).primaryColorLight,
                         size: 20,
                       )),
                   Container(
@@ -276,7 +277,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                         },
                         icon: Icon(
                           Icons.remove_circle_outlined,
-                          color: Colors.white,
+                          color: Theme.of(context).primaryColorLight,
                           size: 20,
                         )),
                   ),
@@ -284,7 +285,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                     child: Text(
                       ' /',
                       textScaleFactor: 1.7,
-                      style: TextStyle(color: Colors.white),
+                      style:
+                          TextStyle(color: Theme.of(context).primaryColorLight),
                     ),
                   ),
                   Transform.scale(
@@ -300,7 +302,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                         },
                         icon: Icon(
                           Icons.add_circle_outlined,
-                          color: Colors.white,
+                          color: Theme.of(context).primaryColorLight,
                           size: 20,
                         )),
                   ),
@@ -327,7 +329,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                               '오늘은 휴식데이!',
                               textScaleFactor: 2.0,
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColorLight,
                                   fontWeight: FontWeight.bold),
                             ),
                             Container(
@@ -337,7 +339,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                               '운동을 추가 하지 않으면 휴식일입니다.',
                               textScaleFactor: 1.2,
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColorLight,
                                   fontWeight: FontWeight.bold),
                             ),
                             Container(
@@ -357,12 +359,13 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                   children: [
                                     ExpandablePanel(
                                         controller: Controllerlist[index],
-                                        theme: const ExpandableThemeData(
+                                        theme: ExpandableThemeData(
                                           headerAlignment:
                                               ExpandablePanelHeaderAlignment
                                                   .center,
                                           hasIcon: true,
-                                          iconColor: Colors.white,
+                                          iconColor: Theme.of(context)
+                                              .primaryColorLight,
                                         ),
                                         header: Padding(
                                           padding: EdgeInsets.only(left: 10),
@@ -373,7 +376,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                     inplandata[index].name,
                                                     textScaleFactor: 1.7,
                                                     style: TextStyle(
-                                                        color: Colors.white)),
+                                                        color: Theme.of(context)
+                                                            .primaryColorLight)),
                                                 onTap: () {
                                                   exselect(false, true, index);
                                                 },
@@ -400,7 +404,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                           icon: Icon(
                                                             Icons
                                                                 .add_circle_outlined,
-                                                            color: Colors.white,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColorLight,
                                                             size: 20,
                                                           )),
                                                     )
@@ -454,8 +460,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                             textScaleFactor:
                                                                 1.7,
                                                             style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColorLight,
                                                             ),
                                                           ),
                                                         ),
@@ -467,7 +474,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                       Theme(
                                                         data: ThemeData(
                                                             unselectedWidgetColor:
-                                                                Colors.white),
+                                                                Theme.of(
+                                                                        context)
+                                                                    .primaryColorLight),
                                                         child: Checkbox(
                                                             materialTapTargetSize:
                                                                 MaterialTapTargetSize
@@ -475,8 +484,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                             activeColor: Theme
                                                                     .of(context)
                                                                 .primaryColor,
-                                                            checkColor:
-                                                                Colors.white,
+                                                            checkColor: Theme
+                                                                    .of(context)
+                                                                .primaryColorLight,
                                                             value: inplandata[
                                                                     index]
                                                                 .sets[setindex]
@@ -524,7 +534,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                               },
                                               icon: Icon(
                                                 Icons.remove_circle_outlined,
-                                                color: Colors.white,
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
                                                 size: 20,
                                               )),
                                         ),
@@ -543,7 +554,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                               },
                                               icon: Icon(
                                                 Icons.add_circle_outlined,
-                                                color: Colors.white,
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
                                                 size: 20,
                                               )),
                                         ),
@@ -581,7 +593,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                               },
                               icon: Icon(
                                 Icons.remove_circle_outlined,
-                                color: Colors.white,
+                                color: Theme.of(context).primaryColorLight,
                                 size: 20,
                               )),
                         ),
@@ -592,7 +604,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                             child: Text(
                           '/',
                           textScaleFactor: 1.7,
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight),
                         )),
                         Container(
                           width: 10,
@@ -608,7 +621,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                               },
                               icon: Icon(
                                 Icons.add_circle_outlined,
-                                color: Colors.white,
+                                color: Theme.of(context).primaryColorLight,
                                 size: 20,
                               )),
                         ),
@@ -639,7 +652,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                     style: TextStyle(
                         color: (provider.userest && provider.timeron < 0)
                             ? Colors.red
-                            : Colors.white)),
+                            : Theme.of(context).primaryColorLight)),
               );
             })),
             Container(child: Consumer<RoutineTimeProvider>(
@@ -684,7 +697,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
             height: 220,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-              color: Colors.white,
+              color: Theme.of(context).primaryColorLight,
             ),
             child: _setinfo(eindex, sindex));
       },
@@ -789,7 +802,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                         hintText: "${setdata.weight}",
                         hintStyle: TextStyle(
                           fontSize: 21,
-                          color: Colors.white,
+                          color: Theme.of(context).primaryColorLight,
                         ),
                       ),
                       onChanged: (text) {
@@ -821,7 +834,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                         hintText: "${setdata.weight}",
                         hintStyle: TextStyle(
                           fontSize: 21,
-                          color: Colors.white,
+                          color: Theme.of(context).primaryColorLight,
                         ),
                       ),
                       onChanged: (text) {
@@ -912,14 +925,15 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
         Container(
           margin: const EdgeInsets.fromLTRB(10, 16, 10, 16),
           child: TextField(
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Theme.of(context).primaryColorLight),
               decoration: InputDecoration(
                 prefixIcon: Icon(
                   Icons.search,
-                  color: Colors.white,
+                  color: Theme.of(context).primaryColorLight,
                 ),
                 hintText: "Exercise Name",
-                hintStyle: TextStyle(fontSize: 20.0, color: Colors.white),
+                hintStyle: TextStyle(
+                    fontSize: 20.0, color: Theme.of(context).primaryColorLight),
               ),
               onChanged: (text) {
                 searchExercise(text.toString(), state);
@@ -1015,7 +1029,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                         Text(
                           exuniq[index].name,
                           textScaleFactor: 1.7,
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight),
                         ),
                         Container(
                           child: Row(
@@ -1189,9 +1204,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
             ];
 
       return Scaffold(
-          appBar: _appbarWidget(),
-          body: _Nday_RoutineWidget(),
-          backgroundColor: Color(0xFF101012));
+        appBar: _appbarWidget(),
+        body: _Nday_RoutineWidget(),
+      );
     });
   }
 }

@@ -89,10 +89,9 @@ class _ProgramDownloadState extends State<ProgramDownload> {
             "",
             textScaleFactor: 2.7,
             style: TextStyle(
-              color: Colors.white,
+              color: Theme.of(context).primaryColorLight,
             ),
           ),
-          backgroundColor: Color(0xFF101012),
         ));
   }
 
@@ -133,7 +132,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                             Text(widget.program.routinedata.name,
                                 textScaleFactor: 2.0,
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: Theme.of(context).primaryColorLight,
                                     fontWeight: FontWeight.bold)),
                           ],
                         ),
@@ -162,7 +161,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                   child: Center(
                                     child: Text("기간",
                                         style: TextStyle(
-                                            color: Colors.white,
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
                                             fontWeight: FontWeight.bold)),
                                   )),
                               SizedBox(
@@ -170,7 +170,9 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                 child: Center(
                                   child: Text(
                                       '${widget.program.routinedata.exercises[0].plans.length.toString()}days',
-                                      style: TextStyle(color: Colors.white)),
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight)),
                                 ),
                               ),
                             ],
@@ -183,7 +185,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                   child: Center(
                                     child: Text("난이도",
                                         style: TextStyle(
-                                            color: Colors.white,
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
                                             fontWeight: FontWeight.bold)),
                                   )),
                               SizedBox(
@@ -191,7 +194,9 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                 child: Center(
                                   child: Text(
                                       '${item_map[widget.program.level]}',
-                                      style: TextStyle(color: Colors.white)),
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight)),
                                 ),
                               ),
                             ],
@@ -213,7 +218,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                     child: Center(
                                   child: Icon(
                                       Icons.supervised_user_circle_sharp,
-                                      color: Colors.white,
+                                      color:
+                                          Theme.of(context).primaryColorLight,
                                       size: 20),
                                 )),
                                 SizedBox(
@@ -222,7 +228,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                             " ${widget.program.subscribe.toString()}",
                                             textScaleFactor: 1.3,
                                             style: TextStyle(
-                                                color: Colors.white)))),
+                                                color: Theme.of(context)
+                                                    .primaryColorLight)))),
                               ],
                             ),
                           )
@@ -238,7 +245,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                 child: Text("Program 설명",
                     textScaleFactor: 2.0,
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold)),
+                        color: Theme.of(context).primaryColorLight,
+                        fontWeight: FontWeight.bold)),
               ),
               Container(
                 padding: const EdgeInsets.all(12.0),
@@ -246,7 +254,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                 child: Text(widget.program.routinedata.routine_time,
                     textScaleFactor: 1.7,
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold)),
+                        color: Theme.of(context).primaryColorLight,
+                        fontWeight: FontWeight.bold)),
               ),
               Container(
                 height: 10,
@@ -257,7 +266,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                 child: Text("세부사항",
                     textScaleFactor: 2.0,
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold)),
+                        color: Theme.of(context).primaryColorLight,
+                        fontWeight: FontWeight.bold)),
               ),
               Consumer<FamousdataProvider>(builder: (builder, provider, child) {
                 return Column(
@@ -314,7 +324,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                       },
                       icon: Icon(
                         Icons.arrow_back_ios_outlined,
-                        color: Colors.white,
+                        color: Theme.of(context).primaryColorLight,
                         size: 20,
                       )),
                   Container(
@@ -324,7 +334,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                     child: Text(
                       'Day ${plandata.progress % 7 + 1}',
                       textScaleFactor: 2.0,
-                      style: TextStyle(color: Colors.white),
+                      style:
+                          TextStyle(color: Theme.of(context).primaryColorLight),
                     ),
                   ),
                   Container(
@@ -352,7 +363,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                       },
                       icon: Icon(
                         Icons.arrow_forward_ios_outlined,
-                        color: Colors.white,
+                        color: Theme.of(context).primaryColorLight,
                         size: 20,
                       )),
                   Container(
@@ -382,7 +393,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                             '오늘은 휴식데이!',
                             textScaleFactor: 2.0,
                             style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).primaryColorLight,
                                 fontWeight: FontWeight.bold),
                           ),
                           Container(
@@ -409,12 +420,13 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                 children: [
                                   ExpandablePanel(
                                       controller: Controllerlist[index],
-                                      theme: const ExpandableThemeData(
+                                      theme: ExpandableThemeData(
                                         headerAlignment:
                                             ExpandablePanelHeaderAlignment
                                                 .center,
                                         hasIcon: true,
-                                        iconColor: Colors.white,
+                                        iconColor:
+                                            Theme.of(context).primaryColorLight,
                                       ),
                                       header: Padding(
                                         padding: EdgeInsets.only(left: 10),
@@ -424,7 +436,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                               inplandata[index].name,
                                               textScaleFactor: 1.7,
                                               style: TextStyle(
-                                                  color: Colors.white),
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight),
                                             ),
                                             Container(
                                               width: 10,
@@ -464,7 +477,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                                   child: Text(
                                                     '각자의 기준 운동 1rm X 무게비(%)로 운동 중량이 설정됩니다. 내 ${inplandata[index].ref_name} 1rm: ${refinfo.onerm.toStringAsFixed(0)}',
                                                     style: TextStyle(
-                                                        color: Colors.white),
+                                                        color: Theme.of(context)
+                                                            .primaryColorLight),
                                                   ),
                                                 ),
                                               ),
@@ -493,7 +507,9 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                                         '기준 1rm   X   ${(inplandata[index].sets[setindex].weight).toStringAsFixed(0)}%    X    ${inplandata[index].sets[setindex].reps}reps',
                                                         textScaleFactor: 1.7,
                                                         style: TextStyle(
-                                                          color: Colors.white,
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .primaryColorLight,
                                                         ),
                                                       ),
                                                     ),
@@ -555,7 +571,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
         padding: const EdgeInsets.only(left: 10, right: 5),
         child: ChoiceChip(
           label: Text('week${i + 1}'),
-          labelStyle: TextStyle(color: Colors.white),
+          labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
           selected: _famousdataProvider.week == i,
           selectedColor: Theme.of(context).primaryColor,
           backgroundColor: Theme.of(context).cardColor,
@@ -587,7 +603,9 @@ class _ProgramDownloadState extends State<ProgramDownload> {
             padding: const EdgeInsets.only(right: 4.0),
             child: Icon(
               Icons.thumb_up_off_alt_rounded,
-              color: isLiked ? Theme.of(context).primaryColor : Colors.white,
+              color: isLiked
+                  ? Theme.of(context).primaryColor
+                  : Theme.of(context).primaryColorLight,
               size: buttonSize,
             ),
           );
@@ -597,7 +615,9 @@ class _ProgramDownloadState extends State<ProgramDownload> {
         },
         likeCount: widget.program.like.length,
         countBuilder: (int? count, bool isLiked, String text) {
-          var color = isLiked ? Theme.of(context).primaryColor : Colors.white;
+          var color = isLiked
+              ? Theme.of(context).primaryColor
+              : Theme.of(context).primaryColorLight;
           Widget result;
           if (count == 0) {
             result = Text(
@@ -664,7 +684,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                 foregroundColor: Theme.of(context).primaryColor,
                 backgroundColor: Theme.of(context).primaryColor,
                 textStyle: TextStyle(
-                  color: Colors.white,
+                  color: Theme.of(context).primaryColorLight,
                 ),
                 disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
                 padding: EdgeInsets.all(12.0),
@@ -731,7 +751,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               },
               child: Text("시작하기",
                   textScaleFactor: 1.7,
-                  style: TextStyle(color: Colors.white)))),
+                  style:
+                      TextStyle(color: Theme.of(context).primaryColorLight)))),
     );
   }
 
@@ -760,7 +781,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               '운동을 시작 할 수 있어요',
               textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Theme.of(context).primaryColorLight),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -768,7 +789,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                 Text('운동을 시작 할까요?',
                     textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white)),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
                 Text('외부를 터치하면 취소 할 수 있어요',
                     textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
@@ -793,7 +815,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
@@ -803,7 +825,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               setSetting();
             },
             child: Text("운동 시작 하기",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   void setSetting() {
@@ -826,14 +849,15 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                   '본인의 1rm이 맞나요? ',
                   textScaleFactor: 2.0,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Theme.of(context).primaryColorLight),
                 ),
               ),
               Container(
                 child: Text('아니라면 값을 수정 해주세요',
                     textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white)),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
               ),
               Container(
                 child: Text('외부를 터치하면 취소 할 수 있어요',
@@ -853,7 +877,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                             "운동",
                             textScaleFactor: 1.5,
                             style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).primaryColorLight,
                                 fontWeight: FontWeight.bold),
                           ),
                         )),
@@ -864,7 +888,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                           child: Text("1rm",
                               textScaleFactor: 1.5,
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColorLight,
                                   fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center),
                         )),
@@ -902,7 +926,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                     '프로그램 이름을 정해주세요',
                     textScaleFactor: 2.0,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight),
                   ),
                 ),
                 Container(
@@ -929,7 +954,9 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                       }
                     });
                   },
-                  style: TextStyle(fontSize: 24.0, color: Colors.white),
+                  style: TextStyle(
+                      fontSize: 24.0,
+                      color: Theme.of(context).primaryColorLight),
                   textAlign: TextAlign.center,
                   controller: _workoutNameCtrl,
                   decoration: InputDecoration(
@@ -945,8 +972,9 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                             color: Theme.of(context).primaryColor, width: 3),
                       ),
                       hintText: "운동 루틴 이름",
-                      hintStyle:
-                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                      hintStyle: TextStyle(
+                          fontSize: 24.0,
+                          color: Theme.of(context).primaryColorLight)),
                 ),
                 SizedBox(height: 20),
                 _finalConfirmButton(state)
@@ -972,7 +1000,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                       : Theme.of(context).primaryColor,
               foregroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
@@ -995,7 +1023,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               }
             },
             child: Text(_customRuUsed == true ? "존재하는 이름" : "이 이름으로 저장",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   Widget _neededlist() {
@@ -1029,7 +1058,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                   child: Text(
                     Exercises.name,
                     textScaleFactor: 1.5,
-                    style: TextStyle(color: Colors.white),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight),
                   ),
                 ),
               ),
@@ -1040,7 +1070,9 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                       controller: _onermController[index],
                       keyboardType: TextInputType.numberWithOptions(
                           signed: false, decimal: true),
-                      style: TextStyle(fontSize: 18, color: Colors.white),
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Theme.of(context).primaryColorLight),
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
                           filled: true,
@@ -1057,8 +1089,9 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                 width: 3),
                           ),
                           hintText: Exercises.onerm.toStringAsFixed(1),
-                          hintStyle:
-                              TextStyle(fontSize: 18, color: Colors.white)),
+                          hintStyle: TextStyle(
+                              fontSize: 18,
+                              color: Theme.of(context).primaryColorLight)),
                       onChanged: (text) {
                         double changeweight;
                         if (text == "") {
@@ -1104,7 +1137,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
@@ -1123,7 +1156,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               titleSetting();
             },
             child: Text("1rm 확인",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   void _editWorkoutCheck() async {

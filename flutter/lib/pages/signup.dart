@@ -39,26 +39,9 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _isEmailused = false;
   bool _isNickNameused = false;
   bool _isPhoneNumberused = false;
-
-  final Map<String, Widget> _heightUnitList = const <String, Widget>{
-    "cm":
-        Text("cm", textScaleFactor: 2.0, style: TextStyle(color: Colors.white)),
-    "inch": Text("inch",
-        textScaleFactor: 2.0, style: TextStyle(color: Colors.white)),
-  };
-  final Map<String, Widget> _weightUnitList = const <String, Widget>{
-    "kg":
-        Text("kg", textScaleFactor: 2.0, style: TextStyle(color: Colors.white)),
-    "lb":
-        Text("lb", textScaleFactor: 2.0, style: TextStyle(color: Colors.white)),
-  };
-
-  final Map<bool, Widget> _genderList = const <bool, Widget>{
-    true:
-        Text("남성", textScaleFactor: 2.5, style: TextStyle(color: Colors.white)),
-    false:
-        Text("여성", textScaleFactor: 2.5, style: TextStyle(color: Colors.white)),
-  };
+  var _heightUnitList;
+  var _weightUnitList;
+  var _genderList;
 
   TextEditingController _userEmailCtrl = TextEditingController(text: "");
   TextEditingController _userPasswordCtrl =
@@ -121,6 +104,33 @@ class _SignUpPageState extends State<SignUpPage> {
     _loginState = Provider.of<LoginPageProvider>(context, listen: false);
     _PrefProvider = Provider.of<PrefsProvider>(context, listen: false);
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+
+    _heightUnitList = <String, Widget>{
+      "cm": Text("cm",
+          textScaleFactor: 2.0,
+          style: TextStyle(color: Theme.of(context).primaryColorLight)),
+      "inch": Text("inch",
+          textScaleFactor: 2.0,
+          style: TextStyle(color: Theme.of(context).primaryColorLight)),
+    };
+    _weightUnitList = <String, Widget>{
+      "kg": Text("kg",
+          textScaleFactor: 2.0,
+          style: TextStyle(color: Theme.of(context).primaryColorLight)),
+      "lb": Text("lb",
+          textScaleFactor: 2.0,
+          style: TextStyle(color: Theme.of(context).primaryColorLight)),
+    };
+
+    _genderList = <bool, Widget>{
+      true: Text("남성",
+          textScaleFactor: 2.5,
+          style: TextStyle(color: Theme.of(context).primaryColorLight)),
+      false: Text("여성",
+          textScaleFactor: 2.5,
+          style: TextStyle(color: Theme.of(context).primaryColorLight)),
+    };
+
     if (_userProvider.userKakaoEmail != null) {
       _userEmailCtrl.text = _userProvider.userKakaoEmail;
     }
@@ -139,7 +149,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
     return Scaffold(
         body: Container(
-      color: Color(0xFF101012),
       child: GestureDetector(
           onTap: () {
             FocusScope.of(context).unfocus();
@@ -216,7 +225,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _signupProfileWidget() {
     return Container(
-      color: Color(0xFF101012),
       child: Center(
           child: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -228,7 +236,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: SizedBox(),
               ),
               Text("회원가입을 진행할게요",
-                  textScaleFactor: 2.5, style: TextStyle(color: Colors.white)),
+                  textScaleFactor: 2.5,
+                  style: TextStyle(color: Theme.of(context).primaryColorLight)),
               Text("어떻게 불러드릴까요?",
                   textScaleFactor: 1.3, style: TextStyle(color: Colors.grey)),
               SizedBox(
@@ -260,7 +269,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _signupGenderWidget() {
     return Container(
-      color: Color(0xFF101012),
       child: Center(
           child: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -271,9 +279,10 @@ class _SignUpPageState extends State<SignUpPage> {
                       flex: 3,
                       child: SizedBox(),
                     ),
-                    const Text("성별을 선택해주세요",
+                    Text("성별을 선택해주세요",
                         textScaleFactor: 2.5,
-                        style: TextStyle(color: Colors.white)),
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorLight)),
                     const Text("성별에 따라 추천 무게가 달라져요",
                         textScaleFactor: 1.3,
                         style: TextStyle(color: Colors.grey)),
@@ -296,7 +305,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _signupSettingWidget() {
     return Container(
-      color: Color(0xFF101012),
       child: Center(
           child: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -309,7 +317,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     Text("키, 몸무게를 입력해주세요",
                         textScaleFactor: 2.5,
-                        style: TextStyle(color: Colors.white)),
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorLight)),
                     Text("신체에 따라 추천 프로그램이 달라져요",
                         textScaleFactor: 1.3,
                         style: TextStyle(color: Colors.grey)),
@@ -356,7 +365,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _signupImageWidget() {
     return Container(
-      color: Color(0xFF101012),
       child: Center(
           child: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -369,7 +377,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     Text("사진을 설정해주세요",
                         textScaleFactor: 2.5,
-                        style: TextStyle(color: Colors.white)),
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorLight)),
                     Text("사진을 클릭하면 변경 할 수 있어요",
                         textScaleFactor: 1.3,
                         style: TextStyle(color: Colors.grey)),
@@ -418,7 +427,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _signupExerciseWidget() {
     return Container(
-      color: Color(0xFF101012),
       child: Center(
           child: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -432,7 +440,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     Text("회원가입 완료!",
                         textScaleFactor: 2.5,
-                        style: TextStyle(color: Colors.white)),
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorLight)),
                     Text("1rm과 목표치를 설정해보세요",
                         textScaleFactor: 1.3,
                         style: TextStyle(color: Colors.grey)),
@@ -452,7 +461,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 "운동",
                                 textScaleFactor: 1.5,
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColorLight,
                                 ),
                               )),
                           Container(
@@ -460,7 +469,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               child: Text("1rm",
                                   textScaleFactor: 1.5,
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: Theme.of(context).primaryColorLight,
                                   ),
                                   textAlign: TextAlign.center)),
                           Container(
@@ -468,7 +477,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               child: Text("목표",
                                   textScaleFactor: 1.5,
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: Theme.of(context).primaryColorLight,
                                   ),
                                   textAlign: TextAlign.center))
                         ],
@@ -488,7 +497,6 @@ class _SignUpPageState extends State<SignUpPage> {
                               return Container(
                                 alignment: Alignment.center,
                                 height: 1,
-                                color: Color(0xFF101012),
                                 child: Container(
                                   alignment: Alignment.center,
                                   margin: EdgeInsets.symmetric(horizontal: 10),
@@ -584,7 +592,7 @@ class _SignUpPageState extends State<SignUpPage> {
               child: Text(
                 Exercises.name,
                 textScaleFactor: 1.5,
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Theme.of(context).primaryColorLight),
               ),
             ),
             Container(
@@ -593,11 +601,14 @@ class _SignUpPageState extends State<SignUpPage> {
                   controller: _onermController[index],
                   keyboardType: TextInputType.numberWithOptions(
                       signed: false, decimal: true),
-                  style: TextStyle(fontSize: 18, color: Colors.white),
+                  style: TextStyle(
+                      fontSize: 18, color: Theme.of(context).primaryColorLight),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
                       hintText: Exercises.onerm.toStringAsFixed(1),
-                      hintStyle: TextStyle(fontSize: 18, color: Colors.white)),
+                      hintStyle: TextStyle(
+                          fontSize: 18,
+                          color: Theme.of(context).primaryColorLight)),
                   onChanged: (text) {
                     double changeweight;
                     if (text == "") {
@@ -616,11 +627,14 @@ class _SignUpPageState extends State<SignUpPage> {
                   controller: _goalController[index],
                   keyboardType: TextInputType.numberWithOptions(
                       signed: false, decimal: true),
-                  style: TextStyle(fontSize: 18, color: Colors.white),
+                  style: TextStyle(
+                      fontSize: 18, color: Theme.of(context).primaryColorLight),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
                       hintText: Exercises.goal.toStringAsFixed(1),
-                      hintStyle: TextStyle(fontSize: 18, color: Colors.white)),
+                      hintStyle: TextStyle(
+                          fontSize: 18,
+                          color: Theme.of(context).primaryColorLight)),
                   onChanged: (text) {
                     double changeweight;
                     if (text == "") {
@@ -663,7 +677,7 @@ class _SignUpPageState extends State<SignUpPage> {
           });
       },
       controller: _userNicknameCtrl,
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(color: Theme.of(context).primaryColorLight),
       decoration: InputDecoration(
         filled: true,
         labelText: _isNickNameused == false ? "닉네임" : "사용 불가 닉네임",
@@ -679,7 +693,9 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-              color: _isNickNameused == false ? Colors.white : Colors.red,
+              color: _isNickNameused == false
+                  ? Theme.of(context).primaryColorLight
+                  : Colors.red,
               width: 3.0),
           borderRadius: BorderRadius.circular(8.0),
         ),
@@ -693,7 +709,7 @@ class _SignUpPageState extends State<SignUpPage> {
       controller: _userHeightCtrl,
       keyboardType:
           TextInputType.numberWithOptions(signed: false, decimal: true),
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(color: Theme.of(context).primaryColorLight),
       decoration: InputDecoration(
         filled: true,
         labelText: "키",
@@ -704,7 +720,8 @@ class _SignUpPageState extends State<SignUpPage> {
           borderRadius: BorderRadius.circular(5.0),
         ),
         enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2.0),
+          borderSide: BorderSide(
+              color: Theme.of(context).primaryColorLight, width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
       ),
@@ -716,7 +733,7 @@ class _SignUpPageState extends State<SignUpPage> {
       controller: _userWeightCtrl,
       keyboardType:
           TextInputType.numberWithOptions(signed: false, decimal: true),
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(color: Theme.of(context).primaryColorLight),
       decoration: InputDecoration(
         filled: true,
         labelText: "몸무게",
@@ -727,7 +744,8 @@ class _SignUpPageState extends State<SignUpPage> {
           borderRadius: BorderRadius.circular(5.0),
         ),
         enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 3.0),
+          borderSide: BorderSide(
+              color: Theme.of(context).primaryColorLight, width: 3.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
       ),
@@ -805,7 +823,7 @@ class _SignUpPageState extends State<SignUpPage> {
       },
       controller: _userPhoneNumberCtrl,
       keyboardType: TextInputType.number,
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(color: Theme.of(context).primaryColorLight),
       decoration: InputDecoration(
         filled: true,
         labelText: _isPhoneNumberused == false ? "휴대폰(-없이)" : "중복된 전화번호",
@@ -821,7 +839,9 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-              color: _isPhoneNumberused == false ? Colors.white : Colors.red,
+              color: _isPhoneNumberused == false
+                  ? Theme.of(context).primaryColorLight
+                  : Colors.red,
               width: 3.0),
           borderRadius: BorderRadius.circular(8.0),
         ),
@@ -843,25 +863,27 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget _passwordWidget() {
     return TextFormField(
       controller: _userPasswordCtrl,
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(color: Theme.of(context).primaryColorLight),
       obscureText: true,
       enableSuggestions: false,
       autocorrect: false,
       obscuringCharacter: "*",
       decoration: InputDecoration(
         labelText: "비밀번호",
-        labelStyle: TextStyle(color: Colors.white),
+        labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
         focusedBorder: OutlineInputBorder(
           borderSide:
               BorderSide(color: Theme.of(context).primaryColor, width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
         border: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.white, width: 2.0),
+          borderSide: BorderSide(
+              color: Theme.of(context).primaryColorLight, width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2.0),
+          borderSide: BorderSide(
+              color: Theme.of(context).primaryColorLight, width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
       ),
@@ -880,9 +902,8 @@ class _SignUpPageState extends State<SignUpPage> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
-              disabledForegroundColor: Color(0xFF101012),
               padding: EdgeInsets.all(8.0),
             ),
             onPressed: () => _isSignupIndex == 0
@@ -924,7 +945,9 @@ class _SignUpPageState extends State<SignUpPage> {
                         : _isSignupIndex == 3
                             ? "다음"
                             : "회원가입 완료",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                style: TextStyle(
+                    fontSize: 20.0,
+                    color: Theme.of(context).primaryColorLight))));
   }
 
   Widget _weightSubmitButton(context) {
@@ -939,16 +962,17 @@ class _SignUpPageState extends State<SignUpPage> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
-              disabledForegroundColor: Color(0xFF101012),
               padding: EdgeInsets.all(8.0),
             ),
             onPressed: () => _postExerciseCheck(context),
             child: Column(
               children: [
                 Text(isLoading ? 'loggin in.....' : "운동 정보 제출",
-                    style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        color: Theme.of(context).primaryColorLight)),
                 Text("추천 운동을 운동탭에서 확인해보세요",
                     style: TextStyle(color: Colors.grey, fontSize: 14)),
               ],
@@ -967,16 +991,17 @@ class _SignUpPageState extends State<SignUpPage> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
-              disabledForegroundColor: Color(0xFF101012),
               padding: EdgeInsets.all(8.0),
             ),
             onPressed: () => setState(() {
                   _signUpGenderCheck() ? _isSignupIndex = 2 : null;
                 }),
             child: Text(isLoading ? 'loggin in.....' : "다음",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                style: TextStyle(
+                    fontSize: 20.0,
+                    color: Theme.of(context).primaryColorLight))));
   }
 
   void _signUpCheck() async {
@@ -1223,12 +1248,9 @@ class _SignUpPageState extends State<SignUpPage> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              foregroundColor: Color(0xFF101012),
-              backgroundColor: Color(0xFF101012),
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
-              disabledForegroundColor: Color(0xFF101012),
               padding: EdgeInsets.all(8.0),
             ),
             onPressed: () => isLoading ? null : _loginState.changeSignup(false),

@@ -88,7 +88,6 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
       ),
       title: Container(),
       actions: null,
-      backgroundColor: Color(0xFF101012),
     );
   }
 
@@ -128,7 +127,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                       .exercises[widget.eindex].target[0]
                                   : '${provier.exercisesdata.exercises[widget.eindex].target.toString().substring(1, provier.exercisesdata.exercises[widget.eindex].target.toString().length - 1)}',
                               textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.white)),
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
                         ),
                       ),
                     ],
@@ -149,7 +149,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                         child: Center(
                           child: Text(
                               '${provier.exercisesdata.exercises[widget.eindex].category}',
-                              style: TextStyle(color: Colors.white)),
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
                         ),
                       ),
                     ],
@@ -170,7 +171,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                         child: Center(
                           child: Text(
                               '${provier.exercisesdata.exercises[widget.eindex].onerm.toStringAsFixed(0)}${_userProvider.userdata.weight_unit}',
-                              style: TextStyle(color: Colors.white)),
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
                         ),
                       ),
                     ],
@@ -191,7 +193,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                         child: Center(
                           child: Text(
                               '${provier.exercisesdata.exercises[widget.eindex].goal.toStringAsFixed(0)}${_userProvider.userdata.weight_unit}',
-                              style: TextStyle(color: Colors.white)),
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
                         ),
                       ),
                     ],
@@ -276,7 +279,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                         '나만의 운동노트를 적어주세요',
                                     textScaleFactor: 1.3,
                                     style: TextStyle(
-                                        color: Colors.white,
+                                        color:
+                                            Theme.of(context).primaryColorLight,
                                         fontWeight: FontWeight.bold));
                               }),
                             ),
@@ -327,12 +331,14 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                       '커스텀 운동을 수정해보세요',
                       textScaleFactor: 2.0,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white),
+                      style:
+                          TextStyle(color: Theme.of(context).primaryColorLight),
                     ),
                     Text('운동의 정보를 입력해 주세요',
                         textScaleFactor: 1.3,
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white)),
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorLight)),
                     Text('외부를 터치하면 취소 할 수 있어요',
                         textScaleFactor: 1.0,
                         textAlign: TextAlign.center,
@@ -355,7 +361,9 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                           }
                         });
                       },
-                      style: TextStyle(fontSize: 24.0, color: Colors.white),
+                      style: TextStyle(
+                          fontSize: 24.0,
+                          color: Theme.of(context).primaryColorLight),
                       textAlign: TextAlign.center,
                       controller: _customExNameCtrl,
                       decoration: InputDecoration(
@@ -373,8 +381,9 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                 width: 3),
                           ),
                           hintText: "커스텀 운동 이름",
-                          hintStyle:
-                              TextStyle(fontSize: 24.0, color: Colors.white)),
+                          hintStyle: TextStyle(
+                              fontSize: 24.0,
+                              color: Theme.of(context).primaryColorLight)),
                     ),
                     SizedBox(height: 20),
                     Row(
@@ -385,7 +394,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                             '운동부위:',
                             textScaleFactor: 2.0,
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight),
                           ),
                         ),
                         SizedBox(width: 20),
@@ -394,13 +404,14 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                               width: MediaQuery.of(context).size.width * 2 / 5,
                               child: DropdownButtonFormField(
                                 isExpanded: true,
-                                dropdownColor: Color(0xFF101012),
                                 decoration: InputDecoration(
                                   filled: true,
                                   enabledBorder: UnderlineInputBorder(
                                     borderRadius: BorderRadius.circular(8.0),
                                     borderSide: BorderSide(
-                                        color: Colors.white, width: 3),
+                                        color:
+                                            Theme.of(context).primaryColorLight,
+                                        width: 3),
                                   ),
                                   focusedBorder: UnderlineInputBorder(
                                     borderRadius: BorderRadius.circular(8.0),
@@ -413,7 +424,9 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                     alignment: Alignment.center,
                                     child: Text(
                                       '기타',
-                                      style: TextStyle(color: Colors.white),
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight),
                                     )),
                                 items: options
                                     .map((item) => DropdownMenuItem<String>(
@@ -423,7 +436,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                             child: Text(
                                               item,
                                               style: TextStyle(
-                                                  color: Colors.white),
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight),
                                             ))))
                                     .toList(),
                                 onChanged: (item) => setState(
@@ -441,7 +455,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                             '카테고리:',
                             textScaleFactor: 2.0,
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight),
                           ),
                         ),
                         SizedBox(width: 20),
@@ -450,13 +465,14 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                               width: MediaQuery.of(context).size.width * 2 / 5,
                               child: DropdownButtonFormField(
                                 isExpanded: true,
-                                dropdownColor: Color(0xFF101012),
                                 decoration: InputDecoration(
                                   filled: true,
                                   enabledBorder: UnderlineInputBorder(
                                     borderRadius: BorderRadius.circular(8.0),
                                     borderSide: BorderSide(
-                                        color: Colors.white, width: 3),
+                                        color:
+                                            Theme.of(context).primaryColorLight,
+                                        width: 3),
                                   ),
                                   focusedBorder: UnderlineInputBorder(
                                     borderRadius: BorderRadius.circular(8.0),
@@ -469,7 +485,9 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                     alignment: Alignment.center,
                                     child: Text(
                                       '기타',
-                                      style: TextStyle(color: Colors.white),
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight),
                                     )),
                                 items: options2
                                     .map((item) => DropdownMenuItem<String>(
@@ -479,7 +497,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                             child: Text(
                                               item,
                                               style: TextStyle(
-                                                  color: Colors.white),
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight),
                                             ))))
                                     .toList(),
                                 onChanged: (item) => setState(
@@ -512,7 +531,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                       ? Color(0xFF212121)
                       : Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
@@ -535,7 +554,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
               }
             },
             child: Text(_customExUsed == true ? "존재하는 운동" : "커스텀 운동 추가",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   Widget _commentWidget() {
@@ -561,8 +581,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                 borderSide:
                     BorderSide(color: Theme.of(context).primaryColor, width: 3),
               ),
-              fillColor: Colors.white),
-          style: TextStyle(color: Colors.white)),
+              fillColor: Theme.of(context).primaryColorLight),
+          style: TextStyle(color: Theme.of(context).primaryColorLight)),
     );
   }
 
@@ -581,7 +601,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
               '커스텀운동을 삭제 할 수 있어요',
               textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Theme.of(context).primaryColorLight),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -589,7 +609,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                 Text('커스텀운동을 삭제 하시겠나요?',
                     textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white)),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
                 Text('외부를 터치하면 취소 할 수 있어요',
                     textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
@@ -616,7 +637,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                 foregroundColor: Theme.of(context).primaryColor,
                 backgroundColor: Theme.of(context).primaryColor,
                 textStyle: TextStyle(
-                  color: Colors.white,
+                  color: Theme.of(context).primaryColorLight,
                 ),
                 disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
                 padding: EdgeInsets.all(12.0),
@@ -626,7 +647,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
               },
               child: Text("플랜에 운동 추가하기",
                   textScaleFactor: 1.7,
-                  style: TextStyle(color: Colors.white)))),
+                  style:
+                      TextStyle(color: Theme.of(context).primaryColorLight)))),
     );
   }
 
@@ -645,7 +667,6 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        color: Color(0xFF101012),
       ),
       child: ListView(
         shrinkWrap: true,
@@ -657,8 +678,9 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
             child: Text(
               '추가할 플랜을 선택하세요',
               textScaleFactor: 2.0,
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Theme.of(context).primaryColorLight,
+                  fontWeight: FontWeight.bold),
             ),
           ),
           Text('외부를 터치하면 취소 할 수 있어요',
@@ -727,7 +749,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                         border: new Border(
                                             right: new BorderSide(
                                                 width: 1.0,
-                                                color: Colors.white24))),
+                                                color: Theme.of(context)
+                                                    .primaryColorLight))),
                                     child: Container(
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 8),
@@ -735,14 +758,16 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                         width: 25,
                                         child: SvgPicture.asset(
                                             "assets/svg/dumbel_on.svg",
-                                            color: Colors.white30),
+                                            color: Theme.of(context)
+                                                .primaryColorLight),
                                       ),
                                     )),
                                 title: Text(
                                   routinelist[index].name,
                                   textScaleFactor: 1.5,
                                   style: TextStyle(
-                                      color: Colors.white,
+                                      color:
+                                          Theme.of(context).primaryColorLight,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 subtitle: Row(
@@ -752,11 +777,13 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                             "${routinelist[index].exercises.length}개 운동",
                                             textScaleFactor: 1.0,
                                             style: TextStyle(
-                                                color: Colors.white30))
+                                                color: Theme.of(context)
+                                                    .primaryColorLight))
                                         : Text("루틴 모드",
                                             textScaleFactor: 1.0,
                                             style: TextStyle(
-                                                color: Colors.white30)),
+                                                color: Theme.of(context)
+                                                    .primaryColorLight)),
                                   ],
                                 ),
                               ),
@@ -797,7 +824,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                             child: Icon(
                               Icons.add,
                               size: 28.0,
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorLight,
                             ),
                           ),
                           Padding(
@@ -808,7 +835,9 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                               children: [
                                 Text("운동 플랜을 만들어 보세요",
                                     textScaleFactor: 1.5,
-                                    style: TextStyle(color: Colors.white)),
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .primaryColorLight)),
                                 Text("원하는 이름, 종류의 플랜을 만들 수 있어요",
                                     textScaleFactor: 1.1,
                                     style: TextStyle(color: Colors.grey)),
@@ -836,7 +865,6 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-              color: Color(0xFF101012),
             ),
             child: _MyWorkout());
       },
@@ -869,7 +897,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                 '운동 루틴을 추가 할게요',
                 textScaleFactor: 2.0,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Theme.of(context).primaryColorLight),
               ),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -877,7 +905,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                   Text('운동 루틴의 이름을 입력해 주세요',
                       textScaleFactor: 1.3,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white)),
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColorLight)),
                   Text('외부를 터치하면 취소 할 수 있어요',
                       textScaleFactor: 1.0,
                       textAlign: TextAlign.center,
@@ -900,7 +929,9 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                         }
                       });
                     },
-                    style: TextStyle(fontSize: 24.0, color: Colors.white),
+                    style: TextStyle(
+                        fontSize: 24.0,
+                        color: Theme.of(context).primaryColorLight),
                     textAlign: TextAlign.center,
                     controller: _workoutNameCtrl,
                     decoration: InputDecoration(
@@ -916,8 +947,9 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                               color: Theme.of(context).primaryColor, width: 3),
                         ),
                         hintText: "운동 루틴 이름",
-                        hintStyle:
-                            TextStyle(fontSize: 24.0, color: Colors.white)),
+                        hintStyle: TextStyle(
+                            fontSize: 24.0,
+                            color: Theme.of(context).primaryColorLight)),
                   ),
                 ],
               ),
@@ -943,7 +975,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                       ? Color(0xFF212121)
                       : Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
@@ -962,7 +994,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
               ;
             },
             child: Text(_customExUsed == true ? "존재하는 루틴 이름" : "새 루틴 추가",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   void _getChartSourcefromDay() async {
@@ -1010,7 +1043,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
@@ -1028,7 +1061,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
               Navigator.of(context).pop();
             },
             child: Text("커스텀 운동 삭제 하기",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   Widget _chartWidget(context) {
@@ -1087,7 +1121,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                 legend: Legend(
                     isVisible: true,
                     position: LegendPosition.bottom,
-                    textStyle: TextStyle(color: Colors.white)),
+                    textStyle:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
                 series: [
                   // Renders line chart
                   LineSeries<historyModel.Exercises, DateTime>(
@@ -1159,7 +1194,6 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
     double top = 20;
     double bottom = 20;
     return Container(
-      color: Color(0xFF101012),
       child: Column(
         children: [
           Row(
@@ -1168,7 +1202,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(exuniq.date,
                     textScaleFactor: 1.5,
-                    style: TextStyle(color: Colors.white)),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
               ),
             ],
           ),
@@ -1300,7 +1335,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                   "${index + 1}",
                                   textScaleFactor: 1.7,
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: Theme.of(context).primaryColorLight,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
@@ -1314,7 +1349,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                             sets[index].weight.toStringAsFixed(1),
                             textScaleFactor: 1.7,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorLight,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -1322,14 +1357,15 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                         Container(
                             width: 35,
                             child: SvgPicture.asset("assets/svg/multiply.svg",
-                                color: Colors.white, height: 19)),
+                                color: Theme.of(context).primaryColorLight,
+                                height: 19)),
                         Container(
                           width: 40,
                           child: Text(
                             sets[index].reps.toString(),
                             textScaleFactor: 1.7,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorLight,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -1340,13 +1376,17 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                 ? Text(
                                     "${(sets[index].weight * (1 + sets[index].reps / 30)).toStringAsFixed(1)}",
                                     textScaleFactor: 1.7,
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .primaryColorLight),
                                     textAlign: TextAlign.center,
                                   )
                                 : Text(
                                     "${sets[index].weight}",
                                     textScaleFactor: 1.7,
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .primaryColorLight),
                                     textAlign: TextAlign.center,
                                   )),
                       ],
@@ -1357,7 +1397,6 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                   return Container(
                     alignment: Alignment.center,
                     height: 1,
-                    color: Color(0xFF101012),
                     child: Container(
                       alignment: Alignment.center,
                       margin: EdgeInsets.symmetric(horizontal: 10),
@@ -1415,7 +1454,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                               icon: Icon(
                                 Icons.delete,
                                 size: 25,
-                                color: Colors.white,
+                                color: Theme.of(context).primaryColorLight,
                               ),
                             ),
                           )
@@ -1433,7 +1472,6 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                   ),
                   expandedHeight: _appbarWidget().preferredSize.height * 2,
                   collapsedHeight: _appbarWidget().preferredSize.height,
-                  backgroundColor: Color(0xFF101012),
                   flexibleSpace: myFlexibleSpaceBar(
                     expandedTitleScale: 1.2,
                     titlePaddingTween: EdgeInsetsTween(
@@ -1447,7 +1485,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                           _exProvider
                               .exercisesdata.exercises[widget.eindex].name,
                           textScaleFactor: 1.3,
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight),
                         )),
                       ],
                     ),
@@ -1474,7 +1513,6 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                   ),
                 ),
               ]),
-        backgroundColor: Color(0xFF101012),
         bottomNavigationBar: _Add_to_Plan_Button(),
       );
     });

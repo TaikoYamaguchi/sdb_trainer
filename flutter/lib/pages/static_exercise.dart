@@ -77,7 +77,8 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("", style: TextStyle(color: Colors.white)),
+              Text("",
+                  style: TextStyle(color: Theme.of(context).primaryColorLight)),
               GestureDetector(
                   onTap: () {
                     _deleteExerciseCheck();
@@ -86,11 +87,11 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                     padding: const EdgeInsets.only(right: 5),
                     child: Text("운동 삭제",
                         textScaleFactor: 1.3,
-                        style: TextStyle(color: Colors.white)),
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorLight)),
                   )),
             ],
           ),
-          backgroundColor: Color(0xFF101012),
         ));
   }
 
@@ -102,12 +103,11 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
       if (states.any(interactiveStates.contains)) {
         return Theme.of(context).primaryColor;
       }
-      return Colors.white;
+      return Theme.of(context).primaryColorLight;
     }
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 5),
-      color: Color(0xFF101012),
       child: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -136,12 +136,14 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                           ? Text(
                               _exampleex.name,
                               textScaleFactor: 4.0,
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight),
                             )
                           : Text(
                               _exampleex.name,
                               textScaleFactor: 2.7,
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight),
                             ),
                       Text(
                         "Best 1RM: ${widget.exercise.onerm!.toStringAsFixed(1)}/${widget.exercise.goal!.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
@@ -164,7 +166,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                             "Set",
                             textScaleFactor: 1.1,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorLight,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.right,
@@ -175,7 +177,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                             "Weight(${_userProvider.userdata.weight_unit})",
                             textScaleFactor: 1.1,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorLight,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.center,
@@ -187,7 +189,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                             "Reps",
                             textScaleFactor: 1.1,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorLight,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.center,
@@ -198,7 +200,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                             "1RM",
                             textScaleFactor: 1.1,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorLight,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.center,
@@ -231,7 +233,8 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                                           repsController.clear();
                                         },
                                         backgroundColor: Color(0xFFFE4A49),
-                                        foregroundColor: Colors.white,
+                                        foregroundColor:
+                                            Theme.of(context).primaryColorLight,
                                         icon: Icons.delete,
                                         label: 'Delete',
                                       )
@@ -270,7 +273,8 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                                               "${index + 1}",
                                               textScaleFactor: 1.7,
                                               style: TextStyle(
-                                                color: Colors.white,
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
                                               ),
                                               textAlign: TextAlign.center,
                                             ),
@@ -289,7 +293,8 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                                           fontSize: 21 *
                                               _themeProvider.userFontSize /
                                               0.8,
-                                          color: Colors.white,
+                                          color: Theme.of(context)
+                                              .primaryColorLight,
                                         ),
                                         textAlign: TextAlign.center,
                                         decoration: InputDecoration(
@@ -299,7 +304,8 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                                             fontSize: 21 *
                                                 _themeProvider.userFontSize /
                                                 0.8,
-                                            color: Colors.white,
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
                                           ),
                                         ),
                                         onChanged: (text) {
@@ -320,7 +326,8 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                                         width: 35,
                                         child: SvgPicture.asset(
                                             "assets/svg/multiply.svg",
-                                            color: Colors.white,
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
                                             height: 19 *
                                                 _themeProvider.userFontSize /
                                                 0.8)),
@@ -333,7 +340,8 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                                           fontSize: 21 *
                                               _themeProvider.userFontSize /
                                               0.8,
-                                          color: Colors.white,
+                                          color: Theme.of(context)
+                                              .primaryColorLight,
                                         ),
                                         textAlign: TextAlign.center,
                                         decoration: InputDecoration(
@@ -343,7 +351,8 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                                             fontSize: 21 *
                                                 _themeProvider.userFontSize /
                                                 0.8,
-                                            color: Colors.white,
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
                                           ),
                                         ),
                                         onChanged: (text) {
@@ -369,14 +378,16 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                                                     "${(widget.exercise.sets[index].weight * (1 + widget.exercise.sets[index].reps / 30)).toStringAsFixed(1)}",
                                                     textScaleFactor: 1.7,
                                                     style: TextStyle(
-                                                        color: Colors.white),
+                                                        color: Theme.of(context)
+                                                            .primaryColorLight),
                                                     textAlign: TextAlign.center,
                                                   )
                                                 : Text(
                                                     "${widget.exercise.sets[index].weight}",
                                                     textScaleFactor: 1.7,
                                                     style: TextStyle(
-                                                        color: Colors.white),
+                                                        color: Theme.of(context)
+                                                            .primaryColorLight),
                                                     textAlign: TextAlign.center,
                                                   )),
                                   ],
@@ -387,7 +398,6 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                           return Container(
                             alignment: Alignment.center,
                             height: 1,
-                            color: Color(0xFF101012),
                             child: Container(
                               alignment: Alignment.center,
                               margin: EdgeInsets.symmetric(horizontal: 10),
@@ -409,7 +419,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                           },
                           icon: Icon(
                             Icons.remove,
-                            color: Colors.white,
+                            color: Theme.of(context).primaryColorLight,
                             size: 24,
                           )),
                       IconButton(
@@ -424,7 +434,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                           },
                           icon: Icon(
                             Icons.add,
-                            color: Colors.white,
+                            color: Theme.of(context).primaryColorLight,
                             size: 24,
                           )),
                     ],

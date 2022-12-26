@@ -58,9 +58,8 @@ class _ProfileGoalState extends State<ProfileGoal> {
           title: Text(
             "",
             textScaleFactor: 2.5,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
-          backgroundColor: Color(0xFF101012),
         ));
   }
 
@@ -78,7 +77,6 @@ class _ProfileGoalState extends State<ProfileGoal> {
           }
         },
         child: Container(
-          color: Color(0xFF101012),
           child: Center(
               child: Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -92,11 +90,12 @@ class _ProfileGoalState extends State<ProfileGoal> {
                         Text("운동 정보 수정",
                             textScaleFactor: 2.7,
                             style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).primaryColorLight,
                                 fontWeight: FontWeight.w600)),
                         Text("목표치와 1rm을 설정해보세요",
                             textScaleFactor: 1.3,
-                            style: TextStyle(color: Colors.white)),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight)),
                         SizedBox(
                           height: 40,
                         ),
@@ -113,7 +112,8 @@ class _ProfileGoalState extends State<ProfileGoal> {
                                     "운동",
                                     textScaleFactor: 1.5,
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color:
+                                          Theme.of(context).primaryColorLight,
                                     ),
                                   )),
                               Container(
@@ -121,7 +121,8 @@ class _ProfileGoalState extends State<ProfileGoal> {
                                   child: Text("1rm",
                                       textScaleFactor: 1.5,
                                       style: TextStyle(
-                                        color: Colors.white,
+                                        color:
+                                            Theme.of(context).primaryColorLight,
                                       ),
                                       textAlign: TextAlign.center)),
                               Container(
@@ -129,7 +130,8 @@ class _ProfileGoalState extends State<ProfileGoal> {
                                   child: Text("목표",
                                       textScaleFactor: 1.5,
                                       style: TextStyle(
-                                        color: Colors.white,
+                                        color:
+                                            Theme.of(context).primaryColorLight,
                                       ),
                                       textAlign: TextAlign.center))
                             ],
@@ -148,7 +150,6 @@ class _ProfileGoalState extends State<ProfileGoal> {
                                 return Container(
                                   alignment: Alignment.center,
                                   height: 1,
-                                  color: Color(0xFF101012),
                                   child: Container(
                                     alignment: Alignment.center,
                                     margin:
@@ -185,7 +186,7 @@ class _ProfileGoalState extends State<ProfileGoal> {
               child: Text(
                 Exercises.name,
                 textScaleFactor: 1.5,
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Theme.of(context).primaryColorLight),
               ),
             ),
             Container(
@@ -194,11 +195,14 @@ class _ProfileGoalState extends State<ProfileGoal> {
                   controller: _onermController[index],
                   keyboardType: TextInputType.numberWithOptions(
                       signed: false, decimal: true),
-                  style: TextStyle(fontSize: 18, color: Colors.white),
+                  style: TextStyle(
+                      fontSize: 18, color: Theme.of(context).primaryColorLight),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
                       hintText: Exercises.onerm.toStringAsFixed(1),
-                      hintStyle: TextStyle(fontSize: 18, color: Colors.white)),
+                      hintStyle: TextStyle(
+                          fontSize: 18,
+                          color: Theme.of(context).primaryColorLight)),
                   onChanged: (text) {
                     double changeweight;
                     if (text == "") {
@@ -217,11 +221,14 @@ class _ProfileGoalState extends State<ProfileGoal> {
                   controller: _goalController[index],
                   keyboardType: TextInputType.numberWithOptions(
                       signed: false, decimal: true),
-                  style: TextStyle(fontSize: 18, color: Colors.white),
+                  style: TextStyle(
+                      fontSize: 18, color: Theme.of(context).primaryColorLight),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
                       hintText: Exercises.goal.toStringAsFixed(1),
-                      hintStyle: TextStyle(fontSize: 18, color: Colors.white)),
+                      hintStyle: TextStyle(
+                          fontSize: 18,
+                          color: Theme.of(context).primaryColorLight)),
                   onChanged: (text) {
                     double changeweight;
                     if (text == "") {
@@ -251,14 +258,14 @@ class _ProfileGoalState extends State<ProfileGoal> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
-              disabledForegroundColor: Color(0xFF101012),
               padding: EdgeInsets.all(8.0),
             ),
             onPressed: () => _postExerciseCheck(),
             child: Text(isLoading ? 'loggin in.....' : "운동 정보 수정",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   void _postExerciseCheck() async {

@@ -54,28 +54,30 @@ class _ProfileState extends State<Profile> {
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(40.0), // here the desired height
           child: AppBar(
-              elevation: 0,
-              title: Text("설정",
-                  textScaleFactor: 1.7, style: TextStyle(color: Colors.white)),
-              actions: [
-                Container(
-                    alignment: Alignment.center,
-                    child: ElevatedButton(
-                        onPressed: () {
-                          _PopProvider.tutorpopon();
-                          Future.delayed(Duration(milliseconds: 400))
-                              .then((value) {
-                            _bodyStater.change(1);
-                          });
-                          _PrefsProvider.tutorstart();
-                        },
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                Theme.of(context).cardColor)),
-                        child: Text('튜토리얼',
-                            style: TextStyle(color: Colors.white))))
-              ],
-              backgroundColor: Color(0xFF101012))),
+            elevation: 0,
+            title: Text("설정",
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight)),
+            actions: [
+              Container(
+                  alignment: Alignment.center,
+                  child: ElevatedButton(
+                      onPressed: () {
+                        _PopProvider.tutorpopon();
+                        Future.delayed(Duration(milliseconds: 400))
+                            .then((value) {
+                          _bodyStater.change(1);
+                        });
+                        _PrefsProvider.tutorstart();
+                      },
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Theme.of(context).cardColor)),
+                      child: Text('튜토리얼',
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight))))
+            ],
+          )),
       body: _userProvider.userdata != null
           ? _profile(context)
           : Center(
@@ -84,7 +86,6 @@ class _ProfileState extends State<Profile> {
                 CircularProgressIndicator(),
               ],
             )),
-      backgroundColor: Color(0xFF101012),
     );
   }
 
@@ -130,7 +131,8 @@ class _ProfileState extends State<Profile> {
                           const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
                       child: Text("사진을 올릴 방법을 고를 수 있어요",
                           textScaleFactor: 1.3,
-                          style: TextStyle(color: Colors.white)),
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight)),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -145,7 +147,7 @@ class _ProfileState extends State<Profile> {
                                 foregroundColor: Theme.of(context).primaryColor,
                                 backgroundColor: Theme.of(context).primaryColor,
                                 textStyle: TextStyle(
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColorLight,
                                 ),
                                 disabledForegroundColor:
                                     Color.fromRGBO(246, 58, 64, 20),
@@ -158,10 +160,14 @@ class _ProfileState extends State<Profile> {
                               child: Column(
                                 children: [
                                   Icon(Icons.camera_alt,
-                                      size: 24, color: Colors.white),
+                                      size: 24,
+                                      color:
+                                          Theme.of(context).primaryColorLight),
                                   Text('촬영',
                                       textScaleFactor: 1.3,
-                                      style: TextStyle(color: Colors.white)),
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight)),
                                 ],
                               ),
                             )),
@@ -175,7 +181,7 @@ class _ProfileState extends State<Profile> {
                                 foregroundColor: Theme.of(context).primaryColor,
                                 backgroundColor: Theme.of(context).primaryColor,
                                 textStyle: TextStyle(
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColorLight,
                                 ),
                                 disabledForegroundColor:
                                     Color.fromRGBO(246, 58, 64, 20),
@@ -188,10 +194,14 @@ class _ProfileState extends State<Profile> {
                               child: Column(
                                 children: [
                                   Icon(Icons.collections,
-                                      size: 24, color: Colors.white),
+                                      size: 24,
+                                      color:
+                                          Theme.of(context).primaryColorLight),
                                   Text('갤러리',
                                       textScaleFactor: 1.3,
-                                      style: TextStyle(color: Colors.white)),
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight)),
                                 ],
                               ),
                             )),
@@ -216,7 +226,7 @@ class _ProfileState extends State<Profile> {
             foregroundColor: Theme.of(context).primaryColor,
             backgroundColor: Theme.of(context).primaryColor,
             textStyle: TextStyle(
-              color: Colors.white,
+              color: Theme.of(context).primaryColorLight,
             ),
             disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
             padding: EdgeInsets.all(12.0),
@@ -225,7 +235,8 @@ class _ProfileState extends State<Profile> {
             userLogOut(context);
           },
           child: Text('로그아웃',
-              textScaleFactor: 1.3, style: TextStyle(color: Colors.white)),
+              textScaleFactor: 1.3,
+              style: TextStyle(color: Theme.of(context).primaryColorLight)),
         ));
   }
 
@@ -305,8 +316,10 @@ class _ProfileState extends State<Profile> {
                         children: [
                           Text("프로필",
                               textScaleFactor: 1.1,
-                              style: TextStyle(color: Colors.white)),
-                          Icon(Icons.chevron_right, color: Colors.white),
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
+                          Icon(Icons.chevron_right,
+                              color: Theme.of(context).primaryColorLight),
                         ]));
               })),
           ElevatedButton(
@@ -329,8 +342,10 @@ class _ProfileState extends State<Profile> {
                       children: [
                         Text("목표 설정하기",
                             textScaleFactor: 1.1,
-                            style: TextStyle(color: Colors.white)),
-                        Icon(Icons.chevron_right, color: Colors.white),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight)),
+                        Icon(Icons.chevron_right,
+                            color: Theme.of(context).primaryColorLight),
                       ]))),
           ElevatedButton(
               onPressed: () {
@@ -347,8 +362,10 @@ class _ProfileState extends State<Profile> {
                       children: [
                         Text("오류 알려주기",
                             textScaleFactor: 1.1,
-                            style: TextStyle(color: Colors.white)),
-                        Icon(Icons.chevron_right, color: Colors.white),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight)),
+                        Icon(Icons.chevron_right,
+                            color: Theme.of(context).primaryColorLight),
                       ]))),
           ElevatedButton(
               onPressed: () {
@@ -373,8 +390,10 @@ class _ProfileState extends State<Profile> {
                       children: [
                         Text("친구와 운동하기",
                             textScaleFactor: 1.1,
-                            style: TextStyle(color: Colors.white)),
-                        Icon(Icons.chevron_right, color: Colors.white),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight)),
+                        Icon(Icons.chevron_right,
+                            color: Theme.of(context).primaryColorLight),
                       ]))),
           ElevatedButton(
               onPressed: () async {
@@ -394,8 +413,10 @@ class _ProfileState extends State<Profile> {
                       children: [
                         Text("평점 남기기🙏",
                             textScaleFactor: 1.1,
-                            style: TextStyle(color: Colors.white)),
-                        Icon(Icons.open_in_new, color: Colors.white),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight)),
+                        Icon(Icons.open_in_new,
+                            color: Theme.of(context).primaryColorLight),
                       ]))),
           Column(
             children: [
@@ -410,7 +431,8 @@ class _ProfileState extends State<Profile> {
                         children: [
                           Text("글자 크기 변경",
                               textScaleFactor: 1.1,
-                              style: TextStyle(color: Colors.white)),
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
                         ]),
                   )),
               Container(
@@ -427,23 +449,32 @@ class _ProfileState extends State<Profile> {
                           children: {
                             0.6: Text("가",
                                 style: TextStyle(
-                                    fontSize: 10.0, color: Colors.white)),
+                                    fontSize: 10.0,
+                                    color:
+                                        Theme.of(context).primaryColorLight)),
                             0.7: Text("가",
                                 style: TextStyle(
-                                    fontSize: 12.0, color: Colors.white)),
+                                    fontSize: 12.0,
+                                    color:
+                                        Theme.of(context).primaryColorLight)),
                             0.8: Text("가",
                                 style: TextStyle(
-                                    fontSize: 14.0, color: Colors.white)),
+                                    fontSize: 14.0,
+                                    color:
+                                        Theme.of(context).primaryColorLight)),
                             0.9: Text("가",
                                 style: TextStyle(
-                                    fontSize: 16.0, color: Colors.white)),
+                                    fontSize: 16.0,
+                                    color:
+                                        Theme.of(context).primaryColorLight)),
                             1.0: Text("가",
                                 style: TextStyle(
-                                    fontSize: 18.0, color: Colors.white)),
+                                    fontSize: 18.0,
+                                    color:
+                                        Theme.of(context).primaryColorLight)),
                           },
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
-                            color: Color(0xFF101012),
                           ),
                           innerPadding: const EdgeInsets.all(4),
                           thumbDecoration: BoxDecoration(
@@ -472,8 +503,10 @@ class _ProfileState extends State<Profile> {
                       children: [
                         Text("로그아웃",
                             textScaleFactor: 1.1,
-                            style: TextStyle(color: Colors.white)),
-                        Icon(Icons.chevron_right, color: Colors.white),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight)),
+                        Icon(Icons.chevron_right,
+                            color: Theme.of(context).primaryColorLight),
                       ]))),
           SizedBox(height: 30),
           GestureDetector(
@@ -530,8 +563,8 @@ class _ProfileState extends State<Profile> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("exercise_change",
-                              style: TextStyle(color: Colors.white)),
-                          Icon(Icons.chevron_right, color: Colors.white),
+                              style: TextStyle(color: Theme.of(context).primaryColorLight)),
+                          Icon(Icons.chevron_right, color: Theme.of(context).primaryColorLight),
                         ])));
           }),
           Consumer<HistorydataProvider>(builder: (builder, provider, child) {
@@ -557,8 +590,8 @@ class _ProfileState extends State<Profile> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("history_change",
-                              style: TextStyle(color: Colors.white)),
-                          Icon(Icons.chevron_right, color: Colors.white),
+                              style: TextStyle(color: Theme.of(context).primaryColorLight)),
+                          Icon(Icons.chevron_right, color: Theme.of(context).primaryColorLight),
                         ])));
           }),
 
@@ -598,8 +631,8 @@ class _ProfileState extends State<Profile> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("exercise_add",
-                              style: TextStyle(color: Colors.white)),
-                          Icon(Icons.chevron_right, color: Colors.white),
+                              style: TextStyle(color: Theme.of(context).primaryColorLight)),
+                          Icon(Icons.chevron_right, color: Theme.of(context).primaryColorLight),
                         ])));
           }),
           */

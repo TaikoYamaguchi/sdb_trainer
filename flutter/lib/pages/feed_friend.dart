@@ -52,7 +52,8 @@ class _FeedFriendState extends State<FeedFriend> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("친구관리", style: TextStyle(color: Colors.white)),
+              Text("친구관리",
+                  style: TextStyle(color: Theme.of(context).primaryColorLight)),
               TextButton(
                   onPressed: () {
                     Navigator.push(
@@ -61,10 +62,11 @@ class _FeedFriendState extends State<FeedFriend> {
                             child: FeedFriendEdit(),
                             transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
                   },
-                  child: Text("친구찾기", style: TextStyle(color: Colors.white))),
+                  child: Text("친구찾기",
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColorLight))),
             ],
           ),
-          backgroundColor: Color(0xFF101012),
         ));
   }
 
@@ -82,53 +84,51 @@ class _FeedFriendState extends State<FeedFriend> {
           }
         },
         child: Container(
-            color: Color(0xFF101012),
             child: Column(children: [
-              Expanded(
-                child: Consumer<UserdataProvider>(
-                    builder: (builder, provider, child) {
-                  return provider.userFriends.userdatas.isEmpty
-                      ? Container(
-                          color: Color(0xFF101012),
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("친구를 찾고 추가해 보세요",
-                                    textScaleFactor: 2.0,
-                                    style: TextStyle(color: Colors.white)),
-                                Text("오른쪽 위 친구찾기를 클릭하세요",
-                                    textScaleFactor: 1.3,
-                                    style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                    )),
-                                SizedBox(height: 60)
-                              ],
-                            ),
-                          ))
-                      : ListView.separated(
-                          itemBuilder: (BuildContext _context, int index) {
-                            return _friend_listWidget(provider,
-                                provider.userFriends.userdatas[index]);
-                          },
-                          separatorBuilder: (BuildContext _context, int index) {
-                            return Container(
-                              alignment: Alignment.center,
-                              height: 1,
-                              color: Color(0xFF101012),
-                              child: Container(
-                                alignment: Alignment.center,
-                                margin: EdgeInsets.symmetric(horizontal: 10),
-                                height: 1,
-                                color: Color(0xFF717171),
-                              ),
-                            );
-                          },
-                          itemCount: provider.userFriends.userdatas.length,
+          Expanded(
+            child:
+                Consumer<UserdataProvider>(builder: (builder, provider, child) {
+              return provider.userFriends.userdatas.isEmpty
+                  ? Container(
+                      child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("친구를 찾고 추가해 보세요",
+                              textScaleFactor: 2.0,
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
+                          Text("오른쪽 위 친구찾기를 클릭하세요",
+                              textScaleFactor: 1.3,
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                              )),
+                          SizedBox(height: 60)
+                        ],
+                      ),
+                    ))
+                  : ListView.separated(
+                      itemBuilder: (BuildContext _context, int index) {
+                        return _friend_listWidget(
+                            provider, provider.userFriends.userdatas[index]);
+                      },
+                      separatorBuilder: (BuildContext _context, int index) {
+                        return Container(
+                          alignment: Alignment.center,
+                          height: 1,
+                          child: Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.symmetric(horizontal: 10),
+                            height: 1,
+                            color: Color(0xFF717171),
+                          ),
                         );
-                }),
-              )
-            ])));
+                      },
+                      itemCount: provider.userFriends.userdatas.length,
+                    );
+            }),
+          )
+        ])));
   }
 
   Widget _friend_listWidget(provider, user) {
@@ -185,7 +185,8 @@ class _FeedFriendState extends State<FeedFriend> {
                     ),
                     Text(user.nickname,
                         textScaleFactor: 1.5,
-                        style: TextStyle(color: Colors.white)),
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorLight)),
                   ])),
               _feedLikeButton(provider, user)
             ],

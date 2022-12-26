@@ -68,7 +68,7 @@ class _AppState extends State<App> {
     return BottomNavigationBarItem(
       icon: SvgPicture.asset("assets/svg/${iconName}_off.svg"),
       activeIcon: SvgPicture.asset("assets/svg/${iconName}_on.svg",
-          color: Colors.white),
+          color: Theme.of(context).primaryColorLight),
       label: label,
     );
   }
@@ -93,7 +93,7 @@ class _AppState extends State<App> {
               BottomNavigationBar(
                 backgroundColor: const Color(0xFF212121),
                 type: BottomNavigationBarType.fixed,
-                selectedItemColor: Colors.white,
+                selectedItemColor: Theme.of(context).primaryColorLight,
                 unselectedItemColor: Color(0xFF717171),
                 elevation: 0.0,
                 onTap: (int index) {
@@ -197,14 +197,17 @@ class _AppState extends State<App> {
             title: Text(
               '운동을 종료 할 수 있어요',
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 24),
+              style: TextStyle(
+                  color: Theme.of(context).primaryColorLight, fontSize: 24),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('운동을 종료 하시겠나요?',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
+                    style: TextStyle(
+                        color: Theme.of(context).primaryColorLight,
+                        fontSize: 16)),
                 Text('외부를 터치하면 취소 할 수 있어요',
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.grey, fontSize: 12)),
@@ -228,7 +231,7 @@ class _AppState extends State<App> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
@@ -248,7 +251,9 @@ class _AppState extends State<App> {
               Navigator.of(context, rootNavigator: true).pop();
             },
             child: Text("운동 종료 하기",
-                style: TextStyle(fontSize: 20.0, color: Colors.white))));
+                style: TextStyle(
+                    fontSize: 20.0,
+                    color: Theme.of(context).primaryColorLight))));
   }
 
   void recordExercise_plan() {
@@ -434,7 +439,7 @@ class _AppState extends State<App> {
           Expanded(flex: 3, child: SizedBox(height: 6)),
           Text("SUPERO",
               style: TextStyle(
-                  color: Colors.white,
+                  color: Theme.of(context).primaryColorLight,
                   fontSize: 54,
                   fontWeight: FontWeight.w800)),
           Text("우리의 운동 극복 스토리",
@@ -528,7 +533,8 @@ class _AppState extends State<App> {
                                     backgroundColor:
                                         Theme.of(context).primaryColor,
                                     textStyle: TextStyle(
-                                      color: Colors.white,
+                                      color:
+                                          Theme.of(context).primaryColorLight,
                                     ),
                                     disabledForegroundColor:
                                         Color.fromRGBO(246, 58, 64, 20),
@@ -547,7 +553,8 @@ class _AppState extends State<App> {
                                           color: (provider.userest &&
                                                   provider.timeron < 0)
                                               ? Colors.red
-                                              : Colors.white)))),
+                                              : Theme.of(context)
+                                                  .primaryColorLight)))),
                           Row(
                             children: [
                               ActionButton(
@@ -572,7 +579,6 @@ class _AppState extends State<App> {
               );
             }),
             extendBody: false,
-            backgroundColor: Color(0xFF101012),
             bottomNavigationBar: _loginState.isLogin
                 ? _userProvider.userdata == null
                     ? null
@@ -727,7 +733,7 @@ class _ExpandableFabState extends State<ExpandableFab>
                   style: TextStyle(
                       color: (provider.userest && provider.timeron < 0)
                           ? Colors.red
-                          : Colors.white));
+                          : Theme.of(context).primaryColorLight));
             }),
           ),
         ),
@@ -803,7 +809,7 @@ class ActionButton extends StatelessWidget {
             iconSize: 20,
             onPressed: onPressed,
             icon: icon,
-            color: Colors.white,
+            color: Theme.of(context).primaryColorLight,
           ),
         ),
       ),

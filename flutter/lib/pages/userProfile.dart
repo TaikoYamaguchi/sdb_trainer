@@ -49,10 +49,10 @@ class _UserProfileState extends State<UserProfile> {
               })
             ];
       return Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: _appbarWidget(),
-          body: _userProfileWidget(),
-          backgroundColor: Color(0xFF101012));
+        resizeToAvoidBottomInset: false,
+        appBar: _appbarWidget(),
+        body: _userProfileWidget(),
+      );
     });
   }
 
@@ -74,9 +74,8 @@ class _UserProfileState extends State<UserProfile> {
           title: Text(
             "",
             textScaleFactor: 2.5,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
-          backgroundColor: Color(0xFF101012),
         ));
   }
 
@@ -111,7 +110,8 @@ class _UserProfileState extends State<UserProfile> {
                           const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
                       child: Text("사진을 올릴 방법을 고를 수 있어요",
                           textScaleFactor: 1.3,
-                          style: TextStyle(color: Colors.white)),
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight)),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -126,7 +126,7 @@ class _UserProfileState extends State<UserProfile> {
                                 foregroundColor: Theme.of(context).primaryColor,
                                 backgroundColor: Theme.of(context).primaryColor,
                                 textStyle: TextStyle(
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColorLight,
                                 ),
                                 disabledForegroundColor:
                                     Color.fromRGBO(246, 58, 64, 20),
@@ -139,10 +139,14 @@ class _UserProfileState extends State<UserProfile> {
                               child: Column(
                                 children: [
                                   Icon(Icons.camera_alt,
-                                      size: 24, color: Colors.white),
+                                      size: 24,
+                                      color:
+                                          Theme.of(context).primaryColorLight),
                                   Text('촬영',
                                       textScaleFactor: 1.3,
-                                      style: TextStyle(color: Colors.white)),
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight)),
                                 ],
                               ),
                             )),
@@ -156,7 +160,7 @@ class _UserProfileState extends State<UserProfile> {
                                 foregroundColor: Theme.of(context).primaryColor,
                                 backgroundColor: Theme.of(context).primaryColor,
                                 textStyle: TextStyle(
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColorLight,
                                 ),
                                 disabledForegroundColor:
                                     Color.fromRGBO(246, 58, 64, 20),
@@ -169,10 +173,14 @@ class _UserProfileState extends State<UserProfile> {
                               child: Column(
                                 children: [
                                   Icon(Icons.collections,
-                                      size: 24, color: Colors.white),
+                                      size: 24,
+                                      color:
+                                          Theme.of(context).primaryColorLight),
                                   Text('갤러리',
                                       textScaleFactor: 1.3,
-                                      style: TextStyle(color: Colors.white)),
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight)),
                                 ],
                               ),
                             )),
@@ -198,14 +206,15 @@ class _UserProfileState extends State<UserProfile> {
             title: Text('정말 탈퇴 하시나요?',
                 textScaleFactor: 2.0,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white)),
+                style: TextStyle(color: Theme.of(context).primaryColorLight)),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('더 많은 기능을 준비 중 이에요',
                     textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white)),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
                 Text('데이터를 지우면 복구 할 수 없어요',
                     textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
@@ -233,7 +242,8 @@ class _UserProfileState extends State<UserProfile> {
                 title: Text('탈퇴가 완료되었어요',
                     textScaleFactor: 2.0,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white)),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -258,10 +268,8 @@ class _UserProfileState extends State<UserProfile> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              backgroundColor: Color(0xFF101012),
-              foregroundColor: Color(0xFF101012),
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
@@ -279,7 +287,8 @@ class _UserProfileState extends State<UserProfile> {
               print('storage delete ok');
             },
             child: Text("탈퇴",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   Widget _LogOutAfterDeleteButton() {
@@ -290,10 +299,8 @@ class _UserProfileState extends State<UserProfile> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              backgroundColor: Color(0xFF101012),
-              foregroundColor: Color(0xFF101012),
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
@@ -303,7 +310,8 @@ class _UserProfileState extends State<UserProfile> {
               Navigator.of(context, rootNavigator: true).pop();
             },
             child: Text("로그아웃",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   Widget _userProfileWidget() {
@@ -343,8 +351,10 @@ class _UserProfileState extends State<UserProfile> {
                         children: [
                           Text(_userProvider.userdata.nickname,
                               textScaleFactor: 1.1,
-                              style: TextStyle(color: Colors.white)),
-                          Icon(Icons.chevron_right, color: Colors.white),
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
+                          Icon(Icons.chevron_right,
+                              color: Theme.of(context).primaryColorLight),
                         ]));
               }),
             ),
@@ -374,8 +384,10 @@ class _UserProfileState extends State<UserProfile> {
                                     .toString() +
                                 _userProvider.userdata.weight_unit,
                             textScaleFactor: 1.1,
-                            style: TextStyle(color: Colors.white)),
-                        Icon(Icons.chevron_right, color: Colors.white),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight)),
+                        Icon(Icons.chevron_right,
+                            color: Theme.of(context).primaryColorLight),
                       ])),
             ),
             ElevatedButton(
@@ -391,7 +403,8 @@ class _UserProfileState extends State<UserProfile> {
                       children: [
                         Text(_userProvider.userdata.isMan ? "남성" : "여성",
                             textScaleFactor: 1.1,
-                            style: const TextStyle(color: Colors.white)),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight)),
                         Container(),
                       ])),
             ),
@@ -407,11 +420,12 @@ class _UserProfileState extends State<UserProfile> {
                   height: 50,
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         Text("회원탈퇴",
                             textScaleFactor: 1.1,
                             style: TextStyle(color: Colors.grey)),
-                        Icon(Icons.chevron_right, color: Colors.white),
+                        Icon(Icons.chevron_right,
+                            color: Theme.of(context).primaryColorLight),
                       ])),
             ),
             const SizedBox(height: 30),
@@ -446,7 +460,9 @@ class _UserProfileState extends State<UserProfile> {
                 onPressed: () {
                   _displayPhotoDialog();
                 },
-                child: Text("사진 편집", style: TextStyle(color: Colors.white)))
+                child: Text("사진 편집",
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)))
           ]),
         ));
   }

@@ -28,9 +28,9 @@ class _FriendProfileState extends State<FriendProfile> {
     _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     return Scaffold(
-        appBar: _appbarWidget(),
-        body: _userProfileWidget(),
-        backgroundColor: Color(0xFF101012));
+      appBar: _appbarWidget(),
+      body: _userProfileWidget(),
+    );
   }
 
   PreferredSizeWidget _appbarWidget() {
@@ -53,9 +53,8 @@ class _FriendProfileState extends State<FriendProfile> {
           title: Text(
             widget.user.nickname,
             textScaleFactor: 2.7,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
-          backgroundColor: Color(0xFF101012),
         ));
   }
 
@@ -73,7 +72,6 @@ class _FriendProfileState extends State<FriendProfile> {
         child: SingleChildScrollView(
           child: Container(
             width: MediaQuery.of(context).size.width,
-            color: Color(0xFF101012),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
@@ -119,7 +117,8 @@ class _FriendProfileState extends State<FriendProfile> {
                             ),
                             Text("팔로워",
                                 textScaleFactor: 1.3,
-                                style: TextStyle(color: Colors.white))
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight))
                           ],
                         ),
                       ),
@@ -137,7 +136,8 @@ class _FriendProfileState extends State<FriendProfile> {
                             ),
                             Text("팔로잉",
                                 textScaleFactor: 1.3,
-                                style: TextStyle(color: Colors.white))
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight))
                           ],
                         ),
                       ),
@@ -155,7 +155,8 @@ class _FriendProfileState extends State<FriendProfile> {
                             ),
                             Text("운동기록",
                                 textScaleFactor: 1.3,
-                                style: TextStyle(color: Colors.white))
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight))
                           ],
                         ),
                       )
@@ -193,7 +194,7 @@ class _FriendProfileState extends State<FriendProfile> {
                           ? "팔로잉 중 "
                           : "팔로우 하기 ",
                   textScaleFactor: 1.3,
-                  style: TextStyle(color: Colors.white)),
+                  style: TextStyle(color: Theme.of(context).primaryColorLight)),
             ],
           ),
         ),
@@ -261,7 +262,9 @@ Widget _feedCardList(context) {
                         padding: EdgeInsets.symmetric(vertical: 16),
                         child: Center(
                             child: Text("운동을 시작해보고 있어요",
-                                style: TextStyle(color: Colors.white))),
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).primaryColorLight))),
                       );
                     }
                   },
@@ -270,7 +273,6 @@ Widget _feedCardList(context) {
                     return Container(
                       alignment: Alignment.center,
                       height: 0,
-                      color: Color(0xFF101012),
                       child: Container(
                         alignment: Alignment.center,
                         height: 0,
@@ -284,7 +286,8 @@ Widget _feedCardList(context) {
                   padding: EdgeInsets.symmetric(vertical: 16),
                   child: Center(
                       child: Text("운동을 시작해보고 있어요",
-                          style: TextStyle(color: Colors.white))),
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight))),
                 );
         } catch (e) {
           return CircularProgressIndicator();

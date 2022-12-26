@@ -89,7 +89,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             Text(
               "+버튼을 눌러 원하는 운동을 추가 하세요",
               textScaleFactor: 1.7,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Theme.of(context).primaryColorLight),
             ),
             SizedBox(
               height: 100,
@@ -112,7 +112,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
           Text(
             "이곳에 검색하여 원하는 운동을 찾고,",
             textScaleFactor: 1.7,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
           SizedBox(
             height: 100,
@@ -136,7 +136,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
           Text(
             "운동을 클릭하여 원하는 운동을 추가한 뒤,",
             textScaleFactor: 1.7,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
           SizedBox(
             height: 100,
@@ -160,7 +160,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
           Text(
             "이곳을 눌러 Routine 수정을 완료하세요",
             textScaleFactor: 1.7,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
           SizedBox(
             height: 100,
@@ -235,7 +235,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 child: TextField(
                     key: keySearch,
                     controller: _exSearchCtrl,
-                    style: TextStyle(color: Colors.white),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight),
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(0),
                       prefixIcon: Icon(
@@ -243,7 +244,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                         color: Theme.of(context).primaryColor,
                       ),
                       hintText: "운동 검색",
-                      hintStyle: TextStyle(fontSize: 20.0, color: Colors.white),
+                      hintStyle: TextStyle(
+                          fontSize: 20.0,
+                          color: Theme.of(context).primaryColorLight),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                             width: 2, color: Theme.of(context).cardColor),
@@ -278,7 +281,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                       return Text(
                         provider.workoutdata.routinedatas[widget.rindex].name,
                         textScaleFactor: 1.3,
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorLight),
                       );
                     }),
                   ),
@@ -319,7 +323,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 },
               )
       ],
-      backgroundColor: Color(0xFF101012),
     );
   }
 
@@ -357,7 +360,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               '운동을 종료 할 수 있어요',
               textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Theme.of(context).primaryColorLight),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -365,7 +368,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 Text('운동을 종료 하시겠나요?',
                     textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white)),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
                 Text('외부를 터치하면 취소 할 수 있어요',
                     textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
@@ -390,7 +394,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
@@ -402,7 +406,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               Navigator.of(context, rootNavigator: true).pop();
             },
             child: Text("운동 종료 하기",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   void recordExercise() {
@@ -547,12 +552,14 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                             '커스텀 운동을 만들어보세요',
                             textScaleFactor: 2.0,
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight),
                           ),
                           Text('운동의 이름을 입력해 주세요',
                               textScaleFactor: 1.3,
                               textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.white)),
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
                           Text('외부를 터치하면 취소 할 수 있어요',
                               textScaleFactor: 1.0,
                               textAlign: TextAlign.center,
@@ -575,8 +582,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                 }
                               });
                             },
-                            style:
-                                TextStyle(fontSize: 24.0, color: Colors.white),
+                            style: TextStyle(
+                                fontSize: 24.0,
+                                color: Theme.of(context).primaryColorLight),
                             textAlign: TextAlign.center,
                             controller: _customExNameCtrl,
                             decoration: InputDecoration(
@@ -595,7 +603,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                 ),
                                 hintText: "커스텀 운동 이름",
                                 hintStyle: TextStyle(
-                                    fontSize: 24.0, color: Colors.white)),
+                                    fontSize: 24.0,
+                                    color:
+                                        Theme.of(context).primaryColorLight)),
                           ),
                           SizedBox(height: 20),
                           Row(
@@ -607,7 +617,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                   '운동부위:',
                                   textScaleFactor: 2.0,
                                   textAlign: TextAlign.start,
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).primaryColorLight),
                                 ),
                               ),
                             ],
@@ -622,7 +634,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                   '카테고리:',
                                   textScaleFactor: 2.0,
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).primaryColorLight),
                                 ),
                               ),
                               SizedBox(width: 20),
@@ -633,14 +647,15 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                         5,
                                     child: DropdownButtonFormField(
                                       isExpanded: true,
-                                      dropdownColor: Color(0xFF101012),
                                       decoration: InputDecoration(
                                         filled: true,
                                         enabledBorder: UnderlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(8.0),
                                           borderSide: BorderSide(
-                                              color: Colors.white, width: 3),
+                                              color: Theme.of(context)
+                                                  .primaryColorLight,
+                                              width: 3),
                                         ),
                                         focusedBorder: UnderlineInputBorder(
                                           borderRadius:
@@ -655,8 +670,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                           alignment: Alignment.center,
                                           child: Text(
                                             '기타',
-                                            style:
-                                                TextStyle(color: Colors.white),
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColorLight),
                                           )),
                                       items: options2
                                           .map((item) => DropdownMenuItem<
@@ -667,7 +683,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                                   child: Text(
                                                     item,
                                                     style: TextStyle(
-                                                        color: Colors.white),
+                                                        color: Theme.of(context)
+                                                            .primaryColorLight),
                                                   ))))
                                           .toList(),
                                       onChanged: (item) => setState(
@@ -703,7 +720,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                       ? Color(0xFF212121)
                       : Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
@@ -725,7 +742,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               }
             },
             child: Text(_customExUsed == true ? "존재하는 운동" : "커스텀 운동 추가",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   void _editWorkoutNameCheck(newname) async {
@@ -754,7 +772,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
 
   Widget _exercisesWidget(bool scrollable, bool shirink) {
     return Container(
-      color: Color(0xFF101012),
       child: Consumer2<WorkoutdataProvider, ExercisesdataProvider>(
           builder: (builder, wdp, exp, child) {
         List exunique = exp.exercisesdata.exercises;
@@ -831,7 +848,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                               _editWorkoutCheck();
                             },
                             backgroundColor: Color(0xFFFE4A49),
-                            foregroundColor: Colors.white,
+                            foregroundColor:
+                                Theme.of(context).primaryColorLight,
                             icon: Icons.delete,
                             label: 'Delete',
                           )
@@ -856,7 +874,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                               Text(
                                 exlist[index].name,
                                 textScaleFactor: _isexsearch ? 1.1 : 1.7,
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight),
                               ),
                               _isexsearch
                                   ? Container()
@@ -946,7 +965,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                           child: Icon(
                                             Icons.add,
                                             size: 28.0,
-                                            color: Colors.white,
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
                                           ),
                                         ),
                                         Padding(
@@ -960,7 +980,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                               Text("운동 추가",
                                                   textScaleFactor: 1.5,
                                                   style: TextStyle(
-                                                    color: Colors.white,
+                                                    color: Theme.of(context)
+                                                        .primaryColorLight,
                                                   )),
                                             ],
                                           ),
@@ -968,7 +989,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                       ]),
                                   Text("오른쪽을 눌러서 추가 할 수 있어요",
                                       textScaleFactor: 1.0,
-                                      style: TextStyle(color: Colors.white)),
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight)),
                                 ],
                               ),
                             ),
@@ -1006,7 +1029,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                   child: Icon(
                                     Icons.add,
                                     size: 28.0,
-                                    color: Colors.white,
+                                    color: Theme.of(context).primaryColorLight,
                                   ),
                                 ),
                                 Padding(
@@ -1020,7 +1043,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                       Text("이곳을 눌러보세요",
                                           textScaleFactor: 1.5,
                                           style: TextStyle(
-                                            color: Colors.white,
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
                                           )),
                                       Text("운동을 추가 할 수 있어요",
                                           textScaleFactor: 1.1,
@@ -1042,7 +1066,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
 
   Widget _exercises_searchWidget() {
     return Container(
-      color: Color(0xFF101012),
       child: Column(
         children: [
           Padding(
@@ -1052,10 +1075,10 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                   builder: (context, provider, child) {
                 return ExpandablePanel(
                   controller: _menucontroller,
-                  theme: const ExpandableThemeData(
+                  theme: ExpandableThemeData(
                     headerAlignment: ExpandablePanelHeaderAlignment.center,
                     hasIcon: false,
-                    iconColor: Colors.white,
+                    iconColor: Theme.of(context).primaryColorLight,
                   ),
                   header: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1068,7 +1091,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                         child: Card(
                           color: provider.filtmenu == 1
                               ? Theme.of(context).primaryColor
-                              : Colors.white30,
+                              : Theme.of(context).primaryColorLight,
                           child: Container(
                             width: MediaQuery.of(context).size.width / 2 - 10,
                             height:
@@ -1079,7 +1102,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                     ? "운동부위"
                                     : '${provider.tags.toString().replaceAll('[', '').replaceAll(']', '')}',
                                 textScaleFactor: 1.5,
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -1094,7 +1118,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                         child: Card(
                           color: provider.filtmenu == 2
                               ? Theme.of(context).primaryColor
-                              : Colors.white30,
+                              : Theme.of(context).primaryColorLight,
                           child: Container(
                             width: MediaQuery.of(context).size.width / 2 - 10,
                             height:
@@ -1105,7 +1129,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                     ? "운동유형"
                                     : '${provider.tags2.toString().replaceAll('[', '').replaceAll(']', '')}',
                                 textScaleFactor: 1.5,
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -1143,7 +1168,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                   child: Center(
                     child: Text("운동 종목",
                         textScaleFactor: 2.0,
-                        style: TextStyle(color: Colors.white)),
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorLight)),
                   ),
                 )
               ]),
@@ -1226,7 +1252,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                                       child: Icon(
                                                         Icons.add,
                                                         size: 28.0,
-                                                        color: Colors.white,
+                                                        color: Theme.of(context)
+                                                            .primaryColorLight,
                                                       ),
                                                     ),
                                                     Padding(
@@ -1254,7 +1281,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                               Text("개인 운동을 추가 할 수 있어요",
                                                   textScaleFactor: 1.0,
                                                   style: TextStyle(
-                                                    color: Colors.white,
+                                                    color: Theme.of(context)
+                                                        .primaryColorLight,
                                                   )),
                                             ],
                                           ),
@@ -1328,7 +1356,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                           Text(
                             exuniq[index].name,
                             textScaleFactor: _isexsearch ? 1.1 : 1.7,
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight),
                           ),
                         ],
                       ),
@@ -1367,7 +1396,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   Widget exp1() {
     return Container(
       width: MediaQuery.of(context).size.width,
-      color: Color(0xFF101012),
       child:
           Consumer<ExercisesdataProvider>(builder: (context, provider, child) {
         return ChipsChoice<String>.multiple(
@@ -1408,7 +1436,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   Widget exp2() {
     return Container(
       width: MediaQuery.of(context).size.width,
-      color: Color(0xFF101012),
       child:
           Consumer<ExercisesdataProvider>(builder: (context, provider, child) {
         return ChipsChoice<String>.multiple(
@@ -1526,94 +1553,91 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             ];
 
       return Scaffold(
-          appBar: _isexsearch ? _appbarWidget() : null,
-          body: _isexsearch
-              ? _exercises_searchWidget()
-              : CustomScrollView(slivers: [
-                  SliverAppBar(
-                    snap: false,
-                    floating: false,
-                    pinned: true,
-                    actions: [
-                      IconButton(
-                        key: keyPlus,
-                        icon: SvgPicture.asset("assets/svg/add_white.svg"),
-                        onPressed: () {
-                          _workoutProvider.dataBU(widget.rindex);
+        appBar: _isexsearch ? _appbarWidget() : null,
+        body: _isexsearch
+            ? _exercises_searchWidget()
+            : CustomScrollView(slivers: [
+                SliverAppBar(
+                  snap: false,
+                  floating: false,
+                  pinned: true,
+                  actions: [
+                    IconButton(
+                      key: keyPlus,
+                      icon: SvgPicture.asset("assets/svg/add_white.svg"),
+                      onPressed: () {
+                        _workoutProvider.dataBU(widget.rindex);
 
-                          setState(() {
-                            _isexsearch = !_isexsearch;
-                          });
-                          _PrefsProvider.eachworkouttutor
-                              ? [
-                                  Future.delayed(Duration(milliseconds: 100))
-                                      .then((value) {
-                                    Tutorial.showTutorial(context, itens);
-                                  }),
-                                  _PrefsProvider.tutordone()
-                                ]
-                              : null;
-                        },
-                      )
-                    ],
-                    leading: Center(
-                      child: GestureDetector(
-                        child: Icon(Icons.arrow_back_ios_outlined),
-                        onTap: () {
-                          btnDisabled == true
-                              ? null
-                              : [
-                                  btnDisabled = true,
-                                  Navigator.of(context).pop()
-                                ];
-                        },
-                      ),
+                        setState(() {
+                          _isexsearch = !_isexsearch;
+                        });
+                        _PrefsProvider.eachworkouttutor
+                            ? [
+                                Future.delayed(Duration(milliseconds: 100))
+                                    .then((value) {
+                                  Tutorial.showTutorial(context, itens);
+                                }),
+                                _PrefsProvider.tutordone()
+                              ]
+                            : null;
+                      },
+                    )
+                  ],
+                  leading: Center(
+                    child: GestureDetector(
+                      child: Icon(Icons.arrow_back_ios_outlined),
+                      onTap: () {
+                        btnDisabled == true
+                            ? null
+                            : [btnDisabled = true, Navigator.of(context).pop()];
+                      },
                     ),
-                    expandedHeight: _appbarWidget().preferredSize.height * 2,
-                    collapsedHeight: _appbarWidget().preferredSize.height,
-                    backgroundColor: Color(0xFF101012),
-                    flexibleSpace: myFlexibleSpaceBar(
-                      expandedTitleScale: 1.2,
-                      titlePaddingTween: EdgeInsetsTween(
-                          begin: EdgeInsets.only(left: 12.0, bottom: 8),
-                          end: EdgeInsets.only(left: 60.0, bottom: 8)),
-                      title: GestureDetector(
-                        onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return NameInputDialog(rindex: widget.rindex);
-                              });
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              child: Consumer<WorkoutdataProvider>(
-                                  builder: (builder, provider, child) {
-                                return Text(
-                                  provider.workoutdata
-                                      .routinedatas[widget.rindex].name,
-                                  textScaleFactor: 1.3,
-                                  style: TextStyle(color: Colors.white),
-                                );
-                              }),
-                            ),
-                          ],
-                        ),
+                  ),
+                  expandedHeight: _appbarWidget().preferredSize.height * 2,
+                  collapsedHeight: _appbarWidget().preferredSize.height,
+                  flexibleSpace: myFlexibleSpaceBar(
+                    expandedTitleScale: 1.2,
+                    titlePaddingTween: EdgeInsetsTween(
+                        begin: EdgeInsets.only(left: 12.0, bottom: 8),
+                        end: EdgeInsets.only(left: 60.0, bottom: 8)),
+                    title: GestureDetector(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return NameInputDialog(rindex: widget.rindex);
+                            });
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            child: Consumer<WorkoutdataProvider>(
+                                builder: (builder, provider, child) {
+                              return Text(
+                                provider.workoutdata.routinedatas[widget.rindex]
+                                    .name,
+                                textScaleFactor: 1.3,
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight),
+                              );
+                            }),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, _index) {
-                        return Container(child: _exercisesWidget(true, true));
-                      },
-                      childCount: 1,
-                    ),
-                  )
-                ]),
-          backgroundColor: Color(0xFF101012));
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, _index) {
+                      return Container(child: _exercisesWidget(true, true));
+                    },
+                    childCount: 1,
+                  ),
+                )
+              ]),
+      );
     });
   }
 }

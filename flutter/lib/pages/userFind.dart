@@ -34,15 +34,13 @@ class _UserFindPageState extends State<UserFindPage> {
           title: Text(
             "회원 찾기",
             textScaleFactor: 2.5,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
-          backgroundColor: Color(0xFF101012),
         ));
   }
 
   Widget _signupProfileWidget() {
     return Container(
-      color: Color(0xFF101012),
       child: Center(
           child: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -56,7 +54,8 @@ class _UserFindPageState extends State<UserFindPage> {
                     Text("휴대폰으로 계정 찾기(현재 사용이 어렵습니다. 고객센터로 문의 부탁드립니다)",
                         textScaleFactor: 2.1,
                         style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.w800)),
+                            color: Theme.of(context).primaryColorLight,
+                            fontWeight: FontWeight.w800)),
                     SizedBox(
                       height: 8,
                     ),
@@ -78,27 +77,34 @@ class _UserFindPageState extends State<UserFindPage> {
   Widget _userWidget() {
     return Row(
       children: [
-        Text("아이디는 ${user.email} 입니다.", style: TextStyle(color: Colors.white)),
+        Text("아이디는 ${user.email} 입니다.",
+            style: TextStyle(color: Theme.of(context).primaryColorLight)),
         TextFormField(
           enabled: _isVerification == false,
           controller: _userPhoneNumberCtrl,
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Theme.of(context).primaryColorLight),
           autofocus: true,
           keyboardType:
               TextInputType.numberWithOptions(signed: true, decimal: true),
           decoration: InputDecoration(
             labelText: _isPhoneEmpty == false ? "휴대폰" : "휴대폰으로 가입한 정보가 없습니다",
             labelStyle: TextStyle(
-                color: _isPhoneEmpty == false ? Colors.white : Colors.red),
+                color: _isPhoneEmpty == false
+                    ? Theme.of(context).primaryColorLight
+                    : Colors.red),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                  color: _isPhoneEmpty == false ? Colors.white : Colors.red,
+                  color: _isPhoneEmpty == false
+                      ? Theme.of(context).primaryColorLight
+                      : Colors.red,
                   width: 2.0),
               borderRadius: BorderRadius.circular(5.0),
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                  color: _isPhoneEmpty == false ? Colors.white : Colors.red,
+                  color: _isPhoneEmpty == false
+                      ? Theme.of(context).primaryColorLight
+                      : Colors.red,
                   width: 2.0),
               borderRadius: BorderRadius.circular(5.0),
             ),
@@ -112,23 +118,29 @@ class _UserFindPageState extends State<UserFindPage> {
     return TextFormField(
       enabled: _isVerification == false,
       controller: _userPhoneNumberCtrl,
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(color: Theme.of(context).primaryColorLight),
       autofocus: true,
       keyboardType:
           TextInputType.numberWithOptions(signed: true, decimal: true),
       decoration: InputDecoration(
         labelText: _isPhoneEmpty == false ? "휴대폰" : "휴대폰으로 가입한 정보가 없습니다",
         labelStyle: TextStyle(
-            color: _isPhoneEmpty == false ? Colors.white : Colors.red),
+            color: _isPhoneEmpty == false
+                ? Theme.of(context).primaryColorLight
+                : Colors.red),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-              color: _isPhoneEmpty == false ? Colors.white : Colors.red,
+              color: _isPhoneEmpty == false
+                  ? Theme.of(context).primaryColorLight
+                  : Colors.red,
               width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-              color: _isPhoneEmpty == false ? Colors.white : Colors.red,
+              color: _isPhoneEmpty == false
+                  ? Theme.of(context).primaryColorLight
+                  : Colors.red,
               width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
@@ -140,21 +152,27 @@ class _UserFindPageState extends State<UserFindPage> {
     return TextFormField(
       enabled: _isVerification == true,
       controller: _userVerificationCodeCtrl,
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(color: Theme.of(context).primaryColorLight),
       decoration: InputDecoration(
-        hintStyle: TextStyle(color: Colors.white),
+        hintStyle: TextStyle(color: Theme.of(context).primaryColorLight),
         labelText: _isPhoneEmpty == false ? "인증번호 입력" : "휴대폰으로 가입한 정보가 없습니다",
         labelStyle: TextStyle(
-            color: _isPhoneEmpty == false ? Colors.white : Colors.red),
+            color: _isPhoneEmpty == false
+                ? Theme.of(context).primaryColorLight
+                : Colors.red),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-              color: _isPhoneEmpty == false ? Colors.white : Colors.red,
+              color: _isPhoneEmpty == false
+                  ? Theme.of(context).primaryColorLight
+                  : Colors.red,
               width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-              color: _isPhoneEmpty == false ? Colors.white : Colors.red,
+              color: _isPhoneEmpty == false
+                  ? Theme.of(context).primaryColorLight
+                  : Colors.red,
               width: 2.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
@@ -170,7 +188,7 @@ class _UserFindPageState extends State<UserFindPage> {
               foregroundColor: Color.fromRGBO(246, 58, 64, 20),
               backgroundColor: Color.fromRGBO(246, 58, 64, 20),
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(8.0),
@@ -185,7 +203,7 @@ class _UserFindPageState extends State<UserFindPage> {
                         ? "휴대폰 입력"
                         : "인증번호 입력",
                 textScaleFactor: 1.7,
-                style: TextStyle(color: Colors.white))));
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   void _phoneNumberCheck() async {

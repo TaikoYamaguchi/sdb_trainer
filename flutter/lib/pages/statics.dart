@@ -96,7 +96,9 @@ class _CalendarState extends State<Calendar> {
             child: Text("운동",
                 textScaleFactor: 1.3,
                 style: TextStyle(
-                  color: page == 0 ? Colors.white : Colors.grey,
+                  color: page == 0
+                      ? Theme.of(context).primaryColorLight
+                      : Colors.grey,
                 )),
             padding: const EdgeInsets.all(5.0),
           ),
@@ -104,24 +106,26 @@ class _CalendarState extends State<Calendar> {
               child: Text("달력",
                   textScaleFactor: 1.3,
                   style: TextStyle(
-                    color: page == 1 ? Colors.white : Colors.grey,
+                    color: page == 1
+                        ? Theme.of(context).primaryColorLight
+                        : Colors.grey,
                   )),
               padding: const EdgeInsets.all(5.0)),
           2: Padding(
               child: Text("몸무게",
                   textScaleFactor: 1.3,
                   style: TextStyle(
-                    color: page == 2 ? Colors.white : Colors.grey,
+                    color: page == 2
+                        ? Theme.of(context).primaryColorLight
+                        : Colors.grey,
                   )),
               padding: const EdgeInsets.all(5.0)),
         };
         return Container(
-          color: Color(0xFF101012),
           child: CupertinoSlidingSegmentedControl(
               groupValue: page,
               children: _staticList,
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-              backgroundColor: Color(0xFF101012),
               thumbColor: Theme.of(context).primaryColor,
               onValueChanged: (i) {
                 print(i);
@@ -302,11 +306,11 @@ class _CalendarState extends State<Calendar> {
               children: [
                 Text("기록",
                     textScaleFactor: 1.7,
-                    style: TextStyle(color: Colors.white)),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
               ],
             );
           }),
-          backgroundColor: Color(0xFF101012),
         ));
   }
 
@@ -362,7 +366,7 @@ class _CalendarState extends State<Calendar> {
                             child: Icon(
                               Icons.add,
                               size: 28.0,
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorLight,
                             ),
                           ),
                           Padding(
@@ -373,7 +377,9 @@ class _CalendarState extends State<Calendar> {
                               children: [
                                 Text("몸무게를 기록해 보세요",
                                     textScaleFactor: 1.5,
-                                    style: TextStyle(color: Colors.white)),
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .primaryColorLight)),
                                 Text("목표치를 기록하고 달성 할 수 있어요",
                                     textScaleFactor: 1.1,
                                     style: TextStyle(color: Colors.grey)),
@@ -406,7 +412,8 @@ class _CalendarState extends State<Calendar> {
                             left: 24.0, top: 4.0, bottom: 4.0),
                         child: Text("몸무게 차트",
                             textScaleFactor: 1.7,
-                            style: TextStyle(color: Colors.white)),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight)),
                       ),
                       Container(
                         width: 100,
@@ -414,13 +421,16 @@ class _CalendarState extends State<Calendar> {
                             height: 24.0,
                             children: {
                               true: Text("on",
-                                  style: TextStyle(color: Colors.white)),
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).primaryColorLight)),
                               false: Text("off",
-                                  style: TextStyle(color: Colors.white))
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).primaryColorLight))
                             },
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
-                              color: Color(0xFF101012),
                             ),
                             innerPadding: const EdgeInsets.all(4),
                             thumbDecoration: BoxDecoration(
@@ -461,8 +471,7 @@ class _CalendarState extends State<Calendar> {
                                               .userdata.bodyStats!.length ==
                                           0
                                       ? 0
-                                      : _userProvider
-                                                  .userdata.bodyStats!.length >
+                                      : _userProvider.userdata.bodyStats!.length >
                                               1
                                           ? _userProvider.userdata.bodyStats!
                                               .reduce((BodyStat curr,
@@ -478,11 +487,12 @@ class _CalendarState extends State<Calendar> {
                               legend: Legend(
                                   isVisible: true,
                                   position: LegendPosition.bottom,
-                                  textStyle: TextStyle(color: Colors.white)),
+                                  textStyle: TextStyle(
+                                      color: Theme.of(context).primaryColorLight)),
                               series: [
                                 LineSeries<BodyStat, DateTime>(
                                   isVisibleInLegend: true,
-                                  color: Colors.white54,
+                                  color: Theme.of(context).primaryColorLight,
                                   name: "목표",
                                   dataSource: _userProvider.userdata.bodyStats!,
                                   xValueMapper: (BodyStat sales, _) =>
@@ -549,7 +559,7 @@ class _CalendarState extends State<Calendar> {
               '몸무게를 기록 할게요',
               textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Theme.of(context).primaryColorLight),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -565,7 +575,7 @@ class _CalendarState extends State<Calendar> {
                       signed: false, decimal: true),
                   style: TextStyle(
                     fontSize: 21,
-                    color: Colors.white,
+                    color: Theme.of(context).primaryColorLight,
                   ),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
@@ -583,8 +593,9 @@ class _CalendarState extends State<Calendar> {
                       labelText: "몸무게",
                       labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
                       hintText: "몸무게",
-                      hintStyle:
-                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                      hintStyle: TextStyle(
+                          fontSize: 24.0,
+                          color: Theme.of(context).primaryColorLight)),
                   onChanged: (text) {},
                 ),
                 TextField(
@@ -593,7 +604,7 @@ class _CalendarState extends State<Calendar> {
                       signed: false, decimal: true),
                   style: TextStyle(
                     fontSize: 21,
-                    color: Colors.white,
+                    color: Theme.of(context).primaryColorLight,
                   ),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
@@ -611,8 +622,9 @@ class _CalendarState extends State<Calendar> {
                       labelText: "목표 몸무게",
                       labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
                       hintText: "목표 몸무게",
-                      hintStyle:
-                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                      hintStyle: TextStyle(
+                          fontSize: 24.0,
+                          color: Theme.of(context).primaryColorLight)),
                   onChanged: (text) {},
                 ),
               ],
@@ -628,14 +640,15 @@ class _CalendarState extends State<Calendar> {
                     foregroundColor: Theme.of(context).primaryColor,
                     backgroundColor: Theme.of(context).primaryColor,
                     textStyle: TextStyle(
-                      color: Colors.white,
+                      color: Theme.of(context).primaryColorLight,
                     ),
                     disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
                     padding: EdgeInsets.all(12.0),
                   ),
                   child: Text('오늘 몸무게 기록하기',
                       textScaleFactor: 1.7,
-                      style: TextStyle(color: Colors.white)),
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColorLight)),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                     _displayBodyWeightPushDialog(
@@ -674,7 +687,7 @@ class _CalendarState extends State<Calendar> {
               '몸무게를 수정 할게요',
               textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Theme.of(context).primaryColorLight),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -690,7 +703,7 @@ class _CalendarState extends State<Calendar> {
                       signed: false, decimal: true),
                   style: TextStyle(
                     fontSize: 21,
-                    color: Colors.white,
+                    color: Theme.of(context).primaryColorLight,
                   ),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
@@ -708,8 +721,9 @@ class _CalendarState extends State<Calendar> {
                       labelText: "몸무게",
                       labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
                       hintText: "몸무게",
-                      hintStyle:
-                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                      hintStyle: TextStyle(
+                          fontSize: 24.0,
+                          color: Theme.of(context).primaryColorLight)),
                   onChanged: (text) {},
                 ),
                 TextField(
@@ -718,7 +732,7 @@ class _CalendarState extends State<Calendar> {
                       signed: false, decimal: true),
                   style: TextStyle(
                     fontSize: 21,
-                    color: Colors.white,
+                    color: Theme.of(context).primaryColorLight,
                   ),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
@@ -736,8 +750,9 @@ class _CalendarState extends State<Calendar> {
                       labelText: "목표 몸무게",
                       labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
                       hintText: "목표 몸무게",
-                      hintStyle:
-                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                      hintStyle: TextStyle(
+                          fontSize: 24.0,
+                          color: Theme.of(context).primaryColorLight)),
                   onChanged: (text) {},
                 ),
               ],
@@ -753,14 +768,15 @@ class _CalendarState extends State<Calendar> {
                     foregroundColor: Theme.of(context).primaryColor,
                     backgroundColor: Theme.of(context).primaryColor,
                     textStyle: TextStyle(
-                      color: Colors.white,
+                      color: Theme.of(context).primaryColorLight,
                     ),
                     disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
                     padding: EdgeInsets.all(12.0),
                   ),
                   child: Text('몸무게 수정 하기',
                       textScaleFactor: 1.7,
-                      style: TextStyle(color: Colors.white)),
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColorLight)),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                     _userProvider.setUserWeightEdit(
@@ -837,7 +853,7 @@ class _CalendarState extends State<Calendar> {
               _weightChange,
               textScaleFactor: 2.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Theme.of(context).primaryColorLight),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -860,14 +876,15 @@ class _CalendarState extends State<Calendar> {
                     foregroundColor: Theme.of(context).primaryColor,
                     backgroundColor: Theme.of(context).primaryColor,
                     textStyle: TextStyle(
-                      color: Colors.white,
+                      color: Theme.of(context).primaryColorLight,
                     ),
                     disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
                     padding: EdgeInsets.all(12.0),
                   ),
                   child: Text('닫기',
                       textScaleFactor: 1.7,
-                      style: TextStyle(color: Colors.white)),
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColorLight)),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
@@ -926,11 +943,12 @@ class _CalendarState extends State<Calendar> {
               legend: Legend(
                   isVisible: true,
                   position: LegendPosition.bottom,
-                  textStyle: TextStyle(color: Colors.white)),
+                  textStyle:
+                      TextStyle(color: Theme.of(context).primaryColorLight)),
               series: [
                 LineSeries<BodyStat, DateTime>(
                   isVisibleInLegend: true,
-                  color: Colors.white54,
+                  color: Theme.of(context).primaryColorLight,
                   name: "목표",
                   dataSource: _userProvider.userdata.bodyStats!,
                   xValueMapper: (BodyStat sales, _) =>
@@ -979,7 +997,8 @@ class _CalendarState extends State<Calendar> {
                     child: Focus(
                       child: TextField(
                           controller: _exCalendarSearchCtrl,
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight),
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.all(0),
                             isDense: true,
@@ -988,8 +1007,9 @@ class _CalendarState extends State<Calendar> {
                               color: Theme.of(context).primaryColor,
                             ),
                             hintText: "운동 검색",
-                            hintStyle:
-                                TextStyle(fontSize: 16.0, color: Colors.white),
+                            hintStyle: TextStyle(
+                                fontSize: 16.0,
+                                color: Theme.of(context).primaryColorLight),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   width: 1.5,
@@ -1070,13 +1090,16 @@ class _CalendarState extends State<Calendar> {
                 ),
                 markerDecoration: BoxDecoration(
                     color: Color(0xFffc60a8), shape: BoxShape.circle),
-                selectedTextStyle: const TextStyle(
-                    color: Colors.white,
+                selectedTextStyle: TextStyle(
+                    color: Theme.of(context).primaryColorLight,
                     fontSize: 16,
                     fontWeight: FontWeight.bold),
-                defaultTextStyle: const TextStyle(color: Colors.white),
-                withinRangeTextStyle: TextStyle(color: Colors.white),
-                weekendTextStyle: TextStyle(color: Colors.white),
+                defaultTextStyle:
+                    TextStyle(color: Theme.of(context).primaryColorLight),
+                withinRangeTextStyle:
+                    TextStyle(color: Theme.of(context).primaryColorLight),
+                weekendTextStyle:
+                    TextStyle(color: Theme.of(context).primaryColorLight),
                 outsideTextStyle:
                     TextStyle(color: Color.fromRGBO(113, 113, 113, 100)),
                 todayDecoration: BoxDecoration(
@@ -1093,13 +1116,15 @@ class _CalendarState extends State<Calendar> {
                   borderRadius: BorderRadius.circular(5.0),
                 ),
               ),
-              headerStyle: const HeaderStyle(
+              headerStyle: HeaderStyle(
                   formatButtonVisible: false,
-                  titleTextStyle: TextStyle(color: Colors.white),
+                  titleTextStyle:
+                      TextStyle(color: Theme.of(context).primaryColorLight),
                   titleCentered: true,
-                  leftChevronIcon: Icon(Icons.arrow_left, color: Colors.white),
-                  rightChevronIcon:
-                      Icon(Icons.arrow_right, color: Colors.white),
+                  leftChevronIcon: Icon(Icons.arrow_left,
+                      color: Theme.of(context).primaryColorLight),
+                  rightChevronIcon: Icon(Icons.arrow_right,
+                      color: Theme.of(context).primaryColorLight),
                   headerPadding:
                       EdgeInsets.symmetric(horizontal: 5.0, vertical: 3.0)),
             ),
@@ -1264,110 +1289,115 @@ class _CalendarState extends State<Calendar> {
 
     double deviceWidth = MediaQuery.of(context).size.width;
     return Container(
-        color: Color(0xFF101012),
         child: GestureDetector(
-          onTap: () {},
-          child: Container(
-            decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(top),
-                    bottomRight: Radius.circular(bottom),
-                    topLeft: Radius.circular(top),
-                    bottomLeft: Radius.circular(bottom))),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        width: deviceWidth / 3 - 20,
-                        child: Text(bodyStat.date.substring(0, 10),
-                            textScaleFactor: 1.3,
-                            style: TextStyle(color: Colors.grey),
-                            textAlign: TextAlign.center),
-                      ),
-                      Container(
-                        width: deviceWidth / 3 - 20,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                              bodyStat.weight.toStringAsFixed(1) +
-                                  "${userdata.weight_unit}",
-                              textScaleFactor: 1.3,
-                              style: TextStyle(color: Colors.white),
-                              textAlign: TextAlign.center),
-                        ),
-                      ),
-                      Container(
-                        width: deviceWidth / 3 - 20,
-                        child: Text(
-                            bodyStat.weight_goal.toStringAsFixed(1) +
-                                "${userdata.weight_unit}",
-                            textScaleFactor: 1.3,
-                            style: TextStyle(color: Colors.white),
-                            textAlign: TextAlign.center),
-                      ),
-                      GestureDetector(
-                        child: Icon(
-                          Icons.more_vert,
-                          color: Colors.grey,
-                          size: 18.0,
-                        ),
-                        onTapDown: _storePosition,
-                        onTap: () {
-                          showMenu(
-                              context: context,
-                              position: RelativeRect.fromRect(
-                                  _tapPosition & Size(30, 30),
-                                  Offset.zero & Size(0, 0)),
-                              items: [
-                                PopupMenuItem(
-                                    onTap: () {
-                                      Future<void>.delayed(
-                                          const Duration(), // OR const Duration(milliseconds: 500),
-                                          () => _displayEditBodyWeightDialog(
-                                              index));
-                                    },
-                                    padding: EdgeInsets.all(0.0),
-                                    child: ListTile(
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 4.0, vertical: 0.0),
-                                        leading: Icon(Icons.edit,
-                                            color: Colors.white),
-                                        title: Text("수정",
-                                            style: TextStyle(
-                                                color: Colors.white)))),
-                                PopupMenuItem(
-                                    onTap: () {
-                                      Future<void>.delayed(
-                                          const Duration(), // OR const Duration(milliseconds: 500),
-                                          () => _userProvider
-                                              .setUserWeightDelete(index));
-                                      ;
-                                    },
-                                    padding: EdgeInsets.all(0.0),
-                                    child: ListTile(
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 4.0, vertical: 0.0),
-                                        leading: Icon(Icons.delete,
-                                            color: Colors.white),
-                                        title: Text("삭제",
-                                            style: TextStyle(
-                                                color: Colors.white)))),
-                              ]);
-                        },
-                      )
-                    ],
+      onTap: () {},
+      child: Container(
+        decoration: BoxDecoration(
+            color: Theme.of(context).cardColor,
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(top),
+                bottomRight: Radius.circular(bottom),
+                topLeft: Radius.circular(top),
+                bottomLeft: Radius.circular(bottom))),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Container(
+                    width: deviceWidth / 3 - 20,
+                    child: Text(bodyStat.date.substring(0, 10),
+                        textScaleFactor: 1.3,
+                        style: TextStyle(color: Colors.grey),
+                        textAlign: TextAlign.center),
                   ),
-                )
-              ],
-            ),
-          ),
-        ));
+                  Container(
+                    width: deviceWidth / 3 - 20,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                          bodyStat.weight.toStringAsFixed(1) +
+                              "${userdata.weight_unit}",
+                          textScaleFactor: 1.3,
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight),
+                          textAlign: TextAlign.center),
+                    ),
+                  ),
+                  Container(
+                    width: deviceWidth / 3 - 20,
+                    child: Text(
+                        bodyStat.weight_goal.toStringAsFixed(1) +
+                            "${userdata.weight_unit}",
+                        textScaleFactor: 1.3,
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorLight),
+                        textAlign: TextAlign.center),
+                  ),
+                  GestureDetector(
+                    child: Icon(
+                      Icons.more_vert,
+                      color: Colors.grey,
+                      size: 18.0,
+                    ),
+                    onTapDown: _storePosition,
+                    onTap: () {
+                      showMenu(
+                          context: context,
+                          position: RelativeRect.fromRect(
+                              _tapPosition & Size(30, 30),
+                              Offset.zero & Size(0, 0)),
+                          items: [
+                            PopupMenuItem(
+                                onTap: () {
+                                  Future<void>.delayed(
+                                      const Duration(), // OR const Duration(milliseconds: 500),
+                                      () =>
+                                          _displayEditBodyWeightDialog(index));
+                                },
+                                padding: EdgeInsets.all(0.0),
+                                child: ListTile(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 4.0, vertical: 0.0),
+                                    leading: Icon(Icons.edit,
+                                        color: Theme.of(context)
+                                            .primaryColorLight),
+                                    title: Text("수정",
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorLight)))),
+                            PopupMenuItem(
+                                onTap: () {
+                                  Future<void>.delayed(
+                                      const Duration(), // OR const Duration(milliseconds: 500),
+                                      () => _userProvider
+                                          .setUserWeightDelete(index));
+                                  ;
+                                },
+                                padding: EdgeInsets.all(0.0),
+                                child: ListTile(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 4.0, vertical: 0.0),
+                                    leading: Icon(Icons.delete,
+                                        color: Theme.of(context)
+                                            .primaryColorLight),
+                                    title: Text("삭제",
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorLight)))),
+                          ]);
+                    },
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    ));
   }
 
   Widget _onechartExerciseWidget(
@@ -1375,7 +1405,6 @@ class _CalendarState extends State<Calendar> {
     double top = 20;
     double bottom = 20;
     return Container(
-      color: Color(0xFF101012),
       child: Column(
         children: [
           Row(
@@ -1384,7 +1413,8 @@ class _CalendarState extends State<Calendar> {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(exuniq.date,
                     textScaleFactor: 1.5,
-                    style: TextStyle(color: Colors.white)),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
               ),
             ],
           ),
@@ -1435,7 +1465,6 @@ class _CalendarState extends State<Calendar> {
     double top = 0;
     double bottom = 0;
     return Container(
-      color: Color(0xFF101012),
       child: Column(
         children: [
           Row(
@@ -1445,7 +1474,8 @@ class _CalendarState extends State<Calendar> {
                 padding: const EdgeInsets.all(8.0),
                 child: Text("훈련 " + (index + 1).toString(),
                     textScaleFactor: 1.5,
-                    style: TextStyle(color: Colors.white)),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -1473,10 +1503,13 @@ class _CalendarState extends State<Calendar> {
                               child: ListTile(
                                   contentPadding: EdgeInsets.symmetric(
                                       horizontal: 4.0, vertical: 0.0),
-                                  leading:
-                                      Icon(Icons.delete, color: Colors.white),
+                                  leading: Icon(Icons.delete,
+                                      color:
+                                          Theme.of(context).primaryColorLight),
                                   title: Text("삭제",
-                                      style: TextStyle(color: Colors.white)))),
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight)))),
                         ]);
                   },
                 ),
@@ -1525,7 +1558,8 @@ class _CalendarState extends State<Calendar> {
                         Text(
                           exuniq[index].name,
                           textScaleFactor: 1.3,
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight),
                         ),
                         Container(
                           child: Row(
@@ -1653,7 +1687,7 @@ class _CalendarState extends State<Calendar> {
                                   "${index + 1}",
                                   textScaleFactor: 1.3,
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: Theme.of(context).primaryColorLight,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
@@ -1667,7 +1701,7 @@ class _CalendarState extends State<Calendar> {
                             sets[index].weight.toStringAsFixed(1),
                             textScaleFactor: 1.3,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorLight,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -1675,7 +1709,7 @@ class _CalendarState extends State<Calendar> {
                         Container(
                             width: 35,
                             child: SvgPicture.asset("assets/svg/multiply.svg",
-                                color: Colors.white,
+                                color: Theme.of(context).primaryColorLight,
                                 height:
                                     19 * _themeProvider.userFontSize / 0.8)),
                         Container(
@@ -1684,7 +1718,7 @@ class _CalendarState extends State<Calendar> {
                             sets[index].reps.toString(),
                             textScaleFactor: 1.3,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorLight,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -1695,13 +1729,17 @@ class _CalendarState extends State<Calendar> {
                                 ? Text(
                                     "${(sets[index].weight * (1 + sets[index].reps / 30)).toStringAsFixed(1)}",
                                     textScaleFactor: 1.3,
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .primaryColorLight),
                                     textAlign: TextAlign.center,
                                   )
                                 : Text(
                                     "${sets[index].weight}",
                                     textScaleFactor: 1.3,
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .primaryColorLight),
                                     textAlign: TextAlign.center,
                                   )),
                       ],
@@ -1712,7 +1750,6 @@ class _CalendarState extends State<Calendar> {
                   return Container(
                     alignment: Alignment.center,
                     height: 1,
-                    color: Color(0xFF101012),
                     child: Container(
                       alignment: Alignment.center,
                       margin: EdgeInsets.symmetric(horizontal: 10),
@@ -1762,7 +1799,8 @@ class _CalendarState extends State<Calendar> {
                   child: Focus(
                     child: TextField(
                         controller: _exSearchCtrl,
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorLight),
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.all(0),
                           isDense: true,
@@ -1771,8 +1809,9 @@ class _CalendarState extends State<Calendar> {
                             color: Theme.of(context).primaryColor,
                           ),
                           hintText: "운동 검색",
-                          hintStyle:
-                              TextStyle(fontSize: 16.0, color: Colors.white),
+                          hintStyle: TextStyle(
+                              fontSize: 16.0,
+                              color: Theme.of(context).primaryColorLight),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                                 width: 1.5, color: Theme.of(context).cardColor),
@@ -1831,7 +1870,8 @@ class _CalendarState extends State<Calendar> {
                           _exProvider.exercisesdata!
                               .exercises[_chartIndex.chartIndex].name,
                           textScaleFactor: 1.7,
-                          style: TextStyle(color: Colors.white)),
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight)),
                     ),
                     Container(
                       width: 100,
@@ -1839,13 +1879,15 @@ class _CalendarState extends State<Calendar> {
                           height: 24.0,
                           children: {
                             true: Text("on",
-                                style: TextStyle(color: Colors.white)),
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).primaryColorLight)),
                             false: Text("off",
-                                style: TextStyle(color: Colors.white))
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight))
                           },
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
-                            color: Color(0xFF101012),
                           ),
                           innerPadding: const EdgeInsets.all(4),
                           thumbDecoration: BoxDecoration(
@@ -1896,12 +1938,14 @@ class _CalendarState extends State<Calendar> {
                             legend: Legend(
                                 isVisible: true,
                                 position: LegendPosition.bottom,
-                                textStyle: TextStyle(color: Colors.white)),
+                                textStyle: TextStyle(
+                                    color:
+                                        Theme.of(context).primaryColorLight)),
                             series: [
                               // Renders line chart
                               LineSeries<Exercises, DateTime>(
                                 isVisibleInLegend: true,
-                                color: Colors.white54,
+                                color: Theme.of(context).primaryColorLight,
                                 name: "goal",
                                 dataSource: _sdbChartData!,
                                 xValueMapper: (Exercises sales, _) =>
@@ -1954,7 +1998,7 @@ class _CalendarState extends State<Calendar> {
             padding: const EdgeInsets.only(left: 3, right: 3),
             child: ChoiceChip(
               label: Text(_exProvider.exercisesdata!.exercises[i].name),
-              labelStyle: TextStyle(color: Colors.white),
+              labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
               selected: _chartIndex.chartIndex == i,
               selectedColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).cardColor,
@@ -1973,7 +2017,7 @@ class _CalendarState extends State<Calendar> {
           padding: const EdgeInsets.only(left: 3, right: 3),
           child: ChoiceChip(
             label: Text(_exProvider.exercisesdata!.exercises[i].name),
-            labelStyle: TextStyle(color: Colors.white),
+            labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
             selected: _chartIndex.chartIndex == i,
             selectedColor: Theme.of(context).primaryColor,
             backgroundColor: Theme.of(context).cardColor,
@@ -2000,7 +2044,7 @@ class _CalendarState extends State<Calendar> {
         padding: const EdgeInsets.only(left: 3, right: 3),
         child: ChoiceChip(
           label: Text("All"),
-          labelStyle: TextStyle(color: Colors.white),
+          labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
           selected: _chartIndex.staticIndex == 0,
           selectedColor: Theme.of(context).primaryColor,
           backgroundColor: Theme.of(context).cardColor,
@@ -2020,7 +2064,7 @@ class _CalendarState extends State<Calendar> {
           padding: const EdgeInsets.only(left: 3, right: 3),
           child: ChoiceChip(
             label: Text(_exProvider.exercisesdata!.exercises[i - 1].name),
-            labelStyle: TextStyle(color: Colors.white),
+            labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
             selected: _chartIndex.staticIndex == i,
             selectedColor: Theme.of(context).primaryColor,
             backgroundColor: Theme.of(context).cardColor,
@@ -2042,7 +2086,7 @@ class _CalendarState extends State<Calendar> {
           padding: const EdgeInsets.only(left: 10, right: 5),
           child: ChoiceChip(
             label: Text(_exProvider.exercisesdata!.exercises[i - 1].name),
-            labelStyle: TextStyle(color: Colors.white),
+            labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
             selected: _chartIndex.staticIndex == i,
             selectedColor: Theme.of(context).primaryColor,
             backgroundColor: Theme.of(context).cardColor,
@@ -2079,14 +2123,15 @@ class _CalendarState extends State<Calendar> {
             title: Text('운동을 삭제 할 수 있어요',
                 textScaleFactor: 2.0,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white)),
+                style: TextStyle(color: Theme.of(context).primaryColorLight)),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('정말로 운동을 지우시나요?',
                     textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white)),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
                 Text('외부를 터치하면 취소 할 수 있어요',
                     textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
@@ -2111,9 +2156,8 @@ class _CalendarState extends State<Calendar> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
-              disabledForegroundColor: Color(0xFF101012),
               padding: EdgeInsets.all(8.0),
             ),
             onPressed: () {
@@ -2122,7 +2166,8 @@ class _CalendarState extends State<Calendar> {
               Navigator.of(context, rootNavigator: true).pop();
             },
             child: Text("삭제",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   @override
@@ -2134,9 +2179,6 @@ class _CalendarState extends State<Calendar> {
     _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     _getChartSourcefromDay();
-    return Scaffold(
-        appBar: _appbarWidget(),
-        backgroundColor: Color(0xFF101012),
-        body: _staticsPages());
+    return Scaffold(appBar: _appbarWidget(), body: _staticsPages());
   }
 }
