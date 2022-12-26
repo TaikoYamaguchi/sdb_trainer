@@ -736,7 +736,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                           child: Card(
                             color: provider.filtmenu == 1
                                 ? Theme.of(context).primaryColor
-                                : Theme.of(context).primaryColorLight,
+                                : Theme.of(context).cardColor,
                             child: Container(
                               width: MediaQuery.of(context).size.width / 2 - 10,
                               height:
@@ -764,7 +764,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                           child: Card(
                             color: provider.filtmenu == 2
                                 ? Theme.of(context).primaryColor
-                                : Theme.of(context).primaryColorLight,
+                                : Theme.of(context).cardColor,
                             child: Container(
                               width: MediaQuery.of(context).size.width / 2 - 10,
                               height:

@@ -491,6 +491,63 @@ class _ProfileState extends State<Profile> {
                   )),
             ],
           ),
+          Column(
+            children: [
+              Container(
+                  color: Theme.of(context).cardColor,
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16.0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("테마 변경",
+                              textScaleFactor: 1.1,
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
+                        ]),
+                  )),
+              Container(
+                  color: Theme.of(context).cardColor,
+                  width: MediaQuery.of(context).size.width,
+                  height: 30,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                    child: Center(
+                      child: CustomSlidingSegmentedControl(
+                          height: 50.0,
+                          isStretch: true,
+                          initialValue: _themeProvider.userThemeDark,
+                          children: {
+                            "white": Text("화이트",
+                                textScaleFactor: 1.1,
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).primaryColorLight)),
+                            "dark": Text("블랙",
+                                textScaleFactor: 1.1,
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).primaryColorLight)),
+                          },
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Theme.of(context).canvasColor,
+                          ),
+                          innerPadding: const EdgeInsets.all(4),
+                          thumbDecoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: Theme.of(context).cardColor),
+                          onValueChanged: (value) {
+                            setState(() {
+                              _themeProvider.setUserTheme(value);
+                            });
+                          }),
+                    ),
+                  )),
+            ],
+          ),
 
           ElevatedButton(
               onPressed: () => userLogOut(context),
