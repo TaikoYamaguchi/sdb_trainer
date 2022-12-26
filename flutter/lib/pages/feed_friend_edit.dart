@@ -78,6 +78,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
                           color: Theme.of(context).primaryColorLight))),
             ],
           ),
+          backgroundColor: Theme.of(context).canvasColor,
         ));
   }
 

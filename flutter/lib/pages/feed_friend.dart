@@ -67,6 +67,7 @@ class _FeedFriendState extends State<FeedFriend> {
                           color: Theme.of(context).primaryColorLight))),
             ],
           ),
+          backgroundColor: Theme.of(context).canvasColor,
         ));
   }
 

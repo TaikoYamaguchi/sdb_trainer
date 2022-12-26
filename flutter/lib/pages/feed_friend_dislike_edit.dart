@@ -58,6 +58,7 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
             textScaleFactor: 2.7,
             style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
+          backgroundColor: Theme.of(context).canvasColor,
         ));
   }
 

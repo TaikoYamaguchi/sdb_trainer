@@ -140,6 +140,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
               },
             )
           ],
+          backgroundColor: Theme.of(context).canvasColor,
         ));
   }
 

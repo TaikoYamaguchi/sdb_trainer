@@ -78,7 +78,7 @@ class ExerciseState extends State<Exercise> {
             Text(
               "+버튼을 눌러 원하는 이름의 루틴을 추가하세요",
               textScaleFactor: 1.7,
-              style: TextStyle(color: Theme.of(context).primaryColorLight),
+              style: TextStyle(color: Colors.white),
             ),
             SizedBox(
               height: 100,
@@ -128,6 +128,7 @@ class ExerciseState extends State<Exercise> {
               }
             })
           ],
+          backgroundColor: Theme.of(context).canvasColor,
         ));
   }
 

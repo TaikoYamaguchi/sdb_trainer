@@ -120,6 +120,7 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
               },
             )
           ],
+          backgroundColor: Theme.of(context).canvasColor,
         ));
   }
 
@@ -295,7 +296,8 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                     '  Timer: ',
                                     textScaleFactor: 1.7,
                                     style: TextStyle(
-                                      color: Theme.of(context).primaryColorLight,
+                                      color:
+                                          Theme.of(context).primaryColorLight,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -314,7 +316,8 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                           color: (provider.userest &&
                                                   provider.timeron < 0)
                                               ? Colors.red
-                                              : Theme.of(context).primaryColorLight));
+                                              : Theme.of(context)
+                                                  .primaryColorLight));
                                 })),
                               ],
                             ),
@@ -393,14 +396,17 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                   ? Text(
                                       _exercise.name,
                                       textScaleFactor: 2.0,
-                                      style: TextStyle(color: Theme.of(context).primaryColorLight),
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight),
                                     )
                                   : _exercise.name.length < 8
                                       ? Text(
                                           _exercise.name,
                                           textScaleFactor: 4.0,
                                           style: TextStyle(
-                                            color: Theme.of(context).primaryColorLight,
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
                                           ),
                                         )
                                       : Flexible(
@@ -409,7 +415,8 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                             textScaleFactor: 3.2,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
-                                              color: Theme.of(context).primaryColorLight,
+                                              color: Theme.of(context)
+                                                  .primaryColorLight,
                                             ),
                                           ),
                                         ),
@@ -535,9 +542,11 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                           child: Theme(
                                             data: ThemeData(
                                                 unselectedWidgetColor:
-                                                    Theme.of(context).primaryColorLight),
+                                                    Theme.of(context)
+                                                        .primaryColorLight),
                                             child: Checkbox(
-                                                checkColor: Theme.of(context).primaryColorLight,
+                                                checkColor: Theme.of(context)
+                                                    .primaryColorLight,
                                                 activeColor: Theme.of(context)
                                                     .primaryColor,
                                                 value: _sets[index].ischecked,
@@ -656,7 +665,9 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                                 backgroundColor:
                                                     Theme.of(context)
                                                         .primaryColor,
-                                                foregroundColor: Theme.of(context).primaryColorLight,
+                                                foregroundColor:
+                                                    Theme.of(context)
+                                                        .primaryColorLight,
                                                 icon: Icons.check,
                                                 label: '밀어서 check',
                                               )
@@ -671,7 +682,8 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                                 "${index + 1}",
                                                 textScaleFactor: 1.7,
                                                 style: TextStyle(
-                                                  color: Theme.of(context).primaryColorLight,
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight,
                                                 ),
                                                 textAlign: TextAlign.center,
                                               ),
@@ -688,7 +700,8 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                                         decimal: true),
                                                 style: TextStyle(
                                                   fontSize: 21,
-                                                  color: Theme.of(context).primaryColorLight,
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight,
                                                 ),
                                                 textAlign: TextAlign.center,
                                                 decoration: InputDecoration(
@@ -696,7 +709,8 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                                       "${_sets[index].weight}",
                                                   hintStyle: TextStyle(
                                                     fontSize: 21,
-                                                    color: Theme.of(context).primaryColorLight,
+                                                    color: Theme.of(context)
+                                                        .primaryColorLight,
                                                   ),
                                                 ),
                                                 onChanged: (text) {
@@ -719,7 +733,8 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                                 width: 35,
                                                 child: SvgPicture.asset(
                                                     "assets/svg/multiply.svg",
-                                                    color: Theme.of(context).primaryColorLight,
+                                                    color: Theme.of(context)
+                                                        .primaryColorLight,
                                                     height: 19)),
                                             Container(
                                               width: 40,
@@ -731,7 +746,8 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                                     TextInputType.number,
                                                 style: TextStyle(
                                                   fontSize: 21,
-                                                  color: Theme.of(context).primaryColorLight,
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight,
                                                 ),
                                                 textAlign: TextAlign.center,
                                                 decoration: InputDecoration(
@@ -739,7 +755,8 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                                       "${_sets[index].reps}",
                                                   hintStyle: TextStyle(
                                                     fontSize: 21,
-                                                    color: Theme.of(context).primaryColorLight,
+                                                    color: Theme.of(context)
+                                                        .primaryColorLight,
                                                   ),
                                                 ),
                                                 onChanged: (text) {
@@ -765,8 +782,9 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                                         "${(_sets[index].weight * (1 + _sets[index].reps / 30)).toStringAsFixed(1)}",
                                                         textScaleFactor: 1.7,
                                                         style: TextStyle(
-                                                            color:
-                                                                Theme.of(context).primaryColorLight),
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColorLight),
                                                         textAlign:
                                                             TextAlign.center,
                                                       )
@@ -774,8 +792,9 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                                         "${_sets[index].weight}",
                                                         textScaleFactor: 1.7,
                                                         style: TextStyle(
-                                                            color:
-                                                                Theme.of(context).primaryColorLight),
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColorLight),
                                                         textAlign:
                                                             TextAlign.center,
                                                       )),
@@ -869,7 +888,8 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                               },
                                               icon: Icon(
                                                 Icons.arrow_back_ios_outlined,
-                                                color: Theme.of(context).primaryColorLight,
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
                                                 size: 30,
                                               )),
                                           Consumer<WorkoutdataProvider>(builder:
@@ -883,7 +903,8 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                                   .name,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
-                                                  color: Theme.of(context).primaryColorLight),
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight),
                                             ));
                                           })
                                         ],
@@ -896,7 +917,8 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                           onPressed: () {},
                                           icon: Icon(
                                             null,
-                                            color: Theme.of(context).primaryColorLight,
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
                                             size: 40,
                                           )),
                                     )),
@@ -962,7 +984,8 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                                   .name,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
-                                                color: Theme.of(context).primaryColorLight,
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
                                               ),
                                             ));
                                           }),
@@ -976,7 +999,8 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                               icon: Icon(
                                                 Icons
                                                     .arrow_forward_ios_outlined,
-                                                color: Theme.of(context).primaryColorLight,
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
                                                 size: 30,
                                               )),
                                         ],
@@ -989,7 +1013,8 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                           onPressed: () {},
                                           icon: Icon(
                                             null,
-                                            color: Theme.of(context).primaryColorLight,
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
                                             size: 40,
                                           )),
                                     ))
@@ -1047,7 +1072,8 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                 Text('운동을 종료 하시겠나요?',
                     textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Theme.of(context).primaryColorLight)),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
                 Text('외부를 터치하면 취소 할 수 있어요',
                     textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
@@ -1084,7 +1110,8 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
               Navigator.of(context, rootNavigator: true).pop();
             },
             child: Text("운동 종료 하기",
-                textScaleFactor: 1.7, style: TextStyle(color: Theme.of(context).primaryColorLight))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   void _displaySetRestAlert(pindex) {
@@ -1110,7 +1137,8 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                 Text('세트당 휴식 시간을 입력해주세요',
                     textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Theme.of(context).primaryColorLight)),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
                 SizedBox(height: 20),
                 TextField(
                   controller: _resttimectrl,
@@ -1133,8 +1161,9 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                             color: Theme.of(context).primaryColor, width: 3),
                       ),
                       hintText: "휴식 시간 입력(초)",
-                      hintStyle:
-                          TextStyle(fontSize: 24.0, color: Theme.of(context).primaryColorLight)),
+                      hintStyle: TextStyle(
+                          fontSize: 24.0,
+                          color: Theme.of(context).primaryColorLight)),
                   onChanged: (text) {
                     int changetime;
                     changetime = int.parse(text);
@@ -1161,7 +1190,8 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                   ),
                   child: Text('휴식 시간 설정하기',
                       textScaleFactor: 1.7,
-                      style: TextStyle(color: Theme.of(context).primaryColorLight)),
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColorLight)),
                   onPressed: () {
                     _workoutProvider.resttimecheck(
                         widget.rindex, pindex, _routinetimeProvider.changetime);
@@ -1199,7 +1229,8 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                 Text('운동을 시작 할까요?',
                     textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Theme.of(context).primaryColorLight)),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
                 Text('외부를 터치하면 취소 할 수 있어요',
                     textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
@@ -1239,7 +1270,8 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
               Navigator.of(context, rootNavigator: true).pop();
             },
             child: Text("운동 시작 하기",
-                textScaleFactor: 1.7, style: TextStyle(color: Theme.of(context).primaryColorLight))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   void recordExercise() {
@@ -1340,8 +1372,6 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
 
-    return Scaffold(
-        appBar: _appbarWidget(),
-        body: _exercisedetailPage(),
+    return Scaffold(appBar: _appbarWidget(), body: _exercisedetailPage());
   }
 }

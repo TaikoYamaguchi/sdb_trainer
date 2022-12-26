@@ -90,6 +90,7 @@ class _ExerciseDoneState extends State<ExerciseDone> {
             textScaleFactor: 2.7,
             style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
+          backgroundColor: Theme.of(context).canvasColor,
         ));
   }
 

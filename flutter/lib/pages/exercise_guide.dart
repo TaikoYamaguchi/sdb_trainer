@@ -88,6 +88,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
       ),
       title: Container(),
       actions: null,
+      backgroundColor: Theme.of(context).canvasColor,
     );
   }
 

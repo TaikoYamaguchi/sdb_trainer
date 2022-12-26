@@ -121,6 +121,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                   Icons.cloud_upload_rounded,
                 ))
           ],
+          backgroundColor: Theme.of(context).canvasColor,
         ));
   }
 

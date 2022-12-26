@@ -97,6 +97,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                 },
                 child: Icon(Icons.filter_list))
           ],
+          backgroundColor: Theme.of(context).canvasColor,
         ));
   }
 

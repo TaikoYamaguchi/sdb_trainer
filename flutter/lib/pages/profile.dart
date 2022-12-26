@@ -77,6 +77,7 @@ class _ProfileState extends State<Profile> {
                           style: TextStyle(
                               color: Theme.of(context).primaryColorLight))))
             ],
+            backgroundColor: Theme.of(context).canvasColor,
           )),
       body: _userProvider.userdata != null
           ? _profile(context)

@@ -323,6 +323,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                 },
               )
       ],
+      backgroundColor: Theme.of(context).canvasColor,
     );
   }
 
