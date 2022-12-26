@@ -1272,7 +1272,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
       _onerm = 0;
     }
     if (_onerm > _exercise.onerm) {
-      _displayNewOnermAlert(_onerm, _sets);
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return newOnermAlerts(
+                onerm: _onerm, sets: _sets, exercise: _exercise);
+          });
       _routinetimeProvider.newRoutineUpdate();
       print("display");
       print(_onerm);
@@ -3019,152 +3024,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             ));
       },
     );
-  }
-
-  void _displayNewOnermAlert(_onerm, Sets _sets) {
-    late ConfettiController _controllerCenter;
-    _controllerCenter =
-        ConfettiController(duration: const Duration(seconds: 3));
-    _controllerCenter.play();
-    _exProvider.putOnermValue(
-        _exProvider.exercisesdata.exercises
-            .indexWhere((element) => element.name == _exercise.name),
-        _onerm);
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            buttonPadding: EdgeInsets.all(12.0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            backgroundColor: Theme.of(context).cardColor,
-            contentPadding: EdgeInsets.all(12.0),
-            title: Text(
-              '신기록을 달성했어요!',
-              textScaleFactor: 2.0,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Stack(children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _exercise.name.length < 8
-                          ? Text(
-                              _exercise.name,
-                              textScaleFactor: 3.2,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFffc60a8)),
-                            )
-                          : Flexible(
-                              child: Text(
-                                _exercise.name,
-                                textScaleFactor: 2.4,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xFffc60a8)),
-                              ),
-                            ),
-                      Center(
-                        child: Text(
-                            _onerm.toStringAsFixed(1) +
-                                _userProvider.userdata.weight_unit,
-                            textScaleFactor: 2.7,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFffc60a8),
-                            )),
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                              width: 120,
-                              child: Center(
-                                  child: Text(
-                                "${_sets.weight.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
-                                textScaleFactor: 1.7,
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                ),
-                              ))),
-                          Container(
-                              width: 20,
-                              child: SvgPicture.asset("assets/svg/multiply.svg",
-                                  color: Colors.grey,
-                                  height:
-                                      19 * _themeProvider.userFontSize / 0.8)),
-                          Container(
-                              width: 120,
-                              child: Center(
-                                  child: Text(
-                                "${_sets.reps}회",
-                                textScaleFactor: 1.7,
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                ),
-                              )))
-                        ],
-                      )
-                    ],
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: ConfettiWidget(
-                      confettiController: _controllerCenter,
-                      blastDirectionality: BlastDirectionality
-                          .explosive, // don't specify a direction, blast randomly
-                      shouldLoop:
-                          true, // start again as soon as the animation is finished
-                      colors: const [
-                        Colors.green,
-                        Colors.blue,
-                        Colors.pink,
-                        Colors.orange,
-                        Colors.purple
-                      ], // manually specify the colors to be used
-                    ),
-                  )
-                ])
-              ],
-            ),
-            actions: <Widget>[
-              _closeNewOnermButton(),
-            ],
-          );
-        });
-  }
-
-  Widget _closeNewOnermButton() {
-    return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: TextButton(
-            style: TextButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              foregroundColor: Theme.of(context).primaryColor,
-              backgroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(
-                color: Colors.white,
-              ),
-              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-              padding: EdgeInsets.all(12.0),
-            ),
-            onPressed: () {
-              Navigator.of(context, rootNavigator: true).pop();
-            },
-            child: Text("계속 운동 하기",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
   void _displayFinishAlert() {
