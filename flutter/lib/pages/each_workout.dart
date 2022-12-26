@@ -89,7 +89,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             Text(
               "+버튼을 눌러 원하는 운동을 추가 하세요",
               textScaleFactor: 1.7,
-              style: TextStyle(color: Theme.of(context).primaryColorLight),
+              style: TextStyle(color: Colors.white),
             ),
             SizedBox(
               height: 100,
@@ -112,7 +112,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
           Text(
             "이곳에 검색하여 원하는 운동을 찾고,",
             textScaleFactor: 1.7,
-            style: TextStyle(color: Theme.of(context).primaryColorLight),
+            style: TextStyle(color: Colors.white),
           ),
           SizedBox(
             height: 100,
@@ -136,7 +136,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
           Text(
             "운동을 클릭하여 원하는 운동을 추가한 뒤,",
             textScaleFactor: 1.7,
-            style: TextStyle(color: Theme.of(context).primaryColorLight),
+            style: TextStyle(color: Colors.white),
           ),
           SizedBox(
             height: 100,
@@ -160,7 +160,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
           Text(
             "이곳을 눌러 Routine 수정을 완료하세요",
             textScaleFactor: 1.7,
-            style: TextStyle(color: Theme.of(context).primaryColorLight),
+            style: TextStyle(color: Colors.white),
           ),
           SizedBox(
             height: 100,
