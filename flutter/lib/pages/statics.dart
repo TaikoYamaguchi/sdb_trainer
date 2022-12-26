@@ -311,6 +311,7 @@ class _CalendarState extends State<Calendar> {
               ],
             );
           }),
+          backgroundColor: Theme.of(context).canvasColor,
         ));
   }
 

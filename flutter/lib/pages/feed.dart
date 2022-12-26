@@ -119,6 +119,7 @@ class _FeedState extends State<Feed> {
                             color: Theme.of(context).primaryColorLight))),
               ],
             ),
+            backgroundColor: Theme.of(context).canvasColor,
           )),
       body: _userProvider.userdata != null
           ? Center(child: _feedCardList(context))

@@ -36,6 +36,7 @@ class _UserFindPageState extends State<UserFindPage> {
             textScaleFactor: 2.5,
             style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
+          backgroundColor: Theme.of(context).canvasColor,
         ));
   }
 

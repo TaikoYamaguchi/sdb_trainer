@@ -92,6 +92,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                   )),
             ],
           ),
+          backgroundColor: Theme.of(context).canvasColor,
         ));
   }
 

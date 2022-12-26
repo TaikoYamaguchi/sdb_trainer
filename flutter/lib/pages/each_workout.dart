@@ -1497,6 +1497,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                   snap: false,
                   floating: false,
                   pinned: true,
+                  backgroundColor: Theme.of(context).canvasColor,
                   actions: [
                     IconButton(
                       key: keyPlus,

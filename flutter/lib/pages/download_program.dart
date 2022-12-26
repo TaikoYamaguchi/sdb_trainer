@@ -92,6 +92,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               color: Theme.of(context).primaryColorLight,
             ),
           ),
+          backgroundColor: Theme.of(context).canvasColor,
         ));
   }
 

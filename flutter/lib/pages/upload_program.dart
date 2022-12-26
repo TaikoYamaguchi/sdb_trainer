@@ -101,6 +101,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
               color: Theme.of(context).primaryColorLight,
             ),
           ),
+          backgroundColor: Theme.of(context).canvasColor,
         ));
   }
 

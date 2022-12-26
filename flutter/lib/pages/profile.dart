@@ -476,6 +476,7 @@ class _ProfileState extends State<Profile> {
                           },
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
+                            color: Theme.of(context).canvasColor,
                           ),
                           innerPadding: const EdgeInsets.all(4),
                           thumbDecoration: BoxDecoration(
