@@ -290,6 +290,29 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
                 textScaleFactor: 1.5, style: TextStyle(color: Colors.white))));
   }
 
+  Widget _FinishConfirmButton(context) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
+            ),
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            child: Text("운동 종료 하기",
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+  }
+
   @override
   Widget build(BuildContext context) {
     switch (widget.layer) {
@@ -350,7 +373,9 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
                 ? exSearchOutButton(context)
                 : widget.layer == 3
                     ? _StartConfirmButton(context)
-                    : _moveToExButton(context),
+                    : widget.layer == 3
+                        ? _moveToExButton(context)
+                        : _FinishConfirmButton(context),
       ],
     );
   }

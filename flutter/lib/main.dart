@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
       child: Consumer<ThemeProvider>(builder: (context, provider, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          themeMode: ThemeMode.light,
+          themeMode: ThemeMode.dark,
           theme: ThemeData(
               textTheme: Theme.of(context).textTheme.apply(
                     fontSizeFactor: _themeProvider.userFontSize,
