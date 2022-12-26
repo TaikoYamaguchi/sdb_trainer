@@ -1,4 +1,5 @@
 import 'package:confetti/confetti.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:launch_review/launch_review.dart';
@@ -796,6 +797,209 @@ class _setResttimeAlertState extends State<setResttimeAlert> {
             onPressed: () {
               _resttimectrl.clear();
               Navigator.of(context, rootNavigator: true).pop(true);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class setWeightAlert extends StatefulWidget {
+  setWeightAlert(
+      {Key? key,
+      required this.rindex,
+      required this.pindex,
+      required this.eindex})
+      : super(key: key);
+  int rindex;
+  int pindex;
+  int eindex;
+  @override
+  _setWeightAlertState createState() => _setWeightAlertState();
+}
+
+class _setWeightAlertState extends State<setWeightAlert> {
+  var _exProvider;
+  var _userProvider;
+  var _workoutProvider;
+  var _routinetimeProvider;
+  var _routinemenuProvider;
+  TextEditingController _additionalweightctrl = TextEditingController(text: "");
+  final Map<int, Widget> _menuList = const <int, Widget>{
+    0: Padding(
+      child: Text("중량 추가",
+          textScaleFactor: 1.3, style: TextStyle(color: Colors.white)),
+      padding: const EdgeInsets.all(5.0),
+    ),
+    1: Padding(
+        child: Text("중량 제거",
+            textScaleFactor: 1.3, style: TextStyle(color: Colors.white)),
+        padding: const EdgeInsets.all(5.0)),
+  };
+
+  Widget _posnegControllerWidget() {
+    return SizedBox(
+      width: double.infinity,
+      child: Consumer<RoutineMenuStater>(builder: (context, provider, child) {
+        return Container(
+          color: Theme.of(context).cardColor,
+          child: CupertinoSlidingSegmentedControl(
+              groupValue: provider.ispositive ? 0 : 1,
+              children: _menuList,
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+              backgroundColor: Theme.of(context).cardColor,
+              thumbColor: provider.ispositive
+                  ? Theme.of(context).primaryColor
+                  : Colors.red,
+              onValueChanged: (i) {
+                provider.boolchange();
+              }),
+        );
+      }),
+    );
+  }
+
+  void _editWorkoutwCheck() async {
+    WorkoutEdit(
+            id: _workoutProvider.workoutdata.id,
+            user_email: _userProvider.userdata.email,
+            routinedatas: _workoutProvider.workoutdata.routinedatas)
+        .editWorkout()
+        .then((data) =>
+            data["user_email"] != null ? null : showToast("입력을 확인해주세요"));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
+    _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
+    _routinetimeProvider =
+        Provider.of<RoutineTimeProvider>(context, listen: false);
+    _routinemenuProvider =
+        Provider.of<RoutineMenuStater>(context, listen: false);
+
+    double input = _workoutProvider.workoutdata.routinedatas[widget.rindex]
+        .exercises[widget.pindex].sets[widget.eindex].weight
+        .abs();
+    _additionalweightctrl.text = _workoutProvider
+        .workoutdata
+        .routinedatas[widget.rindex]
+        .exercises[widget.pindex]
+        .sets[widget.eindex]
+        .weight
+        .abs()
+        .toString();
+    _routinemenuProvider.boolchangeto(_workoutProvider
+                .workoutdata
+                .routinedatas[widget.rindex]
+                .exercises[widget.pindex]
+                .sets[widget.eindex]
+                .weight <
+            0
+        ? false
+        : true);
+
+    return AlertDialog(
+      buttonPadding: EdgeInsets.all(12.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      backgroundColor: Theme.of(context).cardColor,
+      contentPadding: EdgeInsets.all(12.0),
+      title: Text(
+        '중량 추가/제거가 가능해요',
+        textScaleFactor: 2.0,
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.white),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('추가/제거할 중량을 입력해주세요',
+              textScaleFactor: 1.3,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white)),
+          SizedBox(height: 20),
+          _posnegControllerWidget(),
+          SizedBox(
+            width: 150,
+            child: Consumer2<RoutineMenuStater, WorkoutdataProvider>(
+                builder: (context, provider, provider2, child) {
+              return TextField(
+                controller: _additionalweightctrl,
+                keyboardType: TextInputType.numberWithOptions(
+                    signed: false, decimal: true),
+                style: TextStyle(
+                  fontSize: 21 * _themeProvider.userFontSize / 0.8,
+                  color: provider.ispositive ? Colors.white : Colors.red,
+                ),
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                    isDense: true,
+                    prefixIcon: Text(
+                      provider.ispositive ? "+" : "-",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 35 * _themeProvider.userFontSize / 0.8,
+                        color: provider.ispositive ? Colors.white : Colors.red,
+                      ),
+                    ),
+                    prefixIconConstraints:
+                        BoxConstraints(minWidth: 0, minHeight: 0),
+                    filled: true,
+                    enabledBorder: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).primaryColor, width: 3),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).primaryColor, width: 3),
+                    ),
+                    hintText: "입력",
+                    hintStyle: TextStyle(
+                        fontSize: 21.0 * _themeProvider.userFontSize / 0.8,
+                        color:
+                            provider.ispositive ? Colors.white : Colors.red)),
+                onChanged: (text) {
+                  input = double.parse(text);
+                },
+              );
+            }),
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
+            ),
+            child: Text('중량 추가/제거 하기',
+                textScaleFactor: 1.7, style: TextStyle(color: Colors.white)),
+            onPressed: () {
+              _workoutProvider.weightcheck(
+                  widget.rindex,
+                  widget.pindex,
+                  widget.eindex,
+                  _routinemenuProvider.ispositive ? input : -input);
+              _editWorkoutwCheck();
+              _additionalweightctrl.clear();
+              Navigator.of(context, rootNavigator: true).pop();
             },
           ),
         ),

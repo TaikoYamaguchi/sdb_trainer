@@ -1697,8 +1697,17 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                 width: 70,
                                                 child: GestureDetector(
                                                   onTap: () {
-                                                    _displaySetWeightAlert(
-                                                        pindex, index);
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return setWeightAlert(
+                                                            eindex: index,
+                                                            pindex: pindex,
+                                                            rindex:
+                                                                widget.rindex,
+                                                          );
+                                                        });
                                                   },
                                                   child: Center(
                                                     child: Text(
@@ -2579,8 +2588,18 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                     width: 80,
                                                     child: GestureDetector(
                                                       onTap: () {
-                                                        _displaySetWeightAlert(
-                                                            pindex, index);
+                                                        showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return setWeightAlert(
+                                                                eindex: index,
+                                                                pindex: pindex,
+                                                                rindex: widget
+                                                                    .rindex,
+                                                              );
+                                                            });
                                                       },
                                                       child: Center(
                                                         child: Text(
@@ -2927,158 +2946,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
               isroutine: true,
             ));
       },
-    );
-  }
-
-  void _displaySetWeightAlert(pindex, eindex) {
-    double input = _workoutProvider.workoutdata.routinedatas[widget.rindex]
-        .exercises[pindex].sets[eindex].weight
-        .abs();
-    _additionalweightctrl.text = _workoutProvider.workoutdata
-        .routinedatas[widget.rindex].exercises[pindex].sets[eindex].weight
-        .abs()
-        .toString();
-    _routinemenuProvider.boolchangeto(_workoutProvider
-                .workoutdata
-                .routinedatas[widget.rindex]
-                .exercises[pindex]
-                .sets[eindex]
-                .weight <
-            0
-        ? false
-        : true);
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            buttonPadding: EdgeInsets.all(12.0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            backgroundColor: Theme.of(context).cardColor,
-            contentPadding: EdgeInsets.all(12.0),
-            title: Text(
-              '중량 추가/제거가 가능해요',
-              textScaleFactor: 2.0,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('추가/제거할 중량을 입력해주세요',
-                    textScaleFactor: 1.3,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white)),
-                SizedBox(height: 20),
-                _posnegControllerWidget(),
-                SizedBox(
-                  width: 150,
-                  child: Consumer2<RoutineMenuStater, WorkoutdataProvider>(
-                      builder: (context, provider, provider2, child) {
-                    return TextField(
-                      controller: _additionalweightctrl,
-                      keyboardType: TextInputType.numberWithOptions(
-                          signed: false, decimal: true),
-                      style: TextStyle(
-                        fontSize: 21 * _themeProvider.userFontSize / 0.8,
-                        color: provider.ispositive ? Colors.white : Colors.red,
-                      ),
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                          isDense: true,
-                          prefixIcon: Text(
-                            provider.ispositive ? "+" : "-",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 35 * _themeProvider.userFontSize / 0.8,
-                              color: provider.ispositive
-                                  ? Colors.white
-                                  : Colors.red,
-                            ),
-                          ),
-                          prefixIconConstraints:
-                              BoxConstraints(minWidth: 0, minHeight: 0),
-                          filled: true,
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            borderSide: BorderSide(
-                                color: Theme.of(context).primaryColor,
-                                width: 3),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            borderSide: BorderSide(
-                                color: Theme.of(context).primaryColor,
-                                width: 3),
-                          ),
-                          hintText: "입력",
-                          hintStyle: TextStyle(
-                              fontSize:
-                                  21.0 * _themeProvider.userFontSize / 0.8,
-                              color: provider.ispositive
-                                  ? Colors.white
-                                  : Colors.red)),
-                      onChanged: (text) {
-                        input = double.parse(text);
-                      },
-                    );
-                  }),
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    foregroundColor: Theme.of(context).primaryColor,
-                    backgroundColor: Theme.of(context).primaryColor,
-                    textStyle: TextStyle(
-                      color: Colors.white,
-                    ),
-                    disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-                    padding: EdgeInsets.all(12.0),
-                  ),
-                  child: Text('중량 추가/제거 하기',
-                      textScaleFactor: 1.7,
-                      style: TextStyle(color: Colors.white)),
-                  onPressed: () {
-                    _workoutProvider.weightcheck(widget.rindex, pindex, eindex,
-                        _routinemenuProvider.ispositive ? input : -input);
-                    _editWorkoutwCheck();
-                    _additionalweightctrl.clear();
-                    Navigator.of(context, rootNavigator: true).pop();
-                  },
-                ),
-              ),
-            ],
-          );
-        });
-  }
-
-  Widget _posnegControllerWidget() {
-    return SizedBox(
-      width: double.infinity,
-      child: Consumer<RoutineMenuStater>(builder: (context, provider, child) {
-        return Container(
-          color: Theme.of(context).cardColor,
-          child: CupertinoSlidingSegmentedControl(
-              groupValue: provider.ispositive ? 0 : 1,
-              children: _menuList,
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-              backgroundColor: Theme.of(context).cardColor,
-              thumbColor: provider.ispositive
-                  ? Theme.of(context).primaryColor
-                  : Colors.red,
-              onValueChanged: (i) {
-                provider.boolchange();
-              }),
-        );
-      }),
     );
   }
 
