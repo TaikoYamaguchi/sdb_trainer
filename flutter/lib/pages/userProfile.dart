@@ -369,7 +369,7 @@ class _UserProfileState extends State<UserProfile> {
                               style: TextStyle(
                                   color: Theme.of(context).primaryColorLight)),
                           Icon(Icons.chevron_right,
-                              color: Theme.of(context).primaryColorLight),
+                              color: Theme.of(context).primaryColorDark),
                         ]));
               }),
             ),
@@ -402,7 +402,7 @@ class _UserProfileState extends State<UserProfile> {
                             style: TextStyle(
                                 color: Theme.of(context).primaryColorLight)),
                         Icon(Icons.chevron_right,
-                            color: Theme.of(context).primaryColorLight),
+                            color: Theme.of(context).primaryColorDark),
                       ])),
             ),
             ElevatedButton(
@@ -440,7 +440,7 @@ class _UserProfileState extends State<UserProfile> {
                             textScaleFactor: 1.1,
                             style: TextStyle(color: Colors.grey)),
                         Icon(Icons.chevron_right,
-                            color: Theme.of(context).primaryColorLight),
+                            color: Theme.of(context).primaryColorDark),
                       ])),
             ),
             const SizedBox(height: 30),

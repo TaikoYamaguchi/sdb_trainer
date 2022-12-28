@@ -1511,7 +1511,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                   actions: [
                     IconButton(
                       key: keyPlus,
-                      icon: SvgPicture.asset("assets/svg/add_white.svg"),
+                      icon: SvgPicture.asset("assets/svg/add_white.svg",
+                          color: Theme.of(context).primaryColorLight),
                       onPressed: () {
                         _workoutProvider.dataBU(widget.rindex);
 
@@ -1532,7 +1533,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                   ],
                   leading: Center(
                     child: GestureDetector(
-                      child: Icon(Icons.arrow_back_ios_outlined),
+                      child: Icon(Icons.arrow_back_ios_outlined,
+                          color: Theme.of(context).primaryColorLight),
                       onTap: () {
                         btnDisabled == true
                             ? null

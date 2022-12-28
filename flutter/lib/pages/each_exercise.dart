@@ -65,17 +65,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
   var _currentExindex;
   List exControllerlist = [];
   List<CountDownController> _countcontroller = [];
-  final Map<int, Widget> _menuList = const <int, Widget>{
-    0: Padding(
-      child: Text("중량 추가",
-          textScaleFactor: 1.3, style: TextStyle(color: Colors.white)),
-      padding: const EdgeInsets.all(5.0),
-    ),
-    1: Padding(
-        child: Text("중량 제거",
-            textScaleFactor: 1.3, style: TextStyle(color: Colors.white)),
-        padding: const EdgeInsets.all(5.0)),
-  };
+  var _menuList;
   JustTheController tooltipController = new JustTheController();
   bool _isSetChanged = false;
   double top = 0;
@@ -123,7 +113,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
           title: Text(
             "",
             textScaleFactor: 2.7,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
           actions: [
             GestureDetector(
@@ -300,13 +290,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
       if (states.any(interactiveStates.contains)) {
         return Theme.of(context).primaryColor;
       }
-      return Colors.white;
+      return Theme.of(context).primaryColorLight;
     }
 
     return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 5),
-        color: Color(0xFF101012),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -320,7 +309,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             'Timer: ',
                             textScaleFactor: 1.7,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorLight,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -336,10 +325,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               textScaleFactor: 1.7,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color:
-                                      (provider.userest && provider.timeron < 0)
-                                          ? Colors.red
-                                          : Colors.white));
+                                  color: (provider.userest &&
+                                          provider.timeron < 0)
+                                      ? Colors.red
+                                      : Theme.of(context).primaryColorLight));
                         })),
                       ],
                     ),
@@ -359,7 +348,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                   '  Timer: ',
                                   textScaleFactor: 1.7,
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: Theme.of(context).primaryColorLight,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -378,7 +367,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                         color: (provider.userest &&
                                                 provider.timeron < 0)
                                             ? Colors.red
-                                            : Colors.white));
+                                            : Theme.of(context)
+                                                .primaryColorLight));
                               })),
                             ],
                           ),
@@ -401,7 +391,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 textScaleFactor: 1.7,
                                 style: TextStyle(
                                   color: provider.userest
-                                      ? Colors.white
+                                      ? Theme.of(context).primaryColorLight
                                       : Color(0xFF717171),
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -457,13 +447,17 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 ? Text(
                                     _exercise.name,
                                     textScaleFactor: 2.0,
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .primaryColorLight),
                                   )
                                 : _exercise.name.length < 8
                                     ? Text(
                                         _exercise.name,
                                         textScaleFactor: 3.2,
-                                        style: TextStyle(color: Colors.white),
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorLight),
                                       )
                                     : Flexible(
                                         child: Text(
@@ -471,7 +465,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                           textScaleFactor: 2.4,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
-                                            color: Colors.white,
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
                                           ),
                                         ),
                                       ),
@@ -527,7 +522,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           "Set",
                           textScaleFactor: 1.1,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Theme.of(context).primaryColorLight,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.right,
@@ -538,7 +533,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           "Weight(${_userProvider.userdata.weight_unit})",
                           textScaleFactor: 1.1,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Theme.of(context).primaryColorLight,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
@@ -550,7 +545,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           "Reps",
                           textScaleFactor: 1.1,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Theme.of(context).primaryColorLight,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
@@ -561,7 +556,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           "1RM",
                           textScaleFactor: 1.1,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Theme.of(context).primaryColorLight,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
@@ -606,9 +601,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                         child: Theme(
                                           data: ThemeData(
                                               unselectedWidgetColor:
-                                                  Colors.white),
+                                                  Theme.of(context)
+                                                      .primaryColorLight),
                                           child: Checkbox(
-                                              checkColor: Colors.white,
+                                              checkColor: Theme.of(context)
+                                                  .primaryColorLight,
                                               activeColor: Theme.of(context)
                                                   .primaryColor,
                                               value: _sets[index].ischecked,
@@ -728,7 +725,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               onPressed: (_) {},
                                               backgroundColor: Theme.of(context)
                                                   .primaryColor,
-                                              foregroundColor: Colors.white,
+                                              foregroundColor: Theme.of(context)
+                                                  .primaryColorLight,
                                               icon: Icons.check,
                                               label: '밀어서 check',
                                             )
@@ -743,7 +741,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               "${index + 1}",
                                               textScaleFactor: 1.7,
                                               style: TextStyle(
-                                                color: Colors.white,
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
                                               ),
                                               textAlign: TextAlign.center,
                                             ),
@@ -763,7 +762,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                         .userFontSize *
                                                     21 /
                                                     0.8,
-                                                color: Colors.white,
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
                                               ),
                                               textAlign: TextAlign.center,
                                               decoration: InputDecoration(
@@ -774,7 +774,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                           .userFontSize *
                                                       21 /
                                                       0.8,
-                                                  color: Colors.white,
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight,
                                                 ),
                                               ),
                                               onChanged: (text) {
@@ -797,7 +798,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               width: 35,
                                               child: SvgPicture.asset(
                                                   "assets/svg/multiply.svg",
-                                                  color: Colors.white,
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight,
                                                   height: 19 *
                                                       _themeProvider
                                                           .userFontSize /
@@ -814,7 +816,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                         .userFontSize *
                                                     21 /
                                                     0.8,
-                                                color: Colors.white,
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
                                               ),
                                               textAlign: TextAlign.center,
                                               decoration: InputDecoration(
@@ -825,7 +828,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                       _themeProvider
                                                           .userFontSize /
                                                       0.8,
-                                                  color: Colors.white,
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight,
                                                 ),
                                               ),
                                               onChanged: (text) {
@@ -850,7 +854,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                       "${(_sets[index].weight * (1 + _sets[index].reps / 30)).toStringAsFixed(1)}",
                                                       textScaleFactor: 1.7,
                                                       style: TextStyle(
-                                                          color: Colors.white),
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .primaryColorLight),
                                                       textAlign:
                                                           TextAlign.center,
                                                     )
@@ -858,7 +864,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                       "${_sets[index].weight}",
                                                       textScaleFactor: 1.7,
                                                       style: TextStyle(
-                                                          color: Colors.white),
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .primaryColorLight),
                                                       textAlign:
                                                           TextAlign.center,
                                                     )),
@@ -904,7 +912,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               },
                               icon: Icon(
                                 Icons.remove,
-                                color: Colors.white,
+                                color: Theme.of(context).primaryColorLight,
                                 size: 24,
                               )),
                           IconButton(
@@ -921,7 +929,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               },
                               icon: Icon(
                                 Icons.add,
-                                color: Colors.white,
+                                color: Theme.of(context).primaryColorLight,
                                 size: 24,
                               )),
                         ],
@@ -954,7 +962,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                             },
                                             icon: Icon(
                                               Icons.arrow_back_ios_outlined,
-                                              color: Colors.white,
+                                              color: Theme.of(context)
+                                                  .primaryColorLight,
                                               size: 30,
                                             )),
                                         Consumer<WorkoutdataProvider>(builder:
@@ -967,8 +976,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                 .exercises[pindex - 1]
                                                 .name,
                                             overflow: TextOverflow.ellipsis,
-                                            style:
-                                                TextStyle(color: Colors.white),
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColorLight),
                                           ));
                                         })
                                       ],
@@ -981,7 +991,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                         onPressed: () {},
                                         icon: Icon(
                                           null,
-                                          color: Colors.white,
+                                          color: Theme.of(context)
+                                              .primaryColorLight,
                                           size: 40,
                                         )),
                                   )),
@@ -1046,7 +1057,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                 .name,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
-                                              color: Colors.white,
+                                              color: Theme.of(context)
+                                                  .primaryColorLight,
                                             ),
                                           ));
                                         }),
@@ -1059,7 +1071,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                             },
                                             icon: Icon(
                                               Icons.arrow_forward_ios_outlined,
-                                              color: Colors.white,
+                                              color: Theme.of(context)
+                                                  .primaryColorLight,
                                               size: 30,
                                             )),
                                       ],
@@ -1072,7 +1085,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                         onPressed: () {},
                                         icon: Icon(
                                           null,
-                                          color: Colors.white,
+                                          color: Theme.of(context)
+                                              .primaryColorLight,
                                           size: 40,
                                         )),
                                   ))
@@ -1205,13 +1219,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
       if (states.any(interactiveStates.contains)) {
         return Theme.of(context).primaryColor;
       }
-      return Colors.white;
+      return Theme.of(context).primaryColorLight;
     }
 
     return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 5),
-        color: Color(0xFF101012),
         child: GestureDetector(
           onTap: () {
             FocusScope.of(context).unfocus();
@@ -1229,7 +1242,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               'Timer: ',
                               textScaleFactor: 1.7,
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).primaryColorLight,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -1248,7 +1261,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                     color: (provider.userest &&
                                             provider.timeron < 0)
                                         ? Colors.red
-                                        : Colors.white));
+                                        : Theme.of(context).primaryColorLight));
                           })),
                         ],
                       ),
@@ -1268,7 +1281,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                     '  Timer: ',
                                     textScaleFactor: 1.7,
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color:
+                                          Theme.of(context).primaryColorLight,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -1287,7 +1301,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                           color: (provider.userest &&
                                                   provider.timeron < 0)
                                               ? Colors.red
-                                              : Colors.white));
+                                              : Theme.of(context)
+                                                  .primaryColorLight));
                                 })),
                               ],
                             ),
@@ -1310,7 +1325,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                   textScaleFactor: 1.7,
                                   style: TextStyle(
                                     color: provider.userest
-                                        ? Colors.white
+                                        ? Theme.of(context).primaryColorLight
                                         : Color(0xFF717171),
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -1366,14 +1381,17 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                   ? Text(
                                       _exercise.name,
                                       textScaleFactor: 2.0,
-                                      style: TextStyle(color: Colors.white),
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight),
                                     )
                                   : _exercise.name.length < 8
                                       ? Text(
                                           _exercise.name,
                                           textScaleFactor: 3.2,
                                           style: TextStyle(
-                                            color: Colors.white,
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
                                           ),
                                         )
                                       : Flexible(
@@ -1382,7 +1400,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                             textScaleFactor: 2.4,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
-                                              color: Colors.white,
+                                              color: Theme.of(context)
+                                                  .primaryColorLight,
                                             ),
                                           ),
                                         ),
@@ -1428,7 +1447,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             "Set",
                             textScaleFactor: 1.1,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorLight,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.right,
@@ -1441,7 +1460,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 "Weight",
                                 textScaleFactor: 1.1,
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColorLight,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 textAlign: TextAlign.center,
@@ -1464,7 +1483,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                     padding: EdgeInsets.all(8.0),
                                     child: Text(
                                       '맨몸 카테고리의 운동은 기본 무게가 체중으로 세팅되고,\n무게를 누르면 체중에 추가/제거가 가능해요.',
-                                      style: TextStyle(color: Colors.white),
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight),
                                     ),
                                   ),
                                 ),
@@ -1478,7 +1499,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             "Reps",
                             textScaleFactor: 1.1,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorLight,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.center,
@@ -1489,7 +1510,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             "1RM",
                             textScaleFactor: 1.1,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorLight,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.center,
@@ -1543,9 +1564,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                           child: Theme(
                                             data: ThemeData(
                                                 unselectedWidgetColor:
-                                                    Colors.white),
+                                                    Theme.of(context)
+                                                        .primaryColorLight),
                                             child: Checkbox(
-                                                checkColor: Colors.white,
+                                                checkColor: Theme.of(context)
+                                                    .primaryColorLight,
                                                 activeColor: Theme.of(context)
                                                     .primaryColor,
                                                 value: _sets[index].ischecked,
@@ -1673,7 +1696,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                 backgroundColor:
                                                     Theme.of(context)
                                                         .primaryColor,
-                                                foregroundColor: Colors.white,
+                                                foregroundColor:
+                                                    Theme.of(context)
+                                                        .primaryColorLight,
                                                 icon: Icons.check,
                                                 label: '밀어서 check',
                                               )
@@ -1688,7 +1713,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                 "${index + 1}",
                                                 textScaleFactor: 1.7,
                                                 style: TextStyle(
-                                                  color: Colors.white,
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight,
                                                 ),
                                                 textAlign: TextAlign.center,
                                               ),
@@ -1714,7 +1740,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                         "${_sets[index].index + _sets[index].weight}",
                                                         textScaleFactor: 1.7,
                                                         style: TextStyle(
-                                                          color: Colors.white,
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .primaryColorLight,
                                                         )),
                                                   ),
                                                 )),
@@ -1722,7 +1750,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                 width: 35,
                                                 child: SvgPicture.asset(
                                                     "assets/svg/multiply.svg",
-                                                    color: Colors.white,
+                                                    color: Theme.of(context)
+                                                        .primaryColorLight,
                                                     height: 19 *
                                                         _themeProvider
                                                             .userFontSize /
@@ -1740,7 +1769,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                       _themeProvider
                                                           .userFontSize /
                                                       0.8,
-                                                  color: Colors.white,
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight,
                                                 ),
                                                 textAlign: TextAlign.center,
                                                 decoration: InputDecoration(
@@ -1751,7 +1781,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                         _themeProvider
                                                             .userFontSize /
                                                         0.8,
-                                                    color: Colors.white,
+                                                    color: Theme.of(context)
+                                                        .primaryColorLight,
                                                   ),
                                                 ),
                                                 onChanged: (text) {
@@ -1777,8 +1808,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                         "${((_sets[index].weight + _sets[index].index) * (1 + _sets[index].reps / 30)).toStringAsFixed(1)}",
                                                         textScaleFactor: 1.7,
                                                         style: TextStyle(
-                                                            color:
-                                                                Colors.white),
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColorLight),
                                                         textAlign:
                                                             TextAlign.center,
                                                       )
@@ -1786,8 +1818,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                         "${_sets[index].weight + _sets[index].index}",
                                                         textScaleFactor: 1.7,
                                                         style: TextStyle(
-                                                            color:
-                                                                Colors.white),
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColorLight),
                                                         textAlign:
                                                             TextAlign.center,
                                                       )),
@@ -1834,7 +1867,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 },
                                 icon: Icon(
                                   Icons.remove,
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColorLight,
                                   size: 24,
                                 )),
                             IconButton(
@@ -1852,7 +1885,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 },
                                 icon: Icon(
                                   Icons.add,
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColorLight,
                                   size: 24,
                                 )),
                           ],
@@ -1885,7 +1918,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               },
                                               icon: Icon(
                                                 Icons.arrow_back_ios_outlined,
-                                                color: Colors.white,
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
                                                 size: 30,
                                               )),
                                           Consumer<WorkoutdataProvider>(builder:
@@ -1899,7 +1933,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                   .name,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
-                                                  color: Colors.white),
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight),
                                             ));
                                           })
                                         ],
@@ -1912,7 +1947,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                           onPressed: () {},
                                           icon: Icon(
                                             null,
-                                            color: Colors.white,
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
                                             size: 40,
                                           )),
                                     )),
@@ -1978,7 +2014,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                   .name,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
-                                                color: Colors.white,
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
                                               ),
                                             ));
                                           }),
@@ -1992,7 +2029,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               icon: Icon(
                                                 Icons
                                                     .arrow_forward_ios_outlined,
-                                                color: Colors.white,
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
                                                 size: 30,
                                               )),
                                         ],
@@ -2005,7 +2043,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                           onPressed: () {},
                                           icon: Icon(
                                             null,
-                                            color: Colors.white,
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
                                             size: 40,
                                           )),
                                     ))
@@ -2032,13 +2071,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
       if (states.any(interactiveStates.contains)) {
         return Theme.of(context).primaryColor;
       }
-      return Colors.white;
+      return Theme.of(context).primaryColorLight;
     }
 
     return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 5),
-        color: Color(0xFF101012),
         child: GestureDetector(
           onTap: () {
             FocusScope.of(context).unfocus();
@@ -2056,7 +2094,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               'Timer: ',
                               textScaleFactor: 1.7,
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).primaryColorLight,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -2075,7 +2113,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                     color: (provider.userest &&
                                             provider.timeron < 0)
                                         ? Colors.red
-                                        : Colors.white));
+                                        : Theme.of(context).primaryColorLight));
                           })),
                         ],
                       ),
@@ -2095,7 +2133,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                     '  Timer: ',
                                     textScaleFactor: 1.7,
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color:
+                                          Theme.of(context).primaryColorLight,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -2114,7 +2153,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                           color: (provider.userest &&
                                                   provider.timeron < 0)
                                               ? Colors.red
-                                              : Colors.white));
+                                              : Theme.of(context)
+                                                  .primaryColorLight));
                                 })),
                               ],
                             ),
@@ -2137,7 +2177,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                   textScaleFactor: 1.7,
                                   style: TextStyle(
                                     color: provider.userest
-                                        ? Colors.white
+                                        ? Theme.of(context).primaryColorLight
                                         : Color(0xFF717171),
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -2193,14 +2233,17 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                   ? Text(
                                       _exercise.name,
                                       textScaleFactor: 2.0,
-                                      style: TextStyle(color: Colors.white),
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight),
                                     )
                                   : _exercise.name.length < 8
                                       ? Text(
                                           _exercise.name,
                                           textScaleFactor: 3.2,
                                           style: TextStyle(
-                                            color: Colors.white,
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
                                           ),
                                         )
                                       : Flexible(
@@ -2208,8 +2251,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                             _exercise.name,
                                             textScaleFactor: 2.4,
                                             overflow: TextOverflow.ellipsis,
-                                            style:
-                                                TextStyle(color: Colors.white),
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColorLight),
                                           ),
                                         ),
                               Column(
@@ -2254,7 +2298,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             "Set",
                             textScaleFactor: 1.1,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorLight,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.right,
@@ -2269,7 +2313,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             "Distance",
                             textScaleFactor: 4.0,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorLight,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.center,
@@ -2280,7 +2324,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             "Duration(hh:mm:ss)",
                             textScaleFactor: 4.0,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorLight,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.center,
@@ -2328,11 +2372,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 padding: EdgeInsets.only(right: 10),
                                 child: ExpandablePanel(
                                     controller: exControllerlist[index],
-                                    theme: const ExpandableThemeData(
+                                    theme: ExpandableThemeData(
                                       headerAlignment:
                                           ExpandablePanelHeaderAlignment.center,
                                       hasIcon: false,
-                                      iconColor: Colors.white,
+                                      iconColor:
+                                          Theme.of(context).primaryColorLight,
                                     ),
                                     header: Row(
                                       mainAxisAlignment:
@@ -2345,9 +2390,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               child: Theme(
                                                 data: ThemeData(
                                                     unselectedWidgetColor:
-                                                        Colors.white),
+                                                        Theme.of(context)
+                                                            .primaryColorLight),
                                                 child: Checkbox(
-                                                    checkColor: Colors.white,
+                                                    checkColor:
+                                                        Theme.of(context)
+                                                            .primaryColorLight,
                                                     activeColor:
                                                         Theme.of(context)
                                                             .primaryColor,
@@ -2470,7 +2518,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                         Theme.of(context)
                                                             .primaryColor,
                                                     foregroundColor:
-                                                        Colors.white,
+                                                        Theme.of(context)
+                                                            .primaryColorLight,
                                                     icon: Icons.check,
                                                     label: '밀어서 check',
                                                   )
@@ -2486,7 +2535,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                     "${index + 1}",
                                                     textScaleFactor: 1.7,
                                                     style: TextStyle(
-                                                      color: Colors.white,
+                                                      color: Theme.of(context)
+                                                          .primaryColorLight,
                                                     ),
                                                     textAlign: TextAlign.center,
                                                   ),
@@ -2580,8 +2630,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                         icon: Icon(
                                                             Icons
                                                                 .play_arrow_rounded,
-                                                            color:
-                                                                Colors.white),
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColorLight),
                                                       ),
                                                     )),
                                                 Container(
@@ -2607,8 +2658,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                             textScaleFactor:
                                                                 1.7,
                                                             style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColorLight,
                                                             )),
                                                       ),
                                                     )),
@@ -2672,7 +2724,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               fontSize: 33.0 *
                                                   _themeProvider.userFontSize /
                                                   0.8,
-                                              color: Colors.white,
+                                              color: Theme.of(context)
+                                                  .primaryColorLight,
                                               fontWeight: FontWeight.bold),
                                           textFormat:
                                               CountdownTextFormat.HH_MM_SS,
@@ -2742,7 +2795,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 },
                                 icon: Icon(
                                   Icons.remove,
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColorLight,
                                   size: 24,
                                 )),
                             IconButton(
@@ -2760,7 +2813,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 },
                                 icon: Icon(
                                   Icons.add,
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColorLight,
                                   size: 24,
                                 )),
                           ],
@@ -2793,7 +2846,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               },
                                               icon: Icon(
                                                 Icons.arrow_back_ios_outlined,
-                                                color: Colors.white,
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
                                                 size: 30,
                                               )),
                                           Consumer<WorkoutdataProvider>(builder:
@@ -2807,7 +2861,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                   .name,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
-                                                  color: Colors.white),
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight),
                                             ));
                                           })
                                         ],
@@ -2820,7 +2875,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                           onPressed: () {},
                                           icon: Icon(
                                             null,
-                                            color: Colors.white,
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
                                             size: 40,
                                           )),
                                     )),
@@ -2886,7 +2942,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                   .name,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
-                                                color: Colors.white,
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
                                               ),
                                             ));
                                           }),
@@ -2900,7 +2957,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               icon: Icon(
                                                 Icons
                                                     .arrow_forward_ios_outlined,
-                                                color: Colors.white,
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
                                                 size: 30,
                                               )),
                                         ],
@@ -2913,7 +2971,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                           onPressed: () {},
                                           icon: Icon(
                                             null,
-                                            color: Colors.white,
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
                                             size: 40,
                                           )),
                                     ))
@@ -2939,7 +2998,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             height: MediaQuery.of(context).size.height * 0.75,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-              color: Colors.white,
+              color: Theme.of(context).primaryColorLight,
             ),
             child: ExerciseGuide(
               eindex: eindex,
@@ -3049,11 +3108,24 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
     _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     _prefsProvider = Provider.of<PrefsProvider>(context, listen: false);
+    _menuList = <int, Widget>{
+      0: Padding(
+        child: Text("중량 추가",
+            textScaleFactor: 1.3,
+            style: TextStyle(color: Theme.of(context).primaryColorLight)),
+        padding: const EdgeInsets.all(5.0),
+      ),
+      1: Padding(
+          child: Text("중량 제거",
+              textScaleFactor: 1.3,
+              style: TextStyle(color: Theme.of(context).primaryColorLight)),
+          padding: const EdgeInsets.all(5.0)),
+    };
 
     return Scaffold(
-        appBar: _appbarWidget(),
-        body: _exercisedetailPage(),
-        backgroundColor: Color(0xFF101012));
+      appBar: _appbarWidget(),
+      body: _exercisedetailPage(),
+    );
   }
 
   @override

@@ -96,9 +96,8 @@ class _CalendarState extends State<Calendar> {
             child: Text("운동",
                 textScaleFactor: 1.3,
                 style: TextStyle(
-                  color: page == 0
-                      ? Theme.of(context).primaryColorLight
-                      : Colors.grey,
+                  color:
+                      page == 0 ? Theme.of(context).buttonColor : Colors.grey,
                 )),
             padding: const EdgeInsets.all(5.0),
           ),
@@ -106,18 +105,16 @@ class _CalendarState extends State<Calendar> {
               child: Text("달력",
                   textScaleFactor: 1.3,
                   style: TextStyle(
-                    color: page == 1
-                        ? Theme.of(context).primaryColorLight
-                        : Colors.grey,
+                    color:
+                        page == 1 ? Theme.of(context).buttonColor : Colors.grey,
                   )),
               padding: const EdgeInsets.all(5.0)),
           2: Padding(
               child: Text("몸무게",
                   textScaleFactor: 1.3,
                   style: TextStyle(
-                    color: page == 2
-                        ? Theme.of(context).primaryColorLight
-                        : Colors.grey,
+                    color:
+                        page == 2 ? Theme.of(context).buttonColor : Colors.grey,
                   )),
               padding: const EdgeInsets.all(5.0)),
         };
@@ -367,7 +364,7 @@ class _CalendarState extends State<Calendar> {
                             child: Icon(
                               Icons.add,
                               size: 28.0,
-                              color: Theme.of(context).primaryColorLight,
+                              color: Theme.of(context).buttonColor,
                             ),
                           ),
                           Padding(
@@ -423,12 +420,15 @@ class _CalendarState extends State<Calendar> {
                             children: {
                               true: Text("on",
                                   style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorLight)),
+                                      color: _bodyWeightChartIsOpen
+                                          ? Theme.of(context).buttonColor
+                                          : Theme.of(context)
+                                              .primaryColorLight)),
                               false: Text("off",
                                   style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorLight))
+                                      color: _bodyWeightChartIsOpen
+                                          ? Theme.of(context).primaryColorLight
+                                          : Theme.of(context).buttonColor))
                             },
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
@@ -1092,7 +1092,7 @@ class _CalendarState extends State<Calendar> {
                 markerDecoration: BoxDecoration(
                     color: Color(0xFffc60a8), shape: BoxShape.circle),
                 selectedTextStyle: TextStyle(
-                    color: Theme.of(context).primaryColorLight,
+                    color: Theme.of(context).buttonColor,
                     fontSize: 16,
                     fontWeight: FontWeight.bold),
                 defaultTextStyle:
@@ -1174,12 +1174,12 @@ class _CalendarState extends State<Calendar> {
           separatorBuilder: (BuildContext _context, int index) {
             return Container(
               alignment: Alignment.center,
-              height: 1,
+              height: 0,
               color: Color(0xFF212121),
               child: Container(
                 alignment: Alignment.center,
                 margin: EdgeInsets.symmetric(horizontal: 10),
-                height: 1,
+                height: 0,
                 color: Color(0xFF717171),
               ),
             );
@@ -1264,13 +1264,12 @@ class _CalendarState extends State<Calendar> {
                 separatorBuilder: (BuildContext _context, int index) {
                   return Container(
                     alignment: Alignment.center,
-                    height: 1,
-                    color: Color(0xFF212121),
+                    height: 0.5,
                     child: Container(
                       alignment: Alignment.center,
                       margin: EdgeInsets.symmetric(horizontal: 10),
-                      height: 1,
-                      color: Color(0xFF717171),
+                      height: 0.5,
+                      color: Theme.of(context).primaryColorDark,
                     ),
                   );
                 },
@@ -1422,7 +1421,7 @@ class _CalendarState extends State<Calendar> {
           GestureDetector(
             onTap: () {},
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.only(
@@ -1584,13 +1583,12 @@ class _CalendarState extends State<Calendar> {
               separatorBuilder: (BuildContext _context, int index) {
                 return Container(
                   alignment: Alignment.center,
-                  height: 1,
-                  color: Color(0xFF212121),
+                  height: 0.5,
                   child: Container(
                     alignment: Alignment.center,
                     margin: EdgeInsets.symmetric(horizontal: 10),
-                    height: 1,
-                    color: Color(0xFF717171),
+                    height: 0.5,
+                    color: Theme.of(context).primaryColorDark,
                   ),
                 );
               },
@@ -1750,12 +1748,12 @@ class _CalendarState extends State<Calendar> {
                 separatorBuilder: (BuildContext _context, int index) {
                   return Container(
                     alignment: Alignment.center,
-                    height: 1,
+                    height: 0,
                     child: Container(
                       alignment: Alignment.center,
                       margin: EdgeInsets.symmetric(horizontal: 10),
-                      height: 1,
-                      color: Color(0xFF717171),
+                      height: 0,
+                      color: Theme.of(context).primaryColorDark,
                     ),
                   );
                 },
@@ -1881,11 +1879,14 @@ class _CalendarState extends State<Calendar> {
                           children: {
                             true: Text("on",
                                 style: TextStyle(
-                                    color:
-                                        Theme.of(context).primaryColorLight)),
+                                    color: _bodyExChartIsOpen
+                                        ? Theme.of(context).buttonColor
+                                        : Theme.of(context).primaryColorLight)),
                             false: Text("off",
                                 style: TextStyle(
-                                    color: Theme.of(context).primaryColorLight))
+                                    color: _bodyExChartIsOpen
+                                        ? Theme.of(context).primaryColorLight
+                                        : Theme.of(context).buttonColor))
                           },
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
@@ -1999,7 +2000,10 @@ class _CalendarState extends State<Calendar> {
             padding: const EdgeInsets.only(left: 3, right: 3),
             child: ChoiceChip(
               label: Text(_exProvider.exercisesdata!.exercises[i].name),
-              labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
+              labelStyle: TextStyle(
+                  color: _chartIndex.chartIndex == i
+                      ? Theme.of(context).buttonColor
+                      : Theme.of(context).primaryColorLight),
               selected: _chartIndex.chartIndex == i,
               selectedColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).cardColor,
@@ -2018,7 +2022,10 @@ class _CalendarState extends State<Calendar> {
           padding: const EdgeInsets.only(left: 3, right: 3),
           child: ChoiceChip(
             label: Text(_exProvider.exercisesdata!.exercises[i].name),
-            labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
+            labelStyle: TextStyle(
+                color: _chartIndex.chartIndex == i
+                    ? Theme.of(context).buttonColor
+                    : Theme.of(context).primaryColorLight),
             selected: _chartIndex.chartIndex == i,
             selectedColor: Theme.of(context).primaryColor,
             backgroundColor: Theme.of(context).cardColor,
@@ -2045,7 +2052,10 @@ class _CalendarState extends State<Calendar> {
         padding: const EdgeInsets.only(left: 3, right: 3),
         child: ChoiceChip(
           label: Text("All"),
-          labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
+          labelStyle: TextStyle(
+              color: _chartIndex.staticIndex == 0
+                  ? Theme.of(context).buttonColor
+                  : Theme.of(context).primaryColorLight),
           selected: _chartIndex.staticIndex == 0,
           selectedColor: Theme.of(context).primaryColor,
           backgroundColor: Theme.of(context).cardColor,
@@ -2065,7 +2075,10 @@ class _CalendarState extends State<Calendar> {
           padding: const EdgeInsets.only(left: 3, right: 3),
           child: ChoiceChip(
             label: Text(_exProvider.exercisesdata!.exercises[i - 1].name),
-            labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
+            labelStyle: TextStyle(
+                color: _chartIndex.staticIndex == i
+                    ? Theme.of(context).buttonColor
+                    : Theme.of(context).primaryColorLight),
             selected: _chartIndex.staticIndex == i,
             selectedColor: Theme.of(context).primaryColor,
             backgroundColor: Theme.of(context).cardColor,

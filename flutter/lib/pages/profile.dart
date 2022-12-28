@@ -320,7 +320,7 @@ class _ProfileState extends State<Profile> {
                               style: TextStyle(
                                   color: Theme.of(context).primaryColorLight)),
                           Icon(Icons.chevron_right,
-                              color: Theme.of(context).primaryColorLight),
+                              color: Theme.of(context).primaryColorDark),
                         ]));
               })),
           ElevatedButton(
@@ -346,7 +346,7 @@ class _ProfileState extends State<Profile> {
                             style: TextStyle(
                                 color: Theme.of(context).primaryColorLight)),
                         Icon(Icons.chevron_right,
-                            color: Theme.of(context).primaryColorLight),
+                            color: Theme.of(context).primaryColorDark),
                       ]))),
           ElevatedButton(
               onPressed: () {
@@ -366,7 +366,7 @@ class _ProfileState extends State<Profile> {
                             style: TextStyle(
                                 color: Theme.of(context).primaryColorLight)),
                         Icon(Icons.chevron_right,
-                            color: Theme.of(context).primaryColorLight),
+                            color: Theme.of(context).primaryColorDark),
                       ]))),
           ElevatedButton(
               onPressed: () {
@@ -394,7 +394,7 @@ class _ProfileState extends State<Profile> {
                             style: TextStyle(
                                 color: Theme.of(context).primaryColorLight)),
                         Icon(Icons.chevron_right,
-                            color: Theme.of(context).primaryColorLight),
+                            color: Theme.of(context).primaryColorDark),
                       ]))),
           ElevatedButton(
               onPressed: () async {
@@ -417,7 +417,7 @@ class _ProfileState extends State<Profile> {
                             style: TextStyle(
                                 color: Theme.of(context).primaryColorLight)),
                         Icon(Icons.open_in_new,
-                            color: Theme.of(context).primaryColorLight),
+                            color: Theme.of(context).primaryColorDark),
                       ]))),
           Column(
             children: [
@@ -565,7 +565,7 @@ class _ProfileState extends State<Profile> {
                             style: TextStyle(
                                 color: Theme.of(context).primaryColorLight)),
                         Icon(Icons.chevron_right,
-                            color: Theme.of(context).primaryColorLight),
+                            color: Theme.of(context).primaryColorDark),
                       ]))),
           SizedBox(height: 30),
           GestureDetector(

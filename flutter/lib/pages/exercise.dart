@@ -287,7 +287,7 @@ class ExerciseState extends State<Exercise> {
                                         backgroundColor:
                                             Theme.of(context).primaryColor,
                                         foregroundColor:
-                                            Theme.of(context).primaryColorLight,
+                                            Theme.of(context).buttonColor,
                                         icon: Icons.edit,
                                         label: '수정',
                                       ),
@@ -308,7 +308,7 @@ class ExerciseState extends State<Exercise> {
                                         },
                                         backgroundColor: Color(0xFFFE4A49),
                                         foregroundColor:
-                                            Theme.of(context).primaryColorLight,
+                                            Theme.of(context).buttonColor,
                                         icon: Icons.delete,
                                         label: '삭제',
                                       )
@@ -329,7 +329,7 @@ class ExerciseState extends State<Exercise> {
                                                 right: new BorderSide(
                                                     width: 1.0,
                                                     color: Theme.of(context)
-                                                        .primaryColorLight))),
+                                                        .primaryColorDark))),
                                         child: routinelist[index].mode == 0
                                             ? Container(
                                                 padding: EdgeInsets.symmetric(
@@ -339,7 +339,7 @@ class ExerciseState extends State<Exercise> {
                                                   child: SvgPicture.asset(
                                                       "assets/svg/dumbel_on.svg",
                                                       color: Theme.of(context)
-                                                          .primaryColorLight),
+                                                          .primaryColorDark),
                                                 ),
                                               )
                                             : CircularPercentIndicator(
@@ -393,7 +393,7 @@ class ExerciseState extends State<Exercise> {
                                       ),
                                       trailing: Icon(Icons.keyboard_arrow_right,
                                           color: Theme.of(context)
-                                              .primaryColorLight,
+                                              .primaryColorDark,
                                           size: 30.0)),
                                 ),
                               )),
@@ -437,7 +437,7 @@ class ExerciseState extends State<Exercise> {
                             child: Icon(
                               Icons.add,
                               size: 28.0,
-                              color: Theme.of(context).primaryColorLight,
+                              color: Theme.of(context).buttonColor,
                             ),
                           ),
                           Padding(

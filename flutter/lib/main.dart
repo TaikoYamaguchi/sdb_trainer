@@ -74,14 +74,15 @@ class MyApp extends StatelessWidget {
               textTheme: Theme.of(context).textTheme.apply(
                     fontSizeFactor: _themeProvider.userFontSize,
                   ),
-              primaryColor: const Color(0xff7a28cb),
+              primaryColor: const Color(0xff7a28cb), //main color
               primaryColorBrightness: Brightness.light,
-              cardColor: const Color(0xfff2f3f5),
-              canvasColor: Colors.white,
+              cardColor: const Color(0xfff2f3f5), //cardcolor
+              canvasColor: Colors.white, //backgroundcolor
               brightness: Brightness.light,
-              primaryColorLight: Colors.black,
-              primaryColorDark: Color(0xFFB5B9C2),
-              indicatorColor: const Color(0xfff2f3f5),
+              primaryColorLight: Colors.black, //fontcolor
+              primaryColorDark: Color(0xFFB5B9C2), // grey color
+              indicatorColor: const Color(0xfff2f3f5), // navigation color
+              buttonColor: Colors.white, // in primary color text white
               textSelectionTheme: TextSelectionThemeData(
                 cursorColor: const Color(0xff7a28cb),
                 selectionColor: const Color(0xff7a28cb),
@@ -101,6 +102,7 @@ class MyApp extends StatelessWidget {
               primaryColorLight: Colors.white,
               primaryColorDark: Color(0xFF717171),
               indicatorColor: const Color(0xFF212121),
+              buttonColor: Colors.white,
               textSelectionTheme: TextSelectionThemeData(
                 cursorColor: const Color(0xff7a28cb),
                 selectionColor: const Color(0xff7a28cb),
