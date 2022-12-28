@@ -1368,12 +1368,14 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             tooltip: (i, v) => v,
           ),
           wrapped: true,
-          choiceStyle: const C2ChoiceStyle(
-            color: Color(0xff40434e),
+          choiceStyle: C2ChoiceStyle(
             appearance: C2ChipType.elevated,
+            labelStyle: TextStyle(
+              color: Theme.of(context).primaryColorLight,
+            ),
           ),
-          choiceActiveStyle: const C2ChoiceStyle(
-            color: Color(0xff7a28cb),
+          choiceActiveStyle: C2ChoiceStyle(
+            color: Theme.of(context).primaryColor,
             appearance: C2ChipType.elevated,
           ),
         );
@@ -1409,11 +1411,10 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
           ),
           wrapped: true,
           choiceStyle: const C2ChoiceStyle(
-            color: Color(0xff40434e),
             appearance: C2ChipType.elevated,
           ),
-          choiceActiveStyle: const C2ChoiceStyle(
-            color: Color(0xff7a28cb),
+          choiceActiveStyle: C2ChoiceStyle(
+            color: Theme.of(context).primaryColor,
             appearance: C2ChipType.elevated,
           ),
         );

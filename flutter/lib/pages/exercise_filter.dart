@@ -272,11 +272,10 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
           ),
           wrapped: true,
           choiceStyle: const C2ChoiceStyle(
-            color: Color(0xff40434e),
             appearance: C2ChipType.elevated,
           ),
-          choiceActiveStyle: const C2ChoiceStyle(
-            color: Color(0xff7a28cb),
+          choiceActiveStyle: C2ChoiceStyle(
+            color: Theme.of(context).primaryColor,
             appearance: C2ChipType.elevated,
           ),
         );
@@ -600,13 +599,12 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
           separatorBuilder: (BuildContext _context, int index) {
             return Container(
               alignment: Alignment.center,
-              height: 1,
-              color: Color(0xFF212121),
+              height: 0.5,
               child: Container(
                 alignment: Alignment.center,
                 margin: EdgeInsets.symmetric(horizontal: 10),
-                height: 1,
-                color: Color(0xFF717171),
+                height: 0.5,
+                color: Theme.of(context).primaryColorDark,
               ),
             );
           },

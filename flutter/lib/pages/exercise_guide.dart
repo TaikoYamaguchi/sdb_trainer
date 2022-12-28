@@ -65,7 +65,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
         enableSelectionZooming: true,
         selectionRectBorderColor: Colors.red,
         selectionRectBorderWidth: 2,
-        selectionRectColor: Colors.grey,
+        selectionRectColor: Theme.of(context).primaryColorDark,
         enablePanning: true,
         maximumZoomLevel: 0.7);
     super.initState();
@@ -117,7 +117,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                           child: Center(
                             child: Text("Target",
                                 style: TextStyle(
-                                    color: Colors.grey,
+                                    color: Theme.of(context).primaryColorDark,
                                     fontWeight: FontWeight.bold)),
                           )),
                       SizedBox(
@@ -145,7 +145,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                           child: Center(
                             child: Text("Category",
                                 style: TextStyle(
-                                    color: Colors.grey,
+                                    color: Theme.of(context).primaryColorDark,
                                     fontWeight: FontWeight.bold)),
                           )),
                       SizedBox(
@@ -167,7 +167,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                           child: Center(
                             child: Text("1rm",
                                 style: TextStyle(
-                                    color: Colors.grey,
+                                    color: Theme.of(context).primaryColorDark,
                                     fontWeight: FontWeight.bold)),
                           )),
                       SizedBox(
@@ -189,7 +189,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                           child: Center(
                             child: Text("Goal",
                                 style: TextStyle(
-                                    color: Colors.grey,
+                                    color: Theme.of(context).primaryColorDark,
                                     fontWeight: FontWeight.bold)),
                           )),
                       SizedBox(
@@ -231,7 +231,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                             child: Text("나만의 운동 노트",
                                 textScaleFactor: 1.5,
                                 style: TextStyle(
-                                    color: Colors.grey,
+                                    color: Theme.of(context).primaryColorDark,
                                     fontWeight: FontWeight.bold)),
                           ),
                           editing
@@ -264,7 +264,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                     icon: Icon(
                                       Icons.edit,
                                       size: 18,
-                                      color: Colors.grey,
+                                      color: Theme.of(context).primaryColorDark,
                                     ),
                                   ),
                                 )
@@ -346,7 +346,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                     Text('외부를 터치하면 취소 할 수 있어요',
                         textScaleFactor: 1.0,
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.grey)),
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorDark)),
                     SizedBox(height: 20),
                     TextField(
                       onChanged: (value) {
@@ -574,7 +575,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
           maxLines: null,
           decoration: InputDecoration(
               labelText: '운동에 관해 적을 수 있어요',
-              labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
+              labelStyle: TextStyle(
+                  fontSize: 16.0, color: Theme.of(context).primaryColorDark),
               enabledBorder: UnderlineInputBorder(
                 borderRadius: BorderRadius.circular(8.0),
                 borderSide:
@@ -613,8 +615,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
               },
               child: Text("플랜에 운동 추가하기",
                   textScaleFactor: 1.7,
-                  style:
-                      TextStyle(color: Theme.of(context).primaryColorLight)))),
+                  style: TextStyle(color: Theme.of(context).buttonColor)))),
     );
   }
 
@@ -652,7 +653,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
           Text('외부를 터치하면 취소 할 수 있어요',
               textScaleFactor: 1.0,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey)),
+              style: TextStyle(color: Theme.of(context).primaryColorDark)),
           Container(
             height: 10,
           ),
@@ -806,7 +807,9 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                             .primaryColorLight)),
                                 Text("원하는 이름, 종류의 플랜을 만들 수 있어요",
                                     textScaleFactor: 1.1,
-                                    style: TextStyle(color: Colors.grey)),
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .primaryColorDark)),
                               ],
                             ),
                           )
@@ -876,7 +879,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                   Text('외부를 터치하면 취소 할 수 있어요',
                       textScaleFactor: 1.0,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.grey)),
+                      style:
+                          TextStyle(color: Theme.of(context).primaryColorDark)),
                   SizedBox(height: 20),
                   TextField(
                     onChanged: (value) {
@@ -1129,12 +1133,11 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
         separatorBuilder: (BuildContext _context, int index) {
           return Container(
             alignment: Alignment.center,
-            height: 1,
-            color: Color(0xFF212121),
+            height: 0,
             child: Container(
               alignment: Alignment.center,
               margin: EdgeInsets.symmetric(horizontal: 10),
-              height: 1,
+              height: 0,
               color: Color(0xFF717171),
             ),
           );
@@ -1227,7 +1230,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                             "Set",
                             textScaleFactor: 1.1,
                             style: TextStyle(
-                              color: Colors.grey,
+                              color: Theme.of(context).primaryColorDark,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.center,
@@ -1242,7 +1245,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                         "Weight(${_userProvider.userdata.weight_unit})",
                         textScaleFactor: 1.1,
                         style: TextStyle(
-                          color: Colors.grey,
+                          color: Theme.of(context).primaryColorDark,
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
@@ -1254,7 +1257,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                         "Reps",
                         textScaleFactor: 1.1,
                         style: TextStyle(
-                          color: Colors.grey,
+                          color: Theme.of(context).primaryColorDark,
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
@@ -1265,7 +1268,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                         "1RM",
                         textScaleFactor: 1.1,
                         style: TextStyle(
-                          color: Colors.grey,
+                          color: Theme.of(context).primaryColorDark,
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
@@ -1352,12 +1355,12 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                 separatorBuilder: (BuildContext _context, int index) {
                   return Container(
                     alignment: Alignment.center,
-                    height: 1,
+                    height: 0.5,
                     child: Container(
                       alignment: Alignment.center,
                       margin: EdgeInsets.symmetric(horizontal: 10),
-                      height: 1,
-                      color: Color(0xFF717171),
+                      height: 0.5,
+                      color: Theme.of(context).primaryColorDark,
                     ),
                   );
                 },
@@ -1419,7 +1422,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                   ],
                   leading: Center(
                     child: GestureDetector(
-                      child: Icon(Icons.arrow_back_ios_outlined),
+                      child: Icon(Icons.arrow_back_ios_outlined,
+                          color: Theme.of(context).primaryColorLight),
                       onTap: () {
                         btnDisabled == true
                             ? null
