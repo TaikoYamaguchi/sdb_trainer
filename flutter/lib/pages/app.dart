@@ -517,7 +517,7 @@ class _AppState extends State<App> {
             floatingActionButton: Consumer<RoutineTimeProvider>(
                 builder: (builder, provider, child) {
               return Container(
-                child: (provider.isstarted && _bodyStater.bodystate != 1)
+                child: (provider.isstarted && _bodyStater.bodystate != 0)
                     ? ExpandableFab(
                         distance: 105,
                         children: [
