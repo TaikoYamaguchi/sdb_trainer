@@ -317,6 +317,30 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
                 textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
   }
 
+  Widget _customDeleteButton() {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(
+                color: Theme.of(context).primaryColorLight,
+              ),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
+            ),
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            child: Text("커스텀 운동 삭제 하기",
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
+  }
+
   @override
   Widget build(BuildContext context) {
     switch (widget.layer) {
@@ -343,6 +367,11 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
       case 5:
         title = "운동을 종료 할 수 있어요";
         subtitle = '운동을 종료 하시겠나요?';
+        comment = '외부를 터치하면 취소 할 수 있어요';
+        break;
+      case 6:
+        title = "커스텀운동을 삭제 할 수 있어요";
+        subtitle = '커스텀운동을 삭제 하시겠나요?';
         comment = '외부를 터치하면 취소 할 수 있어요';
         break;
     }
@@ -377,9 +406,11 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
                 ? exSearchOutButton(context)
                 : widget.layer == 3
                     ? _StartConfirmButton(context)
-                    : widget.layer == 3
+                    : widget.layer == 4
                         ? _moveToExButton(context)
-                        : _FinishConfirmButton(context),
+                        : widget.layer == 5
+                            ? _FinishConfirmButton(context)
+                            : _customDeleteButton(),
       ],
     );
   }
