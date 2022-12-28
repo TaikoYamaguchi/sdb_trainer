@@ -974,7 +974,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                   child: Icon(
                                     Icons.add,
                                     size: 28.0,
-                                    color: Theme.of(context).primaryColorLight,
+                                    color: Theme.of(context).buttonColor,
                                   ),
                                 ),
                                 Padding(

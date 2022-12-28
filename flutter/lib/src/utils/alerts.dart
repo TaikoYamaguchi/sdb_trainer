@@ -31,11 +31,13 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
                 ? new Text("긴급 점검 중 입니다",
                     textScaleFactor: 1.5,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white))
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight))
                 : new Text("앱이 업데이트 되었어요",
                     textAlign: TextAlign.center,
                     textScaleFactor: 2.0,
-                    style: TextStyle(color: Colors.white)),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
             content: new SingleChildScrollView(
               child: type == "r"
                   ? Column(
@@ -43,11 +45,13 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
                         Text("빨리 점검을 끝내겠습니다",
                             textScaleFactor: 1.3,
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white)),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight)),
                         Text("양해 부탁드립니다",
                             textScaleFactor: 1.3,
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white)),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight)),
                       ],
                     )
                   : Column(
@@ -55,11 +59,13 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
                         Text("더 좋은 서비스를 제공해 드리기 위해",
                             textScaleFactor: 1.3,
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white)),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight)),
                         Text("앱을 업데이트 해주세요",
                             textScaleFactor: 1.3,
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white)),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight)),
                       ],
                     ),
             ),
@@ -77,7 +83,7 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
                                 foregroundColor: Theme.of(context).primaryColor,
                                 backgroundColor: Theme.of(context).primaryColor,
                                 textStyle: TextStyle(
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColorLight,
                                 ),
                                 disabledForegroundColor:
                                     Color.fromRGBO(246, 58, 64, 20),
@@ -85,7 +91,9 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
                               ),
                               child: new Text("업데이트 하러가기",
                                   textScaleFactor: 1.7,
-                                  style: TextStyle(color: Colors.white)),
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).primaryColorLight)),
                               onPressed: () {
                                 LaunchReview.launch(
                                     androidAppId: "com.tk_lck.supero",
@@ -109,7 +117,8 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
                                       backgroundColor:
                                           Theme.of(context).primaryColor,
                                       textStyle: TextStyle(
-                                        color: Colors.white,
+                                        color:
+                                            Theme.of(context).primaryColorLight,
                                       ),
                                       disabledForegroundColor:
                                           Color.fromRGBO(246, 58, 64, 20),
@@ -117,7 +126,9 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
                                     ),
                                     child: new Text("업데이트 하기",
                                         textScaleFactor: 1.7,
-                                        style: TextStyle(color: Colors.white)),
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorLight)),
                                     onPressed: () {
                                       LaunchReview.launch(
                                           androidAppId: "com.tk_lck.supero",
@@ -137,7 +148,8 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
                                         foregroundColor: Color(0xFF101012),
                                         backgroundColor: Color(0xFF101012),
                                         textStyle: TextStyle(
-                                          color: Colors.white,
+                                          color: Theme.of(context)
+                                              .primaryColorLight,
                                         ),
                                         disabledForegroundColor:
                                             Color(0xFF101012),
@@ -145,8 +157,9 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
                                       ),
                                       child: new Text("다음에",
                                           textScaleFactor: 1.7,
-                                          style:
-                                              TextStyle(color: Colors.white)),
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColorLight)),
                                       onPressed: () {
                                         Navigator.of(context,
                                                 rootNavigator: true)
@@ -196,7 +209,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
               backgroundColor: Theme.of(context).primaryColor,
               foregroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
@@ -207,7 +220,8 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
               _routineMenuProvider.change(1);
             },
             child: Text("바로 운동 하기",
-                textScaleFactor: 1.5, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.5,
+                style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
   Widget _DeleteConfirmButton_r(rindex, context) {
@@ -235,7 +249,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
               backgroundColor: Theme.of(context).primaryColor,
               foregroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).buttonColor,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
@@ -246,7 +260,8 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
               Navigator.of(context, rootNavigator: true).pop();
             },
             child: Text("삭제",
-                textScaleFactor: 1.5, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.5,
+                style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
   Widget exSearchOutButton(context) {
@@ -259,7 +274,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
               ),
               backgroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
@@ -268,7 +283,8 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
               Navigator.of(context, rootNavigator: true).pop(true);
             },
             child: Text("편집 취소 하기",
-                textScaleFactor: 1.5, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.5,
+                style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
   Widget _StartConfirmButton(context) {
@@ -282,7 +298,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
@@ -291,7 +307,8 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
               Navigator.of(context, rootNavigator: true).pop(true);
             },
             child: Text("운동 시작 하기",
-                textScaleFactor: 1.5, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.5,
+                style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
   Widget _FinishConfirmButton(context) {
@@ -305,7 +322,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
@@ -314,7 +331,8 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
               Navigator.of(context, rootNavigator: true).pop(true);
             },
             child: Text("운동 종료 하기",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
   Widget _customDeleteButton() {
@@ -338,7 +356,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
             },
             child: Text("커스텀 운동 삭제 하기",
                 textScaleFactor: 1.7,
-                style: TextStyle(color: Theme.of(context).primaryColorLight))));
+                style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
   @override
@@ -385,14 +403,14 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
       title: Text(title,
           textScaleFactor: 1.5,
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white)),
+          style: TextStyle(color: Theme.of(context).primaryColorLight)),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(subtitle,
               textScaleFactor: 1.3,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white)),
+              style: TextStyle(color: Theme.of(context).primaryColorLight)),
           Text(comment,
               textScaleFactor: 1.0,
               textAlign: TextAlign.center,
@@ -442,7 +460,7 @@ class _newOnermAlertsState extends State<newOnermAlerts> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
@@ -451,7 +469,8 @@ class _newOnermAlertsState extends State<newOnermAlerts> {
               Navigator.of(context, rootNavigator: true).pop();
             },
             child: Text("계속 운동 하기",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   @override
@@ -474,7 +493,7 @@ class _newOnermAlertsState extends State<newOnermAlerts> {
         '신기록을 달성했어요!',
         textScaleFactor: 2.0,
         textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: Theme.of(context).primaryColorLight),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -618,9 +637,9 @@ class _exGoalEditAlertState extends State<exGoalEditAlert> {
       contentPadding: EdgeInsets.all(12.0),
       title: Text(
         '목표를 달성하셨나요?',
-        textScaleFactor: 2.0,
+        textScaleFactor: 1.7,
         textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: Theme.of(context).primaryColorLight),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -636,7 +655,7 @@ class _exGoalEditAlertState extends State<exGoalEditAlert> {
                 TextInputType.numberWithOptions(signed: false, decimal: true),
             style: TextStyle(
               fontSize: 21 * _themeProvider.userFontSize / 0.8,
-              color: Colors.white,
+              color: Theme.of(context).primaryColorLight,
             ),
             textAlign: TextAlign.center,
             decoration: InputDecoration(
@@ -660,16 +679,17 @@ class _exGoalEditAlertState extends State<exGoalEditAlert> {
                 hintText: "1RM",
                 hintStyle: TextStyle(
                     fontSize: 24.0 * _themeProvider.userFontSize / 0.8,
-                    color: Colors.white)),
+                    color: Theme.of(context).primaryColorLight)),
             onChanged: (text) {},
           ),
+          SizedBox(height: 8),
           TextField(
             controller: _exGoalController,
             keyboardType:
                 TextInputType.numberWithOptions(signed: false, decimal: true),
             style: TextStyle(
               fontSize: 21 * _themeProvider.userFontSize / 0.8,
-              color: Colors.white,
+              color: Theme.of(context).primaryColorLight,
             ),
             textAlign: TextAlign.center,
             decoration: InputDecoration(
@@ -693,7 +713,7 @@ class _exGoalEditAlertState extends State<exGoalEditAlert> {
                 hintText: "목표",
                 hintStyle: TextStyle(
                     fontSize: 24.0 * _themeProvider.userFontSize / 0.8,
-                    color: Colors.white)),
+                    color: Theme.of(context).primaryColorLight)),
             onChanged: (text) {},
           ),
         ],
@@ -709,13 +729,14 @@ class _exGoalEditAlertState extends State<exGoalEditAlert> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
             ),
             child: Text('수정하기',
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white)),
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).buttonColor)),
             onPressed: () {
               _exProvider.putOnermGoalValue(
                   index,
@@ -762,10 +783,10 @@ class _setResttimeAlertState extends State<setResttimeAlert> {
       backgroundColor: Theme.of(context).cardColor,
       contentPadding: EdgeInsets.all(12.0),
       title: Text(
-        '휴식 시간을 설정 해볼게요',
+        '휴식 시간을 설정해요',
         textScaleFactor: 1.5,
         textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: Theme.of(context).primaryColorLight),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -773,14 +794,14 @@ class _setResttimeAlertState extends State<setResttimeAlert> {
           Text('세트당 휴식 시간을 입력해주세요',
               textScaleFactor: 1.3,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white)),
+              style: TextStyle(color: Theme.of(context).primaryColorDark)),
           SizedBox(height: 20),
           TextField(
             controller: _resttimectrl,
             keyboardType: TextInputType.number,
             style: TextStyle(
               fontSize: 21 * _themeProvider.userFontSize / 0.8,
-              color: Colors.white,
+              color: Theme.of(context).primaryColorLight,
             ),
             textAlign: TextAlign.center,
             decoration: InputDecoration(
@@ -798,7 +819,7 @@ class _setResttimeAlertState extends State<setResttimeAlert> {
                 hintText: "휴식 시간 입력(초)",
                 hintStyle: TextStyle(
                     fontSize: 24.0 * _themeProvider.userFontSize / 0.8,
-                    color: Colors.white)),
+                    color: Theme.of(context).primaryColorLight)),
             onChanged: (text) {
               int changetime;
               changetime = int.parse(text);
@@ -818,13 +839,14 @@ class _setResttimeAlertState extends State<setResttimeAlert> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
             ),
             child: Text('휴식 시간 설정하기',
-                textScaleFactor: 1.5, style: TextStyle(color: Colors.white)),
+                textScaleFactor: 1.5,
+                style: TextStyle(color: Theme.of(context).buttonColor)),
             onPressed: () {
               _resttimectrl.clear();
               Navigator.of(context, rootNavigator: true).pop(true);
@@ -857,22 +879,25 @@ class _setWeightAlertState extends State<setWeightAlert> {
   var _routinetimeProvider;
   var _routinemenuProvider;
   TextEditingController _additionalweightctrl = TextEditingController(text: "");
-  final Map<int, Widget> _menuList = const <int, Widget>{
-    0: Padding(
-      child: Text("중량 추가",
-          textScaleFactor: 1.3, style: TextStyle(color: Colors.white)),
-      padding: const EdgeInsets.all(5.0),
-    ),
-    1: Padding(
-        child: Text("중량 제거",
-            textScaleFactor: 1.3, style: TextStyle(color: Colors.white)),
-        padding: const EdgeInsets.all(5.0)),
-  };
+  var _menuList;
 
   Widget _posnegControllerWidget() {
     return SizedBox(
       width: double.infinity,
       child: Consumer<RoutineMenuStater>(builder: (context, provider, child) {
+        _menuList = <int, Widget>{
+          0: Padding(
+            child: Text("중량 추가",
+                textScaleFactor: 1.3,
+                style: TextStyle(color: Theme.of(context).primaryColorLight)),
+            padding: const EdgeInsets.all(5.0),
+          ),
+          1: Padding(
+              child: Text("중량 제거",
+                  textScaleFactor: 1.3,
+                  style: TextStyle(color: Theme.of(context).primaryColorLight)),
+              padding: const EdgeInsets.all(5.0)),
+        };
         return Container(
           color: Theme.of(context).cardColor,
           child: CupertinoSlidingSegmentedControl(
@@ -941,10 +966,10 @@ class _setWeightAlertState extends State<setWeightAlert> {
       backgroundColor: Theme.of(context).cardColor,
       contentPadding: EdgeInsets.all(12.0),
       title: Text(
-        '중량 추가/제거가 가능해요',
-        textScaleFactor: 2.0,
+        '중량 추가/제거 가능해요',
+        textScaleFactor: 1.5,
         textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: Theme.of(context).primaryColorLight),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -952,9 +977,10 @@ class _setWeightAlertState extends State<setWeightAlert> {
           Text('추가/제거할 중량을 입력해주세요',
               textScaleFactor: 1.3,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white)),
-          SizedBox(height: 20),
+              style: TextStyle(color: Theme.of(context).primaryColorLight)),
+          SizedBox(height: 12),
           _posnegControllerWidget(),
+          SizedBox(height: 8),
           SizedBox(
             width: 150,
             child: Consumer2<RoutineMenuStater, WorkoutdataProvider>(
@@ -965,7 +991,9 @@ class _setWeightAlertState extends State<setWeightAlert> {
                     signed: false, decimal: true),
                 style: TextStyle(
                   fontSize: 21 * _themeProvider.userFontSize / 0.8,
-                  color: provider.ispositive ? Colors.white : Colors.red,
+                  color: provider.ispositive
+                      ? Theme.of(context).primaryColorLight
+                      : Colors.red,
                 ),
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
@@ -975,7 +1003,9 @@ class _setWeightAlertState extends State<setWeightAlert> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 35 * _themeProvider.userFontSize / 0.8,
-                        color: provider.ispositive ? Colors.white : Colors.red,
+                        color: provider.ispositive
+                            ? Theme.of(context).primaryColorLight
+                            : Colors.red,
                       ),
                     ),
                     prefixIconConstraints:
@@ -994,8 +1024,9 @@ class _setWeightAlertState extends State<setWeightAlert> {
                     hintText: "입력",
                     hintStyle: TextStyle(
                         fontSize: 21.0 * _themeProvider.userFontSize / 0.8,
-                        color:
-                            provider.ispositive ? Colors.white : Colors.red)),
+                        color: provider.ispositive
+                            ? Theme.of(context).primaryColorLight
+                            : Colors.red)),
                 onChanged: (text) {
                   input = double.parse(text);
                 },
@@ -1015,13 +1046,14 @@ class _setWeightAlertState extends State<setWeightAlert> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
             ),
             child: Text('중량 추가/제거 하기',
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white)),
+                textScaleFactor: 1.5,
+                style: TextStyle(color: Theme.of(context).buttonColor)),
             onPressed: () {
               _workoutProvider.weightcheck(
                   widget.rindex,

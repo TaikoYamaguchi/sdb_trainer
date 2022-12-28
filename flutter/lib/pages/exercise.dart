@@ -164,18 +164,48 @@ class ExerciseState extends State<Exercise> {
     return SizedBox(
       width: double.infinity,
       child: Consumer<RoutineMenuStater>(builder: (context, provider, child) {
+        _menuList = <int, Widget>{
+          0: Padding(
+            child: Text("개별 운동",
+                textScaleFactor: 1.3,
+                style: TextStyle(
+                    color: provider.menustate == 0
+                        ? Theme.of(context).buttonColor
+                        : Theme.of(context).primaryColorDark)),
+            padding: const EdgeInsets.all(5.0),
+          ),
+          1: Padding(
+              child: Text("나의 플랜",
+                  textScaleFactor: 1.3,
+                  style: TextStyle(
+                      color: provider.menustate == 1
+                          ? Theme.of(context).buttonColor
+                          : Theme.of(context).primaryColorDark)),
+              padding: const EdgeInsets.all(5.0)),
+          2: Padding(
+              child: Text("루틴 찾기",
+                  textScaleFactor: 1.3,
+                  style: TextStyle(
+                      color: provider.menustate == 2
+                          ? Theme.of(context).buttonColor
+                          : Theme.of(context).primaryColorDark)),
+              padding: const EdgeInsets.all(5.0))
+        };
         return Container(
-          child: CupertinoSlidingSegmentedControl(
-              groupValue: provider.menustate,
-              children: _menuList,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-              thumbColor: Theme.of(context).primaryColor,
-              onValueChanged: (i) {
-                controller!.animateToPage(i as int,
-                    duration: const Duration(milliseconds: 200),
-                    curve: Curves.easeInOut);
-                provider.change(i);
-              }),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: CupertinoSlidingSegmentedControl(
+                groupValue: provider.menustate,
+                children: _menuList,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                thumbColor: Theme.of(context).primaryColor,
+                onValueChanged: (i) {
+                  controller!.animateToPage(i as int,
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeInOut);
+                  provider.change(i);
+                }),
+          ),
         );
       }),
     );
@@ -221,7 +251,7 @@ class ExerciseState extends State<Exercise> {
                           _editWorkoutCheck();
                         });
                 },
-                padding: EdgeInsets.symmetric(horizontal: 5),
+                padding: EdgeInsets.symmetric(horizontal: 4),
                 itemBuilder: (BuildContext _context, int index) {
                   final List<Color> color = <Color>[];
                   color.add(Color(0xFffc60a8).withOpacity(1.0));
@@ -576,24 +606,6 @@ class ExerciseState extends State<Exercise> {
     _RoutineMenuProvider =
         Provider.of<RoutineMenuStater>(context, listen: false);
     _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
-    _menuList = <int, Widget>{
-      0: Padding(
-        child: Text("개별 운동",
-            textScaleFactor: 1.3,
-            style: TextStyle(color: Theme.of(context).primaryColorLight)),
-        padding: const EdgeInsets.all(5.0),
-      ),
-      1: Padding(
-          child: Text("나의 플랜",
-              textScaleFactor: 1.3,
-              style: TextStyle(color: Theme.of(context).primaryColorLight)),
-          padding: const EdgeInsets.all(5.0)),
-      2: Padding(
-          child: Text("루틴 찾기",
-              textScaleFactor: 1.3,
-              style: TextStyle(color: Theme.of(context).primaryColorLight)),
-          padding: const EdgeInsets.all(5.0))
-    };
 
     _PrefsProvider.eachworkouttutor
         ? _PrefsProvider.stepone

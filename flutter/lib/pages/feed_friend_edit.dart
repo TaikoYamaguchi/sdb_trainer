@@ -138,12 +138,12 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
                   separatorBuilder: (BuildContext _context, int index) {
                     return Container(
                       alignment: Alignment.center,
-                      height: 1,
+                      height: 0.5,
                       child: Container(
                         alignment: Alignment.center,
                         margin: EdgeInsets.symmetric(horizontal: 10),
-                        height: 1,
-                        color: Color(0xFF717171),
+                        height: 0.5,
+                        color: Theme.of(context).primaryColorDark,
                       ),
                     );
                   },
@@ -164,7 +164,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
   Widget _friend_listWidget(user) {
     return Container(
         child: Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

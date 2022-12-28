@@ -276,8 +276,8 @@ class _ProfileBodyState extends State<ProfileBody> {
                   _userProvider.userdata.bodyStats.last.weight);
             },
             child: Text(isLoading ? 'loggin in.....' : "프로필 수정",
-                textScaleFactor: 1.7,
-                style: TextStyle(color: Theme.of(context).primaryColorLight))));
+                textScaleFactor: 1.5,
+                style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
   void _editCheck() async {

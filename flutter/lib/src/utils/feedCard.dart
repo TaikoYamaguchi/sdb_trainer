@@ -72,7 +72,7 @@ class _FeedCardState extends State<FeedCard> {
       width: MediaQuery.of(context).size.width,
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
           child: Consumer2<HistorydataProvider, UserdataProvider>(
               builder: (builder, provider, provider2, child) {
             return _userProvider.userdata.dislike.contains(user.email)
@@ -91,7 +91,7 @@ class _FeedCardState extends State<FeedCard> {
                       children: [
                         Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
+                                horizontal: 8, vertical: 5),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -699,12 +699,12 @@ class _FeedCardState extends State<FeedCard> {
               backgroundColor: Theme.of(context).cardColor,
               contentPadding: EdgeInsets.all(12.0),
               title: Text('운동에 글을 남겨 보세요',
-                  textScaleFactor: 2.0,
+                  textScaleFactor: 1.3,
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Theme.of(context).primaryColorLight)),
               content: Column(mainAxisSize: MainAxisSize.min, children: [
                 Text('코멘트를 입력해 주세요',
-                    textScaleFactor: 1.3,
+                    textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
                     style:
                         TextStyle(color: Theme.of(context).primaryColorLight)),
@@ -784,7 +784,7 @@ class _FeedCardState extends State<FeedCard> {
             },
             child: Text("글 남기기",
                 textScaleFactor: 1.7,
-                style: TextStyle(color: Theme.of(context).primaryColorLight))));
+                style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
   Widget _feedTextField(text) {

@@ -56,7 +56,7 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
           ),
           title: Text(
             "차단 친구 관리",
-            textScaleFactor: 2.7,
+            textScaleFactor: 1.7,
             style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
           backgroundColor: Theme.of(context).canvasColor,

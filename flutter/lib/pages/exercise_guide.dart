@@ -65,7 +65,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
         enableSelectionZooming: true,
         selectionRectBorderColor: Colors.red,
         selectionRectBorderWidth: 2,
-        selectionRectColor: Theme.of(context).primaryColorDark,
+        selectionRectColor: Colors.white,
         enablePanning: true,
         maximumZoomLevel: 0.7);
     super.initState();

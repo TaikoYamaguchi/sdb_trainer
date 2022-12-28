@@ -243,18 +243,21 @@ class _FeedState extends State<Feed> {
     return SizedBox(
       width: double.infinity,
       child: Container(
-        child: CupertinoSlidingSegmentedControl(
-            groupValue: _feedListCtrl,
-            children: _feedList,
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-            thumbColor: Theme.of(context).primaryColor,
-            onValueChanged: (i) {
-              setState(() {
-                _feedListCtrl = i as int;
-                _isPageController.jumpToPage(4241 + i);
-                _feedController(_feedListCtrl);
-              });
-            }),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          child: CupertinoSlidingSegmentedControl(
+              groupValue: _feedListCtrl,
+              children: _feedList,
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+              thumbColor: Theme.of(context).primaryColor,
+              onValueChanged: (i) {
+                setState(() {
+                  _feedListCtrl = i as int;
+                  _isPageController.jumpToPage(4241 + i);
+                  _feedController(_feedListCtrl);
+                });
+              }),
+        ),
       ),
     );
   }

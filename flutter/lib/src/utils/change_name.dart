@@ -46,7 +46,7 @@ class _NameInputDialogState extends State<NameInputDialog> {
                       ? Color(0xFF212121)
                       : Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
@@ -59,7 +59,8 @@ class _NameInputDialogState extends State<NameInputDialog> {
               }
             },
             child: Text(_customRuUsed == true ? "존재하는 루틴 이름" : "루틴 이름 수정",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
   void _editWorkoutNameCheck(newname) async {
@@ -88,7 +89,7 @@ class _NameInputDialogState extends State<NameInputDialog> {
                       ? Color(0xFF212121)
                       : Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColorLight,
               ),
               padding: EdgeInsets.all(12.0),
             ),
@@ -110,7 +111,8 @@ class _NameInputDialogState extends State<NameInputDialog> {
               ;
             },
             child: Text(_customRuUsed == true ? "존재하는 루틴 이름" : "새 루틴 추가",
-                textScaleFactor: 1.7, style: TextStyle(color: Colors.white))));
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
   void _editWorkoutCheck() async {
@@ -137,15 +139,15 @@ class _NameInputDialogState extends State<NameInputDialog> {
         contentPadding: EdgeInsets.all(12.0),
         title: Text(
           title,
-          textScaleFactor: 2.0,
+          textScaleFactor: 1.5,
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Theme.of(context).primaryColorLight),
         ),
         content: Column(mainAxisSize: MainAxisSize.min, children: [
           Text('운동 루틴의 이름을 입력해 주세요',
               textScaleFactor: 1.3,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white)),
+              style: TextStyle(color: Theme.of(context).primaryColorLight)),
           Text('외부를 터치하면 취소 할 수 있어요',
               textScaleFactor: 1.0,
               textAlign: TextAlign.center,
@@ -167,7 +169,8 @@ class _NameInputDialogState extends State<NameInputDialog> {
                 }
               });
             },
-            style: TextStyle(fontSize: 24.0, color: Colors.white),
+            style: TextStyle(
+                fontSize: 24.0, color: Theme.of(context).primaryColorLight),
             textAlign: TextAlign.center,
             controller: _workoutNameCtrl,
             decoration: InputDecoration(
@@ -183,7 +186,9 @@ class _NameInputDialogState extends State<NameInputDialog> {
                       color: Theme.of(context).primaryColor, width: 3),
                 ),
                 hintText: "운동 루틴 이름",
-                hintStyle: TextStyle(fontSize: 24.0, color: Colors.white)),
+                hintStyle: TextStyle(
+                    fontSize: 24.0,
+                    color: Theme.of(context).primaryColorLight)),
           ),
           widget.rindex == -1
               ? Container(
@@ -193,7 +198,8 @@ class _NameInputDialogState extends State<NameInputDialog> {
                       Text(
                         '플랜 모드',
                         textScaleFactor: 1.2,
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorLight),
                       ),
                       Transform.scale(
                           scale: 1,
@@ -201,9 +207,11 @@ class _NameInputDialogState extends State<NameInputDialog> {
                               builder: (builder, provider, child) {
                             return Theme(
                                 data: ThemeData(
-                                    unselectedWidgetColor: Colors.white),
+                                    unselectedWidgetColor:
+                                        Theme.of(context).primaryColorLight),
                                 child: Checkbox(
-                                    checkColor: Colors.white,
+                                    checkColor:
+                                        Theme.of(context).primaryColorLight,
                                     activeColor: Theme.of(context).primaryColor,
                                     value: _ischecked,
                                     onChanged: (newvalue) {

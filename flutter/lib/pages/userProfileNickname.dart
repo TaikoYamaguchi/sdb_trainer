@@ -178,8 +178,8 @@ class _ProfileNicknameState extends State<ProfileNickname> {
             ),
             onPressed: () => _editCheck(),
             child: Text(isLoading ? 'loggin in.....' : "닉네임 수정",
-                textScaleFactor: 1.7,
-                style: TextStyle(color: Theme.of(context).primaryColorLight))));
+                textScaleFactor: 1.5,
+                style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
   void _editCheck() async {

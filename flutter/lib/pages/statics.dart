@@ -558,7 +558,7 @@ class _CalendarState extends State<Calendar> {
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
               '몸무게를 기록 할게요',
-              textScaleFactor: 2.0,
+              textScaleFactor: 1.5,
               textAlign: TextAlign.center,
               style: TextStyle(color: Theme.of(context).primaryColorLight),
             ),
@@ -599,6 +599,7 @@ class _CalendarState extends State<Calendar> {
                           color: Theme.of(context).primaryColorLight)),
                   onChanged: (text) {},
                 ),
+                SizedBox(height: 6),
                 TextField(
                   controller: _userWeightGoalController,
                   keyboardType: TextInputType.numberWithOptions(
@@ -647,9 +648,8 @@ class _CalendarState extends State<Calendar> {
                     padding: EdgeInsets.all(12.0),
                   ),
                   child: Text('오늘 몸무게 기록하기',
-                      textScaleFactor: 1.7,
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColorLight)),
+                      textScaleFactor: 1.5,
+                      style: TextStyle(color: Theme.of(context).buttonColor)),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                     _displayBodyWeightPushDialog(
@@ -686,7 +686,7 @@ class _CalendarState extends State<Calendar> {
             contentPadding: EdgeInsets.all(12.0),
             title: Text(
               '몸무게를 수정 할게요',
-              textScaleFactor: 2.0,
+              textScaleFactor: 1.5,
               textAlign: TextAlign.center,
               style: TextStyle(color: Theme.of(context).primaryColorLight),
             ),
@@ -727,6 +727,7 @@ class _CalendarState extends State<Calendar> {
                           color: Theme.of(context).primaryColorLight)),
                   onChanged: (text) {},
                 ),
+                SizedBox(height: 6),
                 TextField(
                   controller: _userWeightGoalController,
                   keyboardType: TextInputType.numberWithOptions(
@@ -775,7 +776,7 @@ class _CalendarState extends State<Calendar> {
                     padding: EdgeInsets.all(12.0),
                   ),
                   child: Text('몸무게 수정 하기',
-                      textScaleFactor: 1.7,
+                      textScaleFactor: 1.5,
                       style: TextStyle(
                           color: Theme.of(context).primaryColorLight)),
                   onPressed: () {
@@ -1191,7 +1192,7 @@ class _CalendarState extends State<Calendar> {
   }
 
   Widget _bodyWeightListWidget(List<BodyStat> bodyStats) {
-    double deviceWidth = MediaQuery.of(context).size.width;
+    double deviceWidth = MediaQuery.of(context).size.width - 8;
     double top = 20;
     double bottom = 20;
     return Expanded(
@@ -1287,7 +1288,7 @@ class _CalendarState extends State<Calendar> {
     double top = 0;
     double bottom = 0;
 
-    double deviceWidth = MediaQuery.of(context).size.width;
+    double deviceWidth = MediaQuery.of(context).size.width - 8;
     return Container(
         child: GestureDetector(
       onTap: () {},
@@ -2193,6 +2194,11 @@ class _CalendarState extends State<Calendar> {
     _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     _getChartSourcefromDay();
-    return Scaffold(appBar: _appbarWidget(), body: _staticsPages());
+    return Scaffold(
+        appBar: _appbarWidget(),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          child: _staticsPages(),
+        ));
   }
 }

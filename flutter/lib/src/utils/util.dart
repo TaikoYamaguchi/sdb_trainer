@@ -68,7 +68,9 @@ void displayPhotoDialog(context) {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
                     child: Text("사진을 어디서 가져올까요?",
-                        style: TextStyle(color: Colors.white, fontSize: 16.0)),
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorLight,
+                            fontSize: 16.0)),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -83,7 +85,7 @@ void displayPhotoDialog(context) {
                               foregroundColor: Theme.of(context).primaryColor,
                               backgroundColor: Theme.of(context).primaryColor,
                               textStyle: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).primaryColorLight,
                               ),
                               disabledForegroundColor:
                                   Color.fromRGBO(246, 58, 64, 20),
@@ -96,10 +98,13 @@ void displayPhotoDialog(context) {
                             child: Column(
                               children: [
                                 Icon(Icons.camera_alt,
-                                    size: 24, color: Colors.white),
+                                    size: 24,
+                                    color: Theme.of(context).primaryColorLight),
                                 Text('촬영',
                                     style: TextStyle(
-                                        fontSize: 16, color: Colors.white)),
+                                        fontSize: 16,
+                                        color: Theme.of(context)
+                                            .primaryColorLight)),
                               ],
                             ),
                           )),
@@ -113,7 +118,7 @@ void displayPhotoDialog(context) {
                               foregroundColor: Theme.of(context).primaryColor,
                               backgroundColor: Theme.of(context).primaryColor,
                               textStyle: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).primaryColorLight,
                               ),
                               disabledForegroundColor:
                                   Color.fromRGBO(246, 58, 64, 20),
@@ -126,10 +131,13 @@ void displayPhotoDialog(context) {
                             child: Column(
                               children: [
                                 Icon(Icons.collections,
-                                    size: 24, color: Colors.white),
+                                    size: 24,
+                                    color: Theme.of(context).primaryColorLight),
                                 Text('갤러리',
                                     style: TextStyle(
-                                        fontSize: 16, color: Colors.white)),
+                                        fontSize: 16,
+                                        color: Theme.of(context)
+                                            .primaryColorLight)),
                               ],
                             ),
                           )),
@@ -154,13 +162,16 @@ void displayErrorAlert(context, title, message) {
           backgroundColor: Theme.of(context).cardColor,
           title: Text(title,
               textAlign: TextAlign.left,
-              style: TextStyle(color: Colors.white, fontSize: 14)),
+              style: TextStyle(
+                  color: Theme.of(context).primaryColorLight, fontSize: 14)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(message,
                   textAlign: TextAlign.left,
-                  style: TextStyle(color: Colors.white, fontSize: 14)),
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColorLight,
+                      fontSize: 14)),
             ],
           ),
           actions: <Widget>[
@@ -181,7 +192,7 @@ Widget _DeleteConfirmButton(context) {
             backgroundColor: Theme.of(context).primaryColor,
             foregroundColor: Theme.of(context).primaryColor,
             textStyle: TextStyle(
-              color: Colors.white,
+              color: Theme.of(context).primaryColorLight,
             ),
             disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
             padding: EdgeInsets.all(12.0),
@@ -190,7 +201,9 @@ Widget _DeleteConfirmButton(context) {
             Navigator.of(context, rootNavigator: true).pop();
           },
           child: Text("확인",
-              style: TextStyle(fontSize: 20.0, color: Colors.white))));
+              style: TextStyle(
+                  fontSize: 20.0,
+                  color: Theme.of(context).primaryColorLight))));
 }
 
 void displayShareAlert(context, title, message) {
@@ -204,13 +217,16 @@ void displayShareAlert(context, title, message) {
           backgroundColor: Theme.of(context).cardColor,
           title: Text(title,
               textAlign: TextAlign.left,
-              style: TextStyle(color: Colors.white, fontSize: 14)),
+              style: TextStyle(
+                  color: Theme.of(context).primaryColorLight, fontSize: 14)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(message,
                   textAlign: TextAlign.left,
-                  style: TextStyle(color: Colors.white, fontSize: 14)),
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColorLight,
+                      fontSize: 14)),
             ],
           ),
           actions: <Widget>[
@@ -233,7 +249,7 @@ Widget _shareConfirmButton(context) {
             backgroundColor: Theme.of(context).primaryColor,
             foregroundColor: Theme.of(context).primaryColor,
             textStyle: TextStyle(
-              color: Colors.white,
+              color: Theme.of(context).primaryColorLight,
             ),
             disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
             padding: EdgeInsets.all(12.0),
@@ -253,7 +269,9 @@ Widget _shareConfirmButton(context) {
             Navigator.of(context, rootNavigator: true).pop();
           },
           child: Text("공유하기",
-              style: TextStyle(fontSize: 20.0, color: Colors.white))));
+              style: TextStyle(
+                  fontSize: 20.0,
+                  color: Theme.of(context).primaryColorLight))));
 }
 
 Future<Map<String, dynamic>> getDeviceInfo() async {

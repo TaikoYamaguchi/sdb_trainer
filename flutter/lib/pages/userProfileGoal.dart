@@ -163,13 +163,13 @@ class _ProfileGoalState extends State<ProfileGoal> {
                                   (BuildContext _context, int index) {
                                 return Container(
                                   alignment: Alignment.center,
-                                  height: 1,
+                                  height: 0.5,
                                   child: Container(
                                     alignment: Alignment.center,
                                     margin:
                                         EdgeInsets.symmetric(horizontal: 10),
-                                    height: 1,
-                                    color: Color(0xFF717171),
+                                    height: 0.5,
+                                    color: Theme.of(context).primaryColorDark,
                                   ),
                                 );
                               },
@@ -213,6 +213,7 @@ class _ProfileGoalState extends State<ProfileGoal> {
                       fontSize: 18, color: Theme.of(context).primaryColorLight),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
+                      border: InputBorder.none,
                       hintText: Exercises.onerm.toStringAsFixed(1),
                       hintStyle: TextStyle(
                           fontSize: 18,
@@ -239,6 +240,7 @@ class _ProfileGoalState extends State<ProfileGoal> {
                       fontSize: 18, color: Theme.of(context).primaryColorLight),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
+                      border: InputBorder.none,
                       hintText: Exercises.goal.toStringAsFixed(1),
                       hintStyle: TextStyle(
                           fontSize: 18,
@@ -278,8 +280,8 @@ class _ProfileGoalState extends State<ProfileGoal> {
             ),
             onPressed: () => _postExerciseCheck(),
             child: Text(isLoading ? 'loggin in.....' : "운동 정보 수정",
-                textScaleFactor: 1.7,
-                style: TextStyle(color: Theme.of(context).primaryColorLight))));
+                textScaleFactor: 1.5,
+                style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
   void _postExerciseCheck() async {
