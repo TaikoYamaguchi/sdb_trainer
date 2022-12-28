@@ -590,44 +590,6 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
     );
   }
 
-  void _displayFinishAlert() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            buttonPadding: EdgeInsets.all(12.0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            backgroundColor: Theme.of(context).cardColor,
-            contentPadding: EdgeInsets.all(12.0),
-            title: Text(
-              '커스텀운동을 삭제 할 수 있어요',
-              textScaleFactor: 2.0,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Theme.of(context).primaryColorLight),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('커스텀운동을 삭제 하시겠나요?',
-                    textScaleFactor: 1.3,
-                    textAlign: TextAlign.center,
-                    style:
-                        TextStyle(color: Theme.of(context).primaryColorLight)),
-                Text('외부를 터치하면 취소 할 수 있어요',
-                    textScaleFactor: 1.0,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey)),
-              ],
-            ),
-            actions: <Widget>[
-              _FinishConfirmButton(),
-            ],
-          );
-        });
-  }
-
   Widget _Add_to_Plan_Button() {
     return Padding(
       padding: const EdgeInsets.all(12.0),
@@ -1026,6 +988,29 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
     }
   }
 
+  _showMyDialog() async {
+    var result = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return showsimpleAlerts(
+            layer: 6,
+            rindex: -1,
+            eindex: -1,
+          );
+        });
+    if (result == true) {
+      setState(() {
+        _delete = !_delete;
+      });
+
+      _exProvider.removeExdata(widget.eindex);
+      _postExerciseCheck();
+      _exProvider.settestdata_d();
+
+      Navigator.of(context).pop();
+    }
+  }
+
   initialHistorydataGet() async {
     final _initHistorydataProvider =
         Provider.of<HistorydataProvider>(context, listen: false);
@@ -1034,39 +1019,6 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
 
     _initExercisesdataProvider.getdata();
     await _initHistorydataProvider.getdata();
-  }
-
-  Widget _FinishConfirmButton() {
-    return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: TextButton(
-            style: TextButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              foregroundColor: Theme.of(context).primaryColor,
-              backgroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(
-                color: Theme.of(context).primaryColorLight,
-              ),
-              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-              padding: EdgeInsets.all(12.0),
-            ),
-            onPressed: () {
-              setState(() {
-                _delete = !_delete;
-              });
-
-              _exProvider.removeExdata(widget.eindex);
-              _postExerciseCheck();
-              _exProvider.settestdata_d();
-
-              Navigator.of(context, rootNavigator: true).pop();
-              Navigator.of(context).pop();
-            },
-            child: Text("커스텀 운동 삭제 하기",
-                textScaleFactor: 1.7,
-                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   Widget _chartWidget(context) {
@@ -1454,7 +1406,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                         ? Container(
                             child: IconButton(
                               onPressed: () {
-                                _displayFinishAlert();
+                                _showMyDialog();
                               },
                               icon: Icon(
                                 Icons.delete,

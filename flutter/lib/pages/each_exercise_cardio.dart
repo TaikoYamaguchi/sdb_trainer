@@ -546,7 +546,7 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                                     Theme.of(context)
                                                         .primaryColorLight),
                                             child: Checkbox(
-                                                checkColor: Theme.of(context)
+                                                checkColor: Theme.of(cont간편장부-라군1002호.xlsxext)
                                                     .primaryColorLight,
                                                 activeColor: Theme.of(context)
                                                     .primaryColor,
@@ -567,7 +567,7 @@ class _CardioExerciseDetailsState extends State<CardioExerciseDetails> {
                                                                       .routinedatas[
                                                                           widget
                                                                               .rindex]
-                                                                      .exercises[
+                                                                      .e간편장부-라군1002호.xlsxxercises[
                                                                           pindex]
                                                                       .rest),
                                                                   index ==
