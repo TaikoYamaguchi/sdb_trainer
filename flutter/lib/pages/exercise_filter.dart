@@ -754,8 +754,10 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                       : '${provider.tags.toString().replaceAll('[', '').replaceAll(']', '')}',
                                   textScaleFactor: 1.5,
                                   style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorLight),
+                                      color: provider.filtmenu == 1
+                                          ? Theme.of(context).buttonColor
+                                          : Theme.of(context)
+                                              .primaryColorLight),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -782,8 +784,10 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                       : '${provider.tags2.toString().replaceAll('[', '').replaceAll(']', '')}',
                                   textScaleFactor: 1.5,
                                   style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorLight),
+                                      color: provider.filtmenu == 2
+                                          ? Theme.of(context).buttonColor
+                                          : Theme.of(context)
+                                              .primaryColorLight),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),

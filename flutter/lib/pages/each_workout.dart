@@ -849,13 +849,12 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                             ? Container()
                             : Container(
                                 alignment: Alignment.center,
-                                height: 1,
-                                color: Color(0xFF212121),
+                                height: 0.5,
                                 child: Container(
                                   alignment: Alignment.center,
                                   margin: EdgeInsets.symmetric(horizontal: 10),
-                                  height: 1,
-                                  color: Color(0xFF717171),
+                                  height: 0.5,
+                                  color: Theme.of(context).primaryColorDark,
                                 ),
                               )
                       ],
@@ -1049,7 +1048,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                     : '${provider.tags.toString().replaceAll('[', '').replaceAll(']', '')}',
                                 textScaleFactor: 1.5,
                                 style: TextStyle(
-                                    color: Theme.of(context).primaryColorLight),
+                                    color: provider.filtmenu == 1
+                                        ? Theme.of(context).buttonColor
+                                        : Theme.of(context).primaryColorLight),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -1076,7 +1077,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                     : '${provider.tags2.toString().replaceAll('[', '').replaceAll(']', '')}',
                                 textScaleFactor: 1.5,
                                 style: TextStyle(
-                                    color: Theme.of(context).primaryColorLight),
+                                    color: provider.filtmenu == 2
+                                        ? Theme.of(context).buttonColor
+                                        : Theme.of(context).primaryColorLight),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -1199,7 +1202,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                                         Icons.add,
                                                         size: 28.0,
                                                         color: Theme.of(context)
-                                                            .primaryColorLight,
+                                                            .buttonColor,
                                                       ),
                                                     ),
                                                     Padding(
@@ -1217,8 +1220,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                                               textScaleFactor:
                                                                   1.5,
                                                               style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .primaryColorLight,
                                                               )),
                                                         ],
                                                       ),
@@ -1288,7 +1292,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                       padding: EdgeInsets.symmetric(
                           horizontal: _isexsearch ? 10 : 20),
                       decoration: BoxDecoration(
-                          color: Color(0xFF212121),
                           borderRadius: BorderRadius.only(
                               topRight: Radius.circular(top),
                               bottomRight: Radius.circular(bottom),
@@ -1314,13 +1317,12 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               separatorBuilder: (BuildContext _context, int index) {
                 return Container(
                   alignment: Alignment.center,
-                  height: 1,
-                  color: Color(0xFF212121),
+                  height: 0.5,
                   child: Container(
                     alignment: Alignment.center,
                     margin: EdgeInsets.symmetric(horizontal: 10),
-                    height: 1,
-                    color: Color(0xFF717171),
+                    height: 0.5,
+                    color: Theme.of(context).primaryColorDark,
                   ),
                 );
               },
