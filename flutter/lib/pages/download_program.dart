@@ -14,6 +14,7 @@ import 'package:sdb_trainer/src/model/workoutdata.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart' as uex;
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
+import 'package:sdb_trainer/src/utils/alerts.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
@@ -750,7 +751,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                 _postExerciseCheck();
                 ref_exercise_index = ref_exercise_index.toSet().toList();
 
-                _displayStartAlert();
+                _showMyDialog();
               },
               child: Text("시작하기",
                   textScaleFactor: 1.7,
@@ -805,6 +806,21 @@ class _ProgramDownloadState extends State<ProgramDownload> {
             ],
           );
         });
+  }
+
+  _showMyDialog() async {
+    var result = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return showsimpleAlerts(
+            layer: 3,
+            rindex: -1,
+            eindex: -1,
+          );
+        });
+    if (result == true) {
+      setSetting();
+    }
   }
 
   Widget _StartConfirmButton() {
