@@ -150,7 +150,8 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                       Text(
                         "Best 1RM: ${widget.exercise.onerm!.toStringAsFixed(1)}/${widget.exercise.goal!.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
                         textScaleFactor: 1.7,
-                        style: TextStyle(color: Color(0xFF717171)),
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorDark),
                       )
                     ],
                   )),
@@ -254,11 +255,10 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                                           Transform.scale(
                                               scale: 1.2,
                                               child: Checkbox(
-                                                  checkColor: Color(0xFF101012),
-                                                  fillColor:
-                                                      MaterialStateProperty
-                                                          .resolveWith(
-                                                              getColor),
+                                                  checkColor: Theme.of(context)
+                                                      .buttonColor,
+                                                  activeColor: Theme.of(context)
+                                                      .primaryColor,
                                                   value: widget.exercise
                                                       .sets[index].ischecked,
                                                   onChanged: (newvalue) {
@@ -300,6 +300,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                                         ),
                                         textAlign: TextAlign.center,
                                         decoration: InputDecoration(
+                                          border: InputBorder.none,
                                           hintText:
                                               "${widget.exercise.sets[index].weight}",
                                           hintStyle: TextStyle(
@@ -347,6 +348,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                                         ),
                                         textAlign: TextAlign.center,
                                         decoration: InputDecoration(
+                                          border: InputBorder.none,
                                           hintText:
                                               "${widget.exercise.sets[index].reps}",
                                           hintStyle: TextStyle(
@@ -399,12 +401,12 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                         separatorBuilder: (BuildContext _context, int index) {
                           return Container(
                             alignment: Alignment.center,
-                            height: 1,
+                            height: 0.5,
                             child: Container(
                               alignment: Alignment.center,
                               margin: EdgeInsets.symmetric(horizontal: 10),
-                              height: 1,
-                              color: Color(0xFF717171),
+                              height: 0.5,
+                              color: Theme.of(context).primaryColorDark,
                             ),
                           );
                         },

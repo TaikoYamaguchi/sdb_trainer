@@ -216,8 +216,8 @@ class _FeedState extends State<Feed> {
             textScaleFactor: 1.3,
             style: TextStyle(
               color: _feedListCtrl == 1
-                  ? Theme.of(context).primaryColorLight
-                  : Colors.grey,
+                  ? Theme.of(context).buttonColor
+                  : Theme.of(context).primaryColorDark,
             )),
         padding: const EdgeInsets.all(5.0),
       ),
@@ -226,8 +226,8 @@ class _FeedState extends State<Feed> {
               textScaleFactor: 1.3,
               style: TextStyle(
                 color: _feedListCtrl == 2
-                    ? Theme.of(context).primaryColorLight
-                    : Colors.grey,
+                    ? Theme.of(context).buttonColor
+                    : Theme.of(context).primaryColorDark,
               )),
           padding: const EdgeInsets.all(5.0)),
       3: Padding(
@@ -235,8 +235,8 @@ class _FeedState extends State<Feed> {
               textScaleFactor: 1.3,
               style: TextStyle(
                 color: _feedListCtrl == 3
-                    ? Theme.of(context).primaryColorLight
-                    : Colors.grey,
+                    ? Theme.of(context).buttonColor
+                    : Theme.of(context).primaryColorDark,
               )),
           padding: const EdgeInsets.all(5.0))
     };

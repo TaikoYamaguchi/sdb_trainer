@@ -105,7 +105,7 @@ class _AppState extends State<App> {
                 selectedLabelStyle: TextStyle(fontWeight: FontWeight.w500),
                 currentIndex: _bodyStater.bodystate,
                 items: [
-//                  _bottomNavigationBarItem("home", "홈"),
+                  _bottomNavigationBarItem("home", "홈"),
                   _bottomNavigationBarItem("dumbel", "운동"),
                   _bottomNavigationBarItem("feed", "피드"),
                   _bottomNavigationBarItem("calendar", "기록"),
@@ -115,14 +115,16 @@ class _AppState extends State<App> {
               Center(
                 child: Container(
                   width:
-                      _bodyStater.bodystate == 0 || _bodyStater.bodystate == 3
+                      _bodyStater.bodystate == 0 || _bodyStater.bodystate == 4
                           ? width
-                          : width * 0.5,
+                          : width * 0.6,
                   child: Align(
                     alignment:
                         _bodyStater.bodystate == 0 || _bodyStater.bodystate == 1
                             ? Alignment.bottomLeft
-                            : Alignment.bottomRight,
+                            : _bodyStater.bodystate == 2
+                                ? Alignment.bottomCenter
+                                : Alignment.bottomRight,
                     child: Container(
                       height: 2,
                       decoration: BoxDecoration(
@@ -131,7 +133,7 @@ class _AppState extends State<App> {
                             topRight: Radius.circular(30),
                             topLeft: Radius.circular(30)),
                       ),
-                      width: width * 0.25,
+                      width: width * 0.2,
                     ),
                   ),
                 ),
@@ -503,7 +505,7 @@ class _AppState extends State<App> {
                     : IndexedStack(
                         index: _bodyStater.bodystate,
                         children: <Widget>[
-//                            Home(),
+                            Home(),
                             TabNavigator(),
                             Feed(),
                             Calendar(),

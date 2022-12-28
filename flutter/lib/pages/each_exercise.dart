@@ -597,15 +597,15 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                   Container(
                                     width: 60,
                                     child: Transform.scale(
-                                        scale: 1.2,
+                                        scale: 1.1,
                                         child: Theme(
                                           data: ThemeData(
                                               unselectedWidgetColor:
                                                   Theme.of(context)
                                                       .primaryColorLight),
                                           child: Checkbox(
-                                              checkColor: Theme.of(context)
-                                                  .primaryColorLight,
+                                              checkColor:
+                                                  Theme.of(context).buttonColor,
                                               activeColor: Theme.of(context)
                                                   .primaryColor,
                                               value: _sets[index].ischecked,
@@ -767,6 +767,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               ),
                                               textAlign: TextAlign.center,
                                               decoration: InputDecoration(
+                                                border: InputBorder.none,
                                                 hintText:
                                                     "${_sets[index].weight}",
                                                 hintStyle: TextStyle(
@@ -821,6 +822,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               ),
                                               textAlign: TextAlign.center,
                                               decoration: InputDecoration(
+                                                border: InputBorder.none,
                                                 hintText:
                                                     "${_sets[index].reps}",
                                                 hintStyle: TextStyle(
@@ -881,13 +883,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           separatorBuilder: (BuildContext _context, int index) {
                             return Container(
                               alignment: Alignment.center,
-                              height: 1,
-                              color: Color(0xFF101012),
+                              height: 0.5,
                               child: Container(
                                 alignment: Alignment.center,
                                 margin: EdgeInsets.symmetric(horizontal: 10),
-                                height: 1,
-                                color: Color(0xFF717171),
+                                height: 0.5,
+                                color: Theme.of(context).primaryColorDark,
                               ),
                             );
                           },
@@ -1560,7 +1561,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                     Container(
                                       width: 60,
                                       child: Transform.scale(
-                                          scale: 1.2,
+                                          scale: 1.1,
                                           child: Theme(
                                             data: ThemeData(
                                                 unselectedWidgetColor:
@@ -1774,6 +1775,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                 ),
                                                 textAlign: TextAlign.center,
                                                 decoration: InputDecoration(
+                                                  border: InputBorder.none,
                                                   hintText:
                                                       "${_sets[index].reps}",
                                                   hintStyle: TextStyle(
@@ -1835,16 +1837,15 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                             separatorBuilder:
                                 (BuildContext _context, int index) {
                               return Container(
-                                alignment: Alignment.center,
-                                height: 1,
-                                color: Color(0xFF101012),
-                                child: Container(
                                   alignment: Alignment.center,
-                                  margin: EdgeInsets.symmetric(horizontal: 10),
-                                  height: 1,
-                                  color: Color(0xFF717171),
-                                ),
-                              );
+                                  height: 0.5,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    height: 0.5,
+                                    color: Theme.of(context).primaryColorDark,
+                                  ));
                             },
                             itemCount: _sets.length),
                       ),
@@ -2386,7 +2387,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                         Container(
                                           width: 60,
                                           child: Transform.scale(
-                                              scale: 1.2,
+                                              scale: 1.1,
                                               child: Theme(
                                                 data: ThemeData(
                                                     unselectedWidgetColor:
@@ -2764,13 +2765,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                 (BuildContext _context, int index) {
                               return Container(
                                 alignment: Alignment.center,
-                                height: 1,
-                                color: Color(0xFF101012),
+                                height: 0.5,
                                 child: Container(
                                   alignment: Alignment.center,
                                   margin: EdgeInsets.symmetric(horizontal: 10),
-                                  height: 1,
-                                  color: Color(0xFF717171),
+                                  height: 0.5,
+                                  color: Theme.of(context).primaryColorDark,
                                 ),
                               );
                             },
