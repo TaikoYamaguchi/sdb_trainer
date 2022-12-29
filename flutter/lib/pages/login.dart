@@ -60,47 +60,50 @@ class LoginPageState extends State<LoginPage> {
     return Scaffold(
       key: _scaffoldKey,
       body: Container(
+          color: Color(0xFF101012),
           child: Center(
               child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Expanded(flex: 3, child: SizedBox(height: 6)),
-              Text("SUPERO",
-                  style: TextStyle(
-                      color: Theme.of(context).primaryColorLight,
-                      fontSize: 54,
-                      fontWeight: FontWeight.w800)),
-              Text("우리의 운동 극복 스토리",
-                  style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500)),
-              Expanded(flex: 3, child: SizedBox(height: 6)),
-              _isEmailLogin ? _emailWidget() : Container(),
-              SizedBox(height: 8),
-              _isEmailLogin ? _passwordWidget() : Container(),
-              SizedBox(height: 14),
-              _isEmailLogin ? _signInUpButton("로그인", context) : Container(),
-              SizedBox(height: 14),
-              _isEmailLogin ? _signInUpButton("회원가입", context) : Container(),
-              _isEmailLogin
-                  ? Container()
-                  : _loginSocialButton("kakao", context),
-              _isEmailLogin
-                  ? Container()
-                  : _loginSocialButton("google", context),
-              _isEmailLogin
-                  ? Container()
-                  : _isiOS
-                      ? _loginSocialButton("apple", context)
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(flex: 3, child: SizedBox(height: 6)),
+                  Text("SUPERO",
+                      style: TextStyle(
+                          color: Theme.of(context).buttonColor,
+                          fontSize: 54,
+                          fontWeight: FontWeight.w800)),
+                  Text("우리의 운동 극복 스토리",
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500)),
+                  Expanded(flex: 3, child: SizedBox(height: 6)),
+                  _isEmailLogin ? _emailWidget() : Container(),
+                  SizedBox(height: 8),
+                  _isEmailLogin ? _passwordWidget() : Container(),
+                  SizedBox(height: 14),
+                  _isEmailLogin ? _signInUpButton("로그인", context) : Container(),
+                  SizedBox(height: 14),
+                  _isEmailLogin
+                      ? _signInUpButton("회원가입", context)
                       : Container(),
-              //_emailLoginButton(context),
-              SizedBox(height: 42),
-              _isEmailLogin ? _findUser(context) : Container()
-            ]),
-      ))),
+                  _isEmailLogin
+                      ? Container()
+                      : _loginSocialButton("kakao", context),
+                  _isEmailLogin
+                      ? Container()
+                      : _loginSocialButton("google", context),
+                  _isEmailLogin
+                      ? Container()
+                      : _isiOS
+                          ? _loginSocialButton("apple", context)
+                          : Container(),
+                  //_emailLoginButton(context),
+                  SizedBox(height: 42),
+                  _isEmailLogin ? _findUser(context) : Container()
+                ]),
+          ))),
     );
   }
 
