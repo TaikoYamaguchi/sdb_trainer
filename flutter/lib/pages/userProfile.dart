@@ -5,6 +5,7 @@ import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
+import 'package:sdb_trainer/src/utils/alerts.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/userProfileNickname.dart';
@@ -207,6 +208,29 @@ class _UserProfileState extends State<UserProfile> {
             ],
           );
         });
+  }
+
+  _showMyDialog() async {
+    var result = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return showsimpleAlerts(
+            layer: 8,
+            eindex: -1,
+            rindex: -1,
+          );
+        });
+    if (result == true) {
+      final storage = FlutterSecureStorage();
+
+      UserDelete().deleteUser().then((data) {
+        if (data!.email != "") {
+          _displayUserLogoutAfterDeleteAlert();
+        }
+      });
+      storage.deleteAll();
+      print('storage delete ok');
+    }
   }
 
   void _displayUserDeleteAlert() {

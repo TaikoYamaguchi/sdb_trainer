@@ -117,7 +117,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                             backgroundColor: Colors.transparent)
                         : Icon(
                             Icons.account_circle,
-                            color: Theme.of(context).primaryColorDark,
+                            color: Colors.grey,
                             size: 100.0,
                           ),
                     Expanded(
@@ -306,6 +306,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
       ;
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 5),
+        color: Color(0xFF101012),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -377,8 +378,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
             ),
             Divider(
               indent: 10,
-              thickness: 0.5,
-              color: Theme.of(context).primaryColorDark,
+              thickness: 1.3,
+              color: Colors.grey,
             ),
             ListView(
               shrinkWrap: true,
@@ -453,8 +454,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .primaryColorDark,
+                                                      color: Colors.grey,
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
@@ -545,7 +545,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                   Divider(
                                     indent: 10,
                                     thickness: 1.3,
-                                    color: Theme.of(context).primaryColorDark,
+                                    color: Colors.grey,
                                   ),
                                 ],
                               ),
@@ -755,7 +755,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               },
               child: Text("시작하기",
                   textScaleFactor: 1.7,
-                  style: TextStyle(color: Theme.of(context).buttonColor)))),
+                  style:
+                      TextStyle(color: Theme.of(context).primaryColorLight)))),
     );
   }
 
@@ -767,45 +768,6 @@ class _ProgramDownloadState extends State<ProgramDownload> {
         .then((data) => data["user_email"] != null
             ? {showToast("수정 완료"), _exProvider.getdata()}
             : showToast("입력을 확인해주세요"));
-  }
-
-  void _displayStartAlert() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            buttonPadding: EdgeInsets.all(12.0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            backgroundColor: Theme.of(context).cardColor,
-            contentPadding: EdgeInsets.all(12.0),
-            title: Text(
-              '운동을 시작 할 수 있어요',
-              textScaleFactor: 2.0,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Theme.of(context).primaryColorLight),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('운동을 시작 할까요?',
-                    textScaleFactor: 1.3,
-                    textAlign: TextAlign.center,
-                    style:
-                        TextStyle(color: Theme.of(context).primaryColorLight)),
-                Text('외부를 터치하면 취소 할 수 있어요',
-                    textScaleFactor: 1.0,
-                    textAlign: TextAlign.center,
-                    style:
-                        TextStyle(color: Theme.of(context).primaryColorDark)),
-              ],
-            ),
-            actions: <Widget>[
-              _StartConfirmButton(),
-            ],
-          );
-        });
   }
 
   _showMyDialog() async {
@@ -821,31 +783,6 @@ class _ProgramDownloadState extends State<ProgramDownload> {
     if (result == true) {
       setSetting();
     }
-  }
-
-  Widget _StartConfirmButton() {
-    return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: TextButton(
-            style: TextButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              foregroundColor: Theme.of(context).primaryColor,
-              backgroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(
-                color: Theme.of(context).primaryColorLight,
-              ),
-              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-              padding: EdgeInsets.all(12.0),
-            ),
-            onPressed: () {
-              Navigator.of(context, rootNavigator: true).pop();
-              setSetting();
-            },
-            child: Text("운동 시작 하기",
-                textScaleFactor: 1.7,
-                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   void setSetting() {
@@ -882,8 +819,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                 child: Text('외부를 터치하면 취소 할 수 있어요',
                     textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
-                    style:
-                        TextStyle(color: Theme.of(context).primaryColorDark)),
+                    style: TextStyle(color: Colors.grey)),
               ),
               Container(
                 child: Row(
@@ -954,8 +890,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                   child: Text('외부를 터치하면 취소 할 수 있어요',
                       textScaleFactor: 1.0,
                       textAlign: TextAlign.center,
-                      style:
-                          TextStyle(color: Theme.of(context).primaryColorDark)),
+                      style: TextStyle(color: Colors.grey)),
                 ),
                 SizedBox(height: 20),
                 TextField(
@@ -1133,12 +1068,13 @@ class _ProgramDownloadState extends State<ProgramDownload> {
           ),
           Container(
             alignment: Alignment.center,
-            height: 0.5,
+            height: 1,
+            color: Color(0xFF101012),
             child: Container(
               alignment: Alignment.center,
               margin: EdgeInsets.symmetric(horizontal: 10),
-              height: 0.5,
-              color: Theme.of(context).primaryColorDark,
+              height: 1,
+              color: Color(0xFF717171),
             ),
           )
         ],
@@ -1157,7 +1093,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
-                color: Theme.of(context).buttonColor,
+                color: Theme.of(context).primaryColorLight,
               ),
               disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
               padding: EdgeInsets.all(12.0),
@@ -1177,7 +1113,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
             },
             child: Text("1rm 확인",
                 textScaleFactor: 1.7,
-                style: TextStyle(color: Theme.of(context).buttonColor))));
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   void _editWorkoutCheck() async {

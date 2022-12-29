@@ -1,6 +1,7 @@
 import 'package:confetti/confetti.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:provider/provider.dart';
@@ -382,6 +383,28 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
                 style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
+  Widget _deleteConfirmButton_User() {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              textStyle: TextStyle(
+                color: Theme.of(context).primaryColorLight,
+              ),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
+            ),
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop(true);
+            },
+            child: Text("탈퇴",
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
+  }
+
   @override
   Widget build(BuildContext context) {
     switch (widget.layer) {
@@ -419,6 +442,11 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
         title = "기록을 삭제 할 수 있어요";
         subtitle = '정말로 기록을 지우시나요?';
         comment = '외부를 터치하면 취소 할 수 있어요';
+        break;
+      case 8:
+        title = "정말 탈퇴 하시나요?";
+        subtitle = '더 많은 기능을 준비 중 이에요';
+        comment = '데이터를 지우면 복구 할 수 없어요';
         break;
     }
     ;
@@ -458,7 +486,9 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
                             ? _FinishConfirmButton(context)
                             : widget.layer == 6
                                 ? _customDeleteButton()
-                                : _deleteConfirmButton_History(),
+                                : widget.layer == 7
+                                    ? _deleteConfirmButton_History()
+                                    : _deleteConfirmButton_User(),
       ],
     );
   }
