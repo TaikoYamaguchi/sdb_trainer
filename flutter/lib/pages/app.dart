@@ -547,7 +547,7 @@ class _AppState extends State<App> {
                                                   provider.timeron < 0)
                                               ? Colors.red
                                               : Theme.of(context)
-                                                  .primaryColorLight)))),
+                                                  .buttonColor)))),
                           Row(
                             children: [
                               ActionButton(
@@ -726,7 +726,7 @@ class _ExpandableFabState extends State<ExpandableFab>
                   style: TextStyle(
                       color: (provider.userest && provider.timeron < 0)
                           ? Colors.red
-                          : Theme.of(context).primaryColorLight));
+                          : Theme.of(context).buttonColor));
             }),
           ),
         ),
@@ -802,7 +802,7 @@ class ActionButton extends StatelessWidget {
             iconSize: 20,
             onPressed: onPressed,
             icon: icon,
-            color: Theme.of(context).primaryColorLight,
+            color: Theme.of(context).buttonColor,
           ),
         ),
       ),

@@ -99,12 +99,11 @@ void displayPhotoDialog(context) {
                               children: [
                                 Icon(Icons.camera_alt,
                                     size: 24,
-                                    color: Theme.of(context).primaryColorLight),
+                                    color: Theme.of(context).buttonColor),
                                 Text('촬영',
                                     style: TextStyle(
                                         fontSize: 16,
-                                        color: Theme.of(context)
-                                            .primaryColorLight)),
+                                        color: Theme.of(context).buttonColor)),
                               ],
                             ),
                           )),
@@ -132,12 +131,11 @@ void displayPhotoDialog(context) {
                               children: [
                                 Icon(Icons.collections,
                                     size: 24,
-                                    color: Theme.of(context).primaryColorLight),
+                                    color: Theme.of(context).buttonColor),
                                 Text('갤러리',
                                     style: TextStyle(
                                         fontSize: 16,
-                                        color: Theme.of(context)
-                                            .primaryColorLight)),
+                                        color: Theme.of(context).buttonColor)),
                               ],
                             ),
                           )),
