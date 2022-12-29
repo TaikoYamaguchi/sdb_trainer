@@ -359,6 +359,29 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
                 style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
+  Widget _deleteConfirmButton_History() {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(
+                color: Theme.of(context).primaryColorLight,
+              ),
+              padding: const EdgeInsets.all(8.0),
+            ),
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop(true);
+            },
+            child: Text("삭제",
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
+  }
+
   @override
   Widget build(BuildContext context) {
     switch (widget.layer) {
@@ -390,6 +413,11 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
       case 6:
         title = "커스텀운동을 삭제 할 수 있어요";
         subtitle = '커스텀운동을 삭제 하시겠나요?';
+        comment = '외부를 터치하면 취소 할 수 있어요';
+        break;
+      case 7:
+        title = "기록을 삭제 할 수 있어요";
+        subtitle = '정말로 기록을 지우시나요?';
         comment = '외부를 터치하면 취소 할 수 있어요';
         break;
     }
@@ -428,7 +456,9 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
                         ? _moveToExButton(context)
                         : widget.layer == 5
                             ? _FinishConfirmButton(context)
-                            : _customDeleteButton(),
+                            : widget.layer == 6
+                                ? _customDeleteButton()
+                                : _deleteConfirmButton_History(),
       ],
     );
   }
@@ -1063,6 +1093,154 @@ class _setWeightAlertState extends State<setWeightAlert> {
               _editWorkoutwCheck();
               _additionalweightctrl.clear();
               Navigator.of(context, rootNavigator: true).pop();
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class bodyWeightCtrlAlert extends StatefulWidget {
+  bodyWeightCtrlAlert({Key? key, required this.layer}) : super(key: key);
+  int layer;
+  @override
+  _bodyWeightCtrlAlertState createState() => _bodyWeightCtrlAlertState();
+}
+
+class _bodyWeightCtrlAlertState extends State<bodyWeightCtrlAlert> {
+  var _userProvider;
+  String title = '';
+  String subtitle = '';
+  String comment = '';
+
+  @override
+  Widget build(BuildContext context) {
+    var _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    var _userWeightController = TextEditingController(
+        text: _userProvider.userdata.bodyStats.last.weight.toString());
+    var _userWeightGoalController = TextEditingController(
+        text: _userProvider.userdata.bodyStats.last.weight_goal.toString());
+
+    switch (widget.layer) {
+      case 1:
+        title = "몸무게를 기록 할게요";
+        subtitle = '몸무게와 목표치를 바꿔보세요';
+        comment = '오늘 몸무게 기록하기';
+        break;
+      case 2:
+        title = "몸무게를 수정 할게요";
+        subtitle = '몸무게와 목표치를 수정해보세요';
+        comment = '몸무게 수정 하기';
+        break;
+    }
+    ;
+
+    return AlertDialog(
+      buttonPadding: EdgeInsets.all(12.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      backgroundColor: Theme.of(context).cardColor,
+      contentPadding: EdgeInsets.all(12.0),
+      title: Text(
+        title,
+        textScaleFactor: 1.5,
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Theme.of(context).primaryColorLight),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(subtitle,
+              textScaleFactor: 1.3,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey)),
+          SizedBox(height: 20),
+          TextField(
+            controller: _userWeightController,
+            keyboardType:
+                TextInputType.numberWithOptions(signed: false, decimal: true),
+            style: TextStyle(
+              fontSize: 21,
+              color: Theme.of(context).primaryColorLight,
+            ),
+            textAlign: TextAlign.center,
+            decoration: InputDecoration(
+                filled: true,
+                enabledBorder: UnderlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor, width: 3),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor, width: 3),
+                ),
+                labelText: "몸무게",
+                labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
+                hintText: "몸무게",
+                hintStyle: TextStyle(
+                    fontSize: 24.0,
+                    color: Theme.of(context).primaryColorLight)),
+            onChanged: (text) {},
+          ),
+          SizedBox(height: 6),
+          TextField(
+            controller: _userWeightGoalController,
+            keyboardType:
+                TextInputType.numberWithOptions(signed: false, decimal: true),
+            style: TextStyle(
+              fontSize: 21,
+              color: Theme.of(context).primaryColorLight,
+            ),
+            textAlign: TextAlign.center,
+            decoration: InputDecoration(
+                filled: true,
+                enabledBorder: UnderlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor, width: 3),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor, width: 3),
+                ),
+                labelText: "목표 몸무게",
+                labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
+                hintText: "목표 몸무게",
+                hintStyle: TextStyle(
+                    fontSize: 24.0,
+                    color: Theme.of(context).primaryColorLight)),
+            onChanged: (text) {},
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(
+                color: Theme.of(context).primaryColorLight,
+              ),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
+            ),
+            child: Text(comment,
+                textScaleFactor: 1.5,
+                style: TextStyle(color: Theme.of(context).buttonColor)),
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true)
+                  .pop([_userWeightController, _userWeightGoalController]);
             },
           ),
         ),

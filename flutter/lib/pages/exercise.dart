@@ -9,7 +9,6 @@ import 'package:sdb_trainer/pages/each_plan.dart';
 import 'package:sdb_trainer/pages/each_workout.dart';
 import 'package:sdb_trainer/pages/exercise_filter.dart';
 import 'package:sdb_trainer/pages/routine_bank.dart';
-import 'package:sdb_trainer/pages/unique_exercise.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/routinemenu.dart';
