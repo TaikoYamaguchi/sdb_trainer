@@ -5,6 +5,7 @@ import 'package:sdb_trainer/pages/static_exercise.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/src/model/userdata.dart';
+import 'package:sdb_trainer/src/utils/alerts.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -50,11 +51,12 @@ class _CalendarState extends State<Calendar> {
   var _exCalendarSearchCtrlBool = false;
   bool _bodyWeightChartIsOpen = true;
   bool _bodyExChartIsOpen = true;
-  TextEditingController _exSearchCtrl = TextEditingController(text: "");
-  TextEditingController _exCalendarSearchCtrl = TextEditingController(text: "");
+  final TextEditingController _exSearchCtrl = TextEditingController(text: "");
+  final TextEditingController _exCalendarSearchCtrl =
+      TextEditingController(text: "");
   var _themeProvider;
 
-  TextEditingController _eventController = TextEditingController();
+  final TextEditingController _eventController = TextEditingController();
 
   late StreamSubscription<bool> keyboardSubscription;
 
@@ -68,7 +70,7 @@ class _CalendarState extends State<Calendar> {
       }
     });
     // TODO: implement initState
-    _tapPosition = Offset(0.0, 0.0);
+    _tapPosition = const Offset(0.0, 0.0);
     selectedEvents = {};
     _tooltipBehavior = TooltipBehavior(enable: true);
     _zoomPanBehavior = ZoomPanBehavior(
@@ -91,38 +93,38 @@ class _CalendarState extends State<Calendar> {
             ? provider.isPageController.page
             : provider.isPageController.initialPage;
 
-        Map<int, Widget> _staticList = <int, Widget>{
+        Map<int, Widget> staticList = <int, Widget>{
           0: Padding(
+            padding: const EdgeInsets.all(5.0),
             child: Text("운동",
                 textScaleFactor: 1.3,
                 style: TextStyle(
                   color:
                       page == 0 ? Theme.of(context).buttonColor : Colors.grey,
                 )),
-            padding: const EdgeInsets.all(5.0),
           ),
           1: Padding(
+              padding: const EdgeInsets.all(5.0),
               child: Text("달력",
                   textScaleFactor: 1.3,
                   style: TextStyle(
                     color:
                         page == 1 ? Theme.of(context).buttonColor : Colors.grey,
-                  )),
-              padding: const EdgeInsets.all(5.0)),
+                  ))),
           2: Padding(
+              padding: const EdgeInsets.all(5.0),
               child: Text("몸무게",
                   textScaleFactor: 1.3,
                   style: TextStyle(
                     color:
                         page == 2 ? Theme.of(context).buttonColor : Colors.grey,
-                  )),
-              padding: const EdgeInsets.all(5.0)),
+                  ))),
         };
         return Container(
           child: CupertinoSlidingSegmentedControl(
               groupValue: page,
-              children: _staticList,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+              children: staticList,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
               thumbColor: Theme.of(context).primaryColor,
               onValueChanged: (i) {
                 print(i);
@@ -134,57 +136,57 @@ class _CalendarState extends State<Calendar> {
   }
 
   initialHistorydataGet() async {
-    final _initHistorydataProvider =
+    final initHistorydataProvider =
         Provider.of<HistorydataProvider>(context, listen: false);
-    final _initExercisesdataProvider =
+    final initExercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
 
-    _initExercisesdataProvider.getdata();
-    await _initHistorydataProvider.getdata();
+    initExercisesdataProvider.getdata();
+    await initHistorydataProvider.getdata();
   }
 
   initialProviderGet() async {
-    final _initUserdataProvider =
+    final initUserdataProvider =
         Provider.of<UserdataProvider>(context, listen: false);
-    final _initHistorydataProvider =
+    final initHistorydataProvider =
         Provider.of<HistorydataProvider>(context, listen: false);
-    final _famousdataProvider =
+    final famousdataProvider =
         Provider.of<FamousdataProvider>(context, listen: false);
 
-    final _initExercisesdataProvider =
+    final initExercisesdataProvider =
         Provider.of<ExercisesdataProvider>(context, listen: false);
-    final _initworkoutProvider =
+    final initworkoutProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
 
-    await [
-      _initUserdataProvider.getdata(),
-      _initUserdataProvider.getUsersFriendsAll(),
-      _initHistorydataProvider.getdata(),
-      _famousdataProvider.getdata(),
-      _initworkoutProvider.getdata(),
-      _initExercisesdataProvider.getdata(),
+    [
+      initUserdataProvider.getdata(),
+      initUserdataProvider.getUsersFriendsAll(),
+      initHistorydataProvider.getdata(),
+      famousdataProvider.getdata(),
+      initworkoutProvider.getdata(),
+      initExercisesdataProvider.getdata(),
     ];
-    _initHistorydataProvider.getFriendsHistorydata();
-    _initUserdataProvider.getFriendsdata();
-    _initUserdataProvider.getUsersFriendsAll();
-    _initHistorydataProvider.getHistorydataAll();
-    _initHistorydataProvider.getCommentAll();
+    initHistorydataProvider.getFriendsHistorydata();
+    initUserdataProvider.getFriendsdata();
+    initUserdataProvider.getUsersFriendsAll();
+    initHistorydataProvider.getHistorydataAll();
+    initHistorydataProvider.getCommentAll();
 
-    _initUserdataProvider.userdata != null
+    initUserdataProvider.userdata != null
         ? [
-            _initUserdataProvider.getFriendsdata(),
-            _initHistorydataProvider.getFriendsHistorydata()
+            initUserdataProvider.getFriendsdata(),
+            initHistorydataProvider.getFriendsHistorydata()
           ]
         : null;
   }
 
   List<SDBdata> _getEventsfromDay(DateTime date) {
-    String date_calendar = DateFormat('yyyy-MM-dd').format(date);
+    String dateCalendar = DateFormat('yyyy-MM-dd').format(date);
     selectedEvents = {};
     if (_hisProvider.historydata != null && _chartIndex.staticIndex == 0) {
       for (int i = 0; i < _hisProvider.historydata!.sdbdatas.length; i++) {
         if (_hisProvider.historydata!.sdbdatas[i].date!.substring(0, 10) ==
-            date_calendar) {
+            dateCalendar) {
           if (selectedEvents[date] != null) {
             selectedEvents[date]!.add(_hisProvider.historydata!.sdbdatas[i]);
           } else {
@@ -196,7 +198,7 @@ class _CalendarState extends State<Calendar> {
         _chartIndex.staticIndex != 0) {
       for (int i = 0; i < _hisProvider.historydata!.sdbdatas.length; i++) {
         if (_hisProvider.historydata!.sdbdatas[i].date!.substring(0, 10) ==
-            date_calendar) {
+            dateCalendar) {
           if (selectedEvents[date] != null) {
             if (_hisProvider.historydata!.sdbdatas[i].exercises
                     .indexWhere((exercise) {
@@ -237,7 +239,7 @@ class _CalendarState extends State<Calendar> {
     if (_hisProvider.historydata == null) {
       await initialHistorydataGet();
     }
-    var _sdbChartDataExample = _hisProvider.historydata.sdbdatas
+    var sdbChartDataExample = _hisProvider.historydata.sdbdatas
         .map((name) => name.exercises
             .where((name) => name.name ==
                     _exProvider
@@ -246,12 +248,12 @@ class _CalendarState extends State<Calendar> {
                 : false)
             .toList())
         .toList();
-    for (int i = 0; i < _sdbChartDataExample.length; i++) {
-      if (_sdbChartDataExample[i].isEmpty) {
+    for (int i = 0; i < sdbChartDataExample.length; i++) {
+      if (sdbChartDataExample[i].isEmpty) {
         null;
       } else {
-        for (int k = 0; k < _sdbChartDataExample[i].length; k++) {
-          _sdbChartData!.add(_sdbChartDataExample[i][k]);
+        for (int k = 0; k < sdbChartDataExample[i].length; k++) {
+          _sdbChartData!.add(sdbChartDataExample[i][k]);
         }
       }
     }
@@ -269,7 +271,7 @@ class _CalendarState extends State<Calendar> {
       return Column(
         children: [
           _staticControllerWidget(),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Expanded(
             child: GestureDetector(
                 onTap: () {
@@ -283,7 +285,7 @@ class _CalendarState extends State<Calendar> {
                     _weightWidget()
                   ],
                   onPageChanged: (page) {
-                    _chartIndex.changePageController(page as int);
+                    _chartIndex.changePageController(page);
                   },
                 )),
           ),
@@ -294,7 +296,7 @@ class _CalendarState extends State<Calendar> {
 
   PreferredSizeWidget _appbarWidget() {
     return PreferredSize(
-        preferredSize: Size.fromHeight(40.0), // here the desired height
+        preferredSize: const Size.fromHeight(40.0), // here the desired height
         child: AppBar(
           elevation: 0,
           title: Consumer2<ChartIndexProvider, StaticPageProvider>(
@@ -314,10 +316,10 @@ class _CalendarState extends State<Calendar> {
 
   Widget _weightWidget() {
     final List<Color> color = <Color>[];
-    color.add(Color(0xFffc60a8).withOpacity(0.7));
+    color.add(const Color(0xFffc60a8).withOpacity(0.7));
     color.add(Theme.of(context).primaryColor.withOpacity(0.9));
     color.add(Theme.of(context).primaryColor.withOpacity(0.9));
-    color.add(Color(0xFffc60a8).withOpacity(0.7));
+    color.add(const Color(0xFffc60a8).withOpacity(0.7));
 
     final List<double> stops = <double>[];
     stops.add(0.0);
@@ -350,7 +352,7 @@ class _CalendarState extends State<Calendar> {
                   padding: const EdgeInsets.all(1.0),
                   child: GestureDetector(
                     onTap: () {
-                      _displayBodyWeightDialog();
+                      _showMyDialog_NewWeight();
                     },
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -378,7 +380,7 @@ class _CalendarState extends State<Calendar> {
                                     style: TextStyle(
                                         color: Theme.of(context)
                                             .primaryColorLight)),
-                                Text("목표치를 기록하고 달성 할 수 있어요",
+                                const Text("목표치를 기록하고 달성 할 수 있어요",
                                     textScaleFactor: 1.1,
                                     style: TextStyle(color: Colors.grey)),
                               ],
@@ -394,7 +396,7 @@ class _CalendarState extends State<Calendar> {
               width: double.infinity,
               decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(20),
                       bottomRight: Radius.circular(20),
                       topLeft: Radius.circular(20),
@@ -413,7 +415,7 @@ class _CalendarState extends State<Calendar> {
                             style: TextStyle(
                                 color: Theme.of(context).primaryColorLight)),
                       ),
-                      Container(
+                      SizedBox(
                         width: 100,
                         child: CustomSlidingSegmentedControl(
                             height: 24.0,
@@ -451,7 +453,7 @@ class _CalendarState extends State<Calendar> {
                           height: 250,
                           decoration: BoxDecoration(
                               color: Theme.of(context).cardColor,
-                              borderRadius: BorderRadius.only(
+                              borderRadius: const BorderRadius.only(
                                   topRight: Radius.circular(20),
                                   bottomRight: Radius.circular(20),
                                   topLeft: Radius.circular(20),
@@ -532,312 +534,105 @@ class _CalendarState extends State<Calendar> {
                       : Container(),
                 ],
               )),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           _bodyWeightListWidget(_userProvider.userdata.bodyStats)
         ],
       ));
     });
   }
 
-  void _displayBodyWeightDialog() {
-    var _userWeightController = TextEditingController(
-        text: _userProvider.userdata.bodyStats.last.weight.toString());
-    var _userWeightGoalController = TextEditingController(
-        text: _userProvider.userdata.bodyStats.last.weight_goal.toString());
-
-    DateTime _toDay = DateTime.now();
-    showDialog(
+  _showMyDialog_NewWeight() async {
+    var result = await showDialog(
         context: context,
-        builder: (context) {
-          return AlertDialog(
-            buttonPadding: EdgeInsets.all(12.0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            backgroundColor: Theme.of(context).cardColor,
-            contentPadding: EdgeInsets.all(12.0),
-            title: Text(
-              '몸무게를 기록 할게요',
-              textScaleFactor: 1.5,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Theme.of(context).primaryColorLight),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('몸무게와 목표치를 바꿔보세요',
-                    textScaleFactor: 1.3,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey)),
-                SizedBox(height: 20),
-                TextField(
-                  controller: _userWeightController,
-                  keyboardType: TextInputType.numberWithOptions(
-                      signed: false, decimal: true),
-                  style: TextStyle(
-                    fontSize: 21,
-                    color: Theme.of(context).primaryColorLight,
-                  ),
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                      filled: true,
-                      enabledBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor, width: 3),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor, width: 3),
-                      ),
-                      labelText: "몸무게",
-                      labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
-                      hintText: "몸무게",
-                      hintStyle: TextStyle(
-                          fontSize: 24.0,
-                          color: Theme.of(context).primaryColorLight)),
-                  onChanged: (text) {},
-                ),
-                SizedBox(height: 6),
-                TextField(
-                  controller: _userWeightGoalController,
-                  keyboardType: TextInputType.numberWithOptions(
-                      signed: false, decimal: true),
-                  style: TextStyle(
-                    fontSize: 21,
-                    color: Theme.of(context).primaryColorLight,
-                  ),
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                      filled: true,
-                      enabledBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor, width: 3),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor, width: 3),
-                      ),
-                      labelText: "목표 몸무게",
-                      labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
-                      hintText: "목표 몸무게",
-                      hintStyle: TextStyle(
-                          fontSize: 24.0,
-                          color: Theme.of(context).primaryColorLight)),
-                  onChanged: (text) {},
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    foregroundColor: Theme.of(context).primaryColor,
-                    backgroundColor: Theme.of(context).primaryColor,
-                    textStyle: TextStyle(
-                      color: Theme.of(context).primaryColorLight,
-                    ),
-                    disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-                    padding: EdgeInsets.all(12.0),
-                  ),
-                  child: Text('오늘 몸무게 기록하기',
-                      textScaleFactor: 1.5,
-                      style: TextStyle(color: Theme.of(context).buttonColor)),
-                  onPressed: () {
-                    Navigator.of(context, rootNavigator: true).pop();
-                    _displayBodyWeightPushDialog(
-                        double.parse(_userWeightController.text),
-                        double.parse(_userWeightGoalController.text));
-                    _userProvider.setUserWeightAdd(
-                        _toDay.toString(),
-                        double.parse(_userWeightController.text),
-                        double.parse(_userWeightGoalController.text));
-                  },
-                ),
-              ),
-            ],
+        builder: (BuildContext context) {
+          return bodyWeightCtrlAlert(
+            layer: 1,
           );
         });
+    if (result.isNotEmpty) {
+      DateTime toDay = DateTime.now();
+      _displayBodyWeightPushDialog(
+          double.parse(result[0].text), double.parse(result[1].text));
+      _userProvider.setUserWeightAdd(toDay.toString(),
+          double.parse(result[0].text), double.parse(result[1].text));
+    }
   }
 
-  void _displayEditBodyWeightDialog(index) {
-    var _userWeightController = TextEditingController(
-        text: _userProvider.userdata.bodyStats[index].weight.toString());
-    var _userWeightGoalController = TextEditingController(
-        text: _userProvider.userdata.bodyStats[index].weight_goal.toString());
-
-    DateTime _toDay = DateTime.now();
-    showDialog(
+  _showMyDialog(historyId) async {
+    var result = await showDialog(
         context: context,
-        builder: (context) {
-          return AlertDialog(
-            buttonPadding: EdgeInsets.all(12.0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            backgroundColor: Theme.of(context).cardColor,
-            contentPadding: EdgeInsets.all(12.0),
-            title: Text(
-              '몸무게를 수정 할게요',
-              textScaleFactor: 1.5,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Theme.of(context).primaryColorLight),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('몸무게와 목표치를 수정해보세요',
-                    textScaleFactor: 1.3,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey)),
-                SizedBox(height: 20),
-                TextField(
-                  controller: _userWeightController,
-                  keyboardType: TextInputType.numberWithOptions(
-                      signed: false, decimal: true),
-                  style: TextStyle(
-                    fontSize: 21,
-                    color: Theme.of(context).primaryColorLight,
-                  ),
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                      filled: true,
-                      enabledBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor, width: 3),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor, width: 3),
-                      ),
-                      labelText: "몸무게",
-                      labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
-                      hintText: "몸무게",
-                      hintStyle: TextStyle(
-                          fontSize: 24.0,
-                          color: Theme.of(context).primaryColorLight)),
-                  onChanged: (text) {},
-                ),
-                SizedBox(height: 6),
-                TextField(
-                  controller: _userWeightGoalController,
-                  keyboardType: TextInputType.numberWithOptions(
-                      signed: false, decimal: true),
-                  style: TextStyle(
-                    fontSize: 21,
-                    color: Theme.of(context).primaryColorLight,
-                  ),
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                      filled: true,
-                      enabledBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor, width: 3),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor, width: 3),
-                      ),
-                      labelText: "목표 몸무게",
-                      labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
-                      hintText: "목표 몸무게",
-                      hintStyle: TextStyle(
-                          fontSize: 24.0,
-                          color: Theme.of(context).primaryColorLight)),
-                  onChanged: (text) {},
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    foregroundColor: Theme.of(context).primaryColor,
-                    backgroundColor: Theme.of(context).primaryColor,
-                    textStyle: TextStyle(
-                      color: Theme.of(context).primaryColorLight,
-                    ),
-                    disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-                    padding: EdgeInsets.all(12.0),
-                  ),
-                  child: Text('몸무게 수정 하기',
-                      textScaleFactor: 1.5,
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColorLight)),
-                  onPressed: () {
-                    Navigator.of(context, rootNavigator: true).pop();
-                    _userProvider.setUserWeightEdit(
-                        index,
-                        double.parse(_userWeightController.text),
-                        double.parse(_userWeightGoalController.text));
-                  },
-                ),
-              ),
-            ],
+        builder: (BuildContext context) {
+          return showsimpleAlerts(
+            layer: 7,
+            eindex: -1,
+            rindex: -1,
           );
         });
+    if (result == true) {
+      _hisProvider.deleteHistorydata(historyId);
+      HistoryDelete(history_id: historyId).deleteHistory();
+    }
   }
 
-  void _displayBodyWeightPushDialog(_userWeight, _userGoal) {
-    var _weightChange = "";
-    var _weightSuccess = "";
-    if ((_userWeight - _userProvider.userdata.bodyStats.last.weight) > 0) {
-      _weightChange = "+" +
-          (_userWeight - _userProvider.userdata.bodyStats.last.weight)
+  _showMyDialog_EditWeight(index) async {
+    var result = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return bodyWeightCtrlAlert(
+            layer: 2,
+          );
+        });
+    if (result.isNotEmpty) {
+      _userProvider.setUserWeightEdit(
+          index, double.parse(result[0].text), double.parse(result[1].text));
+    }
+  }
+
+  void _displayBodyWeightPushDialog(userWeight, userGoal) {
+    var weightChange = "";
+    var weightSuccess = "";
+    if ((userWeight - _userProvider.userdata.bodyStats.last.weight) > 0) {
+      weightChange = "+" +
+          (userWeight - _userProvider.userdata.bodyStats.last.weight)
               .toStringAsFixed(1) +
           "kg 증가했어요";
       if (_userProvider.userdata.bodyStats.last.weight >
           _userProvider.userdata.bodyStats.last.weight_goal) {
-        _weightSuccess = "감량에 분발이 필요해요";
+        weightSuccess = "감량에 분발이 필요해요";
       } else if (_userProvider.userdata.bodyStats.last.weight <
           _userProvider.userdata.bodyStats.last.weight_goal) {
-        _weightSuccess = "증량이 성공중 이에요";
+        weightSuccess = "증량이 성공중 이에요";
       } else if (_userProvider.userdata.bodyStats.last.weight ==
           _userProvider.userdata.bodyStats.last.weight_goal) {
-        _weightSuccess = "현재 몸무게를 유지해주세요";
+        weightSuccess = "현재 몸무게를 유지해주세요";
       }
-    } else if ((_userWeight - _userProvider.userdata.bodyStats.last.weight) <
+    } else if ((userWeight - _userProvider.userdata.bodyStats.last.weight) <
         0) {
-      _weightChange = "" +
-          (_userWeight - _userProvider.userdata.bodyStats.last.weight)
+      weightChange = "" +
+          (userWeight - _userProvider.userdata.bodyStats.last.weight)
               .toStringAsFixed(1) +
           "kg 감소했어요";
       if (_userProvider.userdata.bodyStats.last.weight >
           _userProvider.userdata.bodyStats.last.weight_goal) {
-        _weightSuccess = "감량에 성공중 이에요";
+        weightSuccess = "감량에 성공중 이에요";
       } else if (_userProvider.userdata.bodyStats.last.weight <
           _userProvider.userdata.bodyStats.last.weight_goal) {
-        _weightSuccess = "증량에 분발이 필요해요";
+        weightSuccess = "증량에 분발이 필요해요";
       } else if (_userProvider.userdata.bodyStats.last.weight ==
           _userProvider.userdata.bodyStats.last.weight_goal) {
-        _weightSuccess = "현재 몸무게를 유지해주세요";
+        weightSuccess = "현재 몸무게를 유지해주세요";
       }
     } else {
-      _weightChange = "몸무게가 유지 되었어요";
+      weightChange = "몸무게가 유지 되었어요";
       if (_userProvider.userdata.bodyStats.last.weight >
           _userProvider.userdata.bodyStats.last.weight_goal) {
-        _weightSuccess = "감량에 분발이 필요해요";
+        weightSuccess = "감량에 분발이 필요해요";
       } else if (_userProvider.userdata.bodyStats.last.weight <
           _userProvider.userdata.bodyStats.last.weight_goal) {
-        _weightSuccess = "증량에 분발이 필요해요";
+        weightSuccess = "증량에 분발이 필요해요";
       } else if (_userProvider.userdata.bodyStats.last.weight ==
           _userProvider.userdata.bodyStats.last.weight_goal) {
-        _weightSuccess = "현재 몸무게를 유지해주세요";
+        weightSuccess = "현재 몸무게를 유지해주세요";
       }
     }
 
@@ -845,14 +640,14 @@ class _CalendarState extends State<Calendar> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            buttonPadding: EdgeInsets.all(12.0),
+            buttonPadding: const EdgeInsets.all(12.0),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
             backgroundColor: Theme.of(context).cardColor,
-            contentPadding: EdgeInsets.all(12.0),
+            contentPadding: const EdgeInsets.all(12.0),
             title: Text(
-              _weightChange,
+              weightChange,
               textScaleFactor: 2.0,
               textAlign: TextAlign.center,
               style: TextStyle(color: Theme.of(context).primaryColorLight),
@@ -860,10 +655,10 @@ class _CalendarState extends State<Calendar> {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(_weightSuccess,
+                Text(weightSuccess,
                     textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey)),
+                    style: const TextStyle(color: Colors.grey)),
                 _bodyWeightChartWidget(context),
               ],
             ),
@@ -880,8 +675,9 @@ class _CalendarState extends State<Calendar> {
                     textStyle: TextStyle(
                       color: Theme.of(context).primaryColorLight,
                     ),
-                    disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-                    padding: EdgeInsets.all(12.0),
+                    disabledForegroundColor:
+                        const Color.fromRGBO(246, 58, 64, 20),
+                    padding: const EdgeInsets.all(12.0),
                   ),
                   child: Text('닫기',
                       textScaleFactor: 1.7,
@@ -899,10 +695,10 @@ class _CalendarState extends State<Calendar> {
 
   Widget _bodyWeightChartWidget(context) {
     final List<Color> color = <Color>[];
-    color.add(Color(0xFffc60a8).withOpacity(0.7));
+    color.add(const Color(0xFffc60a8).withOpacity(0.7));
     color.add(Theme.of(context).primaryColor.withOpacity(0.9));
     color.add(Theme.of(context).primaryColor.withOpacity(0.9));
-    color.add(Color(0xFffc60a8).withOpacity(0.7));
+    color.add(const Color(0xFffc60a8).withOpacity(0.7));
 
     final List<double> stops = <double>[];
     stops.add(0.0);
@@ -918,7 +714,7 @@ class _CalendarState extends State<Calendar> {
         begin: Alignment.bottomCenter,
         end: Alignment.topCenter);
     return (Center(
-      child: Container(
+      child: SizedBox(
           width: deviceWidth * 2 / 3,
           height: 200,
           child: SfCartesianChart(
@@ -991,7 +787,7 @@ class _CalendarState extends State<Calendar> {
             Row(
               mainAxisSize: MainAxisSize.max,
               children: [
-                Container(
+                SizedBox(
                   width: _exCalendarSearchCtrlBool ? 150 : 50,
                   height: 40,
                   child: Padding(
@@ -1041,7 +837,7 @@ class _CalendarState extends State<Calendar> {
                   ),
                 ),
                 Expanded(
-                  child: Container(
+                  child: SizedBox(
                       height: 40,
                       child: ListView(
                           scrollDirection: Axis.horizontal,
@@ -1090,7 +886,7 @@ class _CalendarState extends State<Calendar> {
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(5.0),
                 ),
-                markerDecoration: BoxDecoration(
+                markerDecoration: const BoxDecoration(
                     color: Color(0xFffc60a8), shape: BoxShape.circle),
                 selectedTextStyle: TextStyle(
                     color: Theme.of(context).buttonColor,
@@ -1103,7 +899,7 @@ class _CalendarState extends State<Calendar> {
                 weekendTextStyle:
                     TextStyle(color: Theme.of(context).primaryColorLight),
                 outsideTextStyle:
-                    TextStyle(color: Color.fromRGBO(113, 113, 113, 100)),
+                    const TextStyle(color: Color.fromRGBO(113, 113, 113, 100)),
                 todayDecoration: BoxDecoration(
                   shape: BoxShape.rectangle,
                   color: Theme.of(context).cardColor,
@@ -1127,8 +923,8 @@ class _CalendarState extends State<Calendar> {
                       color: Theme.of(context).primaryColorLight),
                   rightChevronIcon: Icon(Icons.arrow_right,
                       color: Theme.of(context).primaryColorLight),
-                  headerPadding:
-                      EdgeInsets.symmetric(horizontal: 5.0, vertical: 3.0)),
+                  headerPadding: const EdgeInsets.symmetric(
+                      horizontal: 5.0, vertical: 3.0)),
             ),
           ]),
         ),
@@ -1143,20 +939,20 @@ class _CalendarState extends State<Calendar> {
   Widget _allchartExercisesWidget(exercises) {
     return Expanded(
         child: ListView.separated(
-            itemBuilder: (BuildContext _context, int index) {
+            itemBuilder: (BuildContext context, int index) {
               return _chartExercisesWidget(exercises[index].exercises,
                   exercises[index].id, _userProvider.userdata, true, index);
             },
-            separatorBuilder: (BuildContext _context, int index) {
+            separatorBuilder: (BuildContext context, int index) {
               return Container(
                 alignment: Alignment.center,
                 height: 1,
-                color: Color(0xFF212121),
+                color: const Color(0xFF212121),
                 child: Container(
                   alignment: Alignment.center,
-                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
                   height: 1,
-                  color: Color(0xFF717171),
+                  color: const Color(0xFF717171),
                 ),
               );
             },
@@ -1168,20 +964,20 @@ class _CalendarState extends State<Calendar> {
   Widget _onechartExercisesWidget(exercises) {
     return Expanded(
       child: ListView.separated(
-          itemBuilder: (BuildContext _context, int index) {
+          itemBuilder: (BuildContext context, int index) {
             return _onechartExerciseWidget(
                 exercises[index], 0, _userProvider.userdata, true, index);
           },
-          separatorBuilder: (BuildContext _context, int index) {
+          separatorBuilder: (BuildContext context, int index) {
             return Container(
               alignment: Alignment.center,
               height: 0,
-              color: Color(0xFF212121),
+              color: const Color(0xFF212121),
               child: Container(
                 alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(horizontal: 10),
+                margin: const EdgeInsets.symmetric(horizontal: 10),
                 height: 0,
-                color: Color(0xFF717171),
+                color: const Color(0xFF717171),
               ),
             );
           },
@@ -1198,7 +994,7 @@ class _CalendarState extends State<Calendar> {
     return Expanded(
       child: SingleChildScrollView(
           child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.only(
@@ -1212,9 +1008,9 @@ class _CalendarState extends State<Calendar> {
                 child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
+                SizedBox(
                   width: deviceWidth / 3 - 20,
-                  child: Text(
+                  child: const Text(
                     "날짜",
                     textScaleFactor: 1.1,
                     style: TextStyle(
@@ -1224,10 +1020,10 @@ class _CalendarState extends State<Calendar> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                Container(
+                SizedBox(
                   width: deviceWidth / 3 - 20,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Text(
                       "몸무게",
                       textScaleFactor: 1.1,
@@ -1239,9 +1035,9 @@ class _CalendarState extends State<Calendar> {
                     ),
                   ),
                 ),
-                Container(
+                SizedBox(
                   width: deviceWidth / 3 - 20,
-                  child: Text(
+                  child: const Text(
                     "목표",
                     textScaleFactor: 1.1,
                     style: TextStyle(
@@ -1251,30 +1047,30 @@ class _CalendarState extends State<Calendar> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SizedBox(width: 16)
+                const SizedBox(width: 16)
               ],
             )),
             ListView.separated(
-                itemBuilder: (BuildContext _context, int index) {
+                itemBuilder: (BuildContext context, int index) {
                   return _bodyWeightListItemWidget(
                       List.from(bodyStats.reversed)[index],
                       _userProvider.userdata,
                       true,
                       bodyStats.length - index - 1);
                 },
-                separatorBuilder: (BuildContext _context, int index) {
+                separatorBuilder: (BuildContext context, int index) {
                   return Container(
                     alignment: Alignment.center,
                     height: 0.5,
                     child: Container(
                       alignment: Alignment.center,
-                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
                       height: 0.5,
                       color: Theme.of(context).primaryColorDark,
                     ),
                   );
                 },
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: bodyStats.length,
                 scrollDirection: Axis.vertical),
@@ -1308,14 +1104,14 @@ class _CalendarState extends State<Calendar> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Container(
+                  SizedBox(
                     width: deviceWidth / 3 - 20,
                     child: Text(bodyStat.date.substring(0, 10),
                         textScaleFactor: 1.3,
-                        style: TextStyle(color: Colors.grey),
+                        style: const TextStyle(color: Colors.grey),
                         textAlign: TextAlign.center),
                   ),
-                  Container(
+                  SizedBox(
                     width: deviceWidth / 3 - 20,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -1328,7 +1124,7 @@ class _CalendarState extends State<Calendar> {
                           textAlign: TextAlign.center),
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     width: deviceWidth / 3 - 20,
                     child: Text(
                         bodyStat.weight_goal.toStringAsFixed(1) +
@@ -1339,29 +1135,23 @@ class _CalendarState extends State<Calendar> {
                         textAlign: TextAlign.center),
                   ),
                   GestureDetector(
-                    child: Icon(
-                      Icons.more_vert,
-                      color: Colors.grey,
-                      size: 18.0,
-                    ),
                     onTapDown: _storePosition,
                     onTap: () {
                       showMenu(
                           context: context,
                           position: RelativeRect.fromRect(
-                              _tapPosition & Size(30, 30),
-                              Offset.zero & Size(0, 0)),
+                              _tapPosition & const Size(30, 30),
+                              Offset.zero & const Size(0, 0)),
                           items: [
                             PopupMenuItem(
                                 onTap: () {
                                   Future<void>.delayed(
                                       const Duration(), // OR const Duration(milliseconds: 500),
-                                      () =>
-                                          _displayEditBodyWeightDialog(index));
+                                      () => _showMyDialog_EditWeight(index));
                                 },
-                                padding: EdgeInsets.all(0.0),
+                                padding: const EdgeInsets.all(0.0),
                                 child: ListTile(
-                                    contentPadding: EdgeInsets.symmetric(
+                                    contentPadding: const EdgeInsets.symmetric(
                                         horizontal: 4.0, vertical: 0.0),
                                     leading: Icon(Icons.edit,
                                         color: Theme.of(context)
@@ -1376,11 +1166,10 @@ class _CalendarState extends State<Calendar> {
                                       const Duration(), // OR const Duration(milliseconds: 500),
                                       () => _userProvider
                                           .setUserWeightDelete(index));
-                                  ;
                                 },
-                                padding: EdgeInsets.all(0.0),
+                                padding: const EdgeInsets.all(0.0),
                                 child: ListTile(
-                                    contentPadding: EdgeInsets.symmetric(
+                                    contentPadding: const EdgeInsets.symmetric(
                                         horizontal: 4.0, vertical: 0.0),
                                     leading: Icon(Icons.delete,
                                         color: Theme.of(context)
@@ -1391,6 +1180,11 @@ class _CalendarState extends State<Calendar> {
                                                 .primaryColorLight)))),
                           ]);
                     },
+                    child: Icon(
+                      Icons.more_vert,
+                      color: Colors.grey,
+                      size: 18.0,
+                    ),
                   )
                 ],
               ),
@@ -1402,7 +1196,7 @@ class _CalendarState extends State<Calendar> {
   }
 
   Widget _onechartExerciseWidget(
-      exuniq, history_id, userdata, bool shirink, index) {
+      exuniq, historyId, userdata, bool shirink, index) {
     double top = 20;
     double bottom = 20;
     return Container(
@@ -1422,7 +1216,7 @@ class _CalendarState extends State<Calendar> {
           GestureDetector(
             onTap: () {},
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.only(
@@ -1439,16 +1233,14 @@ class _CalendarState extends State<Calendar> {
                     child: Row(
                       //mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text("",
+                        const Text("",
                             textScaleFactor: 1.0,
                             style: TextStyle(color: Color(0xFF717171))),
-                        Expanded(child: SizedBox()),
+                        const Expanded(child: SizedBox()),
                         Text(
-                            "1RM: " +
-                                exuniq.onerm.toStringAsFixed(1) +
-                                "/${exuniq.goal.toStringAsFixed(1)}${userdata.weight_unit}",
+                            "${"1RM: " + exuniq.onerm.toStringAsFixed(1)}/${exuniq.goal.toStringAsFixed(1)}${userdata.weight_unit}",
                             textScaleFactor: 1.0,
-                            style: TextStyle(color: Color(0xFF717171))),
+                            style: const TextStyle(color: Color(0xFF717171))),
                       ],
                     ),
                   )
@@ -1462,7 +1254,7 @@ class _CalendarState extends State<Calendar> {
   }
 
   Widget _chartExercisesWidget(
-      exuniq, history_id, userdata, bool shirink, index) {
+      exuniq, historyId, userdata, bool shirink, index) {
     double top = 0;
     double bottom = 0;
     return Container(
@@ -1473,7 +1265,7 @@ class _CalendarState extends State<Calendar> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text("훈련 " + (index + 1).toString(),
+                child: Text("훈련 ${index + 1}",
                     textScaleFactor: 1.5,
                     style:
                         TextStyle(color: Theme.of(context).primaryColorLight)),
@@ -1481,28 +1273,23 @@ class _CalendarState extends State<Calendar> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
-                  child: Icon(
-                    Icons.more_vert,
-                    color: Colors.grey,
-                    size: 18.0,
-                  ),
                   onTapDown: _storePosition,
                   onTap: () {
                     showMenu(
                         context: context,
                         position: RelativeRect.fromRect(
-                            _tapPosition & Size(30, 30),
-                            Offset.zero & Size(0, 0)),
+                            _tapPosition & const Size(30, 30),
+                            Offset.zero & const Size(0, 0)),
                         items: [
                           PopupMenuItem(
                               onTap: () {
                                 Future<void>.delayed(
                                     const Duration(), // OR const Duration(milliseconds: 500),
-                                    () => _displayDeleteAlert(history_id));
+                                    () => _showMyDialog(historyId));
                               },
-                              padding: EdgeInsets.all(0.0),
+                              padding: const EdgeInsets.all(0.0),
                               child: ListTile(
-                                  contentPadding: EdgeInsets.symmetric(
+                                  contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 4.0, vertical: 0.0),
                                   leading: Icon(Icons.delete,
                                       color:
@@ -1513,13 +1300,18 @@ class _CalendarState extends State<Calendar> {
                                               .primaryColorLight)))),
                         ]);
                   },
+                  child: Icon(
+                    Icons.more_vert,
+                    color: Colors.grey,
+                    size: 18.0,
+                  ),
                 ),
               )
             ],
           ),
           ListView.separated(
-              padding: EdgeInsets.symmetric(horizontal: 5),
-              itemBuilder: (BuildContext _context, int index) {
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              itemBuilder: (BuildContext context, int index) {
                 if (index == 0) {
                   top = 20;
                   bottom = 0;
@@ -1539,11 +1331,11 @@ class _CalendarState extends State<Calendar> {
                                 exercise: exuniq[index],
                                 index: index,
                                 origin_exercises: exuniq,
-                                history_id: history_id),
+                                history_id: historyId),
                             transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
                   },
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     decoration: BoxDecoration(
                         color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.only(
@@ -1566,13 +1358,12 @@ class _CalendarState extends State<Calendar> {
                           child: Row(
                             //mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Expanded(child: SizedBox()),
+                              const Expanded(child: SizedBox()),
                               Text(
-                                  "1RM: " +
-                                      exuniq[index].onerm.toStringAsFixed(1) +
-                                      "/${exuniq[index].goal.toStringAsFixed(1)}${userdata.weight_unit}",
+                                  "${"1RM: " + exuniq[index].onerm.toStringAsFixed(1)}/${exuniq[index].goal.toStringAsFixed(1)}${userdata.weight_unit}",
                                   textScaleFactor: 1.0,
-                                  style: TextStyle(color: Color(0xFF717171))),
+                                  style: const TextStyle(
+                                      color: Color(0xFF717171))),
                             ],
                           ),
                         )
@@ -1581,19 +1372,19 @@ class _CalendarState extends State<Calendar> {
                   ),
                 );
               },
-              separatorBuilder: (BuildContext _context, int index) {
+              separatorBuilder: (BuildContext context, int index) {
                 return Container(
                   alignment: Alignment.center,
                   height: 0.5,
                   child: Container(
                     alignment: Alignment.center,
-                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
                     height: 0.5,
                     color: Theme.of(context).primaryColorDark,
                   ),
                 );
               },
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: shirink,
               itemCount: exuniq.length),
         ],
@@ -1606,20 +1397,20 @@ class _CalendarState extends State<Calendar> {
       child: Column(
         children: [
           Container(
-              padding: EdgeInsets.all(5.0),
+              padding: const EdgeInsets.all(5.0),
               height: 28,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 80,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
+                        SizedBox(
                           width: 25,
-                          child: Text(
+                          child: const Text(
                             "Set",
                             textScaleFactor: 1.1,
                             style: TextStyle(
@@ -1632,21 +1423,21 @@ class _CalendarState extends State<Calendar> {
                       ],
                     ),
                   ),
-                  Container(
+                  SizedBox(
                       width: 70,
                       child: Text(
                         "Weight(${_userProvider.userdata.weight_unit})",
                         textScaleFactor: 1.1,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.grey,
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
                       )),
                   Container(width: 35),
-                  Container(
+                  SizedBox(
                       width: 40,
-                      child: Text(
+                      child: const Text(
                         "Reps",
                         textScaleFactor: 1.1,
                         style: TextStyle(
@@ -1655,9 +1446,9 @@ class _CalendarState extends State<Calendar> {
                         ),
                         textAlign: TextAlign.center,
                       )),
-                  Container(
+                  SizedBox(
                       width: 70,
-                      child: Text(
+                      child: const Text(
                         "1RM",
                         textScaleFactor: 1.1,
                         style: TextStyle(
@@ -1670,18 +1461,18 @@ class _CalendarState extends State<Calendar> {
               )),
           SizedBox(
             child: ListView.separated(
-                itemBuilder: (BuildContext _context, int index) {
+                itemBuilder: (BuildContext context, int index) {
                   return Container(
-                    padding: EdgeInsets.all(5.0),
+                    padding: const EdgeInsets.all(5.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
+                        SizedBox(
                           width: 80,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
+                              SizedBox(
                                 width: 25,
                                 child: Text(
                                   "${index + 1}",
@@ -1695,7 +1486,7 @@ class _CalendarState extends State<Calendar> {
                             ],
                           ),
                         ),
-                        Container(
+                        SizedBox(
                           width: 70,
                           child: Text(
                             sets[index].weight.toStringAsFixed(1),
@@ -1706,13 +1497,13 @@ class _CalendarState extends State<Calendar> {
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        Container(
+                        SizedBox(
                             width: 35,
                             child: SvgPicture.asset("assets/svg/multiply.svg",
                                 color: Theme.of(context).primaryColorLight,
                                 height:
                                     19 * _themeProvider.userFontSize / 0.8)),
-                        Container(
+                        SizedBox(
                           width: 40,
                           child: Text(
                             sets[index].reps.toString(),
@@ -1723,7 +1514,7 @@ class _CalendarState extends State<Calendar> {
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        Container(
+                        SizedBox(
                             width: 70,
                             child: (sets[index].reps != 1)
                                 ? Text(
@@ -1746,19 +1537,19 @@ class _CalendarState extends State<Calendar> {
                     ),
                   );
                 },
-                separatorBuilder: (BuildContext _context, int index) {
+                separatorBuilder: (BuildContext context, int index) {
                   return Container(
                     alignment: Alignment.center,
                     height: 0,
                     child: Container(
                       alignment: Alignment.center,
-                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
                       height: 0,
                       color: Theme.of(context).primaryColorDark,
                     ),
                   );
                 },
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: sets.length),
           ),
@@ -1769,10 +1560,10 @@ class _CalendarState extends State<Calendar> {
 
   Widget _chartWidget() {
     final List<Color> color = <Color>[];
-    color.add(Color(0xFffc60a8).withOpacity(0.7));
+    color.add(const Color(0xFffc60a8).withOpacity(0.7));
     color.add(Theme.of(context).primaryColor.withOpacity(0.9));
     color.add(Theme.of(context).primaryColor.withOpacity(0.9));
-    color.add(Color(0xFffc60a8).withOpacity(0.7));
+    color.add(const Color(0xFffc60a8).withOpacity(0.7));
 
     final List<double> stops = <double>[];
     stops.add(0.0);
@@ -1791,7 +1582,7 @@ class _CalendarState extends State<Calendar> {
           Row(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Container(
+              SizedBox(
                 width: _exSearchCtrlBool ? 150 : 50,
                 height: 40,
                 child: Padding(
@@ -1840,7 +1631,7 @@ class _CalendarState extends State<Calendar> {
                 ),
               ),
               Expanded(
-                child: Container(
+                child: SizedBox(
                     height: 40,
                     child: ListView(
                         scrollDirection: Axis.horizontal,
@@ -1848,12 +1639,12 @@ class _CalendarState extends State<Calendar> {
               ),
             ],
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           Container(
               width: double.infinity,
               decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(20),
                       bottomRight: Radius.circular(20),
                       topLeft: Radius.circular(20),
@@ -1873,7 +1664,7 @@ class _CalendarState extends State<Calendar> {
                           style: TextStyle(
                               color: Theme.of(context).primaryColorLight)),
                     ),
-                    Container(
+                    SizedBox(
                       width: 100,
                       child: CustomSlidingSegmentedControl(
                           height: 24.0,
@@ -1909,7 +1700,7 @@ class _CalendarState extends State<Calendar> {
                         height: 250,
                         decoration: BoxDecoration(
                             color: Theme.of(context).cardColor,
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                                 topRight: Radius.circular(20),
                                 bottomRight: Radius.circular(20),
                                 topLeft: Radius.circular(20),
@@ -1925,7 +1716,7 @@ class _CalendarState extends State<Calendar> {
                                 axisLine: const AxisLine(width: 0),
                                 majorTickLines: const MajorTickLines(size: 0),
                                 majorGridLines: const MajorGridLines(width: 0),
-                                minimum: _sdbChartData!.length == 0
+                                minimum: _sdbChartData!.isEmpty
                                     ? 0
                                     : _sdbChartData!.length > 1
                                         ? _sdbChartData!
@@ -1986,7 +1777,7 @@ class _CalendarState extends State<Calendar> {
                             ]))
                     : Container()
               ])),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           _onechartExercisesWidget(_sdbChartData)
         ],
       ),
@@ -2052,7 +1843,7 @@ class _CalendarState extends State<Calendar> {
       Padding(
         padding: const EdgeInsets.only(left: 3, right: 3),
         child: ChoiceChip(
-          label: Text("All"),
+          label: const Text("All"),
           labelStyle: TextStyle(
               color: _chartIndex.staticIndex == 0
                   ? Theme.of(context).buttonColor
@@ -2124,65 +1915,6 @@ class _CalendarState extends State<Calendar> {
 
   void _storePosition(TapDownDetails details) {
     _tapPosition = details.globalPosition;
-  }
-
-  void _displayDeleteAlert(history_id) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            backgroundColor: Theme.of(context).cardColor,
-            title: Text('운동을 삭제 할 수 있어요',
-                textScaleFactor: 2.0,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Theme.of(context).primaryColorLight)),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('정말로 운동을 지우시나요?',
-                    textScaleFactor: 1.3,
-                    textAlign: TextAlign.center,
-                    style:
-                        TextStyle(color: Theme.of(context).primaryColorLight)),
-                Text('외부를 터치하면 취소 할 수 있어요',
-                    textScaleFactor: 1.0,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey)),
-              ],
-            ),
-            actions: <Widget>[
-              _deleteConfirmButton(history_id),
-            ],
-          );
-        });
-  }
-
-  Widget _deleteConfirmButton(history_id) {
-    return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: TextButton(
-            style: TextButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              foregroundColor: Theme.of(context).primaryColor,
-              backgroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(
-                color: Theme.of(context).primaryColorLight,
-              ),
-              padding: EdgeInsets.all(8.0),
-            ),
-            onPressed: () {
-              _hisProvider.deleteHistorydata(history_id);
-              HistoryDelete(history_id: history_id).deleteHistory();
-              Navigator.of(context, rootNavigator: true).pop();
-            },
-            child: Text("삭제",
-                textScaleFactor: 1.7,
-                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   @override
