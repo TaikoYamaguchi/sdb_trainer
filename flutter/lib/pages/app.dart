@@ -553,7 +553,7 @@ class _AppState extends State<App> {
                               ActionButton(
                                 onPressed: () {
                                   _PopProvider.gotoon();
-                                  _bodyStater.change(1);
+                                  _bodyStater.change(0);
                                 },
                                 icon: Icon(Icons.play_arrow),
                               ),
