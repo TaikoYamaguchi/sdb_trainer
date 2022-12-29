@@ -63,6 +63,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     var _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     _themeProvider.getUserFontsize();
+    _themeProvider.getUserTheme();
     return Center(
       child: Consumer<ThemeProvider>(builder: (context, provider, child) {
         return MaterialApp(

@@ -33,7 +33,7 @@ class ThemeProvider extends ChangeNotifier {
     final storage = new FlutterSecureStorage();
     try {
       var _userFontsize = await storage.write(
-          key: "sdb_theme", value: fontSize.toStringAsFixed(1));
+          key: "sdb_fontSize", value: fontSize.toStringAsFixed(1));
       _userFontSize = fontSize;
     } catch (e) {
       _userFontSize = fontSize;
@@ -48,6 +48,7 @@ class ThemeProvider extends ChangeNotifier {
       var _userThemeStorage = await storage.read(key: "sdb_theme");
       if (_userThemeStorage != null && _userThemeStorage != "") {
         _userThemeDark = _userThemeStorage;
+        print(_userThemeStorage);
         notifyListeners();
         return _userThemeStorage;
       } else {
@@ -65,6 +66,7 @@ class ThemeProvider extends ChangeNotifier {
   setUserTheme(String theme) async {
     final storage = new FlutterSecureStorage();
     try {
+      print(theme);
       var _userThemeStorage =
           await storage.write(key: "sdb_theme", value: theme);
       _userThemeDark = theme;
