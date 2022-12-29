@@ -35,7 +35,7 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
                         TextStyle(color: Theme.of(context).primaryColorLight))
                 : new Text("앱이 업데이트 되었어요",
                     textAlign: TextAlign.center,
-                    textScaleFactor: 2.0,
+                    textScaleFactor: 1.5,
                     style:
                         TextStyle(color: Theme.of(context).primaryColorLight)),
             content: new SingleChildScrollView(
@@ -127,8 +127,8 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
                                     child: new Text("업데이트 하기",
                                         textScaleFactor: 1.7,
                                         style: TextStyle(
-                                            color: Theme.of(context)
-                                                .primaryColorLight)),
+                                            color:
+                                                Theme.of(context).buttonColor)),
                                     onPressed: () {
                                       LaunchReview.launch(
                                           androidAppId: "com.tk_lck.supero",
@@ -159,7 +159,7 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
                                           textScaleFactor: 1.7,
                                           style: TextStyle(
                                               color: Theme.of(context)
-                                                  .primaryColorLight)),
+                                                  .buttonColor)),
                                       onPressed: () {
                                         Navigator.of(context,
                                                 rootNavigator: true)
@@ -491,7 +491,7 @@ class _newOnermAlertsState extends State<newOnermAlerts> {
       contentPadding: EdgeInsets.all(12.0),
       title: Text(
         '신기록을 달성했어요!',
-        textScaleFactor: 2.0,
+        textScaleFactor: 1.5,
         textAlign: TextAlign.center,
         style: TextStyle(color: Theme.of(context).primaryColorLight),
       ),
