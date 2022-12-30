@@ -689,7 +689,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
             },
             child: Text(_customExUsed == true ? "존재하는 운동" : "커스텀 운동 추가",
                 textScaleFactor: 1.7,
-                style: TextStyle(color: Theme.of(context).primaryColorLight))));
+                style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
   void _editWorkoutNameCheck(newname) async {
@@ -910,8 +910,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                           child: Icon(
                                             Icons.add,
                                             size: 28.0,
-                                            color: Theme.of(context)
-                                                .primaryColorLight,
+                                            color:
+                                                Theme.of(context).buttonColor,
                                           ),
                                         ),
                                         Padding(

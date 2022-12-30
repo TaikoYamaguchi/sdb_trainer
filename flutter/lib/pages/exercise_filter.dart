@@ -216,8 +216,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                                     child: Icon(
                                       Icons.add,
                                       size: 28.0,
-                                      color:
-                                          Theme.of(context).primaryColorLight,
+                                      color: Theme.of(context).buttonColor,
                                     ),
                                   ),
                                   Padding(

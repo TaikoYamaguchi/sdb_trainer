@@ -791,7 +791,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                             child: Icon(
                               Icons.add,
                               size: 28.0,
-                              color: Theme.of(context).primaryColorLight,
+                              color: Theme.of(context).buttonColor,
                             ),
                           ),
                           Padding(
