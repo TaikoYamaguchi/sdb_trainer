@@ -90,7 +90,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       builder: (builder, provider, child) {
                     return Text(
                       provider.workoutdata.routinedatas[widget.rindex].name,
-                      textScaleFactor: 2.7,
+                      textScaleFactor: 1.5,
                       style: TextStyle(
                         color: Theme.of(context).primaryColorLight,
                         overflow: TextOverflow.ellipsis,

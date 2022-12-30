@@ -117,7 +117,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                             backgroundColor: Colors.transparent)
                         : Icon(
                             Icons.account_circle,
-                            color: Colors.grey,
+                            color: Theme.of(context).primaryColorDark,
                             size: 100.0,
                           ),
                     Expanded(
@@ -306,7 +306,6 @@ class _ProgramDownloadState extends State<ProgramDownload> {
       ;
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 5),
-        color: Color(0xFF101012),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -379,7 +378,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
             Divider(
               indent: 10,
               thickness: 1.3,
-              color: Colors.grey,
+              color: Theme.of(context).primaryColorDark,
             ),
             ListView(
               shrinkWrap: true,
@@ -454,7 +453,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style: TextStyle(
-                                                      color: Colors.grey,
+                                                      color: Theme.of(context)
+                                                          .primaryColorDark,
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
@@ -545,7 +545,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                   Divider(
                                     indent: 10,
                                     thickness: 1.3,
-                                    color: Colors.grey,
+                                    color: Theme.of(context).primaryColorDark,
                                   ),
                                 ],
                               ),
@@ -755,8 +755,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               },
               child: Text("시작하기",
                   textScaleFactor: 1.7,
-                  style:
-                      TextStyle(color: Theme.of(context).primaryColorLight)))),
+                  style: TextStyle(color: Theme.of(context).buttonColor)))),
     );
   }
 
@@ -819,7 +818,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                 child: Text('외부를 터치하면 취소 할 수 있어요',
                     textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey)),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorDark)),
               ),
               Container(
                 child: Row(
@@ -890,7 +890,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                   child: Text('외부를 터치하면 취소 할 수 있어요',
                       textScaleFactor: 1.0,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.grey)),
+                      style:
+                          TextStyle(color: Theme.of(context).primaryColorDark)),
                 ),
                 SizedBox(height: 20),
                 TextField(
@@ -980,7 +981,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
             },
             child: Text(_customRuUsed == true ? "존재하는 이름" : "이 이름으로 저장",
                 textScaleFactor: 1.7,
-                style: TextStyle(color: Theme.of(context).primaryColorLight))));
+                style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
   Widget _neededlist() {
