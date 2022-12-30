@@ -22,8 +22,21 @@ def upgrade():
     inspector = Inspector.from_engine(conn)
     tables = inspector.get_table_names()
 
-    pass
-
+    if "interview" not in tables:
+        op.create_table(
+            "interview",
+            sa.Column("id", sa.Integer, primary_key=True),
+            sa.Column("user_email", sa.String(50), nullable=False),
+            sa.Column("user_nickname", sa.String(50), nullable=False),
+            sa.Column("progress", sa.String(50), nullable=False),
+            sa.Column("title", sa.String(50), nullable=True),
+            sa.Column("content", sa.String, nullable=False),
+            sa.Column("like", sa.ARRAY(sa.String), nullable=True),
+            sa.Column("date", sa.DateTime, nullable=False),
+            sa.Column("reply_id", sa.Integer, nullable=True),
+            sa.Column("modified_number", sa.Integer, nullable=False),
+            sa.Column("ip", sa.String(50), nullable=False),
+        )
 
 def downgrade():
     pass

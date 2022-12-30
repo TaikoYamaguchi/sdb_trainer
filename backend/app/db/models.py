@@ -112,3 +112,17 @@ class Famous(Base):
     level = Column(Integer, nullable=True)
     subscribe = Column(Integer, nullable=True)
     category = Column(MutableList.as_mutable(ARRAY(String)))
+
+class Interview(Base):
+    __tablename__ = "interview"
+    id = Column(Integer, primary_key=True, index=True)
+    user_email = Column(String, index=True, nullable=False)
+    user_nickname = Column(String, nullable=False)
+    progress = Column(String, nullable=False)
+    title = Column(String, nullable=True)
+    content = Column(String, nullable=False)
+    like = Column(MutableList.as_mutable(ARRAY(String)))
+    date = Column(DateTime, nullable=False)
+    reply_id = Column(Integer, nullable=True)
+    modified_number = Column(Integer, nullable=False)
+    ip = Column(String, nullable=True)

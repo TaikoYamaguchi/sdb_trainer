@@ -282,3 +282,30 @@ class UserFCMTokenIn(BaseModel):
 class UserBodyStatIn(BaseModel):
     body_stats:t.Any
 
+class InterviewBase(BaseModel):
+    user_email : str
+    user_nickname : str
+    progress : str
+    title : str
+    content : str
+    like:list
+    date: datetime
+    reply_id: int
+    class Config:
+        orm_mode = True
+
+class InterviewCreate(InterviewBase):
+
+    class Config:
+        orm_mode = True
+
+class InterviewOut(InterviewBase):
+
+    class Config:
+        orm_mode = True
+
+class ManageLikeInterview(BaseModel):
+    interview_id:int
+    email:str
+    status:str
+    disorlike:str
