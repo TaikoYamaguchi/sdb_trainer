@@ -1332,8 +1332,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
         }));
   }
 
-  void searchExercise(String query) {
-    final suggestions = _exProvider.exercisesdata.exercises.map((exercise) {
+  void searchExercise(String query) async {
+    final suggestions =
+        await _exProvider.exercisesdata.exercises.map((exercise) {
       final exTitle = exercise.name.toLowerCase().replaceAll(' ', '');
       return (exTitle.contains(query.toLowerCase().replaceAll(' ', '')))
           as bool;
@@ -1422,35 +1423,40 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
     );
   }
 
-  filterTotal(String query, List tags, List tags2) {
-    final suggestions = _exProvider.exercisesdata.exercises.where((exercise) {
-      if (query == '') {
-        return true;
-      } else {
+  filterTotal(String query, List tags, List tags2) async {
+    var suggestions;
+    var suggestions2;
+    var suggestions3;
+    if (query == '') {
+      suggestions = await _exProvider.exercisesdata.exercises;
+    } else {
+      suggestions = await _exProvider.exercisesdata.exercises.where((exercise) {
         final exTitle = exercise.name.toLowerCase().replaceAll(' ', '');
         return (exTitle.contains(query.toLowerCase().replaceAll(' ', '')))
             as bool;
-      }
-    }).toList();
+      }).toList();
+    }
 
-    final suggestions2 = _exProvider.exercisesdata.exercises.where((exercise) {
-      if (tags[0] == 'All') {
-        return true;
-      } else {
+    if (tags[0] == 'All') {
+      suggestions2 = await _exProvider.exercisesdata.exercises;
+    } else {
+      suggestions2 =
+          await _exProvider.exercisesdata.exercises.where((exercise) {
         final extarget = Set.from(exercise.target);
         final query_s = Set.from(tags);
         return (query_s.intersection(extarget).isNotEmpty) as bool;
-      }
-    }).toList();
+      }).toList();
+    }
 
-    final suggestions3 = _exProvider.exercisesdata.exercises.where((exercise) {
-      if (tags2[0] == 'All') {
-        return true;
-      } else {
+    if (tags2[0] == 'All') {
+      suggestions3 = await _exProvider.exercisesdata.exercises;
+    } else {
+      suggestions3 =
+          await _exProvider.exercisesdata.exercises.where((exercise) {
         final excate = exercise.category;
         return (tags2.contains(excate)) as bool;
-      }
-    }).toList();
+      }).toList();
+    }
     _exProvider.settesttotal(suggestions, suggestions2, suggestions3);
   }
 

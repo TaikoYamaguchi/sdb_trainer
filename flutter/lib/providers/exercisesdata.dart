@@ -124,12 +124,11 @@ class ExercisesdataProvider extends ChangeNotifier {
 
   settestdata(data) async {
     _testdata = data;
-    print(_testdata.length);
     notifyListeners();
   }
 
   settestdata_d() async {
-    _testdata = _testdata
+    _testdata = await _testdata
         .toSet()
         .intersection(_exercisesdata.exercises.toSet())
         .toList();
@@ -138,17 +137,17 @@ class ExercisesdataProvider extends ChangeNotifier {
 
   settestdata_s(data) async {
     _testdata_s = data;
-    final commonElements = [_testdata_s, _testdata_f1, _testdata_f2].fold<Set>(
-        [_testdata_s, _testdata_f1, _testdata_f2].first.toSet(),
-        (a, b) => a.intersection(b.toSet()));
+    final commonElements = await [_testdata_s, _testdata_f1, _testdata_f2]
+        .fold<Set>([_testdata_s, _testdata_f1, _testdata_f2].first.toSet(),
+            (a, b) => a.intersection(b.toSet()));
     settestdata(commonElements.toList());
   }
 
   settestdata_f1(data) async {
     _testdata_f1 = data;
-    final commonElements = [_testdata_s, _testdata_f1, _testdata_f2].fold<Set>(
-        [_testdata_s, _testdata_f1, _testdata_f2].first.toSet(),
-        (a, b) => a.intersection(b.toSet()));
+    final commonElements = await [_testdata_s, _testdata_f1, _testdata_f2]
+        .fold<Set>([_testdata_s, _testdata_f1, _testdata_f2].first.toSet(),
+            (a, b) => a.intersection(b.toSet()));
 
     print(commonElements);
     settestdata(commonElements.toList());
@@ -156,9 +155,9 @@ class ExercisesdataProvider extends ChangeNotifier {
 
   settestdata_f2(data) async {
     _testdata_f2 = data;
-    final commonElements = [_testdata_s, _testdata_f1, _testdata_f2].fold<Set>(
-        [_testdata_s, _testdata_f1, _testdata_f2].first.toSet(),
-        (a, b) => a.intersection(b.toSet()));
+    final commonElements = await [_testdata_s, _testdata_f1, _testdata_f2]
+        .fold<Set>([_testdata_s, _testdata_f1, _testdata_f2].first.toSet(),
+            (a, b) => a.intersection(b.toSet()));
     settestdata(commonElements.toList());
   }
 
@@ -166,9 +165,9 @@ class ExercisesdataProvider extends ChangeNotifier {
     _testdata_s = data;
     _testdata_f1 = data1;
     _testdata_f2 = data2;
-    final commonElements = [_testdata_s, _testdata_f1, _testdata_f2].fold<Set>(
-        [_testdata_s, _testdata_f1, _testdata_f2].first.toSet(),
-        (a, b) => a.intersection(b.toSet()));
+    final commonElements = await [_testdata_s, _testdata_f1, _testdata_f2]
+        .fold<Set>([_testdata_s, _testdata_f1, _testdata_f2].first.toSet(),
+            (a, b) => a.intersection(b.toSet()));
     settestdata(commonElements.toList());
   }
 
