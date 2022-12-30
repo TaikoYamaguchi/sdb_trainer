@@ -47,9 +47,13 @@ class ThemeProvider extends ChangeNotifier {
     try {
       var _userThemeStorage = await storage.read(key: "sdb_theme");
       if (_userThemeStorage != null && _userThemeStorage != "") {
-        _userThemeDark = _userThemeStorage;
-        print(_userThemeStorage);
+        if (_userThemeStorage != "dark" && _userThemeStorage != "white") {
+          _userThemeDark = "dark";
+        } else {
+          _userThemeDark = _userThemeStorage;
+        }
         notifyListeners();
+
         return _userThemeStorage;
       } else {
         _userThemeDark = "dark";
