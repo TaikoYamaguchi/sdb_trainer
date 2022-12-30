@@ -725,8 +725,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               onPressed: (_) {},
                                               backgroundColor: Theme.of(context)
                                                   .primaryColor,
-                                              foregroundColor: Theme.of(context)
-                                                  .primaryColorLight,
+                                              foregroundColor:
+                                                  Theme.of(context).buttonColor,
                                               icon: Icons.check,
                                               label: '밀어서 check',
                                             )
@@ -1006,7 +1006,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                             _routinetimeProvider.isstarted
                                         ? Color(0xFF212121)
                                         : provider.buttoncolor,
-                                textStyle: const TextStyle(fontSize: 20)),
+                                textStyle: const TextStyle()),
                             onPressed: () {
                               (provider.nowonrindex != widget.rindex) &&
                                       _routinetimeProvider.isstarted
@@ -1569,7 +1569,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                         .primaryColorLight),
                                             child: Checkbox(
                                                 checkColor: Theme.of(context)
-                                                    .primaryColorLight,
+                                                    .buttonColor,
                                                 activeColor: Theme.of(context)
                                                     .primaryColor,
                                                 value: _sets[index].ischecked,
@@ -1699,7 +1699,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                         .primaryColor,
                                                 foregroundColor:
                                                     Theme.of(context)
-                                                        .primaryColorLight,
+                                                        .buttonColor,
                                                 icon: Icons.check,
                                                 label: '밀어서 check',
                                               )
@@ -1962,7 +1962,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               _routinetimeProvider.isstarted
                                           ? Color(0xFF212121)
                                           : provider.buttoncolor,
-                                  textStyle: const TextStyle(fontSize: 20)),
+                                  textStyle: const TextStyle()),
                               onPressed: () {
                                 (provider.nowonrindex != widget.rindex) &&
                                         _routinetimeProvider.isstarted
@@ -2311,8 +2311,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                       Container(
                           width: 80,
                           child: Text(
-                            "Distance",
-                            textScaleFactor: 4.0,
+                            "거리",
+                            textScaleFactor: 1.1,
                             style: TextStyle(
                               color: Theme.of(context).primaryColorLight,
                               fontWeight: FontWeight.bold,
@@ -2322,8 +2322,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                       Container(
                           width: 140,
                           child: Text(
-                            "Duration(hh:mm:ss)",
-                            textScaleFactor: 4.0,
+                            "시간(시:분:초)",
+                            textScaleFactor: 1.1,
                             style: TextStyle(
                               color: Theme.of(context).primaryColorLight,
                               fontWeight: FontWeight.bold,
@@ -2396,7 +2396,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                 child: Checkbox(
                                                     checkColor:
                                                         Theme.of(context)
-                                                            .primaryColorLight,
+                                                            .buttonColor,
                                                     activeColor:
                                                         Theme.of(context)
                                                             .primaryColor,
@@ -2520,7 +2520,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                                             .primaryColor,
                                                     foregroundColor:
                                                         Theme.of(context)
-                                                            .primaryColorLight,
+                                                            .buttonColor,
                                                     icon: Icons.check,
                                                     label: '밀어서 check',
                                                   )
@@ -2725,8 +2725,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               fontSize: 33.0 *
                                                   _themeProvider.userFontSize /
                                                   0.8,
-                                              color: Theme.of(context)
-                                                  .primaryColorLight,
+                                              color:
+                                                  Theme.of(context).buttonColor,
                                               fontWeight: FontWeight.bold),
                                           textFormat:
                                               CountdownTextFormat.HH_MM_SS,
@@ -2889,7 +2889,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                                               _routinetimeProvider.isstarted
                                           ? Color(0xFF212121)
                                           : provider.buttoncolor,
-                                  textStyle: const TextStyle(fontSize: 20)),
+                                  textStyle: const TextStyle()),
                               onPressed: () {
                                 (provider.nowonrindex != widget.rindex) &&
                                         _routinetimeProvider.isstarted

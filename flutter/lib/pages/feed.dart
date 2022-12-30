@@ -301,8 +301,8 @@ class _FeedState extends State<Feed> {
                     },
                     child: Text("친구 찾기",
                         textScaleFactor: 1.7,
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorLight))))
+                        style:
+                            TextStyle(color: Theme.of(context).buttonColor))))
           ]),
         ),
       ),
@@ -337,12 +337,11 @@ class _FeedState extends State<Feed> {
                   padding: EdgeInsets.all(12.0),
                 ),
                 onPressed: () {
-                  _bodyStater.change(1);
+                  _bodyStater.change(0);
                 },
                 child: Text("첫 운동 하기",
                     textScaleFactor: 1.7,
-                    style:
-                        TextStyle(color: Theme.of(context).primaryColorLight))))
+                    style: TextStyle(color: Theme.of(context).buttonColor))))
       ]),
     ));
   }

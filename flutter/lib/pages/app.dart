@@ -250,8 +250,7 @@ class _AppState extends State<App> {
             },
             child: Text("운동 종료 하기",
                 style: TextStyle(
-                    fontSize: 20.0,
-                    color: Theme.of(context).primaryColorLight))));
+                    fontSize: 20.0, color: Theme.of(context).buttonColor))));
   }
 
   void recordExercise_plan() {
