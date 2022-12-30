@@ -3,11 +3,6 @@
 weight lifting trainer app
 
 ## server 사용법
-1. Docker 설치 한다.
-2. flutter/lib/localhost.dart 에서 본인 컴터 ip로 고친다. 
-3. sudo service docker start ---- 로 Docker 실행시킨다.
-4. docker run -d -p 9000:9000 --name=portainer --restart=unless-stopped -v /var/run/docker.sock:/var/run/docker.sock -v /var/portainer/data:/data portainer/portainer----Docker 툴인 portainer 를 9000포트에서 실행시킨다.
-5. scripts/build.sh를 sh build.sh로 실행시킨다.(Docker에 서버를 구축해주는 작업)
 
 ## Getting Started
 
