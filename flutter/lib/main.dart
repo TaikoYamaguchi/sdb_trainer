@@ -8,6 +8,7 @@ import 'package:sdb_trainer/pages/login.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
+import 'package:sdb_trainer/providers/interviewdata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/routinemenu.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
@@ -52,6 +53,8 @@ void main() {
         create: (BuildContext context) => RoutineMenuStater()),
     ChangeNotifierProvider(
         create: (BuildContext context) => FamousdataProvider()),
+    ChangeNotifierProvider(
+        create: (BuildContext context) => InterviewdataProvider()),
     ChangeNotifierProvider(create: (BuildContext context) => ThemeProvider()),
   ], child: MyApp()));
 }

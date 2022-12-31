@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/pages/interview.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
+import 'package:sdb_trainer/providers/interviewdata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/themeMode.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
@@ -41,6 +43,7 @@ class _ProfileState extends State<Profile> {
   var _PrefsProvider;
   var _bodyStater;
   var _themeProvider;
+  var _interviewProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +53,9 @@ class _ProfileState extends State<Profile> {
     _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
     _bodyStater = Provider.of<BodyStater>(context, listen: false);
     _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+
+    _interviewProvider =
+        Provider.of<InterviewdataProvider>(context, listen: false);
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(40.0), // here the desired height
@@ -263,7 +269,7 @@ class _ProfileState extends State<Profile> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("친구와 운동하기",
+                        Text("친구와 운동하기👍",
                             textScaleFactor: 1.1,
                             style: TextStyle(
                                 color: Theme.of(context).primaryColorLight)),
@@ -293,6 +299,35 @@ class _ProfileState extends State<Profile> {
                         Icon(Icons.open_in_new,
                             color: Theme.of(context).primaryColorDark),
                       ]))),
+          ElevatedButton(
+              onPressed: () async {
+                _PopProvider.profilestackup();
+                _interviewProvider.interviewdataAll == null
+                    ? _interviewProvider.getinterviewdataFirst()
+                    : null;
+                Navigator.push(
+                    context,
+                    Transition(
+                        child: Interview(),
+                        transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+              },
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(Theme.of(context).cardColor)),
+              child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("기능 제안하기👏",
+                            textScaleFactor: 1.1,
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight)),
+                        Icon(Icons.chevron_right,
+                            color: Theme.of(context).primaryColorDark),
+                      ]))),
+
           Column(
             children: [
               Container(

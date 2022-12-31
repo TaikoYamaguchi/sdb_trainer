@@ -285,12 +285,8 @@ class UserBodyStatIn(BaseModel):
 class InterviewBase(BaseModel):
     user_email : str
     user_nickname : str
-    progress : str
     title : str
     content : str
-    like:list
-    date: datetime
-    reply_id: int
     class Config:
         orm_mode = True
 
@@ -300,6 +296,11 @@ class InterviewCreate(InterviewBase):
         orm_mode = True
 
 class InterviewOut(InterviewBase):
+    id: int
+    reply_id: t.Optional[int]
+    progress : str
+    like:list
+    date: datetime
 
     class Config:
         orm_mode = True

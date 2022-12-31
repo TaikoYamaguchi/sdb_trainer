@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:confetti/confetti.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -99,6 +101,7 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
                                 LaunchReview.launch(
                                     androidAppId: "com.tk_lck.supero",
                                     iOSAppId: "6444859542");
+                                exit(0);
                               }))
                       : Row(
                           mainAxisSize: MainAxisSize.max,

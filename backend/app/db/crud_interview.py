@@ -21,7 +21,6 @@ def create_interview(db: Session, interview: schemas.InterviewCreate, ip:str):
         like=[],
         date = datetime.datetime.utcnow()+datetime.timedelta(hours=9),
         modified_number=0,
-        reply_id=interview.reply_id,
         ip = ip
     )
     print(interview.user_email)
@@ -32,6 +31,10 @@ def create_interview(db: Session, interview: schemas.InterviewCreate, ip:str):
 
 def get_interviews_by_email(db: Session, email) -> t.List[schemas.InterviewOut]:
     interviews = db.query(models.Interview).filter(models.Interview.user_email == email).order_by(models.Interview.id.desc()).all()
+    return interviews
+
+def get_interviews(db: Session, skip, limit) -> t.List[schemas.InterviewOut]:
+    interviews = db.query(models.Interview).order_by(models.Interview.id.desc()).offset(skip).limit(limit).all()
     return interviews
 
 

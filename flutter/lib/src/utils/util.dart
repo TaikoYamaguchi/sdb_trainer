@@ -200,8 +200,7 @@ Widget _DeleteConfirmButton(context) {
           },
           child: Text("확인",
               style: TextStyle(
-                  fontSize: 20.0,
-                  color: Theme.of(context).primaryColorLight))));
+                  fontSize: 20.0, color: Theme.of(context).buttonColor))));
 }
 
 void displayShareAlert(context, title, message) {
@@ -268,8 +267,7 @@ Widget _shareConfirmButton(context) {
           },
           child: Text("공유하기",
               style: TextStyle(
-                  fontSize: 20.0,
-                  color: Theme.of(context).primaryColorLight))));
+                  fontSize: 20.0, color: Theme.of(context).buttonColor))));
 }
 
 Future<Map<String, dynamic>> getDeviceInfo() async {
