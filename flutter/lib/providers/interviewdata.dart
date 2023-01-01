@@ -5,7 +5,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 class InterviewdataProvider extends ChangeNotifier {
   var _interviewdataAll;
+  List<String> _selectedTags = [];
   get interviewdataAll => _interviewdataAll;
+  get selectedTags => _selectedTags;
 
   getinterviewdataFirst() {
     InterviewdataFirst.loadinterviewDataFirst().then((value) {
@@ -56,6 +58,24 @@ class InterviewdataProvider extends ChangeNotifier {
         return false;
       }
     }));
+
+    notifyListeners();
+  }
+
+  addTag(String tag) {
+    _selectedTags.add(tag);
+
+    notifyListeners();
+  }
+
+  removeTag(String tag) {
+    _selectedTags.removeWhere((element) => element == tag);
+
+    notifyListeners();
+  }
+
+  initTags() {
+    _selectedTags = [];
 
     notifyListeners();
   }

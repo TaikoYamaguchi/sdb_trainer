@@ -27,6 +27,13 @@ class _InterviewState extends State<Interview> {
   var _final_interview_id;
   var _themeProvider;
   var _hasMore = true;
+  List<String> _tagsList = [
+    '버그',
+    '기능 개선',
+    '질문',
+    '기타',
+  ];
+  List<String>? _tags = [];
 
   TextEditingController _titleCtrl = TextEditingController(text: "");
   TextEditingController _contentCtrl = TextEditingController(text: "");
@@ -100,6 +107,7 @@ class _InterviewState extends State<Interview> {
             ),
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text("기능 제안하기",
                     textScaleFactor: 1.5,
@@ -150,7 +158,7 @@ class _InterviewState extends State<Interview> {
                     return Container(
                       width: MediaQuery.of(context).size.width,
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -176,14 +184,42 @@ class _InterviewState extends State<Interview> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      _interviewDatas[index].title,
-                                      textAlign: TextAlign.start,
-                                      textScaleFactor: 1.5,
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorLight),
+                                    SizedBox(height: 4),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            _interviewDatas[index].title,
+                                            textAlign: TextAlign.start,
+                                            textScaleFactor: 1.5,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColorLight),
+                                          ),
+                                        ),
+                                        Container(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 4.0),
+                                            child: Text(
+                                              _interviewDatas[index]
+                                                  .date
+                                                  .substring(2, 10),
+                                              textScaleFactor: 1.1,
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .primaryColorDark),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
+                                    SizedBox(height: 4),
                                     Text(
                                       _interviewDatas[index].content,
                                       textScaleFactor: 1.3,
@@ -191,6 +227,61 @@ class _InterviewState extends State<Interview> {
                                           color: Theme.of(context)
                                               .primaryColorDark),
                                     ),
+                                    SizedBox(height: 4),
+                                    Container(
+                                      child: Wrap(
+                                          children: _interviewDatas[index]
+                                              .tags
+                                              .map<Widget>(
+                                        (tag) {
+                                          bool isSelected = true;
+
+                                          return GestureDetector(
+                                            onTap: () {},
+                                            child: Container(
+                                                margin: EdgeInsets.symmetric(
+                                                    horizontal: 4, vertical: 2),
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 2,
+                                                      horizontal: 8),
+                                                  decoration: BoxDecoration(
+                                                      color: Theme.of(context)
+                                                          .buttonColor,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              18),
+                                                      border: Border.all(
+                                                          color: isSelected
+                                                              ? Theme.of(
+                                                                      context)
+                                                                  .primaryColor
+                                                              : Theme.of(
+                                                                      context)
+                                                                  .primaryColorDark,
+                                                          width: 1)),
+                                                  child: Text(
+                                                    tag,
+                                                    style: TextStyle(
+                                                        color: isSelected
+                                                            ? Theme.of(context)
+                                                                .primaryColor
+                                                            : Theme.of(context)
+                                                                .primaryColorDark,
+                                                        fontSize: 12 *
+                                                            _themeProvider
+                                                                .userFontSize /
+                                                            0.8),
+                                                  ),
+                                                )),
+                                          );
+                                        },
+                                      ).toList()),
+                                    ),
+                                    Divider(
+                                        color:
+                                            Theme.of(context).primaryColorDark,
+                                        thickness: 0.3)
                                   ],
                                 ),
                               ),
@@ -224,10 +315,10 @@ class _InterviewState extends State<Interview> {
                 separatorBuilder: (BuildContext _context, int index) {
                   return Container(
                     alignment: Alignment.center,
-                    height: 0.5,
+                    height: 0,
                     child: Container(
                       alignment: Alignment.center,
-                      height: 0.5,
+                      height: 0,
                       color: Theme.of(context).primaryColorDark,
                     ),
                   );
@@ -333,6 +424,61 @@ class _InterviewState extends State<Interview> {
                                     color: Theme.of(context).primaryColorDark)),
                             onChanged: (text) {})),
                     SizedBox(height: 8.0),
+                    Consumer<InterviewdataProvider>(
+                        builder: (context, provider, child) {
+                      return Container(
+                        child: Wrap(
+                          children: _tagsList.map(
+                            (tag) {
+                              bool isSelected = false;
+                              if (_interviewProvider.selectedTags!
+                                  .contains(tag)) {
+                                isSelected = true;
+                              }
+                              return GestureDetector(
+                                onTap: () {
+                                  if (!_interviewProvider.selectedTags!
+                                      .contains(tag)) {
+                                    _interviewProvider.addTag(tag);
+                                  } else {
+                                    _interviewProvider.removeTag(tag);
+                                  }
+                                },
+                                child: Container(
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 5, vertical: 4),
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 5, horizontal: 12),
+                                      decoration: BoxDecoration(
+                                          color: Theme.of(context).buttonColor,
+                                          borderRadius:
+                                              BorderRadius.circular(18),
+                                          border: Border.all(
+                                              color: isSelected
+                                                  ? Theme.of(context)
+                                                      .primaryColor
+                                                  : Theme.of(context)
+                                                      .primaryColorDark,
+                                              width: 1)),
+                                      child: Text(
+                                        tag,
+                                        style: TextStyle(
+                                            color: isSelected
+                                                ? Theme.of(context).primaryColor
+                                                : Theme.of(context)
+                                                    .primaryColorDark,
+                                            fontSize: 14 *
+                                                _themeProvider.userFontSize /
+                                                0.8),
+                                      ),
+                                    )),
+                              );
+                            },
+                          ).toList(),
+                        ),
+                      );
+                    }),
                     Column(
                       children: [
                         Container(
@@ -383,12 +529,17 @@ class _InterviewState extends State<Interview> {
                 showToast("제목과 내용을 확인 부탁드려요!");
               } else {
                 InterviewPost(
-                        user_email: _userProvider.userdata.email, user_nickname: _userProvider.userdata.email, title: _titleCtrl.text, content: _contentCtrl.text, tags: [])
+                        user_email: _userProvider.userdata.email,
+                        user_nickname: _userProvider.userdata.email,
+                        title: _titleCtrl.text,
+                        content: _contentCtrl.text,
+                        tags: _interviewProvider.selectedTags)
                     .postinterview()
                     .then((value) => {
                           _interviewProvider.getinterviewdataFirst(),
                           Navigator.pop(context),
                           _titleCtrl.clear(),
+                          _interviewProvider.initTags(),
                           _contentCtrl.clear(),
                         });
               }
