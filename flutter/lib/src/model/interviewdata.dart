@@ -7,6 +7,7 @@ class InterviewData {
   final String content;
   final List<dynamic> like;
   final String? date;
+  final List<dynamic>? tags;
   final int? reply_id;
   InterviewData(
       {required this.id,
@@ -17,6 +18,7 @@ class InterviewData {
       required this.content,
       required this.like,
       required this.date,
+      required this.tags,
       required this.reply_id});
 
   Map toJson() => {
@@ -28,6 +30,7 @@ class InterviewData {
         "content": content,
         "like": like,
         "date": date,
+        "tags": tags,
         "reply_id": reply_id,
       };
 
@@ -41,6 +44,7 @@ class InterviewData {
       content: parsedJson['content'],
       like: parsedJson["like"],
       date: parsedJson["date"],
+      tags: parsedJson["tags"],
       reply_id: parsedJson["reply_id"],
     );
   }

@@ -20,6 +20,7 @@ def create_interview(db: Session, interview: schemas.InterviewCreate, ip:str):
         content = interview.content,
         like=[],
         date = datetime.datetime.utcnow()+datetime.timedelta(hours=9),
+        tags=interview.tags,
         modified_number=0,
         ip = ip
     )

@@ -125,4 +125,5 @@ class Interview(Base):
     date = Column(DateTime, nullable=False)
     reply_id = Column(Integer, nullable=True)
     modified_number = Column(Integer, nullable=False)
+    tags = Column(MutableList.as_mutable(ARRAY(String)), nullable=True)
     ip = Column(String, nullable=True)

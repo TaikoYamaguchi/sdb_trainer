@@ -10,6 +10,9 @@ class InterviewdataProvider extends ChangeNotifier {
   getinterviewdataFirst() {
     InterviewdataFirst.loadinterviewDataFirst().then((value) {
       _interviewdataAll = value;
+      print("provider");
+      print(value);
+
       notifyListeners();
     });
   }

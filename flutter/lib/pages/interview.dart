@@ -135,28 +135,69 @@ class _InterviewState extends State<Interview> {
   }
 
   Widget _interviewCardList(context) {
-    var _interviewDatas = _interviewProvider.interviewdataAll.interviewDatas;
-    print(_interviewDatas);
     return Container(
       width: MediaQuery.of(context).size.width,
       child:
           Consumer<InterviewdataProvider>(builder: (builder, provider, child) {
+        var _interviewDatas =
+            _interviewProvider.interviewdataAll.interviewDatas;
         return RefreshIndicator(
             onRefresh: _onRefresh,
             child: ListView.separated(
                 controller: _pageController,
                 itemBuilder: (BuildContext _context, int index) {
-                  print(index);
-                  print(_interviewDatas.length);
                   if (index < _interviewDatas.length) {
-                    print(MediaQuery.of(context).size.width);
                     return Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 120,
-                      child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0)),
-                          child: Text(_interviewDatas[index].content)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 40,
+                              child: _interviewDatas[index].progress == "open"
+                                  ? Icon(
+                                      Icons.radio_button_unchecked,
+                                      color: Color(0xFF26A943),
+                                      size: 28,
+                                    )
+                                  : _interviewDatas[index].progress == "closed"
+                                      ? Icon(Icons.radio_button_checked,
+                                          color: Theme.of(context).primaryColor,
+                                          size: 28)
+                                      : Icon(Icons.radio_button_checked,
+                                          color: Theme.of(context).primaryColor,
+                                          size: 28),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      _interviewDatas[index].title,
+                                      textAlign: TextAlign.start,
+                                      textScaleFactor: 1.5,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight),
+                                    ),
+                                    Text(
+                                      _interviewDatas[index].content,
+                                      textScaleFactor: 1.3,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorDark),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     );
                   } else if (_interviewDatas.length == 0) {
                     return Padding(
@@ -183,11 +224,11 @@ class _InterviewState extends State<Interview> {
                 separatorBuilder: (BuildContext _context, int index) {
                   return Container(
                     alignment: Alignment.center,
-                    height: 0,
+                    height: 0.5,
                     child: Container(
                       alignment: Alignment.center,
-                      height: 0,
-                      color: Color(0xFF717171),
+                      height: 0.5,
+                      color: Theme.of(context).primaryColorDark,
                     ),
                   );
                 },
@@ -258,9 +299,7 @@ class _InterviewState extends State<Interview> {
                                     fontSize:
                                         14 * _themeProvider.userFontSize / 0.8,
                                     color: Theme.of(context).primaryColorDark)),
-                            onChanged: (text) {
-                              setState(() {});
-                            })),
+                            onChanged: (text) {})),
                     SizedBox(height: 12),
                     Container(
                         child: TextFormField(
@@ -292,9 +331,7 @@ class _InterviewState extends State<Interview> {
                                     fontSize:
                                         14 * _themeProvider.userFontSize / 0.8,
                                     color: Theme.of(context).primaryColorDark)),
-                            onChanged: (text) {
-                              setState(() {});
-                            })),
+                            onChanged: (text) {})),
                     SizedBox(height: 8.0),
                     Column(
                       children: [
@@ -346,10 +383,7 @@ class _InterviewState extends State<Interview> {
                 showToast("제목과 내용을 확인 부탁드려요!");
               } else {
                 InterviewPost(
-                        user_email: _userProvider.userdata.email,
-                        user_nickname: _userProvider.userdata.email,
-                        title: _titleCtrl.text,
-                        content: _contentCtrl.text)
+                        user_email: _userProvider.userdata.email, user_nickname: _userProvider.userdata.email, title: _titleCtrl.text, content: _contentCtrl.text, tags: [])
                     .postinterview()
                     .then((value) => {
                           _interviewProvider.getinterviewdataFirst(),

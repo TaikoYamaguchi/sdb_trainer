@@ -86,11 +86,13 @@ class InterviewPost {
   final String user_nickname;
   final String title;
   final String content;
+  final List<String> tags;
   InterviewPost({
     required this.user_email,
     required this.user_nickname,
     required this.title,
     required this.content,
+    required this.tags,
   });
   Future<String> _interviewPostFromServer() async {
     var formData = new Map<String, dynamic>();
@@ -98,6 +100,7 @@ class InterviewPost {
     formData["user_nickname"] = user_nickname;
     formData["title"] = title;
     formData["content"] = content;
+    formData["tags"] = tags;
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/interviewcreate");
     var response = await http.post(url, body: json.encode(formData));

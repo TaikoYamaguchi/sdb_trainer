@@ -35,6 +35,7 @@ def upgrade():
             sa.Column("date", sa.DateTime, nullable=False),
             sa.Column("reply_id", sa.Integer, nullable=True),
             sa.Column("modified_number", sa.Integer, nullable=False),
+            sa.Column("tags", sa.ARRAY(sa.String), nullable=True),
             sa.Column("ip", sa.String(50), nullable=False),
         )
 

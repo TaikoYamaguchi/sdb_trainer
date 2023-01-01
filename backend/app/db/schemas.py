@@ -287,6 +287,7 @@ class InterviewBase(BaseModel):
     user_nickname : str
     title : str
     content : str
+    tags : list
     class Config:
         orm_mode = True
 
