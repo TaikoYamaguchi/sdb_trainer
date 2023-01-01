@@ -1114,7 +1114,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
             },
             child: Text("1rm 확인",
                 textScaleFactor: 1.7,
-                style: TextStyle(color: Theme.of(context).primaryColorLight))));
+                style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
   void _editWorkoutCheck() async {
