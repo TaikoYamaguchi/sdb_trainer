@@ -526,6 +526,8 @@ class ExerciseState extends State<Exercise> {
               _PopProvider.exstackup(1);
               _exProvider.inittestdata();
               _exProvider.settags([key_list[index].toString()]);
+              _exProvider.settags2(['All']);
+
               filterExercise(_exProvider.tags);
               Navigator.push(
                   context,
