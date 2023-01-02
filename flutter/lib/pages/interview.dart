@@ -150,6 +150,7 @@ class _InterviewState extends State<Interview> {
   Widget _interviewCardList(context) {
     return Container(
       width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
       child:
           Consumer<InterviewdataProvider>(builder: (builder, provider, child) {
         var _interviewDatas =
@@ -158,6 +159,8 @@ class _InterviewState extends State<Interview> {
             onRefresh: _onRefresh,
             child: SingleChildScrollView(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -410,7 +413,7 @@ class _InterviewState extends State<Interview> {
                           return Padding(
                               padding: EdgeInsets.symmetric(vertical: 16),
                               child: Center(
-                                  child: Text("데이터 없음",
+                                  child: Text("기능을 제안해주세요",
                                       style: TextStyle(
                                           color: Theme.of(context)
                                               .primaryColorLight))));
@@ -421,7 +424,7 @@ class _InterviewState extends State<Interview> {
                             child: Center(
                                 child: _hasMore
                                     ? CircularProgressIndicator()
-                                    : Text("데이터 없음",
+                                    : Text("기능을 제안해주세요",
                                         style: TextStyle(
                                             color: Theme.of(context)
                                                 .primaryColorLight))),
