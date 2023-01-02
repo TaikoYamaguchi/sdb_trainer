@@ -109,6 +109,12 @@ class ExercisesdataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  resettags() async {
+    _tags = ['All'];
+    _tags2 = ['All'];
+    notifyListeners();
+  }
+
   settags2(item) async {
     _tags2 = item;
     notifyListeners();
