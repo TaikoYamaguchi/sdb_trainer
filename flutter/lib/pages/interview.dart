@@ -31,6 +31,7 @@ class _InterviewState extends State<Interview> {
   var _final_interview_id;
   var _themeProvider;
   var _hasMore = true;
+  var _tapPosition;
   List<String> _tagsList = [
     '버그',
     '기능 개선',
@@ -46,6 +47,7 @@ class _InterviewState extends State<Interview> {
   @override
   void initState() {
     super.initState();
+    _tapPosition = Offset(0.0, 0.0);
     binding.addPostFrameCallback((_) async {
       _fetchInterviewPage();
       _pageController.addListener(() {
@@ -494,51 +496,67 @@ class _InterviewState extends State<Interview> {
                                     TransitionEffect.RIGHT_TO_LEFT));
                       },
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          user.image == ""
-                              ? Icon(
-                                  Icons.account_circle,
-                                  color: Colors.grey,
-                                  size: 46.0,
-                                )
-                              : CachedNetworkImage(
-                                  imageUrl: user.image,
-                                  imageBuilder: (context, imageProivder) =>
-                                      Container(
-                                    height: 46,
-                                    width: 46,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(50)),
-                                        image: DecorationImage(
-                                          image: imageProivder,
-                                          fit: BoxFit.cover,
-                                        )),
-                                  ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              user.image == ""
+                                  ? Icon(
+                                      Icons.account_circle,
+                                      color: Colors.grey,
+                                      size: 46.0,
+                                    )
+                                  : CachedNetworkImage(
+                                      imageUrl: user.image,
+                                      imageBuilder: (context, imageProivder) =>
+                                          Container(
+                                        height: 46,
+                                        width: 46,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(50)),
+                                            image: DecorationImage(
+                                              image: imageProivder,
+                                              fit: BoxFit.cover,
+                                            )),
+                                      ),
+                                    ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      interviewData.user_nickname,
+                                      textScaleFactor: 1.5,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight),
+                                    ),
+                                    Text(
+                                      interviewData.date!.substring(2, 10),
+                                      textScaleFactor: 1.0,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorDark),
+                                    ),
+                                  ],
                                 ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  interviewData.user_nickname,
-                                  textScaleFactor: 1.5,
-                                  style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorLight),
-                                ),
-                                Text(
-                                  interviewData.date!.substring(2, 10),
-                                  textScaleFactor: 1.0,
-                                  style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorDark),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
+                          GestureDetector(
+                              onTapDown: _storePosition,
+                              onTap: () {
+                                interviewData.user_email ==
+                                        _userProvider.userdata.email
+                                    ? _myInterviewMenu(interviewData)
+                                    : null;
+                              },
+                              child: Icon(Icons.more_vert,
+                                  color: Colors.grey, size: 18.0))
                         ],
                       ),
                     ),
@@ -729,6 +747,32 @@ class _InterviewState extends State<Interview> {
             child: Text("닫기",
                 textScaleFactor: 1.5,
                 style: TextStyle(color: Theme.of(context).buttonColor))));
+  }
+
+  Future<dynamic> _myInterviewMenu(InterviewData interviewData) {
+    return showMenu(
+      context: context,
+      position: RelativeRect.fromRect(
+          _tapPosition & Size(30, 30), Offset.zero & Size(0, 0)),
+      items: [
+        PopupMenuItem(
+            child: ListTile(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+                leading: Icon(Icons.delete,
+                    color: Theme.of(context).primaryColorLight),
+                title: Text("삭제",
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
+                onTap: () async {
+                  InterviewDelete(interview_id: interviewData.id)
+                      .deleteInterview();
+                  _interviewProvider.deleteInterviewdata(interviewData.id);
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                }))
+      ],
+    );
   }
 
   void _showInterviewPostBottomSheet() {
@@ -939,7 +983,7 @@ class _InterviewState extends State<Interview> {
                         tags: _interviewProvider.selectedTags)
                     .postInterview()
                     .then((value) => {
-                          _interviewProvider.getinterviewdataFirst(),
+                          _interviewProvider.getInterviewdataFirst(),
                           Navigator.pop(context),
                           _titleCtrl.clear(),
                           _interviewProvider.initTags(),
@@ -1029,6 +1073,10 @@ class _InterviewState extends State<Interview> {
           interviewData, _userProvider.userdata.email, "append");
       return !isLiked;
     }
+  }
+
+  void _storePosition(TapDownDetails details) {
+    _tapPosition = details.globalPosition;
   }
 
   @override

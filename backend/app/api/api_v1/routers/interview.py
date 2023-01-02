@@ -80,6 +80,7 @@ async def interview_likes(
     interview = manage_like_by_interview_id(db, likeContent)
     # This is necessary for react-admin to work
     return interview
+
 @r.delete(
     "/interviewDelete/{interview_id}", response_model=InterviewOut, response_model_exclude_none=True
 )
