@@ -53,7 +53,7 @@ class _FriendProfileState extends State<FriendProfile> {
           ),
           title: Text(
             widget.user.nickname,
-            textScaleFactor: 2.7,
+            textScaleFactor: 1.7,
             style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
           backgroundColor: Theme.of(context).canvasColor,
@@ -257,7 +257,8 @@ Widget _feedCardList(context) {
                                   sdbdata: provider
                                       .historydataUserEmail.sdbdatas[index],
                                   index: index,
-                                  feedListCtrl: 0)
+                                  feedListCtrl: 0,
+                                  openUserDetail: false)
                               : Container());
                     } else {
                       return Padding(

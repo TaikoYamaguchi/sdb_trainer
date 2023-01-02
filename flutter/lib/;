@@ -141,7 +141,7 @@ class _InterviewState extends State<Interview> {
   }
 
   Future<void> _onRefresh() {
-    _interviewProvider.getInterviewdataFirst();
+    _interviewProvider.getinterviewdataFirst();
     return Future<void>.value();
   }
 
@@ -969,7 +969,7 @@ class _InterviewState extends State<Interview> {
           return Icon(Icons.favorite,
               color: isLiked
                   ? Theme.of(context).primaryColor
-                  : Theme.of(context).primaryColorDark,
+                  : Theme.of(context).primaryColorLight,
               size: buttonSize);
         },
         onTap: (bool isLiked) async {

@@ -14,7 +14,7 @@ from . import models, schemas
 def create_interview(db: Session, interview: schemas.InterviewCreate, ip:str):
     db_interview = models.Interview(
         user_email=interview.user_email,
-        user_nickname=interview.user_email,
+        user_nickname=interview.user_nickname,
         progress = "open",
         title = interview.title,
         content = interview.content,

@@ -303,7 +303,7 @@ class _ProfileState extends State<Profile> {
               onPressed: () async {
                 _PopProvider.profilestackup();
                 _interviewProvider.interviewdataAll == null
-                    ? _interviewProvider.getinterviewdataFirst()
+                    ? _interviewProvider.getInterviewdataFirst()
                     : null;
                 Navigator.push(
                     context,

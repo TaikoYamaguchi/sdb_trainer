@@ -165,7 +165,8 @@ class _FeedState extends State<Feed> {
                                         child: FeedCard(
                                             sdbdata: _historydata[index],
                                             index: index,
-                                            feedListCtrl: _feedListCtrl));
+                                            feedListCtrl: _feedListCtrl,
+                                            openUserDetail: true));
                                   } else {
                                     _final_history_id =
                                         _historydata[index - 1].id;

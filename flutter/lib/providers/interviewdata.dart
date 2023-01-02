@@ -9,8 +9,8 @@ class InterviewdataProvider extends ChangeNotifier {
   get interviewdataAll => _interviewdataAll;
   get selectedTags => _selectedTags;
 
-  getinterviewdataFirst() {
-    InterviewdataFirst.loadinterviewDataFirst().then((value) {
+  getInterviewdataFirst() {
+    InterviewdataFirst.loadInterviewDataFirst().then((value) {
       _interviewdataAll = value;
       print("provider");
       print(value);
@@ -19,12 +19,12 @@ class InterviewdataProvider extends ChangeNotifier {
     });
   }
 
-  addinterviewdataPage(InterviewDataList) {
+  addInterviewdataPage(InterviewDataList) {
     _interviewdataAll.interviewDatas.addAll(InterviewDataList.interviewDatas);
     notifyListeners();
   }
 
-  patchinterviewLikedata(interviewData, email, status) {
+  patchInterviewLikedata(interviewData, email, status) {
     if (status == "remove") {
       _interviewdataAll.interviewDatas.indexWhere((interviewData) {
         if (interviewData.id == interviewData.id) {
@@ -49,7 +49,7 @@ class InterviewdataProvider extends ChangeNotifier {
     }
   }
 
-  deleteinterviewdata(interview_id) {
+  deleteInterviewdata(interview_id) {
     _interviewdataAll.interviewDatas
         .removeAt(_interviewdataAll.interviewDatas.indexWhere((interviewData) {
       if (interviewData.id == interview_id) {

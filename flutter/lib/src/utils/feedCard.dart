@@ -19,11 +19,13 @@ class FeedCard extends StatefulWidget {
   hisdata.SDBdata sdbdata;
   int index;
   int feedListCtrl;
+  bool openUserDetail;
   FeedCard(
       {Key? key,
       required this.sdbdata,
       required this.index,
-      required this.feedListCtrl})
+      required this.feedListCtrl,
+      required this.openUserDetail})
       : super(key: key);
 
   @override
@@ -97,12 +99,16 @@ class _FeedCardState extends State<FeedCard> {
                               children: [
                                 GestureDetector(
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        Transition(
-                                            child: FriendProfile(user: user),
-                                            transitionEffect: TransitionEffect
-                                                .RIGHT_TO_LEFT));
+                                    widget.openUserDetail
+                                        ? Navigator.push(
+                                            context,
+                                            Transition(
+                                                child:
+                                                    FriendProfile(user: user),
+                                                transitionEffect:
+                                                    TransitionEffect
+                                                        .RIGHT_TO_LEFT))
+                                        : null;
                                   },
                                   child: Row(
                                     crossAxisAlignment:

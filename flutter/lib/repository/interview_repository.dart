@@ -34,7 +34,7 @@ class InterviewService {
 }
 
 class InterviewdataFirst {
-  static Future<String> _loadinterviewDataFromServer() async {
+  static Future<String> _loadInterviewDataFromServer() async {
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/interview");
     var response = await http.get(url);
     if (response.statusCode == 200) {
@@ -46,8 +46,8 @@ class InterviewdataFirst {
     }
   }
 
-  static Future<InterviewDataList> loadinterviewDataFirst() async {
-    String jsonString = await _loadinterviewDataFromServer();
+  static Future<InterviewDataList> loadInterviewDataFirst() async {
+    String jsonString = await _loadInterviewDataFromServer();
     final jsonResponse = json.decode(jsonString);
     InterviewDataList interviewData = InterviewDataList.fromJson(jsonResponse);
     return (interviewData);
@@ -116,7 +116,7 @@ class InterviewPost {
     }
   }
 
-  Future<Map<String, dynamic>> postinterview() async {
+  Future<Map<String, dynamic>> postInterview() async {
     String jsonString = await _interviewPostFromServer();
     final jsonResponse = json.decode(jsonString);
     return (jsonResponse);
@@ -155,7 +155,7 @@ class InterviewLike {
     }
   }
 
-  Future<Map<String, dynamic>> patchinterviewLike() async {
+  Future<Map<String, dynamic>> patchInterviewLike() async {
     String jsonString = await _interviewLikeFromServer();
     final jsonResponse = json.decode(jsonString);
     return (jsonResponse);
@@ -191,7 +191,7 @@ class InterviewDelete {
     }
   }
 
-  Future<Map<String, dynamic>> deleteinterview() async {
+  Future<Map<String, dynamic>> deleteInterview() async {
     String jsonString = await _interviewDeletefromServer();
     final jsonResponse = json.decode(jsonString);
     return (jsonResponse);
