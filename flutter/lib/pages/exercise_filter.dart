@@ -702,10 +702,10 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                   return ExpandablePanel(
                     controller: _menucontroller,
                     theme: ExpandableThemeData(
-                      headerAlignment: ExpandablePanelHeaderAlignment.center,
-                      hasIcon: false,
-                      iconColor: Theme.of(context).primaryColorLight,
-                    ),
+                        headerAlignment: ExpandablePanelHeaderAlignment.center,
+                        hasIcon: false,
+                        iconColor: Theme.of(context).primaryColorLight,
+                        tapHeaderToExpand: false),
                     header: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
