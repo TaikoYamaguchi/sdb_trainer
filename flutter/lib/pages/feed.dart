@@ -300,7 +300,7 @@ class _FeedState extends State<Feed> {
                                   TransitionEffect.RIGHT_TO_LEFT));
                     },
                     child: Text("친구 찾기",
-                        textScaleFactor: 1.7,
+                        textScaleFactor: 1.5,
                         style:
                             TextStyle(color: Theme.of(context).buttonColor))))
           ]),
@@ -340,7 +340,7 @@ class _FeedState extends State<Feed> {
                   _bodyStater.change(0);
                 },
                 child: Text("첫 운동 하기",
-                    textScaleFactor: 1.7,
+                    textScaleFactor: 1.5,
                     style: TextStyle(color: Theme.of(context).buttonColor))))
       ]),
     ));

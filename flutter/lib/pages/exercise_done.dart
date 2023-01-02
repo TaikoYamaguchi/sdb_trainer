@@ -88,7 +88,7 @@ class _ExerciseDoneState extends State<ExerciseDone> {
           ),
           title: Text(
             "운동 기록",
-            textScaleFactor: 2.7,
+            textScaleFactor: 1.7,
             style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
           backgroundColor: Theme.of(context).canvasColor,
@@ -386,9 +386,8 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
               child: Text("운동 완료",
-                  textScaleFactor: 1.7,
-                  style:
-                      TextStyle(color: Theme.of(context).primaryColorLight)))),
+                  textScaleFactor: 1.5,
+                  style: TextStyle(color: Theme.of(context).buttonColor)))),
     );
   }
 

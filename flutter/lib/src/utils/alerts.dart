@@ -335,7 +335,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
               Navigator.of(context, rootNavigator: true).pop(true);
             },
             child: Text("운동 종료 하기",
-                textScaleFactor: 1.7,
+                textScaleFactor: 1.5,
                 style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
@@ -359,7 +359,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
               Navigator.of(context, rootNavigator: true).pop();
             },
             child: Text("커스텀 운동 삭제 하기",
-                textScaleFactor: 1.7,
+                textScaleFactor: 1.5,
                 style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
@@ -382,8 +382,8 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
               Navigator.of(context, rootNavigator: true).pop(true);
             },
             child: Text("삭제",
-                textScaleFactor: 1.7,
-                style: TextStyle(color: Theme.of(context).primaryColorLight))));
+                textScaleFactor: 1.5,
+                style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
   Widget _deleteConfirmButton_User() {
@@ -404,7 +404,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
               Navigator.of(context, rootNavigator: true).pop(true);
             },
             child: Text("탈퇴",
-                textScaleFactor: 1.7,
+                textScaleFactor: 1.5,
                 style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
@@ -532,8 +532,8 @@ class _newOnermAlertsState extends State<newOnermAlerts> {
               Navigator.of(context, rootNavigator: true).pop();
             },
             child: Text("계속 운동 하기",
-                textScaleFactor: 1.7,
-                style: TextStyle(color: Theme.of(context).primaryColorLight))));
+                textScaleFactor: 1.5,
+                style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
   @override
@@ -568,7 +568,7 @@ class _newOnermAlertsState extends State<newOnermAlerts> {
                 widget.exercise.name.length < 8
                     ? Text(
                         widget.exercise.name,
-                        textScaleFactor: 3.2,
+                        textScaleFactor: 1.9,
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             color: Color(0xFffc60a8)),
@@ -576,7 +576,7 @@ class _newOnermAlertsState extends State<newOnermAlerts> {
                     : Flexible(
                         child: Text(
                           widget.exercise.name,
-                          textScaleFactor: 2.4,
+                          textScaleFactor: 1.7,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
@@ -587,7 +587,7 @@ class _newOnermAlertsState extends State<newOnermAlerts> {
                   child: Text(
                       widget.onerm.toStringAsFixed(1) +
                           _userProvider.userdata.weight_unit,
-                      textScaleFactor: 2.7,
+                      textScaleFactor: 1.7,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
@@ -604,7 +604,7 @@ class _newOnermAlertsState extends State<newOnermAlerts> {
                         child: Center(
                             child: Text(
                           "${widget.sets.weight.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
-                          textScaleFactor: 1.7,
+                          textScaleFactor: 1.5,
                           style: TextStyle(
                             color: Colors.grey,
                           ),
@@ -613,13 +613,13 @@ class _newOnermAlertsState extends State<newOnermAlerts> {
                         width: 20,
                         child: SvgPicture.asset("assets/svg/multiply.svg",
                             color: Colors.grey,
-                            height: 19 * _themeProvider.userFontSize / 0.8)),
+                            height: 16 * _themeProvider.userFontSize / 0.8)),
                     Container(
                         width: 120,
                         child: Center(
                             child: Text(
                           "${widget.sets.reps}회",
-                          textScaleFactor: 1.7,
+                          textScaleFactor: 1.5,
                           style: TextStyle(
                             color: Colors.grey,
                           ),
@@ -798,7 +798,7 @@ class _exGoalEditAlertState extends State<exGoalEditAlert> {
               padding: EdgeInsets.all(12.0),
             ),
             child: Text('수정하기',
-                textScaleFactor: 1.7,
+                textScaleFactor: 1.5,
                 style: TextStyle(color: Theme.of(context).buttonColor)),
             onPressed: () {
               _exProvider.putOnermGoalValue(
