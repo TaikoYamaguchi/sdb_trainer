@@ -130,6 +130,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                   ? provier.exercisesdata
                                       .exercises[widget.eindex].target[0]
                                   : '${provier.exercisesdata.exercises[widget.eindex].target.toString().substring(1, provier.exercisesdata.exercises[widget.eindex].target.toString().length - 1)}',
+                              textScaleFactor: 1.2,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Theme.of(context).primaryColorLight)),
@@ -153,6 +154,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                         child: Center(
                           child: Text(
                               '${provier.exercisesdata.exercises[widget.eindex].category}',
+                              textScaleFactor: 1.2,
                               style: TextStyle(
                                   color: Theme.of(context).primaryColorLight)),
                         ),
@@ -175,6 +177,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                         child: Center(
                           child: Text(
                               '${provier.exercisesdata.exercises[widget.eindex].onerm.toStringAsFixed(0)}${_userProvider.userdata.weight_unit}',
+                              textScaleFactor: 1.2,
                               style: TextStyle(
                                   color: Theme.of(context).primaryColorLight)),
                         ),
@@ -188,6 +191,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                           width: MediaQuery.of(context).size.width / 5,
                           child: Center(
                             child: Text("Goal",
+                                textScaleFactor: 1.2,
                                 style: TextStyle(
                                     color: Theme.of(context).primaryColorDark,
                                     fontWeight: FontWeight.bold)),
@@ -1445,7 +1449,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                             child: Text(
                           _exProvider
                               .exercisesdata.exercises[widget.eindex].name,
-                          textScaleFactor: 1.3,
+                          textScaleFactor: 1.1,
                           style: TextStyle(
                               color: Theme.of(context).primaryColorLight),
                         )),
