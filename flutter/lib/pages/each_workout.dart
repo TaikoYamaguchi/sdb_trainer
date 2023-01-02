@@ -1524,6 +1524,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                           color: Theme.of(context).primaryColorLight),
                       onPressed: () {
                         _workoutProvider.dataBU(widget.rindex);
+                        _exProvider.resettags();
+                        _exProvider.inittestdata();
 
                         setState(() {
                           _isexsearch = !_isexsearch;
