@@ -84,43 +84,43 @@ class ExercisesdataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  putHomeExList(exList) async {
+  putHomeExList(exList) {
     _homeExList = exList;
     notifyListeners();
   }
 
-  removeHomeExList(index) async {
+  removeHomeExList(index) {
     _homeExList.removeAt(index);
     notifyListeners();
   }
 
-  insertHomeExList(index, item) async {
+  insertHomeExList(index, item) {
     _homeExList.insert(index, item);
     notifyListeners();
   }
 
-  addHomeExList(item) async {
+  addHomeExList(item) {
     _homeExList.add(item);
     notifyListeners();
   }
 
-  settags(item) async {
+  settags(item) {
     _tags = item;
     notifyListeners();
   }
 
-  resettags() async {
+  resettags() {
     _tags = ['All'];
     _tags2 = ['All'];
     notifyListeners();
   }
 
-  settags2(item) async {
+  settags2(item) {
     _tags2 = item;
     notifyListeners();
   }
 
-  inittestdata() async {
+  inittestdata() {
     _testdata = _exercisesdata.exercises;
     _testdata_s = _exercisesdata.exercises;
     _testdata_f1 = _exercisesdata.exercises;
@@ -128,56 +128,56 @@ class ExercisesdataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  settestdata(data) async {
+  settestdata(data) {
     _testdata = data;
     notifyListeners();
   }
 
-  settestdata_d() async {
-    _testdata = await _testdata
+  settestdata_d() {
+    _testdata = _testdata
         .toSet()
         .intersection(_exercisesdata.exercises.toSet())
         .toList();
     notifyListeners();
   }
 
-  settestdata_s(data) async {
+  settestdata_s(data) {
     _testdata_s = data;
-    final commonElements = await [_testdata_s, _testdata_f1, _testdata_f2]
-        .fold<Set>([_testdata_s, _testdata_f1, _testdata_f2].first.toSet(),
-            (a, b) => a.intersection(b.toSet()));
+    var commonElements = [_testdata_s, _testdata_f1, _testdata_f2].fold<Set>(
+        [_testdata_s, _testdata_f1, _testdata_f2].first.toSet(),
+        (a, b) => a.intersection(b.toSet()));
     settestdata(commonElements.toList());
   }
 
-  settestdata_f1(data) async {
+  settestdata_f1(data) {
     _testdata_f1 = data;
-    final commonElements = await [_testdata_s, _testdata_f1, _testdata_f2]
-        .fold<Set>([_testdata_s, _testdata_f1, _testdata_f2].first.toSet(),
-            (a, b) => a.intersection(b.toSet()));
+    var commonElements = [_testdata_s, _testdata_f1, _testdata_f2].fold<Set>(
+        [_testdata_s, _testdata_f1, _testdata_f2].first.toSet(),
+        (a, b) => a.intersection(b.toSet()));
 
     print(commonElements);
     settestdata(commonElements.toList());
   }
 
-  settestdata_f2(data) async {
+  settestdata_f2(data) {
     _testdata_f2 = data;
-    final commonElements = await [_testdata_s, _testdata_f1, _testdata_f2]
-        .fold<Set>([_testdata_s, _testdata_f1, _testdata_f2].first.toSet(),
-            (a, b) => a.intersection(b.toSet()));
+    var commonElements = [_testdata_s, _testdata_f1, _testdata_f2].fold<Set>(
+        [_testdata_s, _testdata_f1, _testdata_f2].first.toSet(),
+        (a, b) => a.intersection(b.toSet()));
     settestdata(commonElements.toList());
   }
 
-  settesttotal(data, data1, data2) async {
+  settesttotal(data, data1, data2) {
     _testdata_s = data;
     _testdata_f1 = data1;
     _testdata_f2 = data2;
-    final commonElements = await [_testdata_s, _testdata_f1, _testdata_f2]
-        .fold<Set>([_testdata_s, _testdata_f1, _testdata_f2].first.toSet(),
-            (a, b) => a.intersection(b.toSet()));
+    var commonElements = [_testdata_s, _testdata_f1, _testdata_f2].fold<Set>(
+        [_testdata_s, _testdata_f1, _testdata_f2].first.toSet(),
+        (a, b) => a.intersection(b.toSet()));
     settestdata(commonElements.toList());
   }
 
-  setfiltmenu(num) async {
+  setfiltmenu(num) {
     _filtmenu = num;
     notifyListeners();
   }
