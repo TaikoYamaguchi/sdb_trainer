@@ -492,12 +492,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                           ? Container()
                           : GestureDetector(
                               onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return exGoalEditAlert(
-                                          exercise: _exercise);
-                                    });
+                                exGoalEditAlert(context, _exercise);
                               },
                               child: Text(
                                 "Best 1RM: ${_info.onerm.toStringAsFixed(1)}/${_info.goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
@@ -3090,6 +3085,132 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             : showToast("입력을 확인해주세요"));
   }
 
+  void _displayExEditDialog() {
+    var index = _exProvider.exercisesdata.exercises
+        .indexWhere((element) => element.name == _exercise.name);
+    var _exOnermController = TextEditingController(
+        text: _exProvider.exercisesdata.exercises[index].onerm
+            .toStringAsFixed(1));
+    var _exGoalController = TextEditingController(
+        text:
+            _exProvider.exercisesdata.exercises[index].goal.toStringAsFixed(1));
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            buttonPadding: EdgeInsets.all(12.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            backgroundColor: Theme.of(context).cardColor,
+            contentPadding: EdgeInsets.all(12.0),
+            title: Text(
+              '목표를 달성하셨나요?',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text("더 높은 목표를 설정해보세요!",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 16)),
+                SizedBox(height: 20),
+                TextField(
+                  controller: _exOnermController,
+                  keyboardType: TextInputType.numberWithOptions(
+                      signed: false, decimal: true),
+                  style: TextStyle(
+                    fontSize: 21,
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                      filled: true,
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      labelText: "1RM (" +
+                          _exProvider.exercisesdata.exercises[index].name +
+                          ")",
+                      labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
+                      hintText: "1RM",
+                      hintStyle:
+                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                  onChanged: (text) {},
+                ),
+                TextField(
+                  controller: _exGoalController,
+                  keyboardType: TextInputType.numberWithOptions(
+                      signed: false, decimal: true),
+                  style: TextStyle(
+                    fontSize: 21,
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                      filled: true,
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      labelText: "목표 (" +
+                          _exProvider.exercisesdata.exercises[index].name +
+                          ")",
+                      labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
+                      hintText: "목표",
+                      hintStyle:
+                          TextStyle(fontSize: 24.0, color: Colors.white)),
+                  onChanged: (text) {},
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    foregroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).primaryColor,
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                    disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+                    padding: EdgeInsets.all(12.0),
+                  ),
+                  child: Text('수정하기',
+                      style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                  onPressed: () {
+                    _exProvider.putOnermGoalValue(
+                        index,
+                        double.parse(_exOnermController.text),
+                        double.parse(_exGoalController.text));
+                    _postExerciseCheck();
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
@@ -3126,11 +3247,5 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
       appBar: _appbarWidget(),
       body: _exercisedetailPage(),
     );
-  }
-
-  @override
-  void dispose() {
-    print('dispose');
-    super.dispose();
   }
 }

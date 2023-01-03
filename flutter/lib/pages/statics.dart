@@ -542,13 +542,7 @@ class _CalendarState extends State<Calendar> {
   }
 
   _showMyDialog_NewWeight() async {
-    var result = await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return bodyWeightCtrlAlert(
-            layer: 1,
-          );
-        });
+    var result = await bodyWeightCtrlAlert(context, 1);
     if (result.isNotEmpty) {
       DateTime toDay = DateTime.now();
       _displayBodyWeightPushDialog(
@@ -575,13 +569,7 @@ class _CalendarState extends State<Calendar> {
   }
 
   _showMyDialog_EditWeight(index) async {
-    var result = await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return bodyWeightCtrlAlert(
-            layer: 2,
-          );
-        });
+    var result = await bodyWeightCtrlAlert(context, 2);
     if (result.isNotEmpty) {
       _userProvider.setUserWeightEdit(
           index, double.parse(result[0].text), double.parse(result[1].text));
