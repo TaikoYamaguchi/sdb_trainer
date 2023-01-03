@@ -11,6 +11,7 @@ import 'package:sdb_trainer/pages/exercise_filter.dart';
 import 'package:sdb_trainer/pages/routine_bank.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
+import 'package:sdb_trainer/providers/routinemenu.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
@@ -28,21 +29,22 @@ import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:tutorial/tutorial.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-class Exercise extends StatefulWidget {
+class ExSearch extends StatefulWidget {
   final onPush;
-  Exercise({Key? key, this.onPush}) : super(key: key);
+  ExSearch({Key? key, this.onPush}) : super(key: key);
 
   @override
-  ExerciseState createState() => ExerciseState();
+  ExSearchState createState() => ExSearchState();
 }
 
-class ExerciseState extends State<Exercise> {
+class ExSearchState extends State<ExSearch> {
   TextEditingController _workoutNameCtrl = TextEditingController(text: "");
   var _userProvider;
   var _exProvider;
   var _workoutProvider;
   var _famousdataProvider;
   var _routinetimeProvider;
+  var _RoutineMenuProvider;
   var _PopProvider;
   var _PrefsProvider;
   bool modecheck = false;
@@ -110,6 +112,22 @@ class ExerciseState extends State<Exercise> {
               ),
             ],
           ),
+          actions: [
+            Consumer<RoutineMenuStater>(builder: (builder, provider, child) {
+              if (provider.menustate == 1) {
+                return IconButton(
+                  iconSize: 30,
+                  icon: Icon(Icons.refresh_rounded),
+                  color: Theme.of(context).primaryColorLight,
+                  onPressed: () {
+                    _onRefresh();
+                  },
+                );
+              } else {
+                return Container();
+              }
+            })
+          ],
           backgroundColor: Theme.of(context).canvasColor,
         ));
   }
@@ -119,7 +137,88 @@ class ExerciseState extends State<Exercise> {
     return Future<void>.value();
   }
 
-  Widget _myWorkout() {
+  Widget _workoutWidget() {
+    return Container(
+      child: Column(
+        children: [
+          Container(
+            height: 40,
+            alignment: Alignment.center,
+            child: Center(
+              child: Consumer<RoutineMenuStater>(
+                  builder: (builder, provider, child) {
+                return _ExerciseControllerWidget();
+              }),
+            ),
+          ),
+          Consumer<RoutineMenuStater>(builder: (builder, provider, child) {
+            return _routinemenuPage();
+          }),
+        ],
+      ),
+    );
+  }
+
+  Widget _ExerciseControllerWidget() {
+    return SizedBox(
+      width: double.infinity,
+      child: Consumer<RoutineMenuStater>(builder: (context, provider, child) {
+        _menuList = <int, Widget>{
+          0: Padding(
+            child: Text("개별 운동",
+                textScaleFactor: 1.3,
+                style: TextStyle(
+                    color: provider.menustate == 0
+                        ? Theme.of(context).buttonColor
+                        : Theme.of(context).primaryColorDark)),
+            padding: const EdgeInsets.all(5.0),
+          ),
+          1: Padding(
+              child: Text("루틴 찾기",
+                  textScaleFactor: 1.3,
+                  style: TextStyle(
+                      color: provider.menustate == 1
+                          ? Theme.of(context).buttonColor
+                          : Theme.of(context).primaryColorDark)),
+              padding: const EdgeInsets.all(5.0))
+        };
+        return Container(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: CupertinoSlidingSegmentedControl(
+                groupValue: provider.menustate,
+                children: _menuList,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                thumbColor: Theme.of(context).primaryColor,
+                onValueChanged: (i) {
+                  controller!.animateToPage(i as int,
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeInOut);
+                  provider.change(i);
+                }),
+          ),
+        );
+      }),
+    );
+  }
+
+  Widget _routinemenuPage() {
+    controller = PageController(initialPage: _RoutineMenuProvider.menustate);
+    return Expanded(
+      child: PageView(
+        onPageChanged: (value) {
+          _RoutineMenuProvider.change(value);
+        },
+        controller: controller,
+        children: [
+          group_by_target(),
+          RoutineBank(),
+        ],
+      ),
+    );
+  }
+
+  Widget _MyWorkout() {
     return Container(
       //padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: ListView(
@@ -505,6 +604,8 @@ class ExerciseState extends State<Exercise> {
         Provider.of<FamousdataProvider>(context, listen: false);
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
+    _RoutineMenuProvider =
+        Provider.of<RoutineMenuStater>(context, listen: false);
     _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
 
     _PrefsProvider.eachworkouttutor
@@ -612,7 +713,7 @@ class ExerciseState extends State<Exercise> {
         body: Consumer2<ExercisesdataProvider, WorkoutdataProvider>(
             builder: (context, provider1, provider2, widget) {
           if (provider2.workoutdata != null) {
-            return _myWorkout();
+            return _workoutWidget();
           }
           return Container(
             child: Center(

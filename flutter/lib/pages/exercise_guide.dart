@@ -638,7 +638,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
             : showToast("입력을 확인해주세요"));
   }
 
-  Widget _MyWorkout() {
+  Widget _myWorkout() {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -707,7 +707,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                             color: Theme.of(context).cardColor,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15.0)),
-                            elevation: 8.0,
+                            elevation: 0.3,
                             margin: new EdgeInsets.symmetric(
                                 horizontal: 0, vertical: 6.0),
                             child: Container(
@@ -843,7 +843,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
             ),
-            child: _MyWorkout());
+            child: _myWorkout());
       },
     );
   }

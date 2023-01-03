@@ -1134,7 +1134,7 @@ class _SignUpPageState extends State<SignUpPage> {
         .postExercise()
         .then((data) => data["user_email"] != null
             ? {
-                _bodyStater.change(0),
+                _bodyStater.change(1),
                 _loginState.change(true),
                 LoginPageState().initialProviderGet(context)
               }

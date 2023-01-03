@@ -11,6 +11,7 @@ import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/navigators/exercise_navi.dart';
+import 'package:sdb_trainer/navigators/exSearch_navi.dart';
 import 'package:sdb_trainer/navigators/profile_navi.dart';
 import 'package:sdb_trainer/pages/home.dart';
 import 'package:sdb_trainer/pages/login.dart';
@@ -66,10 +67,16 @@ class _AppState extends State<App> {
   BottomNavigationBarItem _bottomNavigationBarItem(
       String iconName, String label) {
     return BottomNavigationBarItem(
-      icon: SvgPicture.asset("assets/svg/${iconName}_off.svg",
-          color: Theme.of(context).primaryColorDark),
-      activeIcon: SvgPicture.asset("assets/svg/${iconName}_on.svg",
-          color: Theme.of(context).primaryColorLight),
+      icon: Padding(
+        padding: const EdgeInsets.only(bottom: 4.0),
+        child: SvgPicture.asset("assets/svg/${iconName}.svg",
+            height: 20, width: 20, color: Theme.of(context).primaryColorDark),
+      ),
+      activeIcon: Padding(
+        padding: const EdgeInsets.only(bottom: 4.0),
+        child: SvgPicture.asset("assets/svg/${iconName}.svg",
+            height: 20, width: 20, color: Theme.of(context).primaryColorLight),
+      ),
       label: label,
     );
   }
@@ -105,23 +112,26 @@ class _AppState extends State<App> {
                 selectedLabelStyle: TextStyle(fontWeight: FontWeight.w500),
                 currentIndex: _bodyStater.bodystate,
                 items: [
-                  _bottomNavigationBarItem("dumbel", "운동"),
-                  _bottomNavigationBarItem("feed", "피드"),
-                  _bottomNavigationBarItem("calendar", "기록"),
-                  _bottomNavigationBarItem("profile", "프로필"),
+                  _bottomNavigationBarItem("search-svgrepo-com", "찾기"),
+                  _bottomNavigationBarItem("dumbbell-svgrepo-com-3", "운동"),
+                  _bottomNavigationBarItem("heart-svgrepo-com", "피드"),
+                  _bottomNavigationBarItem("calendar-svgrepo-com", "기록"),
+                  _bottomNavigationBarItem("avatar-svgrepo-com", "프로필"),
                 ],
               ),
               Center(
                 child: Container(
                   width:
-                      _bodyStater.bodystate == 0 || _bodyStater.bodystate == 3
+                      _bodyStater.bodystate == 0 || _bodyStater.bodystate == 4
                           ? width
-                          : width * 0.5,
+                          : width * 0.6,
                   child: Align(
                     alignment:
                         _bodyStater.bodystate == 0 || _bodyStater.bodystate == 1
                             ? Alignment.bottomLeft
-                            : Alignment.bottomRight,
+                            : _bodyStater.bodystate == 2
+                                ? Alignment.bottomCenter
+                                : Alignment.bottomRight,
                     child: Container(
                       height: 2,
                       decoration: BoxDecoration(
@@ -130,7 +140,7 @@ class _AppState extends State<App> {
                             topRight: Radius.circular(30),
                             topLeft: Radius.circular(30)),
                       ),
-                      width: width * 0.25,
+                      width: width * 0.2,
                     ),
                   ),
                 ),
@@ -481,12 +491,16 @@ class _AppState extends State<App> {
       return WillPopScope(
         onWillPop: () async {
           final shouldPop;
-          shouldPop = false;
           _bodyStater.bodystate == 0
-              ? _PopProvider.popon()
-              : _bodyStater.bodystate == 3
-                  ? _PopProvider.propopon()
-                  : null;
+              ? shouldPop = true
+              : [
+                  shouldPop = false,
+                  _bodyStater.bodystate == 1
+                      ? _PopProvider.popon()
+                      : _bodyStater.bodystate == 4
+                          ? _PopProvider.propopon()
+                          : null
+                ];
 
           return shouldPop!;
         },
@@ -497,6 +511,7 @@ class _AppState extends State<App> {
                     : IndexedStack(
                         index: _bodyStater.bodystate,
                         children: <Widget>[
+                            SearchNavigator(),
                             TabNavigator(),
                             Feed(),
                             Calendar(),
@@ -508,7 +523,7 @@ class _AppState extends State<App> {
             floatingActionButton: Consumer<RoutineTimeProvider>(
                 builder: (builder, provider, child) {
               return Container(
-                child: (provider.isstarted && _bodyStater.bodystate != 0)
+                child: (provider.isstarted && _bodyStater.bodystate != 1)
                     ? ExpandableFab(
                         distance: 105,
                         children: [
@@ -552,7 +567,7 @@ class _AppState extends State<App> {
                               ActionButton(
                                 onPressed: () {
                                   _PopProvider.gotoon();
-                                  _bodyStater.change(0);
+                                  _bodyStater.change(1);
                                 },
                                 icon: Icon(Icons.play_arrow),
                               ),

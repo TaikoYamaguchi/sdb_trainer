@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/routinemenu.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
@@ -203,6 +204,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
   Widget _moveToExButton(context) {
     var _routineMenuProvider =
         Provider.of<RoutineMenuStater>(context, listen: false);
+    var _bodyStater = Provider.of<BodyStater>(context, listen: false);
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: TextButton(
@@ -221,7 +223,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
             onPressed: () {
               Navigator.of(context).pushNamedAndRemoveUntil(
                   '/', (Route<dynamic> route) => false);
-              _routineMenuProvider.change(1);
+              _bodyStater.change(1);
             },
             child: Text("바로 운동 하기",
                 textScaleFactor: 1.5,

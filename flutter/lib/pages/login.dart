@@ -429,7 +429,7 @@ class LoginPageState extends State<LoginPage> {
           storageEmail != "" &&
           storageEmail == _userEmailCtrl.text) {
         initialProviderGet(context);
-        _bodyStater.change(0);
+        _bodyStater.change(1);
         _loginState.change(true);
         fcmSetting();
       } else {
@@ -440,7 +440,7 @@ class LoginPageState extends State<LoginPage> {
             .then((token) => token["access_token"] != null
                 ? {
                     initialProviderGet(context),
-                    _bodyStater.change(0),
+                    _bodyStater.change(1),
                     _loginState.change(true),
                     fcmSetting(),
                   }
@@ -453,7 +453,7 @@ class LoginPageState extends State<LoginPage> {
           .then((token) => token["access_token"] != null
               ? {
                   initialProviderGet(context),
-                  _bodyStater.change(0),
+                  _bodyStater.change(1),
                   _loginState.change(true),
                   fcmSetting(),
                 }
@@ -469,7 +469,7 @@ class LoginPageState extends State<LoginPage> {
           storageEmail != "" &&
           storageEmail == _userEmailCtrl.text) {
         initialProviderGet(context);
-        _bodyStater.change(0);
+        _bodyStater.change(1);
         _loginState.change(true);
 
         fcmSetting();
@@ -480,7 +480,7 @@ class LoginPageState extends State<LoginPage> {
           ).loginKakaoUser().then((token) => token["access_token"] != null
               ? {
                   initialProviderGet(context),
-                  _bodyStater.change(0),
+                  _bodyStater.change(1),
                   _loginState.change(true),
                   fcmSetting(),
                 }
@@ -498,7 +498,7 @@ class LoginPageState extends State<LoginPage> {
         ).loginKakaoUser().then((token) => token["access_token"] != null
             ? {
                 initialProviderGet(context),
-                _bodyStater.change(0),
+                _bodyStater.change(1),
                 _loginState.change(true),
                 fcmSetting(),
               }
@@ -516,7 +516,7 @@ class LoginPageState extends State<LoginPage> {
     String? storageEmail = await storage.read(key: "sdb_email");
     if (storageEmail != null && storageEmail != "") {
       initialProviderGet(context);
-      _bodyStater.change(0);
+      _bodyStater.change(1);
       _loginState.change(true);
 
       fcmSetting();
