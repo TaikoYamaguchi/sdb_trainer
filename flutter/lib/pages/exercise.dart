@@ -422,10 +422,10 @@ class ExerciseState extends State<Exercise> {
                                       ),
                                       trailing: Padding(
                                         padding:
-                                            EdgeInsets.fromLTRB(12, 4, 0, 12),
+                                            EdgeInsets.fromLTRB(12, 4, 0, 4),
                                         child: Container(
                                           height: 20.0,
-                                          width: 4.0,
+                                          width: 3.0,
                                           decoration: BoxDecoration(
                                               color: Theme.of(context)
                                                   .primaryColorDark,

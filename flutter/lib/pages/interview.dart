@@ -138,7 +138,9 @@ class _InterviewState extends State<Interview> {
   }
 
   Future<void> _onRefresh() {
-    _interviewProvider.getInterviewdataFirst();
+    setState(() {
+      _interviewProvider.getInterviewdataFirst();
+    });
     return Future<void>.value();
   }
 
