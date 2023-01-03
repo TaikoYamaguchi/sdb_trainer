@@ -36,7 +36,6 @@ class _FeedState extends State<Feed> {
     super.initState();
     binding.addPostFrameCallback((_) async {
       BuildContext context = binding.renderViewElement!;
-      _fetchHistoryPage(context);
       _pageController.addListener(() {
         if (_pageController.position.maxScrollExtent ==
             _pageController.offset) {
@@ -47,11 +46,13 @@ class _FeedState extends State<Feed> {
   }
 
   Future _fetchHistoryPage(context) async {
+    _hasMore = true;
     try {
       var nextPage =
           await HistorydataPagination(final_history_id: _final_history_id)
               .loadSDBdataPagination()
               .then((data) => {
+                    print(data.sdbdatas),
                     if (data.sdbdatas.isEmpty != true)
                       {
                         _hisProvider.addHistorydataPage(data),
@@ -69,7 +70,11 @@ class _FeedState extends State<Feed> {
                                       }
                                   }
                               }
-                          }
+                          },
+                        setState(() {
+                          print("noooo");
+                          _hasMore = true;
+                        })
                       }
                     else
                       {
@@ -174,7 +179,7 @@ class _FeedState extends State<Feed> {
                                       padding:
                                           EdgeInsets.symmetric(vertical: 16),
                                       child: Center(
-                                          child: _hasMore
+                                          child: _hasMore == true
                                               ? CircularProgressIndicator()
                                               : Text("데이터 없음",
                                                   style: TextStyle(
