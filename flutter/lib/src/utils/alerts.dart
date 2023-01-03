@@ -358,7 +358,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
               padding: EdgeInsets.all(12.0),
             ),
             onPressed: () {
-              Navigator.of(context, rootNavigator: true).pop();
+              Navigator.of(context, rootNavigator: true).pop(true);
             },
             child: Text("커스텀 운동 삭제 하기",
                 textScaleFactor: 1.5,

@@ -964,6 +964,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               : GestureDetector(
                   onTap: () {
                     _workoutProvider.dataBU(widget.rindex);
+                    _exProvider.resettags();
+                    _exProvider.inittestdata();
                     setState(() {
                       _isexsearch = !_isexsearch;
                     });
