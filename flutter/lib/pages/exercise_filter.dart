@@ -553,15 +553,11 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                             Expanded(
                               child: Text(
                                 exuniq[index].name,
-                                textScaleFactor: 1.3,
+                                textScaleFactor: 1.4,
                                 style: TextStyle(
                                     color: Theme.of(context).primaryColorLight),
                               ),
                             ),
-                            Text(
-                                "1RM: ${exuniq[index].onerm.toStringAsFixed(0)}/${exuniq[index].goal.toStringAsFixed(0)}${_userProvider.userdata.weight_unit}",
-                                textScaleFactor: 1.1,
-                                style: TextStyle(color: Colors.grey)),
                           ],
                         ),
                       ),

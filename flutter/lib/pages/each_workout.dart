@@ -501,6 +501,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                             style: TextStyle(
                                 color: Theme.of(context).primaryColorLight),
                           ),
+                          SizedBox(height: 4),
                           Text('운동의 이름을 입력해 주세요',
                               textScaleFactor: 1.3,
                               textAlign: TextAlign.center,
@@ -688,7 +689,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
               }
             },
             child: Text(_customExUsed == true ? "존재하는 운동" : "커스텀 운동 추가",
-                textScaleFactor: 1.7,
+                textScaleFactor: 1.5,
                 style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
@@ -794,8 +795,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                               _editWorkoutCheck();
                             },
                             backgroundColor: Color(0xFFFE4A49),
-                            foregroundColor:
-                                Theme.of(context).primaryColorLight,
+                            foregroundColor: Theme.of(context).buttonColor,
                             icon: Icons.delete,
                             label: 'Delete',
                           )
@@ -813,35 +813,52 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                   topLeft: Radius.circular(top),
                                   bottomLeft: Radius.circular(bottom))),
                           height: _isexsearch ? 42 : 52,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
-                                exlist[index].name,
-                                textScaleFactor: _isexsearch ? 1.1 : 1.7,
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColorLight),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      exlist[index].name,
+                                      textScaleFactor: _isexsearch ? 1.1 : 1.7,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight),
+                                    ),
+                                    _isexsearch
+                                        ? Container()
+                                        : Container(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                    "Rest: ${exlist[index].rest}",
+                                                    textScaleFactor: 1.0,
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xFF717171))),
+                                              ],
+                                            ),
+                                          )
+                                  ],
+                                ),
                               ),
-                              _isexsearch
-                                  ? Container()
-                                  : Container(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("Rest: ${exlist[index].rest}",
-                                              textScaleFactor: 1.0,
-                                              style: TextStyle(
-                                                  color: Color(0xFF717171))),
-                                          Text(
-                                              "1RM: ${exinfo[0].onerm.toStringAsFixed(1)}/${exinfo[0].goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
-                                              textScaleFactor: 1.0,
-                                              style: TextStyle(
-                                                  color: Color(0xFF717171))),
-                                        ],
-                                      ),
-                                    )
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(0, 12, 0, 12),
+                                child: Container(
+                                  height: 15.0,
+                                  width: 3.0,
+                                  decoration: BoxDecoration(
+                                      color: Theme.of(context).primaryColorDark,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(8.0))),
+                                ),
+                              )
                             ],
                           ),
                         ),
