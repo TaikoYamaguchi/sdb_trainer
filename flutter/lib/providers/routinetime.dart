@@ -121,7 +121,8 @@ class RoutineTimeProvider extends ChangeNotifier {
         _timeron = _timetosubstract -
             DateTime.now().difference(_timerstarttime).inSeconds;
         if (_timeron == 0 && _userest) {
-          Vibration.vibrate(duration: 1000);
+          Vibration.vibrate(
+              pattern: [500, 1000, 500, 2000], intensities: [1, 255]);
         }
         counter--;
         notifyListeners();
@@ -170,12 +171,14 @@ class RoutineTimeProvider extends ChangeNotifier {
         _starttime = DateTime.parse(_isInitialTime!);
         print(_starttime);
         int counter = 10001;
+        resettimer(0);
         timer1 = Timer.periodic(Duration(seconds: 1), (timer) {
           _routineTime = DateTime.now().difference(_starttime).inSeconds;
           _timeron = _timetosubstract -
               DateTime.now().difference(_timerstarttime).inSeconds;
           if (_timeron == 0 && _userest) {
-            Vibration.vibrate(duration: 1000);
+            Vibration.vibrate(
+                pattern: [500, 1000, 500, 2000], intensities: [1, 255]);
           }
           counter--;
           notifyListeners();

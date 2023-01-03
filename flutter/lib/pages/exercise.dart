@@ -420,10 +420,19 @@ class ExerciseState extends State<Exercise> {
                                                           .primaryColorLight)),
                                         ],
                                       ),
-                                      trailing: Icon(Icons.keyboard_arrow_right,
-                                          color: Theme.of(context)
-                                              .primaryColorDark,
-                                          size: 30.0)),
+                                      trailing: Padding(
+                                        padding:
+                                            EdgeInsets.fromLTRB(12, 4, 0, 12),
+                                        child: Container(
+                                          height: 20.0,
+                                          width: 4.0,
+                                          decoration: BoxDecoration(
+                                              color: Theme.of(context)
+                                                  .primaryColorDark,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(8.0))),
+                                        ),
+                                      )),
                                 ),
                               )),
                         ],

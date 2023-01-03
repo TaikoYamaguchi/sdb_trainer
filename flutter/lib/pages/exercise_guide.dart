@@ -120,6 +120,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                     color: Theme.of(context).primaryColorDark,
                                     fontWeight: FontWeight.bold)),
                           )),
+                      SizedBox(height: 4),
                       SizedBox(
                         width: MediaQuery.of(context).size.width / 5,
                         child: Center(
@@ -149,6 +150,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                     color: Theme.of(context).primaryColorDark,
                                     fontWeight: FontWeight.bold)),
                           )),
+                      SizedBox(height: 4),
                       SizedBox(
                         width: MediaQuery.of(context).size.width / 5,
                         child: Center(
@@ -172,6 +174,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                                     color: Theme.of(context).primaryColorDark,
                                     fontWeight: FontWeight.bold)),
                           )),
+                      SizedBox(height: 4),
                       SizedBox(
                         width: MediaQuery.of(context).size.width / 5,
                         child: Center(
@@ -191,16 +194,17 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                           width: MediaQuery.of(context).size.width / 5,
                           child: Center(
                             child: Text("Goal",
-                                textScaleFactor: 1.2,
                                 style: TextStyle(
                                     color: Theme.of(context).primaryColorDark,
                                     fontWeight: FontWeight.bold)),
                           )),
+                      SizedBox(height: 4),
                       SizedBox(
                         width: MediaQuery.of(context).size.width / 5,
                         child: Center(
                           child: Text(
                               '${provier.exercisesdata.exercises[widget.eindex].goal.toStringAsFixed(0)}${_userProvider.userdata.weight_unit}',
+                              textScaleFactor: 1.2,
                               style: TextStyle(
                                   color: Theme.of(context).primaryColorLight)),
                         ),
