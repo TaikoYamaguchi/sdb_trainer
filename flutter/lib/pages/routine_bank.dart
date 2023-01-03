@@ -26,6 +26,10 @@ class _RoutineBankState extends State<RoutineBank> {
   var _PopProvider;
   var _userProvider;
   var _exProvider;
+  Future<void> _onRefresh() {
+    _famousdataProvider.getdata();
+    return Future<void>.value();
+  }
 
   Widget famous_pg() {
     return Column(
@@ -355,9 +359,11 @@ class _RoutineBankState extends State<RoutineBank> {
   }
 
   Widget famous_body() {
-    return ListView(
-      children: [famous_pg(), user_pg()],
-    );
+    return RefreshIndicator(
+        onRefresh: _onRefresh,
+        child: ListView(
+          children: [famous_pg(), user_pg()],
+        ));
   }
 
   Widget _famousLikeButton(program) {

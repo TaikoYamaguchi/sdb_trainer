@@ -1108,7 +1108,7 @@ class _FeedCardState extends State<FeedCard> {
   Widget _exerciseWidget(Exercises, index) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 1),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
