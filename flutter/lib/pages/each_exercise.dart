@@ -1182,13 +1182,14 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
       _onerm = 0;
     }
     if (_onerm > _exercise.onerm) {
+      _exProvider.putOnermValue(
+          _exProvider.exercisesdata.exercises
+              .indexWhere((element) => element.name == _exercise.name),
+          _onerm);
+
       showDialog(
           context: context,
           builder: (BuildContext context) {
-            _exProvider.putOnermValue(
-                _exProvider.exercisesdata.exercises
-                    .indexWhere((element) => element.name == _exercise.name),
-                _onerm);
             return newOnermAlerts(
                 onerm: _onerm, sets: _sets, exercise: _exercise);
           });
@@ -3081,7 +3082,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
             user_email: _userProvider.userdata.email, exercises: _exercises)
         .editExercise()
         .then((data) => data["user_email"] != null
-            ? {showToast("수정 완료"), _exProvider.getdata()}
+            ? showToast("수정 완료")
             : showToast("입력을 확인해주세요"));
   }
 
