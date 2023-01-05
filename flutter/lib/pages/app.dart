@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
@@ -83,72 +84,88 @@ class _AppState extends State<App> {
 
   Widget _bottomNavigationBarwidget() {
     var width = MediaQuery.of(context).size.width;
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).indicatorColor,
-        borderRadius: BorderRadius.only(
-            topRight: Radius.circular(30), topLeft: Radius.circular(30)),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30.0),
-          topRight: Radius.circular(30.0),
-        ),
-        child: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              BottomNavigationBar(
-                backgroundColor: Theme.of(context).indicatorColor,
-                type: BottomNavigationBarType.fixed,
-                selectedItemColor: Theme.of(context).primaryColorLight,
-                unselectedItemColor: Theme.of(context).primaryColorDark,
-                elevation: 0.0,
-                onTap: (int index) {
-                  _bodyStater.change(index);
-                },
-                selectedFontSize: 14,
-                unselectedFontSize: 14,
-                selectedLabelStyle: TextStyle(fontWeight: FontWeight.w500),
-                currentIndex: _bodyStater.bodystate,
-                items: [
-                  _bottomNavigationBarItem("search-svgrepo-com", "찾기"),
-                  _bottomNavigationBarItem("dumbbell-svgrepo-com-3", "운동"),
-                  _bottomNavigationBarItem("heart-svgrepo-com", "피드"),
-                  _bottomNavigationBarItem("calendar-svgrepo-com", "기록"),
-                  _bottomNavigationBarItem("avatar-svgrepo-com", "프로필"),
-                ],
-              ),
-              Center(
+    double displayWidth = MediaQuery.of(context).size.width;
+    return Stack(
+      children: [
+        ClipRect(
+            child: BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: 2.0,
+                  sigmaY: 2.0,
+                ),
                 child: Container(
-                  width:
-                      _bodyStater.bodystate == 0 || _bodyStater.bodystate == 4
+                    width: double.maxFinite,
+                    height: displayWidth * .220,
+                    color: Colors.black.withOpacity(0)))),
+        Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).indicatorColor.withOpacity(0.97),
+            border: Border.all(width: 0.1, color: Colors.grey),
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(30), topLeft: Radius.circular(30)),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30.0),
+              topRight: Radius.circular(30.0),
+            ),
+            child: SafeArea(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  BottomNavigationBar(
+                    backgroundColor: Colors.transparent,
+                    type: BottomNavigationBarType.fixed,
+                    selectedItemColor: Theme.of(context).primaryColorLight,
+                    unselectedItemColor: Theme.of(context).primaryColorDark,
+                    elevation: 0.0,
+                    onTap: (int index) {
+                      _bodyStater.change(index);
+                    },
+                    selectedFontSize: 14,
+                    unselectedFontSize: 14,
+                    selectedLabelStyle: TextStyle(fontWeight: FontWeight.w500),
+                    currentIndex: _bodyStater.bodystate,
+                    items: [
+                      _bottomNavigationBarItem("search-svgrepo-com", "찾기"),
+                      _bottomNavigationBarItem("dumbbell-svgrepo-com-3", "운동"),
+                      _bottomNavigationBarItem("heart-svgrepo-com", "피드"),
+                      _bottomNavigationBarItem("calendar-svgrepo-com", "기록"),
+                      _bottomNavigationBarItem("avatar-svgrepo-com", "프로필"),
+                    ],
+                  ),
+                  Center(
+                    child: Container(
+                      width: _bodyStater.bodystate == 0 ||
+                              _bodyStater.bodystate == 4
                           ? width
                           : width * 0.6,
-                  child: Align(
-                    alignment:
-                        _bodyStater.bodystate == 0 || _bodyStater.bodystate == 1
+                      child: Align(
+                        alignment: _bodyStater.bodystate == 0 ||
+                                _bodyStater.bodystate == 1
                             ? Alignment.bottomLeft
                             : _bodyStater.bodystate == 2
                                 ? Alignment.bottomCenter
                                 : Alignment.bottomRight,
-                    child: Container(
-                      height: 2,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(30),
-                            topLeft: Radius.circular(30)),
+                        child: Container(
+                          height: 2,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(30),
+                                topLeft: Radius.circular(30)),
+                          ),
+                          width: width * 0.2,
+                        ),
                       ),
-                      width: width * 0.2,
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 
@@ -585,7 +602,6 @@ class _AppState extends State<App> {
                     : null,
               );
             }),
-            extendBody: false,
             bottomNavigationBar: _loginState.isLogin
                 ? _userProvider.userdata == null
                     ? null
