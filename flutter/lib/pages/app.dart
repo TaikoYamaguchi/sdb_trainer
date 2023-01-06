@@ -95,7 +95,7 @@ class _AppState extends State<App> {
                 ),
                 child: Container(
                     width: double.maxFinite,
-                    height: displayWidth * .220,
+                    height: 55,
                     color: Colors.black.withOpacity(0)))),
         Container(
           decoration: BoxDecoration(
