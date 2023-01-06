@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 
 
-version: 1.2.2+84
+version: 1.2.3+85
 
 
 
@@ -87,6 +87,7 @@ dependencies:
   share_plus: ^6.3.0
   in_app_review: ^2.0.6
   auto_size_text: ^3.0.0
+  flutter_gif: ^0.0.4
 
 
 
@@ -118,6 +119,7 @@ flutter:
     - assets/svg/
     - assets/json/
     - assets/png/
+    - assets/gif/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

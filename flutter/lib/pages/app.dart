@@ -267,11 +267,9 @@ class _AppState extends State<App> {
                   1) {
                 recordExercise_plan();
                 _editHistoryCheck();
-                _editWorkoutCheck();
               } else {
                 recordExercise();
                 _editHistoryCheck();
-                _editWorkoutwoCheck();
               }
               Navigator.of(context, rootNavigator: true).pop();
             },
