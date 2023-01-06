@@ -1151,7 +1151,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
     if (result == true) {
       recordExercise();
       _editHistoryCheck();
-      _editWorkoutwoCheck();
     }
   }
 
@@ -3059,6 +3058,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails> {
                               routinetime: _routinetimeProvider.routineTime,
                               sdbdata: hisdata.SDBdata.fromJson(data)),
                           transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
+                  _editWorkoutwoCheck(),
                   _routinetimeProvider.routinecheck(widget.rindex),
                   _prefsProvider.lastplan(_workoutProvider
                       .workoutdata.routinedatas[widget.rindex].name),

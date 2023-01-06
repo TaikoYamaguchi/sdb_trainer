@@ -380,6 +380,14 @@ class _AppState extends State<App> {
                               routinetime: _routinetimeProvider.routineTime,
                               sdbdata: hisdata.SDBdata.fromJson(data)),
                           transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
+                  if (_workoutProvider
+                          .workoutdata
+                          .routinedatas[_routinetimeProvider.nowonrindex]
+                          .mode ==
+                      1)
+                    {_editWorkoutCheck()}
+                  else
+                    {_editWorkoutwoCheck()},
                   _routinetimeProvider.routinecheck(0),
                   _routinetimeProvider.getprefs(_workoutProvider.workoutdata
                       .routinedatas[_routinetimeProvider.nowonrindex].name),
