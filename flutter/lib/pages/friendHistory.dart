@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gif/flutter_gif.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:sdb_trainer/src/model/historydata.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/static_exercise.dart';
@@ -16,12 +18,15 @@ class FriendHistory extends StatefulWidget {
   _FriendHistoryState createState() => _FriendHistoryState();
 }
 
-class _FriendHistoryState extends State<FriendHistory> {
+class _FriendHistoryState extends State<FriendHistory>
+    with TickerProviderStateMixin {
   var _userProvider;
   var _themeProvider;
+  late FlutterGifController controller1;
   @override
   void initState() {
     super.initState();
+    controller1 = FlutterGifController(vsync: this);
   }
 
   PreferredSizeWidget _appbarWidget() {
@@ -110,6 +115,18 @@ class _FriendHistoryState extends State<FriendHistory> {
       exuniq, history_id, userdata, bool shirink, index) {
     double top = 0;
     double bottom = 0;
+    var _exImage;
+    try {
+      _exImage = extra_completely_new_Ex[extra_completely_new_Ex
+              .indexWhere((element) => element.name == exuniq[index].name)]
+          .image;
+      if (_exImage == null) {
+        _exImage = "";
+      }
+    } catch (e) {
+      _exImage = "";
+    }
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -117,13 +134,37 @@ class _FriendHistoryState extends State<FriendHistory> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text(exuniq[index].name,
-                      textScaleFactor: 1.3,
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColorLight)),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      _exImage != ""
+                          ? GifImage(
+                              controller: controller1,
+                              image: AssetImage(_exImage),
+                              height: 48,
+                              width: 48,
+                              fit: BoxFit.cover,
+                            )
+                          : Container(
+                              height: 48,
+                              width: 48,
+                              child: Icon(Icons.image_not_supported,
+                                  color: Theme.of(context).primaryColorDark),
+                              decoration: BoxDecoration(shape: BoxShape.circle),
+                            ),
+                      SizedBox(width: 8.0),
+                      Expanded(
+                        child: Text(exuniq[index].name,
+                            textScaleFactor: 1.4,
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight)),
+                      ),
+                    ],
+                  ),
                 ),
                 widget.sdbdata.user_email == userdata.email
                     ? GestureDetector(
@@ -140,10 +181,10 @@ class _FriendHistoryState extends State<FriendHistory> {
                                       TransitionEffect.RIGHT_TO_LEFT));
                         },
                         child: Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: Icon(
                             Icons.settings,
-                            color: Theme.of(context).primaryColorLight,
+                            color: Theme.of(context).primaryColorDark,
                           ),
                         ))
                     : Container()
@@ -178,10 +219,11 @@ class _FriendHistoryState extends State<FriendHistory> {
                                   exuniq[index].onerm.toStringAsFixed(1) +
                                   "/${exuniq[index].goal.toStringAsFixed(1)}${userdata.weight_unit}",
                               textScaleFactor: 1.0,
-                              style: TextStyle(color: Color(0xFF717171))),
+                              style: TextStyle(color: Color(0xFF717171)))
                         ],
                       ),
-                    )
+                    ),
+                    SizedBox(height: 4.0)
                   ],
                 ),
               ),

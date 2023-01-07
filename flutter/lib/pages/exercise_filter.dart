@@ -2,6 +2,7 @@ import 'package:chips_choice/chips_choice.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_gif/flutter_gif.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/exercise_guide.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
@@ -10,6 +11,7 @@ import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
+import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
 import 'package:dio/dio.dart';
 import 'package:transition/transition.dart';
@@ -22,7 +24,8 @@ class ExerciseFilter extends StatefulWidget {
   State<ExerciseFilter> createState() => _ExerciseFilterState();
 }
 
-class _ExerciseFilterState extends State<ExerciseFilter> {
+class _ExerciseFilterState extends State<ExerciseFilter>
+    with TickerProviderStateMixin {
   var _exProvider;
   var _famousdataProvider;
   var _userProvider;
@@ -38,6 +41,12 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
   var selectedItem2 = '기타';
   ExpandableController _menucontroller =
       ExpandableController(initialExpanded: true);
+  late FlutterGifController controller1;
+
+  @override
+  void initState() {
+    controller1 = FlutterGifController(vsync: this);
+  }
 
   PreferredSizeWidget _appbarWidget() {
     btnDisabled = false;
@@ -518,7 +527,19 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
               top = 0;
               bottom = 0;
             }
-            ;
+            var _exImage;
+            try {
+              _exImage = extra_completely_new_Ex[
+                      extra_completely_new_Ex.indexWhere(
+                          (element) => element.name == exuniq[index].name)]
+                  .image;
+              if (_exImage == null) {
+                _exImage = "";
+              }
+            } catch (e) {
+              _exImage = "";
+            }
+
             return GestureDetector(
               onTap: () {
                 _PopProvider.exstackup(2);
@@ -533,7 +554,7 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
               },
               child: Container(
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(horizontal: 8),
                   decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.only(
@@ -550,6 +571,24 @@ class _ExerciseFilterState extends State<ExerciseFilter> {
                             vertical: 12.0, horizontal: 4.0),
                         child: Row(
                           children: [
+                            _exImage != ""
+                                ? GifImage(
+                                    controller: controller1,
+                                    image: AssetImage(_exImage),
+                                    height: 48,
+                                    width: 48,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Container(
+                                    height: 48,
+                                    width: 48,
+                                    child: Icon(Icons.image_not_supported,
+                                        color:
+                                            Theme.of(context).primaryColorDark),
+                                    decoration:
+                                        BoxDecoration(shape: BoxShape.circle),
+                                  ),
+                            SizedBox(width: 8.0),
                             Expanded(
                               child: Text(
                                 exuniq[index].name,

@@ -9,6 +9,7 @@ import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
+import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:sdb_trainer/src/utils/alerts.dart';
 import '../src/model/historydata.dart' as historyModel;
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
@@ -1408,9 +1409,10 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
             : CustomScrollView(slivers: [
                 SliverAppBar(
                   snap: false,
-                  floating: false,
+                  floating: true,
                   pinned: true,
-                  backgroundColor: Theme.of(context).canvasColor,
+                  backgroundColor:
+                      Theme.of(context).canvasColor.withOpacity(0.9),
                   actions: [
                     _exProvider.exercisesdata.exercises[widget.eindex].custom &&
                             !widget.isroutine
@@ -1464,10 +1466,33 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, _index) {
+                      var _exImage;
+                      try {
+                        _exImage = extra_completely_new_Ex[
+                                extra_completely_new_Ex.indexWhere((element) =>
+                                    element.name ==
+                                    _exProvider.exercisesdata
+                                        .exercises[widget.eindex].name)]
+                            .image;
+                        if (_exImage == null) {
+                          _exImage = "";
+                        }
+                      } catch (e) {
+                        _exImage = "";
+                      }
+
                       return Container(
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
+                              _exImage != ""
+                                  ? Image.asset(
+                                      _exImage,
+                                      height: 240,
+                                      width: 240,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : SizedBox(height: 12),
                               Status(),
                               SizedBox(height: 20),
                               exercisenote(),

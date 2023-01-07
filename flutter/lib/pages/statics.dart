@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_gif/flutter_gif.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:sdb_trainer/pages/static_exercise.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
+import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:sdb_trainer/src/model/userdata.dart';
 import 'package:sdb_trainer/src/utils/alerts.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -32,7 +34,7 @@ class Calendar extends StatefulWidget {
   _CalendarState createState() => _CalendarState();
 }
 
-class _CalendarState extends State<Calendar> {
+class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
   late Map<DateTime, List<SDBdata>> selectedEvents;
   List<Exercises>? _sdbChartData = [];
   CalendarFormat _calendarFormat = CalendarFormat.month;
@@ -59,9 +61,11 @@ class _CalendarState extends State<Calendar> {
   final TextEditingController _eventController = TextEditingController();
 
   late StreamSubscription<bool> keyboardSubscription;
+  late FlutterGifController controller1;
 
   @override
   void initState() {
+    controller1 = FlutterGifController(vsync: this);
     var keyboardVisibilityController = KeyboardVisibilityController();
     keyboardSubscription =
         keyboardVisibilityController.onChange.listen((bool visible) {
@@ -1310,6 +1314,19 @@ class _CalendarState extends State<Calendar> {
                   top = 0;
                   bottom = 0;
                 }
+                var _exImage;
+                try {
+                  _exImage = extra_completely_new_Ex[
+                          extra_completely_new_Ex.indexWhere(
+                              (element) => element.name == exuniq[index].name)]
+                      .image;
+                  if (_exImage == null) {
+                    _exImage = "";
+                  }
+                } catch (e) {
+                  _exImage = "";
+                }
+
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -1323,7 +1340,7 @@ class _CalendarState extends State<Calendar> {
                             transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
                     decoration: BoxDecoration(
                         color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.only(
@@ -1332,29 +1349,52 @@ class _CalendarState extends State<Calendar> {
                             topLeft: Radius.circular(top),
                             bottomLeft: Radius.circular(bottom))),
                     height: 52,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Row(
                       children: [
-                        Text(
-                          exuniq[index].name,
-                          textScaleFactor: 1.3,
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColorLight),
-                        ),
-                        Container(
-                          child: Row(
-                            //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        _exImage != ""
+                            ? GifImage(
+                                controller: controller1,
+                                image: AssetImage(_exImage),
+                                height: 48,
+                                width: 48,
+                                fit: BoxFit.cover,
+                              )
+                            : Container(
+                                height: 48,
+                                width: 48,
+                                child: Icon(Icons.image_not_supported,
+                                    color: Theme.of(context).primaryColorDark),
+                                decoration:
+                                    BoxDecoration(shape: BoxShape.circle),
+                              ),
+                        SizedBox(width: 8.0),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Expanded(child: SizedBox()),
                               Text(
-                                  "${"1RM: " + exuniq[index].onerm.toStringAsFixed(1)}/${exuniq[index].goal.toStringAsFixed(1)}${userdata.weight_unit}",
-                                  textScaleFactor: 1.0,
-                                  style: const TextStyle(
-                                      color: Color(0xFF717171))),
+                                exuniq[index].name,
+                                textScaleFactor: 1.3,
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight),
+                              ),
+                              Container(
+                                child: Row(
+                                  //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    const Expanded(child: SizedBox()),
+                                    Text(
+                                        "${"1RM: " + exuniq[index].onerm.toStringAsFixed(1)}/${exuniq[index].goal.toStringAsFixed(1)}${userdata.weight_unit}",
+                                        textScaleFactor: 1.0,
+                                        style: const TextStyle(
+                                            color: Color(0xFF717171))),
+                                  ],
+                                ),
+                              )
                             ],
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),

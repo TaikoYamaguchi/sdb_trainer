@@ -1,6 +1,7 @@
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_gif/flutter_gif.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/each_exercise.dart';
@@ -16,6 +17,7 @@ import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
+import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'package:sdb_trainer/src/model/workoutdata.dart' as wod;
@@ -37,7 +39,8 @@ class EachWorkoutDetails extends StatefulWidget {
   _EachWorkoutDetailsState createState() => _EachWorkoutDetailsState();
 }
 
-class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
+class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
+    with TickerProviderStateMixin {
   var _hisProvider;
   var _routinetimeProvider;
   var _userProvider;
@@ -56,6 +59,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   bool _inittutor = true;
   ExpandableController _menucontroller =
       ExpandableController(initialExpanded: true);
+  late FlutterGifController controller1;
 
   List<Map<String, dynamic>> datas = [];
   double top = 0;
@@ -79,6 +83,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
   //Iniciando o estado.
   @override
   void initState() {
+    controller1 = FlutterGifController(vsync: this);
     itens.addAll({
       TutorialItem(
           globalKey: keyPlus,
@@ -745,7 +750,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                   _editWorkoutCheck();
                 });
               },
-              padding: EdgeInsets.symmetric(horizontal: _isexsearch ? 2 : 5),
+              padding: EdgeInsets.symmetric(horizontal: _isexsearch ? 2 : 4),
               itemBuilder: (BuildContext _context, int index) {
                 final exinfo = exunique.where((unique) {
                   return (unique.name == exlist[index].name);
@@ -763,7 +768,20 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                   top = 0;
                   bottom = 0;
                 }
-                ;
+
+                var _exImage;
+                try {
+                  _exImage = extra_completely_new_Ex[
+                          extra_completely_new_Ex.indexWhere(
+                              (element) => element.name == exlist[index].name)]
+                      .image;
+                  if (_exImage == null) {
+                    _exImage = "";
+                  }
+                } catch (e) {
+                  _exImage = "";
+                }
+
                 return GestureDetector(
                   key: Key('$index'),
                   onTap: () {
@@ -804,7 +822,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                       children: [
                         Container(
                           padding: EdgeInsets.symmetric(
-                              horizontal: _isexsearch ? 10 : 20),
+                              horizontal: _isexsearch ? 8 : 8),
                           decoration: BoxDecoration(
                               color: Theme.of(context).cardColor,
                               borderRadius: BorderRadius.only(
@@ -812,44 +830,74 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                                   bottomRight: Radius.circular(bottom),
                                   topLeft: Radius.circular(top),
                                   bottomLeft: Radius.circular(bottom))),
-                          height: _isexsearch ? 42 : 52,
+                          height: _isexsearch ? 42 : 76,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                child: Row(
                                   children: [
-                                    Text(
-                                      exlist[index].name,
-                                      textScaleFactor: _isexsearch ? 1.1 : 1.7,
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorLight),
-                                    ),
                                     _isexsearch
                                         ? Container()
-                                        : Container(
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                    "Rest: ${exlist[index].rest}",
-                                                    textScaleFactor: 1.0,
-                                                    style: TextStyle(
-                                                        color:
-                                                            Color(0xFF717171))),
-                                              ],
-                                            ),
-                                          )
+                                        : _exImage != ""
+                                            ? GifImage(
+                                                controller: controller1,
+                                                image: AssetImage(_exImage),
+                                                height: 64,
+                                                width: 64,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Container(
+                                                height: 64,
+                                                width: 64,
+                                                child: Icon(
+                                                    Icons.image_not_supported,
+                                                    color: Theme.of(context)
+                                                        .primaryColorDark),
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle),
+                                              ),
+                                    SizedBox(width: 8),
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            exlist[index].name,
+                                            textScaleFactor:
+                                                _isexsearch ? 1.1 : 1.7,
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColorLight),
+                                          ),
+                                          _isexsearch
+                                              ? Container()
+                                              : Container(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                          "Rest: ${exlist[index].rest}",
+                                                          textScaleFactor: 1.0,
+                                                          style: TextStyle(
+                                                              color: Color(
+                                                                  0xFF717171))),
+                                                    ],
+                                                  ),
+                                                )
+                                        ],
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.fromLTRB(0, 12, 0, 12),
+                                padding: EdgeInsets.fromLTRB(4, 12, 4, 12),
                                 child: Container(
                                   height: 15.0,
                                   width: 3.0,
@@ -1535,7 +1583,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails> {
                   snap: false,
                   floating: false,
                   pinned: true,
-                  backgroundColor: Theme.of(context).canvasColor,
+                  backgroundColor:
+                      Theme.of(context).canvasColor.withOpacity(0.9),
                   actions: [
                     IconButton(
                       key: keyPlus,
