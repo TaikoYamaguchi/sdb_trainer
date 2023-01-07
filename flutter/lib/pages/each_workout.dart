@@ -724,8 +724,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
 
   Widget _exercisesWidget(bool scrollable, bool shirink) {
     return Container(
-      child: Consumer2<WorkoutdataProvider, ExercisesdataProvider>(
-          builder: (builder, wdp, exp, child) {
+      child: Consumer3<WorkoutdataProvider, ExercisesdataProvider,
+          RoutineTimeProvider>(builder: (builder, wdp, exp, rtp, child) {
         List exunique = exp.exercisesdata.exercises;
         List exlist = wdp.workoutdata.routinedatas[widget.rindex].exercises;
         for (int i = 0; i < exlist.length; i++) {
@@ -824,7 +824,11 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                           padding: EdgeInsets.symmetric(
                               horizontal: _isexsearch ? 8 : 8),
                           decoration: BoxDecoration(
-                              color: Theme.of(context).cardColor,
+                              color: rtp.isstarted
+                                  ? index == rtp.nowoneindex
+                                      ? Color(0xffCEEC97)
+                                      : Theme.of(context).cardColor
+                                  : Theme.of(context).cardColor,
                               borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(top),
                                   bottomRight: Radius.circular(bottom),
@@ -927,20 +931,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                   ),
                 );
               },
-              /*
-              separatorBuilder: (BuildContext _context, int index){
-                return Container(
-                  alignment: Alignment.center,
-                  height:1, color: Color(0xFF212121),
-                  child: Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                    height:1, color: Color(0xFF717171),
-                  ),
-                );
-
-              },
-               */
               shrinkWrap: shirink,
               itemCount: exlist.length),
           _isexsearch
