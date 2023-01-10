@@ -15,12 +15,14 @@ import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:sdb_trainer/pages/userProfile.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/src/model/exerciseList.dart';
+import 'package:sdb_trainer/src/model/pre_exerciseList.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/userProfileGoal.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:async';
+import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:in_app_review/in_app_review.dart';
@@ -562,17 +564,20 @@ class _ProfileState extends State<Profile> {
                           Icon(Icons.chevron_right, color: Theme.of(context).primaryColorLight),
                         ])));
           }),
-
+          */
           Consumer<ExercisesdataProvider>(builder: (builder, provider, child) {
             return ElevatedButton(
                 onPressed: () {
                   print('fuck3');
-                  for (int n = 0; n < old_Ex.length; n++) {
-                    extra_completely_new_Ex.removeWhere(
-                        (element) => element.name == old_Ex[n].name);
-                    print(extra_completely_new_Ex.length);
-                  }
 
+                  for (int n = 0; n < delete_Ex.length; n++) {
+                    extra_completely_new_Ex
+                        .removeWhere((element) => element.name == delete_Ex[n]);
+                  }
+                  var after = jsonEncode(extra_completely_new_Ex);
+                  print(after);
+
+/*
                   provider.getdata_all().then((value) {
                     print(provider.exercisesdatas.exercisedatas[0].exercises[1]
                         .target[0]);
@@ -580,9 +585,24 @@ class _ProfileState extends State<Profile> {
                         n < provider.exercisesdatas.exercisedatas.length;
                         n++) {
                       provider.exercisesdatas.exercisedatas[n].exercises
-                          .addAll(extra_completely_new_Ex);
+                          .addAll(new_Ex);
+                      for (int i = 0; i < delete_Ex.length; i++) {
+                        provider.exercisesdatas.exercisedatas[n].exercises
+                            .removeWhere(
+                                (element) => element.name == delete_Ex[i]);
+                      }
+                      provider
+                          .exercisesdatas
+                          .exercisedatas[n]
+                          .exercises[provider
+                              .exercisesdatas.exercisedatas[n].exercises
+                              .indexWhere((element) =>
+                                  element.name == '리버스 인클라인 덤벨 리어 델트 레이즈')]
+                          .name = '인클라인 덤벨 리어 델트 레이즈';
                     }
                   });
+
+      */
                 },
                 onLongPress: () {
                   ExerciseEditAll(
@@ -599,11 +619,12 @@ class _ProfileState extends State<Profile> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("exercise_add",
-                              style: TextStyle(color: Theme.of(context).primaryColorLight)),
-                          Icon(Icons.chevron_right, color: Theme.of(context).primaryColorLight),
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
+                          Icon(Icons.chevron_right,
+                              color: Theme.of(context).primaryColorLight),
                         ])));
           }),
-          */
         ]),
       ),
     );
