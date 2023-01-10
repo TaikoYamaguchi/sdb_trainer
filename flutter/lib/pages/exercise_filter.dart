@@ -246,7 +246,15 @@ class _ExerciseFilterState extends State<ExerciseFilter>
         return ChipsChoice<String>.multiple(
           value: provider.tags,
           onChanged: (val) {
-            provider.settags(val);
+            val.indexOf('기타') == val.length - 1
+                ? {
+                    provider.settags(['기타']),
+                    _menucontroller.expanded = false
+                  }
+                : [
+                    val.remove('기타'),
+                    provider.settags(val),
+                  ];
           },
           choiceItems: C2Choice.listFrom<String, String>(
             source: items2,
@@ -268,7 +276,7 @@ class _ExerciseFilterState extends State<ExerciseFilter>
   }
 
   void _displayCustomExInputDialog(provider) {
-    _famousdataProvider.emptytags();
+    _famousdataProvider.settags(['기타']);
     showModalBottomSheet<void>(
         isScrollControlled: true,
         context: context,

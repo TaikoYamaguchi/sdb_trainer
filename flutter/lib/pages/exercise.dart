@@ -234,98 +234,151 @@ class ExerciseState extends State<Exercise> {
                                         label: '삭제',
                                       )
                                     ]),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: Theme.of(context).cardColor,
-                                      borderRadius:
-                                          BorderRadius.circular(15.0)),
-                                  child: ListTile(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 15, vertical: 5.0),
-                                      leading: Container(
-                                        height: double.infinity,
-                                        padding: EdgeInsets.only(right: 15.0),
-                                        decoration: new BoxDecoration(
-                                            border: new Border(
-                                                right: new BorderSide(
-                                                    width: 1.0,
-                                                    color: Theme.of(context)
-                                                        .primaryColorDark))),
-                                        child: routinelist[index].mode == 0
-                                            ? Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 8),
-                                                child: SizedBox(
-                                                  width: 25,
-                                                  child: SvgPicture.asset(
-                                                      "assets/svg/dumbel_on.svg",
-                                                      color: Theme.of(context)
-                                                          .primaryColorDark),
-                                                ),
-                                              )
-                                            : CircularPercentIndicator(
-                                                radius: 20,
-                                                lineWidth: 5.0,
-                                                animation: true,
-                                                percent: (routinelist[index]
+                                child: Consumer<RoutineTimeProvider>(
+                                    builder: (builder, provider, child) {
+                                  return Material(
+                                    elevation: provider.isstarted
+                                        ? index == provider.nowonrindex
+                                            ? 5
+                                            : 0
+                                        : 0,
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: provider.isstarted
+                                              ? index == provider.nowonrindex
+                                                  ? Color(0xffCEEC97)
+                                                  : Theme.of(context).cardColor
+                                              : Theme.of(context).cardColor,
+                                          borderRadius:
+                                              BorderRadius.circular(15.0)),
+                                      child: ListTile(
+                                          contentPadding: EdgeInsets.symmetric(
+                                              horizontal: 15, vertical: 5.0),
+                                          leading: Container(
+                                            height: double.infinity,
+                                            padding:
+                                                EdgeInsets.only(right: 15.0),
+                                            decoration: new BoxDecoration(
+                                                border: new Border(
+                                                    right: new BorderSide(
+                                                        width: 1.0,
+                                                        color: Theme.of(context)
+                                                            .primaryColorDark))),
+                                            child: routinelist[index].mode == 0
+                                                ? Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 8),
+                                                    child: SizedBox(
+                                                      width: 25,
+                                                      child: SvgPicture.asset(
+                                                          "assets/svg/dumbel_on.svg",
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .primaryColorDark),
+                                                    ),
+                                                  )
+                                                : CircularPercentIndicator(
+                                                    radius: 20,
+                                                    lineWidth: 5.0,
+                                                    animation: true,
+                                                    percent: (routinelist[index]
+                                                                .exercises[0]
+                                                                .progress +
+                                                            1) /
+                                                        routinelist[index]
                                                             .exercises[0]
-                                                            .progress +
-                                                        1) /
-                                                    routinelist[index]
-                                                        .exercises[0]
-                                                        .plans
-                                                        .length,
-                                                center: new Text(
-                                                  "${routinelist[index].exercises[0].progress + 1}/${routinelist[index].exercises[0].plans.length}",
-                                                  textScaleFactor: 0.8,
-                                                  style: new TextStyle(
-                                                    color: Theme.of(context)
-                                                        .primaryColorLight,
+                                                            .plans
+                                                            .length,
+                                                    center: new Text(
+                                                      "${routinelist[index].exercises[0].progress + 1}/${routinelist[index].exercises[0].plans.length}",
+                                                      textScaleFactor: 0.8,
+                                                      style: new TextStyle(
+                                                        color: Theme.of(context)
+                                                            .primaryColorLight,
+                                                      ),
+                                                    ),
+                                                    linearGradient:
+                                                        gradientColors,
+                                                    circularStrokeCap:
+                                                        CircularStrokeCap.round,
                                                   ),
+                                          ),
+                                          title: Text(
+                                            routinelist[index].name,
+                                            textScaleFactor: 1.5,
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          subtitle: Row(
+                                            children: [
+                                              routinelist[index].mode == 0
+                                                  ? Text(
+                                                      "리스트 모드 - ${routinelist[index].exercises.length}개 운동",
+                                                      textScaleFactor: 1.0,
+                                                      style: TextStyle(
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .primaryColorLight))
+                                                  : Text("플랜 모드",
+                                                      textScaleFactor: 1.0,
+                                                      style: TextStyle(
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .primaryColorLight)),
+                                            ],
+                                          ),
+                                          trailing: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              provider.isstarted
+                                                  ? index ==
+                                                          provider.nowonrindex
+                                                      ? Text(
+                                                          provider.userest
+                                                              ? provider.timeron <
+                                                                      0
+                                                                  ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
+                                                                  : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
+                                                              : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                                                          textScaleFactor: 1.4,
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: (provider
+                                                                          .userest &&
+                                                                      provider.timeron <
+                                                                          0)
+                                                                  ? Colors.red
+                                                                  : Theme.of(
+                                                                          context)
+                                                                      .primaryColorLight))
+                                                      : Container()
+                                                  : Container(),
+                                              Padding(
+                                                padding: EdgeInsets.fromLTRB(
+                                                    12, 4, 0, 4),
+                                                child: Container(
+                                                  height: 20.0,
+                                                  width: 3.0,
+                                                  decoration: BoxDecoration(
+                                                      color: Theme.of(context)
+                                                          .primaryColorDark,
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  8.0))),
                                                 ),
-                                                linearGradient: gradientColors,
-                                                circularStrokeCap:
-                                                    CircularStrokeCap.round,
                                               ),
-                                      ),
-                                      title: Text(
-                                        routinelist[index].name,
-                                        textScaleFactor: 1.5,
-                                        style: TextStyle(
-                                            color: Theme.of(context)
-                                                .primaryColorLight,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      subtitle: Row(
-                                        children: [
-                                          routinelist[index].mode == 0
-                                              ? Text(
-                                                  "리스트 모드 - ${routinelist[index].exercises.length}개 운동",
-                                                  textScaleFactor: 1.0,
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .primaryColorLight))
-                                              : Text("플랜 모드",
-                                                  textScaleFactor: 1.0,
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .primaryColorLight)),
-                                        ],
-                                      ),
-                                      trailing: Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(12, 4, 0, 4),
-                                        child: Container(
-                                          height: 20.0,
-                                          width: 3.0,
-                                          decoration: BoxDecoration(
-                                              color: Theme.of(context)
-                                                  .primaryColorDark,
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8.0))),
-                                        ),
-                                      )),
-                                ),
+                                            ],
+                                          )),
+                                    ),
+                                  );
+                                }),
                               )),
                         ],
                       ),
