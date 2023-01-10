@@ -620,19 +620,6 @@ class LoginPageState extends State<LoginPage> {
     binding.addPostFrameCallback((_) async {
       BuildContext context = binding.renderViewElement!;
       if (context != null) {
-        for (Exercises ex in extra_completely_new_Ex) {
-          try {
-            precacheImage(Image.asset(ex.image!).image, context);
-          } catch (e) {
-            null;
-          }
-        }
-      }
-    });
-
-    binding.addPostFrameCallback((_) async {
-      BuildContext context = binding.renderViewElement!;
-      if (context != null) {
         for (var user in usertestList) {
           precacheImage(CachedNetworkImageProvider(user.image), context);
         }

@@ -580,9 +580,8 @@ class _ExerciseFilterState extends State<ExerciseFilter>
                         child: Row(
                           children: [
                             _exImage != ""
-                                ? GifImage(
-                                    controller: controller1,
-                                    image: AssetImage(_exImage),
+                                ? Image.asset(
+                                    _exImage,
                                     height: 48,
                                     width: 48,
                                     fit: BoxFit.cover,

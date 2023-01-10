@@ -856,9 +856,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                     _isexsearch
                                         ? Container()
                                         : _exImage != ""
-                                            ? GifImage(
-                                                controller: controller1,
-                                                image: AssetImage(_exImage),
+                                            ? Image.asset(
+                                                _exImage,
                                                 height: 64,
                                                 width: 64,
                                                 fit: BoxFit.cover,

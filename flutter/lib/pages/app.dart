@@ -7,6 +7,8 @@ import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/repository/version_repository.dart';
+import 'package:sdb_trainer/src/model/exerciseList.dart';
+import 'package:sdb_trainer/src/model/exercisesdata.dart';
 import 'package:sdb_trainer/src/utils/alerts.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -58,11 +60,32 @@ class _AppState extends State<App> {
     VersionService.loadVersionData().then((data) {
       if (data == _appUpdateVersion) {
         _updateCheck = true;
+        print("Tress");
+        initialExImageGet(context);
       } else {
         showUpdateVersion(data, context);
+        initialExImageGet(context);
       }
     });
     super.initState();
+  }
+
+  void initialExImageGet(context) async {
+    final binding = WidgetsFlutterBinding.ensureInitialized();
+
+    binding.addPostFrameCallback((_) async {
+      BuildContext context = binding.renderViewElement!;
+      if (context != null) {
+        for (Exercises ex in extra_completely_new_Ex) {
+          try {
+            precacheImage(AssetImage(ex.image!), context);
+            print(ex.image);
+          } catch (e) {
+            null;
+          }
+        }
+      }
+    });
   }
 
   BottomNavigationBarItem _bottomNavigationBarItem(
