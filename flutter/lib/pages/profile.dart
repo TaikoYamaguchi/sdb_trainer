@@ -508,14 +508,14 @@ class _ProfileState extends State<Profile> {
                     })),
 
           //ex back end 바꾸는 코드임 절대 지우지 말것
-          /*
+/*
           Consumer<ExercisesdataProvider>(builder: (builder, provider, child) {
             return ElevatedButton(
                 onPressed: () {
                   print('fuck');
                   provider.getdata_all().then((value) {
-                    print(provider.exercisesdatas.exercisedatas[10].exercises[1]
-                        .target[0]);
+                    print(provider
+                        .exercisesdatas.exercisedatas[10].exercises[1].image);
                   });
                 },
                 onLongPress: () {
@@ -533,10 +533,14 @@ class _ProfileState extends State<Profile> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("exercise_change",
-                              style: TextStyle(color: Theme.of(context).primaryColorLight)),
-                          Icon(Icons.chevron_right, color: Theme.of(context).primaryColorLight),
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
+                          Icon(Icons.chevron_right,
+                              color: Theme.of(context).primaryColorLight),
                         ])));
           }),
+
+
           Consumer<HistorydataProvider>(builder: (builder, provider, child) {
             return ElevatedButton(
                 onPressed: () {
@@ -564,11 +568,15 @@ class _ProfileState extends State<Profile> {
                           Icon(Icons.chevron_right, color: Theme.of(context).primaryColorLight),
                         ])));
           }),
+
+
+
+
               Consumer<ExercisesdataProvider>(builder: (builder, provider, child) {
             return ElevatedButton(
                 onPressed: () {
                   print('fuck3');
-
+/*
                   for (int n = 0; n < delete_Ex.length; n++) {
                     extra_completely_new_Ex
                         .removeWhere((element) => element.name == delete_Ex[n]);
@@ -576,7 +584,7 @@ class _ProfileState extends State<Profile> {
                   var after = jsonEncode(extra_completely_new_Ex);
                   print(after);
 
-/*
+   */
                   provider.getdata_all().then((value) {
                     print(provider.exercisesdatas.exercisedatas[0].exercises[1]
                         .target[0]);
@@ -601,7 +609,7 @@ class _ProfileState extends State<Profile> {
                     }
                   });
 
-      */
+   
                 },
                 onLongPress: () {
                   ExerciseEditAll(
@@ -623,7 +631,7 @@ class _ProfileState extends State<Profile> {
                           Icon(Icons.chevron_right,
                               color: Theme.of(context).primaryColorLight),
                         ])));
-          }),i
+          }),
       */
         ]),
       ),

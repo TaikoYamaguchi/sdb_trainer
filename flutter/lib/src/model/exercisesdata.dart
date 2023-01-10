@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:sdb_trainer/src/model/pre_exerciseList.dart';
 
 class ExercisesdataList {
   final List<Exercisesdata> exercisedatas;
