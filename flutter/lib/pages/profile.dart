@@ -572,7 +572,7 @@ class _ProfileState extends State<Profile> {
 
 
 
-              Consumer<ExercisesdataProvider>(builder: (builder, provider, child) {
+          Consumer<ExercisesdataProvider>(builder: (builder, provider, child) {
             return ElevatedButton(
                 onPressed: () {
                   print('fuck3');
@@ -591,25 +591,13 @@ class _ProfileState extends State<Profile> {
                     for (int n = 0;
                         n < provider.exercisesdatas.exercisedatas.length;
                         n++) {
+//                      provider.exercisesdatas.exercisedatas[n].exercises
+//                          .addAll(new_Ex);
                       provider.exercisesdatas.exercisedatas[n].exercises
-                          .addAll(new_Ex);
-                      for (int i = 0; i < delete_Ex.length; i++) {
-                        provider.exercisesdatas.exercisedatas[n].exercises
-                            .removeWhere(
-                                (element) => element.name == delete_Ex[i]);
-                      }
-                      provider
-                          .exercisesdatas
-                          .exercisedatas[n]
-                          .exercises[provider
-                              .exercisesdatas.exercisedatas[n].exercises
-                              .indexWhere((element) =>
-                                  element.name == '리버스 인클라인 덤벨 리어 델트 레이즈')]
-                          .name = '인클라인 덤벨 리어 델트 레이즈';
+                          .removeWhere((element) =>
+                              element.name == '얼터네이팅 덤벨 바벨 벤치 프레스');
                     }
                   });
-
-   
                 },
                 onLongPress: () {
                   ExerciseEditAll(
@@ -632,7 +620,7 @@ class _ProfileState extends State<Profile> {
                               color: Theme.of(context).primaryColorLight),
                         ])));
           }),
-      */
+ */
         ]),
       ),
     );
