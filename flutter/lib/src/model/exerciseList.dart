@@ -292,7 +292,7 @@ List<Exercises> extra_completely_new_Ex = [
   Exercises(
       goal: 0.0,
       name: '크런치',
-      image: "assets/gif/Crunch_180.gif",
+      image: "assets/gif/000613-7a28cb_360.webp",
       onerm: 0.0,
       custom: false,
       target: ["복근"],
