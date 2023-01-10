@@ -56,36 +56,7 @@ class _SignUpPageState extends State<SignUpPage> {
   var _userWeightUnitCtrl = "kg";
   var _userHeightUnitCtrl = "cm";
   var _userGenderCtrl = true;
-  List<Exercises> exerciseList = [
-    Exercises(
-        goal: 0.0,
-        name: "바벨 스쿼트",
-        image: null,
-        onerm: 0.0,
-        custom: false,
-        target: ["다리"],
-        category: "바벨",
-        note: ''),
-    Exercises(
-        goal: 0.0,
-        name: "바벨 데드리프트",
-        image: null,
-        onerm: 0.0,
-        custom: false,
-        target: ["다리", "등", "허리"],
-        category: "바벨",
-        note: ''),
-    Exercises(
-        goal: 0.0,
-        name: "바벨 벤치 프레스",
-        image: null,
-        onerm: 0.0,
-        custom: false,
-        target: ["가슴", "삼두"],
-        category: "바벨",
-        note: ''),
-  ];
-
+  List<Exercises> exerciseList = extra_completely_new_Ex;
   List<routine.Routinedatas> routinedatas = [];
 
   List<TextEditingController> _onermController = [];
@@ -223,10 +194,6 @@ class _SignUpPageState extends State<SignUpPage> {
             ],
           )),
     ));
-  }
-
-  void add_extra_ex() {
-    exerciseList..addAll(extra_completely_new_Ex);
   }
 
   Widget _signupWidget() {
@@ -460,16 +427,12 @@ class _SignUpPageState extends State<SignUpPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Expanded(
-                      flex: 3,
-                      child: SizedBox(),
-                    ),
                     Text("추천 목표치를 설정했어요",
-                        textScaleFactor: 2.5,
+                        textScaleFactor: 2.0,
                         style: TextStyle(
                             color: Theme.of(context).primaryColorLight)),
-                    Text("1RM은 추후에도 입력 가능해요",
-                        textScaleFactor: 1.3,
+                    Text("1RM 입력은 추후 가능해요",
+                        textScaleFactor: 1.5,
                         style: TextStyle(
                             color: Theme.of(context).primaryColorDark)),
                     SizedBox(
@@ -510,34 +473,38 @@ class _SignUpPageState extends State<SignUpPage> {
                         ],
                       ),
                     ),
-                    MediaQuery.removePadding(
-                        context: context,
-                        removeTop: true,
-                        child: ListView.separated(
-                            itemBuilder: (BuildContext _context, int index) {
-                              return Center(
-                                  child: _exerciseWidget(
-                                      exerciseList[index], index));
-                            },
-                            separatorBuilder:
-                                (BuildContext _context, int index) {
-                              return Container(
-                                alignment: Alignment.center,
-                                height: 0.5,
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  margin: EdgeInsets.symmetric(horizontal: 10),
-                                  height: 0.5,
-                                  color: Theme.of(context).primaryColorDark,
-                                ),
-                              );
-                            },
-                            shrinkWrap: true,
-                            itemCount: exerciseList.length)),
-
                     Expanded(
-                      flex: 3,
-                      child: SizedBox(),
+                      child: Container(
+                        child: SingleChildScrollView(
+                          child: MediaQuery.removePadding(
+                              context: context,
+                              removeTop: true,
+                              child: ListView.separated(
+                                  itemBuilder:
+                                      (BuildContext _context, int index) {
+                                    return Center(
+                                        child: _exerciseWidget(
+                                            exerciseList[index], index));
+                                  },
+                                  separatorBuilder:
+                                      (BuildContext _context, int index) {
+                                    return Container(
+                                      alignment: Alignment.center,
+                                      height: 0.5,
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        height: 0.5,
+                                        color:
+                                            Theme.of(context).primaryColorDark,
+                                      ),
+                                    );
+                                  },
+                                  shrinkWrap: true,
+                                  itemCount: exerciseList.length)),
+                        ),
+                      ),
                     ),
                     _weightSubmitButton(context),
                     SizedBox(height: 8)
@@ -1046,7 +1013,7 @@ class _SignUpPageState extends State<SignUpPage> {
             onPressed: () => _postExerciseCheck(context),
             child: Column(
               children: [
-                Text(isLoading ? 'loggin in.....' : "운동 하러 가기",
+                Text(isLoading ? 'loggin in.....' : "추천 운동 하러 가기",
                     style: TextStyle(
                         fontSize: 20.0, color: Theme.of(context).buttonColor)),
                 Text("추천 운동이 운동 탭에 생길거에요",
@@ -1129,7 +1096,6 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   void _postExerciseCheck(context) async {
-    add_extra_ex();
     ExercisePost(user_email: _userEmailCtrl.text, exercises: exerciseList)
         .postExercise()
         .then((data) => data["user_email"] != null
