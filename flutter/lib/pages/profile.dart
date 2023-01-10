@@ -564,8 +564,7 @@ class _ProfileState extends State<Profile> {
                           Icon(Icons.chevron_right, color: Theme.of(context).primaryColorLight),
                         ])));
           }),
-          */
-          Consumer<ExercisesdataProvider>(builder: (builder, provider, child) {
+              Consumer<ExercisesdataProvider>(builder: (builder, provider, child) {
             return ElevatedButton(
                 onPressed: () {
                   print('fuck3');
@@ -624,7 +623,8 @@ class _ProfileState extends State<Profile> {
                           Icon(Icons.chevron_right,
                               color: Theme.of(context).primaryColorLight),
                         ])));
-          }),
+          }),i
+      */
         ]),
       ),
     );
