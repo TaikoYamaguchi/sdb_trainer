@@ -715,7 +715,7 @@ List<Exercises> extra_completely_new_Ex = [
   Exercises(
       goal: 0.0,
       name: '바벨 컬',
-      image: "assets/gif/Barbell-Curl_Upper-Arms_1080.webp",
+      image: "assets/gif/Barbell-Curl_Upper-Arms_10802.webp",
       onerm: 0.0,
       custom: false,
       target: ["이두"],
