@@ -23,6 +23,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:firebase_auth/firebase_auth.dart' as firebase;
+import 'package:sdb_trainer/src/model/exerciseList.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -621,6 +622,18 @@ class LoginPageState extends State<LoginPage> {
       if (context != null) {
         for (var user in usertestList) {
           precacheImage(CachedNetworkImageProvider(user.image), context);
+        }
+      }
+    });
+    binding.addPostFrameCallback((_) async {
+      BuildContext context = binding.renderViewElement!;
+      if (context != null) {
+        for (Exercises ex in extra_completely_new_Ex) {
+          try {
+            precacheImage(Image.asset(ex.image!).image, context);
+          } catch (e) {
+            null;
+          }
         }
       }
     });

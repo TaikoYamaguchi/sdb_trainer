@@ -2028,6 +2028,15 @@ List<Exercises> extra_completely_new_Ex = [
       note: ''),
   Exercises(
       goal: 0.0,
+      name: '밀리터리 프레스',
+      image: 'assets/gif/532813-7a28cb_360.webp',
+      onerm: 0.0,
+      custom: false,
+      target: ["어깨", "삼두"],
+      category: "바벨",
+      note: ''),
+  Exercises(
+      goal: 0.0,
       name: '덤벨 얼터네디팅 숄더 프레스',
       image: 'assets/gif/397213-7a28cb_360.webp',
       onerm: 0.0,
