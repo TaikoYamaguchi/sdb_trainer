@@ -55,6 +55,7 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
   var _customExUsed = false;
   var selectedItem = '기타';
   var selectedItem2 = '기타';
+  bool _isExListShow = true;
 
   var keyPlus = GlobalKey();
   var keyContainer = GlobalKey();
@@ -613,95 +614,88 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                   onTap: () {
                     _workoutProvider.removeexAt(widget.rindex, index);
                   },
-                  child: Slidable(
-                    endActionPane: ActionPane(
-                        extentRatio: 0.2,
-                        motion: const ScrollMotion(),
-                        children: [
-                          SlidableAction(
-                            onPressed: (_) {
-                              _workoutProvider.removeexAt(widget.rindex, index);
-                              _editWorkoutCheck();
-                            },
-                            backgroundColor: Color(0xFFFE4A49),
-                            foregroundColor: Theme.of(context).buttonColor,
-                            icon: Icons.delete,
-                            label: 'Delete',
-                          )
-                        ]),
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 8),
-                          decoration: BoxDecoration(
-                              color: rtp.isstarted
-                                  ? index == rtp.nowoneindex
-                                      ? Color(0xffCEEC97)
-                                      : Theme.of(context).cardColor
-                                  : Theme.of(context).cardColor,
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(top),
-                                  bottomRight: Radius.circular(bottom),
-                                  topLeft: Radius.circular(top),
-                                  bottomLeft: Radius.circular(bottom))),
-                          height: 42,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Container(),
-                                    SizedBox(width: 8),
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            exlist[index].name,
-                                            textScaleFactor: 1.1,
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .primaryColorLight),
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        decoration: BoxDecoration(
+                            color: rtp.isstarted
+                                ? index == rtp.nowoneindex
+                                    ? Color(0xffCEEC97)
+                                    : Theme.of(context).cardColor
+                                : Theme.of(context).cardColor,
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(top),
+                                bottomRight: Radius.circular(bottom),
+                                topLeft: Radius.circular(top),
+                                bottomLeft: Radius.circular(bottom))),
+                        height: 56,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  _exImage != ""
+                                      ? Image.asset(
+                                          _exImage,
+                                          height: 50,
+                                          width: 50,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Container(
+                                          height: 50,
+                                          width: 50,
+                                          child: Icon(Icons.image_not_supported,
+                                              color: Theme.of(context)
+                                                  .primaryColorDark),
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle),
+                                        ),
+                                  _isExListShow
+                                      ? Container()
+                                      : Expanded(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              SizedBox(width: 8),
+                                              Expanded(
+                                                child: Text(
+                                                  exlist[index].name,
+                                                  textScaleFactor: 1.2,
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .primaryColorLight),
+                                                ),
+                                              ),
+                                              Container()
+                                            ],
                                           ),
-                                          Container()
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                        ),
+                                ],
                               ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(4, 12, 4, 12),
-                                child: Container(
-                                  height: 15.0,
-                                  width: 3.0,
-                                  decoration: BoxDecoration(
-                                      color: Theme.of(context).primaryColorDark,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(8.0))),
-                                ),
-                              )
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        index == exlist.length - 1
-                            ? Container()
-                            : Container(
+                      ),
+                      index == exlist.length - 1
+                          ? Container()
+                          : Container(
+                              alignment: Alignment.center,
+                              height: 0.5,
+                              child: Container(
                                 alignment: Alignment.center,
+                                margin: EdgeInsets.symmetric(horizontal: 10),
                                 height: 0.5,
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  margin: EdgeInsets.symmetric(horizontal: 10),
-                                  height: 0.5,
-                                  color: Theme.of(context).primaryColorDark,
-                                ),
-                              )
-                      ],
-                    ),
+                                color: Theme.of(context).primaryColorDark,
+                              ),
+                            )
+                    ],
                   ),
                 );
               },
@@ -864,30 +858,6 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
               }),
             ),
           ),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width / 2 - 1,
-                  child: Center(
-                    child: Text("현재 루틴",
-                        textScaleFactor: 2.0,
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                        )),
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width / 2 - 1,
-                  child: Center(
-                    child: Text("운동 종목",
-                        textScaleFactor: 2.0,
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorLight)),
-                  ),
-                )
-              ]),
           Expanded(
             child: NotificationListener<ScrollNotification>(
               onNotification: (ScrollNotification notification) {
@@ -899,16 +869,19 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                     _menucontroller.expanded = false;
                   }
                 }
-
-                // Returning null (or false) to
-                // "allow the notification to continue to be dispatched to further ancestors".
                 return false;
               },
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  if (details.delta.dx > 0) {
+                  if (details.delta.dx > 0 && _isExListShow == true) {
+                    setState(() {
+                      _isExListShow = false;
+                    });
                     print("Dragging in +X direction");
-                  } else if (details.delta.dx < 0) {
+                  } else if (details.delta.dx < 0 && _isExListShow == false) {
+                    setState(() {
+                      _isExListShow = true;
+                    });
                     print("-x");
                   }
                 },
@@ -916,17 +889,36 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SingleChildScrollView(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width / 3 - 1,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 4.0, left: 1.0),
-                            child: _exercisesWidget(false, true),
+                      Column(
+                        children: [
+                          Container(
+                            child: Center(
+                              child: Text("현재 루틴",
+                                  textScaleFactor: 1.6,
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                  )),
+                            ),
                           ),
-                        ),
+                          Expanded(
+                            child: Container(
+                              width: _isExListShow
+                                  ? 78
+                                  : MediaQuery.of(context).size.width - 88,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 4.0, left: 1.0),
+                                child: SingleChildScrollView(
+                                  child: _exercisesWidget(true, true),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        padding: const EdgeInsets.only(
+                            left: 4.0, right: 4.0, top: 36),
                         child: VerticalDivider(
                             color: Theme.of(context).primaryColor,
                             thickness: 2,
@@ -936,13 +928,22 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                           builder: (builder, provider, child) {
                         return Expanded(
                           child: Container(
-                            width: MediaQuery.of(context).size.width / 2 - 1,
                             child: Padding(
                               padding:
                                   const EdgeInsets.only(top: 4.0, right: 1.0),
                               child: Column(
                                 children: [
+                                  Container(
+                                    child: Center(
+                                      child: Text("운동 종목",
+                                          textScaleFactor: 1.6,
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColorLight)),
+                                    ),
+                                  ),
                                   _exercisesItemWidget(true),
+                                  SizedBox(height: 4),
                                   GestureDetector(
                                       onTap: () {
                                         _displayCustomExInputDialog(provider);
@@ -953,7 +954,7 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                                         child: Align(
                                           alignment: Alignment.topLeft,
                                           child: Container(
-                                            height: 100,
+                                            height: 80,
                                             width: MediaQuery.of(context)
                                                 .size
                                                 .width,
@@ -974,8 +975,8 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                                                               .center,
                                                       children: [
                                                         Container(
-                                                          width: 48,
-                                                          height: 48,
+                                                          width: 40,
+                                                          height: 40,
                                                           decoration: BoxDecoration(
                                                               shape: BoxShape
                                                                   .circle,
@@ -990,37 +991,51 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                                                                 .buttonColor,
                                                           ),
                                                         ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(16.0),
-                                                          child: Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text("커스텀 운동",
-                                                                  textScaleFactor:
-                                                                      1.5,
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Theme.of(
-                                                                            context)
-                                                                        .primaryColorLight,
-                                                                  )),
-                                                            ],
-                                                          ),
-                                                        )
+                                                        _isExListShow
+                                                            ? Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        8.0),
+                                                                child: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Text(
+                                                                        "커스텀 운동",
+                                                                        textScaleFactor:
+                                                                            1.5,
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              Theme.of(context).primaryColorLight,
+                                                                        )),
+                                                                  ],
+                                                                ),
+                                                              )
+                                                            : Container()
                                                       ]),
-                                                  Text("개인 운동을 추가 할 수 있어요",
-                                                      textScaleFactor: 1.0,
-                                                      style: TextStyle(
-                                                        color: Theme.of(context)
-                                                            .primaryColorLight,
-                                                      )),
+                                                  SizedBox(height: 4),
+                                                  _isExListShow
+                                                      ? Text(
+                                                          "개인 운동을 추가 할 수 있어요",
+                                                          textScaleFactor: 1.0,
+                                                          style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColorLight,
+                                                          ))
+                                                      : Text("커스텀",
+                                                          textScaleFactor: 1.0,
+                                                          style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColorLight,
+                                                          )),
                                                 ],
                                               ),
                                             ),
@@ -1065,6 +1080,33 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
               padding: EdgeInsets.symmetric(horizontal: 2),
               itemBuilder: (BuildContext _context, int index) {
                 bool alreadyexist = existlist.contains(exuniq[index].name);
+                if (exuniq.length == 1) {
+                  top = 20;
+                  bottom = 20;
+                } else if (index == 0) {
+                  top = 20;
+                  bottom = 0;
+                } else if (index == exuniq.length - 1) {
+                  top = 0;
+                  bottom = 20;
+                } else {
+                  top = 0;
+                  bottom = 0;
+                }
+
+                var _exImage;
+                try {
+                  _exImage = extra_completely_new_Ex[
+                          extra_completely_new_Ex.indexWhere(
+                              (element) => element.name == exuniq[index].name)]
+                      .image;
+                  if (_exImage == null) {
+                    _exImage = "";
+                  }
+                } catch (e) {
+                  _exImage = "";
+                }
+
                 return GestureDetector(
                   onTap: () {
                     setState(() {
@@ -1078,24 +1120,53 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                   },
                   child: Container(
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      padding: EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(
+                          color: Theme.of(context).cardColor,
                           borderRadius: BorderRadius.only(
                               topRight: Radius.circular(top),
                               bottomRight: Radius.circular(bottom),
                               topLeft: Radius.circular(top),
                               bottomLeft: Radius.circular(bottom))),
-                      height: 42,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      height: 56,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(
-                            exuniq[index].name,
-                            textScaleFactor: 1.1,
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColorLight),
-                          ),
+                          _exImage != ""
+                              ? Image.asset(
+                                  _exImage,
+                                  height: 50,
+                                  width: 50,
+                                  fit: BoxFit.cover,
+                                )
+                              : Container(
+                                  height: 50,
+                                  width: 50,
+                                  child: Icon(Icons.image_not_supported,
+                                      color:
+                                          Theme.of(context).primaryColorDark),
+                                  decoration:
+                                      BoxDecoration(shape: BoxShape.circle),
+                                ),
+                          _isExListShow
+                              ? Expanded(
+                                  child: Row(
+                                    children: [
+                                      SizedBox(width: 8),
+                                      Expanded(
+                                        child: Text(
+                                          exuniq[index].name,
+                                          textScaleFactor: 1.2,
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColorLight),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Container(),
                         ],
                       ),
                     ),
