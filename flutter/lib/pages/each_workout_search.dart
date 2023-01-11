@@ -668,6 +668,8 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                                                 child: Text(
                                                   exlist[index].name,
                                                   textScaleFactor: 1.2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   style: TextStyle(
                                                       color: Theme.of(context)
                                                           .primaryColorLight),
@@ -901,7 +903,8 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                             ),
                           ),
                           Expanded(
-                            child: Container(
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 400),
                               width: _isExListShow
                                   ? 78
                                   : MediaQuery.of(context).size.width - 88,
