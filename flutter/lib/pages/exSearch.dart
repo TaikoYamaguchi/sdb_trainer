@@ -1,12 +1,6 @@
-import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
-import 'package:sdb_trainer/pages/each_exercise.dart';
-import 'package:sdb_trainer/pages/each_plan.dart';
-import 'package:sdb_trainer/pages/each_workout.dart';
 import 'package:sdb_trainer/pages/exercise_filter.dart';
 import 'package:sdb_trainer/pages/routine_bank.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
@@ -16,22 +10,15 @@ import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
-import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
-import 'package:sdb_trainer/src/model/userdata.dart';
-import 'package:sdb_trainer/src/model/workoutdata.dart';
-import 'package:sdb_trainer/src/utils/alerts.dart';
-import 'package:sdb_trainer/src/utils/change_name.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:tutorial/tutorial.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ExSearch extends StatefulWidget {
-  final onPush;
-  ExSearch({Key? key, this.onPush}) : super(key: key);
+  ExSearch({Key? key}) : super(key: key);
 
   @override
   ExSearchState createState() => ExSearchState();
@@ -42,11 +29,8 @@ class ExSearchState extends State<ExSearch> {
   var _userProvider;
   var _exProvider;
   var _workoutProvider;
-  var _famousdataProvider;
-  var _routinetimeProvider;
   var _RoutineMenuProvider;
   var _PopProvider;
-  var _PrefsProvider;
   bool modecheck = false;
   PageController? controller;
   List<Map<String, dynamic>> datas = [];
@@ -54,7 +38,6 @@ class ExSearchState extends State<ExSearch> {
   double bottom = 0;
   int swap = 1;
   String _title = "Workout List";
-  var _customExUsed = false;
 
   var keyPlus = GlobalKey();
   var keyContainer = GlobalKey();
@@ -282,17 +265,6 @@ class ExSearchState extends State<ExSearch> {
     );
   }
 
-  void _editWorkoutCheck() async {
-    WorkoutEdit(
-            user_email: _userProvider.userdata.email,
-            id: _workoutProvider.workoutdata.id,
-            routinedatas: _workoutProvider.workoutdata.routinedatas)
-        .editWorkout()
-        .then((data) => data["user_email"] != null
-            ? [showToast("done!"), _workoutProvider.getdata()]
-            : showToast("입력을 확인해주세요"));
-  }
-
   @override
   Widget build(BuildContext context) {
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
@@ -300,13 +272,8 @@ class ExSearchState extends State<ExSearch> {
     _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
 
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
-    _famousdataProvider =
-        Provider.of<FamousdataProvider>(context, listen: false);
-    _routinetimeProvider =
-        Provider.of<RoutineTimeProvider>(context, listen: false);
     _RoutineMenuProvider =
         Provider.of<RoutineMenuStater>(context, listen: false);
-    _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
 
     return Scaffold(
       appBar: _appbarWidget(),

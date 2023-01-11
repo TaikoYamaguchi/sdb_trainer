@@ -886,7 +886,7 @@ List<Exercises> extra_completely_new_Ex = [
   Exercises(
       goal: 0.0,
       name: '프리쳐 바벨 컬',
-      image: 'assets/gif/701213-7a28cb_360.webp',
+      image: 'assets/gif/433813-7a28cb_360.webp',
       onerm: 0.0,
       custom: false,
       target: ["이두"],
@@ -2245,7 +2245,7 @@ List<Exercises> extra_completely_new_Ex = [
   Exercises(
       goal: 0.0,
       name: '케이블 익스터널 로테이션',
-      image: 'assets/gif/023512-7a28cb_360.webp',
+      image: 'assets/gif/023513-7a28cb_360.webp',
       onerm: 0.0,
       custom: false,
       target: ["어깨"],

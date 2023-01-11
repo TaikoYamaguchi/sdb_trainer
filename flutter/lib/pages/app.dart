@@ -16,7 +16,6 @@ import 'package:provider/provider.dart';
 import 'package:sdb_trainer/navigators/exercise_navi.dart';
 import 'package:sdb_trainer/navigators/exSearch_navi.dart';
 import 'package:sdb_trainer/navigators/profile_navi.dart';
-import 'package:sdb_trainer/pages/home.dart';
 import 'package:sdb_trainer/pages/login.dart';
 import 'package:sdb_trainer/pages/signup.dart';
 import 'package:sdb_trainer/pages/feed.dart';
@@ -31,7 +30,6 @@ import 'package:sdb_trainer/supero_version.dart';
 import 'dart:math' as math;
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/exercise_done.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'statics.dart';
 
 class App extends StatefulWidget {
@@ -53,18 +51,15 @@ class _AppState extends State<App> {
   var _loginState;
   var _userProvider;
   int updatecount = 0;
-  bool _updateCheck = false;
   @override
   void initState() {
-    var _appUpdateVersion = SuperoVersion.getSuperoVersion().toString();
+    var appUpdateVersion = SuperoVersion.getSuperoVersion().toString();
     VersionService.loadVersionData().then((data) {
-      if (data == _appUpdateVersion) {
-        _updateCheck = true;
-        print("Tress");
+      if (data.substring(0, data.length - 1) ==
+          appUpdateVersion.substring(0, appUpdateVersion.length - 1)) {
         initialExImageGet(context);
       } else {
         showUpdateVersion(data, context);
-        initialExImageGet(context);
       }
     });
     super.initState();
@@ -78,8 +73,7 @@ class _AppState extends State<App> {
       if (context != null) {
         for (Exercises ex in extra_completely_new_Ex) {
           try {
-            precacheImage(AssetImage(ex.image!), context);
-            print(ex.image);
+            await precacheImage(AssetImage(ex.image!), context);
           } catch (e) {
             null;
           }
@@ -107,7 +101,6 @@ class _AppState extends State<App> {
 
   Widget _bottomNavigationBarwidget() {
     var width = MediaQuery.of(context).size.width;
-    double displayWidth = MediaQuery.of(context).size.width;
     return Stack(
       children: [
         ClipRect(
@@ -262,13 +255,13 @@ class _AppState extends State<App> {
               ],
             ),
             actions: <Widget>[
-              _FinishConfirmButton(),
+              _finishConfirmButton(),
             ],
           );
         });
   }
 
-  Widget _FinishConfirmButton() {
+  Widget _finishConfirmButton() {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: TextButton(
@@ -533,7 +526,6 @@ class _AppState extends State<App> {
 
     return Consumer3<BodyStater, LoginPageProvider, UserdataProvider>(
         builder: (builder, provider1, provider2, provider3, child) {
-      print(_userProvider.userdata);
       return WillPopScope(
         onWillPop: () async {
           final shouldPop;
@@ -552,7 +544,8 @@ class _AppState extends State<App> {
         },
         child: Scaffold(
             body: _loginState.isLogin
-                ? _userProvider.userdata == null
+                ? _userProvider.userdata == null ||
+                        _hisProvider.historydataAll == null
                     ? _initialLoginWidget()
                     : IndexedStack(
                         index: _bodyStater.bodystate,
@@ -632,7 +625,8 @@ class _AppState extends State<App> {
               );
             }),
             bottomNavigationBar: _loginState.isLogin
-                ? _userProvider.userdata == null
+                ? _userProvider.userdata == null ||
+                        _hisProvider.historydataAll == null
                     ? null
                     : _bottomNavigationBarwidget()
                 : null),
@@ -847,7 +841,6 @@ class ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return SizedBox(
       width: 40,
       height: 40,
