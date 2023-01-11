@@ -711,7 +711,7 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: Container(
-                        height: 80,
+                        height: 88,
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                             color: Theme.of(context).cardColor,
@@ -736,29 +736,39 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                                         color: Theme.of(context).buttonColor,
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16.0, vertical: 4.0),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text("운동 추가",
-                                              textScaleFactor: 1.5,
-                                              style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .primaryColorLight,
-                                              )),
-                                        ],
-                                      ),
-                                    )
+                                    _isExListShow
+                                        ? Container()
+                                        : Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 16.0,
+                                                vertical: 4.0),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text("운동 추가",
+                                                    textScaleFactor: 1.5,
+                                                    style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .primaryColorLight,
+                                                    )),
+                                              ],
+                                            ),
+                                          )
                                   ]),
-                              Text("오른쪽을 눌러서 추가 할 수 있어요",
-                                  textScaleFactor: 1.0,
-                                  style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorLight)),
+                              SizedBox(height: 4),
+                              _isExListShow
+                                  ? Text("오른쪽 클릭",
+                                      textScaleFactor: 1.0,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight))
+                                  : Text("오른쪽을 눌러서 추가 할 수 있어요",
+                                      textScaleFactor: 1.0,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight)),
                             ],
                           ),
                         ),
