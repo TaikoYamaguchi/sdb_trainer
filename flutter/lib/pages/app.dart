@@ -524,8 +524,9 @@ class _AppState extends State<App> {
     _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
     _userProvider.getUsersFriendsAll();
 
-    return Consumer3<BodyStater, LoginPageProvider, UserdataProvider>(
-        builder: (builder, provider1, provider2, provider3, child) {
+    return Consumer4<BodyStater, LoginPageProvider, HistorydataProvider,
+            UserdataProvider>(
+        builder: (builder, provider1, provider2, provider3, provider4, child) {
       return WillPopScope(
         onWillPop: () async {
           final shouldPop;
