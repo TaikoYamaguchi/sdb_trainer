@@ -349,7 +349,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                           padding: EdgeInsets.symmetric(horizontal: 8),
                           decoration: BoxDecoration(
                               color: rtp.isstarted
-                                  ? index == rtp.nowoneindex
+                                  ? (index == rtp.nowoneindex &&
+                                          widget.rindex == rtp.nowonrindex)
                                       ? Color(0xffCEEC97)
                                       : Theme.of(context).cardColor
                                   : Theme.of(context).cardColor,
