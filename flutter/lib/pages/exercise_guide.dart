@@ -1409,7 +1409,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
             : CustomScrollView(slivers: [
                 SliverAppBar(
                   snap: false,
-                  floating: true,
+                  floating: false,
                   pinned: true,
                   backgroundColor:
                       Theme.of(context).canvasColor.withOpacity(0.9),
