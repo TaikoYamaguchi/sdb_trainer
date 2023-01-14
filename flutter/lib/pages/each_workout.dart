@@ -310,23 +310,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                   _exImage = "";
                 }
 
-                return GestureDetector(
+                return Container(
                   key: Key('$index'),
-                  onTap: () {
-                    [
-                      _PopProvider.exstackup(2),
-                      Navigator.push(
-                          context,
-                          Transition(
-                              child: EachExerciseDetails(
-                                ueindex: exunique.indexWhere((element) =>
-                                    element.name == exlist[index].name),
-                                eindex: index,
-                                rindex: widget.rindex,
-                              ),
-                              transitionEffect: TransitionEffect.RIGHT_TO_LEFT))
-                    ];
-                  },
                   child: Slidable(
                     endActionPane: ActionPane(
                         extentRatio: 0.2,
@@ -345,92 +330,131 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                         ]),
                     child: Column(
                       children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 8),
-                          decoration: BoxDecoration(
-                              color: rtp.isstarted
-                                  ? (index == rtp.nowoneindex &&
-                                          widget.rindex == rtp.nowonrindex)
-                                      ? Color(0xffCEEC97)
-                                      : Theme.of(context).cardColor
-                                  : Theme.of(context).cardColor,
+                        Material(
+                          borderRadius: BorderRadius.circular(15.0),
+                          child: Ink(
+                            decoration: BoxDecoration(
+                                color: rtp.isstarted
+                                    ? (index == rtp.nowoneindex &&
+                                            widget.rindex == rtp.nowonrindex)
+                                        ? Color(0xffCEEC97)
+                                        : Theme.of(context).cardColor
+                                    : Theme.of(context).cardColor,
+                                borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(top),
+                                    bottomRight: Radius.circular(bottom),
+                                    topLeft: Radius.circular(top),
+                                    bottomLeft: Radius.circular(bottom))),
+                            child: InkWell(
+                              onTap: () {
+                                [
+                                  _PopProvider.exstackup(2),
+                                  Navigator.push(
+                                      context,
+                                      Transition(
+                                          child: EachExerciseDetails(
+                                            ueindex: exunique.indexWhere(
+                                                (element) =>
+                                                    element.name ==
+                                                    exlist[index].name),
+                                            eindex: index,
+                                            rindex: widget.rindex,
+                                          ),
+                                          transitionEffect:
+                                              TransitionEffect.RIGHT_TO_LEFT))
+                                ];
+                              },
+                              highlightColor: Colors.grey,
                               borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(top),
                                   bottomRight: Radius.circular(bottom),
                                   topLeft: Radius.circular(top),
-                                  bottomLeft: Radius.circular(bottom))),
-                          height: 76,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
+                                  bottomLeft: Radius.circular(bottom)),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 8),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(top),
+                                        bottomRight: Radius.circular(bottom),
+                                        topLeft: Radius.circular(top),
+                                        bottomLeft: Radius.circular(bottom))),
+                                height: 76,
                                 child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    _exImage != ""
-                                        ? Image.asset(
-                                            _exImage,
-                                            height: 64,
-                                            width: 64,
-                                            fit: BoxFit.cover,
-                                          )
-                                        : Container(
-                                            height: 64,
-                                            width: 64,
-                                            child: Icon(
-                                                Icons.image_not_supported,
-                                                color: Theme.of(context)
-                                                    .primaryColorDark),
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle),
-                                          ),
-                                    SizedBox(width: 8),
                                     Expanded(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                      child: Row(
                                         children: [
-                                          Text(
-                                            exlist[index].name,
-                                            textScaleFactor: 1.7,
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .primaryColorLight),
-                                          ),
-                                          Container(
-                                            child: Row(
+                                          _exImage != ""
+                                              ? Image.asset(
+                                                  _exImage,
+                                                  height: 64,
+                                                  width: 64,
+                                                  fit: BoxFit.cover,
+                                                )
+                                              : Container(
+                                                  height: 64,
+                                                  width: 64,
+                                                  child: Icon(
+                                                      Icons.image_not_supported,
+                                                      color: Theme.of(context)
+                                                          .primaryColorDark),
+                                                  decoration: BoxDecoration(
+                                                      shape: BoxShape.circle),
+                                                ),
+                                          SizedBox(width: 8),
+                                          Expanded(
+                                            child: Column(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                    "Rest: ${exlist[index].rest}",
-                                                    textScaleFactor: 1.0,
-                                                    style: TextStyle(
-                                                        color:
-                                                            Color(0xFF717171))),
+                                                  exlist[index].name,
+                                                  textScaleFactor: 1.7,
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .primaryColorLight),
+                                                ),
+                                                Container(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                          "Rest: ${exlist[index].rest}",
+                                                          textScaleFactor: 1.0,
+                                                          style: TextStyle(
+                                                              color: Color(
+                                                                  0xFF717171))),
+                                                    ],
+                                                  ),
+                                                )
                                               ],
                                             ),
-                                          )
+                                          ),
                                         ],
                                       ),
                                     ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(4, 12, 4, 12),
+                                      child: Container(
+                                        height: 15.0,
+                                        width: 3.0,
+                                        decoration: BoxDecoration(
+                                            color: Theme.of(context)
+                                                .primaryColorDark,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(8.0))),
+                                      ),
+                                    )
                                   ],
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(4, 12, 4, 12),
-                                child: Container(
-                                  height: 15.0,
-                                  width: 3.0,
-                                  decoration: BoxDecoration(
-                                      color: Theme.of(context).primaryColorDark,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(8.0))),
-                                ),
-                              )
-                            ],
+                            ),
                           ),
                         ),
                         index == exlist.length - 1
