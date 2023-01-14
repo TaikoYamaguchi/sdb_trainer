@@ -158,230 +158,247 @@ class ExerciseState extends State<Exercise> {
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter);
 
-                  return GestureDetector(
+                  return Container(
                     key: Key('$index'),
-                    onTap: () {
-                      _PopProvider.exstackup(1);
-                      routinelist[index].mode == 0
-                          ? Navigator.push(
-                              context,
-                              Transition(
-                                  child: EachWorkoutDetails(
-                                    rindex: index,
-                                  ),
-                                  transitionEffect:
-                                      TransitionEffect.RIGHT_TO_LEFT))
-                          : Navigator.push(
-                              context,
-                              Transition(
-                                  child: EachPlanDetails(
-                                    rindex: index,
-                                  ),
-                                  transitionEffect:
-                                      TransitionEffect.RIGHT_TO_LEFT));
-                    },
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Card(
-                              color: Theme.of(context).cardColor,
-                              elevation: 0.5,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15.0)),
-                              margin: new EdgeInsets.symmetric(
-                                  horizontal: 0, vertical: 6.0),
-                              child: Slidable(
-                                endActionPane: ActionPane(
-                                    extentRatio: 0.4,
-                                    motion: const DrawerMotion(),
-                                    children: [
-                                      SlidableAction(
-                                        onPressed: (_) {
-                                          showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return NameInputDialog(
-                                                  rindex: index);
-                                            },
-                                          );
-                                        },
-                                        backgroundColor:
-                                            Theme.of(context).primaryColor,
-                                        foregroundColor:
-                                            Theme.of(context).buttonColor,
-                                        icon: Icons.edit,
-                                        label: '수정',
-                                      ),
-                                      SlidableAction(
-                                        onPressed: (_) {
-                                          _routinetimeProvider.isstarted
-                                              ? showToast("운동중엔 루틴제거는 불가능 해요")
-                                              : showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return showsimpleAlerts(
-                                                      layer: 1,
-                                                      rindex: index,
-                                                      eindex: -1,
-                                                    );
-                                                  });
-                                        },
-                                        backgroundColor: Color(0xFFFE4A49),
-                                        foregroundColor:
-                                            Theme.of(context).buttonColor,
-                                        icon: Icons.delete,
-                                        label: '삭제',
-                                      )
-                                    ]),
-                                child: Consumer<RoutineTimeProvider>(
-                                    builder: (builder, provider, child) {
-                                  return Material(
-                                    elevation: provider.isstarted
-                                        ? index == provider.nowonrindex
-                                            ? 5
-                                            : 0
-                                        : 0,
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          color: provider.isstarted
-                                              ? index == provider.nowonrindex
-                                                  ? Color(0xffCEEC97)
-                                                  : Theme.of(context).cardColor
-                                              : Theme.of(context).cardColor,
-                                          borderRadius:
-                                              BorderRadius.circular(15.0)),
-                                      child: ListTile(
-                                          contentPadding: EdgeInsets.symmetric(
-                                              horizontal: 15, vertical: 5.0),
-                                          leading: Container(
-                                            height: double.infinity,
-                                            padding:
-                                                EdgeInsets.only(right: 15.0),
-                                            decoration: new BoxDecoration(
-                                                border: new Border(
-                                                    right: new BorderSide(
-                                                        width: 1.0,
-                                                        color: Theme.of(context)
-                                                            .primaryColorDark))),
-                                            child: routinelist[index].mode == 0
-                                                ? Container(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 8),
-                                                    child: SizedBox(
-                                                      width: 25,
-                                                      child: SvgPicture.asset(
-                                                          "assets/svg/dumbel_on.svg",
-                                                          color: Theme.of(
-                                                                  context)
-                                                              .primaryColorDark),
-                                                    ),
-                                                  )
-                                                : CircularPercentIndicator(
-                                                    radius: 20,
-                                                    lineWidth: 5.0,
-                                                    animation: true,
-                                                    percent: (routinelist[index]
-                                                                .exercises[0]
-                                                                .progress +
-                                                            1) /
-                                                        routinelist[index]
-                                                            .exercises[0]
-                                                            .plans
-                                                            .length,
-                                                    center: new Text(
-                                                      "${routinelist[index].exercises[0].progress + 1}/${routinelist[index].exercises[0].plans.length}",
-                                                      textScaleFactor: 0.8,
-                                                      style: new TextStyle(
-                                                        color: Theme.of(context)
-                                                            .primaryColorLight,
-                                                      ),
-                                                    ),
-                                                    linearGradient:
-                                                        gradientColors,
-                                                    circularStrokeCap:
-                                                        CircularStrokeCap.round,
-                                                  ),
-                                          ),
-                                          title: Text(
-                                            routinelist[index].name,
-                                            textScaleFactor: 1.5,
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .primaryColorLight,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          subtitle: Row(
-                                            children: [
-                                              routinelist[index].mode == 0
-                                                  ? Text(
-                                                      "리스트 모드 - ${routinelist[index].exercises.length}개 운동",
-                                                      textScaleFactor: 1.0,
-                                                      style: TextStyle(
-                                                          color: Theme.of(
-                                                                  context)
-                                                              .primaryColorLight))
-                                                  : Text("플랜 모드",
-                                                      textScaleFactor: 1.0,
-                                                      style: TextStyle(
-                                                          color: Theme.of(
-                                                                  context)
-                                                              .primaryColorLight)),
-                                            ],
-                                          ),
-                                          trailing: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              provider.isstarted
-                                                  ? index ==
-                                                          provider.nowonrindex
-                                                      ? Text(
-                                                          provider.userest
-                                                              ? provider.timeron <
-                                                                      0
-                                                                  ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
-                                                                  : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
-                                                              : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
-                                                          textScaleFactor: 1.4,
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color: (provider
-                                                                          .userest &&
-                                                                      provider.timeron <
-                                                                          0)
-                                                                  ? Colors.red
-                                                                  : Theme.of(
-                                                                          context)
-                                                                      .primaryColorLight))
-                                                      : Container()
-                                                  : Container(),
-                                              Padding(
-                                                padding: EdgeInsets.fromLTRB(
-                                                    12, 4, 0, 4),
-                                                child: Container(
-                                                  height: 20.0,
-                                                  width: 3.0,
-                                                  decoration: BoxDecoration(
-                                                      color: Theme.of(context)
-                                                          .primaryColorDark,
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  8.0))),
-                                                ),
-                                              ),
-                                            ],
-                                          )),
+                    child: Column(
+                      children: [
+                        Card(
+                            color: Theme.of(context).cardColor,
+                            elevation: 0.5,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0)),
+                            margin: new EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 6.0),
+                            child: Slidable(
+                              endActionPane: ActionPane(
+                                  extentRatio: 0.4,
+                                  motion: const DrawerMotion(),
+                                  children: [
+                                    SlidableAction(
+                                      onPressed: (_) {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return NameInputDialog(
+                                                rindex: index);
+                                          },
+                                        );
+                                      },
+                                      backgroundColor:
+                                          Theme.of(context).primaryColor,
+                                      foregroundColor:
+                                          Theme.of(context).buttonColor,
+                                      icon: Icons.edit,
+                                      label: '수정',
                                     ),
-                                  );
-                                }),
-                              )),
-                        ],
-                      ),
+                                    SlidableAction(
+                                      onPressed: (_) {
+                                        _routinetimeProvider.isstarted
+                                            ? showToast("운동중엔 루틴제거는 불가능 해요")
+                                            : showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return showsimpleAlerts(
+                                                    layer: 1,
+                                                    rindex: index,
+                                                    eindex: -1,
+                                                  );
+                                                });
+                                      },
+                                      backgroundColor: Color(0xFFFE4A49),
+                                      foregroundColor:
+                                          Theme.of(context).buttonColor,
+                                      icon: Icons.delete,
+                                      label: '삭제',
+                                    )
+                                  ]),
+                              child: Consumer<RoutineTimeProvider>(
+                                  builder: (builder, provider, child) {
+                                return Material(
+                                  elevation: provider.isstarted
+                                      ? index == provider.nowonrindex
+                                          ? 5
+                                          : 0
+                                      : 0,
+                                  borderRadius: BorderRadius.circular(15.0),
+                                  child: Ink(
+                                    decoration: BoxDecoration(
+                                        color: provider.isstarted
+                                            ? index == provider.nowonrindex
+                                                ? Color(0xffCEEC97)
+                                                : Theme.of(context).cardColor
+                                            : Theme.of(context).cardColor,
+                                        borderRadius:
+                                            BorderRadius.circular(15.0)),
+                                    child: InkWell(
+                                      highlightColor: Colors.grey,
+                                      borderRadius: BorderRadius.circular(15.0),
+                                      onTap: () {
+                                        _PopProvider.exstackup(1);
+                                        routinelist[index].mode == 0
+                                            ? Navigator.push(
+                                                context,
+                                                Transition(
+                                                    child: EachWorkoutDetails(
+                                                      rindex: index,
+                                                    ),
+                                                    transitionEffect:
+                                                        TransitionEffect
+                                                            .RIGHT_TO_LEFT))
+                                            : Navigator.push(
+                                                context,
+                                                Transition(
+                                                    child: EachPlanDetails(
+                                                      rindex: index,
+                                                    ),
+                                                    transitionEffect:
+                                                        TransitionEffect
+                                                            .RIGHT_TO_LEFT));
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(15.0)),
+                                        child: ListTile(
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    horizontal: 15,
+                                                    vertical: 5.0),
+                                            leading: Container(
+                                              height: double.infinity,
+                                              padding:
+                                                  EdgeInsets.only(right: 15.0),
+                                              decoration: new BoxDecoration(
+                                                  border: new Border(
+                                                      right: new BorderSide(
+                                                          width: 1.0,
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .primaryColorDark))),
+                                              child: routinelist[index].mode ==
+                                                      0
+                                                  ? Container(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 8),
+                                                      child: SizedBox(
+                                                        width: 25,
+                                                        child: SvgPicture.asset(
+                                                            "assets/svg/dumbel_on.svg",
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColorDark),
+                                                      ),
+                                                    )
+                                                  : CircularPercentIndicator(
+                                                      radius: 20,
+                                                      lineWidth: 5.0,
+                                                      animation: true,
+                                                      percent: (routinelist[
+                                                                      index]
+                                                                  .exercises[0]
+                                                                  .progress +
+                                                              1) /
+                                                          routinelist[index]
+                                                              .exercises[0]
+                                                              .plans
+                                                              .length,
+                                                      center: new Text(
+                                                        "${routinelist[index].exercises[0].progress + 1}/${routinelist[index].exercises[0].plans.length}",
+                                                        textScaleFactor: 0.8,
+                                                        style: new TextStyle(
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .primaryColorLight,
+                                                        ),
+                                                      ),
+                                                      linearGradient:
+                                                          gradientColors,
+                                                      circularStrokeCap:
+                                                          CircularStrokeCap
+                                                              .round,
+                                                    ),
+                                            ),
+                                            title: Text(
+                                              routinelist[index].name,
+                                              textScaleFactor: 1.5,
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            subtitle: Row(
+                                              children: [
+                                                routinelist[index].mode == 0
+                                                    ? Text(
+                                                        "리스트 모드 - ${routinelist[index].exercises.length}개 운동",
+                                                        textScaleFactor: 1.0,
+                                                        style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColorLight))
+                                                    : Text("플랜 모드",
+                                                        textScaleFactor: 1.0,
+                                                        style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColorLight)),
+                                              ],
+                                            ),
+                                            trailing: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                provider.isstarted
+                                                    ? index ==
+                                                            provider.nowonrindex
+                                                        ? Text(
+                                                            provider.userest
+                                                                ? provider.timeron <
+                                                                        0
+                                                                    ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
+                                                                    : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
+                                                                : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                                                            textScaleFactor:
+                                                                1.4,
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: (provider
+                                                                            .userest &&
+                                                                        provider.timeron <
+                                                                            0)
+                                                                    ? Colors.red
+                                                                    : Theme.of(
+                                                                            context)
+                                                                        .primaryColorLight))
+                                                        : Container()
+                                                    : Container(),
+                                                Padding(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      12, 4, 0, 4),
+                                                  child: Container(
+                                                    height: 20.0,
+                                                    width: 3.0,
+                                                    decoration: BoxDecoration(
+                                                        color: Theme.of(context)
+                                                            .primaryColorDark,
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    8.0))),
+                                                  ),
+                                                ),
+                                              ],
+                                            )),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                            )),
+                      ],
                     ),
                   );
                 },
