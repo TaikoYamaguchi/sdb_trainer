@@ -239,39 +239,42 @@ class _ExerciseFilterState extends State<ExerciseFilter>
   }
 
   Widget targetchip(items2) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      color: Theme.of(context).cardColor,
-      child: Consumer<FamousdataProvider>(builder: (context, provider, child) {
-        return ChipsChoice<String>.multiple(
-          value: provider.tags,
-          onChanged: (val) {
-            val.indexOf('기타') == val.length - 1
-                ? {
-                    provider.settags(['기타']),
-                    _menucontroller.expanded = false
-                  }
-                : [
-                    val.remove('기타'),
-                    provider.settags(val),
-                  ];
-          },
-          choiceItems: C2Choice.listFrom<String, String>(
-            source: items2,
-            value: (i, v) => v,
-            label: (i, v) => v,
-            tooltip: (i, v) => v,
-          ),
-          wrapped: true,
-          choiceStyle: const C2ChoiceStyle(
-            appearance: C2ChipType.elevated,
-          ),
-          choiceActiveStyle: C2ChoiceStyle(
-            color: Theme.of(context).primaryColor,
-            appearance: C2ChipType.elevated,
-          ),
-        );
-      }),
+    return Center(
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        color: Theme.of(context).cardColor,
+        child:
+            Consumer<FamousdataProvider>(builder: (context, provider, child) {
+          return ChipsChoice<String>.multiple(
+            value: provider.tags,
+            onChanged: (val) {
+              val.indexOf('기타') == val.length - 1
+                  ? {
+                      provider.settags(['기타']),
+                      _menucontroller.expanded = false
+                    }
+                  : [
+                      val.remove('기타'),
+                      provider.settags(val),
+                    ];
+            },
+            choiceItems: C2Choice.listFrom<String, String>(
+              source: items2,
+              value: (i, v) => v,
+              label: (i, v) => v,
+              tooltip: (i, v) => v,
+            ),
+            wrapped: true,
+            choiceStyle: const C2ChoiceStyle(
+              appearance: C2ChipType.elevated,
+            ),
+            choiceActiveStyle: C2ChoiceStyle(
+              color: Theme.of(context).primaryColor,
+              appearance: C2ChipType.elevated,
+            ),
+          );
+        }),
+      ),
     );
   }
 
@@ -830,6 +833,7 @@ class _ExerciseFilterState extends State<ExerciseFilter>
                         } else if (notification.direction ==
                             ScrollDirection.reverse) {
                           _menucontroller.expanded = false;
+                          FocusScope.of(context).unfocus();
                         }
                       }
 

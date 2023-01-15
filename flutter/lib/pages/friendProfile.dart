@@ -196,7 +196,7 @@ class _FriendProfileState extends State<FriendProfile> {
                           ? "팔로잉 중 "
                           : "팔로우 하기 ",
                   textScaleFactor: 1.3,
-                  style: TextStyle(color: Theme.of(context).primaryColorLight)),
+                  style: TextStyle(color: Theme.of(context).buttonColor)),
             ],
           ),
         ),
