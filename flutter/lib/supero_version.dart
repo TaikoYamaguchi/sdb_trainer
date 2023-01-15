@@ -1,5 +1,5 @@
 class SuperoVersion {
   static String getSuperoVersion() {
-    return "0.7.2g";
+    return "0.7.3g";
   }
 }
