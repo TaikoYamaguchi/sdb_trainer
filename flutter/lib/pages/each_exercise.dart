@@ -1116,7 +1116,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
     });
   }
 
-  _showMyDialog(pindex, index, newvalue) async {
+  _showMyDialog(pindex, index, newvalue, [init_duration]) async {
     var _sets = _workoutProvider
         .workoutdata.routinedatas[widget.rindex].exercises[pindex].sets;
     int ueindex = _exProvider.exercisesdata.exercises.indexWhere((element) =>
@@ -1153,7 +1153,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                               .name)]
                   .category ==
               '유산소'
-          ? _countcontroller[index].start()
+          ? _countcontroller[index].restart(duration: init_duration)
           : null;
     }
   }
@@ -2417,6 +2417,22 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                 controller: _controller,
                                 itemBuilder:
                                     (BuildContext _context, int index) {
+                                  int _duration = (((_sets[index].reps / 10000)
+                                                  .floor() *
+                                              3600) +
+                                          ((_sets[index].reps -
+                                                          (_sets[index].reps /
+                                                                      10000)
+                                                                  .floor() *
+                                                              10000) /
+                                                      100)
+                                                  .floor() *
+                                              60 +
+                                          (_sets[index].reps -
+                                              (_sets[index].reps / 100)
+                                                      .floor() *
+                                                  100))
+                                      .toInt();
                                   exControllerlist.add(ExpandableController());
                                   _countcontroller.add(CountDownController());
                                   weightController[pindex]
@@ -2504,7 +2520,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                               : _showMyDialog(
                                                                   pindex,
                                                                   index,
-                                                                  newvalue);
+                                                                  newvalue,
+                                                                  _duration);
                                                         }),
                                                   )),
                                             ),
@@ -2560,7 +2577,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                             : _showMyDialog(
                                                                 pindex,
                                                                 index,
-                                                                true);
+                                                                true,
+                                                                _duration);
                                                       },
                                                       onClose: () {},
                                                       motionWidget:
@@ -2608,17 +2626,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                                     0, 0),
                                                             iconSize: 30,
                                                             onPressed: () {
-                                                              int _duration = (((_sets[index].reps / 10000)
-                                                                              .floor() *
-                                                                          3600) +
-                                                                      ((_sets[index].reps - (_sets[index].reps / 10000).floor() * 10000) / 100)
-                                                                              .floor() *
-                                                                          60 +
-                                                                      (_sets[index]
-                                                                              .reps -
-                                                                          (_sets[index].reps / 100).floor() *
-                                                                              100))
-                                                                  .toInt();
                                                               for (int s = 0;
                                                                   s <
                                                                       _sets
@@ -2672,7 +2679,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                                   : _showMyDialog(
                                                                       pindex,
                                                                       index,
-                                                                      true);
+                                                                      true,
+                                                                      _duration);
                                                             },
                                                             icon: Icon(
                                                                 Icons
