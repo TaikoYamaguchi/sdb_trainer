@@ -294,7 +294,9 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
             tooltip: (i, v) => v,
           ),
           wrapped: true,
+          runSpacing: 10,
           choiceStyle: const C2ChoiceStyle(
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             color: Color(0xff40434e),
             appearance: C2ChipType.elevated,
           ),
@@ -1241,7 +1243,9 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
             tooltip: (i, v) => v,
           ),
           wrapped: true,
+          runSpacing: 5,
           choiceStyle: C2ChoiceStyle(
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             appearance: C2ChipType.elevated,
             labelStyle: TextStyle(
               color: Theme.of(context).primaryColorLight,
@@ -1283,7 +1287,9 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
             tooltip: (i, v) => v,
           ),
           wrapped: true,
+          runSpacing: 5,
           choiceStyle: const C2ChoiceStyle(
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             appearance: C2ChipType.elevated,
           ),
           choiceActiveStyle: C2ChoiceStyle(

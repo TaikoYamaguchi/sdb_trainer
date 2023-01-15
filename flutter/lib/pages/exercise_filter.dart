@@ -265,7 +265,9 @@ class _ExerciseFilterState extends State<ExerciseFilter>
               tooltip: (i, v) => v,
             ),
             wrapped: true,
+            runSpacing: 10,
             choiceStyle: const C2ChoiceStyle(
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               appearance: C2ChipType.elevated,
             ),
             choiceActiveStyle: C2ChoiceStyle(
@@ -661,7 +663,9 @@ class _ExerciseFilterState extends State<ExerciseFilter>
             tooltip: (i, v) => v,
           ),
           wrapped: true,
+          runSpacing: 5,
           choiceStyle: const C2ChoiceStyle(
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             color: Color(0xff40434e),
             appearance: C2ChipType.elevated,
           ),
@@ -701,7 +705,9 @@ class _ExerciseFilterState extends State<ExerciseFilter>
             tooltip: (i, v) => v,
           ),
           wrapped: true,
+          runSpacing: 5,
           choiceStyle: const C2ChoiceStyle(
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             color: Color(0xff40434e),
             appearance: C2ChipType.elevated,
           ),
