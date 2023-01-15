@@ -65,24 +65,27 @@ class _FriendHistoryState extends State<FriendHistory>
           Navigator.of(context).pop();
         }
       },
-      child: SingleChildScrollView(
-          child: Container(
-              width: MediaQuery.of(context).size.width,
-              child: Consumer<HistorydataProvider>(
-                  builder: (builder, provider, child) {
-                var exercises = provider
-                    .historydataAll
-                    .sdbdatas[
-                        provider.historydataAll.sdbdatas.indexWhere((sdbdata) {
-                  if (sdbdata.id == widget.sdbdata.id) {
-                    return true;
-                  } else {
-                    return false;
-                  }
-                })]
-                    .exercises;
-                return _onechartExercisesWidget(exercises);
-              }))),
+      child: Container(
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
+            child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: Consumer<HistorydataProvider>(
+                    builder: (builder, provider, child) {
+                  var exercises = provider
+                      .historydataAll
+                      .sdbdatas[provider.historydataAll.sdbdatas
+                          .indexWhere((sdbdata) {
+                    if (sdbdata.id == widget.sdbdata.id) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  })]
+                      .exercises;
+                  return _onechartExercisesWidget(exercises);
+                }))),
+      ),
     );
   }
 

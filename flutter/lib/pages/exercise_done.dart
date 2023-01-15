@@ -237,6 +237,7 @@ class _ExerciseDoneState extends State<ExerciseDone> {
           ),
         ),
         _commentWidget(),
+        _visibleInformWidget(),
         _exercise_Done_Button()
       ]),
     ));
@@ -414,6 +415,16 @@ class _ExerciseDoneState extends State<ExerciseDone> {
               fillColor: Theme.of(context).primaryColorLight),
           style: TextStyle(color: Theme.of(context).primaryColorLight)),
     );
+  }
+
+  Widget _visibleInformWidget() {
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+        child: Text(
+          "피드가 공개돼요. 비공개는 피드에서 할 수 있어요! ",
+          textScaleFactor: 1.3,
+          style: TextStyle(color: Theme.of(context).primaryColorLight),
+        ));
   }
 
   @override

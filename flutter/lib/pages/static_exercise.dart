@@ -108,12 +108,21 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
       return Theme.of(context).primaryColorLight;
     }
 
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 5),
-      child: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
+    bool btnDisabled = false;
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      onPanUpdate: (details) {
+        if (details.delta.dx > 0 && btnDisabled == false) {
+          btnDisabled = true;
+          Navigator.of(context).pop();
+          print("Dragging in +X direction");
+        }
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 5),
+        height: MediaQuery.of(context).size.height,
         child:
             Consumer<HistorydataProvider>(builder: (builder, provider, child) {
           _exampleex = provider
@@ -128,6 +137,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
               .exercises[widget.index];
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.max,
             children: [
               Container(
                   height: 130,
