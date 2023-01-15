@@ -43,12 +43,12 @@ class ThemeProvider extends ChangeNotifier {
 
   Future<String> getUserTheme() async {
     final storage = new FlutterSecureStorage();
-    _userThemeDark = "dark";
+    _userThemeDark = "white";
     try {
       var _userThemeStorage = await storage.read(key: "sdb_theme");
       if (_userThemeStorage != null && _userThemeStorage != "") {
         if (_userThemeStorage != "dark" && _userThemeStorage != "white") {
-          _userThemeDark = "dark";
+          _userThemeDark = "white";
         } else {
           _userThemeDark = _userThemeStorage;
         }
@@ -56,14 +56,14 @@ class ThemeProvider extends ChangeNotifier {
 
         return _userThemeStorage;
       } else {
-        _userThemeDark = "dark";
+        _userThemeDark = "white";
         notifyListeners();
-        return "dark";
+        return "white";
       }
     } catch (e) {
-      _userThemeDark = "dark";
+      _userThemeDark = "white";
       notifyListeners();
-      return "dark";
+      return "white";
     }
   }
 

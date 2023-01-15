@@ -292,12 +292,11 @@ class _FeedCardState extends State<FeedCard> {
                                 children: [
                                   Container(
                                     alignment: Alignment.center,
-                                    height: 0.5,
-                                    color: Colors.black,
+                                    height: 0.3,
                                     child: Container(
                                       alignment: Alignment.center,
-                                      height: 0.5,
-                                      color: Color(0xFF717171),
+                                      height: 0.3,
+                                      color: Theme.of(context).primaryColorDark,
                                     ),
                                   ),
                                   _commentContent(),
@@ -544,12 +543,11 @@ class _FeedCardState extends State<FeedCard> {
         separatorBuilder: (BuildContext _context, int index) {
           return Container(
             alignment: Alignment.center,
-            height: 0.5,
-            color: Colors.black,
+            height: 0.3,
             child: Container(
               alignment: Alignment.center,
-              height: 0.5,
-              color: Color(0xFF717171),
+              height: 0.3,
+              color: Theme.of(context).primaryColorDark,
             ),
           );
         },
@@ -801,9 +799,9 @@ class _FeedCardState extends State<FeedCard> {
           flex: 10,
           child: Padding(
             padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
             child: Text(text,
-                textScaleFactor: 1.1,
+                textScaleFactor: 1.3,
                 style: TextStyle(color: Theme.of(context).primaryColorLight)),
           ),
         )
@@ -1066,12 +1064,12 @@ class _FeedCardState extends State<FeedCard> {
                     const EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
                 border: OutlineInputBorder(
                   borderSide: BorderSide(
-                      color: Theme.of(context).primaryColorLight, width: 1.0),
+                      color: Theme.of(context).primaryColorLight, width: 0.3),
                   borderRadius: BorderRadius.circular(5.0),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                      color: Theme.of(context).primaryColorLight, width: 1.0),
+                      color: Theme.of(context).primaryColorLight, width: 0.3),
                   borderRadius: BorderRadius.circular(5.0),
                 ),
               ),

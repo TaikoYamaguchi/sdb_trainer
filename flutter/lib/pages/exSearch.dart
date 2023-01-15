@@ -219,7 +219,8 @@ class ExSearchState extends State<ExSearch> {
                       transitionEffect: TransitionEffect.BOTTOM_TO_TOP));
             },
             child: Card(
-              elevation: 0.3,
+              elevation: 0,
+              color: Theme.of(context).canvasColor,
               child: Container(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
