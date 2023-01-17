@@ -686,7 +686,12 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                               name: _exProvider
                                   .exercisesdata.exercises[widget.eindex].name,
                               sets: wod.Setslist().setslist,
-                              rest: 90));
+                              rest: 90,
+                              isCardio: _exProvider.exercisesdata
+                                          .exercises[widget.eindex].category ==
+                                      "유산소"
+                                  ? true
+                                  : false));
                       _editWorkoutCheck();
                       Navigator.of(context).pop();
 

@@ -1132,7 +1132,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       reps: 10,
                       ischecked: false)
                 ],
-                rest: 90),
+                rest: 90,
+                isCardio: false),
             routine.Exercises(
                 name: "바벨 데드리프트",
                 sets: [
@@ -1152,6 +1153,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       reps: 10,
                       ischecked: false)
                 ],
+                isCardio: false,
                 rest: 90),
             routine.Exercises(
                 name: "바벨 벤치 프레스",
@@ -1172,6 +1174,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       reps: 10,
                       ischecked: false)
                 ],
+                isCardio: false,
                 rest: 90),
             routine.Exercises(
                 name: "풀업",
@@ -1192,6 +1195,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       reps: 5,
                       ischecked: false),
                 ],
+                isCardio: false,
                 rest: 90),
             routine.Exercises(
                 name: "러닝",
@@ -1202,6 +1206,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       reps: 1000,
                       ischecked: false),
                 ],
+                isCardio: true,
                 rest: 90),
           ],
           routine_time: 0.0)
