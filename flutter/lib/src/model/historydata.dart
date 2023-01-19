@@ -111,14 +111,22 @@ class Exercises {
   final double? onerm;
   final double? goal;
   final String? date;
+  final bool? isCardio;
   Exercises(
       {required this.name,
       required this.sets,
       required this.onerm,
       required this.goal,
-      required this.date});
-  Map toJson() =>
-      {"name": name, "sets": sets, "onerm": onerm, "goal": goal, "date": date};
+      required this.date,
+      required this.isCardio});
+  Map toJson() => {
+        "name": name,
+        "sets": sets,
+        "onerm": onerm,
+        "goal": goal,
+        "date": date,
+        "isCardio": isCardio
+      };
   factory Exercises.fromJson(Map<String, dynamic> parsedJson) {
     var list = parsedJson["sets"] as List;
     List<Sets> setList = list.map((i) => Sets.fromJson(i)).toList();
@@ -129,7 +137,9 @@ class Exercises {
         sets: setList,
         onerm: parsedJson["onerm"],
         goal: parsedJson["goal"],
-        date: parsedJson["date"]);
+        date: parsedJson["date"],
+        isCardio:
+            parsedJson["isCardio"] == null ? false : parsedJson["isCardio"]);
   }
 }
 

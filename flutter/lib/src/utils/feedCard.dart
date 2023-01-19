@@ -1104,6 +1104,12 @@ class _FeedCardState extends State<FeedCard> {
   }
 
   Widget _exerciseWidget(Exercises, index) {
+    var cardioValueSec = 0;
+    if (Exercises.isCardio) {
+      Exercises.sets.forEach((set) {
+        cardioValueSec = cardioValueSec + set.reps as int;
+      });
+    }
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 1),
@@ -1131,7 +1137,9 @@ class _FeedCardState extends State<FeedCard> {
             Container(
               width: 70,
               child: Text(
-                Exercises.onerm.toStringAsFixed(1),
+                Exercises.isCardio
+                    ? cardioValueSec.toString() + "초"
+                    : Exercises.onerm.toStringAsFixed(1),
                 textScaleFactor: 1.3,
                 style: TextStyle(color: Theme.of(context).primaryColorLight),
                 textAlign: TextAlign.center,

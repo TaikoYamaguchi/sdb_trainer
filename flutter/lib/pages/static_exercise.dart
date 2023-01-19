@@ -505,7 +505,8 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
           sets: recordedsets,
           onerm: monerm,
           goal: widget.exercise.goal,
-          date: widget.exercise.date));
+          date: widget.exercise.date,
+          isCardio: widget.exercise.isCardio == null ? false : true));
     }
   }
 

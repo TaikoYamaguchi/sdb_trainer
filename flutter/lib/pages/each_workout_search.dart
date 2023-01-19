@@ -1130,7 +1130,10 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                           new wod.Exercises(
                               name: exuniq[index].name,
                               sets: wod.Setslist().setslist,
-                              rest: 90));
+                              rest: 90,
+                              isCardio: exuniq[index].category == "유산소"
+                                  ? true
+                                  : false));
                     });
                   },
                   child: Container(

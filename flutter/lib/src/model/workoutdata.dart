@@ -188,14 +188,24 @@ class Exercises {
   final String name;
   final List<Sets> sets;
   int rest;
-  Exercises({required this.name, required this.sets, required this.rest});
+  final bool? isCardio;
+  Exercises(
+      {required this.name,
+      required this.sets,
+      required this.rest,
+      required this.isCardio});
 
-  Map toJson() => {"name": name, "sets": sets, "rest": rest};
+  Map toJson() =>
+      {"name": name, "sets": sets, "rest": rest, "isCardio": isCardio};
   factory Exercises.fromJson(Map<String, dynamic> parsedJson) {
     var list = parsedJson["sets"] as List;
     List<Sets> setList = list.map((i) => Sets.fromJson(i)).toList();
     return Exercises(
-        name: parsedJson["name"], sets: setList, rest: parsedJson["rest"]);
+        name: parsedJson["name"],
+        sets: setList,
+        rest: parsedJson["rest"],
+        isCardio:
+            parsedJson["isCardio"] == null ? false : parsedJson["isCardio"]);
   }
 }
 

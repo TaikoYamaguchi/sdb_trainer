@@ -2923,7 +2923,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
             sets: recordedsets,
             onerm: monerm,
             goal: _eachex.goal,
-            date: DateTime.now().toString().substring(0, 10)));
+            date: DateTime.now().toString().substring(0, 10),
+            isCardio: exercise_all[n].isCardio));
       }
 
       if (monerm > _eachex.onerm) {

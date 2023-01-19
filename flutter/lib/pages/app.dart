@@ -329,7 +329,8 @@ class _AppState extends State<App> {
             sets: recordedsets,
             onerm: monerm,
             goal: _eachex.goal,
-            date: DateTime.now().toString().substring(0, 10)));
+            date: DateTime.now().toString().substring(0, 10),
+            isCardio: exercise_all[n].category == "유산소" ? true : false));
       }
       if (monerm > _eachex.onerm) {
         modifyExercise(monerm, exercise_all[n].name);
@@ -365,7 +366,8 @@ class _AppState extends State<App> {
             sets: recordedsets,
             onerm: monerm,
             goal: _eachex.goal,
-            date: DateTime.now().toString().substring(0, 10)));
+            date: DateTime.now().toString().substring(0, 10),
+            isCardio: exercise_all[n].category == "유산소" ? true : false));
       }
 
       if (monerm > _eachex.onerm) {
