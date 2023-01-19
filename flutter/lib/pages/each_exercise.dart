@@ -2363,7 +2363,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                               Container(
                                   width: 80,
                                   child: Text(
-                                    "거리",
+                                    "거리(Km)",
                                     textScaleFactor: 1.1,
                                     style: TextStyle(
                                       color:
@@ -2413,11 +2413,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                 controller: _controller,
                                 itemBuilder:
                                     (BuildContext _context, int index) {
-                                  weightController[pindex]
-                                          .controllerlist[index]
-                                          .text =
-                                      provider2.userdata.bodyStats.last.weight
-                                          .toString();
                                   provider
                                           .workoutdata
                                           .routinedatas[widget.rindex]
@@ -2594,34 +2589,55 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                   ),
                                                 ),
                                                 Container(
-                                                    width: 80,
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return setWeightAlert(
-                                                                eindex: index,
-                                                                pindex: pindex,
-                                                                rindex: widget
-                                                                    .rindex,
-                                                              );
-                                                            });
-                                                      },
-                                                      child: Center(
-                                                        child: Text(
-                                                            "${_sets[index].weight}",
-                                                            textScaleFactor:
-                                                                1.7,
-                                                            style: TextStyle(
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColorLight,
-                                                            )),
+                                                  width: 80,
+                                                  child: TextField(
+                                                    controller:
+                                                        weightController[pindex]
+                                                                .controllerlist[
+                                                            index],
+                                                    keyboardType: TextInputType
+                                                        .numberWithOptions(
+                                                            signed: false,
+                                                            decimal: true),
+                                                    style: TextStyle(
+                                                      fontSize: _themeProvider
+                                                              .userFontSize *
+                                                          21 /
+                                                          0.8,
+                                                      color: Theme.of(context)
+                                                          .primaryColorLight,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                    decoration: InputDecoration(
+                                                      border: InputBorder.none,
+                                                      hintText:
+                                                          "${_sets[index].weight}",
+                                                      hintStyle: TextStyle(
+                                                        fontSize: _themeProvider
+                                                                .userFontSize *
+                                                            21 /
+                                                            0.8,
+                                                        color: Theme.of(context)
+                                                            .primaryColorLight,
                                                       ),
-                                                    )),
+                                                    ),
+                                                    onChanged: (text) {
+                                                      double changeweight;
+                                                      if (text == "") {
+                                                        changeweight = 0.0;
+                                                      } else {
+                                                        changeweight =
+                                                            double.parse(text);
+                                                      }
+                                                      _workoutProvider
+                                                          .weightcheck(
+                                                              widget.rindex,
+                                                              pindex,
+                                                              index,
+                                                              changeweight);
+                                                    },
+                                                  ),
+                                                ),
                                                 Container(
                                                     width: 140,
                                                     child: Center(
