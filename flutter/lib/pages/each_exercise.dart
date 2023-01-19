@@ -2361,10 +2361,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                     textAlign: TextAlign.right,
                                   )),
                               Container(
-                                width: 40,
-                                padding: EdgeInsets.only(right: 4),
-                              ),
-                              Container(
                                   width: 80,
                                   child: Text(
                                     "거리",
@@ -2597,82 +2593,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                     textAlign: TextAlign.center,
                                                   ),
                                                 ),
-                                                Container(
-                                                    width: 40,
-                                                    child: Center(
-                                                      child: IconButton(
-                                                        padding:
-                                                            EdgeInsets.fromLTRB(
-                                                                10, 2, 0, 0),
-                                                        iconSize: 30,
-                                                        onPressed: () {
-                                                          for (int s = 0;
-                                                              s < _sets.length;
-                                                              s++) {
-                                                            exControllerlist[s]
-                                                                .value = false;
-                                                          }
-                                                          ;
-                                                          exControllerlist[
-                                                                  index]
-                                                              .value = true;
-                                                          _routinetimeProvider
-                                                                  .isstarted
-                                                              ? [
-                                                                  _workoutProvider
-                                                                      .boolcheck(
-                                                                          widget
-                                                                              .rindex,
-                                                                          pindex,
-                                                                          index,
-                                                                          true),
-                                                                  _routinetimeProvider.resettimer(provider
-                                                                      .workoutdata
-                                                                      .routinedatas[
-                                                                          widget
-                                                                              .rindex]
-                                                                      .exercises[
-                                                                          pindex]
-                                                                      .rest),
-                                                                  _workoutOnermCheck(
-                                                                      _sets[
-                                                                          index],
-                                                                      ueindex),
-                                                                  index ==
-                                                                          _sets.length -
-                                                                              1
-                                                                      ? [
-                                                                          _workoutProvider.setsplus(
-                                                                              widget.rindex,
-                                                                              pindex),
-                                                                          _isSetChanged =
-                                                                              true,
-                                                                          weightController[pindex]
-                                                                              .controllerlist
-                                                                              .add(new TextEditingController(text: provider2.userdata.bodyStats.last.weight.toString())),
-                                                                          repsController[pindex]
-                                                                              .controllerlist
-                                                                              .add(new TextEditingController(text: null)),
-                                                                          showToast(
-                                                                              "세트를 추가했어요! 다음으로 넘어갈 수도 있어요")
-                                                                        ]
-                                                                      : null,
-                                                                  _editWorkoutwCheck()
-                                                                ]
-                                                              : _showMyDialog(
-                                                                  pindex,
-                                                                  index,
-                                                                  true,
-                                                                );
-                                                        },
-                                                        icon: Icon(
-                                                            Icons
-                                                                .play_arrow_rounded,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .primaryColorLight),
-                                                      ),
-                                                    )),
                                                 Container(
                                                     width: 80,
                                                     child: GestureDetector(
