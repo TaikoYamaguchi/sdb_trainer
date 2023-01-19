@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
-import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gif/flutter_gif.dart';
@@ -10,7 +8,6 @@ import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:sdb_trainer/pages/exercise_done.dart';
 import 'package:sdb_trainer/pages/exercise_guide.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
-import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/routinemenu.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
@@ -111,9 +108,26 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
     );
   }
 
+  Widget timerPicker2(time, pindex) {
+    return CupertinoTimerPicker(
+      mode: CupertinoTimerPickerMode.ms,
+      minuteInterval: 1,
+      secondInterval: 10,
+      initialTimerDuration: time,
+      onTimerDurationChanged: (Duration changeTimer) {
+        initialTimer = changeTimer;
+        _routinetimeProvider.resttimecheck(changeTimer.inSeconds);
+
+        _workoutProvider.resttimecheck(
+            widget.rindex, pindex, _routinetimeProvider.changetime);
+        _editWorkoutwCheck();
+      },
+    );
+  }
+
   Widget _buildContainer(Widget picker) {
     return Container(
-      height: 300,
+      height: 280,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         color: CupertinoColors.white,
@@ -430,24 +444,32 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                       : Theme.of(context).primaryColorLight))
                         ]);
                       })),
-                      GestureDetector(
-                        onTap: () {
-                          _showMyDialog_Set_Resttime(pindex);
-                        },
-                        child: Consumer<WorkoutdataProvider>(
-                            builder: (builder, provider, child) {
-                          _exercise = provider.workoutdata
-                              .routinedatas[widget.rindex].exercises[pindex];
-                          return Text(
+                      Consumer<WorkoutdataProvider>(
+                          builder: (builder, provider, child) {
+                        _exercise = provider.workoutdata
+                            .routinedatas[widget.rindex].exercises[pindex];
+                        Duration _time = Duration(seconds: _exercise.rest);
+                        return GestureDetector(
+                          onTap: () {
+                            showCupertinoModalPopup<void>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return _buildContainer(timerPicker2(
+                                    _time,
+                                    pindex,
+                                  ));
+                                });
+                          },
+                          child: Text(
                             "Rest: ${_exercise.rest}",
                             textScaleFactor: 1.4,
                             style: TextStyle(
                               color: Color(0xFF717171),
                               fontWeight: FontWeight.bold,
                             ),
-                          );
-                        }),
-                      ),
+                          ),
+                        );
+                      }),
                     ],
                   )),
             Expanded(
@@ -1226,21 +1248,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
     }
   }
 
-  _showMyDialog_Set_Resttime(pindex) async {
-    var result = await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return setResttimeAlert(
-            rindex: widget.rindex,
-          );
-        });
-    if (result == true) {
-      _workoutProvider.resttimecheck(
-          widget.rindex, pindex, _routinetimeProvider.changetime);
-      _editWorkoutwCheck();
-    }
-  }
-
   void _workoutOnermCheck(Sets _sets, ueindex) {
     var _onerm;
     var _exercise = _exProvider.exercisesdata.exercises[ueindex];
@@ -1374,26 +1381,35 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                 .primaryColorLight))
                               ]);
                             })),
-                            GestureDetector(
-                              onTap: () {
-                                _showMyDialog_Set_Resttime(pindex);
-                              },
-                              child: Consumer<WorkoutdataProvider>(
-                                  builder: (builder, provider, child) {
-                                _exercise = provider
-                                    .workoutdata
-                                    .routinedatas[widget.rindex]
-                                    .exercises[pindex];
-                                return Text(
+                            Consumer<WorkoutdataProvider>(
+                                builder: (builder, provider, child) {
+                              _exercise = provider
+                                  .workoutdata
+                                  .routinedatas[widget.rindex]
+                                  .exercises[pindex];
+                              Duration _time =
+                                  Duration(seconds: _exercise.rest);
+                              return GestureDetector(
+                                onTap: () {
+                                  showCupertinoModalPopup<void>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return _buildContainer(timerPicker2(
+                                          _time,
+                                          pindex,
+                                        ));
+                                      });
+                                },
+                                child: Text(
                                   "Rest: ${_exercise.rest}",
                                   textScaleFactor: 1.4,
                                   style: TextStyle(
                                     color: Color(0xFF717171),
                                     fontWeight: FontWeight.bold,
                                   ),
-                                );
-                              }),
-                            )
+                                ),
+                              );
+                            }),
                           ],
                         ),
                       ],
@@ -2261,24 +2277,32 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                             })),
                           ],
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            _showMyDialog_Set_Resttime(pindex);
-                          },
-                          child: Consumer<WorkoutdataProvider>(
-                              builder: (builder, provider, child) {
-                            _exercise = provider.workoutdata
-                                .routinedatas[widget.rindex].exercises[pindex];
-                            return Text(
+                        Consumer<WorkoutdataProvider>(
+                            builder: (builder, provider, child) {
+                          _exercise = provider.workoutdata
+                              .routinedatas[widget.rindex].exercises[pindex];
+                          Duration _time = Duration(seconds: _exercise.rest);
+                          return GestureDetector(
+                            onTap: () {
+                              showCupertinoModalPopup<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return _buildContainer(timerPicker2(
+                                      _time,
+                                      pindex,
+                                    ));
+                                  });
+                            },
+                            child: Text(
                               "Rest: ${_exercise.rest}",
                               textScaleFactor: 1.4,
                               style: TextStyle(
                                 color: Color(0xFF717171),
                                 fontWeight: FontWeight.bold,
                               ),
-                            );
-                          }),
-                        )
+                            ),
+                          );
+                        }),
                       ],
                     )),
               Expanded(
