@@ -461,10 +461,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                 });
                           },
                           child: Text(
-                            "Rest: ${_exercise.rest}",
+                            "Rest: ${_exercise.rest}초",
                             textScaleFactor: 1.4,
                             style: TextStyle(
-                              color: Color(0xFF717171),
+                              color: Theme.of(context).primaryColorDark,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -1401,10 +1401,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                       });
                                 },
                                 child: Text(
-                                  "Rest: ${_exercise.rest}",
+                                  "Rest: ${_exercise.rest}초",
                                   textScaleFactor: 1.4,
                                   style: TextStyle(
-                                    color: Color(0xFF717171),
+                                    color: Theme.of(context).primaryColorDark,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -2294,10 +2294,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                   });
                             },
                             child: Text(
-                              "Rest: ${_exercise.rest}",
+                              "Rest: ${_exercise.rest}초",
                               textScaleFactor: 1.4,
                               style: TextStyle(
-                                color: Color(0xFF717171),
+                                color: Theme.of(context).primaryColorDark,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

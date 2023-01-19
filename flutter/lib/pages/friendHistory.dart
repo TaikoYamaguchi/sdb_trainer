@@ -380,6 +380,7 @@ class _FriendHistoryState extends State<FriendHistory>
                 shrinkWrap: true,
                 itemCount: sets.length),
           ),
+          SizedBox(height: 4),
           Container(
             child: Row(
               //mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -397,6 +398,7 @@ class _FriendHistoryState extends State<FriendHistory>
               ],
             ),
           ),
+          SizedBox(height: 4),
         ],
       ),
     );
@@ -404,10 +406,10 @@ class _FriendHistoryState extends State<FriendHistory>
 
   Widget _cardioExerciseSetsWidget(sets) {
     double totalDistance = 0;
-    int totalTime = 0;
+    num totalTime = 0;
     sets.forEach((value) {
-      totalDistance = value.weight;
-      totalTime = value.reps;
+      totalDistance += value.weight;
+      totalTime += value.reps;
     });
     return Container(
       child: Column(
@@ -456,7 +458,7 @@ class _FriendHistoryState extends State<FriendHistory>
                         Container(
                             width: MediaQuery.of(context).size.width / 4,
                             child: Text(
-                              "운동 시간",
+                              "운동 시간(시:분:초)",
                               textScaleFactor: 1.0,
                               style: TextStyle(
                                 color: Colors.grey,
@@ -516,7 +518,9 @@ class _FriendHistoryState extends State<FriendHistory>
                               Container(
                                 width: MediaQuery.of(context).size.width / 4,
                                 child: Text(
-                                  sets[index].reps.toString() + "초",
+                                  Duration(seconds: sets[index].reps.toInt())
+                                      .toString()
+                                      .split('.')[0],
                                   textScaleFactor: 1.7,
                                   style: TextStyle(
                                     color: Theme.of(context).primaryColorLight,
@@ -546,20 +550,20 @@ class _FriendHistoryState extends State<FriendHistory>
                 shrinkWrap: true,
                 itemCount: sets.length),
           ),
+          SizedBox(height: 4),
           Container(
             child: Row(
               //mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text("${totalDistance}/%${totalTime}",
+                Expanded(child: SizedBox()),
+                Text(
+                    "Total: ${totalDistance}km/${Duration(seconds: totalTime.toInt()).toString().split('.')[0]}",
                     textScaleFactor: 1.0,
                     style: TextStyle(color: Color(0xFF717171))),
-                Expanded(child: SizedBox()),
-                Text("",
-                    textScaleFactor: 1.0,
-                    style: TextStyle(color: Color(0xFF717171)))
               ],
             ),
           ),
+          SizedBox(height: 4),
         ],
       ),
     );
