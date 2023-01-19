@@ -2940,7 +2940,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
             onerm: monerm,
             goal: _eachex.goal,
             date: DateTime.now().toString().substring(0, 10),
-            isCardio: exercise_all[n].isCardio));
+            isCardio: _eachex.category == "유산소" ? true : false));
       }
 
       if (monerm > _eachex.onerm) {
