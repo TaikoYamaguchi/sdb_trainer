@@ -19,7 +19,6 @@ import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:sdb_trainer/src/utils/alerts.dart';
-import 'package:sdb_trainer/src/utils/hhmmss.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
@@ -67,6 +66,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
   var _chartIndex;
   var _staticPageState;
   var _currentExindex;
+  Duration initialTimer = const Duration();
   List exControllerlist = [];
   List<CountDownController> _countcontroller = [];
   var _menuList;
@@ -95,6 +95,58 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
   void initState() {
     controller1 = FlutterGifController(vsync: this);
     super.initState();
+  }
+
+  Widget timerPicker(time, pindex, index) {
+    return CupertinoTimerPicker(
+      mode: CupertinoTimerPickerMode.hms,
+      minuteInterval: 1,
+      secondInterval: 1,
+      initialTimerDuration: time,
+      onTimerDurationChanged: (Duration changeTimer) {
+        initialTimer = changeTimer;
+        _workoutProvider.repscheck(
+            widget.rindex, pindex, index, changeTimer.inSeconds);
+      },
+    );
+  }
+
+  Widget _buildContainer(Widget picker) {
+    return Container(
+      height: 300,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        color: CupertinoColors.white,
+      ),
+      padding: const EdgeInsets.only(top: 6.0),
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(12, 4, 12, 12),
+            child: Container(
+              height: 6.0,
+              width: 80.0,
+              decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColorDark,
+                  borderRadius: BorderRadius.all(Radius.circular(8.0))),
+            ),
+          ),
+          DefaultTextStyle(
+            style: const TextStyle(
+              color: CupertinoColors.black,
+              fontSize: 22.0,
+            ),
+            child: GestureDetector(
+              onTap: () {},
+              child: SafeArea(
+                top: false,
+                child: picker,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   PreferredSizeWidget _appbarWidget() {
@@ -2413,6 +2465,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                 controller: _controller,
                                 itemBuilder:
                                     (BuildContext _context, int index) {
+                                  Duration _time =
+                                      Duration(seconds: _sets[index].reps);
                                   provider
                                           .workoutdata
                                           .routinedatas[widget.rindex]
@@ -2641,14 +2695,49 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                 Container(
                                                     width: 140,
                                                     child: Center(
-                                                        child: TimeInputField(
-                                                            duration:
-                                                                _sets[index]
-                                                                    .reps,
-                                                            rindex:
-                                                                widget.rindex,
-                                                            pindex: pindex,
-                                                            index: index))),
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          showCupertinoModalPopup<
+                                                                  void>(
+                                                              context: context,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return _buildContainer(
+                                                                    timerPicker(
+                                                                        _time,
+                                                                        pindex,
+                                                                        index));
+                                                              });
+                                                        },
+                                                        child: Column(
+                                                          children: [
+                                                            Container(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      top: 8,
+                                                                      bottom:
+                                                                          8),
+                                                              child: Text(
+                                                                "${_time.inHours.toString().length == 1 ? "0" + _time.inHours.toString() : _time.inHours}:${_time.inMinutes.remainder(60).toString().length == 1 ? "0" + _time.inMinutes.remainder(60).toString() : _time.inMinutes.remainder(60)}:${_time.inSeconds.remainder(60).toString().length == 1 ? "0" + _time.inSeconds.remainder(60).toString() : _time.inSeconds.remainder(60)}",
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize:
+                                                                      _themeProvider
+                                                                              .userFontSize *
+                                                                          21 /
+                                                                          0.8,
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .primaryColorLight,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    )),
                                               ],
                                             ),
                                           ),
