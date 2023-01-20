@@ -1,5 +1,5 @@
 {
- "project_info": {
+  "project_info": {
     "project_number": "508959158364",
     "project_id": "peak-academy-350108",
     "storage_bucket": "peak-academy-350108.appspot.com"
@@ -45,10 +45,18 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "508959158364-a98jdhmhtp38qqvvisf20hn773cr9gsd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tklck.sdbTrainer"
+              }
+            }
+          ]
         }
       }
     }
   ],
   "configuration_version": "1"
-} 
+}

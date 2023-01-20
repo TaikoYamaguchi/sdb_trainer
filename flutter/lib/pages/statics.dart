@@ -897,6 +897,8 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(5.0),
                 ),
+                todayTextStyle:
+                    TextStyle(color: Theme.of(context).primaryColorLight),
                 defaultDecoration: BoxDecoration(
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(5.0),

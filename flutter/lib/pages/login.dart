@@ -24,6 +24,7 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:firebase_auth/firebase_auth.dart' as firebase;
 import 'package:sdb_trainer/src/model/exerciseList.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -41,6 +42,10 @@ class LoginPageState extends State<LoginPage> {
   TextEditingController _userPasswordCtrl = TextEditingController(text: "");
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
+  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
+
   @override
   void initState() {
     super.initState();
@@ -49,6 +54,10 @@ class LoginPageState extends State<LoginPage> {
     Future.delayed(Duration.zero, () {
       _storageLoginCheck(context);
     });
+  }
+
+  Future<void> _testSetUserId(email) async {
+    await analytics.setUserId(id: email);
   }
 
   @override
@@ -432,6 +441,7 @@ class LoginPageState extends State<LoginPage> {
         initialProviderGet(context);
         _bodyStater.change(1);
         _loginState.change(true);
+        _testSetUserId(storageEmail);
         fcmSetting();
       } else {
         UserLogin(
@@ -443,6 +453,7 @@ class LoginPageState extends State<LoginPage> {
                     initialProviderGet(context),
                     _bodyStater.change(1),
                     _loginState.change(true),
+                    _testSetUserId(_userEmailCtrl.text),
                     fcmSetting(),
                   }
                 : showToast("아이디와 비밀번호를 확인해주세요"));
@@ -456,6 +467,7 @@ class LoginPageState extends State<LoginPage> {
                   initialProviderGet(context),
                   _bodyStater.change(1),
                   _loginState.change(true),
+                  _testSetUserId(_userEmailCtrl.text),
                   fcmSetting(),
                 }
               : showToast("아이디와 비밀번호를 확인해주세요"));
@@ -472,6 +484,7 @@ class LoginPageState extends State<LoginPage> {
         initialProviderGet(context);
         _bodyStater.change(1);
         _loginState.change(true);
+        _testSetUserId(_userEmailCtrl.text);
 
         fcmSetting();
       } else {
@@ -483,6 +496,7 @@ class LoginPageState extends State<LoginPage> {
                   initialProviderGet(context),
                   _bodyStater.change(1),
                   _loginState.change(true),
+                  _testSetUserId(_userEmailCtrl.text),
                   fcmSetting(),
                 }
               : _loginState.changeSignup(true));
@@ -501,6 +515,7 @@ class LoginPageState extends State<LoginPage> {
                 initialProviderGet(context),
                 _bodyStater.change(1),
                 _loginState.change(true),
+                _testSetUserId(_userEmailCtrl.text),
                 fcmSetting(),
               }
             : _loginState.changeSignup(true));
@@ -517,6 +532,9 @@ class LoginPageState extends State<LoginPage> {
     String? storageEmail = await storage.read(key: "sdb_email");
     if (storageEmail != null && storageEmail != "") {
       initialProviderGet(context);
+
+      _testSetUserId(storageEmail);
+
       _bodyStater.change(1);
       _loginState.change(true);
 

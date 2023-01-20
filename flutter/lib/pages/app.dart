@@ -31,6 +31,7 @@ import 'dart:math' as math;
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/exercise_done.dart';
 import 'statics.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
@@ -51,6 +52,10 @@ class _AppState extends State<App> {
   var _loginState;
   var _userProvider;
   int updatecount = 0;
+  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
+
   @override
   void initState() {
     var appUpdateVersion = SuperoVersion.getSuperoVersion().toString();
