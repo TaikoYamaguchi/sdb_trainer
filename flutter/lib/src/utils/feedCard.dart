@@ -1138,7 +1138,9 @@ class _FeedCardState extends State<FeedCard> {
               width: 70,
               child: Text(
                 Exercises.isCardio
-                    ? cardioValueSec.toString() + "초"
+                    ? cardioValueSec > 60
+                        ? (cardioValueSec ~/ 60).toString() + "분"
+                        : cardioValueSec.toString() + "초"
                     : Exercises.onerm.toStringAsFixed(1),
                 textScaleFactor: 1.3,
                 style: TextStyle(color: Theme.of(context).primaryColorLight),

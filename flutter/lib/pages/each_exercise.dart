@@ -474,10 +474,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                 });
                           },
                           child: Text(
-                            "Rest: ${_exercise.rest}",
+                            "Rest: ${_exercise.rest}초",
                             textScaleFactor: 1.4,
                             style: TextStyle(
-                              color: Color(0xFF717171),
+                              color: Theme.of(context).primaryColorDark,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -1414,10 +1414,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                       });
                                 },
                                 child: Text(
-                                  "Rest: ${_exercise.rest}",
+                                  "Rest: ${_exercise.rest}초",
                                   textScaleFactor: 1.4,
                                   style: TextStyle(
-                                    color: Color(0xFF717171),
+                                    color: Theme.of(context).primaryColorDark,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -2307,10 +2307,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                   });
                             },
                             child: Text(
-                              "Rest: ${_exercise.rest}",
+                              "Rest: ${_exercise.rest}초",
                               textScaleFactor: 1.4,
                               style: TextStyle(
-                                color: Color(0xFF717171),
+                                color: Theme.of(context).primaryColorDark,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -3066,7 +3066,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
             onerm: monerm,
             goal: _eachex.goal,
             date: DateTime.now().toString().substring(0, 10),
-            isCardio: exercise_all[n].isCardio));
+            isCardio: _eachex.category == "유산소" ? true : false));
       }
 
       if (monerm > _eachex.onerm) {

@@ -200,6 +200,7 @@ class Exercises {
   factory Exercises.fromJson(Map<String, dynamic> parsedJson) {
     var list = parsedJson["sets"] as List;
     List<Sets> setList = list.map((i) => Sets.fromJson(i)).toList();
+    var isCardioCheck;
     return Exercises(
         name: parsedJson["name"],
         sets: setList,

@@ -938,12 +938,12 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
             separatorBuilder: (BuildContext context, int index) {
               return Container(
                 alignment: Alignment.center,
-                height: 1,
+                height: 0.3,
                 color: const Color(0xFF212121),
                 child: Container(
                   alignment: Alignment.center,
                   margin: const EdgeInsets.symmetric(horizontal: 10),
-                  height: 1,
+                  height: 0.3,
                   color: const Color(0xFF717171),
                 ),
               );
@@ -1191,6 +1191,13 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
       exuniq, historyId, userdata, bool shirink, index) {
     double top = 20;
     double bottom = 20;
+
+    double totalDistance = 0;
+    num totalTime = 0;
+    exuniq.sets.forEach((value) {
+      totalDistance += value.weight;
+      totalTime += value.reps;
+    });
     return Container(
       child: Column(
         children: [
@@ -1220,7 +1227,9 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _chartExerciseSetsWidget(exuniq.sets),
+                  exuniq.isCardio
+                      ? _chartCardioExerciseSetsWidget(exuniq.sets)
+                      : _chartExerciseSetsWidget(exuniq.sets),
                   Container(
                     child: Row(
                       //mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -1230,7 +1239,9 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
                             style: TextStyle(color: Color(0xFF717171))),
                         const Expanded(child: SizedBox()),
                         Text(
-                            "${"1RM: " + exuniq.onerm.toStringAsFixed(1)}/${exuniq.goal.toStringAsFixed(1)}${userdata.weight_unit}",
+                            exuniq.isCardio
+                                ? "Total: ${totalDistance}km/${Duration(seconds: totalTime.toInt()).toString().split('.')[0]}"
+                                : "${"1RM: " + exuniq.onerm.toStringAsFixed(1)}/${exuniq.goal.toStringAsFixed(1)}${userdata.weight_unit}",
                             textScaleFactor: 1.0,
                             style: const TextStyle(color: Color(0xFF717171))),
                       ],
@@ -1249,6 +1260,7 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
       exuniq, historyId, userdata, bool shirink, index) {
     double top = 0;
     double bottom = 0;
+
     return Container(
       child: Column(
         children: [
@@ -1326,7 +1338,12 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
                 } catch (e) {
                   _exImage = "";
                 }
-
+                double totalDistance = 0;
+                num totalTime = 0;
+                exuniq[index].sets.forEach((value) {
+                  totalDistance += value.weight;
+                  totalTime += value.reps;
+                });
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -1384,7 +1401,9 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
                                   children: [
                                     const Expanded(child: SizedBox()),
                                     Text(
-                                        "${"1RM: " + exuniq[index].onerm.toStringAsFixed(1)}/${exuniq[index].goal.toStringAsFixed(1)}${userdata.weight_unit}",
+                                        exuniq[index].isCardio
+                                            ? "Total: ${totalDistance}km/${Duration(seconds: totalTime.toInt()).toString().split('.')[0]}"
+                                            : "${"1RM: " + exuniq[index].onerm.toStringAsFixed(1)}/${exuniq[index].goal.toStringAsFixed(1)}${userdata.weight_unit}",
                                         textScaleFactor: 1.0,
                                         style: const TextStyle(
                                             color: Color(0xFF717171))),
@@ -1560,6 +1579,121 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
                                             .primaryColorLight),
                                     textAlign: TextAlign.center,
                                   )),
+                      ],
+                    ),
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return Container(
+                    alignment: Alignment.center,
+                    height: 0,
+                    child: Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      height: 0,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                  );
+                },
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: sets.length),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _chartCardioExerciseSetsWidget(sets) {
+    return Container(
+      child: Column(
+        children: [
+          Container(
+              padding: const EdgeInsets.all(5.0),
+              height: 28,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                      width: 80,
+                      padding: EdgeInsets.only(right: 4),
+                      child: Text(
+                        "Set",
+                        textScaleFactor: 1.1,
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColorLight,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      )),
+                  Container(
+                      width: 80,
+                      child: Text(
+                        "거리(Km)",
+                        textScaleFactor: 1.1,
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColorLight,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      )),
+                  Container(
+                      width: 140,
+                      child: Text(
+                        "시간(시:분:초)",
+                        textScaleFactor: 1.1,
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColorLight,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      )),
+                ],
+              )),
+          SizedBox(
+            child: ListView.separated(
+                itemBuilder: (BuildContext context, int index) {
+                  Duration _time = Duration(seconds: sets[index].reps);
+                  return Container(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: 85,
+                          child: Text(
+                            "${index + 1}",
+                            textScaleFactor: 1.3,
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColorLight,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 80,
+                          child: Text(
+                            sets[index].weight.toStringAsFixed(1),
+                            textScaleFactor: 1.3,
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColorLight,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 140,
+                          child: Text(
+                            "${_time.inHours.toString().length == 1 ? "0" + _time.inHours.toString() : _time.inHours}:${_time.inMinutes.remainder(60).toString().length == 1 ? "0" + _time.inMinutes.remainder(60).toString() : _time.inMinutes.remainder(60)}:${_time.inSeconds.remainder(60).toString().length == 1 ? "0" + _time.inSeconds.remainder(60).toString() : _time.inSeconds.remainder(60)}",
+                            textScaleFactor: 1.3,
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColorLight,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                       ],
                     ),
                   );

@@ -207,24 +207,10 @@ class _FriendHistoryState extends State<FriendHistory>
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _chartExerciseSetsWidget(exuniq[index].sets),
-                    Container(
-                      child: Row(
-                        //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text("",
-                              textScaleFactor: 1.0,
-                              style: TextStyle(color: Color(0xFF717171))),
-                          Expanded(child: SizedBox()),
-                          Text(
-                              "1RM: " +
-                                  exuniq[index].onerm.toStringAsFixed(1) +
-                                  "/${exuniq[index].goal.toStringAsFixed(1)}${userdata.weight_unit}",
-                              textScaleFactor: 1.0,
-                              style: TextStyle(color: Color(0xFF717171)))
-                        ],
-                      ),
-                    ),
+                    widget.sdbdata.exercises[index].isCardio!
+                        ? _cardioExerciseSetsWidget(exuniq[index].sets)
+                        : _chartExerciseSetsWidget(exuniq[index].sets,
+                            exuniq[index].onerm, exuniq[index].goal, userdata),
                     SizedBox(height: 4.0)
                   ],
                 ),
@@ -236,7 +222,7 @@ class _FriendHistoryState extends State<FriendHistory>
     );
   }
 
-  Widget _chartExerciseSetsWidget(sets) {
+  Widget _chartExerciseSetsWidget(sets, onerm, goal, userdata) {
     return Container(
       child: Column(
         children: [
@@ -394,6 +380,190 @@ class _FriendHistoryState extends State<FriendHistory>
                 shrinkWrap: true,
                 itemCount: sets.length),
           ),
+          SizedBox(height: 4),
+          Container(
+            child: Row(
+              //mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text("",
+                    textScaleFactor: 1.0,
+                    style: TextStyle(color: Color(0xFF717171))),
+                Expanded(child: SizedBox()),
+                Text(
+                    "1RM: " +
+                        onerm.toStringAsFixed(1) +
+                        "/${goal.toStringAsFixed(1)}${userdata.weight_unit}",
+                    textScaleFactor: 1.0,
+                    style: TextStyle(color: Color(0xFF717171)))
+              ],
+            ),
+          ),
+          SizedBox(height: 4),
+        ],
+      ),
+    );
+  }
+
+  Widget _cardioExerciseSetsWidget(sets) {
+    double totalDistance = 0;
+    num totalTime = 0;
+    sets.forEach((value) {
+      totalDistance += value.weight;
+      totalTime += value.reps;
+    });
+    return Container(
+      child: Column(
+        children: [
+          Container(
+              padding: EdgeInsets.all(5.0),
+              height: 28,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 80,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 25,
+                          child: Text(
+                            "Set",
+                            textScaleFactor: 1.0,
+                            style: TextStyle(
+                              color: Colors.grey,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Container(
+                            width: MediaQuery.of(context).size.width / 4,
+                            child: Text(
+                              "거리(km)",
+                              textScaleFactor: 1.0,
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
+                              textAlign: TextAlign.center,
+                            )),
+                        Container(
+                            width: MediaQuery.of(context).size.width / 4,
+                            child: Text(
+                              "운동 시간(시:분:초)",
+                              textScaleFactor: 1.0,
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
+                              textAlign: TextAlign.center,
+                            ))
+                      ],
+                    ),
+                  ),
+                ],
+              )),
+          SizedBox(
+            child: ListView.separated(
+                itemBuilder: (BuildContext _context, int index) {
+                  return Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 80,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                width: 25,
+                                child: Text(
+                                  "${index + 1}",
+                                  textScaleFactor: 1.7,
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width / 4,
+                                child: Text(
+                                  sets[index].weight.toStringAsFixed(1),
+                                  textScaleFactor: 1.7,
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width / 4,
+                                child: Text(
+                                  Duration(seconds: sets[index].reps.toInt())
+                                      .toString()
+                                      .split('.')[0],
+                                  textScaleFactor: 1.7,
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                separatorBuilder: (BuildContext _context, int index) {
+                  return Container(
+                    alignment: Alignment.center,
+                    height: 0,
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 0,
+                      color: Color(0xFF717171),
+                    ),
+                  );
+                },
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: sets.length),
+          ),
+          SizedBox(height: 4),
+          Container(
+            child: Row(
+              //mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Expanded(child: SizedBox()),
+                Text(
+                    "Total: ${totalDistance}km/${Duration(seconds: totalTime.toInt()).toString().split('.')[0]}",
+                    textScaleFactor: 1.0,
+                    style: TextStyle(color: Color(0xFF717171))),
+              ],
+            ),
+          ),
+          SizedBox(height: 4),
         ],
       ),
     );
