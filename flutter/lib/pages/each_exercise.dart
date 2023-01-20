@@ -95,33 +95,47 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
   }
 
   Widget timerPicker(time, pindex, index) {
-    return CupertinoTimerPicker(
-      mode: CupertinoTimerPickerMode.hms,
-      minuteInterval: 1,
-      secondInterval: 1,
-      initialTimerDuration: time,
-      onTimerDurationChanged: (Duration changeTimer) {
-        initialTimer = changeTimer;
-        _workoutProvider.repscheck(
-            widget.rindex, pindex, index, changeTimer.inSeconds);
-      },
+    return CupertinoTheme(
+      data: CupertinoThemeData(
+        brightness: _themeProvider.userThemeDark == "dark"
+            ? Brightness.dark
+            : Brightness.light,
+      ),
+      child: CupertinoTimerPicker(
+        mode: CupertinoTimerPickerMode.hms,
+        minuteInterval: 1,
+        secondInterval: 1,
+        initialTimerDuration: time,
+        onTimerDurationChanged: (Duration changeTimer) {
+          initialTimer = changeTimer;
+          _workoutProvider.repscheck(
+              widget.rindex, pindex, index, changeTimer.inSeconds);
+        },
+      ),
     );
   }
 
   Widget timerPicker2(time, pindex) {
-    return CupertinoTimerPicker(
-      mode: CupertinoTimerPickerMode.ms,
-      minuteInterval: 1,
-      secondInterval: 10,
-      initialTimerDuration: time,
-      onTimerDurationChanged: (Duration changeTimer) {
-        initialTimer = changeTimer;
-        _routinetimeProvider.resttimecheck(changeTimer.inSeconds);
+    return CupertinoTheme(
+      data: CupertinoThemeData(
+        brightness: _themeProvider.userThemeDark == "dark"
+            ? Brightness.dark
+            : Brightness.light,
+      ),
+      child: CupertinoTimerPicker(
+        mode: CupertinoTimerPickerMode.ms,
+        minuteInterval: 1,
+        secondInterval: 10,
+        initialTimerDuration: time,
+        onTimerDurationChanged: (Duration changeTimer) {
+          initialTimer = changeTimer;
+          _routinetimeProvider.resttimecheck(changeTimer.inSeconds);
 
-        _workoutProvider.resttimecheck(
-            widget.rindex, pindex, _routinetimeProvider.changetime);
-        _editWorkoutwCheck();
-      },
+          _workoutProvider.resttimecheck(
+              widget.rindex, pindex, _routinetimeProvider.changetime);
+          _editWorkoutwCheck();
+        },
+      ),
     );
   }
 
@@ -130,7 +144,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
       height: 280,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        color: CupertinoColors.white,
+        color: Theme.of(context).canvasColor,
       ),
       padding: const EdgeInsets.only(top: 6.0),
       child: Column(
@@ -145,15 +159,14 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                   borderRadius: BorderRadius.all(Radius.circular(8.0))),
             ),
           ),
-          DefaultTextStyle(
-            style: const TextStyle(
-              color: CupertinoColors.black,
-              fontSize: 22.0,
-            ),
-            child: GestureDetector(
-              onTap: () {},
-              child: SafeArea(
-                top: false,
+          GestureDetector(
+            onTap: () {},
+            child: SafeArea(
+              top: false,
+              child: DefaultTextStyle(
+                style: TextStyle(
+                  fontSize: 22.0,
+                ),
                 child: picker,
               ),
             ),
