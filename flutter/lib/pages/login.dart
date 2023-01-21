@@ -27,6 +27,8 @@ import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 
 class LoginPage extends StatefulWidget {
+  bool isUpdateNeeded;
+  LoginPage({Key? key, required this.isUpdateNeeded}) : super(key: key);
   @override
   LoginPageState createState() => LoginPageState();
 }
@@ -95,9 +97,9 @@ class LoginPageState extends State<LoginPage> {
                   SizedBox(height: 14),
                   _isEmailLogin ? _signInUpButton("로그인", context) : Container(),
                   SizedBox(height: 14),
-                  _isEmailLogin
-                      ? _signInUpButton("회원가입", context)
-                      : Container(),
+                  //_isEmailLogin
+                  //    ? _signInUpButton("회원가입", context)
+                  //    : Container(),
                   _isEmailLogin
                       ? Container()
                       : _loginSocialButton("kakao", context),
@@ -109,7 +111,9 @@ class LoginPageState extends State<LoginPage> {
                       : _isiOS
                           ? _loginSocialButton("apple", context)
                           : Container(),
-                  //_emailLoginButton(context),
+                  widget.isUpdateNeeded
+                      ? _emailLoginButton(context)
+                      : Container(),
                   SizedBox(height: 42),
                   _isEmailLogin ? _findUser(context) : Container()
                 ]),
@@ -200,22 +204,19 @@ class LoginPageState extends State<LoginPage> {
       child: TextFormField(
           controller: _userEmailCtrl,
           decoration: InputDecoration(
-              prefixIcon:
-                  Icon(Icons.email, color: Theme.of(context).primaryColorLight),
+              prefixIcon: Icon(Icons.email, color: Colors.white),
               labelText: "이메일",
-              labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
+              labelStyle: TextStyle(color: Colors.white),
               border: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: Theme.of(context).primaryColorLight, width: 2.0),
+                borderSide: BorderSide(color: Colors.white, width: 2.0),
                 borderRadius: BorderRadius.circular(5.0),
               ),
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: Theme.of(context).primaryColorLight, width: 2.0),
+                borderSide: BorderSide(color: Colors.white, width: 2.0),
                 borderRadius: BorderRadius.circular(5.0),
               ),
-              fillColor: Theme.of(context).primaryColorLight),
-          style: TextStyle(color: Theme.of(context).primaryColorLight)),
+              fillColor: Colors.white),
+          style: TextStyle(color: Colors.white)),
     );
   }
 
@@ -229,22 +230,19 @@ class LoginPageState extends State<LoginPage> {
           autocorrect: false,
           obscuringCharacter: "*",
           decoration: InputDecoration(
-              prefixIcon: Icon(Icons.vpn_key_rounded,
-                  color: Theme.of(context).primaryColorLight),
+              prefixIcon: Icon(Icons.vpn_key_rounded, color: Colors.white),
               labelText: "비밀번호",
-              labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
+              labelStyle: TextStyle(color: Colors.white),
               border: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: Theme.of(context).primaryColorLight, width: 2.0),
+                borderSide: BorderSide(color: Colors.white, width: 2.0),
                 borderRadius: BorderRadius.circular(5.0),
               ),
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: Theme.of(context).primaryColorLight, width: 2.0),
+                borderSide: BorderSide(color: Colors.white, width: 2.0),
                 borderRadius: BorderRadius.circular(5.0),
               ),
-              fillColor: Theme.of(context).primaryColorLight),
-          style: TextStyle(color: Theme.of(context).primaryColorLight)),
+              fillColor: Colors.white),
+          style: TextStyle(color: Colors.white)),
     );
   }
 
@@ -422,7 +420,10 @@ class LoginPageState extends State<LoginPage> {
                   ? null
                   : content == "로그인"
                       ? _loginCheck(context)
-                      : _loginState.changeSignup(true),
+                      : [
+                          _loginState.changeSignup(true),
+                          _userProvider.setUserKakaoEmail("test")
+                        ],
               child: Text(isLoading ? 'loggin in.....' : content,
                   style: TextStyle(
                       fontSize: 20.0,

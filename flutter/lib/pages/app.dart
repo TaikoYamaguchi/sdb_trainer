@@ -52,6 +52,7 @@ class _AppState extends State<App> {
   var _loginState;
   var _userProvider;
   int updatecount = 0;
+  bool _isUpdateNeeded = false;
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
@@ -64,6 +65,7 @@ class _AppState extends State<App> {
           appUpdateVersion.substring(0, appUpdateVersion.length - 1)) {
         initialExImageGet(context);
       } else {
+        _isUpdateNeeded = true;
         showUpdateVersion(data, context);
       }
     });
@@ -566,7 +568,7 @@ class _AppState extends State<App> {
                           ])
                 : _loginState.isSignUp
                     ? SignUpPage()
-                    : LoginPage(),
+                    : LoginPage(isUpdateNeeded: _isUpdateNeeded),
             floatingActionButton: Consumer<RoutineTimeProvider>(
                 builder: (builder, provider, child) {
               return Container(
