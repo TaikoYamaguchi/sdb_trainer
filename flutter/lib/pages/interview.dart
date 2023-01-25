@@ -3,10 +3,14 @@ import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/friendProfile.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
+import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/interviewdata.dart';
 import 'package:sdb_trainer/providers/themeMode.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
+import 'package:sdb_trainer/repository/comment_repository.dart';
 import 'package:sdb_trainer/repository/interview_repository.dart';
+import 'package:sdb_trainer/repository/user_repository.dart';
+import 'package:sdb_trainer/src/model/historydata.dart';
 import 'package:sdb_trainer/src/model/interviewdata.dart';
 import 'package:sdb_trainer/src/model/userdata.dart';
 import 'package:sdb_trainer/src/utils/alerts.dart';
@@ -27,10 +31,12 @@ class Interview extends StatefulWidget {
 class _InterviewState extends State<Interview> {
   var _userProvider;
   var _interviewProvider;
+  var _historyProvider;
   final _pageController = ScrollController();
   var _final_interview_id;
   var _themeProvider;
   var _hasMore = true;
+  TextEditingController _commentInputCtrl = TextEditingController(text: "");
   var _tapPosition;
   List<String> _tagsList = [
     '버그',
@@ -91,6 +97,7 @@ class _InterviewState extends State<Interview> {
     _interviewProvider =
         Provider.of<InterviewdataProvider>(context, listen: false);
     _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    _historyProvider = Provider.of<HistorydataProvider>(context, listen: false);
 
     bool btnDisabled = false;
     return Scaffold(
@@ -754,7 +761,13 @@ class _InterviewState extends State<Interview> {
                     ),
                   ],
                 ),
-                _closeInterviewDetailButton()
+                Column(
+                  children: [
+                    _commentContent(interviewData),
+                    _commentTextInput(interviewData),
+                    _closeInterviewDetailButton()
+                  ],
+                ),
               ],
             ),
           ),
@@ -1142,6 +1155,290 @@ class _InterviewState extends State<Interview> {
           interviewData, _userProvider.userdata.email, "append");
       return !isLiked;
     }
+  }
+
+  Widget _commentContent(InterviewData) {
+    var _commentListbyId = _historyProvider.commentAll.comments
+        .where((comment) => comment.reply_id == InterviewData.id)
+        .toList();
+    return ListView.separated(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemBuilder: (BuildContext _context, int index) {
+          return Padding(
+              padding: EdgeInsets.all(4.0),
+              child: _commentContentCore(_commentListbyId[index]));
+        },
+        separatorBuilder: (BuildContext _context, int index) {
+          return Container(
+            alignment: Alignment.center,
+            height: 0.3,
+            child: Container(
+              alignment: Alignment.center,
+              height: 0.3,
+              color: Theme.of(context).primaryColorDark,
+            ),
+          );
+        },
+        itemCount: _commentListbyId.length);
+  }
+
+  Widget _commentContentCore(Comment) {
+    User user = _userProvider.userFriendsAll.userdatas
+        .where((user) => user.email == Comment.writer_email)
+        .toList()[0];
+    return _userProvider.userdata.dislike.contains(Comment.writer_email)
+        ? Container(
+            child: Padding(
+                padding: const EdgeInsets.only(left: 4.0),
+                child: Text("차단된 사용자 입니다",
+                    textScaleFactor: 1.0,
+                    style: TextStyle(color: Colors.grey))))
+        : Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Flexible(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      Transition(
+                          child: FriendProfile(user: user),
+                          transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+                },
+                child: Row(
+                  children: [
+                    user.image == ""
+                        ? Icon(
+                            Icons.account_circle,
+                            color: Colors.grey,
+                            size: 38.0,
+                          )
+                        : CachedNetworkImage(
+                            imageUrl: user.image,
+                            imageBuilder: (context, imageProivder) => Container(
+                              height: 38,
+                              width: 38,
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(50)),
+                                  image: DecorationImage(
+                                    image: imageProivder,
+                                    fit: BoxFit.cover,
+                                  )),
+                            ),
+                          ),
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 4.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(Comment.writer_nickname,
+                                textScaleFactor: 1.0,
+                                style: TextStyle(color: Colors.grey)),
+                            Text(Comment.content,
+                                textScaleFactor: 1.1,
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).primaryColorLight)),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            GestureDetector(
+              child: Icon(
+                Icons.more_vert,
+                color: Colors.grey,
+                size: 18.0,
+              ),
+              onTapDown: _storePosition,
+              onTap: () {
+                _userProvider.userdata.email == Comment.writer_email
+                    ? showMenu(
+                        context: context,
+                        position: RelativeRect.fromRect(
+                            _tapPosition & Size(30, 30),
+                            Offset.zero & Size(0, 0)),
+                        items: [
+                            PopupMenuItem(
+                                onTap: () {
+                                  _historyProvider.deleteCommentAll(Comment);
+                                  Future<void>.delayed(
+                                      const Duration(), // OR const Duration(milliseconds: 500),
+                                      () =>
+                                          CommentDelete(comment_id: Comment.id)
+                                              .deleteComment());
+                                },
+                                padding: EdgeInsets.all(0.0),
+                                child: ListTile(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 4.0, vertical: 0.0),
+                                    leading: Icon(Icons.delete,
+                                        color: Theme.of(context)
+                                            .primaryColorLight),
+                                    title: Text("삭제",
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorLight)))),
+                          ])
+                    : showMenu(
+                        context: context,
+                        position: RelativeRect.fromRect(
+                            _tapPosition & Size(30, 30),
+                            Offset.zero & Size(0, 0)),
+                        items: [
+                            PopupMenuItem(
+                                onTap: () {
+                                  Future<void>.delayed(
+                                      const Duration(), // OR const Duration(milliseconds: 500),
+                                      () => _displayDislikeAlert(
+                                          Comment.writer_email));
+                                },
+                                padding: EdgeInsets.all(0.0),
+                                child: ListTile(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 4.0, vertical: 0.0),
+                                    leading: Icon(Icons.remove_circle_outlined,
+                                        color: Theme.of(context)
+                                            .primaryColorLight),
+                                    title: Text("신고",
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorLight)))),
+                          ]);
+              },
+            )
+          ]);
+  }
+
+  Widget _commentTextInput(Interview) {
+    return Row(
+      children: [
+        Flexible(
+          child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: TextFormField(
+              keyboardType: TextInputType.multiline,
+              controller: _commentInputCtrl,
+              style: TextStyle(
+                  color: Theme.of(context).primaryColorLight, fontSize: 12.0),
+              decoration: InputDecoration(
+                hintText: "댓글 신고시 이용이 제한 될 수 있습니다.",
+                hintStyle: TextStyle(
+                    color: Theme.of(context).primaryColorLight, fontSize: 12.0),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Theme.of(context).primaryColorLight, width: 0.3),
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Theme.of(context).primaryColorLight, width: 0.3),
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          child: GestureDetector(
+            child: Icon(Icons.arrow_upward,
+                color: Theme.of(context).primaryColorLight),
+            onTap: () {
+              _historyProvider.addCommentAll(Comment(
+                  history_id: 0,
+                  reply_id: Interview.id,
+                  writer_email: _userProvider.userdata.email,
+                  writer_nickname: _userProvider.userdata.nickname,
+                  content: _commentInputCtrl.text));
+              CommentCreate(
+                      history_id: 0,
+                      reply_id: Interview.id,
+                      writer_email: _userProvider.userdata.email,
+                      writer_nickname: _userProvider.userdata.nickname,
+                      content: _commentInputCtrl.text)
+                  .postComment();
+              _commentInputCtrl.clear();
+            },
+          ),
+        )
+      ],
+    );
+  }
+
+  void _displayDislikeAlert(email) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            backgroundColor: Theme.of(context).cardColor,
+            title: Text('사용자를 차단 할 수 있어요',
+                textScaleFactor: 2.0,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Theme.of(context).primaryColorLight)),
+            content: Container(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('피드와 댓글을 모두 차단 할 수 있어요',
+                      textScaleFactor: 1.3,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColorLight)),
+                  Text(
+                    '친구 관리에서 다시 차단 해제 할 수 있어요',
+                    textScaleFactor: 1.0,
+                    style: TextStyle(color: Colors.grey),
+                  )
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              _onDisLikeButtonTapped(email),
+            ],
+          );
+        });
+  }
+
+  Widget _onDisLikeButtonTapped(email) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              foregroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              textStyle: TextStyle(
+                color: Theme.of(context).primaryColorLight,
+              ),
+              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+              padding: EdgeInsets.all(12.0),
+            ),
+            onPressed: () {
+              var user = UserLike(
+                      liked_email: email,
+                      user_email: _userProvider.userdata.email,
+                      status: "append",
+                      disorlike: "dislike")
+                  .patchUserLike();
+              _userProvider.patchUserDislikedata(email, "append");
+
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            child: Text("차단하기",
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight))));
   }
 
   void _storePosition(TapDownDetails details) {

@@ -39,11 +39,14 @@ def create_comment(db: Session, comment: schemas.CommentCreate, ip):
     db.add(db_comment)
     db.commit()
     db.refresh(db_comment)
-    db_history = db.query(models.History).filter(models.History.id == comment.history_id).first()
-    setattr(db_history, "comment_length", db_history.comment_length+1)
-    db.add(db_history)
-    db.commit()
-    db.refresh(db_history)
+    if (comment.history_id != 0):
+
+        db_history = db.query(models.History).filter(models.History.id == comment.history_id).first()
+        setattr(db_history, "comment_length", db_history.comment_length+1)
+        db.add(db_history)
+        db.commit()
+        db.refresh(db_history)
+
     if (comment.writer_email != "Anonymous"):
         db_user = get_user_by_email(db, comment.writer_email)
         setattr(db_user, "comment_cnt", len(db.query(models.Comment).filter(models.Comment.writer_email == comment.writer_email).all()))
@@ -62,11 +65,12 @@ def delete_auth_comment(db: Session, comment_id: int, user:schemas.User):
         if user.email == db_comment.writer_email:
                 db.delete(db_comment)
                 db.commit()
-                db_history = db.query(models.History).filter(models.History.id == db_comment.history_id).first()
-                setattr(db_history, "comment_length", db_history.comment_length-1)
-                db.add(db_history)
-                db.commit()
-                db.refresh(db_history)
+                if (db_comment.history_id != 0):
+                    db_history = db.query(models.History).filter(models.History.id == db_comment.history_id).first()
+                    setattr(db_history, "comment_length", db_history.comment_length-1)
+                    db.add(db_history)
+                    db.commit()
+                    db.refresh(db_history)
                 db_user = get_user_by_email(db, db_comment.writer_email)
                 setattr(db_user, "comment_cnt", len(db.query(models.Comment).filter(models.Comment.writer_email == db_comment.writer_email).all()))
                 db.add(db_user)
