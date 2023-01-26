@@ -4,9 +4,11 @@ import 'package:expandable/expandable.dart';
 import 'package:sdb_trainer/pages/exercise_done.dart';
 import 'package:sdb_trainer/pages/upload_program.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
+import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
+import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
@@ -37,6 +39,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
   var _routinetimeProvider;
   var _PopProvider;
   var _userProvider;
+  var _prefsProvider;
   var _exProvider;
   var _testdata0;
   var _customRuUsed = false;
@@ -158,13 +161,13 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
               ],
             ),
             actions: <Widget>[
-              _FinishConfirmButton(),
+              _finishConfirmButton(),
             ],
           );
         });
   }
 
-  Widget _FinishConfirmButton() {
+  Widget _finishConfirmButton() {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: TextButton(
@@ -1136,7 +1139,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                               sdbdata: hisdata.SDBdata.fromJson(data)),
                           transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
                   _routinetimeProvider.routinecheck(widget.rindex),
-                  _routinetimeProvider.getprefs(_workoutProvider
+                  _prefsProvider.lastplan(_workoutProvider
                       .workoutdata.routinedatas[widget.rindex].name),
                   _hisProvider.getdata(),
                   _hisProvider.getHistorydataAll(),
@@ -1180,6 +1183,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
     _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     _exercises = _exProvider.exercisesdata.exercises;
     _testdata0 = _exProvider.exercisesdata.exercises;
+    _prefsProvider = Provider.of<PrefsProvider>(context, listen: false);
+    _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
