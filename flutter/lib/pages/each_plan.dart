@@ -696,10 +696,10 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (BuildContext context) {
         return Container(
-            height: 220,
+            height: 210,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-              color: Theme.of(context).primaryColorLight,
+              color: Theme.of(context).cardColor,
             ),
             child: _setinfo(eindex, sindex));
       },
@@ -744,7 +744,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                   width: MediaQuery.of(context).size.width / 3,
                   child: Center(
                       child: Text(
-                    '기준 1rm',
+                    '나의 1rm',
                     textScaleFactor: 1.7,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )),
@@ -770,7 +770,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
               ],
             ),
             Container(
-              height: 15,
+              height: 10,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -899,7 +899,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
             height: MediaQuery.of(context).size.height * 2,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-              color: Color(0xFF717171),
+              color: Theme.of(context).cardColor,
             ),
             child: Center(
                 child: _exercises_searchWidget(isadd, isex, where, state)),
