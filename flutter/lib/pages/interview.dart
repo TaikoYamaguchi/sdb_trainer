@@ -46,6 +46,8 @@ class _InterviewState extends State<Interview> {
   ];
   List<String>? _tags = [];
 
+  var _isCommentInputOpen = false;
+
   TextEditingController _titleCtrl = TextEditingController(text: "");
   TextEditingController _contentCtrl = TextEditingController(text: "");
 
@@ -503,11 +505,11 @@ class _InterviewState extends State<Interview> {
         User user = _userProvider.userFriendsAll.userdatas
             .where((user) => user.email == interviewData.user_email)
             .toList()[0];
-        return GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: Container(
+        return GestureDetector(onTap: () {
+          FocusScope.of(context).unfocus();
+        }, child: StatefulBuilder(builder: (BuildContext context,
+            StateSetter setState /*You can rename this!*/) {
+          return Container(
             padding: EdgeInsets.all(12.0),
             height: MediaQuery.of(context).size.height * 0.7,
             decoration: BoxDecoration(
@@ -518,117 +520,101 @@ class _InterviewState extends State<Interview> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(12, 4, 12, 12),
-                      child: Container(
-                        height: 6.0,
-                        width: 80.0,
-                        decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColorDark,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(8.0))),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            Transition(
-                                child: FriendProfile(user: user),
-                                transitionEffect:
-                                    TransitionEffect.RIGHT_TO_LEFT));
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Row(
+                Padding(
+                  padding: EdgeInsets.fromLTRB(12, 4, 12, 12),
+                  child: Container(
+                    height: 6.0,
+                    width: 80.0,
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColorDark,
+                        borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                Transition(
+                                    child: FriendProfile(user: user),
+                                    transitionEffect:
+                                        TransitionEffect.RIGHT_TO_LEFT));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              user.image == ""
-                                  ? Icon(
-                                      Icons.account_circle,
-                                      color: Colors.grey,
-                                      size: 46.0,
-                                    )
-                                  : CachedNetworkImage(
-                                      imageUrl: user.image,
-                                      imageBuilder: (context, imageProivder) =>
-                                          Container(
-                                        height: 46,
-                                        width: 46,
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(50)),
-                                            image: DecorationImage(
-                                              image: imageProivder,
-                                              fit: BoxFit.cover,
-                                            )),
-                                      ),
-                                    ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      interviewData.user_nickname,
-                                      textScaleFactor: 1.5,
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorLight),
-                                    ),
-                                    Text(
-                                      interviewData.date!.substring(2, 10),
-                                      textScaleFactor: 1.0,
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorDark),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          GestureDetector(
-                              onTapDown: _storePosition,
-                              onTap: () {
-                                interviewData.user_email ==
-                                        _userProvider.userdata.email
-                                    ? _myInterviewMenu(interviewData)
-                                    : null;
-                              },
-                              child: Icon(Icons.more_vert,
-                                  color: Colors.grey, size: 18.0))
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: interviewData.progress == "open"
-                          ? Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Row(
+                              Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Icon(
-                                    Icons.radio_button_unchecked,
-                                    color: Color(0xFF26A943),
-                                    size: 28,
+                                  user.image == ""
+                                      ? Icon(
+                                          Icons.account_circle,
+                                          color: Colors.grey,
+                                          size: 46.0,
+                                        )
+                                      : CachedNetworkImage(
+                                          imageUrl: user.image,
+                                          imageBuilder:
+                                              (context, imageProivder) =>
+                                                  Container(
+                                            height: 46,
+                                            width: 46,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(50)),
+                                                image: DecorationImage(
+                                                  image: imageProivder,
+                                                  fit: BoxFit.cover,
+                                                )),
+                                          ),
+                                        ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          interviewData.user_nickname,
+                                          textScaleFactor: 1.5,
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColorLight),
+                                        ),
+                                        Text(
+                                          interviewData.date!.substring(2, 10),
+                                          textScaleFactor: 1.0,
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColorDark),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  Text(" 진행 중",
-                                      style: TextStyle(
-                                          fontSize: 16 *
-                                              _themeProvider.userFontSize /
-                                              0.8,
-                                          color: Color(0xFF26A943)))
                                 ],
                               ),
-                            )
-                          : interviewData.progress == "closed"
+                              GestureDetector(
+                                  onTapDown: _storePosition,
+                                  onTap: () {
+                                    interviewData.user_email ==
+                                            _userProvider.userdata.email
+                                        ? _myInterviewMenu(
+                                            interviewData, setState)
+                                        : null;
+                                  },
+                                  child: Icon(Icons.more_vert,
+                                      color: Colors.grey, size: 18.0))
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: interviewData.progress == "open"
                               ? Padding(
                                   padding: const EdgeInsets.all(4.0),
                                   child: Row(
@@ -636,142 +622,174 @@ class _InterviewState extends State<Interview> {
                                         CrossAxisAlignment.center,
                                     children: [
                                       Icon(
-                                        Icons.radio_button_checked,
-                                        color: Theme.of(context).primaryColor,
+                                        Icons.radio_button_unchecked,
+                                        color: Color(0xFF26A943),
                                         size: 28,
                                       ),
-                                      Text(" 진행 완료",
+                                      Text(" 진행 중",
                                           style: TextStyle(
                                               fontSize: 16 *
                                                   _themeProvider.userFontSize /
                                                   0.8,
-                                              color: Theme.of(context)
-                                                  .primaryColor))
+                                              color: Color(0xFF26A943)))
                                     ],
                                   ),
                                 )
-                              : Icon(Icons.radio_button_checked,
-                                  color: Theme.of(context).primaryColor,
-                                  size: 28),
-                    ),
-                    SizedBox(height: 4),
-                    Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: Card(
-                          color: Theme.of(context).canvasColor,
-                          elevation: 0,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(interviewData.title,
-                                style: TextStyle(
-                                    fontSize:
-                                        16 * _themeProvider.userFontSize / 0.8,
-                                    color:
-                                        Theme.of(context).primaryColorLight)),
-                          ),
-                        )),
-                    SizedBox(height: 4),
-                    Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: Card(
-                          color: Theme.of(context).cardColor,
-                          elevation: 0,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(interviewData.content,
-                                style: TextStyle(
-                                    fontSize:
-                                        13 * _themeProvider.userFontSize / 0.8,
-                                    color:
-                                        Theme.of(context).primaryColorLight)),
-                          ),
-                        )),
-                    SizedBox(height: 4.0),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: Wrap(
-                          children: interviewData.tags!.map<Widget>(
-                        (tag) {
-                          bool isSelected = true;
-
-                          return GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: 4, vertical: 2),
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 2, horizontal: 8),
-                                  decoration: BoxDecoration(
-                                      color: Theme.of(context).canvasColor,
-                                      borderRadius: BorderRadius.circular(18),
-                                      border: Border.all(
-                                          color: isSelected
-                                              ? Theme.of(context).primaryColor
-                                              : Theme.of(context)
-                                                  .primaryColorDark,
-                                          width: 1.5)),
-                                  child: Text(
-                                    tag,
-                                    style: TextStyle(
-                                        color: isSelected
-                                            ? Theme.of(context).primaryColor
-                                            : Theme.of(context)
-                                                .primaryColorDark,
-                                        fontSize: 12 *
-                                            _themeProvider.userFontSize /
-                                            0.8),
-                                  ),
-                                )),
-                          );
-                        },
-                      ).toList()),
-                    ),
-                    Consumer<InterviewdataProvider>(
-                        builder: (context, provider, child) {
-                      return Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text("공감하기",
-                                    textScaleFactor: 1.5,
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .primaryColorDark)),
-                                _interviewLikeButton(interviewData),
-                              ],
-                            ),
-                          ));
-                    }),
-                    SizedBox(height: 4.0),
-                    Column(
-                      children: [
-                        Container(
-                          child: Text('의견 주심에 감사합니다🤗 소중한 의견으로 발전해볼게요!',
-                              textScaleFactor: 1.2,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColorDark)),
+                              : interviewData.progress == "closed"
+                                  ? Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.radio_button_checked,
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            size: 28,
+                                          ),
+                                          Text(" 진행 완료",
+                                              style: TextStyle(
+                                                  fontSize: 16 *
+                                                      _themeProvider
+                                                          .userFontSize /
+                                                      0.8,
+                                                  color: Theme.of(context)
+                                                      .primaryColor))
+                                        ],
+                                      ),
+                                    )
+                                  : Icon(Icons.radio_button_checked,
+                                      color: Theme.of(context).primaryColor,
+                                      size: 28),
                         ),
+                        SizedBox(height: 4),
+                        Container(
+                            width: MediaQuery.of(context).size.width,
+                            child: Card(
+                              color: Theme.of(context).canvasColor,
+                              elevation: 0,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(interviewData.title,
+                                    style: TextStyle(
+                                        fontSize: 16 *
+                                            _themeProvider.userFontSize /
+                                            0.8,
+                                        color: Theme.of(context)
+                                            .primaryColorLight)),
+                              ),
+                            )),
+                        SizedBox(height: 4),
+                        Container(
+                            width: MediaQuery.of(context).size.width,
+                            child: Card(
+                              color: Theme.of(context).cardColor,
+                              elevation: 0,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(interviewData.content,
+                                    style: TextStyle(
+                                        fontSize: 13 *
+                                            _themeProvider.userFontSize /
+                                            0.8,
+                                        color: Theme.of(context)
+                                            .primaryColorLight)),
+                              ),
+                            )),
+                        SizedBox(height: 4.0),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Wrap(
+                              children: interviewData.tags!.map<Widget>(
+                            (tag) {
+                              bool isSelected = true;
+
+                              return GestureDetector(
+                                onTap: () {},
+                                child: Container(
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 4, vertical: 2),
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 2, horizontal: 8),
+                                      decoration: BoxDecoration(
+                                          color: Theme.of(context).canvasColor,
+                                          borderRadius:
+                                              BorderRadius.circular(18),
+                                          border: Border.all(
+                                              color: isSelected
+                                                  ? Theme.of(context)
+                                                      .primaryColor
+                                                  : Theme.of(context)
+                                                      .primaryColorDark,
+                                              width: 1.5)),
+                                      child: Text(
+                                        tag,
+                                        style: TextStyle(
+                                            color: isSelected
+                                                ? Theme.of(context).primaryColor
+                                                : Theme.of(context)
+                                                    .primaryColorDark,
+                                            fontSize: 12 *
+                                                _themeProvider.userFontSize /
+                                                0.8),
+                                      ),
+                                    )),
+                              );
+                            },
+                          ).toList()),
+                        ),
+                        Consumer<InterviewdataProvider>(
+                            builder: (context, provider, child) {
+                          return Container(
+                              width: MediaQuery.of(context).size.width,
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text("공감하기",
+                                        textScaleFactor: 1.5,
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorDark)),
+                                    _interviewLikeButton(interviewData),
+                                  ],
+                                ),
+                              ));
+                        }),
+                        SizedBox(height: 4.0),
+                        Column(
+                          children: [
+                            Container(
+                              child: Text('의견 주심에 감사합니다🤗 소중한 의견으로 발전해볼게요!',
+                                  textScaleFactor: 1.2,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).primaryColorDark)),
+                            ),
+                          ],
+                        ),
+                        _commentContent(interviewData),
                       ],
                     ),
-                  ],
+                  ),
                 ),
                 Column(
                   children: [
-                    _commentContent(interviewData),
-                    _commentTextInput(interviewData),
+                    _isCommentInputOpen
+                        ? _commentTextInput(interviewData, setState)
+                        : Container(),
                     _closeInterviewDetailButton()
                   ],
                 ),
               ],
             ),
-          ),
-        );
+          );
+        }));
       },
     );
   }
@@ -800,7 +818,8 @@ class _InterviewState extends State<Interview> {
                 style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
-  Future<dynamic> _myInterviewMenu(InterviewData interviewData) {
+  Future<dynamic> _myInterviewMenu(
+      InterviewData interviewData, StateSetter setState) {
     return showMenu(
       context: context,
       position: RelativeRect.fromRect(
@@ -821,6 +840,26 @@ class _InterviewState extends State<Interview> {
                   _interviewProvider.deleteInterviewdata(interviewData.id);
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
+                })),
+        PopupMenuItem(
+            child: ListTile(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+                leading: Icon(Icons.open_in_new,
+                    color: Theme.of(context).primaryColorLight),
+                title: Text(_isCommentInputOpen ? "댓글 닫기" : "댓글 열기",
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
+                onTap: () async {
+                  _isCommentInputOpen
+                      ? setState(() {
+                          _isCommentInputOpen = false;
+                          Navigator.of(context).pop();
+                        })
+                      : setState(() {
+                          _isCommentInputOpen = true;
+                          Navigator.of(context).pop();
+                        });
                 }))
       ],
     );
@@ -1314,7 +1353,7 @@ class _InterviewState extends State<Interview> {
           ]);
   }
 
-  Widget _commentTextInput(Interview) {
+  Widget _commentTextInput(Interview, StateSetter setState) {
     return Row(
       children: [
         Flexible(
@@ -1365,6 +1404,9 @@ class _InterviewState extends State<Interview> {
                       content: _commentInputCtrl.text)
                   .postComment();
               _commentInputCtrl.clear();
+              setState(() {
+                _isCommentInputOpen = false;
+              });
             },
           ),
         )
