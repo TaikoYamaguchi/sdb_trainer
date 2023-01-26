@@ -36,6 +36,9 @@ class PrefsProvider extends ChangeNotifier {
     _prefs.getBool('userest') == null
         ? await _prefs.setBool('userest', false)
         : null;
+    _prefs.getString('whichplan') == null
+        ? await _prefs.setString('whichplan', '')
+        : null;
 
     notifyListeners();
   }
@@ -79,7 +82,5 @@ class PrefsProvider extends ChangeNotifier {
     _prefs = await SharedPreferences.getInstance();
     await _prefs.setString('lastroutine', value);
     notifyListeners();
-
   }
-
 }
