@@ -603,8 +603,9 @@ class _InterviewState extends State<Interview> {
                                     interviewData.user_email ==
                                             _userProvider.userdata.email
                                         ? _myInterviewMenu(
-                                            interviewData, setState)
-                                        : null;
+                                            true, interviewData, setState)
+                                        : _myInterviewMenu(
+                                            false, interviewData, setState);
                                   },
                                   child: Icon(Icons.more_vert,
                                       color: Colors.grey, size: 18.0))
@@ -819,50 +820,79 @@ class _InterviewState extends State<Interview> {
   }
 
   Future<dynamic> _myInterviewMenu(
-      InterviewData interviewData, StateSetter setState) {
-    return showMenu(
-      context: context,
-      position: RelativeRect.fromRect(
-          _tapPosition & Size(30, 30), Offset.zero & Size(0, 0)),
-      items: [
-        PopupMenuItem(
-            child: ListTile(
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
-                leading: Icon(Icons.delete,
-                    color: Theme.of(context).primaryColorLight),
-                title: Text("삭제",
-                    style:
-                        TextStyle(color: Theme.of(context).primaryColorLight)),
-                onTap: () async {
-                  InterviewDelete(interview_id: interviewData.id)
-                      .deleteInterview();
-                  _interviewProvider.deleteInterviewdata(interviewData.id);
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                })),
-        PopupMenuItem(
-            child: ListTile(
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
-                leading: Icon(Icons.open_in_new,
-                    color: Theme.of(context).primaryColorLight),
-                title: Text(_isCommentInputOpen ? "댓글 닫기" : "댓글 열기",
-                    style:
-                        TextStyle(color: Theme.of(context).primaryColorLight)),
-                onTap: () async {
-                  _isCommentInputOpen
-                      ? setState(() {
-                          _isCommentInputOpen = false;
-                          Navigator.of(context).pop();
-                        })
-                      : setState(() {
-                          _isCommentInputOpen = true;
-                          Navigator.of(context).pop();
-                        });
-                }))
-      ],
-    );
+      bool isMe, InterviewData interviewData, StateSetter setState) {
+    return isMe
+        ? showMenu(
+            context: context,
+            position: RelativeRect.fromRect(
+                _tapPosition & Size(30, 30), Offset.zero & Size(0, 0)),
+            items: [
+              PopupMenuItem(
+                  child: ListTile(
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+                      leading: Icon(Icons.delete,
+                          color: Theme.of(context).primaryColorLight),
+                      title: Text("삭제",
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight)),
+                      onTap: () async {
+                        InterviewDelete(interview_id: interviewData.id)
+                            .deleteInterview();
+                        _interviewProvider
+                            .deleteInterviewdata(interviewData.id);
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                      })),
+              PopupMenuItem(
+                  child: ListTile(
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+                      leading: Icon(Icons.open_in_new,
+                          color: Theme.of(context).primaryColorLight),
+                      title: Text(_isCommentInputOpen ? "댓글 닫기" : "댓글 열기",
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight)),
+                      onTap: () async {
+                        _isCommentInputOpen
+                            ? setState(() {
+                                _isCommentInputOpen = false;
+                                Navigator.of(context).pop();
+                              })
+                            : setState(() {
+                                _isCommentInputOpen = true;
+                                Navigator.of(context).pop();
+                              });
+                      }))
+            ],
+          )
+        : showMenu(
+            context: context,
+            position: RelativeRect.fromRect(
+                _tapPosition & Size(30, 30), Offset.zero & Size(0, 0)),
+            items: [
+              PopupMenuItem(
+                  child: ListTile(
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+                      leading: Icon(Icons.open_in_new,
+                          color: Theme.of(context).primaryColorLight),
+                      title: Text(_isCommentInputOpen ? "댓글 닫기" : "댓글 열기",
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight)),
+                      onTap: () async {
+                        _isCommentInputOpen
+                            ? setState(() {
+                                _isCommentInputOpen = false;
+                                Navigator.of(context).pop();
+                              })
+                            : setState(() {
+                                _isCommentInputOpen = true;
+                                Navigator.of(context).pop();
+                              });
+                      }))
+            ],
+          );
   }
 
   void _showInterviewPostBottomSheet() {
