@@ -648,11 +648,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                 builder: (context, provider, child) {
               return Center(
                 child: Text(
-                    provider.userest
-                        ? provider.timeron < 0
-                            ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
-                            : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}'
-                        : '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
+                    provider.timeron < 0
+                        ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
+                        : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}',
                     textScaleFactor: 2.0,
                     style: TextStyle(
                         color: (provider.userest && provider.timeron < 0)
