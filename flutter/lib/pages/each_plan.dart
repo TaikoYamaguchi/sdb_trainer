@@ -31,9 +31,10 @@ class EachPlanDetails extends StatefulWidget {
 }
 
 class _EachPlanDetailsState extends State<EachPlanDetails> {
-  TextEditingController _workoutNameCtrl = TextEditingController(text: "");
-  TextEditingController _weightctrl = TextEditingController(text: "");
-  TextEditingController _repsctrl = TextEditingController(text: "");
+  final TextEditingController _workoutNameCtrl =
+      TextEditingController(text: "");
+  final TextEditingController _weightctrl = TextEditingController(text: "");
+  final TextEditingController _repsctrl = TextEditingController(text: "");
   var _workoutProvider;
   var _hisProvider;
   var _routinetimeProvider;
@@ -459,23 +460,22 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                   Row(
                                                     children: [
                                                       GestureDetector(
-                                                        child: Container(
-                                                          child: Text(
-                                                            '${((inplandata[index].sets[setindex].weight * refinfo.onerm / 100 / 2.5).floor() * 2.5).toStringAsFixed(1)}kg  X  ${inplandata[index].sets[setindex].reps}',
-                                                            textScaleFactor:
-                                                                1.7,
-                                                            style: TextStyle(
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColorLight,
+                                                          child: Container(
+                                                            child: Text(
+                                                              '${((inplandata[index].sets[setindex].weight * refinfo.onerm / 100 / 2.5).floor() * 2.5).toStringAsFixed(1)}kg  X  ${inplandata[index].sets[setindex].reps}',
+                                                              textScaleFactor:
+                                                                  1.7,
+                                                              style: TextStyle(
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .primaryColorLight,
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
-                                                        onTap: () {
-                                                          setSetting(
-                                                              index, setindex);
-                                                        },
-                                                      ),
+                                                          onTap: () {
+                                                            setSetting(index,
+                                                                setindex);
+                                                          }),
                                                       Theme(
                                                         data: ThemeData(
                                                             unselectedWidgetColor:
@@ -691,13 +691,13 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
   }
 
   void setSetting(int eindex, int sindex) {
-    showModalBottomSheet<void>(
+    showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (BuildContext context) {
         return Container(
-            height: 210,
+            height: 220,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               color: Theme.of(context).cardColor,
@@ -719,7 +719,12 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
           .exercisesdata.exercises
           .indexWhere((element) => element.name == exdata.ref_name)];
       _weightctrl.text = setdata.weight.toString();
+      _weightctrl.selection = TextSelection.fromPosition(
+          TextPosition(offset: _weightctrl.text.length));
       _repsctrl.text = setdata.reps.toString();
+      _repsctrl.selection = TextSelection.fromPosition(
+          TextPosition(offset: _repsctrl.text.length));
+
       double changeweight = 0.0;
       int changereps = 1;
       return Container(
@@ -834,7 +839,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                         enabledBorder: OutlineInputBorder(
                             borderSide:
                                 BorderSide(width: 3, color: Colors.grey)),
-                        hintText: "${setdata.weight}",
+                        hintText: "${setdata.reps}",
                         hintStyle: TextStyle(
                           fontSize: 21,
                           color: Theme.of(context).primaryColorLight,
