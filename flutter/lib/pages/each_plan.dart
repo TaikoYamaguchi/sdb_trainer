@@ -4,6 +4,7 @@ import 'package:expandable/expandable.dart';
 import 'package:sdb_trainer/pages/exercise_done.dart';
 import 'package:sdb_trainer/pages/upload_program.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
+import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
@@ -36,6 +37,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
   final TextEditingController _weightctrl = TextEditingController(text: "");
   final TextEditingController _repsctrl = TextEditingController(text: "");
   var _workoutProvider;
+  var _FamousedataProvider;
   var _hisProvider;
   var _routinetimeProvider;
   var _PopProvider;
@@ -473,6 +475,13 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                             ),
                                                           ),
                                                           onTap: () {
+                                                            _FamousedataProvider
+                                                                .gettempweight(
+                                                                    inplandata[
+                                                                            index]
+                                                                        .sets[
+                                                                            setindex]
+                                                                        .weight);
                                                             setSetting(index,
                                                                 setindex);
                                                           }),
@@ -697,7 +706,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (BuildContext context) {
         return Container(
-            height: 220,
+            height: 210,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               color: Theme.of(context).cardColor,
@@ -819,6 +828,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                         } else {
                           changeweight = double.parse(text);
                         }
+                        _FamousedataProvider.gettempweight(changeweight);
                       },
                     ),
                   ),
@@ -863,6 +873,22 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                Text("최종 무게: ",
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                Consumer<FamousdataProvider>(
+                    builder: (builder, provider, child) {
+                  return Text(
+                      "${((provider.plantempweight * uniqexinfo.onerm / 100 / 2.5).floor() * 2.5).toStringAsFixed(1)}kg",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
+                      ));
+                }),
+                Container(
+                  width: 50,
+                ),
                 ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.grey),
@@ -1192,6 +1218,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
         Provider.of<RoutineTimeProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
     _PopProvider.tutorpopoff();
+    _FamousedataProvider =
+        Provider.of<FamousdataProvider>(context, listen: false);
+
     return Consumer<PopProvider>(builder: (Builder, provider, child) {
       bool _popable = provider.isstacking;
       _popable == false

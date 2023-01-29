@@ -12,6 +12,8 @@ class FamousdataProvider extends ChangeNotifier {
   get week => _week;
   List<String> _tags = ['기타'];
   get tags => _tags;
+  var _plantempweight;
+  get plantempweight => _plantempweight;
 
   weekchangepre(index) {
     _week = index;
@@ -25,6 +27,11 @@ class FamousdataProvider extends ChangeNotifier {
 
   emptytags() {
     _tags = [];
+  }
+
+  gettempweight(weight) {
+    _plantempweight = weight;
+    notifyListeners();
   }
 
   weekchange(index) {
