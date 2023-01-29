@@ -30,8 +30,13 @@ class WorkoutdataProvider extends ChangeNotifier {
   }
 
   planboolcheck(rindex, eindex, sindex, newvalue) {
-    _workoutdata.routinedatas[rindex].exercises[0].plans[_workoutdata.routinedatas[rindex].exercises[0].progress].exercises[eindex].sets[sindex].ischecked =
-        newvalue;
+    _workoutdata
+        .routinedatas[rindex]
+        .exercises[0]
+        .plans[_workoutdata.routinedatas[rindex].exercises[0].progress]
+        .exercises[eindex]
+        .sets[sindex]
+        .ischecked = newvalue;
     notifyListeners();
   }
 
@@ -42,8 +47,20 @@ class WorkoutdataProvider extends ChangeNotifier {
   }
 
   plansetcheck(rindex, eindex, sindex, newweight, newreps) {
-    _workoutdata.routinedatas[rindex].exercises[0].plans[_workoutdata.routinedatas[rindex].exercises[0].progress].exercises[eindex].sets[sindex].weight = newweight;
-    _workoutdata.routinedatas[rindex].exercises[0].plans[_workoutdata.routinedatas[rindex].exercises[0].progress].exercises[eindex].sets[sindex].reps = newreps;
+    _workoutdata
+        .routinedatas[rindex]
+        .exercises[0]
+        .plans[_workoutdata.routinedatas[rindex].exercises[0].progress]
+        .exercises[eindex]
+        .sets[sindex]
+        .weight = newweight;
+    _workoutdata
+        .routinedatas[rindex]
+        .exercises[0]
+        .plans[_workoutdata.routinedatas[rindex].exercises[0].progress]
+        .exercises[eindex]
+        .sets[sindex]
+        .reps = newreps;
     notifyListeners();
   }
 
@@ -62,8 +79,15 @@ class WorkoutdataProvider extends ChangeNotifier {
     _workoutdata.routinedatas[rindex].exercises[eindex].sets.removeLast();
     notifyListeners();
   }
+
   plansetsminus(rindex, eindex) {
-    _workoutdata.routinedatas[rindex].exercises[0].plans[_workoutdata.routinedatas[rindex].exercises[0].progress].exercises[eindex].sets.removeLast();
+    _workoutdata
+        .routinedatas[rindex]
+        .exercises[0]
+        .plans[_workoutdata.routinedatas[rindex].exercises[0].progress]
+        .exercises[eindex]
+        .sets
+        .removeLast();
     notifyListeners();
   }
 
@@ -93,7 +117,12 @@ class WorkoutdataProvider extends ChangeNotifier {
   }
 
   planremoveexAt(rindex) {
-    _workoutdata.routinedatas[rindex].exercises[0].plans[_workoutdata.routinedatas[rindex].exercises[0].progress].exercises.removeLast();
+    _workoutdata
+        .routinedatas[rindex]
+        .exercises[0]
+        .plans[_workoutdata.routinedatas[rindex].exercises[0].progress]
+        .exercises
+        .removeLast();
     notifyListeners();
   }
 
@@ -103,12 +132,14 @@ class WorkoutdataProvider extends ChangeNotifier {
   }
 
   addplanAt(rindex, ex) {
-    _workoutdata.routinedatas[rindex].exercises[0].plans.insert(_workoutdata.routinedatas[rindex].exercises[0].progress+1,ex);
+    _workoutdata.routinedatas[rindex].exercises[0].plans.insert(
+        _workoutdata.routinedatas[rindex].exercises[0].progress + 1, ex);
     notifyListeners();
   }
 
   removeplanAt(rindex) {
-    _workoutdata.routinedatas[rindex].exercises[0].plans.removeAt(_workoutdata.routinedatas[rindex].exercises[0].progress);
+    _workoutdata.routinedatas[rindex].exercises[0].plans
+        .removeAt(_workoutdata.routinedatas[rindex].exercises[0].progress);
     notifyListeners();
   }
 
@@ -118,17 +149,33 @@ class WorkoutdataProvider extends ChangeNotifier {
   }
 
   planaddexAt(rindex, ex) {
-    _workoutdata.routinedatas[rindex].exercises[0].plans[_workoutdata.routinedatas[rindex].exercises[0].progress].exercises.add(ex);
+    _workoutdata
+        .routinedatas[rindex]
+        .exercises[0]
+        .plans[_workoutdata.routinedatas[rindex].exercises[0].progress]
+        .exercises
+        .add(ex);
     notifyListeners();
   }
 
   planchangeexnameAt(rindex, eindex, change) {
-    _workoutdata.routinedatas[rindex].exercises[0].plans[_workoutdata.routinedatas[rindex].exercises[0].progress].exercises[eindex].name = change;
+    _workoutdata
+        .routinedatas[rindex]
+        .exercises[0]
+        .plans[_workoutdata.routinedatas[rindex].exercises[0].progress]
+        .exercises[eindex]
+        .name = change;
+
     notifyListeners();
   }
 
   planchangeexrefnameAt(rindex, eindex, change) {
-    _workoutdata.routinedatas[rindex].exercises[0].plans[_workoutdata.routinedatas[rindex].exercises[0].progress].exercises[eindex].ref_name = change;
+    _workoutdata
+        .routinedatas[rindex]
+        .exercises[0]
+        .plans[_workoutdata.routinedatas[rindex].exercises[0].progress]
+        .exercises[eindex]
+        .ref_name = change;
     notifyListeners();
   }
 
@@ -146,21 +193,23 @@ class WorkoutdataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  setsplus(rindex, eindex) {
+  setsplus(rindex, eindex, lastset) {
     _workoutdata.routinedatas[rindex].exercises[eindex].sets.add(new Sets(
         index: 0.0,
-        weight: 0.0,
-        reps: 1,
+        weight: lastset.weight,
+        reps: lastset.reps,
         ischecked: false));
     notifyListeners();
   }
 
   plansetsplus(rindex, eindex) {
-    _workoutdata.routinedatas[rindex].exercises[0].plans[_workoutdata.routinedatas[rindex].exercises[0].progress].exercises[eindex].sets.add(new Sets(
-        index: 0.0,
-        weight: 0.0,
-        reps: 1,
-        ischecked: false));
+    _workoutdata
+        .routinedatas[rindex]
+        .exercises[0]
+        .plans[_workoutdata.routinedatas[rindex].exercises[0].progress]
+        .exercises[eindex]
+        .sets
+        .add(new Sets(index: 0.0, weight: 0.0, reps: 1, ischecked: false));
     notifyListeners();
   }
 }

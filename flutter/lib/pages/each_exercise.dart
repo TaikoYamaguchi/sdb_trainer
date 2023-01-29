@@ -750,8 +750,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                                             _sets.length -
                                                                                 1
                                                                         ? [
-                                                                            _workoutProvider.setsplus(widget.rindex,
-                                                                                pindex),
+                                                                            _workoutProvider.setsplus(
+                                                                                widget.rindex,
+                                                                                pindex,
+                                                                                _sets.last),
                                                                             _isSetChanged =
                                                                                 true,
                                                                             print("jjjjjjjjjjjjjj"),
@@ -803,7 +805,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                                       .setsplus(
                                                                           widget
                                                                               .rindex,
-                                                                          pindex),
+                                                                          pindex,
+                                                                          _sets
+                                                                              .last),
                                                                   _isSetChanged =
                                                                       true,
                                                                   weightController[
@@ -1028,7 +1032,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                     onPressed: () {
                                       _isSetChanged = true;
                                       _workoutProvider.setsplus(
-                                          widget.rindex, pindex);
+                                          widget.rindex, pindex, _sets.last);
                                       weightController[pindex]
                                           .controllerlist
                                           .add(new TextEditingController(
@@ -1732,7 +1736,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                                       index ==
                                                                               _sets.length - 1
                                                                           ? [
-                                                                              _workoutProvider.setsplus(widget.rindex, pindex),
+                                                                              _workoutProvider.setsplus(widget.rindex, pindex, _sets.last),
                                                                               _isSetChanged = true,
                                                                               print("jjjjjjjjjjjjjj"),
                                                                               weightController[pindex].controllerlist.add(new TextEditingController(text: provider2.userdata.bodyStats.last.weight.toString())),
@@ -1786,7 +1790,9 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                                     _workoutProvider.setsplus(
                                                                         widget
                                                                             .rindex,
-                                                                        pindex),
+                                                                        pindex,
+                                                                        _sets
+                                                                            .last),
                                                                     _isSetChanged =
                                                                         true,
                                                                     weightController[pindex].controllerlist.add(new TextEditingController(
@@ -1998,7 +2004,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                       onPressed: () {
                                         _isSetChanged = true;
                                         _workoutProvider.setsplus(
-                                            widget.rindex, pindex);
+                                            widget.rindex, pindex, _sets.last);
                                         weightController[pindex]
                                             .controllerlist
                                             .add(new TextEditingController(
@@ -2563,7 +2569,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                                       index ==
                                                                               _sets.length - 1
                                                                           ? [
-                                                                              _workoutProvider.setsplus(widget.rindex, pindex),
+                                                                              _workoutProvider.setsplus(widget.rindex, pindex, _sets.last),
                                                                               _isSetChanged = true,
                                                                               print("jjjjjjjjjjjjjj"),
                                                                               weightController[pindex].controllerlist.add(new TextEditingController(text: provider2.userdata.bodyStats.last.weight.toString())),
@@ -2618,22 +2624,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                                     _workoutProvider.setsplus(
                                                                         widget
                                                                             .rindex,
-                                                                        pindex),
+                                                                        pindex,
+                                                                        _sets
+                                                                            .last),
                                                                     _isSetChanged =
                                                                         true,
-                                                                    weightController[pindex].controllerlist.add(new TextEditingController(
-                                                                        text: provider2
-                                                                            .userdata
-                                                                            .bodyStats
-                                                                            .last
-                                                                            .weight
-                                                                            .toString())),
-                                                                    repsController[
-                                                                            pindex]
-                                                                        .controllerlist
-                                                                        .add(new TextEditingController(
-                                                                            text:
-                                                                                null)),
                                                                     showToast(
                                                                         "세트를 추가했어요! 다음으로 넘어갈 수도 있어요")
                                                                   ]
@@ -2827,7 +2822,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                       onPressed: () {
                                         _isSetChanged = true;
                                         _workoutProvider.setsplus(
-                                            widget.rindex, pindex);
+                                            widget.rindex, pindex, _sets.last);
                                         weightController[pindex]
                                             .controllerlist
                                             .add(new TextEditingController(
