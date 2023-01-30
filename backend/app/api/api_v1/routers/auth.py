@@ -1,6 +1,6 @@
 from app.core.sms import send_sms_find_user, verification_user
 from app.db.crud import create_user, get_friends_by_email, get_user_by_email, get_user_by_phone_number, edit_user, get_user_by_nickname, get_user_by_sms_verifiaction, get_users_by_nickname, manage_like_by_liked_email, get_users, delete_user
-from app.db.schemas import FindUser, FindUserCode, User, UserCreate, UserEdit, ManageLikeUser, UserBase
+from app.db.schemas import FindUser, FindUserCode, User, UserCore, UserCreate, UserEdit, ManageLikeUser, UserBase
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import APIRouter, Depends, Request, HTTPException, status
 from datetime import timedelta
@@ -225,7 +225,7 @@ async def verify_sms(
 async def user_edit(
     request: Request,
     email: str,
-    user: UserBase,
+    user: UserCore,
     db=Depends(get_db),
 ):
     """

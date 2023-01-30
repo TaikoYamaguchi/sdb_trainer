@@ -274,6 +274,8 @@ class _ProfileBodyState extends State<ProfileBody> {
                   _toDay.toString(),
                   double.parse(_userWeightCtrl.text),
                   _userProvider.userdata.bodyStats.last.weight);
+              showToast("수정 완료");
+              Navigator.pop(context);
             },
             child: Text(isLoading ? 'loggin in.....' : "프로필 수정",
                 textScaleFactor: 1.5,

@@ -1274,6 +1274,7 @@ class _InterviewState extends State<Interview> {
                           transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
                 },
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     user.image == ""
                         ? Icon(
@@ -1390,6 +1391,7 @@ class _InterviewState extends State<Interview> {
           child: Padding(
             padding: const EdgeInsets.all(4.0),
             child: TextFormField(
+              maxLines: null,
               keyboardType: TextInputType.multiline,
               controller: _commentInputCtrl,
               style: TextStyle(
