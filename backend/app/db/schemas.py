@@ -4,8 +4,18 @@ import typing as t
 
 from pydantic.types import Json
 
+class UserCore(BaseModel):
+    username:str
+    nickname : str
+    image: str = ""
+    height:float
+    weight:float
+    height_unit:str
+    weight_unit:str
+    favor_exercise:list
 
-class UserBase(BaseModel):
+
+class UserBase(UserCore):
     username:str
     nickname : str
     image: str = ""
