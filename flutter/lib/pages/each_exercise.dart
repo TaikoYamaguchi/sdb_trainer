@@ -100,6 +100,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
         brightness: _themeProvider.userThemeDark == "dark"
             ? Brightness.dark
             : Brightness.light,
+        textTheme: CupertinoTextThemeData(
+            pickerTextStyle: TextStyle(
+                fontSize: 16,
+                color: _themeProvider.userThemeDark == "dark"
+                    ? Colors.white
+                    : Colors.black)),
       ),
       child: CupertinoTimerPicker(
         mode: CupertinoTimerPickerMode.hms,
@@ -121,13 +127,23 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
         brightness: _themeProvider.userThemeDark == "dark"
             ? Brightness.dark
             : Brightness.light,
+        textTheme: CupertinoTextThemeData(
+            pickerTextStyle: TextStyle(
+                fontSize: 16,
+                color: _themeProvider.userThemeDark == "dark"
+                    ? Colors.white
+                    : Colors.black)),
       ),
       child: CupertinoPicker(
         children: List.generate(
           100,
-          (index) => Center(child: Text("${index + 1}")),
+          (index) => Center(
+              child: Text("${index + 1}",
+                  style: TextStyle(
+                    fontSize: 22,
+                  ))),
         ),
-        itemExtent: 50.0,
+        itemExtent: 40.0,
         scrollController: FixedExtentScrollController(initialItem: reps),
         onSelectedItemChanged: (int repindex) {
           _workoutProvider.repscheck(
@@ -143,6 +159,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
         brightness: _themeProvider.userThemeDark == "dark"
             ? Brightness.dark
             : Brightness.light,
+        textTheme: CupertinoTextThemeData(
+            pickerTextStyle: TextStyle(
+                fontSize: 16,
+                color: _themeProvider.userThemeDark == "dark"
+                    ? Colors.white
+                    : Colors.black)),
       ),
       child: CupertinoTimerPicker(
         mode: CupertinoTimerPickerMode.ms,
@@ -163,7 +185,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
 
   Widget _buildContainer(Widget picker) {
     return Container(
-      height: 280,
+      height: 305,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         color: Theme.of(context).cardColor,
@@ -171,6 +193,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
       padding: const EdgeInsets.only(top: 6.0),
       child: Column(
         children: [
+          /*
           Padding(
             padding: EdgeInsets.fromLTRB(12, 4, 12, 12),
             child: Container(
@@ -181,14 +204,30 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                   borderRadius: BorderRadius.all(Radius.circular(8.0))),
             ),
           ),
+          */
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context, rootNavigator: true).pop();
+                      },
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Theme.of(context).cardColor)),
+                      child: Text('Done',
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight)))),
+              Container(width: 10)
+            ],
+          ),
           GestureDetector(
             onTap: () {},
             child: SafeArea(
               top: false,
-              child: DefaultTextStyle(
-                style: TextStyle(
-                  fontSize: 22.0,
-                ),
+              child: Container(
+                height: 215,
                 child: picker,
               ),
             ),
