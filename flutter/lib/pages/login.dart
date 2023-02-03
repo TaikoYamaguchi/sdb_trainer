@@ -111,9 +111,7 @@ class LoginPageState extends State<LoginPage> {
                       : _isiOS
                           ? _loginSocialButton("apple", context)
                           : Container(),
-                  widget.isUpdateNeeded
-                      ? _emailLoginButton(context)
-                      : Container(),
+                  _emailLoginButton(context),
                   SizedBox(height: 42),
                   _isEmailLogin ? _findUser(context) : Container()
                 ]),
