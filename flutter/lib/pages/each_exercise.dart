@@ -963,40 +963,51 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                               .userFontSize /
                                                           0.8)),
                                               Container(
-                                                  width: 40,
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      showCupertinoModalPopup<
-                                                              void>(
-                                                          context: context,
-                                                          builder: (BuildContext
-                                                              context) {
-                                                            return _buildContainer(
-                                                                Container(
-                                                              height: 200,
-                                                              child: repsPicker(
-                                                                  _sets[index]
-                                                                          .reps -
-                                                                      1,
-                                                                  pindex,
-                                                                  index),
-                                                            ));
-                                                          });
-                                                    },
-                                                    child: Text(
-                                                      "${_sets[index].reps}",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                        fontSize: _themeProvider
-                                                                .userFontSize *
-                                                            21 /
-                                                            0.8,
-                                                        color: Theme.of(context)
-                                                            .primaryColorLight,
-                                                      ),
+                                                width: 40,
+                                                child: TextField(
+                                                  controller: repsController[
+                                                          pindex]
+                                                      .controllerlist[index],
+                                                  keyboardType:
+                                                      TextInputType.number,
+                                                  style: TextStyle(
+                                                    fontSize: _themeProvider
+                                                            .userFontSize *
+                                                        21 /
+                                                        0.8,
+                                                    color: Theme.of(context)
+                                                        .primaryColorLight,
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                  decoration: InputDecoration(
+                                                    border: InputBorder.none,
+                                                    hintText:
+                                                        "${_sets[index].reps}",
+                                                    hintStyle: TextStyle(
+                                                      fontSize: 21 *
+                                                          _themeProvider
+                                                              .userFontSize /
+                                                          0.8,
+                                                      color: Theme.of(context)
+                                                          .primaryColorLight,
                                                     ),
-                                                  )),
+                                                  ),
+                                                  onChanged: (text) {
+                                                    int changereps;
+                                                    if (text == "") {
+                                                      changereps = 1;
+                                                    } else {
+                                                      changereps =
+                                                          int.parse(text);
+                                                    }
+                                                    _workoutProvider.repscheck(
+                                                        widget.rindex,
+                                                        pindex,
+                                                        index,
+                                                        changereps);
+                                                  },
+                                                ),
+                                              ),
                                               Container(
                                                   width: 70,
                                                   child: (_sets[index].reps !=
@@ -1930,42 +1941,52 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                                 .userFontSize /
                                                             0.8)),
                                                 Container(
-                                                    width: 40,
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        showCupertinoModalPopup<
-                                                                void>(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return _buildContainer(
-                                                                  Container(
-                                                                height: 200,
-                                                                child: repsPicker(
-                                                                    _sets[index]
-                                                                            .reps -
-                                                                        1,
-                                                                    pindex,
-                                                                    index),
-                                                              ));
-                                                            });
-                                                      },
-                                                      child: Text(
-                                                        "${_sets[index].reps}",
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: TextStyle(
-                                                          fontSize: _themeProvider
-                                                                  .userFontSize *
-                                                              21 /
-                                                              0.8,
-                                                          color: Theme.of(
-                                                                  context)
-                                                              .primaryColorLight,
-                                                        ),
+                                                  width: 40,
+                                                  child: TextField(
+                                                    controller: repsController[
+                                                            pindex]
+                                                        .controllerlist[index],
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    style: TextStyle(
+                                                      fontSize: _themeProvider
+                                                              .userFontSize *
+                                                          21 /
+                                                          0.8,
+                                                      color: Theme.of(context)
+                                                          .primaryColorLight,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                    decoration: InputDecoration(
+                                                      border: InputBorder.none,
+                                                      hintText:
+                                                          "${_sets[index].reps}",
+                                                      hintStyle: TextStyle(
+                                                        fontSize: 21 *
+                                                            _themeProvider
+                                                                .userFontSize /
+                                                            0.8,
+                                                        color: Theme.of(context)
+                                                            .primaryColorLight,
                                                       ),
-                                                    )),
+                                                    ),
+                                                    onChanged: (text) {
+                                                      int changereps;
+                                                      if (text == "") {
+                                                        changereps = 1;
+                                                      } else {
+                                                        changereps =
+                                                            int.parse(text);
+                                                      }
+                                                      _workoutProvider
+                                                          .repscheck(
+                                                              widget.rindex,
+                                                              pindex,
+                                                              index,
+                                                              changereps);
+                                                    },
+                                                  ),
+                                                ),
                                                 Container(
                                                     width: 70,
                                                     child: (_sets[index].reps !=

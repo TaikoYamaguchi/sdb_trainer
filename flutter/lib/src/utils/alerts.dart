@@ -900,6 +900,9 @@ class _setWeightAlertState extends State<setWeightAlert> {
         .weight
         .abs()
         .toString();
+    _additionalweightctrl.selection = TextSelection.fromPosition(
+        TextPosition(offset: _additionalweightctrl.text.length));
+
     _routinemenuProvider.boolchangeto(_workoutProvider
                 .workoutdata
                 .routinedatas[widget.rindex]
