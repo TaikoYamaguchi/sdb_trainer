@@ -5,6 +5,7 @@ import 'package:sdb_trainer/pages/statics.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
+import 'package:sdb_trainer/providers/themeMode.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
@@ -37,6 +38,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
   late Map<DateTime, List<historyModel.SDBdata>> selectedEvents;
   var _userProvider;
   var _exProvider;
+  var _themeProvider;
   var _PopProvider;
   var _workoutProvider;
   TextEditingController _exercisenoteCtrl = TextEditingController(text: '');
@@ -1331,7 +1333,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                             width: 35,
                             child: SvgPicture.asset("assets/svg/multiply.svg",
                                 color: Theme.of(context).primaryColorLight,
-                                height: 19)),
+                                height:
+                                    14 * _themeProvider.userFontSize / 0.8)),
                         Container(
                           width: 40,
                           child: Text(
@@ -1395,6 +1398,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
     _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
     _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
     _getChartSourcefromDay();
+    _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
 
     return Consumer<PopProvider>(builder: (builder, provider, child) {

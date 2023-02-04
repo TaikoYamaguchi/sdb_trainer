@@ -72,18 +72,7 @@ class _FriendHistoryState extends State<FriendHistory>
                 width: MediaQuery.of(context).size.width,
                 child: Consumer<HistorydataProvider>(
                     builder: (builder, provider, child) {
-                  var exercises = provider
-                      .historydataAll
-                      .sdbdatas[provider.historydataAll.sdbdatas
-                          .indexWhere((sdbdata) {
-                    if (sdbdata.id == widget.sdbdata.id) {
-                      return true;
-                    } else {
-                      return false;
-                    }
-                  })]
-                      .exercises;
-                  return _onechartExercisesWidget(exercises);
+                  return _onechartExercisesWidget(widget.sdbdata.exercises);
                 }))),
       ),
     );
@@ -94,6 +83,7 @@ class _FriendHistoryState extends State<FriendHistory>
     return ListView.separated(
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext _context, int index) {
+          print(index);
           return _onechartExerciseWidget(exercises, widget.sdbdata.id,
               _userProvider.userdata, true, index);
         },
@@ -328,9 +318,9 @@ class _FriendHistoryState extends State<FriendHistory>
                         Container(
                             width: 35,
                             child: SvgPicture.asset("assets/svg/multiply.svg",
-                                color: Theme.of(context).primaryColorLight,
+                                color: Colors.grey,
                                 height:
-                                    19 * _themeProvider.userFontSize / 0.8)),
+                                    14 * _themeProvider.userFontSize / 0.8)),
                         Container(
                           width: 40,
                           child: Text(
