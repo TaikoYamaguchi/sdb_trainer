@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class PrefsProvider extends ChangeNotifier {
   bool? _eachworkouttutor = false;
   bool? get eachworkouttutor => _eachworkouttutor;
+  String? _nowonplan = "";
+  String? get nowonplan => _nowonplan;
   bool? _stepone = false;
   bool? get stepone => _stepone;
   bool? _steptwo = false;
@@ -36,9 +38,12 @@ class PrefsProvider extends ChangeNotifier {
     _prefs.getBool('userest') == null
         ? await _prefs.setBool('userest', false)
         : null;
-    _prefs.getString('whichplan') == null
-        ? await _prefs.setString('whichplan', '')
-        : null;
+    _prefs.getString('nowonplan') == null
+        ? [
+            await _prefs.setString('nowonplan', ''),
+            _nowonplan = _prefs.getString('nowonplan')
+          ]
+        : _nowonplan = _prefs.getString('nowonplan');
 
     notifyListeners();
   }
@@ -81,6 +86,13 @@ class PrefsProvider extends ChangeNotifier {
   lastplan(value) async {
     _prefs = await SharedPreferences.getInstance();
     await _prefs.setString('lastroutine', value);
+    notifyListeners();
+  }
+
+  setplan(name) async {
+    await _prefs.setString('nowonplan', name);
+    _nowonplan = _prefs.getString('nowonplan');
+
     notifyListeners();
   }
 }

@@ -124,9 +124,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                               transitionEffect:
                                   TransitionEffect.RIGHT_TO_LEFT));
                 },
-                icon: Icon(
-                  Icons.cloud_upload_rounded,
-                ))
+                icon: Icon(Icons.cloud_upload_rounded,
+                    color: Theme.of(context).primaryColorLight))
           ],
           backgroundColor: Theme.of(context).canvasColor,
         ));
@@ -657,9 +656,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                 builder: (context, provider, child) {
               return Center(
                 child: Text(
-                    provider.timeron < 0
-                        ? '-${(-provider.timeron / 60).floor().toString()}:${((-provider.timeron % 60) / 10).floor().toString()}${((-provider.timeron % 60) % 10).toString()}'
-                        : '${(provider.timeron / 60).floor().toString()}:${((provider.timeron % 60) / 10).floor().toString()}${((provider.timeron % 60) % 10).toString()}',
+                    '${(provider.routineTime / 60).floor().toString()}:${((provider.routineTime % 60) / 10).floor().toString()}${((provider.routineTime % 60) % 10).toString()}',
                     textScaleFactor: 2.0,
                     style: TextStyle(
                         color: (provider.userest && provider.timeron < 0)
@@ -667,8 +664,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                             : Theme.of(context).primaryColorLight)),
               );
             })),
-            Container(child: Consumer<RoutineTimeProvider>(
-                builder: (builder, provider, child) {
+            Container(child: Consumer2<RoutineTimeProvider, PrefsProvider>(
+                builder: (builder, provider, provider2, child) {
               return ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     primary: (provider.nowonrindex != widget.rindex) &&
@@ -684,7 +681,11 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                           if (_routinetimeProvider.isstarted)
                             {_displayFinishAlert()}
                           else
-                            {provider.routinecheck(widget.rindex)}
+                            {
+                              provider.routinecheck(widget.rindex),
+                              provider2.setplan(_workoutProvider
+                                  .workoutdata.routinedatas[widget.rindex].name)
+                            }
                         ];
                 },
                 child: Text((provider.nowonrindex != widget.rindex) &&
