@@ -20,6 +20,7 @@ import 'package:transition/transition.dart';
 import 'package:tutorial/tutorial.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:expandable/expandable.dart';
+import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 
 class EachWorkoutDetails extends StatefulWidget {
   int rindex;
@@ -41,6 +42,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
   var _exProvider;
   late List<hisdata.Exercises> exerciseList = [];
   bool _inittutor = true;
+  bool _exImageOpen = true;
 
   List<Map<String, dynamic>> datas = [];
   double top = 0;
@@ -390,7 +392,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                           bottomRight: Radius.circular(bottom),
                                           topLeft: Radius.circular(top),
                                           bottomLeft: Radius.circular(bottom))),
-                                  height: 76,
+                                  height: _exImageOpen ? 64 : 40,
                                   child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
@@ -398,24 +400,29 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                       Expanded(
                                         child: Row(
                                           children: [
-                                            _exImage != ""
-                                                ? Image.asset(
-                                                    _exImage,
-                                                    height: 64,
-                                                    width: 64,
-                                                    fit: BoxFit.cover,
-                                                  )
-                                                : Container(
-                                                    height: 64,
-                                                    width: 64,
-                                                    child: Icon(
-                                                        Icons
-                                                            .image_not_supported,
-                                                        color: Theme.of(context)
-                                                            .primaryColorDark),
-                                                    decoration: BoxDecoration(
-                                                        shape: BoxShape.circle),
-                                                  ),
+                                            _exImageOpen
+                                                ? _exImage != ""
+                                                    ? Image.asset(
+                                                        _exImage,
+                                                        height: 64,
+                                                        width: 64,
+                                                        fit: BoxFit.cover,
+                                                      )
+                                                    : Container(
+                                                        height: 64,
+                                                        width: 64,
+                                                        child: Icon(
+                                                            Icons
+                                                                .image_not_supported,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColorDark),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle),
+                                                      )
+                                                : Container(),
                                             SizedBox(width: 8),
                                             Expanded(
                                               child: Column(
@@ -431,22 +438,24 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                                         color: Theme.of(context)
                                                             .primaryColorLight),
                                                   ),
-                                                  Container(
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                            "Rest: ${exlist[index].rest}",
-                                                            textScaleFactor:
-                                                                1.0,
-                                                            style: TextStyle(
-                                                                color: Color(
-                                                                    0xFF717171))),
-                                                      ],
-                                                    ),
-                                                  )
+                                                  _exImageOpen
+                                                      ? Container(
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                  "Rest: ${exlist[index].rest}",
+                                                                  textScaleFactor:
+                                                                      1.0,
+                                                                  style: TextStyle(
+                                                                      color: Color(
+                                                                          0xFF717171))),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      : Container()
                                                 ],
                                               ),
                                             ),
@@ -659,7 +668,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
               expandedTitleScale: 1.2,
               titlePaddingTween: EdgeInsetsTween(
                   begin: EdgeInsets.only(left: 12.0, bottom: 8),
-                  end: EdgeInsets.only(left: 60.0, bottom: 8)),
+                  end: EdgeInsets.only(left: 60.0, bottom: 8, right: 40)),
               title: GestureDetector(
                 onTap: () {
                   showDialog(
@@ -669,7 +678,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                       });
                 },
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
                       child: Consumer<WorkoutdataProvider>(
@@ -682,6 +691,37 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                         );
                       }),
                     ),
+                    SizedBox(
+                      width: 100,
+                      height: 30,
+                      child: CustomSlidingSegmentedControl(
+                          children: {
+                            true: Text("on",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: _exImageOpen
+                                        ? Theme.of(context).buttonColor
+                                        : Theme.of(context).primaryColorLight)),
+                            false: Text("off",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: _exImageOpen
+                                        ? Theme.of(context).primaryColorLight
+                                        : Theme.of(context).buttonColor))
+                          },
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          innerPadding: const EdgeInsets.all(4),
+                          thumbDecoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: Theme.of(context).primaryColor),
+                          onValueChanged: (bool value) {
+                            setState(() {
+                              _exImageOpen = value;
+                            });
+                          }),
+                    )
                   ],
                 ),
               ),

@@ -147,7 +147,6 @@ class ExerciseState extends State<Exercise> {
                   final List<Color> color = <Color>[];
                   color.add(Color(0xFffc60a8).withOpacity(1.0));
                   color.add(Theme.of(context).primaryColor.withOpacity(1.0));
-
                   final List<double> stops = <double>[];
                   stops.add(0.3);
                   stops.add(1.0);
