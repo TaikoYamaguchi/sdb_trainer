@@ -2529,7 +2529,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                     textAlign: TextAlign.center,
                                   )),
                               Container(
-                                  width: 140,
+                                  width: 110,
                                   child: Text(
                                     "시간(시:분:초)",
                                     textScaleFactor: 1.1,
@@ -2786,7 +2786,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                   ),
                                                 ),
                                                 Container(
-                                                    width: 140,
+                                                    width: 110,
                                                     child: Center(
                                                       child: InkWell(
                                                         onTap: () {
