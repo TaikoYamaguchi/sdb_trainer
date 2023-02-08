@@ -225,7 +225,7 @@ class ExerciseState extends State<Exercise> {
                                       : Theme.of(context).cardColor,
                                   borderRadius: BorderRadius.circular(15.0)),
                               child: InkWell(
-                                highlightColor: Colors.grey,
+                                hoverColor: Colors.grey,
                                 borderRadius: BorderRadius.circular(15.0),
                                 onTap: () {
                                   _PopProvider.exstackup(1);
