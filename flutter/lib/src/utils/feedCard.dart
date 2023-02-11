@@ -265,6 +265,45 @@ class _FeedCardState extends State<FeedCard> {
                             ],
                           ),
                         ),
+                        SDBdata.like.length != 0
+                            ? GestureDetector(
+                                onTap: () {
+                                  _showLikeFreindBottomSheet(SDBdata);
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10.0,
+                                      right: 10.0,
+                                      top: 0.0,
+                                      bottom: 10.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          SDBdata.like.length == 1
+                                              ? _userProvider
+                                                      .userFriendsAll.userdatas
+                                                      .where((user) =>
+                                                          user.email ==
+                                                          SDBdata.like[0])
+                                                      .toList()[0]
+                                                      .nickname +
+                                                  "님이 좋아합니다"
+                                              : _userProvider
+                                                      .userFriendsAll.userdatas
+                                                      .where((user) =>
+                                                          user.email ==
+                                                          SDBdata.like[0])
+                                                      .toList()[0]
+                                                      .nickname +
+                                                  "님 외 1명이 좋아합니다",
+                                          textScaleFactor: 1.1,
+                                          style: TextStyle(color: Colors.grey))
+                                    ],
+                                  ),
+                                ),
+                              )
+                            : Container(),
                         _photoInfo["feedList"] == widget.feedListCtrl &&
                                 _photoInfo["feedVisible"] == true &&
                                 SDBdata.image.length != 0
@@ -1150,6 +1189,139 @@ class _FeedCardState extends State<FeedCard> {
           ],
         ),
       ),
+    );
+  }
+
+  void _showLikeFreindBottomSheet(SDBdata) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      builder: (BuildContext context) {
+        return GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Container(
+              padding: EdgeInsets.all(12.0),
+              height: MediaQuery.of(context).size.height * 0.5,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                color: Theme.of(context).cardColor,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(12, 4, 12, 12),
+                    child: Container(
+                      height: 6.0,
+                      width: 80.0,
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColorDark,
+                          borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                    ),
+                  ),
+                  Expanded(
+                      child: SingleChildScrollView(
+                          child: ListView.separated(
+                              shrinkWrap: true,
+                              itemBuilder: (BuildContext _context, int index) {
+                                var userLikesEmail = _userProvider
+                                    .userFriendsAll.userdatas
+                                    .where((user) =>
+                                        user.email == SDBdata.like[index])
+                                    .toList()[0];
+                                return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 5),
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              widget.openUserDetail
+                                                  ? Navigator.push(
+                                                      context,
+                                                      Transition(
+                                                          child: FriendProfile(
+                                                              user:
+                                                                  userLikesEmail),
+                                                          transitionEffect:
+                                                              TransitionEffect
+                                                                  .RIGHT_TO_LEFT))
+                                                  : null;
+                                            },
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                userLikesEmail.image == ""
+                                                    ? Icon(
+                                                        Icons.account_circle,
+                                                        color: Colors.grey,
+                                                        size: 46.0,
+                                                      )
+                                                    : CachedNetworkImage(
+                                                        imageUrl: userLikesEmail
+                                                            .image,
+                                                        imageBuilder: (context,
+                                                                imageProivder) =>
+                                                            Container(
+                                                          height: 46,
+                                                          width: 46,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius.all(
+                                                                          Radius.circular(
+                                                                              50)),
+                                                                  image:
+                                                                      DecorationImage(
+                                                                    image:
+                                                                        imageProivder,
+                                                                    fit: BoxFit
+                                                                        .cover,
+                                                                  )),
+                                                        ),
+                                                      ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 5.0),
+                                                  child: Text(
+                                                    userLikesEmail.nickname,
+                                                    textScaleFactor: 1.5,
+                                                    style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .primaryColorLight),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ]));
+                              },
+                              separatorBuilder:
+                                  (BuildContext _context, int index) {
+                                return Container(
+                                  alignment: Alignment.center,
+                                  height: 0.3,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: 0.3,
+                                    color: Theme.of(context).primaryColorDark,
+                                  ),
+                                );
+                              },
+                              itemCount: SDBdata.like.length))),
+                ],
+              )),
+        );
+      },
     );
   }
 
