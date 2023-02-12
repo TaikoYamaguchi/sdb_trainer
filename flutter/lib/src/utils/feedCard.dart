@@ -1205,7 +1205,7 @@ class _FeedCardState extends State<FeedCard> {
           },
           child: Container(
               padding: EdgeInsets.all(12.0),
-              height: MediaQuery.of(context).size.height * 0.5,
+              height: MediaQuery.of(context).size.height * 0.7,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                 color: Theme.of(context).cardColor,
