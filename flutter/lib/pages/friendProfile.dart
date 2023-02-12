@@ -75,119 +75,120 @@ class _FriendProfileState extends State<FriendProfile> {
         child: SingleChildScrollView(
           child: Container(
             width: MediaQuery.of(context).size.width,
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  GestureDetector(
-                      onTap: () {},
-                      child: widget.user.image == ""
-                          ? Icon(
-                              Icons.account_circle,
-                              color: Colors.grey,
-                              size: 160.0,
-                            )
-                          : CachedNetworkImage(
-                              imageUrl: widget.user.image,
-                              imageBuilder: (context, imageProivder) =>
-                                  Container(
-                                height: 160.0,
-                                width: 160.0,
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(50)),
-                                    image: DecorationImage(
-                                      image: imageProivder,
-                                      fit: BoxFit.cover,
-                                    )),
-                              ),
-                            )),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          widget.user.liked.length > 0
-                              ? _showLikeFreindBottomSheet(widget.user.liked)
-                              : null;
-                        },
-                        child: SizedBox(
-                          width: 70,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                widget.user.liked.length.toString(),
-                                textScaleFactor: 2.0,
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
+            child:
+                Consumer<UserdataProvider>(builder: (builder, provider, child) {
+              return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    GestureDetector(
+                        onTap: () {},
+                        child: widget.user.image == ""
+                            ? Icon(
+                                Icons.account_circle,
+                                color: Colors.grey,
+                                size: 160.0,
+                              )
+                            : CachedNetworkImage(
+                                imageUrl: widget.user.image,
+                                imageBuilder: (context, imageProivder) =>
+                                    Container(
+                                  height: 160.0,
+                                  width: 160.0,
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(50)),
+                                      image: DecorationImage(
+                                        image: imageProivder,
+                                        fit: BoxFit.cover,
+                                      )),
                                 ),
-                              ),
-                              Text("팔로워",
-                                  textScaleFactor: 1.3,
+                              )),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            widget.user.liked.length > 0
+                                ? _showLikeFreindBottomSheet(widget.user.liked)
+                                : null;
+                          },
+                          child: SizedBox(
+                            width: 70,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  widget.user.liked.length.toString(),
+                                  textScaleFactor: 2.0,
                                   style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorLight))
-                            ],
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          widget.user.like.length > 0
-                              ? _showLikeFreindBottomSheet(widget.user.like)
-                              : null;
-                        },
-                        child: SizedBox(
-                          width: 70,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                widget.user.like.length.toString(),
-                                textScaleFactor: 2.0,
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
                                 ),
-                              ),
-                              Text("팔로잉",
-                                  textScaleFactor: 1.3,
-                                  style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorLight))
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 70,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              widget.user.history_cnt.toString(),
-                              textScaleFactor: 2.0,
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                              ),
+                                Text("팔로워",
+                                    textScaleFactor: 1.3,
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .primaryColorLight))
+                              ],
                             ),
-                            Text("운동기록",
-                                textScaleFactor: 1.3,
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColorLight))
-                          ],
+                          ),
                         ),
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 32),
-                  Consumer<UserdataProvider>(
-                      builder: (builder, provider, child) {
-                    return _feedLikeButton(provider, widget.user);
-                  }),
-                  _feedCardList(context),
-                ]),
+                        GestureDetector(
+                          onTap: () {
+                            widget.user.like.length > 0
+                                ? _showLikeFreindBottomSheet(widget.user.like)
+                                : null;
+                          },
+                          child: SizedBox(
+                            width: 70,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  widget.user.like.length.toString(),
+                                  textScaleFactor: 2.0,
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                                Text("팔로잉",
+                                    textScaleFactor: 1.3,
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .primaryColorLight))
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 70,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                widget.user.history_cnt.toString(),
+                                textScaleFactor: 2.0,
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
+                              Text("운동기록",
+                                  textScaleFactor: 1.3,
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).primaryColorLight))
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 32),
+                    _feedLikeButton(provider, widget.user),
+                    _feedCardList(context),
+                  ]);
+            }),
           ),
         ));
   }
@@ -261,6 +262,7 @@ class _FriendProfileState extends State<FriendProfile> {
                   Expanded(
                       child: SingleChildScrollView(
                           child: ListView.separated(
+                              physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemBuilder: (BuildContext _context, int index) {
                                 var userLikesEmail = _userProvider

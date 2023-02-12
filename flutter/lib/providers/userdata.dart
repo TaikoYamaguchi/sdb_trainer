@@ -124,11 +124,33 @@ class UserdataProvider extends ChangeNotifier {
           return false;
         }
       }));
+      _userFriendsAll
+          .userdatas[_userFriendsAll.userdatas.indexWhere((userdata) {
+        if (userdata.email == User.email) {
+          return true;
+        } else {
+          return false;
+        }
+      })]
+          .liked
+          .remove(userdata.email);
+
       notifyListeners();
     } else if (status == "append") {
       _userdata.like.add(User.email);
       notifyListeners();
       _userFriends.userdatas.add(User);
+      _userFriendsAll
+          .userdatas[_userFriendsAll.userdatas.indexWhere((userdata) {
+        if (userdata.email == User.email) {
+          return true;
+        } else {
+          return false;
+        }
+      })]
+          .liked
+          .add(userdata.email);
+
       notifyListeners();
     }
   }

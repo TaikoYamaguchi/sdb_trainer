@@ -296,7 +296,7 @@ class _FeedCardState extends State<FeedCard> {
                                                           SDBdata.like[0])
                                                       .toList()[0]
                                                       .nickname +
-                                                  "님 외 1명이 좋아합니다",
+                                                  "님 외 ${SDBdata.like.length - 1}명이 좋아합니다",
                                           textScaleFactor: 1.1,
                                           style: TextStyle(color: Colors.grey))
                                     ],
@@ -1227,6 +1227,7 @@ class _FeedCardState extends State<FeedCard> {
                   Expanded(
                       child: SingleChildScrollView(
                           child: ListView.separated(
+                              physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemBuilder: (BuildContext _context, int index) {
                                 var userLikesEmail = _userProvider
