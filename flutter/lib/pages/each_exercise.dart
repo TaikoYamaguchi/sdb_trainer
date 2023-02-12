@@ -1323,6 +1323,15 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
     if (result == true) {
       recordExercise();
       _editHistoryCheck();
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return showsimpleAlerts(
+              layer: 5,
+              rindex: -1,
+              eindex: 1,
+            );
+          });
     }
   }
 
@@ -3143,6 +3152,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
           .postHistory()
           .then((data) => data["user_email"] != null
               ? {
+                  Navigator.of(context, rootNavigator: true).pop(),
                   Navigator.push(
                       context,
                       Transition(

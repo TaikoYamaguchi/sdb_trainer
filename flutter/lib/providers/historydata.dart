@@ -10,6 +10,8 @@ class HistorydataProvider extends ChangeNotifier {
   var _historydataFriends;
   var _historydataUserEmail;
   var _commentAll;
+  int _isUploaded = 0;
+  get isUploaded => _isUploaded;
   get historydata => _historydata;
   get historydataAll => _historydataAll;
   get historydataAllforChange => _historydataAllforChange;
@@ -17,6 +19,11 @@ class HistorydataProvider extends ChangeNotifier {
   get historydataFriends => _historydataFriends;
   get historydataUserEmail => _historydataUserEmail;
   get commentAll => _commentAll;
+
+  setUploadStatus(int status) {
+    _isUploaded = status;
+    notifyListeners();
+  }
 
   getdata() async {
     await ExerciseService.loadSDBdata().then((value) {

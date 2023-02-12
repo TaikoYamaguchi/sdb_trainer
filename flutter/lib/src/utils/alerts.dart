@@ -317,7 +317,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
                 style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
-  Widget _FinishConfirmButton(context) {
+  Widget _FinishConfirmButton(eindex, context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: TextButton(
@@ -336,7 +336,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
             onPressed: () {
               Navigator.of(context, rootNavigator: true).pop(true);
             },
-            child: Text("운동 종료 하기",
+            child: Text(eindex == 1 ? "운동을 업로드 하는 중..." : "운동 종료 하기",
                 textScaleFactor: 1.5,
                 style: TextStyle(color: Theme.of(context).buttonColor))));
   }
@@ -453,6 +453,11 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
         subtitle = '더 많은 기능을 준비 중 이에요';
         comment = '데이터를 지우면 복구 할 수 없어요';
         break;
+      case 9:
+        title = "운동을 업로드 하는 중...";
+        subtitle = '';
+        comment = '';
+        break;
     }
     ;
 
@@ -488,7 +493,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
                     : widget.layer == 4
                         ? _moveToExButton(context)
                         : widget.layer == 5
-                            ? _FinishConfirmButton(context)
+                            ? _FinishConfirmButton(widget.eindex, context)
                             : widget.layer == 6
                                 ? _customDeleteButton()
                                 : widget.layer == 7
