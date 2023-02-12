@@ -268,6 +268,40 @@ class _AppState extends State<App> {
         });
   }
 
+  _showMyDialog_finish() async {
+    var result = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return showsimpleAlerts(
+            layer: 5,
+            rindex: -1,
+            eindex: -1,
+          );
+        });
+    if (result == true) {
+      if (_workoutProvider.workoutdata
+              .routinedatas[_routinetimeProvider.nowonrindex].mode ==
+          1) {
+        recordExercise_plan();
+        _editHistoryCheck();
+      } else {
+        recordExercise();
+        _editHistoryCheck();
+      }
+      if (!exerciseList.isEmpty) {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return showsimpleAlerts(
+                layer: 5,
+                rindex: -1,
+                eindex: 1,
+              );
+            });
+      }
+    }
+  }
+
   Widget _finishConfirmButton() {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -395,6 +429,7 @@ class _AppState extends State<App> {
           .postHistory()
           .then((data) => data["user_email"] != null
               ? {
+                  Navigator.of(context, rootNavigator: true).pop(),
                   Navigator.push(
                       context,
                       Transition(
@@ -624,7 +659,9 @@ class _AppState extends State<App> {
                                 width: 10,
                               ),
                               ActionButton(
-                                onPressed: _displayFinishAlert,
+                                onPressed: () {
+                                  _showMyDialog_finish();
+                                },
                                 icon: Icon(Icons.stop),
                               ),
                             ],

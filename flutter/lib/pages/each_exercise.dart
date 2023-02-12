@@ -1323,15 +1323,17 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
     if (result == true) {
       recordExercise();
       _editHistoryCheck();
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return showsimpleAlerts(
-              layer: 5,
-              rindex: -1,
-              eindex: 1,
-            );
-          });
+      if (!exerciseList.isEmpty) {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return showsimpleAlerts(
+                layer: 5,
+                rindex: -1,
+                eindex: 1,
+              );
+            });
+      }
     }
   }
 

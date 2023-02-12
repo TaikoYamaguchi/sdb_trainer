@@ -13,6 +13,7 @@ import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
+import 'package:sdb_trainer/src/utils/alerts.dart';
 import 'package:sdb_trainer/src/utils/change_name.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:flutter/cupertino.dart';
@@ -129,6 +130,35 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
           ],
           backgroundColor: Theme.of(context).canvasColor,
         ));
+  }
+
+  _showMyDialog_finish() async {
+    var result = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return showsimpleAlerts(
+            layer: 5,
+            rindex: -1,
+            eindex: -1,
+          );
+        });
+    if (result == true) {
+      recordExercise();
+      _editHistoryCheck();
+      _editWorkoutCheck();
+
+      if (!exerciseList.isEmpty) {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return showsimpleAlerts(
+                layer: 5,
+                rindex: -1,
+                eindex: 1,
+              );
+            });
+      }
+    }
   }
 
   void _displayFinishAlert() {
@@ -679,7 +709,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       ? null
                       : [
                           if (_routinetimeProvider.isstarted)
-                            {_displayFinishAlert()}
+                            {_showMyDialog_finish()}
                           else
                             {
                               provider.routinecheck(widget.rindex),
@@ -1160,6 +1190,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
           .postHistory()
           .then((data) => data["user_email"] != null
               ? {
+                  Navigator.of(context, rootNavigator: true).pop(),
                   Navigator.push(
                       context,
                       Transition(
