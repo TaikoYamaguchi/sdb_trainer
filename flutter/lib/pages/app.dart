@@ -204,6 +204,7 @@ class _AppState extends State<App> {
   }
 
   void _editWorkoutwoCheck() async {
+    print(_routinetimeProvider.nowonrindex);
     var routinedatas_all = _workoutProvider.workoutdata.routinedatas;
     for (int n = 0;
         n < routinedatas_all[_routinetimeProvider.nowonrindex].exercises.length;

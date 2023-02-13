@@ -35,6 +35,7 @@ class ExerciseDone extends StatefulWidget {
 class _ExerciseDoneState extends State<ExerciseDone> {
   var _userProvider;
   var _hisProvider;
+  var _popProvider;
   var _workoutProvider;
   var _routinetimeProvider;
   var _btnDisabled;
@@ -384,7 +385,8 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                 }
                 ;
                 Navigator.of(context).pop();
-                Navigator.of(context).popUntil((route) => route.isFirst);
+                _popProvider.gotoonlast();
+                //Navigator.of(context).popUntil((route) => route.isFirst);
               },
               child: Text("운동 완료",
                   textScaleFactor: 1.5,
@@ -431,6 +433,8 @@ class _ExerciseDoneState extends State<ExerciseDone> {
   Widget build(BuildContext context) {
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
+
+    _popProvider = Provider.of<PopProvider>(context, listen: false);
     _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);

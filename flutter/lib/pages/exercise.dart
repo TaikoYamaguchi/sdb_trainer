@@ -621,11 +621,12 @@ class ExerciseState extends State<Exercise> {
           : [
               provider.exstackup(0),
               Future.delayed(Duration.zero, () async {
-                int grindex = _workoutProvider.workoutdata.routinedatas
-                    .indexWhere((routine) =>
-                        routine.name ==
-                        _PrefsProvider.prefs.getString('lastroutine'));
+                //int grindex = _workoutProvider.workoutdata.routinedatas
+                //    .indexWhere((routine) =>
+                //        routine.name ==
+                //        _PrefsProvider.prefs.getString('lastroutine'));
                 Navigator.of(context).popUntil((route) => route.isFirst);
+                /*
                 if (_workoutProvider.workoutdata.routinedatas[grindex].mode ==
                     1) {
                   Navigator.push(
@@ -648,6 +649,7 @@ class ExerciseState extends State<Exercise> {
                   provider.gotooff();
                   provider.exstackup(1);
                 }
+                */
               }),
             ];
       return Scaffold(
