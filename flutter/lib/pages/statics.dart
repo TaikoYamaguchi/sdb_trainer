@@ -938,17 +938,7 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
                   exercises[index].id, _userProvider.userdata, true, index);
             },
             separatorBuilder: (BuildContext context, int index) {
-              return Container(
-                alignment: Alignment.center,
-                height: 0.3,
-                color: const Color(0xFF212121),
-                child: Container(
-                  alignment: Alignment.center,
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                  height: 0.3,
-                  color: const Color(0xFF717171),
-                ),
-              );
+              return Container();
             },
             shrinkWrap: true,
             itemCount: exercises.length,
@@ -1318,7 +1308,10 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
           ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 5),
               itemBuilder: (BuildContext context, int index) {
-                if (index == 0) {
+                if (exuniq.length == 1) {
+                  top = 20;
+                  bottom = 20;
+                } else if (index == 0) {
                   top = 20;
                   bottom = 0;
                 } else if (index == exuniq.length - 1) {
