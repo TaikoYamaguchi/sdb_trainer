@@ -626,6 +626,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
 
       return Scaffold(
         appBar: null,
+        //body: ReorderableExample(),
+
         body: CustomScrollView(slivers: [
           SliverAppBar(
             snap: false,

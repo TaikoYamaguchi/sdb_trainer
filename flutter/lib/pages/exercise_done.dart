@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/userProfileNickname.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
@@ -93,6 +94,18 @@ class _ExerciseDoneState extends State<ExerciseDone> {
             style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
           backgroundColor: Theme.of(context).canvasColor,
+          actions: [
+            _image == null
+                ? Container()
+                : IconButton(
+                    icon: Icon(Icons.share_rounded),
+                    color: Theme.of(context).primaryColorLight,
+                    onPressed: () {
+                      Share.shareFiles([_image!.path],
+                          text: _exerciseCommentCtrl.text);
+                    },
+                  ),
+          ],
         ));
   }
 
