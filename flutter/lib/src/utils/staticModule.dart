@@ -4,6 +4,7 @@ import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/src/model/historydata.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart' as workoutModel;
+import 'package:sdb_trainer/src/utils/indicator.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
@@ -20,6 +21,30 @@ class StaticModule extends StatefulWidget {
   State<StaticModule> createState() => _StaticModuleState();
 }
 
+class AppColors {
+  static const Color primary = contentColorCyan;
+  static const Color menuBackground = Color(0xFF090912);
+  static const Color itemsBackground = Color(0xFF1B2339);
+  static const Color pageBackground = Color(0xFF282E45);
+  static const Color mainTextColor1 = Colors.white;
+  static const Color mainTextColor2 = Colors.white70;
+  static const Color mainTextColor3 = Colors.white38;
+  static const Color mainGridLineColor = Colors.white10;
+  static const Color borderColor = Colors.white54;
+  static const Color gridLinesColor = Color(0x11FFFFFF);
+
+  static const Color contentColorBlack = Colors.black;
+  static const Color contentColorWhite = Colors.white;
+  static const Color contentColorBlue = Color(0xFF2196F3);
+  static const Color contentColorYellow = Color(0xFFFFC300);
+  static const Color contentColorOrange = Color(0xFFFF683B);
+  static const Color contentColorGreen = Color(0xFF3BFF49);
+  static const Color contentColorPurple = Color(0xFF6E1BFF);
+  static const Color contentColorPink = Color(0xFFFF3AF2);
+  static const Color contentColorRed = Color(0xFFE80054);
+  static const Color contentColorCyan = Color(0xFF50E4FF);
+}
+
 class _StaticModuleState extends State<StaticModule> {
   int _historyCardIndexCtrl = 4242;
   var _dateCtrl = 1;
@@ -33,6 +58,7 @@ class _StaticModuleState extends State<StaticModule> {
   DateTime _toDay = DateTime.now();
   var _historydata;
   var _barsGradient;
+  int _touchedIndex = -1;
   Map<String, int> _exerciseCountMap = {
     "바벨 스쿼트": 0,
     "바벨 데드리프트": 0,
@@ -77,39 +103,56 @@ class _StaticModuleState extends State<StaticModule> {
 
   Widget _historyCard(context) {
     var _page = 11;
-    return Column(
-      children: [
-        SizedBox(
-          height: 260,
-          child: PageView.builder(
+    return Expanded(
+      child: SingleChildScrollView(
+          child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            height: 260,
+            child: PageView.builder(
+                controller: _historyCardcontroller,
+                onPageChanged: (int index) =>
+                    setState(() => _historyCardIndexCtrl = index),
+                itemBuilder: (_, i) {
+                  return Transform.scale(
+                    scale: i == _historyCardIndexCtrl ? 1.03 : 0.97,
+                    child: _historyCardCase(i, _page, context),
+                  );
+                }),
+          ),
+          _dateControllerWidget(),
+          SizedBox(height: 6.0),
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: SmoothPageIndicator(
               controller: _historyCardcontroller,
-              onPageChanged: (int index) =>
-                  setState(() => _historyCardIndexCtrl = index),
-              itemBuilder: (_, i) {
-                return Transform.scale(
-                  scale: i == _historyCardIndexCtrl ? 1.03 : 0.97,
-                  child: _historyCardCase(i, _page, context),
-                );
-              }),
-        ),
-        _dateControllerWidget(),
-        SizedBox(height: 6.0),
-        Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: SmoothPageIndicator(
-            controller: _historyCardcontroller,
-            count: _page,
-            effect: WormEffect(
-              dotHeight: 8,
-              dotWidth: 8,
-              type: WormType.thin,
-              activeDotColor: Theme.of(context).primaryColor,
-              dotColor: Colors.grey,
-              // strokeWidth: 5,
+              count: _page,
+              effect: WormEffect(
+                dotHeight: 8,
+                dotWidth: 8,
+                type: WormType.thin,
+                activeDotColor: Theme.of(context).primaryColor,
+                dotColor: Colors.grey,
+                // strokeWidth: 5,
+              ),
             ),
           ),
-        )
-      ],
+          SizedBox(
+            height: 260,
+            child: PageView.builder(
+                controller: _historyCardcontroller,
+                onPageChanged: (int index) =>
+                    setState(() => _historyCardIndexCtrl = index),
+                itemBuilder: (_, i) {
+                  return Transform.scale(
+                    scale: i == _historyCardIndexCtrl ? 1.03 : 0.97,
+                    child: _historyPieCard(i, _page, context),
+                  );
+                }),
+          ),
+        ],
+      )),
     );
   }
 
@@ -322,6 +365,15 @@ class _StaticModuleState extends State<StaticModule> {
       default:
         _isbottomTitleEx = false;
         return _countHistoryNoWidget(context, 0);
+    }
+  }
+
+  Widget _historyPieCard(_historyCardIndexCtrl, length, context) {
+    var _realIndex = _historyCardIndexCtrl % length;
+    switch (_realIndex) {
+      default:
+        _isbottomTitleEx = false;
+        return _partPieChartWidget(context, 0);
     }
   }
 
@@ -2058,6 +2110,79 @@ class _StaticModuleState extends State<StaticModule> {
         _barChartGroupData);
   }
 
+  Widget _partPieChartWidget(context, _realIndex) {
+    List<PieChartSectionData> _pieDataSets = [];
+    var thevalue = 0;
+    var thekey = "운동을 시작해봐요";
+    _isbottomTitleEx = true;
+    _exerciseCountMap = {"가슴": 0, "등": 0, "다리": 0, "어깨": 0};
+    var _pieColor = [
+      AppColors.contentColorBlue,
+      AppColors.contentColorYellow,
+      AppColors.contentColorOrange,
+      AppColors.contentColorGreen,
+      AppColors.contentColorPurple,
+      AppColors.contentColorPink,
+      AppColors.contentColorRed,
+      AppColors.contentColorCyan
+    ];
+
+    _dateController(_dateCtrl);
+    double deviceWidth = MediaQuery.of(context).size.width;
+    if (_historydata != null) {
+      for (SDBdata sdbdata in _historydata) {
+        for (Exercises exercise in sdbdata.exercises) {
+          for (String target in _exProvider
+              .exercisesdata
+              .exercises[_exProvider.exercisesdata.exercises.indexWhere((ex) {
+            if (ex.name == exercise.name) {
+              return true;
+            } else {
+              return false;
+            }
+          })]
+              .target) {
+            if (_exerciseCountMap.containsKey(target)) {
+              _exerciseCountMap[target] = _exerciseCountMap[target]! + 1;
+            } else {
+              _exerciseCountMap[target] = 0;
+              _exerciseCountMap[target] = _exerciseCountMap[target]! + 1;
+            }
+          }
+        }
+      }
+    }
+    _exerciseCountMap = Map.fromEntries(_exerciseCountMap.entries.toList()
+      ..sort((e1, e2) => e2.value.compareTo(e1.value)));
+
+    _exerciseCountMap.forEach((key, value) {
+      if (value > thevalue) {
+        thevalue = value;
+        thekey = key;
+      }
+    });
+
+    for (int i = 0; i < 4; i++) {
+      _pieDataSets.add(
+        PieChartSectionData(
+            showTitle: false,
+            color: _pieColor[i],
+            value: _exerciseCountMap.values.elementAt(3 - i).toDouble(),
+            title: _exerciseCountMap.keys.elementAt(3 - i)),
+      );
+    }
+
+    return _historyCardPieChart(
+        context,
+        _dateStringCase(_dateCtrl) + " 많은 횟수를 한 부위는?",
+        thekey.toString() + "!",
+        "",
+        9999,
+        0,
+        _realIndex,
+        _pieDataSets);
+  }
+
   Widget _countHistoryPartCountWidget(context, _realIndex) {
     List<BarChartGroupData> _barChartGroupData = [];
     var thevalue = 0;
@@ -2158,6 +2283,21 @@ class _StaticModuleState extends State<StaticModule> {
         ),
       );
 
+  PieTouchData get pieTouchData => PieTouchData(
+        touchCallback: (FlTouchEvent event, pieTouchResponse) {
+          setState(() {
+            if (!event.isInterestedForInteractions ||
+                pieTouchResponse == null ||
+                pieTouchResponse.touchedSection == null) {
+              _touchedIndex = -1;
+              return;
+            }
+            _touchedIndex =
+                pieTouchResponse.touchedSection!.touchedSectionIndex;
+          });
+        },
+      );
+
   Widget _countHistoryCardCore(
       context,
       _historyDateCore,
@@ -2253,6 +2393,110 @@ class _StaticModuleState extends State<StaticModule> {
                                 gridData: FlGridData(show: false),
                               ))),
                         ),
+                      ],
+                    )
+                  : Container()
+            ]),
+          )),
+    );
+  }
+
+  Widget _historyCardPieChart(
+      context,
+      _historyDateCore,
+      _historyTextCore,
+      _histroySideText,
+      int _devicePaddingWidth,
+      int _devicePaddingWidthAdd,
+      int _realIndex,
+      List<PieChartSectionData> _pieDataSets) {
+    double deviceWidth = MediaQuery.of(context).size.width;
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Card(
+          color: Theme.of(context).canvasColor,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            right: deviceWidth / _devicePaddingWidth -
+                                _devicePaddingWidthAdd),
+                        child: Text(_historyDateCore,
+                            textScaleFactor: 1.5,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: _mainFontColor,
+                                fontWeight: FontWeight.w600)),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Consumer<HistorydataProvider>(
+                  builder: (builder, provider, child) {
+                _dateController(_dateCtrl);
+                return Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(_historyTextCore,
+                          textScaleFactor: 2.0,
+                          style: TextStyle(
+                              color: Color(0xFffc60a8),
+                              fontWeight: FontWeight.w600)),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4),
+                        child: Text(_histroySideText,
+                            textScaleFactor: 1.4,
+                            style: TextStyle(
+                                color: _mainFontColor,
+                                fontWeight: FontWeight.w600)),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+              SizedBox(height: 40),
+              _pieDataSets != null
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Container(
+                              height: 110,
+                              child: PieChart(PieChartData(
+                                sections: _pieDataSets,
+                                pieTouchData: pieTouchData,
+                                borderData: FlBorderData(show: false),
+                              ))),
+                        ),
+                        Container(
+                            width: 120,
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: _pieDataSets.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Column(children: [
+                                    Indicator(
+                                      color: _pieDataSets[index].color,
+                                      text: _pieDataSets[index].title,
+                                      isSquare: true,
+                                    ),
+                                    SizedBox(
+                                      height: 4,
+                                    ),
+                                  ]);
+                                }))
                       ],
                     )
                   : Container()
