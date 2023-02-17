@@ -47,8 +47,11 @@ class AppColors {
 
 class _StaticModuleState extends State<StaticModule> {
   int _historyCardIndexCtrl = 4242;
+  int _historyPieCardIndexCtrl = 4242;
   var _dateCtrl = 1;
   final _historyCardcontroller =
+      PageController(viewportFraction: 0.9, initialPage: 4242, keepPage: true);
+  final _historyPieCardcontroller =
       PageController(viewportFraction: 0.9, initialPage: 4242, keepPage: true);
   var _isbottomTitleEx = false;
   var _mainFontColor;
@@ -102,7 +105,8 @@ class _StaticModuleState extends State<StaticModule> {
   }
 
   Widget _historyCard(context) {
-    var _page = 11;
+    var _cardPage = 8;
+    var _cardPiePage = 3;
     return Expanded(
       child: SingleChildScrollView(
           child: Column(
@@ -117,7 +121,7 @@ class _StaticModuleState extends State<StaticModule> {
                 itemBuilder: (_, i) {
                   return Transform.scale(
                     scale: i == _historyCardIndexCtrl ? 1.03 : 0.97,
-                    child: _historyCardCase(i, _page, context),
+                    child: _historyCardCase(i, _cardPage, context),
                   );
                 }),
           ),
@@ -127,7 +131,7 @@ class _StaticModuleState extends State<StaticModule> {
             padding: const EdgeInsets.all(4.0),
             child: SmoothPageIndicator(
               controller: _historyCardcontroller,
-              count: _page,
+              count: _cardPage,
               effect: WormEffect(
                 dotHeight: 8,
                 dotWidth: 8,
@@ -139,17 +143,32 @@ class _StaticModuleState extends State<StaticModule> {
             ),
           ),
           SizedBox(
-            height: 260,
+            height: 340,
             child: PageView.builder(
-                controller: _historyCardcontroller,
+                controller: _historyPieCardcontroller,
                 onPageChanged: (int index) =>
-                    setState(() => _historyCardIndexCtrl = index),
+                    setState(() => _historyPieCardIndexCtrl = index),
                 itemBuilder: (_, i) {
                   return Transform.scale(
-                    scale: i == _historyCardIndexCtrl ? 1.03 : 0.97,
-                    child: _historyPieCard(i, _page, context),
+                    scale: i == _historyPieCardIndexCtrl ? 1.03 : 0.97,
+                    child: _historyPieCard(i, _cardPiePage, context),
                   );
                 }),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: SmoothPageIndicator(
+              controller: _historyPieCardcontroller,
+              count: _cardPiePage,
+              effect: WormEffect(
+                dotHeight: 8,
+                dotWidth: 8,
+                type: WormType.thin,
+                activeDotColor: Theme.of(context).primaryColor,
+                dotColor: Colors.grey,
+                // strokeWidth: 5,
+              ),
+            ),
           ),
         ],
       )),
@@ -352,15 +371,6 @@ class _StaticModuleState extends State<StaticModule> {
       case 7:
         _isbottomTitleEx = true;
         return _countHistoryExWeightWidget(context, _realIndex);
-      case 8:
-        _isbottomTitleEx = true;
-        return _countHistoryPartCountWidget(context, _realIndex);
-      case 9:
-        _isbottomTitleEx = true;
-        return _countHistoryPartSetWidget(context, _realIndex);
-      case 10:
-        _isbottomTitleEx = true;
-        return _countHistoryPartWeightWidget(context, _realIndex);
 
       default:
         _isbottomTitleEx = false;
@@ -371,6 +381,16 @@ class _StaticModuleState extends State<StaticModule> {
   Widget _historyPieCard(_historyCardIndexCtrl, length, context) {
     var _realIndex = _historyCardIndexCtrl % length;
     switch (_realIndex) {
+      case 0:
+        _isbottomTitleEx = false;
+        return _partPieChartWidget(context, 0);
+      case 1:
+        _isbottomTitleEx = false;
+        return _partPieChartSetWidget(context, 0);
+
+      case 2:
+        _isbottomTitleEx = false;
+        return _partPieChartWeightWidget(context, 0);
       default:
         _isbottomTitleEx = false;
         return _partPieChartWidget(context, 0);
@@ -2110,6 +2130,171 @@ class _StaticModuleState extends State<StaticModule> {
         _barChartGroupData);
   }
 
+  Widget _partPieChartWeightWidget(context, _realIndex) {
+    List<PieChartSectionData> _pieDataSets = [];
+    var thevalue = 0;
+    var thekey = "운동을 시작해봐요";
+    _isbottomTitleEx = true;
+    _exerciseCountMapThird = {"가슴": 0, "등": 0, "다리": 0, "어깨": 0};
+    var _pieColor = [
+      AppColors.contentColorBlue,
+      AppColors.contentColorYellow,
+      AppColors.contentColorOrange,
+      AppColors.contentColorGreen,
+      AppColors.contentColorPurple,
+      AppColors.contentColorPink,
+      AppColors.contentColorRed,
+      AppColors.contentColorCyan
+    ];
+
+    _dateController(_dateCtrl);
+    double deviceWidth = MediaQuery.of(context).size.width;
+    if (_historydata != null) {
+      for (SDBdata sdbdata in _historydata) {
+        for (Exercises exercise in sdbdata.exercises) {
+          for (String target in _exProvider
+              .exercisesdata
+              .exercises[_exProvider.exercisesdata.exercises.indexWhere((ex) {
+            if (ex.name == exercise.name) {
+              return true;
+            } else {
+              return false;
+            }
+          })]
+              .target) {
+            if (_exerciseCountMapThird.containsKey(target)) {
+              for (workoutModel.Sets sets in exercise.sets) {
+                _exerciseCountMapThird[target] =
+                    _exerciseCountMapThird[target]! +
+                        (sets.weight * sets.reps).toInt();
+              }
+            } else {
+              _exerciseCountMapThird[target] = 0;
+              for (workoutModel.Sets sets in exercise.sets) {
+                _exerciseCountMapThird[target] =
+                    _exerciseCountMapThird[target]! +
+                        (sets.weight * sets.reps).toInt();
+              }
+            }
+          }
+        }
+      }
+    }
+    _exerciseCountMapThird = Map.fromEntries(
+        _exerciseCountMapThird.entries.toList()
+          ..sort((e1, e2) => e1.value.compareTo(e2.value)));
+
+    _exerciseCountMapThird.forEach((key, value) {
+      if (value > thevalue) {
+        thevalue = value;
+        thekey = key;
+      }
+    });
+
+    for (int i = 0; i < _exerciseCountMapThird.length; i++) {
+      _pieDataSets.add(
+        PieChartSectionData(
+            color: _pieColor[i],
+            value: _exerciseCountMapThird.values
+                .elementAt(_exerciseCountMapThird.length - 1 - i)
+                .toDouble(),
+            title: _exerciseCountMapThird.keys
+                .elementAt(_exerciseCountMapThird.length - 1 - i)),
+      );
+    }
+
+    return _historyCardPieChart(
+        context,
+        _dateStringCase(_dateCtrl) + " 많은 무게를 든 부위는?",
+        thekey.toString() + "!",
+        "",
+        9999,
+        0,
+        _realIndex,
+        _pieDataSets);
+  }
+
+  Widget _partPieChartSetWidget(context, _realIndex) {
+    List<PieChartSectionData> _pieDataSets = [];
+    var thevalue = 0;
+    var thekey = "운동을 시작해봐요";
+    _isbottomTitleEx = true;
+    _exerciseCountMapOdd = {"가슴": 0, "등": 0, "다리": 0, "어깨": 0};
+    var _pieColor = [
+      AppColors.contentColorBlue,
+      AppColors.contentColorYellow,
+      AppColors.contentColorOrange,
+      AppColors.contentColorGreen,
+      AppColors.contentColorPurple,
+      AppColors.contentColorPink,
+      AppColors.contentColorRed,
+      AppColors.contentColorCyan
+    ];
+
+    _dateController(_dateCtrl);
+    double deviceWidth = MediaQuery.of(context).size.width;
+    if (_historydata != null) {
+      for (SDBdata sdbdata in _historydata) {
+        for (Exercises exercise in sdbdata.exercises) {
+          for (String target in _exProvider
+              .exercisesdata
+              .exercises[_exProvider.exercisesdata.exercises.indexWhere((ex) {
+            if (ex.name == exercise.name) {
+              return true;
+            } else {
+              return false;
+            }
+          })]
+              .target) {
+            if (_exerciseCountMapOdd.containsKey(target)) {
+              for (workoutModel.Sets sets in exercise.sets) {
+                _exerciseCountMapOdd[target] =
+                    _exerciseCountMapOdd[target]! + 1;
+              }
+            } else {
+              _exerciseCountMapOdd[target] = 0;
+              for (workoutModel.Sets sets in exercise.sets) {
+                _exerciseCountMapOdd[target] =
+                    _exerciseCountMapOdd[target]! + 1;
+              }
+            }
+          }
+        }
+      }
+    }
+    _exerciseCountMapOdd = Map.fromEntries(_exerciseCountMapOdd.entries.toList()
+      ..sort((e1, e2) => e1.value.compareTo(e2.value)));
+
+    _exerciseCountMapOdd.forEach((key, value) {
+      if (value > thevalue) {
+        thevalue = value;
+        thekey = key;
+      }
+    });
+
+    for (int i = 0; i < _exerciseCountMapOdd.length; i++) {
+      _pieDataSets.add(
+        PieChartSectionData(
+            color: _pieColor[i],
+            value: _exerciseCountMapOdd.values
+                .elementAt(_exerciseCountMapOdd.length - 1 - i)
+                .toDouble(),
+            title: _exerciseCountMapOdd.keys
+                .elementAt(_exerciseCountMapOdd.length - 1 - i)),
+      );
+    }
+
+    return _historyCardPieChart(
+        context,
+        _dateStringCase(_dateCtrl) + " 많은 세트를 한 부위는?",
+        thekey.toString() + "!",
+        "",
+        9999,
+        0,
+        _realIndex,
+        _pieDataSets);
+  }
+
   Widget _partPieChartWidget(context, _realIndex) {
     List<PieChartSectionData> _pieDataSets = [];
     var thevalue = 0;
@@ -2153,7 +2338,7 @@ class _StaticModuleState extends State<StaticModule> {
       }
     }
     _exerciseCountMap = Map.fromEntries(_exerciseCountMap.entries.toList()
-      ..sort((e1, e2) => e2.value.compareTo(e1.value)));
+      ..sort((e1, e2) => e1.value.compareTo(e2.value)));
 
     _exerciseCountMap.forEach((key, value) {
       if (value > thevalue) {
@@ -2162,13 +2347,15 @@ class _StaticModuleState extends State<StaticModule> {
       }
     });
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < _exerciseCountMap.length; i++) {
       _pieDataSets.add(
         PieChartSectionData(
-            showTitle: false,
             color: _pieColor[i],
-            value: _exerciseCountMap.values.elementAt(3 - i).toDouble(),
-            title: _exerciseCountMap.keys.elementAt(3 - i)),
+            value: _exerciseCountMap.values
+                .elementAt(_exerciseCountMap.length - 1 - i)
+                .toDouble(),
+            title: _exerciseCountMap.keys
+                .elementAt(_exerciseCountMap.length - 1 - i)),
       );
     }
 
@@ -2473,7 +2660,7 @@ class _StaticModuleState extends State<StaticModule> {
                       children: [
                         Expanded(
                           child: Container(
-                              height: 110,
+                              height: 170,
                               child: PieChart(PieChartData(
                                 sections: _pieDataSets,
                                 pieTouchData: pieTouchData,
@@ -2481,15 +2668,17 @@ class _StaticModuleState extends State<StaticModule> {
                               ))),
                         ),
                         Container(
-                            width: 120,
+                            width: 100,
                             child: ListView.builder(
                                 shrinkWrap: true,
                                 itemCount: _pieDataSets.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return Column(children: [
                                     Indicator(
+                                      size: 12,
                                       color: _pieDataSets[index].color,
-                                      text: _pieDataSets[index].title,
+                                      text: _pieDataSets[index].title +
+                                          "(${_pieDataSets[index].value.toInt()})",
                                       isSquare: true,
                                     ),
                                     SizedBox(
