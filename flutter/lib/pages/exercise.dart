@@ -39,6 +39,8 @@ class Exercise extends StatefulWidget {
 
 class ExerciseState extends State<Exercise> {
   TextEditingController _workoutNameCtrl = TextEditingController(text: "");
+  final ScrollController _scroller = ScrollController();
+  final _listViewKey = GlobalKey();
   var _userProvider;
   var _exProvider;
   var _workoutProvider;
@@ -47,6 +49,7 @@ class ExerciseState extends State<Exercise> {
   var _PopProvider;
   var _PrefsProvider;
   bool modecheck = false;
+  bool dragstart = false;
   PageController? controller;
   List<Map<String, dynamic>> datas = [];
   double top = 0;
@@ -120,10 +123,43 @@ class ExerciseState extends State<Exercise> {
     return Future<void>.value();
   }
 
+  Widget _createListener(Widget child) {
+    return Listener(
+      child: child,
+      onPointerMove: (PointerMoveEvent event) {
+        if (dragstart) {
+          RenderBox render =
+              _listViewKey.currentContext?.findRenderObject() as RenderBox;
+          Offset position = render.localToGlobal(Offset.zero);
+          double topY = position.dy;
+          double bottomY = topY + render.size.height;
+          const detectedRange = 100;
+
+          const moveDistance = 3;
+          if (event.position.dy < topY + detectedRange) {
+            var to = _scroller.offset - moveDistance;
+            to = (to < 0) ? 0 : to;
+            _scroller.jumpTo(to);
+          }
+          if (event.position.dy > bottomY - detectedRange) {
+            _scroller.jumpTo(_scroller.offset + moveDistance);
+          }
+        }
+        // I/flutter ( 4972): x: 80.0, y: 80.0, height: 560.0, width: 360.0
+        // print("x: ${position.dy}, "
+        //     "y: ${position.dy}, "
+        //     "height: ${render.size.height}, "
+        //     "width: ${render.size.width}");
+      },
+    );
+  }
+
   Widget _myWorkout() {
     return Container(
       //padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: ListView(
+        key: _listViewKey,
+        controller: _scroller,
         shrinkWrap: true,
         children: [
           Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
@@ -142,6 +178,12 @@ class ExerciseState extends State<Exercise> {
                           routinelist.insert(newIndex, item);
                           _editWorkoutCheck();
                         });
+                },
+                onReorderStart: (index) {
+                  dragstart = true;
+                },
+                onReorderEnd: (index) {
+                  dragstart = false;
                 },
                 padding: EdgeInsets.symmetric(horizontal: 4),
                 itemBuilder: (BuildContext _context, int index) {
@@ -657,7 +699,7 @@ class ExerciseState extends State<Exercise> {
         body: Consumer2<ExercisesdataProvider, WorkoutdataProvider>(
             builder: (context, provider1, provider2, widget) {
           if (provider2.workoutdata != null) {
-            return _myWorkout();
+            return _createListener(_myWorkout());
           }
           return Container(
             child: Center(
