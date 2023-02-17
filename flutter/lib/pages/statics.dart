@@ -8,6 +8,7 @@ import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:sdb_trainer/src/model/userdata.dart';
 import 'package:sdb_trainer/src/utils/alerts.dart';
+import 'package:sdb_trainer/src/utils/staticModule.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -100,7 +101,7 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
         Map<int, Widget> staticList = <int, Widget>{
           0: Padding(
             padding: const EdgeInsets.all(5.0),
-            child: Text("운동",
+            child: Text("통계",
                 textScaleFactor: 1.3,
                 style: TextStyle(
                   color:
@@ -1715,227 +1716,9 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
   }
 
   Widget _chartWidget() {
-    final List<Color> color = <Color>[];
-    color.add(const Color(0xFffc60a8).withOpacity(0.7));
-    color.add(Theme.of(context).primaryColor.withOpacity(0.9));
-    color.add(Theme.of(context).primaryColor.withOpacity(0.9));
-    color.add(const Color(0xFffc60a8).withOpacity(0.7));
-
-    final List<double> stops = <double>[];
-    stops.add(0.0);
-    stops.add(0.4);
-    stops.add(0.6);
-    stops.add(1.0);
-
-    final LinearGradient gradientColors = LinearGradient(
-        colors: color,
-        stops: stops,
-        begin: Alignment.bottomCenter,
-        end: Alignment.topCenter);
     return (Center(
       child: Column(
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              SizedBox(
-                width: _exSearchCtrlBool ? 150 : 50,
-                height: 40,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 3.0),
-                  child: Focus(
-                    child: TextField(
-                        controller: _exSearchCtrl,
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorLight),
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(0),
-                          isDense: true,
-                          prefixIcon: Icon(
-                            Icons.search,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                          hintText: "운동 검색",
-                          hintStyle: TextStyle(
-                              fontSize: 16.0,
-                              color: Theme.of(context).primaryColorLight),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                width: 1.5, color: Theme.of(context).cardColor),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Theme.of(context).primaryColor,
-                                width: 1.5),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                        ),
-                        onChanged: (text) {
-                          setState(() {});
-                        }),
-                    onFocusChange: (hasFocus) {
-                      setState(() {
-                        if (_exSearchCtrl.text != "") {
-                          _exSearchCtrlBool = true;
-                        } else {
-                          _exSearchCtrlBool = hasFocus;
-                        }
-                      });
-                    },
-                  ),
-                ),
-              ),
-              Expanded(
-                child: SizedBox(
-                    height: 40,
-                    child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: techChips())),
-              ),
-            ],
-          ),
-          const SizedBox(height: 5),
-          Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                      topLeft: Radius.circular(20),
-                      bottomLeft: Radius.circular(20))),
-              child: Column(children: [
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 24.0, top: 4.0, bottom: 4.0),
-                      child: Text(
-                          _exProvider.exercisesdata!
-                              .exercises[_chartIndex.chartIndex].name,
-                          textScaleFactor: 1.7,
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColorLight)),
-                    ),
-                    SizedBox(
-                      width: 100,
-                      child: CustomSlidingSegmentedControl(
-                          height: 24.0,
-                          children: {
-                            true: Text("on",
-                                style: TextStyle(
-                                    color: _bodyExChartIsOpen
-                                        ? Theme.of(context).buttonColor
-                                        : Theme.of(context).primaryColorLight)),
-                            false: Text("off",
-                                style: TextStyle(
-                                    color: _bodyExChartIsOpen
-                                        ? Theme.of(context).primaryColorLight
-                                        : Theme.of(context).buttonColor))
-                          },
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          innerPadding: const EdgeInsets.all(4),
-                          thumbDecoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Theme.of(context).primaryColor),
-                          onValueChanged: (bool value) {
-                            setState(() {
-                              _bodyExChartIsOpen = value;
-                            });
-                          }),
-                    )
-                  ],
-                ),
-                _bodyExChartIsOpen
-                    ? Container(
-                        height: 250,
-                        decoration: BoxDecoration(
-                            color: Theme.of(context).cardColor,
-                            borderRadius: const BorderRadius.only(
-                                topRight: Radius.circular(20),
-                                bottomRight: Radius.circular(20),
-                                topLeft: Radius.circular(20),
-                                bottomLeft: Radius.circular(20))),
-                        child: SfCartesianChart(
-                            plotAreaBorderWidth: 0,
-                            primaryXAxis: DateTimeAxis(
-                              majorGridLines: const MajorGridLines(width: 0),
-                              majorTickLines: const MajorTickLines(size: 0),
-                              axisLine: const AxisLine(width: 0),
-                            ),
-                            primaryYAxis: NumericAxis(
-                                axisLine: const AxisLine(width: 0),
-                                majorTickLines: const MajorTickLines(size: 0),
-                                majorGridLines: const MajorGridLines(width: 0),
-                                minimum: _sdbChartData!.isEmpty
-                                    ? 0
-                                    : _sdbChartData!.length > 1
-                                        ? _sdbChartData!
-                                                .reduce((curr, next) =>
-                                                    curr.onerm! < next.onerm!
-                                                        ? curr
-                                                        : next)
-                                                .onerm! *
-                                            0.9
-                                        : _sdbChartData![0].onerm),
-                            tooltipBehavior: _tooltipBehavior,
-                            zoomPanBehavior: _zoomPanBehavior,
-                            legend: Legend(
-                                isVisible: true,
-                                position: LegendPosition.bottom,
-                                textStyle: TextStyle(
-                                    color:
-                                        Theme.of(context).primaryColorLight)),
-                            series: [
-                              // Renders line chart
-                              LineSeries<Exercises, DateTime>(
-                                isVisibleInLegend: true,
-                                color: Theme.of(context).primaryColorLight,
-                                name: "goal",
-                                dataSource: _sdbChartData!,
-                                xValueMapper: (Exercises sales, _) =>
-                                    DateTime.parse(sales.date!),
-                                yValueMapper: (Exercises sales, _) =>
-                                    sales.goal,
-                              ),
-
-                              LineSeries<Exercises, DateTime>(
-                                isVisibleInLegend: true,
-                                onCreateShader: (ShaderDetails details) {
-                                  return ui.Gradient.linear(
-                                      details.rect.topRight,
-                                      details.rect.bottomLeft,
-                                      color,
-                                      stops);
-                                },
-                                markerSettings: MarkerSettings(
-                                    isVisible: true,
-                                    height: 6,
-                                    width: 6,
-                                    borderWidth: 3,
-                                    color: Theme.of(context).primaryColor,
-                                    borderColor:
-                                        Theme.of(context).primaryColor),
-                                name: "1rm",
-                                color: Theme.of(context).primaryColor,
-                                width: 5,
-                                dataSource: _sdbChartData!,
-                                xValueMapper: (Exercises sales, _) =>
-                                    DateTime.parse(sales.date!),
-                                yValueMapper: (Exercises sales, _) =>
-                                    sales.onerm,
-                              ),
-                            ]))
-                    : Container()
-              ])),
-          const SizedBox(height: 12),
-          _onechartExercisesWidget(_sdbChartData)
-        ],
+        children: [StaticModule()],
       ),
     ));
   }
