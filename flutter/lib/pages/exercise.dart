@@ -145,7 +145,6 @@ class ExerciseState extends State<Exercise> {
             _scroller.jumpTo(_scroller.offset + moveDistance);
           }
         }
-        // I/flutter ( 4972): x: 80.0, y: 80.0, height: 560.0, width: 360.0
         // print("x: ${position.dy}, "
         //     "y: ${position.dy}, "
         //     "height: ${render.size.height}, "

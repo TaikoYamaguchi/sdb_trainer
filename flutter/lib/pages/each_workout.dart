@@ -33,6 +33,9 @@ class EachWorkoutDetails extends StatefulWidget {
 
 class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
     with TickerProviderStateMixin {
+  final _listViewKey = GlobalKey();
+  bool dragstart = false;
+  final ScrollController _scroller = ScrollController();
   var _userProvider;
   var _workoutProvider;
   var backupwddata;
@@ -289,6 +292,12 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                     exlist.insert(newIndex, item);
                     _editWorkoutCheck();
                   });
+                },
+                onReorderStart: (index) {
+                  dragstart = true;
+                },
+                onReorderEnd: (index) {
+                  dragstart = false;
                 },
                 padding: EdgeInsets.symmetric(horizontal: 4),
                 itemBuilder: (BuildContext _context, int index) {
@@ -582,6 +591,158 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
     );
   }
 
+  Widget _createListener(Widget child) {
+    return Listener(
+      child: child,
+      onPointerMove: (PointerMoveEvent event) {
+        if (dragstart) {
+          RenderBox render =
+              _listViewKey.currentContext?.findRenderObject() as RenderBox;
+          Offset position = render.localToGlobal(Offset.zero);
+          double topY = position.dy;
+          double bottomY = topY + render.size.height;
+          const detectedRange = 100;
+
+          const moveDistance = 3;
+          if (event.position.dy < topY + detectedRange) {
+            var to = _scroller.offset - moveDistance;
+            to = (to < 0) ? 0 : to;
+            _scroller.jumpTo(to);
+          }
+          if (event.position.dy > bottomY - detectedRange) {
+            _scroller.jumpTo(_scroller.offset + moveDistance);
+          }
+        }
+        // print("x: ${position.dy}, "
+        //     "y: ${position.dy}, "
+        //     "height: ${render.size.height}, "
+        //     "width: ${render.size.width}");
+      },
+    );
+  }
+
+  Widget mySliver() {
+    return CustomScrollView(key: _listViewKey, controller: _scroller, slivers: [
+      SliverAppBar(
+        snap: false,
+        floating: false,
+        pinned: true,
+        backgroundColor: Theme.of(context).canvasColor.withOpacity(0.9),
+        actions: [
+          IconButton(
+            key: keyPlus,
+            icon: SvgPicture.asset("assets/svg/add_white.svg",
+                color: Theme.of(context).primaryColorLight),
+            onPressed: () {
+              _workoutProvider.dataBU(widget.rindex);
+              _exProvider.resettags();
+              _exProvider.inittestdata();
+              Navigator.push(
+                  context,
+                  Transition(
+                      child: EachWorkoutSearch(
+                        rindex: widget.rindex,
+                      ),
+                      transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+
+              _PrefsProvider.eachworkouttutor
+                  ? [
+                      Future.delayed(Duration(milliseconds: 100)).then((value) {
+                        Tutorial.showTutorial(context, itens);
+                      }),
+                      _PrefsProvider.tutordone()
+                    ]
+                  : null;
+            },
+          )
+        ],
+        leading: Center(
+          child: GestureDetector(
+            child: Icon(Icons.arrow_back_ios_outlined,
+                color: Theme.of(context).primaryColorLight),
+            onTap: () {
+              btnDisabled == true
+                  ? null
+                  : [btnDisabled = true, Navigator.of(context).pop()];
+            },
+          ),
+        ),
+        expandedHeight: _appbarWidget().preferredSize.height * 2,
+        collapsedHeight: _appbarWidget().preferredSize.height,
+        flexibleSpace: myFlexibleSpaceBar(
+          expandedTitleScale: 1.2,
+          titlePaddingTween: EdgeInsetsTween(
+              begin: EdgeInsets.only(left: 12.0, bottom: 8),
+              end: EdgeInsets.only(left: 60.0, bottom: 8, right: 40)),
+          title: GestureDetector(
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return NameInputDialog(rindex: widget.rindex);
+                  });
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  child: Consumer<WorkoutdataProvider>(
+                      builder: (builder, provider, child) {
+                    return Text(
+                      provider.workoutdata.routinedatas[widget.rindex].name,
+                      textScaleFactor: 1.3,
+                      style:
+                          TextStyle(color: Theme.of(context).primaryColorLight),
+                    );
+                  }),
+                ),
+                SizedBox(
+                  width: 100,
+                  height: 30,
+                  child: CustomSlidingSegmentedControl(
+                      children: {
+                        true: Text("on",
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: _exImageOpen
+                                    ? Theme.of(context).buttonColor
+                                    : Theme.of(context).primaryColorLight)),
+                        false: Text("off",
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: _exImageOpen
+                                    ? Theme.of(context).primaryColorLight
+                                    : Theme.of(context).buttonColor))
+                      },
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      innerPadding: const EdgeInsets.all(4),
+                      thumbDecoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Theme.of(context).primaryColor),
+                      onValueChanged: (bool value) {
+                        setState(() {
+                          _exImageOpen = value;
+                        });
+                      }),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+      SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (context, _index) {
+            return Container(child: _exercisesWidget(true, true));
+          },
+          childCount: 1,
+        ),
+      )
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
@@ -624,131 +785,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
               })
             ];
 
-      return Scaffold(
-        appBar: null,
-        //body: ReorderableExample(),
-
-        body: CustomScrollView(slivers: [
-          SliverAppBar(
-            snap: false,
-            floating: false,
-            pinned: true,
-            backgroundColor: Theme.of(context).canvasColor.withOpacity(0.9),
-            actions: [
-              IconButton(
-                key: keyPlus,
-                icon: SvgPicture.asset("assets/svg/add_white.svg",
-                    color: Theme.of(context).primaryColorLight),
-                onPressed: () {
-                  _workoutProvider.dataBU(widget.rindex);
-                  _exProvider.resettags();
-                  _exProvider.inittestdata();
-                  Navigator.push(
-                      context,
-                      Transition(
-                          child: EachWorkoutSearch(
-                            rindex: widget.rindex,
-                          ),
-                          transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-
-                  _PrefsProvider.eachworkouttutor
-                      ? [
-                          Future.delayed(Duration(milliseconds: 100))
-                              .then((value) {
-                            Tutorial.showTutorial(context, itens);
-                          }),
-                          _PrefsProvider.tutordone()
-                        ]
-                      : null;
-                },
-              )
-            ],
-            leading: Center(
-              child: GestureDetector(
-                child: Icon(Icons.arrow_back_ios_outlined,
-                    color: Theme.of(context).primaryColorLight),
-                onTap: () {
-                  btnDisabled == true
-                      ? null
-                      : [btnDisabled = true, Navigator.of(context).pop()];
-                },
-              ),
-            ),
-            expandedHeight: _appbarWidget().preferredSize.height * 2,
-            collapsedHeight: _appbarWidget().preferredSize.height,
-            flexibleSpace: myFlexibleSpaceBar(
-              expandedTitleScale: 1.2,
-              titlePaddingTween: EdgeInsetsTween(
-                  begin: EdgeInsets.only(left: 12.0, bottom: 8),
-                  end: EdgeInsets.only(left: 60.0, bottom: 8, right: 40)),
-              title: GestureDetector(
-                onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return NameInputDialog(rindex: widget.rindex);
-                      });
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      child: Consumer<WorkoutdataProvider>(
-                          builder: (builder, provider, child) {
-                        return Text(
-                          provider.workoutdata.routinedatas[widget.rindex].name,
-                          textScaleFactor: 1.3,
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColorLight),
-                        );
-                      }),
-                    ),
-                    SizedBox(
-                      width: 100,
-                      height: 30,
-                      child: CustomSlidingSegmentedControl(
-                          children: {
-                            true: Text("on",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: _exImageOpen
-                                        ? Theme.of(context).buttonColor
-                                        : Theme.of(context).primaryColorLight)),
-                            false: Text("off",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: _exImageOpen
-                                        ? Theme.of(context).primaryColorLight
-                                        : Theme.of(context).buttonColor))
-                          },
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          innerPadding: const EdgeInsets.all(4),
-                          thumbDecoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Theme.of(context).primaryColor),
-                          onValueChanged: (bool value) {
-                            setState(() {
-                              _exImageOpen = value;
-                            });
-                          }),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, _index) {
-                return Container(child: _exercisesWidget(true, true));
-              },
-              childCount: 1,
-            ),
-          )
-        ]),
-      );
+      return Scaffold(appBar: null, body: _createListener(mySliver()));
     });
   }
 }
