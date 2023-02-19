@@ -17,6 +17,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'dart:io';
 import 'dart:async';
+import 'package:image/image.dart' as img;
 
 class ExerciseDone extends StatefulWidget {
   List<hisdata.Exercises> exerciseList = [];
@@ -52,7 +53,16 @@ class _ExerciseDoneState extends State<ExerciseDone> {
   Future _getImage(ImageSource imageSource) async {
     _selectImage =
         await _picker.pickImage(source: imageSource, imageQuality: 30);
+    /*
+    var tempImg = img.decodeImage(File(_selectImage!.path).readAsBytesSync());
 
+    var stringimg = img.drawString(tempImg!,
+        'Superoasdklfjasdklfjlasdkfjklasjfklasdlkflasdkfklasdklfklasdklfklaskldflkasdklfjklasdjfkljasdklfjaklsdf',
+        font: img.arial48, x: 0, y: 0, );
+    File waterMarkSaveFile = File(_selectImage!.path);
+    final jpg = img.encodeJpg(stringimg);
+    waterMarkSaveFile.writeAsBytes(jpg);
+    */
     setState(() {
       _image = File(_selectImage!.path); // 가져온 이미지를 _image에 저장
     });

@@ -89,6 +89,7 @@ dependencies:
   in_app_review: ^2.0.6
   auto_size_text: ^3.0.0
   flutter_gif: ^0.0.4
+  image: ^4.0.15
 
 
 
