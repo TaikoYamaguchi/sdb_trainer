@@ -582,8 +582,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                     : _exImage != ""
                                         ? Image.asset(
                                             _exImage,
-                                            height: 180,
-                                            width: 180,
+                                            height: 160,
+                                            width: 160,
                                             fit: BoxFit.cover,
                                           )
                                         : SizedBox(height: 12),
@@ -594,7 +594,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                     _exercise.name.length < 10
                                         ? Icon(
                                             Icons.info_outline_rounded,
-                                            color: Color(0xFF101012),
+                                            color:
+                                                Theme.of(context).canvasColor,
                                           )
                                         : Container(),
                                     isKeyboardVisible
@@ -652,67 +653,93 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                     exGoalEditAlert(context, _exercise);
                                   },
                                   child: Text(
-                                    "Best 1RM: ${_info.onerm.toStringAsFixed(1)}/${_info.goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
-                                    textScaleFactor: 1.7,
-                                    style: TextStyle(color: Color(0xFF717171)),
+                                    "1RM/목표: ${_info.onerm.toStringAsFixed(1)}/${_info.goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
+                                    textScaleFactor: 1.3,
+                                    style: TextStyle(
+                                        color:
+                                            Theme.of(context).primaryColorDark),
                                   ),
                                 );
                         }),
                       ],
                     )),
+                    SizedBox(height: 16),
                     Container(
-                        padding: EdgeInsets.only(right: 10),
-                        height: 25,
+                        padding: EdgeInsets.only(right: 10, bottom: 0),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
-                                width: 85,
+                                width: 60,
                                 padding: EdgeInsets.only(right: 4),
                                 child: Text(
-                                  "Set",
+                                  "완료",
                                   textScaleFactor: 1.1,
                                   style: TextStyle(
-                                    color: Theme.of(context).primaryColorLight,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textAlign: TextAlign.right,
-                                )),
-                            Container(
-                                width: 70,
-                                child: Text(
-                                  "Weight(${_userProvider.userdata.weight_unit})",
-                                  textScaleFactor: 1.1,
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColorLight,
+                                    color: Theme.of(context).primaryColorDark,
                                     fontWeight: FontWeight.bold,
                                   ),
                                   textAlign: TextAlign.center,
                                 )),
-                            Container(width: 35),
-                            Container(
-                                width: 40,
-                                child: Text(
-                                  "Reps",
-                                  textScaleFactor: 1.1,
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColorLight,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                )),
-                            Container(
-                                width: 70,
-                                child: Text(
-                                  "1RM",
-                                  textScaleFactor: 1.1,
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColorLight,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                )),
+                            Expanded(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                      width: 25,
+                                      padding: EdgeInsets.only(right: 4),
+                                      child: Text(
+                                        "세트",
+                                        textScaleFactor: 1.1,
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorDark,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      )),
+                                  Container(
+                                      width: 70,
+                                      child: Text(
+                                        "무게(${_userProvider.userdata.weight_unit})",
+                                        textScaleFactor: 1.1,
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorDark,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      )),
+                                  Container(width: 35),
+                                  Container(
+                                      width: 40,
+                                      child: Text(
+                                        "회",
+                                        textScaleFactor: 1.1,
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorDark,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      )),
+                                  Container(
+                                      width: 70,
+                                      child: Text(
+                                        "1RM",
+                                        textScaleFactor: 1.1,
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorDark,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      )),
+                                ],
+                              ),
+                            ),
                           ],
                         )),
                     Consumer<WorkoutdataProvider>(
@@ -749,7 +776,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                       Container(
                                         width: 60,
                                         child: Transform.scale(
-                                            scale: 1.1,
+                                            scale: 1.3,
                                             child: Theme(
                                               data: ThemeData(
                                                   unselectedWidgetColor:
@@ -760,6 +787,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                       .buttonColor,
                                                   activeColor: Theme.of(context)
                                                       .primaryColor,
+                                                  side: BorderSide(
+                                                      width: 1,
+                                                      color: Theme.of(context)
+                                                          .primaryColorDark),
                                                   value: _sets[index].ischecked,
                                                   onChanged: (newvalue) {
                                                     _routinetimeProvider
@@ -957,7 +988,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                   child: SvgPicture.asset(
                                                       "assets/svg/multiply.svg",
                                                       color: Theme.of(context)
-                                                          .primaryColorLight,
+                                                          .primaryColorDark,
                                                       height: 19 *
                                                           _themeProvider
                                                               .userFontSize /
@@ -1541,8 +1572,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                       : _exImage != ""
                                           ? Image.asset(
                                               _exImage,
-                                              height: 180,
-                                              width: 180,
+                                              height: 160,
+                                              width: 160,
                                               fit: BoxFit.cover,
                                             )
                                           : SizedBox(height: 12),
@@ -1554,7 +1585,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                       _exercise.name.length < 10
                                           ? Icon(
                                               Icons.info_outline_rounded,
-                                              color: Color(0xFF101012),
+                                              color:
+                                                  Theme.of(context).canvasColor,
                                             )
                                           : Container(),
                                       isKeyboardVisible
@@ -1611,100 +1643,124 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                             return isKeyboardVisible
                                 ? Container()
                                 : Text(
-                                    "Best 1RM: ${_info.onerm.toStringAsFixed(1)}/${_info.goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
+                                    "1RM/목표: ${_info.onerm.toStringAsFixed(1)}/${_info.goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
                                     textScaleFactor: 1.7,
-                                    style: TextStyle(color: Color(0xFF717171)),
+                                    style: TextStyle(
+                                        color:
+                                            Theme.of(context).primaryColorDark),
                                   );
                           }),
                         ],
                       )),
+                      SizedBox(height: 16),
                       Container(
                           padding: EdgeInsets.only(right: 10),
-                          height: 25,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Container(
-                                  width: 85,
+                                  width: 60,
                                   padding: EdgeInsets.only(right: 4),
                                   child: Text(
-                                    "Set",
+                                    "완료",
                                     textScaleFactor: 1.1,
                                     style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorLight,
+                                      color: Theme.of(context).primaryColorDark,
                                       fontWeight: FontWeight.bold,
                                     ),
-                                    textAlign: TextAlign.right,
+                                    textAlign: TextAlign.center,
                                   )),
-                              Container(
-                                  width: 70,
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        "Weight",
-                                        textScaleFactor: 1.1,
-                                        style: TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorLight,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          tooltipController.showTooltip();
-                                        },
-                                        child: JustTheTooltip(
-                                          controller: tooltipController,
-                                          child: Padding(
-                                            padding: EdgeInsets.zero,
-                                            child: Icon(
-                                              Icons.info_outline_rounded,
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              size: 20,
-                                            ),
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                        width: 25,
+                                        padding: EdgeInsets.only(right: 4),
+                                        child: Text(
+                                          "세트",
+                                          textScaleFactor: 1.1,
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorDark,
+                                            fontWeight: FontWeight.bold,
                                           ),
-                                          content: Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: Text(
-                                              '맨몸 카테고리의 운동은 기본 무게가 체중으로 세팅되고,\n무게를 누르면 체중에 추가/제거가 가능해요.',
+                                          textAlign: TextAlign.center,
+                                        )),
+                                    Container(
+                                        width: 70,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "무게",
+                                              textScaleFactor: 1.1,
                                               style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .primaryColorLight),
+                                                color: Theme.of(context)
+                                                    .primaryColorDark,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              textAlign: TextAlign.center,
                                             ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                tooltipController.showTooltip();
+                                              },
+                                              child: JustTheTooltip(
+                                                controller: tooltipController,
+                                                child: Padding(
+                                                  padding: EdgeInsets.zero,
+                                                  child: Icon(
+                                                    Icons.info_outline_rounded,
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                    size: 16,
+                                                  ),
+                                                ),
+                                                content: Padding(
+                                                  padding: EdgeInsets.all(8.0),
+                                                  child: Text(
+                                                    '맨몸 카테고리의 운동은 기본 무게가 체중으로 세팅되고,\n무게를 누르면 체중에 추가/제거가 가능해요.',
+                                                    style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .primaryColorLight),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        )),
+                                    Container(width: 35),
+                                    Container(
+                                        width: 40,
+                                        child: Text(
+                                          "회",
+                                          textScaleFactor: 1.1,
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorDark,
+                                            fontWeight: FontWeight.bold,
                                           ),
-                                        ),
-                                      ),
-                                    ],
-                                  )),
-                              Container(width: 35),
-                              Container(
-                                  width: 40,
-                                  child: Text(
-                                    "Reps",
-                                    textScaleFactor: 1.1,
-                                    style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorLight,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  )),
-                              Container(
-                                  width: 70,
-                                  child: Text(
-                                    "1RM",
-                                    textScaleFactor: 1.1,
-                                    style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorLight,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  )),
+                                          textAlign: TextAlign.center,
+                                        )),
+                                    Container(
+                                        width: 70,
+                                        child: Text(
+                                          "1RM",
+                                          textScaleFactor: 1.1,
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorDark,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        )),
+                                  ],
+                                ),
+                              ),
                             ],
                           )),
                       Consumer2<WorkoutdataProvider, UserdataProvider>(
@@ -1755,7 +1811,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                         Container(
                                           width: 60,
                                           child: Transform.scale(
-                                              scale: 1.1,
+                                              scale: 1.3,
                                               child: Theme(
                                                 data: ThemeData(
                                                     unselectedWidgetColor:
@@ -1768,6 +1824,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                     activeColor:
                                                         Theme.of(context)
                                                             .primaryColor,
+                                                    side: BorderSide(
+                                                        width: 1,
+                                                        color: Theme.of(context)
+                                                            .primaryColorDark),
                                                     value:
                                                         _sets[index].ischecked,
                                                     onChanged: (newvalue) {
@@ -2434,8 +2494,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                     : _exImage != ""
                                         ? Image.asset(
                                             _exImage,
-                                            height: 180,
-                                            width: 180,
+                                            height: 160,
+                                            width: 160,
                                             fit: BoxFit.cover,
                                           )
                                         : SizedBox(height: 12),
@@ -2446,7 +2506,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                     _exercise.name.length < 10
                                         ? Icon(
                                             Icons.info_outline_rounded,
-                                            color: Color(0xFF101012),
+                                            color:
+                                                Theme.of(context).canvasColor,
                                           )
                                         : Container(),
                                     isKeyboardVisible
@@ -2493,64 +2554,72 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                               ]);
                             }),
                           ),
-                          Consumer<ExercisesdataProvider>(
-                              builder: (builder, provider, child) {
-                            var _info =
-                                provider.exercisesdata.exercises[ueindex];
-                            return isKeyboardVisible
-                                ? Container()
-                                : Text(
-                                    "Best 1RM: ${_info.onerm.toStringAsFixed(1)}/${_info.goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
-                                    textScaleFactor: 1.7,
-                                    style: TextStyle(color: Color(0xFF717171)),
-                                  );
-                          }),
                         ],
                       )),
+                      SizedBox(height: 16),
                       Container(
                           padding: EdgeInsets.only(right: 10),
-                          height: 25,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Container(
-                                  width: 85,
+                                  width: 60,
                                   padding: EdgeInsets.only(right: 4),
                                   child: Text(
-                                    "Set",
+                                    "완료",
                                     textScaleFactor: 1.1,
                                     style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorLight,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    textAlign: TextAlign.right,
-                                  )),
-                              Container(
-                                  width: 80,
-                                  child: Text(
-                                    "거리(Km)",
-                                    textScaleFactor: 1.1,
-                                    style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorLight,
+                                      color: Theme.of(context).primaryColorDark,
                                       fontWeight: FontWeight.bold,
                                     ),
                                     textAlign: TextAlign.center,
                                   )),
-                              Container(
-                                  width: 110,
-                                  child: Text(
-                                    "시간(시:분:초)",
-                                    textScaleFactor: 1.1,
-                                    style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorLight,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  )),
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                        width: 25,
+                                        padding: EdgeInsets.only(right: 4),
+                                        child: Text(
+                                          "세트",
+                                          textScaleFactor: 1.1,
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorDark,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        )),
+                                    Container(
+                                        width: 80,
+                                        child: Text(
+                                          "거리(Km)",
+                                          textScaleFactor: 1.1,
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorDark,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        )),
+                                    Container(
+                                        width: 110,
+                                        child: Text(
+                                          "시간(시:분:초)",
+                                          textScaleFactor: 1.1,
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorDark,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        )),
+                                  ],
+                                ),
+                              ),
                             ],
                           )),
                       Consumer2<WorkoutdataProvider, UserdataProvider>(
@@ -2598,7 +2667,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                         Container(
                                           width: 60,
                                           child: Transform.scale(
-                                              scale: 1.1,
+                                              scale: 1.3,
                                               child: Theme(
                                                 data: ThemeData(
                                                     unselectedWidgetColor:
@@ -2611,6 +2680,10 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                     activeColor:
                                                         Theme.of(context)
                                                             .primaryColor,
+                                                    side: BorderSide(
+                                                        width: 1,
+                                                        color: Theme.of(context)
+                                                            .primaryColorDark),
                                                     value:
                                                         _sets[index].ischecked,
                                                     onChanged: (newvalue) {
