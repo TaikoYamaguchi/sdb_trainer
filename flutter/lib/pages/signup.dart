@@ -502,7 +502,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     );
                                   },
                                   shrinkWrap: true,
-                                  itemCount: exerciseList.length)),
+                                  itemCount: 3)),
                         ),
                       ),
                     ),

@@ -2,7 +2,7 @@ class InterviewData {
   final int id;
   final String user_email;
   final String user_nickname;
-  final String progress;
+  String progress;
   final String title;
   final String content;
   final List<dynamic> like;

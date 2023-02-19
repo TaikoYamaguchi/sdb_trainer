@@ -162,6 +162,42 @@ class InterviewLike {
   }
 }
 
+class InterviewManage {
+  final int interview_id;
+  final String user_email;
+  final String status;
+  InterviewManage(
+      {required this.interview_id,
+      required this.user_email,
+      required this.status});
+  Future<String> _interviewStatusFromServer() async {
+    var formData = new Map<String, dynamic>();
+    formData["interview_id"] = interview_id;
+    formData["email"] = user_email;
+    formData["status"] = status;
+
+    var url = Uri.parse(
+        LocalHost.getLocalHost() + "/api/interview/status/${interview_id}");
+    var response = await http.patch(url, body: json.encode(formData));
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      String jsonString = utf8.decode(response.bodyBytes);
+      final jsonResponse = json.decode(jsonString);
+
+      return utf8.decode(response.bodyBytes);
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<Map<String, dynamic>> patchInterviewStatus() async {
+    String jsonString = await _interviewStatusFromServer();
+    final jsonResponse = json.decode(jsonString);
+    return (jsonResponse);
+  }
+}
+
 class InterviewDelete {
   final int interview_id;
   InterviewDelete({

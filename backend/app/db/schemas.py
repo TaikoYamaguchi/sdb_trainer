@@ -321,3 +321,8 @@ class ManageLikeInterview(BaseModel):
     email:str
     status:str
     disorlike:str
+
+class ManageStatusInterview(BaseModel):
+    interview_id:int
+    email:str
+    status:str

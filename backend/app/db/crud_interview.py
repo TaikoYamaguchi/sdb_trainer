@@ -63,6 +63,13 @@ def manage_like_by_interview_id(db: Session,likeContent:schemas.ManageLikeInterv
     db.refresh(db_interview)
     return db_interview
 
+def manage_status_by_interview_id(db: Session,manageContent:schemas.ManageStatusInterview) -> schemas.InterviewOut:
+    db_interview = db.query(models.Interview).filter(models.Interview.id == manageContent.interview_id).first()
+    setattr(db_interview, "progress", manageContent.status)
+    db.commit()
+    db.refresh(db_interview)
+    return db_interview
+
 def delete_auth_interview(db: Session, interview_id: int, user:schemas.User):
     db_interview = db.query(models.Interview).filter(models.Interview.id == interview_id).first()
     if user.is_superuser == True :

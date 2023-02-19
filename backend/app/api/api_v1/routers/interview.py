@@ -1,4 +1,4 @@
-from app.db.crud_interview import get_interviews, get_interviews_by_email
+from app.db.crud_interview import get_interviews, get_interviews_by_email, manage_status_by_interview_id
 from app.db.crud_interview import create_interview, delete_auth_interview, get_interviews_by_page, manage_like_by_interview_id
 from fastapi import APIRouter, Request, Depends, Response, encoders
 import typing as t
@@ -6,7 +6,7 @@ import typing as t
 
 from app.core.auth import get_current_active_user, get_current_user
 from app.db.session import get_db
-from app.db.schemas import InterviewCreate, InterviewOut, ManageLikeInterview
+from app.db.schemas import InterviewCreate, InterviewOut, ManageLikeInterview, ManageStatusInterview
 interview_router = r = APIRouter()
 
 @r.post("/interviewcreate", response_model=InterviewOut, response_model_exclude_none=True)
@@ -78,6 +78,20 @@ async def interview_likes(
     db=Depends(get_db),
 ):
     interview = manage_like_by_interview_id(db, likeContent)
+    # This is necessary for react-admin to work
+    return interview
+
+@r.patch(
+    "/interview/status/{interview_id}",
+    response_model=InterviewOut,
+    response_model_exclude_none=True,
+)
+async def interview_status(
+    response: Response,
+    manageContent:ManageStatusInterview,
+    db=Depends(get_db),
+):
+    interview = manage_status_by_interview_id(db, manageContent)
     # This is necessary for react-admin to work
     return interview
 

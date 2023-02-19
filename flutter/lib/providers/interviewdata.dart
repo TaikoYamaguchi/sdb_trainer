@@ -49,6 +49,19 @@ class InterviewdataProvider extends ChangeNotifier {
     }
   }
 
+  patchInterviewStatusdata(interviewData, email, status) {
+    _interviewdataAll.interviewDatas.indexWhere((interview) {
+      if (interview.id == interviewData.id) {
+        interview.progress = status;
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    notifyListeners();
+  }
+
   deleteInterviewdata(interview_id) {
     _interviewdataAll.interviewDatas
         .removeAt(_interviewdataAll.interviewDatas.indexWhere((interviewData) {

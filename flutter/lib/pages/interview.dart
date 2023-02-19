@@ -863,7 +863,60 @@ class _InterviewState extends State<Interview> {
                                 _isCommentInputOpen = true;
                                 Navigator.of(context).pop();
                               });
-                      }))
+                      })),
+              _userProvider.userdata.is_superuser
+                  ? PopupMenuItem(
+                      child: ListTile(
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 4.0, vertical: 0.0),
+                          leading: Icon(Icons.open_in_new,
+                              color: Theme.of(context).primaryColorLight),
+                          title: Text(
+                              interviewData.progress == "open"
+                                  ? "완료 수정"
+                                  : "진행 수정",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
+                          onTap: () async {
+                            interviewData.progress == "open"
+                                ? {
+                                    InterviewManage(
+                                      interview_id: interviewData.id,
+                                      user_email: _userProvider.userdata.email,
+                                      status: "closed",
+                                    ).patchInterviewStatus(),
+                                    _interviewProvider.patchInterviewStatusdata(
+                                        interviewData,
+                                        _userProvider.userdata.email,
+                                        "closed"),
+                                    Navigator.pop(context),
+                                    Navigator.pop(context)
+                                  }
+                                : {
+                                    InterviewManage(
+                                      interview_id: interviewData.id,
+                                      user_email: _userProvider.userdata.email,
+                                      status: "open",
+                                    ).patchInterviewStatus(),
+                                    _interviewProvider.patchInterviewStatusdata(
+                                        interviewData,
+                                        _userProvider.userdata.email,
+                                        "open"),
+                                    Navigator.pop(context),
+                                    Navigator.pop(context)
+                                  };
+                          }))
+                  : PopupMenuItem(
+                      child: ListTile(
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 4.0, vertical: 0.0),
+                          leading: Icon(Icons.open_in_new,
+                              color: Theme.of(context).primaryColorLight),
+                          title: Text(
+                              interviewData.progress == "open" ? "완료" : "진행",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
+                          onTap: () async {}))
             ],
           )
         : showMenu(
@@ -890,7 +943,60 @@ class _InterviewState extends State<Interview> {
                                 _isCommentInputOpen = true;
                                 Navigator.of(context).pop();
                               });
-                      }))
+                      })),
+              _userProvider.userdata.is_superuser == true
+                  ? PopupMenuItem(
+                      child: ListTile(
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 4.0, vertical: 0.0),
+                          leading: Icon(Icons.open_in_new,
+                              color: Theme.of(context).primaryColorLight),
+                          title: Text(
+                              interviewData.progress == "open"
+                                  ? "완료 수정"
+                                  : "진행 수정",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
+                          onTap: () async {
+                            interviewData.progress == "open"
+                                ? {
+                                    InterviewManage(
+                                      interview_id: interviewData.id,
+                                      user_email: _userProvider.userdata.email,
+                                      status: "closed",
+                                    ).patchInterviewStatus(),
+                                    _interviewProvider.patchInterviewStatusdata(
+                                        interviewData,
+                                        _userProvider.userdata.email,
+                                        "closed"),
+                                    Navigator.pop(context),
+                                    Navigator.pop(context)
+                                  }
+                                : {
+                                    InterviewManage(
+                                      interview_id: interviewData.id,
+                                      user_email: _userProvider.userdata.email,
+                                      status: "open",
+                                    ).patchInterviewStatus(),
+                                    _interviewProvider.patchInterviewStatusdata(
+                                        interviewData,
+                                        _userProvider.userdata.email,
+                                        "open"),
+                                    Navigator.pop(context),
+                                    Navigator.pop(context)
+                                  };
+                          }))
+                  : PopupMenuItem(
+                      child: ListTile(
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 4.0, vertical: 0.0),
+                          leading: Icon(Icons.open_in_new,
+                              color: Theme.of(context).primaryColorLight),
+                          title: Text(
+                              interviewData.progress == "open" ? "완료" : "진행",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
+                          onTap: () async {}))
             ],
           );
   }
