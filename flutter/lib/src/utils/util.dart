@@ -25,17 +25,17 @@ void showToast(String message) {
 }
 
 void userLogOut(context) {
-  print("loggggggout");
   var _loginState = Provider.of<LoginPageProvider>(context, listen: false);
   var _userProvider = Provider.of<UserdataProvider>(context, listen: false);
   _userProvider.setUserKakaoEmail(null);
   _userProvider.setUserKakaoName(null);
   _userProvider.setUserKakaoImageUrl(null);
   _userProvider.setUserKakaoGender(null);
-  UserLogOut.logOut();
-  _loginState.change(false);
   _loginState.changeSignup(false);
   _userProvider.getUsersFriendsAll();
+  _loginState.change(false);
+  UserLogOut.logOut();
+  print("loggggggout");
 }
 
 Future _getUserImage(ImageSource imageSource, context) async {

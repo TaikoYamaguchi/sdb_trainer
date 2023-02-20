@@ -1,13 +1,13 @@
 from app.core.sms import send_sms_find_user, verification_user
 from app.db.crud import create_user, get_friends_by_email, get_user_by_email, get_user_by_phone_number, edit_user, get_user_by_nickname, get_user_by_sms_verifiaction, get_users_by_nickname, manage_like_by_liked_email, get_users, delete_user
-from app.db.schemas import FindUser, FindUserCode, User, UserCore, UserCreate, UserEdit, ManageLikeUser, UserBase
+from app.db.schemas import FindUser, FindUserCode, Token, User, UserCore, UserCreate, UserEdit, ManageLikeUser, UserBase
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import APIRouter, Depends, Request, HTTPException, status
 from datetime import timedelta
 
 from app.db.session import get_db
 from app.core import security
-from app.core.auth import authenticate_user, get_current_active_superuser, sign_up_new_user,get_current_user
+from app.core.auth import authenticate_user, get_current_active_superuser, get_current_active_user, sign_up_new_user,get_current_user
 import typing as t
 
 auth_router = r = APIRouter()
@@ -38,6 +38,7 @@ async def login(
     )
 
     return {"access_token": access_token, "token_type": "bearer"}
+
 
 @r.post("/tokenkakao/{email}")
 async def loginkakao(
@@ -129,11 +130,30 @@ async def user_phone_number(
 )
 async def user_email(
     request: Request,
-    email: str,
+    token: str,
     db=Depends(get_db),
 ):
-    user = get_user_by_email(db, email)
+    print("userrr nooo")
+    user = get_current_user(db,token)
     return user
+
+@r.patch(
+    "/user/{email}",
+    response_model=User,
+    response_model_exclude_none=True,
+)
+async def user_email_get(
+    request: Request,
+    email: str,
+    user=Depends(get_current_user),
+    db=Depends(get_db),
+):
+    print("userrr nooo")
+    print(user)
+    user = get_user_by_email(db,email)
+    print(user)
+    return user
+
 
 @r.get(
     "/friends/{email}",
@@ -256,5 +276,7 @@ async def user_delete(
     user=Depends(get_current_user)
 ):
     return delete_user(db, user)
+
+
 
 

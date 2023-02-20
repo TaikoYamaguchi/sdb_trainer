@@ -50,12 +50,14 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    super.initState();
     _userEmailCtrl = TextEditingController(text: "");
+    print("yes");
     _userPasswordCtrl = TextEditingController(text: "");
-    Future.delayed(Duration.zero, () {
-      _storageLoginCheck(context);
+    Future.delayed(Duration.zero, () async {
+      print("yeeeeeeees");
+      await _storageLoginCheck(context);
     });
+    super.initState();
   }
 
   Future<void> _testSetUserId(email) async {
@@ -434,10 +436,12 @@ class LoginPageState extends State<LoginPage> {
     final storage = FlutterSecureStorage();
     try {
       String? storageEmail = await storage.read(key: "sdb_email");
+      String? storageToken = await storage.read(key: "sdb_token");
       if (storageEmail != null &&
+          storageToken != null &&
           storageEmail != "" &&
           storageEmail == _userEmailCtrl.text) {
-        initialProviderGet(context);
+        initialProviderGet(context, storageToken);
         _bodyStater.change(1);
         _loginState.change(true);
         _testSetUserId(storageEmail);
@@ -449,7 +453,7 @@ class LoginPageState extends State<LoginPage> {
             .loginUser()
             .then((token) => token["access_token"] != null
                 ? {
-                    initialProviderGet(context),
+                    initialProviderGet(context, token["access_token"]),
                     _bodyStater.change(1),
                     _loginState.change(true),
                     _testSetUserId(_userEmailCtrl.text),
@@ -463,7 +467,7 @@ class LoginPageState extends State<LoginPage> {
           .loginUser()
           .then((token) => token["access_token"] != null
               ? {
-                  initialProviderGet(context),
+                  initialProviderGet(context, token["access_token"]),
                   _bodyStater.change(1),
                   _loginState.change(true),
                   _testSetUserId(_userEmailCtrl.text),
@@ -477,10 +481,12 @@ class LoginPageState extends State<LoginPage> {
     final storage = FlutterSecureStorage();
     try {
       String? storageEmail = await storage.read(key: "sdb_email");
+      String? storageToken = await storage.read(key: "sdb_token");
       if (storageEmail != null &&
           storageEmail != "" &&
-          storageEmail == _userEmailCtrl.text) {
-        initialProviderGet(context);
+          storageEmail == _userEmailCtrl.text &&
+          storageToken != null) {
+        initialProviderGet(context, storageToken);
         _bodyStater.change(1);
         _loginState.change(true);
         _testSetUserId(_userEmailCtrl.text);
@@ -492,7 +498,7 @@ class LoginPageState extends State<LoginPage> {
             userEmail: _userEmailCtrl.text,
           ).loginKakaoUser().then((token) => token["access_token"] != null
               ? {
-                  initialProviderGet(context),
+                  initialProviderGet(context, token["access_token"]),
                   _bodyStater.change(1),
                   _loginState.change(true),
                   _testSetUserId(_userEmailCtrl.text),
@@ -511,7 +517,7 @@ class LoginPageState extends State<LoginPage> {
           userEmail: _userEmailCtrl.text,
         ).loginKakaoUser().then((token) => token["access_token"] != null
             ? {
-                initialProviderGet(context),
+                initialProviderGet(context, token["access_token"]),
                 _bodyStater.change(1),
                 _loginState.change(true),
                 _testSetUserId(_userEmailCtrl.text),
@@ -526,18 +532,27 @@ class LoginPageState extends State<LoginPage> {
     }
   }
 
-  void _storageLoginCheck(context) async {
+  Future<void> _storageLoginCheck(context) async {
     final storage = FlutterSecureStorage();
     String? storageEmail = await storage.read(key: "sdb_email");
-    if (storageEmail != null && storageEmail != "") {
-      initialProviderGet(context);
-
-      _testSetUserId(storageEmail);
-
-      _bodyStater.change(1);
+    String? storageToken = await storage.read(key: "sdb_token");
+    if (storageEmail != null && storageEmail != "" && storageToken != null) {
       _loginState.change(true);
-
-      fcmSetting();
+      initialProviderGet(context, storageToken);
+      _userProvider.getdata(storageToken).then((value) async {
+        print(value);
+        if (value == false) {
+          await storage.delete(key: "sdb_email");
+          await storage.delete(key: "sdb_token");
+          print("uesssse");
+          _loginState.change(false);
+          showToast("로그인이 만료되었어요");
+        } else {
+          _bodyStater.change(1);
+          _testSetUserId(storageEmail);
+          fcmSetting();
+        }
+      });
     }
   }
 
@@ -587,7 +602,7 @@ class LoginPageState extends State<LoginPage> {
     }
   }
 
-  void initialProviderGet(context) async {
+  void initialProviderGet(context, access_token) async {
     final _initUserdataProvider =
         Provider.of<UserdataProvider>(context, listen: false);
     final _initHistorydataProvider =
@@ -606,9 +621,11 @@ class LoginPageState extends State<LoginPage> {
 
     _storageInitialExerciseCheck(_initExercisesdataProvider);
     _routinetimeProvider.routineInitialCheck();
+
     var usertestList;
     await [
-      _initUserdataProvider.getdata(),
+      print(access_token),
+      _initUserdataProvider.getdata(access_token),
       _initUserdataProvider.getUsersFriendsAll(),
       _initHistorydataProvider.getdata(),
       _workoutdataProvider.getdata(),

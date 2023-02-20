@@ -9,14 +9,29 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 
 class UserService {
-  static Future<String> _loadUserdataFromServer() async {
+  final String token;
+  UserService({required this.token});
+  Future<String> _loadUserdataFromServer() async {
     final storage = new FlutterSecureStorage();
+
+    var formData = new Map<String, dynamic>();
+    formData["access_token"] = token;
+    formData["token_type"] = "access";
     String? user_email = await storage.read(key: "sdb_email");
+
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/user/" + user_email!);
-    var response = await http.get(url);
+    var response = await http.patch(
+      url,
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer ${token}',
+      },
+    );
+
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);
+    } else if (response.statusCode == 401) {
+      throw Exception('unauthorized');
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
       throw Exception('Failed to load post');
@@ -25,7 +40,7 @@ class UserService {
     //await Future.delayed(Duration(milliseconds: 1000));
   }
 
-  static Future<User> loadUserdata() async {
+  Future<User> loadUserdata() async {
     String jsonString = await _loadUserdataFromServer();
     final jsonResponse = json.decode(jsonString);
     User user = User.fromJson(jsonResponse);
