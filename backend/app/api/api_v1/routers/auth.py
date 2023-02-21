@@ -130,11 +130,10 @@ async def user_phone_number(
 )
 async def user_email(
     request: Request,
-    token: str,
+    email: str,
     db=Depends(get_db),
 ):
-    print("userrr nooo")
-    user = get_current_user(db,token)
+    user = get_user_by_email(db,email)
     return user
 
 @r.patch(

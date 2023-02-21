@@ -15,6 +15,7 @@ import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'package:sdb_trainer/src/utils/change_name.dart';
+import 'package:sdb_trainer/src/utils/exStartButton.dart';
 import 'package:sdb_trainer/src/utils/my_flexible_space_bar.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:transition/transition.dart';
@@ -696,37 +697,10 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                     );
                   }),
                 ),
-                SizedBox(
-                  width: 100,
-                  height: 30,
-                  child: CustomSlidingSegmentedControl(
-                      children: {
-                        true: Text("on",
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: _exImageOpen
-                                    ? Theme.of(context).buttonColor
-                                    : Theme.of(context).primaryColorLight)),
-                        false: Text("off",
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: _exImageOpen
-                                    ? Theme.of(context).primaryColorLight
-                                    : Theme.of(context).buttonColor))
-                      },
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      innerPadding: const EdgeInsets.all(4),
-                      thumbDecoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Theme.of(context).primaryColor),
-                      onValueChanged: (bool value) {
-                        setState(() {
-                          _exImageOpen = value;
-                        });
-                      }),
-                )
+                Padding(
+                  padding: const EdgeInsets.only(right: 12.0),
+                  child: ExStartButton(rindex: widget.rindex, pindex: 0),
+                ),
               ],
             ),
           ),
