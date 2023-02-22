@@ -150,41 +150,6 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
     await initHistorydataProvider.getdata();
   }
 
-  initialProviderGet() async {
-    final initUserdataProvider =
-        Provider.of<UserdataProvider>(context, listen: false);
-    final initHistorydataProvider =
-        Provider.of<HistorydataProvider>(context, listen: false);
-    final famousdataProvider =
-        Provider.of<FamousdataProvider>(context, listen: false);
-
-    final initExercisesdataProvider =
-        Provider.of<ExercisesdataProvider>(context, listen: false);
-    final initworkoutProvider =
-        Provider.of<WorkoutdataProvider>(context, listen: false);
-
-    [
-      initUserdataProvider.getdata(),
-      initUserdataProvider.getUsersFriendsAll(),
-      initHistorydataProvider.getdata(),
-      famousdataProvider.getdata(),
-      initworkoutProvider.getdata(),
-      initExercisesdataProvider.getdata(),
-    ];
-    initHistorydataProvider.getFriendsHistorydata();
-    initUserdataProvider.getFriendsdata();
-    initUserdataProvider.getUsersFriendsAll();
-    initHistorydataProvider.getHistorydataAll();
-    initHistorydataProvider.getCommentAll();
-
-    initUserdataProvider.userdata != null
-        ? [
-            initUserdataProvider.getFriendsdata(),
-            initHistorydataProvider.getFriendsHistorydata()
-          ]
-        : null;
-  }
-
   List<SDBdata> _getEventsfromDay(DateTime date) {
     String dateCalendar = DateFormat('yyyy-MM-dd').format(date);
     selectedEvents = {};

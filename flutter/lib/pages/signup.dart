@@ -1096,15 +1096,21 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   void _postExerciseCheck(context) async {
-    ExercisePost(user_email: _userEmailCtrl.text, exercises: exerciseList)
-        .postExercise()
-        .then((data) => data["user_email"] != null
-            ? {
-                _bodyStater.change(1),
-                _loginState.change(true),
-                LoginPageState().initialProviderGet(context)
-              }
-            : showToast("입력을 확인해주세요"));
+    final storage = FlutterSecureStorage();
+    try {
+      String? storageToken = await storage.read(key: "sdb_token");
+      ExercisePost(user_email: _userEmailCtrl.text, exercises: exerciseList)
+          .postExercise()
+          .then((data) => data["user_email"] != null
+              ? {
+                  _bodyStater.change(1),
+                  _loginState.change(true),
+                  LoginPageState().initialProviderGet(context, storageToken)
+                }
+              : showToast("입력을 확인해주세요"));
+    } catch (e) {
+      showToast("입력을 확인해주세요");
+    }
   }
 
   void _postWorkoutCheck() async {

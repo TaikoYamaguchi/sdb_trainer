@@ -23,12 +23,18 @@ class UserdataProvider extends ChangeNotifier {
   get userFeedData => _userFeedData;
   get userFontSize => _userFontSize;
 
-  getdata() async {
-    await UserService.loadUserdata().then((value) {
-      _userdata = value;
-      notifyListeners();
-      return _userdata;
-    });
+  getdata(token) async {
+    print("gogogogogo");
+    try {
+      await UserService(token: token).loadUserdata().then((value) {
+        _userdata = value;
+        notifyListeners();
+        return true;
+      });
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 
   setUserdata(user) {
