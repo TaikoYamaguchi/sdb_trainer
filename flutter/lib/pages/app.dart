@@ -583,7 +583,9 @@ class _AppState extends State<App> {
                       ? _PopProvider.popon()
                       : _bodyStater.bodystate == 4
                           ? _PopProvider.propopon()
-                          : null
+                          : _bodyStater.bodystate == 0
+                              ? _PopProvider.searchpopon()
+                              : null
                 ];
 
           return shouldPop!;

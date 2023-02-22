@@ -206,7 +206,7 @@ class ExSearchState extends State<ExSearch> {
           var key_list = ExImage().body_part_image.keys.toList();
           return GestureDetector(
             onTap: () {
-              _PopProvider.exstackup(1);
+              _PopProvider.searchstackup();
               _exProvider.inittestdata();
               _exProvider.settags([key_list[index].toString()]);
               _exProvider.settags2(['All']);

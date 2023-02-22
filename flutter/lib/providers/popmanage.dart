@@ -9,10 +9,16 @@ class PopProvider extends ChangeNotifier {
   int get exstack => _exstack;
   int _profilestack = 0;
   int get profilestack => _profilestack;
+  int _searchstack = 0;
+  int get searchstack => _searchstack;
+
   bool _isstacking = false;
   bool get isstacking => _isstacking;
   bool _isprostacking = false;
   bool get isprostacking => _isprostacking;
+  bool _issearchstacking = false;
+  bool get issearchstacking => _issearchstacking;
+
   bool _tutorpop = false;
   bool get tutorpop => _tutorpop;
 
@@ -50,6 +56,16 @@ class PopProvider extends ChangeNotifier {
     _isstacking = false;
   }
 
+  searchpopon() {
+    _searchstack == 0 ? null : _issearchstacking = true;
+    notifyListeners();
+  }
+
+  searchpopoff() {
+    _issearchstacking = false;
+    notifyListeners();
+  }
+
   exstackup(order) {
     _exstack = order;
   }
@@ -64,6 +80,14 @@ class PopProvider extends ChangeNotifier {
 
   profilestackdown() {
     _profilestack--;
+  }
+
+  searchstackup() {
+    _searchstack++;
+  }
+
+  searchstackdown() {
+    _searchstack--;
   }
 
   propopon() {
