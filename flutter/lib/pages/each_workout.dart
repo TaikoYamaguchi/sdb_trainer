@@ -291,6 +291,17 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                     }
                     final item = exlist.removeAt(oldIndex);
                     exlist.insert(newIndex, item);
+                    if (oldIndex == rtp.nowoneindex &&
+                        widget.rindex == rtp.nowonrindex) {
+                      rtp.nowoneindexupdate(newIndex);
+                    } else if (oldIndex > rtp.nowoneindex &&
+                        newIndex <= rtp.nowoneindex) {
+                      rtp.nowoneindexupdate(rtp.nowoneindex + 1);
+                    } else if (oldIndex < rtp.nowoneindex &&
+                        newIndex >= rtp.nowoneindex) {
+                      rtp.nowoneindexupdate(rtp.nowoneindex - 1);
+                    }
+
                     _editWorkoutCheck();
                   });
                 },
