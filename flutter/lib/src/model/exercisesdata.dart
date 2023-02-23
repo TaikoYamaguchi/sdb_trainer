@@ -164,3 +164,20 @@ class ExImage {
     'All': 'assets/png/all.png',
   };
 }
+
+class ExImageLight {
+  Map body_part_image = {
+    '가슴': 'assets/png/chests_light.png',
+    '삼두': 'assets/png/triceps_light.png',
+    '등': 'assets/png/back_light.png',
+    '이두': 'assets/png/biceps_light.png',
+    '어깨': 'assets/png/shoulders_light.png',
+    '다리': 'assets/png/legs_light.png',
+    '복근': 'assets/png/abs_light.png',
+    '전완근': 'assets/png/forearms_light.png',
+    '둔근': 'assets/png/glutes_light.png',
+    '유산소': 'assets/png/cardio.png',
+    '기타': 'assets/png/etc.png',
+    'All': 'assets/png/all_light.png',
+  };
+}

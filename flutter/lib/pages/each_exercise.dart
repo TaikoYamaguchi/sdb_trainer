@@ -688,7 +688,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                      width: 25,
+                                      width: 40,
                                       padding: EdgeInsets.only(right: 4),
                                       child: Text(
                                         "세트",
@@ -712,7 +712,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                         ),
                                         textAlign: TextAlign.center,
                                       )),
-                                  Container(width: 35),
+                                  Container(width: 30),
                                   Container(
                                       width: 40,
                                       child: Text(
@@ -923,7 +923,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Container(
-                                                width: 25,
+                                                width: 40,
                                                 child: Text(
                                                   "${index + 1}",
                                                   textScaleFactor: 1.7,
@@ -984,12 +984,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                 ),
                                               ),
                                               Container(
-                                                  width: 35,
+                                                  width: 30,
                                                   child: SvgPicture.asset(
                                                       "assets/svg/multiply.svg",
                                                       color: Theme.of(context)
                                                           .primaryColorDark,
-                                                      height: 19 *
+                                                      height: 16 *
                                                           _themeProvider
                                                               .userFontSize /
                                                           0.8)),
@@ -1677,7 +1677,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
-                                        width: 25,
+                                        width: 40,
                                         padding: EdgeInsets.only(right: 4),
                                         child: Text(
                                           "세트",
@@ -1733,7 +1733,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                             ),
                                           ],
                                         )),
-                                    Container(width: 35),
+                                    Container(width: 30),
                                     Container(
                                         width: 40,
                                         child: Text(
@@ -1961,7 +1961,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                       .spaceBetween,
                                               children: [
                                                 Container(
-                                                  width: 25,
+                                                  width: 40,
                                                   child: Text(
                                                     "${index + 1}",
                                                     textScaleFactor: 1.7,
@@ -2002,12 +2002,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                       ),
                                                     )),
                                                 Container(
-                                                    width: 35,
+                                                    width: 30,
                                                     child: SvgPicture.asset(
                                                         "assets/svg/multiply.svg",
                                                         color: Theme.of(context)
-                                                            .primaryColorLight,
-                                                        height: 19 *
+                                                            .primaryColorDark,
+                                                        height: 16 *
                                                             _themeProvider
                                                                 .userFontSize /
                                                             0.8)),
@@ -2065,7 +2065,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                         ? Text(
                                                             "${((_sets[index].weight + _sets[index].index) * (1 + _sets[index].reps / 30)).toStringAsFixed(1)}",
                                                             textScaleFactor:
-                                                                1.7,
+                                                                1.8,
                                                             style: TextStyle(
                                                                 color: Theme.of(
                                                                         context)
@@ -2076,7 +2076,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                         : Text(
                                                             "${_sets[index].weight + _sets[index].index}",
                                                             textScaleFactor:
-                                                                1.7,
+                                                                1.8,
                                                             style: TextStyle(
                                                                 color: Theme.of(
                                                                         context)
@@ -2581,7 +2581,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
-                                        width: 25,
+                                        width: 40,
                                         padding: EdgeInsets.only(right: 4),
                                         child: Text(
                                           "세트",
@@ -2808,7 +2808,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                       .spaceBetween,
                                               children: [
                                                 Container(
-                                                  width: 25,
+                                                  width: 40,
                                                   child: Text(
                                                     "${index + 1}",
                                                     textScaleFactor: 1.7,

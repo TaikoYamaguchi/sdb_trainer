@@ -4,18 +4,14 @@ import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/exercise_filter.dart';
 import 'package:sdb_trainer/pages/routine_bank.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
-import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/routinemenu.dart';
-import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
-import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
-import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
-import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:tutorial/tutorial.dart';
+import 'package:sdb_trainer/providers/themeMode.dart';
 
 class ExSearch extends StatefulWidget {
   ExSearch({Key? key}) : super(key: key);
@@ -31,6 +27,7 @@ class ExSearchState extends State<ExSearch> {
   var _workoutProvider;
   var _RoutineMenuProvider;
   var _PopProvider;
+  var _themeProvider;
   bool modecheck = false;
   PageController? controller;
   List<Map<String, dynamic>> datas = [];
@@ -194,76 +191,114 @@ class ExSearchState extends State<ExSearch> {
   }
 
   Widget group_by_target() {
-    return Container(
-      child: GridView.builder(
-        itemCount: 12,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          childAspectRatio: 7 / 8,
-          mainAxisSpacing: 10,
-        ),
-        itemBuilder: (BuildContext context, int index) {
-          var key_list = ExImage().body_part_image.keys.toList();
-          return GestureDetector(
-            onTap: () {
-              _PopProvider.searchstackup();
-              _exProvider.inittestdata();
-              _exProvider.settags([key_list[index].toString()]);
-              _exProvider.settags2(['All']);
+    return Consumer<ThemeProvider>(builder: (builder, provider, child) {
+      return Container(
+        child: GridView.builder(
+          itemCount: 12,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            childAspectRatio: 7 / 8,
+            mainAxisSpacing: 10,
+          ),
+          itemBuilder: (BuildContext context, int index) {
+            var key_list = _themeProvider.userThemeDark == "dark"
+                ? ExImage().body_part_image.keys.toList()
+                : ExImageLight().body_part_image.keys.toList();
+            return GestureDetector(
+              onTap: () {
+                _PopProvider.searchstackup();
+                _exProvider.inittestdata();
+                _exProvider.settags([key_list[index].toString()]);
+                _exProvider.settags2(['All']);
 
-              filterExercise(_exProvider.tags);
-              Navigator.push(
-                  context,
-                  Transition(
-                      child: ExerciseFilter(),
-                      transitionEffect: TransitionEffect.BOTTOM_TO_TOP));
-            },
-            child: Card(
-              elevation: 0,
-              color: Theme.of(context).canvasColor,
-              child: Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(1.0),
-                      child: ExImage().body_part_image[key_list[index]] != ''
-                          ? Container(
-                              height: MediaQuery.of(context).size.width / 4,
-                              width: MediaQuery.of(context).size.width / 4,
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(50)),
-                                  image: DecorationImage(
-                                    image: new AssetImage(ExImage()
-                                        .body_part_image[key_list[index]]),
-                                    fit: BoxFit.cover,
-                                  )))
-                          : Container(
+                filterExercise(_exProvider.tags);
+                Navigator.push(
+                    context,
+                    Transition(
+                        child: ExerciseFilter(),
+                        transitionEffect: TransitionEffect.BOTTOM_TO_TOP));
+              },
+              child: Card(
+                elevation: 0,
+                color: Theme.of(context).canvasColor,
+                child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _themeProvider.userThemeDark == "dark"
+                          ? Padding(
+                              padding: EdgeInsets.all(1.0),
+                              child: ExImage()
+                                          .body_part_image[key_list[index]] !=
+                                      ''
+                                  ? Container(
+                                      height:
+                                          MediaQuery.of(context).size.width / 4,
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(50)),
+                                          image: DecorationImage(
+                                            image: new AssetImage(
+                                                ExImage().body_part_image[
+                                                    key_list[index]]),
+                                            fit: BoxFit.cover,
+                                          )))
+                                  : Container(
+                                      color:
+                                          Theme.of(context).primaryColorLight,
+                                      child: Icon(
+                                        Icons.image_not_supported,
+                                        size: 100,
+                                      )),
+                            )
+                          : Padding(
+                              padding: EdgeInsets.all(1.0),
+                              child: ExImageLight()
+                                          .body_part_image[key_list[index]] !=
+                                      ''
+                                  ? Container(
+                                      height:
+                                          MediaQuery.of(context).size.width / 4,
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(50)),
+                                          image: DecorationImage(
+                                            image: new AssetImage(
+                                                ExImageLight().body_part_image[
+                                                    key_list[index]]),
+                                            fit: BoxFit.cover,
+                                          )))
+                                  : Container(
+                                      color:
+                                          Theme.of(context).primaryColorLight,
+                                      child: Icon(
+                                        Icons.image_not_supported,
+                                        size: 100,
+                                      )),
+                            ),
+                      Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          '${key_list[index]}',
+                          textScaleFactor: 1.3,
+                          style: TextStyle(
                               color: Theme.of(context).primaryColorLight,
-                              child: Icon(
-                                Icons.image_not_supported,
-                                size: 100,
-                              )),
-                    ),
-                    Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        '${key_list[index]}',
-                        textScaleFactor: 1.3,
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorLight,
-                            fontWeight: FontWeight.bold),
+                              fontWeight: FontWeight.bold),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
-      ),
-    );
+            );
+          },
+        ),
+      );
+    });
   }
 
   @override
@@ -276,6 +311,7 @@ class ExSearchState extends State<ExSearch> {
     _RoutineMenuProvider =
         Provider.of<RoutineMenuStater>(context, listen: false);
 
+    _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     return Scaffold(
       appBar: _appbarWidget(),
       body: Consumer2<ExercisesdataProvider, WorkoutdataProvider>(
