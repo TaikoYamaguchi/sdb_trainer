@@ -138,42 +138,61 @@ class _FeedCardState extends State<FeedCard> {
                                                     )),
                                               ),
                                             ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 5.0),
-                                        child: Text(
-                                          SDBdata.nickname,
-                                          textScaleFactor: 1.5,
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColorLight),
+                                      Center(
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 6.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Text(
+                                                SDBdata.nickname,
+                                                textScaleFactor: 1.6,
+                                                style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .primaryColorLight),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 4.0),
+                                                child: Text(
+                                                    DateTime.now()
+                                                                .toString()
+                                                                .substring(
+                                                                    2, 4) ==
+                                                            SDBdata.date
+                                                                .substring(2, 4)
+                                                        ? SDBdata.date
+                                                            .substring(5, 10)
+                                                        : SDBdata.date
+                                                            .substring(2, 10),
+                                                    textScaleFactor: 1.1,
+                                                    style: TextStyle(
+                                                        color: Colors.grey)),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 4.0),
-                                      child: Text(SDBdata.date.substring(2, 10),
-                                          textScaleFactor: 1.1,
-                                          style: TextStyle(color: Colors.grey)),
-                                    ),
-                                    GestureDetector(
-                                        onTapDown: _storePosition,
-                                        onTap: () {
-                                          SDBdata.user_email ==
-                                                  _userProvider.userdata.email
-                                              ? _myFeedMenu(SDBdata)
-                                              : _otherFeedMenu(SDBdata);
-                                        },
-                                        child: Icon(Icons.more_vert,
-                                            color: Colors.grey, size: 18.0))
-                                  ],
-                                ),
+                                GestureDetector(
+                                    onTapDown: _storePosition,
+                                    onTap: () {
+                                      SDBdata.user_email ==
+                                              _userProvider.userdata.email
+                                          ? _myFeedMenu(SDBdata)
+                                          : _otherFeedMenu(SDBdata);
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Icon(Icons.more_vert,
+                                          color: Colors.grey, size: 20.0),
+                                    ))
                               ],
                             )),
                         SDBdata.comment != ""
