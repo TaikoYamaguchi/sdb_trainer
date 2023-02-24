@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
+import 'package:sdb_trainer/src/utils/feedCard.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/userProfileNickname.dart';
@@ -130,141 +131,160 @@ class _ExerciseDoneState extends State<ExerciseDone> {
     } else if (widget.routinetime > 0) {
       time_sec = widget.routinetime % 60;
     }
-    return Container(
-        child: SingleChildScrollView(
-      child: Column(children: [
-        Container(
-          height: 150,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              color: Theme.of(context).cardColor,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 40.0, vertical: 8.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 60,
-                          child: Center(
-                              child: Icon(Icons.fitness_center,
-                                  color: Theme.of(context).primaryColorLight,
-                                  size: 40)),
-                        ),
-                        SizedBox(
-                          width: 120,
-                          child: Center(
-                              child: Icon(Icons.access_time,
-                                  color: Theme.of(context).primaryColorLight,
-                                  size: 40)),
-                        ),
-                        SizedBox(
-                            width: 60,
-                            child: Center(
-                                child: Icon(Icons.celebration,
-                                    color: Theme.of(context).primaryColorLight,
-                                    size: 40))),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                            width: 60,
-                            child: Center(
-                              child: Text("운동 갯수",
-                                  style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorLight)),
-                            )),
-                        SizedBox(
-                            width: 120,
-                            child: Center(
-                              child: Text("운동 시간",
-                                  style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorLight)),
-                            )),
-                        SizedBox(
-                            width: 60,
-                            child: Center(
-                              child: Text("신기록",
-                                  style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorLight)),
-                            ))
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 60,
-                          child: Center(
-                            child: Text(widget.exerciseList.length.toString(),
-                                style: TextStyle(
-                                    color:
-                                        Theme.of(context).primaryColorLight)),
+    return GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Container(
+          child: SingleChildScrollView(
+            child: Column(children: [
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 4.0, vertical: 8.0),
+                  child: Card(
+                    color: Theme.of(context).cardColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0)),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 40.0, vertical: 12.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: 60,
+                                child: Center(
+                                    child: Icon(Icons.fitness_center,
+                                        color:
+                                            Theme.of(context).primaryColorLight,
+                                        size: 40)),
+                              ),
+                              SizedBox(
+                                width: 120,
+                                child: Center(
+                                    child: Icon(Icons.access_time,
+                                        color:
+                                            Theme.of(context).primaryColorLight,
+                                        size: 40)),
+                              ),
+                              SizedBox(
+                                  width: 60,
+                                  child: Center(
+                                      child: Icon(Icons.celebration,
+                                          color: Theme.of(context)
+                                              .primaryColorLight,
+                                          size: 40))),
+                            ],
                           ),
-                        ),
-                        SizedBox(
-                          width: 120,
-                          child: Center(
-                            child: Text(
-                                "${time_hour}시 ${time_min}분 ${time_sec}초",
-                                style: TextStyle(
-                                    color:
-                                        Theme.of(context).primaryColorLight)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                  width: 60,
+                                  child: Center(
+                                    child: Text("운동 갯수",
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorLight)),
+                                  )),
+                              SizedBox(
+                                  width: 120,
+                                  child: Center(
+                                    child: Text("운동 시간",
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorLight)),
+                                  )),
+                              SizedBox(
+                                  width: 60,
+                                  child: Center(
+                                    child: Text("신기록",
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorLight)),
+                                  ))
+                            ],
                           ),
-                        ),
-                        SizedBox(
-                            width: 60,
-                            child: Center(
-                                child: Text(
-                                    widget.sdbdata.new_record.toString(),
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .primaryColorLight)))),
-                      ],
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: 60,
+                                child: Center(
+                                  child: Text(
+                                      widget.exerciseList.length.toString(),
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight)),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 120,
+                                child: Center(
+                                  child: Text(
+                                      "${time_hour}시 ${time_min}분 ${time_sec}초",
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight)),
+                                ),
+                              ),
+                              SizedBox(
+                                  width: 60,
+                                  child: Center(
+                                      child: Text(
+                                          widget.sdbdata.new_record.toString(),
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColorLight)))),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
+                  ),
                 ),
+              ),
+              FeedCard(
+                  sdbdata: widget.sdbdata,
+                  index: 0,
+                  feedListCtrl: 0,
+                  openUserDetail: true),
+              SizedBox(height: 8.0),
+
+              /*
+          Container(
+            height: 200,
+            width: MediaQuery.of(context).size.width,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                color: Theme.of(context).cardColor,
+                child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 40.0, vertical: 8.0),
+                    child: GestureDetector(
+                      child: _image == null
+                          ? Icon(Icons.add_photo_alternate,
+                              color: Theme.of(context).primaryColorLight,
+                              size: 120)
+                          : Image.file(File(_image!.path)),
+                      onTap: () {
+                        _displayPhotoAlert();
+                      },
+                    )),
               ),
             ),
           ),
-        ),
-        Container(
-          height: 200,
-          width: MediaQuery.of(context).size.width,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              color: Theme.of(context).cardColor,
-              child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 40.0, vertical: 8.0),
-                  child: GestureDetector(
-                    child: _image == null
-                        ? Icon(Icons.add_photo_alternate,
-                            color: Theme.of(context).primaryColorLight,
-                            size: 120)
-                        : Image.file(File(_image!.path)),
-                    onTap: () {
-                      _displayPhotoAlert();
-                    },
-                  )),
-            ),
+          */
+
+              _exercise_Done_Button()
+            ]),
           ),
-        ),
-        _commentWidget(),
-        _visibleInformWidget(),
-        _exercise_Done_Button()
-      ]),
-    ));
+        ));
   }
 
   void _displayPhotoAlert() {
