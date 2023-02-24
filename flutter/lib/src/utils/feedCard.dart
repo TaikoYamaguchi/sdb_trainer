@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/feedEdit.dart';
 import 'package:sdb_trainer/pages/friendProfile.dart';
 import 'package:sdb_trainer/pages/friendHistory.dart';
+import 'package:sdb_trainer/pages/photo_editer.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
