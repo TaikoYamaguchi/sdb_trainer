@@ -1190,6 +1190,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
           .postHistory()
           .then((data) => data["user_email"] != null
               ? {
+                  _hisProvider.getdata(),
+                  _hisProvider.getHistorydataAll(),
                   Navigator.of(context, rootNavigator: true).pop(),
                   Navigator.push(
                       context,

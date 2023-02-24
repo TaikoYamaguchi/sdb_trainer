@@ -30,6 +30,7 @@ class _FeedEditState extends State<FeedEdit> {
   final _pageController = ScrollController();
   var _final_history_id;
   var _hasMore = true;
+  var btnDisabled;
 
   final _isPageController = PageController(initialPage: 4242, keepPage: true);
 
@@ -49,6 +50,19 @@ class _FeedEditState extends State<FeedEdit> {
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(40.0), // here the desired height
             child: AppBar(
+              leading: Center(
+                child: GestureDetector(
+                  child: Icon(
+                    Icons.arrow_back_ios_outlined,
+                    color: Theme.of(context).primaryColorLight,
+                  ),
+                  onTap: () {
+                    btnDisabled == true
+                        ? null
+                        : [btnDisabled = true, Navigator.of(context).pop()];
+                  },
+                ),
+              ),
               elevation: 0,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

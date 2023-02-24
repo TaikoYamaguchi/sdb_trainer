@@ -347,11 +347,11 @@ class _FeedCardState extends State<FeedCard> {
                                 children: [
                                   Container(
                                     alignment: Alignment.center,
-                                    height: 0.5,
+                                    height: 0.1,
                                     color: Colors.black,
                                     child: Container(
                                       alignment: Alignment.center,
-                                      height: 0.5,
+                                      height: 0.1,
                                       color: Color(0xFF717171),
                                     ),
                                   ),
@@ -366,11 +366,11 @@ class _FeedCardState extends State<FeedCard> {
                                     children: [
                                       Container(
                                         alignment: Alignment.center,
-                                        height: 0.5,
+                                        height: 0.1,
                                         color: Colors.black,
                                         child: Container(
                                           alignment: Alignment.center,
-                                          height: 0.5,
+                                          height: 0.1,
                                           color: Color(0xFF717171),
                                         ),
                                       ),
@@ -494,7 +494,7 @@ class _FeedCardState extends State<FeedCard> {
     }
     Navigator.of(context).pop();
     _popProvider.gotoonlast();
-    Future.delayed(Duration(microseconds: 2000)).then((value) {
+    Future.delayed(Duration(microseconds: 30000)).then((value) {
       _popProvider.gotooff();
     });
 
@@ -726,18 +726,22 @@ class _FeedCardState extends State<FeedCard> {
           color: Theme.of(context).cardColor,
           child: Consumer<HistorydataProvider>(
               builder: (builder, provider, child) {
-            _initImage = _historyProvider
-                    .historydata
-                    .sdbdatas[_historyProvider.historydata.sdbdatas
-                        .indexWhere((sdbdata) {
-                  if (sdbdata.id == widget.sdbdata.id) {
-                    return true;
-                  } else {
-                    return false;
-                  }
-                })]
-                    .image ??
-                [];
+            try {
+              _initImage = _historyProvider
+                      .historydata
+                      .sdbdatas[_historyProvider.historydata.sdbdatas
+                          .indexWhere((sdbdata) {
+                    if (sdbdata.id == widget.sdbdata.id) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  })]
+                      .image ??
+                  [];
+            } catch (e) {
+              _initImage = [];
+            }
             return ListView.separated(
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext _context, int index) {
