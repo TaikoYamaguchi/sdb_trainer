@@ -325,3 +325,8 @@ class ManageStatusInterview(BaseModel):
     interview_id:int
     email:str
     status:str
+
+class HistoryImage(BaseModel):
+    image:list
+    class Config:
+        orm_mode = True

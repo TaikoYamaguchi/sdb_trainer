@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/pages/feedEdit.dart';
 import 'package:sdb_trainer/pages/friendProfile.dart';
 import 'package:sdb_trainer/pages/friendHistory.dart';
 import 'package:sdb_trainer/pages/photo_editer.dart';
@@ -13,7 +14,10 @@ import 'package:like_button/like_button.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'package:sdb_trainer/src/model/userdata.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:io';
+import 'package:sdb_trainer/providers/popmanage.dart';
 
+import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 
 class FeedCard extends StatefulWidget {
@@ -21,12 +25,14 @@ class FeedCard extends StatefulWidget {
   int index;
   int feedListCtrl;
   bool openUserDetail;
+  bool isExEdit;
   FeedCard(
       {Key? key,
       required this.sdbdata,
       required this.index,
       required this.feedListCtrl,
-      required this.openUserDetail})
+      required this.openUserDetail,
+      this.isExEdit = false})
       : super(key: key);
 
   @override
@@ -39,8 +45,13 @@ class _FeedCardState extends State<FeedCard> {
   var _historyProvider;
   var _commentListbyId;
   var _tapPosition;
+  TextEditingController _exEditCommentCtrl = TextEditingController(text: "");
+
+  List<XFile> _image = [];
   final ImagePicker _picker = ImagePicker();
   TextEditingController _commentInputCtrl = TextEditingController(text: "");
+  var _popProvider;
+  List<dynamic> _initImage = [];
   late var _commentInfo = {
     "feedList": widget.feedListCtrl,
     "feedVisible": false
@@ -50,6 +61,7 @@ class _FeedCardState extends State<FeedCard> {
   @override
   void initState() {
     _tapPosition = Offset(0.0, 0.0);
+    _exEditCommentCtrl.text = widget.sdbdata.comment ?? "";
     super.initState();
   }
 
@@ -61,6 +73,8 @@ class _FeedCardState extends State<FeedCard> {
   Widget _feedCard(SDBdata, index) {
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _historyProvider = Provider.of<HistorydataProvider>(context, listen: false);
+
+    _popProvider = Provider.of<PopProvider>(context, listen: false);
     User user = _userProvider.userFriendsAll.userdatas
         .where((user) => user.email == SDBdata.user_email)
         .toList()[0];
@@ -181,24 +195,28 @@ class _FeedCardState extends State<FeedCard> {
                                     ],
                                   ),
                                 ),
-                                GestureDetector(
-                                    onTapDown: _storePosition,
-                                    onTap: () {
-                                      SDBdata.user_email ==
-                                              _userProvider.userdata.email
-                                          ? _myFeedMenu(SDBdata)
-                                          : _otherFeedMenu(SDBdata);
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Icon(Icons.more_vert,
-                                          color: Colors.grey, size: 20.0),
-                                    ))
+                                widget.isExEdit
+                                    ? _exercise_Done_appbar_Button()
+                                    : GestureDetector(
+                                        onTapDown: _storePosition,
+                                        onTap: () {
+                                          SDBdata.user_email ==
+                                                  _userProvider.userdata.email
+                                              ? _myFeedMenu(SDBdata)
+                                              : _otherFeedMenu(SDBdata);
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Icon(Icons.more_vert,
+                                              color: Colors.grey, size: 20.0),
+                                        ))
                               ],
                             )),
-                        SDBdata.comment != ""
-                            ? _feedTextField(SDBdata.comment)
-                            : Container(),
+                        widget.isExEdit
+                            ? _commentWidget()
+                            : SDBdata.comment != ""
+                                ? _feedTextField(SDBdata.comment)
+                                : Container(),
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 0),
@@ -324,9 +342,7 @@ class _FeedCardState extends State<FeedCard> {
                                 ),
                               )
                             : Container(),
-                        _photoInfo["feedList"] == widget.feedListCtrl &&
-                                _photoInfo["feedVisible"] == true &&
-                                SDBdata.image.length != 0
+                        widget.isExEdit
                             ? Column(
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
@@ -340,10 +356,29 @@ class _FeedCardState extends State<FeedCard> {
                                       color: Color(0xFF717171),
                                     ),
                                   ),
-                                  _imageContent(SDBdata),
+                                  _imageExEditContent(SDBdata),
                                 ],
                               )
-                            : Container(),
+                            : _photoInfo["feedList"] == widget.feedListCtrl &&
+                                    _photoInfo["feedVisible"] == true &&
+                                    SDBdata.image.length != 0
+                                ? Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Container(
+                                        alignment: Alignment.center,
+                                        height: 0.5,
+                                        color: Colors.black,
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          height: 0.5,
+                                          color: Color(0xFF717171),
+                                        ),
+                                      ),
+                                      _imageContent(SDBdata),
+                                    ],
+                                  )
+                                : Container(),
                         _commentInfo["feedList"] == widget.feedListCtrl &&
                                 _commentInfo["feedVisible"] == true
                             ? Column(
@@ -362,13 +397,135 @@ class _FeedCardState extends State<FeedCard> {
                                   _commentTextInput(SDBdata)
                                 ],
                               )
-                            : Container()
+                            : Container(),
+                        widget.isExEdit ? _exercise_Done_Button() : Container()
                       ],
                     ),
                   );
           }),
         ),
       ),
+    );
+  }
+
+  Widget _exercise_Done_Button() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: TextButton(
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                foregroundColor: Theme.of(context).primaryColor,
+                backgroundColor: Theme.of(context).primaryColor,
+                textStyle: TextStyle(
+                  color: Theme.of(context).primaryColorLight,
+                ),
+                disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+                padding: EdgeInsets.all(12.0),
+              ),
+              onPressed: () {
+                _submitExChange();
+              },
+              child: Text("운동 제출 하기",
+                  textScaleFactor: 1.5,
+                  style: TextStyle(color: Theme.of(context).buttonColor)))),
+    );
+  }
+
+  Widget _exercise_Done_appbar_Button() {
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: SizedBox(
+          width: 96,
+          child: TextButton(
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
+                ),
+                foregroundColor: Theme.of(context).primaryColor,
+                backgroundColor: Theme.of(context).primaryColor,
+                textStyle: TextStyle(
+                  color: Theme.of(context).primaryColorLight,
+                ),
+                disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
+                padding: EdgeInsets.all(12.0),
+              ),
+              onPressed: () {
+                _submitExChange();
+              },
+              child: Text("운동 제출",
+                  textScaleFactor: 1.1,
+                  style: TextStyle(color: Theme.of(context).buttonColor)))),
+    );
+  }
+
+  void _submitExChange() {
+    if (_initImage.length >= 0) {
+      print(_initImage);
+      HistoryImagePut(history_id: widget.sdbdata.id, images: _initImage)
+          .editHistoryListImage()
+          .then((data) => {
+                _historyProvider.getdata(),
+                _historyProvider.getHistorydataAll()
+              });
+    }
+    if (_exEditCommentCtrl.text != null) {
+      HistoryCommentEdit(
+              history_id: widget.sdbdata.id,
+              user_email: _userProvider.userdata.email,
+              comment: _exEditCommentCtrl.text)
+          .patchHistoryComment()
+          .then((data) => {
+                _historyProvider.patchHistoryCommentdata(
+                    widget.sdbdata, _exEditCommentCtrl.text)
+              });
+    }
+    print("_imaaaage");
+    print(_image);
+    if (_image.isEmpty == false) {
+      HistoryImageEdit(history_id: widget.sdbdata.id, file: _image)
+          .patchHistoryImage()
+          .then((data) => {
+                _historyProvider.getdata(),
+                _historyProvider.getHistorydataAll()
+              });
+    }
+    Navigator.of(context).pop();
+    _popProvider.gotoonlast();
+    Future.delayed(Duration(microseconds: 2000)).then((value) {
+      _popProvider.gotooff();
+    });
+
+    //Navigator.of(context).popUntil((route) => route.isFirst);
+  }
+
+  Widget _commentWidget() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 12.0),
+      child: TextFormField(
+          controller: _exEditCommentCtrl,
+          keyboardType: TextInputType.multiline,
+          //expands: true,
+          maxLines: null,
+          decoration: InputDecoration(
+              labelText: '운동에 관해 기록해보세요',
+              labelStyle: TextStyle(
+                  fontSize: 16.0, color: Theme.of(context).primaryColorDark),
+              enabledBorder: UnderlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide:
+                    BorderSide(color: Theme.of(context).primaryColor, width: 3),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide:
+                    BorderSide(color: Theme.of(context).primaryColor, width: 3),
+              ),
+              fillColor: Theme.of(context).primaryColorLight),
+          style: TextStyle(color: Theme.of(context).primaryColorLight)),
     );
   }
 
@@ -382,59 +539,18 @@ class _FeedCardState extends State<FeedCard> {
             child: ListTile(
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
-                leading: Icon(Icons.mode_edit,
+                leading: Icon(Icons.no_photography,
                     color: Theme.of(context).primaryColorLight),
-                title: Text("코멘트",
-                    style:
-                        TextStyle(color: Theme.of(context).primaryColorLight))),
-            onTap: () {
-              _historyCommentCtrl =
-                  TextEditingController(text: SDBdata.comment);
-              Future<void>.delayed(
-                  const Duration(), // OR const Duration(milliseconds: 500),
-                  () => _displayTextInputDialog(context, SDBdata));
-            }),
-        PopupMenuItem(
-            child: ListTile(
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
-                leading: Icon(Icons.add_photo_alternate,
-                    color: Theme.of(context).primaryColorLight),
-                title: Text("사진추가",
+                title: Text("피드수정",
                     style:
                         TextStyle(color: Theme.of(context).primaryColorLight))),
             onTap: () async {
-              //*
-              print('왜안되');
               await Future.delayed(Duration.zero);
-
               Navigator.push(
                   context,
                   Transition(
-                      child: PhotoEditor(),
+                      child: FeedEdit(sdbdata: SDBdata),
                       transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-              //*/
-
-              _pickImg(SDBdata);
-            }),
-        PopupMenuItem(
-            child: ListTile(
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
-                leading: Icon(Icons.no_photography,
-                    color: Theme.of(context).primaryColorLight),
-                title: Text("사진삭제",
-                    style:
-                        TextStyle(color: Theme.of(context).primaryColorLight))),
-            onTap: () {
-              if (SDBdata.image.length != 0) {
-                HistoryImageDelete(history_id: SDBdata.id)
-                    .deleteHistoryIamge()
-                    .then((value) {
-                  _historyProvider.getdata();
-                  _historyProvider.getHistorydataAll();
-                });
-              }
             }),
         PopupMenuItem(
             child: ListTile(
@@ -601,6 +717,278 @@ class _FeedCardState extends State<FeedCard> {
     );
   }
 
+  Widget _imageExEditContent(SDBdata) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.width,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Card(
+          color: Theme.of(context).cardColor,
+          child: Consumer<HistorydataProvider>(
+              builder: (builder, provider, child) {
+            _initImage = _historyProvider
+                    .historydata
+                    .sdbdatas[_historyProvider.historydata.sdbdatas
+                        .indexWhere((sdbdata) {
+                  if (sdbdata.id == widget.sdbdata.id) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                })]
+                    .image ??
+                [];
+            return ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (BuildContext _context, int index) {
+                  return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6.0, vertical: 8.0),
+                      child: GestureDetector(
+                        child: _image.length + _initImage.length <= index
+                            ? Container(
+                                height:
+                                    MediaQuery.of(context).size.width - 64.0,
+                                width: MediaQuery.of(context).size.width - 64.0,
+                                child: Center(
+                                  child: Icon(Icons.add_photo_alternate,
+                                      color:
+                                          Theme.of(context).primaryColorLight,
+                                      size: 120),
+                                ),
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(50))),
+                              )
+                            : Stack(children: <Widget>[
+                                //Image.file(File(_image![index].path)),
+                                _initImage.length > index
+                                    ? CachedNetworkImage(
+                                        imageUrl: SDBdata.image[index],
+                                        imageBuilder:
+                                            (context, imageProivder) =>
+                                                Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              64.0,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              64.0,
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(50)),
+                                              image: DecorationImage(
+                                                image: imageProivder,
+                                                fit: BoxFit.cover,
+                                              )),
+                                        ),
+                                      )
+                                    : Container(
+                                        height:
+                                            MediaQuery.of(context).size.width -
+                                                64.0,
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                64.0,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(50)),
+                                            image: DecorationImage(
+                                              image: FileImage(File(_image![
+                                                      index - _initImage.length]
+                                                  .path)),
+                                              fit: BoxFit.cover,
+                                            )),
+                                      ),
+
+                                Positioned(
+                                  top: 0,
+                                  right: 0,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      if (index >= _initImage.length) {
+                                        setState(() {
+                                          _image.removeAt(
+                                              index - _initImage.length);
+                                        });
+                                      } else {
+                                        setState(() {
+                                          _initImage.removeAt(index);
+                                        });
+                                      }
+                                    },
+                                    child: SizedBox(
+                                      width: 24.0,
+                                      height: 24.0,
+                                      child: Center(
+                                        child: Material(
+                                          shape: CircleBorder(),
+                                          clipBehavior: Clip.antiAlias,
+                                          elevation: 4.0,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: Icon(
+                                              Icons.close,
+                                              size: 14,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ]),
+                        onTap: () {
+                          if (_initImage!.length + _image.length <= index) {
+                            _displayPhotoAlert();
+                          }
+                        },
+                      ));
+                },
+                separatorBuilder: (BuildContext _context, int index) {
+                  return Container(
+                    height: 0.5,
+                    alignment: Alignment.center,
+                    color: Colors.black,
+                    child: Container(
+                      height: 0.5,
+                      alignment: Alignment.center,
+                      color: Color(0xFF717171),
+                    ),
+                  );
+                },
+                itemCount: _image!.length + 1 + _initImage.length);
+          }),
+        ),
+      ),
+    );
+  }
+
+  Future _getImage(ImageSource imageSource) async {
+    if (imageSource == ImageSource.gallery) {
+      final List<XFile>? _selectedImages =
+          await _picker.pickMultiImage(imageQuality: 30);
+      if (_selectedImages != null) {
+        setState(() {
+          _image.addAll(_selectedImages); // 가져온 이미지를 _image에 저장
+        });
+      }
+    } else if (imageSource == ImageSource.camera) {
+      final XFile? _selectedImages =
+          await _picker.pickImage(source: imageSource, imageQuality: 30);
+      if (_selectedImages != null) {
+        setState(() {
+          _image.add(_selectedImages); // 가져온 이미지를 _image에 저장
+        });
+      }
+    }
+  }
+
+  void _displayPhotoAlert() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).cardColor,
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+                      child: Text("사진을 올릴 방법을 고를 수 있어요",
+                          textScaleFactor: 1.3,
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight)),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width / 4,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                foregroundColor: Theme.of(context).primaryColor,
+                                backgroundColor: Theme.of(context).primaryColor,
+                                textStyle: TextStyle(
+                                  color: Theme.of(context).primaryColorLight,
+                                ),
+                                disabledForegroundColor:
+                                    Color.fromRGBO(246, 58, 64, 20),
+                                padding: EdgeInsets.all(12.0),
+                              ),
+                              onPressed: () {
+                                _getImage(ImageSource.camera);
+                                Navigator.pop(context);
+                              },
+                              child: Column(
+                                children: [
+                                  Icon(Icons.camera_alt,
+                                      size: 24,
+                                      color:
+                                          Theme.of(context).primaryColorLight),
+                                  Text('촬영',
+                                      textScaleFactor: 1.3,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight)),
+                                ],
+                              ),
+                            )),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width / 4,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                foregroundColor: Theme.of(context).primaryColor,
+                                backgroundColor: Theme.of(context).primaryColor,
+                                textStyle: TextStyle(
+                                  color: Theme.of(context).primaryColorLight,
+                                ),
+                                disabledForegroundColor:
+                                    Color.fromRGBO(246, 58, 64, 20),
+                                padding: EdgeInsets.all(12.0),
+                              ),
+                              onPressed: () {
+                                _getImage(ImageSource.gallery);
+                                Navigator.pop(context);
+                              },
+                              child: Column(
+                                children: [
+                                  Icon(Icons.collections,
+                                      size: 24,
+                                      color:
+                                          Theme.of(context).primaryColorLight),
+                                  Text('갤러리',
+                                      textScaleFactor: 1.3,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight)),
+                                ],
+                              ),
+                            )),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
   Widget _commentContent() {
     return ListView.separated(
         shrinkWrap: true,
@@ -692,70 +1080,77 @@ class _FeedCardState extends State<FeedCard> {
                   ),
                 ),
               ),
-              GestureDetector(
-                child: Icon(
-                  Icons.more_vert,
-                  color: Colors.grey,
-                  size: 18.0,
-                ),
-                onTapDown: _storePosition,
-                onTap: () {
-                  _userProvider.userdata.email == Comment.writer_email
-                      ? showMenu(
-                          context: context,
-                          position: RelativeRect.fromRect(
-                              _tapPosition & Size(30, 30),
-                              Offset.zero & Size(0, 0)),
-                          items: [
-                              PopupMenuItem(
-                                  onTap: () {
-                                    _historyProvider.deleteCommentAll(Comment);
-                                    Future<void>.delayed(
-                                        const Duration(), // OR const Duration(milliseconds: 500),
-                                        () => CommentDelete(
-                                                comment_id: Comment.id)
-                                            .deleteComment());
-                                  },
-                                  padding: EdgeInsets.all(0.0),
-                                  child: ListTile(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 4.0, vertical: 0.0),
-                                      leading: Icon(Icons.delete,
-                                          color: Theme.of(context)
-                                              .primaryColorLight),
-                                      title: Text("삭제",
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColorLight)))),
-                            ])
-                      : showMenu(
-                          context: context,
-                          position: RelativeRect.fromRect(
-                              _tapPosition & Size(30, 30),
-                              Offset.zero & Size(0, 0)),
-                          items: [
-                              PopupMenuItem(
-                                  onTap: () {
-                                    Future<void>.delayed(
-                                        const Duration(), // OR const Duration(milliseconds: 500),
-                                        () => _displayDislikeAlert(
-                                            Comment.writer_email));
-                                  },
-                                  padding: EdgeInsets.all(0.0),
-                                  child: ListTile(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 4.0, vertical: 0.0),
-                                      leading: Icon(
-                                          Icons.remove_circle_outlined,
-                                          color: Theme.of(context)
-                                              .primaryColorLight),
-                                      title: Text("신고",
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColorLight)))),
-                            ]);
-                },
-              )
+              widget.isExEdit
+                  ? _exercise_Done_appbar_Button()
+                  : GestureDetector(
+                      child: Icon(
+                        Icons.more_vert,
+                        color: Colors.grey,
+                        size: 18.0,
+                      ),
+                      onTapDown: _storePosition,
+                      onTap: () {
+                        _userProvider.userdata.email == Comment.writer_email
+                            ? showMenu(
+                                context: context,
+                                position: RelativeRect.fromRect(
+                                    _tapPosition & Size(30, 30),
+                                    Offset.zero & Size(0, 0)),
+                                items: [
+                                    PopupMenuItem(
+                                        onTap: () {
+                                          _historyProvider
+                                              .deleteCommentAll(Comment);
+                                          Future<void>.delayed(
+                                              const Duration(), // OR const Duration(milliseconds: 500),
+                                              () => CommentDelete(
+                                                      comment_id: Comment.id)
+                                                  .deleteComment());
+                                        },
+                                        padding: EdgeInsets.all(0.0),
+                                        child: ListTile(
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    horizontal: 4.0,
+                                                    vertical: 0.0),
+                                            leading: Icon(Icons.delete,
+                                                color: Theme.of(context)
+                                                    .primaryColorLight),
+                                            title: Text("삭제",
+                                                style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .primaryColorLight)))),
+                                  ])
+                            : showMenu(
+                                context: context,
+                                position: RelativeRect.fromRect(
+                                    _tapPosition & Size(30, 30),
+                                    Offset.zero & Size(0, 0)),
+                                items: [
+                                    PopupMenuItem(
+                                        onTap: () {
+                                          Future<void>.delayed(
+                                              const Duration(), // OR const Duration(milliseconds: 500),
+                                              () => _displayDislikeAlert(
+                                                  Comment.writer_email));
+                                        },
+                                        padding: EdgeInsets.all(0.0),
+                                        child: ListTile(
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    horizontal: 4.0,
+                                                    vertical: 0.0),
+                                            leading: Icon(
+                                                Icons.remove_circle_outlined,
+                                                color: Theme.of(context)
+                                                    .primaryColorLight),
+                                            title: Text("신고",
+                                                style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .primaryColorLight)))),
+                                  ]);
+                      },
+                    )
             ],
           );
   }

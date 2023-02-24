@@ -184,6 +184,15 @@ def edit_history_all(db:Session, historys: schemas.HistoryAll):
     db.expire_all()
     return db_history
 
+def edit_image_by_history_id_list(db: Session, user, history_id, images:list):
+    db_history = db.query(models.History).filter(models.History.id == history_id).first()
+    db_history.image = images
+    setattr(db_history, "image", db_history.image)
+    db.commit()
+    db.refresh(db_history)
+    return db_history
+    
+
     
 
 

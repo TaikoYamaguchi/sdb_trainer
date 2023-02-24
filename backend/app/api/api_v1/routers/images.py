@@ -1,5 +1,5 @@
 
-from app.db.crud_history import edit_image_by_history_id, remove_image_by_history_id
+from app.db.crud_history import edit_image_by_history_id, edit_image_by_history_id_list, remove_image_by_history_id
 from app.db.crud_famous import edit_image_by_famous_id
 from app.db.crud import edit_image_by_user_email
 from app.core.auth import get_current_user
@@ -12,8 +12,9 @@ import uuid
 from fastapi.responses import FileResponse
 from app.core.image_resize import image_resize
 from app.db.session import get_db
-from app.db.schemas import TemporaryImage, HistoryOut, User, FamousOut
+from app.db.schemas import HistoryImage, TemporaryImage, HistoryOut, User, FamousOut
 images_router = r = APIRouter()
+from typing import List
 
 
 
@@ -76,33 +77,47 @@ async def remove_history_image(
     db_history = remove_image_by_history_id(db, user, history_id)
     return db_history
 
+@r.put(
+    "/temp/historyimages/{history_id}"
+, response_model=HistoryOut)
+async def edit_history_image( 
+    response: Response,
+    history_id:int,
+    images:HistoryImage,
+    user=Depends(get_current_user),
+    db=Depends(get_db),
+):
+    user=Depends(get_current_user)
+    db_history = edit_image_by_history_id_list(db,history_id,images.image)
+    return db_history
+
 @r.post("/temp/historyimages/{history_id}", response_model=HistoryOut, response_model_exclude_none=True)
 async def create_history_image(history_id:int, db=Depends(get_db),
 
     user=Depends(get_current_user),
-    file : UploadFile = File(...)):
+    files : List[UploadFile] = File(...)):
+    print(files);
+    for file in files:
 
-    format = file.content_type.replace("image/","")
-    if (format == "jpeg"):
-        format = "jpg"
+        format = file.content_type.replace("image/","")
+        if (format == "jpeg"):
+            format = "jpg"
 
-    BASE_DIR=os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-    file_uuid=str(uuid.uuid4())
+        BASE_DIR=os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+        file_uuid=str(uuid.uuid4())
 
-    file_path=os.path.join(BASE_DIR, "images",file_uuid+".png")
-    print(file)
-    print(file_path)
-    if not os.path.exists(BASE_DIR):
-        os.mkdir(BASE_DIR)
-    if not os.path.exists(BASE_DIR+"/images"):
-        os.mkdir(BASE_DIR+"/images")
+        file_path=os.path.join(BASE_DIR, "images",file_uuid+".png")
+        if not os.path.exists(BASE_DIR):
+            os.mkdir(BASE_DIR)
+        if not os.path.exists(BASE_DIR+"/images"):
+            os.mkdir(BASE_DIR+"/images")
 
-    with open(file_path,"wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+        with open(file_path,"wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
 
-    image_resize(file_path)
-    db_image = create_temporary_image(db, file_path)
-    db_history = edit_image_by_history_id(db, user,history_id,db_image.id)
+        image_resize(file_path)
+        db_image = create_temporary_image(db, file_path)
+        db_history = edit_image_by_history_id(db, user,history_id,db_image.id)
 
     return db_history
 

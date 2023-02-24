@@ -1,5 +1,6 @@
 import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 import 'package:sdb_trainer/localhost.dart';
 import 'package:http/http.dart' as http;
@@ -8,6 +9,7 @@ import 'package:dio/dio.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sdb_trainer/src/model/historydata.dart';
+import 'package:http_parser/http_parser.dart';
 
 class ExerciseService {
   static Future<String> _loadSDBdataFromLocation() async {
@@ -392,13 +394,19 @@ class HistoryDelete {
 
 class HistoryImageEdit {
   final int history_id;
-  final dynamic file;
+  final List<XFile> file;
   HistoryImageEdit({required this.history_id, required this.file});
   Future<Map<String, dynamic>> _patchHistoryImageFromServer() async {
+    print(file);
+    final List<MultipartFile> _files = await file
+        .map((img) => MultipartFile.fromFileSync(
+              img.path,
+            ))
+        .toList();
+    print(_files);
     final storage = new FlutterSecureStorage();
     String? token = await storage.read(key: "sdb_token");
-    var formData =
-        FormData.fromMap({'file': await MultipartFile.fromFile(file)});
+    var formData = FormData.fromMap({'files': _files});
     var dio = new Dio();
     try {
       dio.options.contentType = 'multipart/form-data';
@@ -424,6 +432,47 @@ class HistoryImageEdit {
       SDBdata user = SDBdata.fromJson(jsonString);
       return (user);
     }
+  }
+}
+
+class HistoryImagePut {
+  final int history_id;
+  final List<dynamic> images;
+  HistoryImagePut({
+    required this.history_id,
+    required this.images,
+  });
+  Future<String> _historyImageListEditfromServer() async {
+    final storage = new FlutterSecureStorage();
+    String? token = await storage.read(key: "sdb_token");
+
+    var formData = new Map<String, dynamic>();
+    formData["image"] = images;
+    var url = Uri.parse(
+        LocalHost.getLocalHost() + "/api/temp/historyimages/${history_id}");
+    var response = await http.put(
+      url,
+      body: json.encode(formData),
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer ${token}',
+      },
+    );
+    if (response.statusCode == 200) {
+      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
+      String jsonString = utf8.decode(response.bodyBytes);
+      final jsonResponse = json.decode(jsonString);
+
+      return utf8.decode(response.bodyBytes);
+    } else {
+      // 만약 응답이 OK가 아니면, 에러를 던집니다.
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<Map<String, dynamic>> editHistoryListImage() async {
+    String jsonString = await _historyImageListEditfromServer();
+    final jsonResponse = json.decode(jsonString);
+    return (jsonResponse);
   }
 }
 
