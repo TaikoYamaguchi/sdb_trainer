@@ -313,6 +313,12 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                 },
                 padding: EdgeInsets.symmetric(horizontal: 4),
                 itemBuilder: (BuildContext _context, int index) {
+                  List doneex = wdp.workoutdata.routinedatas[widget.rindex]
+                      .exercises[index].sets
+                      .where((e) => e.ischecked == true)
+                      .toList();
+                  //print(doneex);
+
                   final exinfo = exunique.where((unique) {
                     return (unique.name == exlist[index].name);
                   }).toList();
@@ -492,6 +498,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                             ],
                                           ),
                                         ),
+                                        doneex.isNotEmpty
+                                            ? Icon(Icons.check_circle_rounded)
+                                            : Container(),
                                         Padding(
                                           padding:
                                               EdgeInsets.fromLTRB(4, 12, 4, 12),
