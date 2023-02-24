@@ -73,21 +73,27 @@ class _FeedState extends State<Feed> {
                           },
                         setState(() {
                           print("noooo");
-                          _hasMore = true;
+                          if (_feedListCtrl == 1) {
+                            _hasMore = true;
+                          }
                         })
                       }
                     else
                       {
                         setState(() {
                           print("noooo");
-                          _hasMore = false;
+                          if (_feedListCtrl == 1) {
+                            _hasMore = false;
+                          }
                         })
                       }
                   });
     } catch (e) {
       setState(() {
         print("noooo");
-        _hasMore = false;
+        if (_feedListCtrl == 1) {
+          _hasMore = false;
+        }
       });
     }
   }
@@ -180,7 +186,9 @@ class _FeedState extends State<Feed> {
                                           EdgeInsets.symmetric(vertical: 16),
                                       child: Center(
                                           child: _hasMore == true
-                                              ? CircularProgressIndicator()
+                                              ? _feedListCtrl == 1
+                                                  ? CircularProgressIndicator()
+                                                  : Container()
                                               : Text("데이터 없음",
                                                   style: TextStyle(
                                                       color: Theme.of(context)
