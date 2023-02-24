@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/friendProfile.dart';
 import 'package:sdb_trainer/pages/friendHistory.dart';
+import 'package:sdb_trainer/pages/photo_editer.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
@@ -402,7 +403,18 @@ class _FeedCardState extends State<FeedCard> {
                 title: Text("사진추가",
                     style:
                         TextStyle(color: Theme.of(context).primaryColorLight))),
-            onTap: () {
+            onTap: () async {
+              //*
+              print('왜안되');
+              await Future.delayed(Duration.zero);
+
+              Navigator.push(
+                  context,
+                  Transition(
+                      child: PhotoEditor(),
+                      transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+              //*/
+
               _pickImg(SDBdata);
             }),
         PopupMenuItem(
