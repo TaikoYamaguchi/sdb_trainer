@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/feedEdit.dart';
@@ -878,6 +880,30 @@ class _FeedCardState extends State<FeedCard> {
       final List<XFile>? _selectedImages =
           await _picker.pickMultiImage(imageQuality: 30);
       if (_selectedImages != null) {
+        for (int i = 0; i < _selectedImages.length; i++) {
+          var tempImg =
+              img.decodeImage(File(_selectedImages[i].path).readAsBytesSync());
+          var cropSize = min(tempImg!.width, tempImg.height);
+          int offsetX =
+              (tempImg.width - min(tempImg.width, tempImg.height)) ~/ 2;
+          int offsetY =
+              (tempImg.height - min(tempImg.width, tempImg.height)) ~/ 2;
+
+//final imageBytes = decodeImage(File(images!.path).readAsBytesSync())!;
+
+          img.Image cropOne = img.copyCrop(
+            tempImg,
+            x: offsetX,
+            y: offsetY,
+            height: cropSize,
+            width: cropSize,
+          );
+          print(cropOne.height);
+          print(cropOne.width);
+
+          File(_selectedImages[i].path).writeAsBytes(img.encodeJpg(cropOne));
+        }
+
         setState(() {
           _image.addAll(_selectedImages); // 가져온 이미지를 _image에 저장
         });
@@ -968,6 +994,12 @@ class _FeedCardState extends State<FeedCard> {
                               onPressed: () {
                                 _getImage(ImageSource.gallery);
                                 Navigator.pop(context);
+                                Navigator.push(
+                                    context,
+                                    Transition(
+                                        child: PhotoEditor(),
+                                        transitionEffect:
+                                            TransitionEffect.RIGHT_TO_LEFT));
                               },
                               child: Column(
                                 children: [

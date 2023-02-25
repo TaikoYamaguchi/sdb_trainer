@@ -1229,6 +1229,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.0"
+  stamp_image:
+    dependency: "direct main"
+    description:
+      name: stamp_image
+      sha256: "63671bb993b1c046713f2378eadf5cd82c430491ee1d744d9ea360260576812f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   step_progress_indicator:
     dependency: "direct main"
     description:

@@ -91,6 +91,7 @@ dependencies:
   flutter_gif: ^0.0.4
   image: ^4.0.15
   http_parser: ^4.0.2
+  stamp_image: ^0.0.2
 
 
 
