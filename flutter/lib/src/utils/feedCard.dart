@@ -1,16 +1,20 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/feedEdit.dart';
 import 'package:sdb_trainer/pages/friendProfile.dart';
 import 'package:sdb_trainer/pages/friendHistory.dart';
 import 'package:sdb_trainer/pages/photo_editer.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
+import 'package:sdb_trainer/providers/tempimagestorage.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/repository/comment_repository.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
+import 'package:stamp_image/stamp_image.dart';
 import 'package:transition/transition.dart';
 import 'package:like_button/like_button.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
@@ -42,10 +46,12 @@ class FeedCard extends StatefulWidget {
 }
 
 class _FeedCardState extends State<FeedCard> {
+  final repaintkey = GlobalKey();
   var _historyCommentCtrl;
   var _userProvider;
   var _historyProvider;
   var _commentListbyId;
+  var _tempImgStrage;
   var _tapPosition;
   TextEditingController _exEditCommentCtrl = TextEditingController(text: "");
 
@@ -73,6 +79,7 @@ class _FeedCardState extends State<FeedCard> {
   }
 
   Widget _feedCard(SDBdata, index) {
+    _tempImgStrage = Provider.of<TempImgStorage>(context, listen: false);
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _historyProvider = Provider.of<HistorydataProvider>(context, listen: false);
 
@@ -495,6 +502,7 @@ class _FeedCardState extends State<FeedCard> {
                 _historyProvider.getHistorydataAll()
               });
     }
+    _tempImgStrage.resetimg();
     Navigator.of(context).pop();
     _popProvider.gotoonlast();
     Future.delayed(Duration(microseconds: 30000)).then((value) {
@@ -663,7 +671,7 @@ class _FeedCardState extends State<FeedCard> {
                           width: MediaQuery.of(context).size.width - 64.0,
                           decoration: BoxDecoration(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(50)),
+                                  BorderRadius.all(Radius.circular(20)),
                               image: DecorationImage(
                                 image: imageProivder,
                                 fit: BoxFit.cover,
@@ -727,8 +735,11 @@ class _FeedCardState extends State<FeedCard> {
         padding: const EdgeInsets.all(8.0),
         child: Card(
           color: Theme.of(context).cardColor,
-          child: Consumer<HistorydataProvider>(
-              builder: (builder, provider, child) {
+          child: Consumer2<HistorydataProvider, TempImgStorage>(
+              builder: (builder, provider, provider2, child) {
+            if (provider2.images.isNotEmpty) {
+              _image = provider2.images;
+            }
             try {
               _initImage = _historyProvider
                       .historydata
@@ -765,7 +776,7 @@ class _FeedCardState extends State<FeedCard> {
                                 ),
                                 decoration: BoxDecoration(
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(50))),
+                                        BorderRadius.all(Radius.circular(20))),
                               )
                             : Stack(children: <Widget>[
                                 //Image.file(File(_image![index].path)),
@@ -785,7 +796,7 @@ class _FeedCardState extends State<FeedCard> {
                                               64.0,
                                           decoration: BoxDecoration(
                                               borderRadius: BorderRadius.all(
-                                                  Radius.circular(50)),
+                                                  Radius.circular(20)),
                                               image: DecorationImage(
                                                 image: imageProivder,
                                                 fit: BoxFit.cover,
@@ -801,7 +812,7 @@ class _FeedCardState extends State<FeedCard> {
                                                 64.0,
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.all(
-                                                Radius.circular(50)),
+                                                Radius.circular(20)),
                                             image: DecorationImage(
                                               image: FileImage(File(_image![
                                                       index - _initImage.length]
@@ -851,7 +862,7 @@ class _FeedCardState extends State<FeedCard> {
                               ]),
                         onTap: () {
                           if (_initImage!.length + _image.length <= index) {
-                            _displayPhotoAlert();
+                            _displayPhotoAlert(SDBdata);
                           }
                         },
                       ));
@@ -888,9 +899,6 @@ class _FeedCardState extends State<FeedCard> {
               (tempImg.width - min(tempImg.width, tempImg.height)) ~/ 2;
           int offsetY =
               (tempImg.height - min(tempImg.width, tempImg.height)) ~/ 2;
-
-//final imageBytes = decodeImage(File(images!.path).readAsBytesSync())!;
-
           img.Image cropOne = img.copyCrop(
             tempImg,
             x: offsetX,
@@ -898,10 +906,8 @@ class _FeedCardState extends State<FeedCard> {
             height: cropSize,
             width: cropSize,
           );
-          print(cropOne.height);
-          print(cropOne.width);
-
           File(_selectedImages[i].path).writeAsBytes(img.encodeJpg(cropOne));
+          print('done1');
         }
 
         setState(() {
@@ -919,7 +925,7 @@ class _FeedCardState extends State<FeedCard> {
     }
   }
 
-  void _displayPhotoAlert() {
+  void _displayPhotoAlert(SDBdata) {
     showDialog(
         context: context,
         builder: (context) {
@@ -958,8 +964,15 @@ class _FeedCardState extends State<FeedCard> {
                                 padding: EdgeInsets.all(12.0),
                               ),
                               onPressed: () {
-                                _getImage(ImageSource.camera);
                                 Navigator.pop(context);
+                                Navigator.push(
+                                    context,
+                                    Transition(
+                                        child: PhotoEditor(
+                                            sdbdata: SDBdata,
+                                            imageSource: ImageSource.camera),
+                                        transitionEffect:
+                                            TransitionEffect.RIGHT_TO_LEFT));
                               },
                               child: Column(
                                 children: [
@@ -992,12 +1005,15 @@ class _FeedCardState extends State<FeedCard> {
                                 padding: EdgeInsets.all(12.0),
                               ),
                               onPressed: () {
-                                _getImage(ImageSource.gallery);
+                                //_getImage(ImageSource.gallery);
                                 Navigator.pop(context);
+
                                 Navigator.push(
                                     context,
                                     Transition(
-                                        child: PhotoEditor(),
+                                        child: PhotoEditor(
+                                            sdbdata: SDBdata,
+                                            imageSource: ImageSource.gallery),
                                         transitionEffect:
                                             TransitionEffect.RIGHT_TO_LEFT));
                               },

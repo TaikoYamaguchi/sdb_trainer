@@ -12,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'package:sdb_trainer/src/utils/feedCard.dart';
+import 'package:sdb_trainer/providers/tempimagestorage.dart';
 
 class FeedEdit extends StatefulWidget {
   final hisdata.SDBdata sdbdata;
@@ -24,6 +25,7 @@ class FeedEdit extends StatefulWidget {
 class _FeedEditState extends State<FeedEdit> {
   var _feedListCtrl = 1;
 
+  var _tempImgStrage;
   var _hisProvider;
   var _historydata;
   var _userProvider;
@@ -44,6 +46,7 @@ class _FeedEditState extends State<FeedEdit> {
   Widget build(BuildContext context) {
     _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
+    _tempImgStrage = Provider.of<TempImgStorage>(context, listen: false);
 
     return Scaffold(
         extendBody: true,
@@ -57,6 +60,7 @@ class _FeedEditState extends State<FeedEdit> {
                     color: Theme.of(context).primaryColorLight,
                   ),
                   onTap: () {
+                    _tempImgStrage.resetimg();
                     btnDisabled == true
                         ? null
                         : [btnDisabled = true, Navigator.of(context).pop()];

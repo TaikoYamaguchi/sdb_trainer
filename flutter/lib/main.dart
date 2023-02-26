@@ -12,6 +12,7 @@ import 'package:sdb_trainer/providers/interviewdata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/routinemenu.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
+import 'package:sdb_trainer/providers/tempimagestorage.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/staticPageState.dart';
 import 'package:sdb_trainer/providers/chartIndexState.dart';
@@ -65,6 +66,7 @@ void main() async {
     ChangeNotifierProvider(
         create: (BuildContext context) => InterviewdataProvider()),
     ChangeNotifierProvider(create: (BuildContext context) => ThemeProvider()),
+    ChangeNotifierProvider(create: (BuildContext context) => TempImgStorage()),
   ], child: MyApp()));
 }
 
