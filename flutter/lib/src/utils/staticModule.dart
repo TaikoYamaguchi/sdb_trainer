@@ -101,7 +101,10 @@ class _StaticModuleState extends State<StaticModule> {
       begin: Alignment.bottomCenter,
       end: Alignment.topCenter,
     );
-    return _historyCard(context);
+    return Consumer<HistorydataProvider>(builder: (builder, provider, child) {
+      _dateController(1);
+      return _historyCard(context);
+    });
   }
 
   Widget _historyCard(context) {
@@ -2680,6 +2683,8 @@ class _StaticModuleState extends State<StaticModule> {
                                       text: _pieDataSets[index].title +
                                           "(${_pieDataSets[index].value.toInt()})",
                                       isSquare: true,
+                                      textColor:
+                                          Theme.of(context).primaryColorLight,
                                     ),
                                     SizedBox(
                                       height: 4,

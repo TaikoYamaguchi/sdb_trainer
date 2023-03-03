@@ -99,7 +99,7 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
             : provider.isPageController.initialPage;
 
         Map<int, Widget> staticList = <int, Widget>{
-          0: Padding(
+          /* 0: Padding(
             padding: const EdgeInsets.all(5.0),
             child: Text("통계",
                 textScaleFactor: 1.3,
@@ -107,7 +107,7 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
                   color:
                       page == 0 ? Theme.of(context).buttonColor : Colors.grey,
                 )),
-          ),
+          ),*/
           1: Padding(
               padding: const EdgeInsets.all(5.0),
               child: Text("달력",
@@ -129,7 +129,7 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
           child: CupertinoSlidingSegmentedControl(
               groupValue: page,
               children: staticList,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
               thumbColor: Theme.of(context).primaryColor,
               onValueChanged: (i) {
                 print(i);

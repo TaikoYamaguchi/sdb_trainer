@@ -258,11 +258,11 @@ class _FeedState extends State<Feed> {
       width: double.infinity,
       child: Container(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: CupertinoSlidingSegmentedControl(
               groupValue: _feedListCtrl,
               children: _feedList,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+              padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
               thumbColor: Theme.of(context).primaryColor,
               onValueChanged: (i) {
                 setState(() {

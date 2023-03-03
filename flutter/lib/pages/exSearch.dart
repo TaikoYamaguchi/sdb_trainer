@@ -143,11 +143,11 @@ class ExSearchState extends State<ExSearch> {
         };
         return Container(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: CupertinoSlidingSegmentedControl(
                 groupValue: provider.menustate,
                 children: _menuList,
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                 thumbColor: Theme.of(context).primaryColor,
                 onValueChanged: (i) {
                   controller!.animateToPage(i as int,

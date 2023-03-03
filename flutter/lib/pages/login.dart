@@ -280,6 +280,15 @@ class LoginPageState extends State<LoginPage> {
         try {
           // 카카오 계정으로 로그인
           OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
+
+          User user = await UserApi.instance.me();
+
+          _userProvider.setUserKakaoEmail(user.kakaoAccount!.email!);
+          _userProvider.setUserKakaoImageUrl(user.properties?["profile_image"]);
+          _userProvider.setUserKakaoName(user.kakaoAccount?.name);
+          _userProvider.setUserKakaoGender(user.kakaoAccount?.gender);
+          _userEmailCtrl.text = user.kakaoAccount!.email!;
+          _userPasswordCtrl.text = user.kakaoAccount!.email!;
           print('로그인 성공 ${token.accessToken}');
           _loginkakaoCheck();
         } catch (error) {
@@ -295,11 +304,11 @@ class LoginPageState extends State<LoginPage> {
 
         User user = await UserApi.instance.me();
 
-        _userEmailCtrl.text = user.kakaoAccount!.email!;
         _userProvider.setUserKakaoEmail(user.kakaoAccount!.email!);
         _userProvider.setUserKakaoImageUrl(user.properties?["profile_image"]);
         _userProvider.setUserKakaoName(user.kakaoAccount?.name);
         _userProvider.setUserKakaoGender(user.kakaoAccount?.gender);
+        _userEmailCtrl.text = user.kakaoAccount!.email!;
         _userPasswordCtrl.text = user.kakaoAccount!.email!;
         print('로그인 성공 ${token.accessToken}');
         _loginkakaoCheck();

@@ -143,7 +143,16 @@ class _InterviewState extends State<Interview> {
               ],
               backgroundColor: Theme.of(context).canvasColor,
             )),
-        body: Center(child: _interviewCardList(context)));
+        body: GestureDetector(
+            onPanUpdate: (details) {
+              if (details.delta.dx > 0 && btnDisabled == false) {
+                btnDisabled = true;
+                Navigator.of(context).pop();
+                print("Dragging in +X direction");
+              }
+            },
+            child: Container(
+                height: double.infinity, child: _interviewCardList(context))));
   }
 
   Future<void> _onRefresh() {
