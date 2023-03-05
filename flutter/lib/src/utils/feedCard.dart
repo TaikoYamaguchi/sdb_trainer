@@ -25,6 +25,7 @@ import 'package:sdb_trainer/providers/popmanage.dart';
 
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class FeedCard extends StatefulWidget {
   hisdata.SDBdata sdbdata;
@@ -42,10 +43,10 @@ class FeedCard extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<FeedCard> createState() => _FeedCardState();
+  State<FeedCard> createState() => FeedCardState();
 }
 
-class _FeedCardState extends State<FeedCard> {
+class FeedCardState extends State<FeedCard> {
   final repaintkey = GlobalKey();
   var _historyCommentCtrl;
   var _userProvider;
@@ -54,6 +55,11 @@ class _FeedCardState extends State<FeedCard> {
   var _tempImgStrage;
   var _tapPosition;
   TextEditingController _exEditCommentCtrl = TextEditingController(text: "");
+
+  PageController _controller =
+      PageController(viewportFraction: 0.93, keepPage: true);
+  PageController _feedEditcontroller =
+      PageController(viewportFraction: 0.93, keepPage: true);
 
   List<XFile> _image = [];
   final ImagePicker _picker = ImagePicker();
@@ -407,40 +413,12 @@ class _FeedCardState extends State<FeedCard> {
                                 ],
                               )
                             : Container(),
-                        widget.isExEdit ? _exercise_Done_Button() : Container()
                       ],
                     ),
                   );
           }),
         ),
       ),
-    );
-  }
-
-  Widget _exercise_Done_Button() {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: TextButton(
-              style: TextButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                foregroundColor: Theme.of(context).primaryColor,
-                backgroundColor: Theme.of(context).primaryColor,
-                textStyle: TextStyle(
-                  color: Theme.of(context).primaryColorLight,
-                ),
-                disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-                padding: EdgeInsets.all(12.0),
-              ),
-              onPressed: () {
-                _submitExChange();
-              },
-              child: Text("운동 제출 하기",
-                  textScaleFactor: 1.5,
-                  style: TextStyle(color: Theme.of(context).buttonColor)))),
     );
   }
 
@@ -463,7 +441,7 @@ class _FeedCardState extends State<FeedCard> {
                 padding: EdgeInsets.all(12.0),
               ),
               onPressed: () {
-                _submitExChange();
+                submitExChange();
               },
               child: Text("운동 제출",
                   textScaleFactor: 1.1,
@@ -471,7 +449,7 @@ class _FeedCardState extends State<FeedCard> {
     );
   }
 
-  void _submitExChange() {
+  void submitExChange() {
     if (_initImage.length >= 0) {
       print(_initImage);
       HistoryImagePut(history_id: widget.sdbdata.id, images: _initImage)
@@ -655,45 +633,53 @@ class _FeedCardState extends State<FeedCard> {
     return Column(
       children: [
         Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.width,
+          width: MediaQuery.of(context).size.height / 2,
+          height: MediaQuery.of(context).size.height / 2,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (BuildContext _context, int index) {
-                  return Padding(
-                      padding: EdgeInsets.all(4.0),
-                      child: CachedNetworkImage(
-                        imageUrl: SDBdata.image[index],
-                        imageBuilder: (context, imageProivder) => Container(
-                          height: MediaQuery.of(context).size.width - 64.0,
-                          width: MediaQuery.of(context).size.width - 64.0,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
-                              image: DecorationImage(
-                                image: imageProivder,
-                                fit: BoxFit.cover,
-                              )),
-                        ),
-                      ));
-                },
-                separatorBuilder: (BuildContext _context, int index) {
-                  return Container(
-                    height: 0.5,
-                    alignment: Alignment.center,
-                    color: Colors.black,
-                    child: Container(
-                      height: 0.5,
-                      alignment: Alignment.center,
-                      color: Color(0xFF717171),
+            padding: const EdgeInsets.all(0.0),
+            child: PageView.builder(
+              controller: _controller,
+              itemCount: SDBdata.image.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext _context, int index) {
+                return Padding(
+                  padding: EdgeInsets.all(4.0),
+                  child: CachedNetworkImage(
+                    imageUrl: SDBdata.image[index],
+                    imageBuilder: (context, imageProivder) => AspectRatio(
+                      aspectRatio: 1,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            image: DecorationImage(
+                              image: imageProivder,
+                              fit: BoxFit.cover,
+                            )),
+                      ),
                     ),
-                  );
-                },
-                itemCount: SDBdata.image.length),
+                  ),
+                );
+              },
+            ),
           ),
         ),
+        SDBdata.image.length > 1
+            ? Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: SmoothPageIndicator(
+                  controller: _controller,
+                  count: SDBdata.image.length,
+                  effect: WormEffect(
+                    dotHeight: 8,
+                    dotWidth: 8,
+                    type: WormType.thin,
+                    activeDotColor: Theme.of(context).primaryColor,
+                    dotColor: Colors.grey,
+                    // strokeWidth: 5,
+                  ),
+                ),
+              )
+            : Container(),
         GestureDetector(
             child: SizedBox(
                 width: MediaQuery.of(context).size.width,
@@ -728,161 +714,169 @@ class _FeedCardState extends State<FeedCard> {
   }
 
   Widget _imageExEditContent(SDBdata) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.width,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Card(
-          color: Theme.of(context).cardColor,
-          child: Consumer2<HistorydataProvider, TempImgStorage>(
-              builder: (builder, provider, provider2, child) {
-            if (provider2.images.isNotEmpty) {
-              _image = provider2.images;
-            }
-            try {
-              _initImage = _historyProvider
-                      .historydata
-                      .sdbdatas[_historyProvider.historydata.sdbdatas
-                          .indexWhere((sdbdata) {
-                    if (sdbdata.id == widget.sdbdata.id) {
-                      return true;
-                    } else {
-                      return false;
-                    }
-                  })]
-                      .image ??
-                  [];
-            } catch (e) {
-              _initImage = [];
-            }
-            return ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (BuildContext _context, int index) {
-                  return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 6.0, vertical: 8.0),
-                      child: GestureDetector(
-                        child: _image.length + _initImage.length <= index
-                            ? Container(
-                                height:
-                                    MediaQuery.of(context).size.width - 64.0,
-                                width: MediaQuery.of(context).size.width - 64.0,
-                                child: Center(
-                                  child: Icon(Icons.add_photo_alternate,
-                                      color:
-                                          Theme.of(context).primaryColorLight,
-                                      size: 120),
-                                ),
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                              )
-                            : Stack(children: <Widget>[
-                                //Image.file(File(_image![index].path)),
-                                _initImage.length > index
-                                    ? CachedNetworkImage(
-                                        imageUrl: SDBdata.image[index],
-                                        imageBuilder:
-                                            (context, imageProivder) =>
-                                                Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .width -
-                                              64.0,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width -
-                                              64.0,
+    return Card(
+      color: Theme.of(context).cardColor,
+      child: Consumer2<HistorydataProvider, TempImgStorage>(
+          builder: (builder, provider, provider2, child) {
+        if (provider2.images.isNotEmpty) {
+          _image = provider2.images;
+        }
+        try {
+          _initImage = _historyProvider
+                  .historydata
+                  .sdbdatas[_historyProvider.historydata.sdbdatas
+                      .indexWhere((sdbdata) {
+                if (sdbdata.id == widget.sdbdata.id) {
+                  return true;
+                } else {
+                  return false;
+                }
+              })]
+                  .image ??
+              [];
+        } catch (e) {
+          _initImage = [];
+        }
+        return Column(
+          children: [
+            Container(
+                width: MediaQuery.of(context).size.height / 2,
+                height: MediaQuery.of(context).size.height / 2,
+                child: Padding(
+                    padding: const EdgeInsets.all(0.0),
+                    child: PageView.builder(
+                        controller: _feedEditcontroller,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext _context, int index) {
+                          return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 6.0, vertical: 8.0),
+                              child: GestureDetector(
+                                child: _image.length + _initImage.length <=
+                                        index
+                                    ? AspectRatio(
+                                        aspectRatio: 1,
+                                        child: Container(
+                                          child: Center(
+                                            child: Icon(
+                                                Icons.add_photo_alternate,
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
+                                                size: 120),
+                                          ),
                                           decoration: BoxDecoration(
                                               borderRadius: BorderRadius.all(
-                                                  Radius.circular(20)),
-                                              image: DecorationImage(
-                                                image: imageProivder,
-                                                fit: BoxFit.cover,
-                                              )),
-                                        ),
-                                      )
-                                    : Container(
-                                        height:
-                                            MediaQuery.of(context).size.width -
-                                                64.0,
-                                        width:
-                                            MediaQuery.of(context).size.width -
-                                                64.0,
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20)),
-                                            image: DecorationImage(
-                                              image: FileImage(File(_image![
-                                                      index - _initImage.length]
-                                                  .path)),
-                                              fit: BoxFit.cover,
-                                            )),
-                                      ),
-
-                                Positioned(
-                                  top: 0,
-                                  right: 0,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      if (index >= _initImage.length) {
-                                        setState(() {
-                                          _image.removeAt(
-                                              index - _initImage.length);
-                                        });
-                                      } else {
-                                        setState(() {
-                                          _initImage.removeAt(index);
-                                        });
-                                      }
-                                    },
-                                    child: SizedBox(
-                                      width: 24.0,
-                                      height: 24.0,
-                                      child: Center(
-                                        child: Material(
-                                          shape: CircleBorder(),
-                                          clipBehavior: Clip.antiAlias,
-                                          elevation: 4.0,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(4.0),
-                                            child: Icon(
-                                              Icons.close,
-                                              size: 14,
-                                              color: Theme.of(context)
-                                                  .primaryColor,
+                                                  Radius.circular(20))),
+                                        ))
+                                    : Stack(children: <Widget>[
+                                        _initImage.length > index
+                                            ? CachedNetworkImage(
+                                                imageUrl: SDBdata.image[index],
+                                                imageBuilder:
+                                                    (context, imageProivder) =>
+                                                        AspectRatio(
+                                                            aspectRatio: 1,
+                                                            child: Container(
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.all(Radius.circular(
+                                                                              20)),
+                                                                      image:
+                                                                          DecorationImage(
+                                                                        image:
+                                                                            imageProivder,
+                                                                        fit: BoxFit
+                                                                            .cover,
+                                                                      )),
+                                                            )),
+                                              )
+                                            : AspectRatio(
+                                                aspectRatio: 1,
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  20)),
+                                                      image: DecorationImage(
+                                                        image: FileImage(File(
+                                                            _image![index -
+                                                                    _initImage
+                                                                        .length]
+                                                                .path)),
+                                                        fit: BoxFit.cover,
+                                                      )),
+                                                )),
+                                        Positioned(
+                                          top: 0,
+                                          right: 0,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              if (index >= _initImage.length) {
+                                                setState(() {
+                                                  _image.removeAt(index -
+                                                      _initImage.length);
+                                                });
+                                              } else {
+                                                setState(() {
+                                                  _initImage.removeAt(index);
+                                                });
+                                              }
+                                            },
+                                            child: SizedBox(
+                                              width: 24.0,
+                                              height: 24.0,
+                                              child: Center(
+                                                child: Material(
+                                                  shape: CircleBorder(),
+                                                  clipBehavior: Clip.antiAlias,
+                                                  elevation: 4.0,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            4.0),
+                                                    child: Icon(
+                                                      Icons.close,
+                                                      size: 14,
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ]),
-                        onTap: () {
-                          if (_initImage!.length + _image.length <= index) {
-                            _displayPhotoAlert(SDBdata);
-                          }
-                        },
-                      ));
-                },
-                separatorBuilder: (BuildContext _context, int index) {
-                  return Container(
-                    height: 0.5,
-                    alignment: Alignment.center,
-                    color: Colors.black,
-                    child: Container(
-                      height: 0.5,
-                      alignment: Alignment.center,
-                      color: Color(0xFF717171),
+                                        )
+                                      ]),
+                                onTap: () {
+                                  if (_initImage!.length + _image.length <=
+                                      index) {
+                                    _displayPhotoAlert(SDBdata);
+                                  }
+                                },
+                              ));
+                        }))),
+            _initImage!.length + _image.length > 1
+                ? Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: SmoothPageIndicator(
+                      controller: _feedEditcontroller,
+                      count: _initImage!.length + _image.length + 1,
+                      effect: WormEffect(
+                        dotHeight: 8,
+                        dotWidth: 8,
+                        type: WormType.thin,
+                        activeDotColor: Theme.of(context).primaryColor,
+                        dotColor: Colors.grey,
+                        // strokeWidth: 5,
+                      ),
                     ),
-                  );
-                },
-                itemCount: _image!.length + 1 + _initImage.length);
-          }),
-        ),
-      ),
+                  )
+                : Container(),
+          ],
+        );
+      }),
     );
   }
 

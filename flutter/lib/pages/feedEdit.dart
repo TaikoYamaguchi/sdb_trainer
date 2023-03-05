@@ -14,6 +14,8 @@ import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'package:sdb_trainer/src/utils/feedCard.dart';
 import 'package:sdb_trainer/providers/tempimagestorage.dart';
 
+GlobalKey<FeedCardState> globalKey = GlobalKey();
+
 class FeedEdit extends StatefulWidget {
   final hisdata.SDBdata sdbdata;
   FeedEdit({Key? key, required this.sdbdata}) : super(key: key);
@@ -47,7 +49,6 @@ class _FeedEditState extends State<FeedEdit> {
     _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _tempImgStrage = Provider.of<TempImgStorage>(context, listen: false);
-
     return Scaffold(
         extendBody: true,
         appBar: PreferredSize(
@@ -79,6 +80,16 @@ class _FeedEditState extends State<FeedEdit> {
               ),
               backgroundColor: Theme.of(context).canvasColor,
             )),
+        floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: Theme.of(context).primaryColor,
+          foregroundColor: Theme.of(context).buttonColor,
+          onPressed: () {
+            globalKey.currentState!.submitExChange();
+            // Respond to button press
+          },
+          label: Text("운동 제출 하기", textScaleFactor: 1.5),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
         body: Center(
             child: Container(
           child: SingleChildScrollView(
@@ -87,7 +98,8 @@ class _FeedEditState extends State<FeedEdit> {
                 index: 0,
                 feedListCtrl: 0,
                 openUserDetail: true,
-                isExEdit: true),
+                isExEdit: true,
+                key: globalKey),
           ),
         )));
   }

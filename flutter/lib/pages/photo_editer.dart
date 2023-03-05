@@ -256,7 +256,7 @@ class _PhotoEditorState extends State<PhotoEditor> {
                     },
                     child: Text('White',
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Theme.of(context).primaryColorLight,
                           fontWeight:
                               _iswhite ? FontWeight.bold : FontWeight.normal,
                           fontSize: 16,
@@ -271,7 +271,7 @@ class _PhotoEditorState extends State<PhotoEditor> {
                     },
                     child: Text('Black',
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Theme.of(context).primaryColorLight,
                           fontWeight:
                               _iswhite ? FontWeight.normal : FontWeight.bold,
                           fontSize: 16,

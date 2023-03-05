@@ -20,6 +20,8 @@ import 'dart:io';
 import 'dart:async';
 import 'package:image/image.dart' as img;
 
+GlobalKey<FeedCardState> globalKey = GlobalKey();
+
 class ExerciseDone extends StatefulWidget {
   List<hisdata.Exercises> exerciseList = [];
   final int routinetime;
@@ -241,7 +243,8 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                   index: 0,
                   feedListCtrl: 0,
                   openUserDetail: true,
-                  isExEdit: true),
+                  isExEdit: true,
+                  key: globalKey),
               SizedBox(height: 8.0),
             ]),
           ),
@@ -261,6 +264,16 @@ class _ExerciseDoneState extends State<ExerciseDone> {
       resizeToAvoidBottomInset: false,
       appBar: _appbarWidget(),
       body: _exerciseDoneWidget(),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Theme.of(context).buttonColor,
+        onPressed: () {
+          globalKey.currentState!.submitExChange();
+          // Respond to button press
+        },
+        label: Text("운동 제출 하기", textScaleFactor: 1.5),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
     );
   }
 }
