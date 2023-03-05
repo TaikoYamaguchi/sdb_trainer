@@ -108,21 +108,21 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
                       page == 0 ? Theme.of(context).buttonColor : Colors.grey,
                 )),
           ),*/
-          1: Padding(
+          0: Padding(
               padding: const EdgeInsets.all(5.0),
               child: Text("달력",
                   textScaleFactor: 1.3,
                   style: TextStyle(
                     color:
-                        page == 1 ? Theme.of(context).buttonColor : Colors.grey,
+                        page == 0 ? Theme.of(context).buttonColor : Colors.grey,
                   ))),
-          2: Padding(
+          1: Padding(
               padding: const EdgeInsets.all(5.0),
               child: Text("몸무게",
                   textScaleFactor: 1.3,
                   style: TextStyle(
                     color:
-                        page == 2 ? Theme.of(context).buttonColor : Colors.grey,
+                        page == 1 ? Theme.of(context).buttonColor : Colors.grey,
                   ))),
         };
         return Container(
@@ -250,7 +250,7 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
                 child: PageView(
                   controller: provider1.isPageController,
                   children: [
-                    _chartWidget(),
+                    //_chartWidget(),
                     _calendarWidget(),
                     _weightWidget()
                   ],

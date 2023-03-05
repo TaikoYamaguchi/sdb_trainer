@@ -643,21 +643,24 @@ class FeedCardState extends State<FeedCard> {
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext _context, int index) {
                 return Padding(
-                  padding: EdgeInsets.all(4.0),
-                  child: CachedNetworkImage(
-                    imageUrl: SDBdata.image[index],
-                    imageBuilder: (context, imageProivder) => AspectRatio(
-                      aspectRatio: 1,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            image: DecorationImage(
-                              image: imageProivder,
-                              fit: BoxFit.cover,
-                            )),
+                  padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 8.0),
+                  child: Stack(children: <Widget>[
+                    CachedNetworkImage(
+                      imageUrl: SDBdata.image[index],
+                      imageBuilder: (context, imageProivder) => AspectRatio(
+                        aspectRatio: 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                              image: DecorationImage(
+                                image: imageProivder,
+                                fit: BoxFit.cover,
+                              )),
+                        ),
                       ),
-                    ),
-                  ),
+                    )
+                  ]),
                 );
               },
             ),
@@ -747,6 +750,7 @@ class FeedCardState extends State<FeedCard> {
                     child: PageView.builder(
                         controller: _feedEditcontroller,
                         scrollDirection: Axis.horizontal,
+                        itemCount: _initImage!.length + _image.length + 1,
                         itemBuilder: (BuildContext _context, int index) {
                           return Padding(
                               padding: const EdgeInsets.symmetric(
@@ -857,7 +861,7 @@ class FeedCardState extends State<FeedCard> {
                                 },
                               ));
                         }))),
-            _initImage!.length + _image.length > 1
+            _initImage!.length + _image.length > 0
                 ? Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: SmoothPageIndicator(
@@ -972,13 +976,12 @@ class FeedCardState extends State<FeedCard> {
                                 children: [
                                   Icon(Icons.camera_alt,
                                       size: 24,
-                                      color:
-                                          Theme.of(context).primaryColorLight),
+                                      color: Theme.of(context).buttonColor),
                                   Text('촬영',
                                       textScaleFactor: 1.3,
                                       style: TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorLight)),
+                                          color:
+                                              Theme.of(context).buttonColor)),
                                 ],
                               ),
                             )),
@@ -1015,13 +1018,12 @@ class FeedCardState extends State<FeedCard> {
                                 children: [
                                   Icon(Icons.collections,
                                       size: 24,
-                                      color:
-                                          Theme.of(context).primaryColorLight),
+                                      color: Theme.of(context).buttonColor),
                                   Text('갤러리',
                                       textScaleFactor: 1.3,
                                       style: TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorLight)),
+                                          color:
+                                              Theme.of(context).buttonColor)),
                                 ],
                               ),
                             )),
