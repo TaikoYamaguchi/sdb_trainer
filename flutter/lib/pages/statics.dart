@@ -126,15 +126,18 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
                   ))),
         };
         return Container(
-          child: CupertinoSlidingSegmentedControl(
-              groupValue: page,
-              children: staticList,
-              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-              thumbColor: Theme.of(context).primaryColor,
-              onValueChanged: (i) {
-                print(i);
-                provider.changePageController(i as int);
-              }),
+          child: Padding(
+            padding: const EdgeInsets.all(6.0),
+            child: CupertinoSlidingSegmentedControl(
+                groupValue: page,
+                children: staticList,
+                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                thumbColor: Theme.of(context).primaryColor,
+                onValueChanged: (i) {
+                  print(i);
+                  provider.changePageController(i as int);
+                }),
+          ),
         );
       }),
     );

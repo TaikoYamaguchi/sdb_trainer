@@ -633,7 +633,6 @@ class FeedCardState extends State<FeedCard> {
     return Column(
       children: [
         Container(
-          width: MediaQuery.of(context).size.height / 2,
           height: MediaQuery.of(context).size.height / 2,
           child: Padding(
             padding: const EdgeInsets.all(0.0),
@@ -743,7 +742,6 @@ class FeedCardState extends State<FeedCard> {
         return Column(
           children: [
             Container(
-                width: MediaQuery.of(context).size.height / 2,
                 height: MediaQuery.of(context).size.height / 2,
                 child: Padding(
                     padding: const EdgeInsets.all(0.0),
