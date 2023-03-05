@@ -63,6 +63,9 @@ class _PhotoEditorState extends State<PhotoEditor> {
       if (_selectedImage != null) {
         setState(() {
           _image.add(_selectedImage); // 가져온 이미지를 _image에 저장
+          repaintkey = List<GlobalKey>.generate(
+              1, (index) => GlobalKey(debugLabel: 'key_$index'),
+              growable: false);
         });
       }
     }
