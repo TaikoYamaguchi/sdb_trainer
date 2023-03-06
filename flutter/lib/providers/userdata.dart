@@ -24,7 +24,6 @@ class UserdataProvider extends ChangeNotifier {
   get userFontSize => _userFontSize;
 
   getdata(token) async {
-    print("gogogogogo");
     try {
       await UserService(token: token).loadUserdata().then((value) {
         _userdata = value;
@@ -32,7 +31,6 @@ class UserdataProvider extends ChangeNotifier {
         return true;
       });
     } catch (e) {
-      print(e);
       return false;
     }
   }

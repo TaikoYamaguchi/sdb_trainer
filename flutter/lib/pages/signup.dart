@@ -1082,7 +1082,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     .then((token) {
                   token["access_token"] != null
                       ? {
-                          _userProvider.getdata(),
+                          _userProvider.getdata(token["access_token"]),
                           _postWorkoutCheck(),
                           print(_userProvider.userdata),
                           setState(() {

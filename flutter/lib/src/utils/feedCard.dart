@@ -630,10 +630,19 @@ class FeedCardState extends State<FeedCard> {
   }
 
   Widget _imageContent(SDBdata) {
+    var container_size;
+    if (MediaQuery.of(context).size.height / 1.5 >
+        MediaQuery.of(context).size.width) {
+      container_size = MediaQuery.of(context).size.width - 12;
+    } else {
+      container_size = MediaQuery.of(context).size.height / 3;
+    }
+
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          height: MediaQuery.of(context).size.height / 2,
+          height: container_size,
           child: Padding(
             padding: const EdgeInsets.all(0.0),
             child: PageView.builder(
@@ -641,25 +650,29 @@ class FeedCardState extends State<FeedCard> {
               itemCount: SDBdata.image.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext _context, int index) {
-                return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 8.0),
-                  child: Stack(children: <Widget>[
-                    CachedNetworkImage(
-                      imageUrl: SDBdata.image[index],
-                      imageBuilder: (context, imageProivder) => AspectRatio(
-                        aspectRatio: 1,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
-                              image: DecorationImage(
-                                image: imageProivder,
-                                fit: BoxFit.cover,
-                              )),
+                return Center(
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
+                    child: Stack(children: <Widget>[
+                      CachedNetworkImage(
+                        imageUrl: SDBdata.image[index],
+                        imageBuilder: (context, imageProivder) => AspectRatio(
+                          aspectRatio: 1,
+                          child: Container(
+                            height: MediaQuery.of(context).size.height / 2,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                                image: DecorationImage(
+                                  image: imageProivder,
+                                  fit: BoxFit.cover,
+                                )),
+                          ),
                         ),
-                      ),
-                    )
-                  ]),
+                      )
+                    ]),
+                  ),
                 );
               },
             ),
@@ -716,6 +729,13 @@ class FeedCardState extends State<FeedCard> {
   }
 
   Widget _imageExEditContent(SDBdata) {
+    var container_size;
+    if (MediaQuery.of(context).size.height / 1.5 >
+        MediaQuery.of(context).size.width) {
+      container_size = MediaQuery.of(context).size.width - 12;
+    } else {
+      container_size = MediaQuery.of(context).size.height / 3;
+    }
     return Card(
       color: Theme.of(context).cardColor,
       child: Consumer2<HistorydataProvider, TempImgStorage>(
@@ -742,7 +762,7 @@ class FeedCardState extends State<FeedCard> {
         return Column(
           children: [
             Container(
-                height: MediaQuery.of(context).size.height / 2,
+                height: container_size,
                 child: Padding(
                     padding: const EdgeInsets.all(0.0),
                     child: PageView.builder(
@@ -750,114 +770,119 @@ class FeedCardState extends State<FeedCard> {
                         scrollDirection: Axis.horizontal,
                         itemCount: _initImage!.length + _image.length + 1,
                         itemBuilder: (BuildContext _context, int index) {
-                          return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 6.0, vertical: 8.0),
-                              child: GestureDetector(
-                                child: _image.length + _initImage.length <=
-                                        index
-                                    ? AspectRatio(
-                                        aspectRatio: 1,
-                                        child: Container(
-                                          child: Center(
-                                            child: Icon(
-                                                Icons.add_photo_alternate,
-                                                color: Theme.of(context)
-                                                    .primaryColorLight,
-                                                size: 120),
-                                          ),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(20))),
-                                        ))
-                                    : Stack(children: <Widget>[
-                                        _initImage.length > index
-                                            ? CachedNetworkImage(
-                                                imageUrl: SDBdata.image[index],
-                                                imageBuilder:
-                                                    (context, imageProivder) =>
-                                                        AspectRatio(
-                                                            aspectRatio: 1,
-                                                            child: Container(
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                      borderRadius:
-                                                                          BorderRadius.all(Radius.circular(
-                                                                              20)),
+                          return Center(
+                            child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 6.0, vertical: 8.0),
+                                child: GestureDetector(
+                                  child: _image.length + _initImage.length <=
+                                          index
+                                      ? AspectRatio(
+                                          aspectRatio: 1,
+                                          child: Container(
+                                            child: Center(
+                                              child: Icon(
+                                                  Icons.add_photo_alternate,
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight,
+                                                  size: 120),
+                                            ),
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(20))),
+                                          ))
+                                      : Stack(children: <Widget>[
+                                          _initImage.length > index
+                                              ? CachedNetworkImage(
+                                                  imageUrl:
+                                                      SDBdata.image[index],
+                                                  imageBuilder: (context,
+                                                          imageProivder) =>
+                                                      AspectRatio(
+                                                          aspectRatio: 1,
+                                                          child: Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius.all(Radius.circular(
+                                                                            20)),
+                                                                    image:
+                                                                        DecorationImage(
                                                                       image:
-                                                                          DecorationImage(
-                                                                        image:
-                                                                            imageProivder,
-                                                                        fit: BoxFit
-                                                                            .cover,
-                                                                      )),
-                                                            )),
-                                              )
-                                            : AspectRatio(
-                                                aspectRatio: 1,
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  20)),
-                                                      image: DecorationImage(
-                                                        image: FileImage(File(
-                                                            _image![index -
-                                                                    _initImage
-                                                                        .length]
-                                                                .path)),
-                                                        fit: BoxFit.cover,
-                                                      )),
-                                                )),
-                                        Positioned(
-                                          top: 0,
-                                          right: 0,
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              if (index >= _initImage.length) {
-                                                setState(() {
-                                                  _image.removeAt(index -
-                                                      _initImage.length);
-                                                });
-                                              } else {
-                                                setState(() {
-                                                  _initImage.removeAt(index);
-                                                });
-                                              }
-                                            },
-                                            child: SizedBox(
-                                              width: 24.0,
-                                              height: 24.0,
-                                              child: Center(
-                                                child: Material(
-                                                  shape: CircleBorder(),
-                                                  clipBehavior: Clip.antiAlias,
-                                                  elevation: 4.0,
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            4.0),
-                                                    child: Icon(
-                                                      Icons.close,
-                                                      size: 14,
-                                                      color: Theme.of(context)
-                                                          .primaryColor,
+                                                                          imageProivder,
+                                                                      fit: BoxFit
+                                                                          .cover,
+                                                                    )),
+                                                          )),
+                                                )
+                                              : AspectRatio(
+                                                  aspectRatio: 1,
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    20)),
+                                                        image: DecorationImage(
+                                                          image: FileImage(File(
+                                                              _image![index -
+                                                                      _initImage
+                                                                          .length]
+                                                                  .path)),
+                                                          fit: BoxFit.cover,
+                                                        )),
+                                                  )),
+                                          Positioned(
+                                            top: 0,
+                                            right: 0,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                if (index >=
+                                                    _initImage.length) {
+                                                  setState(() {
+                                                    _image.removeAt(index -
+                                                        _initImage.length);
+                                                  });
+                                                } else {
+                                                  setState(() {
+                                                    _initImage.removeAt(index);
+                                                  });
+                                                }
+                                              },
+                                              child: SizedBox(
+                                                width: 24.0,
+                                                height: 24.0,
+                                                child: Center(
+                                                  child: Material(
+                                                    shape: CircleBorder(),
+                                                    clipBehavior:
+                                                        Clip.antiAlias,
+                                                    elevation: 4.0,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              4.0),
+                                                      child: Icon(
+                                                        Icons.close,
+                                                        size: 14,
+                                                        color: Theme.of(context)
+                                                            .primaryColor,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        )
-                                      ]),
-                                onTap: () {
-                                  if (_initImage!.length + _image.length <=
-                                      index) {
-                                    _displayPhotoAlert(SDBdata);
-                                  }
-                                },
-                              ));
+                                          )
+                                        ]),
+                                  onTap: () {
+                                    if (_initImage!.length + _image.length <=
+                                        index) {
+                                      _displayPhotoAlert(SDBdata);
+                                    }
+                                  },
+                                )),
+                          );
                         }))),
             _initImage!.length + _image.length > 0
                 ? Padding(
