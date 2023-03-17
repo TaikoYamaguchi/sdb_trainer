@@ -427,7 +427,7 @@ List<Exercises> extra_completely_new_Ex = [
   Exercises(
       goal: 0.0,
       name: '랫 풀다운',
-      image: 'assets/gif/497413-7a28cb_360.webp',
+      image: 'assets/gif/019713-7a28cb_360.webp',
       onerm: 0.0,
       custom: false,
       target: ["등", "이두"],
