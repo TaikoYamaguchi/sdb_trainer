@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/each_exercise.dart';
@@ -64,6 +67,18 @@ class ExerciseState extends State<Exercise> {
   var keySearch = GlobalKey();
   var keySelect = GlobalKey();
   var _menuList;
+  final String iOSTestId = 'ca-app-pub-3940256099942544/2934735716';
+  final String androidTestId = 'ca-app-pub-3940256099942544/6300978111';
+  Map<String, String> UNIT_ID = kReleaseMode
+      ? {
+          'ios': 'ca-app-pub-1921739371491657/3676809918',
+          'android': 'ca-app-pub-1921739371491657/2555299930',
+        }
+      : {
+          'ios': 'ca-app-pub-3940256099942544/2934735716',
+          'android': 'ca-app-pub-3940256099942544/6300978111',
+        };
+  BannerAd? banner;
 
   List<TutorialItem> itens = [];
 
@@ -98,6 +113,16 @@ class ExerciseState extends State<Exercise> {
     ///FUNÇÃO QUE EXIBE O TUTORIAL.
 
     super.initState();
+
+    banner = BannerAd(
+      size: AdSize.banner,
+      adUnitId: UNIT_ID[Platform.isIOS ? 'ios' : 'android']!,
+      listener: BannerAdListener(
+        onAdFailedToLoad: (Ad ad, LoadAdError error) {},
+        onAdLoaded: (_) {},
+      ),
+      request: AdRequest(),
+    )..load();
   }
 
   PreferredSizeWidget _appbarWidget() {
@@ -475,6 +500,13 @@ class ExerciseState extends State<Exercise> {
                   ),
                 ),
               ),
+            ),
+          ),
+          Container(
+            color: Colors.red,
+            height: 50.0,
+            child: AdWidget(
+              ad: banner!,
             ),
           )
         ],
