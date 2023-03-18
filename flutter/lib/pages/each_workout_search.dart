@@ -46,6 +46,8 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
   late List<hisdata.Exercises> exerciseList = [];
   ExpandableController _menucontroller =
       ExpandableController(initialExpanded: true);
+  ScrollController _currentExScrollController = ScrollController();
+  ScrollController _exScrollController = ScrollController();
 
   List<Map<String, dynamic>> datas = [];
   double top = 0;
@@ -531,7 +533,16 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
 
                 filterTotal(
                     _exSearchCtrl.text, _exProvider.tags, _exProvider.tags2);
-
+                Future.delayed(Duration(milliseconds: 100), () async {
+                  setState(() {
+                    _exScrollController.animateTo(
+                      _exScrollController.position.maxScrollExtent,
+                      duration: Duration(seconds: 2),
+                      curve: Curves.fastOutSlowIn,
+                    );
+                  });
+                });
+                showToast("커스텀 운동을 추가 했어요");
                 Navigator.of(context).pop();
               }
             },
@@ -615,6 +626,8 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                   key: Key('$index'),
                   onTap: () {
                     _workoutProvider.removeexAt(widget.rindex, index);
+
+                    showToast("운동이 삭제 됐어요");
                   },
                   child: Column(
                     children: [
@@ -703,7 +716,7 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                   ),
                 );
               },
-              shrinkWrap: shirink,
+              shrinkWrap: true,
               itemCount: exlist.length),
           exlist.isEmpty == true
               ? GestureDetector(
@@ -924,6 +937,7 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                                 padding:
                                     const EdgeInsets.only(top: 4.0, left: 1.0),
                                 child: SingleChildScrollView(
+                                  controller: _currentExScrollController,
                                   child: _exercisesWidget(true, true),
                                 ),
                               ),
@@ -1093,6 +1107,7 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
 
           return ListView.separated(
               padding: EdgeInsets.symmetric(horizontal: 2),
+              controller: _exScrollController,
               itemBuilder: (BuildContext _context, int index) {
                 bool alreadyexist = existlist.contains(exuniq[index].name);
                 if (exuniq.length == 1) {
@@ -1135,6 +1150,17 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                                   ? true
                                   : false));
                     });
+
+                    Future.delayed(Duration(milliseconds: 100), () async {
+                      setState(() {
+                        _currentExScrollController.animateTo(
+                          _currentExScrollController.position.maxScrollExtent,
+                          duration: Duration(seconds: 1),
+                          curve: Curves.fastOutSlowIn,
+                        );
+                      });
+                    });
+                    showToast("운동이 추가 됐어요");
                   },
                   child: Container(
                     child: Container(
@@ -1387,5 +1413,12 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
 
       return Scaffold(appBar: _appbarWidget(), body: _exercises_searchWidget());
     });
+  }
+
+  @override
+  void dispose() {
+    print('dispose');
+    _currentExScrollController.dispose();
+    super.dispose();
   }
 }
