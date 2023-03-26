@@ -6,6 +6,7 @@ import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/src/model/userdata.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
+import 'package:sdb_trainer/src/utils/imageFullViewer.dart';
 import 'package:transition/transition.dart';
 
 class FriendProfile extends StatefulWidget {
@@ -82,7 +83,14 @@ class _FriendProfileState extends State<FriendProfile> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    FullScreenImageViewer(widget.user.image)),
+                          );
+                        },
                         child: widget.user.image == ""
                             ? Icon(
                                 Icons.account_circle,

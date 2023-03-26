@@ -14,6 +14,7 @@ import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/repository/comment_repository.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
+import 'package:sdb_trainer/src/utils/imageFullViewer.dart';
 import 'package:stamp_image/stamp_image.dart';
 import 'package:transition/transition.dart';
 import 'package:like_button/like_button.dart';
@@ -655,19 +656,29 @@ class FeedCardState extends State<FeedCard> {
                     padding:
                         EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
                     child: Stack(children: <Widget>[
-                      CachedNetworkImage(
-                        imageUrl: SDBdata.image[index],
-                        imageBuilder: (context, imageProivder) => AspectRatio(
-                          aspectRatio: 1,
-                          child: Container(
-                            height: MediaQuery.of(context).size.height / 2,
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
-                                image: DecorationImage(
-                                  image: imageProivder,
-                                  fit: BoxFit.cover,
-                                )),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FullScreenImageViewer(
+                                    SDBdata.image[index])),
+                          );
+                        },
+                        child: CachedNetworkImage(
+                          imageUrl: SDBdata.image[index],
+                          imageBuilder: (context, imageProivder) => AspectRatio(
+                            aspectRatio: 1,
+                            child: Container(
+                              height: MediaQuery.of(context).size.height / 2,
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20)),
+                                  image: DecorationImage(
+                                    image: imageProivder,
+                                    fit: BoxFit.cover,
+                                  )),
+                            ),
                           ),
                         ),
                       )
