@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:zoom_pinch_overlay/zoom_pinch_overlay.dart';
 
 class FullScreenImageViewer extends StatelessWidget {
   const FullScreenImageViewer(this.url, {Key? key}) : super(key: key);
@@ -13,31 +14,34 @@ class FullScreenImageViewer extends StatelessWidget {
         child: Stack(
           children: <Widget>[
             GestureDetector(
-              child: CachedNetworkImage(
-                  imageUrl: url,
-                  imageBuilder: (context, imageProivder) => InteractiveViewer(
-                        panEnabled:
-                            false, // Set it to false to prevent panning.
-                        boundaryMargin: EdgeInsets.all(80),
-                        minScale: 1,
-                        maxScale: 4,
-                        child: Center(
-                          child: AspectRatio(
-                              aspectRatio: 1,
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                  image: imageProivder,
-                                  fit: BoxFit.cover,
-                                )),
-                              )),
+                child: Center(
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 0.0, vertical: 4.0),
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: Container(
+                        height: MediaQuery.of(context).size.height / 2,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
                         ),
-                      )),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            )
+                        child: ZoomOverlay(
+                          modalBarrierColor: Colors.black12, // optional
+                          minScale: 0.5, // optional
+                          maxScale: 3.0, // optional
+                          twoTouchOnly: true,
+                          animationDuration: Duration(milliseconds: 300),
+                          animationCurve: Curves.fastOutSlowIn,
+                          onScaleStop: () {},
+                          child: CachedNetworkImage(imageUrl: url),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                })
           ],
         ),
       ),

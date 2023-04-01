@@ -27,6 +27,7 @@ import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:zoom_pinch_overlay/zoom_pinch_overlay.dart';
 
 class FeedCard extends StatefulWidget {
   hisdata.SDBdata sdbdata;
@@ -73,6 +74,7 @@ class FeedCardState extends State<FeedCard> {
   };
 
   late var _photoInfo = {"feedList": widget.feedListCtrl, "feedVisible": true};
+
   @override
   void initState() {
     _tapPosition = Offset(0.0, 0.0);
@@ -643,52 +645,42 @@ class FeedCardState extends State<FeedCard> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          height: container_size,
-          child: Padding(
-            padding: const EdgeInsets.all(0.0),
-            child: PageView.builder(
-              controller: _controller,
-              itemCount: SDBdata.image.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (BuildContext _context, int index) {
-                return Center(
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
-                    child: Stack(children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => FullScreenImageViewer(
-                                    SDBdata.image[index])),
-                          );
-                        },
-                        child: CachedNetworkImage(
-                          imageUrl: SDBdata.image[index],
-                          imageBuilder: (context, imageProivder) => AspectRatio(
+            height: container_size,
+            child: Padding(
+                padding: const EdgeInsets.all(0.0),
+                child: PageView.builder(
+                    controller: _controller,
+                    itemCount: SDBdata.image.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (BuildContext _context, int index) {
+                      return Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 0.0, vertical: 4.0),
+                          child: AspectRatio(
                             aspectRatio: 1,
                             child: Container(
                               height: MediaQuery.of(context).size.height / 2,
                               decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
-                                  image: DecorationImage(
-                                    image: imageProivder,
-                                    fit: BoxFit.cover,
-                                  )),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                              ),
+                              child: ZoomOverlay(
+                                modalBarrierColor: Colors.black12, // optional
+                                minScale: 0.5, // optional
+                                maxScale: 3.0, // optional
+                                twoTouchOnly: true,
+                                animationDuration: Duration(milliseconds: 300),
+                                animationCurve: Curves.fastOutSlowIn,
+                                onScaleStop: () {},
+                                child: CachedNetworkImage(
+                                    imageUrl: SDBdata.image[index]),
+                              ),
                             ),
                           ),
                         ),
-                      )
-                    ]),
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
+                      );
+                    }))),
         SDBdata.image.length > 1
             ? Padding(
                 padding: const EdgeInsets.all(4.0),
