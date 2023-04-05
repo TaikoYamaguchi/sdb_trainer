@@ -1353,26 +1353,7 @@ class FeedCardState extends State<FeedCard> {
         padding: const EdgeInsets.all(4.0),
         child: GestureDetector(
             onTap: () {
-              setState(() {
-                if (_commentInfo["feedList"] == widget.feedListCtrl) {
-                  if (_commentInfo["feedVisible"] == true) {
-                    _commentInfo = {
-                      "feedList": widget.feedListCtrl,
-                      "feedVisible": false
-                    };
-                  } else {
-                    _commentInfo = {
-                      "feedList": widget.feedListCtrl,
-                      "feedVisible": true
-                    };
-                  }
-                } else {
-                  _commentInfo = {
-                    "feedList": widget.feedListCtrl,
-                    "feedVisible": true
-                  };
-                }
-              });
+              _showCommentBottomSheet(SDBdata);
             },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -1388,6 +1369,54 @@ class FeedCardState extends State<FeedCard> {
                         TextStyle(color: Theme.of(context).primaryColorLight))
               ],
             )));
+  }
+
+  void _showCommentBottomSheet(SDBdata) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      builder: (BuildContext context) {
+        return GestureDetector(onTap: () {
+          FocusScope.of(context).unfocus();
+        }, child: StatefulBuilder(builder: (BuildContext context,
+            StateSetter setState /*You can rename this!*/) {
+          return Container(
+            padding: EdgeInsets.all(12.0),
+            height: MediaQuery.of(context).size.height * 0.7,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              color: Theme.of(context).cardColor,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(12, 4, 12, 12),
+                  child: Container(
+                    height: 6.0,
+                    width: 80.0,
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColorDark,
+                        borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: _commentContent(),
+                  ),
+                ),
+                Column(
+                  children: [_commentTextInput(SDBdata)],
+                ),
+              ],
+            ),
+          );
+        }));
+      },
+    );
   }
 
   Widget _feedPhotoButton(SDBdata) {
