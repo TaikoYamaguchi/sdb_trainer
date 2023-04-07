@@ -76,6 +76,8 @@ class FeedCardState extends State<FeedCard> {
 
   late var _photoInfo = {"feedList": widget.feedListCtrl, "feedVisible": true};
 
+  ScrollController _commentScrollController = ScrollController();
+
   @override
   void initState() {
     _tapPosition = Offset(0.0, 0.0);
@@ -1373,8 +1375,11 @@ class FeedCardState extends State<FeedCard> {
         }, child: StatefulBuilder(builder: (BuildContext context,
             StateSetter setState /*You can rename this!*/) {
           return Container(
-            padding: EdgeInsets.symmetric(vertical: 12.0),
-            height: MediaQuery.of(context).size.height * 0.7,
+            padding: EdgeInsets.only(
+                top: 12.0,
+                bottom: 12.0 + MediaQuery.of(context).viewInsets.bottom),
+            height: MediaQuery.of(context).size.height * 0.7 +
+                MediaQuery.of(context).viewInsets.bottom,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               color: Theme.of(context).cardColor,
@@ -1383,47 +1388,57 @@ class FeedCardState extends State<FeedCard> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(12, 4, 12, 12),
-                  child: Container(
-                    height: 6.0,
-                    width: 80.0,
-                    decoration: BoxDecoration(
+                Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(12, 4, 12, 12),
+                      child: Container(
+                        height: 6.0,
+                        width: 80.0,
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColorDark,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0))),
+                      ),
+                    ),
+                    _feedTextField(SDBdata.comment),
+                    Container(
+                      alignment: Alignment.center,
+                      height: 0.3,
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 0.3,
                         color: Theme.of(context).primaryColorDark,
-                        borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                  ),
-                ),
-                _feedTextField(SDBdata.comment),
-                Container(
-                  alignment: Alignment.center,
-                  height: 0.3,
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: 0.3,
-                    color: Theme.of(context).primaryColorDark,
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
                 Expanded(
                   child: SingleChildScrollView(
+                    controller: _commentScrollController,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: _commentContent(SDBdata, setState),
                     ),
                   ),
                 ),
-                Container(
-                  alignment: Alignment.center,
-                  height: 0.3,
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: 0.3,
-                    color: Theme.of(context).primaryColorDark,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 12.0, right: 12.0, bottom: 8.0),
-                  child: _commentTextInput(SDBdata, setState),
+                Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      height: 0.3,
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 0.3,
+                        color: Theme.of(context).primaryColorDark,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 12.0, right: 12.0, bottom: 8.0),
+                      child: _commentTextInput(SDBdata, setState),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -1708,7 +1723,13 @@ class FeedCardState extends State<FeedCard> {
                             content: _commentInputCtrl.text)
                         .postComment();
                     _commentInputCtrl.clear();
-                    setState(() {});
+                    setState(() {
+                      _commentScrollController.animateTo(
+                        _commentScrollController.position.maxScrollExtent,
+                        duration: Duration(seconds: 2),
+                        curve: Curves.fastOutSlowIn,
+                      );
+                    });
                   },
                 ),
               )

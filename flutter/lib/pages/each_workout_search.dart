@@ -1419,6 +1419,8 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
   void dispose() {
     print('dispose');
     _currentExScrollController.dispose();
+    _exScrollController.dispose();
+
     super.dispose();
   }
 }

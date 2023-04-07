@@ -26,6 +26,7 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:sdb_trainer/src/utils/firebase_fcm.dart';
 import 'package:sdb_trainer/src/utils/notification.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -37,6 +38,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   KakaoSdk.init(nativeAppKey: "54b807de5757a704a372c2d0539a67da");
   WidgetsFlutterBinding.ensureInitialized();
+  FirebaseMessaging.onMessageOpenedApp.listen((message) {
+    // 특정 페이지로 가고 싶게한다면 추가 설정이 필요하다
+    print(message);
+  });
   MobileAds.instance.initialize();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
