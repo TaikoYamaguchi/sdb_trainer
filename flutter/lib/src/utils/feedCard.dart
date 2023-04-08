@@ -14,6 +14,7 @@ import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/repository/comment_repository.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
+import 'package:sdb_trainer/src/utils/imageFullViewer.dart';
 import 'package:stamp_image/stamp_image.dart';
 import 'package:transition/transition.dart';
 import 'package:like_button/like_button.dart';
@@ -26,6 +27,7 @@ import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:zoom_pinch_overlay/zoom_pinch_overlay.dart';
 
 class FeedCard extends StatefulWidget {
   hisdata.SDBdata sdbdata;
@@ -70,8 +72,12 @@ class FeedCardState extends State<FeedCard> {
     "feedList": widget.feedListCtrl,
     "feedVisible": false
   };
+  bool _focus = false;
 
   late var _photoInfo = {"feedList": widget.feedListCtrl, "feedVisible": true};
+
+  ScrollController _commentScrollController = ScrollController();
+
   @override
   void initState() {
     _tapPosition = Offset(0.0, 0.0);
@@ -88,11 +94,6 @@ class FeedCardState extends State<FeedCard> {
     _tempImgStrage = Provider.of<TempImgStorage>(context, listen: false);
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _historyProvider = Provider.of<HistorydataProvider>(context, listen: false);
-
-    _popProvider = Provider.of<PopProvider>(context, listen: false);
-    User user = _userProvider.userFriendsAll.userdatas
-        .where((user) => user.email == SDBdata.user_email)
-        .toList()[0];
     if (_historyProvider.commentAll != null) {
       _commentListbyId = _historyProvider.commentAll.comments
           .where((comment) => comment.history_id == SDBdata.id)
@@ -100,6 +101,11 @@ class FeedCardState extends State<FeedCard> {
     } else {
       _commentListbyId = [];
     }
+    _popProvider = Provider.of<PopProvider>(context, listen: false);
+    User user = _userProvider.userFriendsAll.userdatas
+        .where((user) => user.email == SDBdata.user_email)
+        .toList()[0];
+
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Center(
@@ -394,25 +400,6 @@ class FeedCardState extends State<FeedCard> {
                                     ],
                                   )
                                 : Container(),
-                        _commentInfo["feedList"] == widget.feedListCtrl &&
-                                _commentInfo["feedVisible"] == true
-                            ? Column(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Container(
-                                    alignment: Alignment.center,
-                                    height: 0.3,
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      height: 0.3,
-                                      color: Theme.of(context).primaryColorDark,
-                                    ),
-                                  ),
-                                  _commentContent(),
-                                  _commentTextInput(SDBdata)
-                                ],
-                              )
-                            : Container(),
                       ],
                     ),
                   );
@@ -642,42 +629,42 @@ class FeedCardState extends State<FeedCard> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          height: container_size,
-          child: Padding(
-            padding: const EdgeInsets.all(0.0),
-            child: PageView.builder(
-              controller: _controller,
-              itemCount: SDBdata.image.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (BuildContext _context, int index) {
-                return Center(
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
-                    child: Stack(children: <Widget>[
-                      CachedNetworkImage(
-                        imageUrl: SDBdata.image[index],
-                        imageBuilder: (context, imageProivder) => AspectRatio(
-                          aspectRatio: 1,
-                          child: Container(
-                            height: MediaQuery.of(context).size.height / 2,
-                            decoration: BoxDecoration(
+            height: container_size,
+            child: Padding(
+                padding: const EdgeInsets.all(0.0),
+                child: PageView.builder(
+                    controller: _controller,
+                    itemCount: SDBdata.image.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (BuildContext _context, int index) {
+                      return Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 0.0, vertical: 4.0),
+                          child: AspectRatio(
+                            aspectRatio: 1,
+                            child: Container(
+                              height: MediaQuery.of(context).size.height / 2,
+                              decoration: BoxDecoration(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20)),
-                                image: DecorationImage(
-                                  image: imageProivder,
-                                  fit: BoxFit.cover,
-                                )),
+                              ),
+                              child: ZoomOverlay(
+                                modalBarrierColor: Colors.black12, // optional
+                                minScale: 0.5, // optional
+                                maxScale: 3.0, // optional
+                                twoTouchOnly: true,
+                                animationDuration: Duration(milliseconds: 300),
+                                animationCurve: Curves.fastOutSlowIn,
+                                onScaleStop: () {},
+                                child: CachedNetworkImage(
+                                    imageUrl: SDBdata.image[index]),
+                              ),
+                            ),
                           ),
                         ),
-                      )
-                    ]),
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
+                      );
+                    }))),
         SDBdata.image.length > 1
             ? Padding(
                 padding: const EdgeInsets.all(4.0),
@@ -1060,14 +1047,21 @@ class FeedCardState extends State<FeedCard> {
         });
   }
 
-  Widget _commentContent() {
+  Widget _commentContent(SDBdata, StateSetter setState) {
+    if (_historyProvider.commentAll != null) {
+      _commentListbyId = _historyProvider.commentAll.comments
+          .where((comment) => comment.history_id == SDBdata.id)
+          .toList();
+    } else {
+      _commentListbyId = [];
+    }
     return ListView.separated(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext _context, int index) {
           return Padding(
               padding: EdgeInsets.all(4.0),
-              child: _commentContentCore(_commentListbyId[index]));
+              child: _commentContentCore(_commentListbyId[index], setState));
         },
         separatorBuilder: (BuildContext _context, int index) {
           return Container(
@@ -1083,7 +1077,7 @@ class FeedCardState extends State<FeedCard> {
         itemCount: _commentListbyId.length);
   }
 
-  Widget _commentContentCore(Comment) {
+  Widget _commentContentCore(Comment, StateSetter setState) {
     User user = _userProvider.userFriendsAll.userdatas
         .where((user) => user.email == Comment.writer_email)
         .toList()[0];
@@ -1177,6 +1171,7 @@ class FeedCardState extends State<FeedCard> {
                                               () => CommentDelete(
                                                       comment_id: Comment.id)
                                                   .deleteComment());
+                                          setState(() {});
                                         },
                                         padding: EdgeInsets.all(0.0),
                                         child: ListTile(
@@ -1350,26 +1345,7 @@ class FeedCardState extends State<FeedCard> {
         padding: const EdgeInsets.all(4.0),
         child: GestureDetector(
             onTap: () {
-              setState(() {
-                if (_commentInfo["feedList"] == widget.feedListCtrl) {
-                  if (_commentInfo["feedVisible"] == true) {
-                    _commentInfo = {
-                      "feedList": widget.feedListCtrl,
-                      "feedVisible": false
-                    };
-                  } else {
-                    _commentInfo = {
-                      "feedList": widget.feedListCtrl,
-                      "feedVisible": true
-                    };
-                  }
-                } else {
-                  _commentInfo = {
-                    "feedList": widget.feedListCtrl,
-                    "feedVisible": true
-                  };
-                }
-              });
+              _showCommentBottomSheet(SDBdata);
             },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -1385,6 +1361,91 @@ class FeedCardState extends State<FeedCard> {
                         TextStyle(color: Theme.of(context).primaryColorLight))
               ],
             )));
+  }
+
+  void _showCommentBottomSheet(SDBdata) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      builder: (BuildContext context) {
+        return GestureDetector(onTap: () {
+          FocusScope.of(context).unfocus();
+        }, child: StatefulBuilder(builder: (BuildContext context,
+            StateSetter setState /*You can rename this!*/) {
+          return Container(
+            padding: EdgeInsets.only(
+                top: 12.0,
+                bottom: 12.0 + MediaQuery.of(context).viewInsets.bottom),
+            height: MediaQuery.of(context).size.height * 0.7 +
+                MediaQuery.of(context).viewInsets.bottom,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              color: Theme.of(context).cardColor,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(12, 4, 12, 12),
+                      child: Container(
+                        height: 6.0,
+                        width: 80.0,
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColorDark,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0))),
+                      ),
+                    ),
+                    _feedTextField(SDBdata.comment),
+                    Container(
+                      alignment: Alignment.center,
+                      height: 0.3,
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 0.3,
+                        color: Theme.of(context).primaryColorDark,
+                      ),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: _commentScrollController,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: _commentContent(SDBdata, setState),
+                    ),
+                  ),
+                ),
+                Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      height: 0.3,
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 0.3,
+                        color: Theme.of(context).primaryColorDark,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 12.0, right: 12.0, bottom: 8.0),
+                      child: _commentTextInput(SDBdata, setState),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        }));
+      },
+    );
   }
 
   Widget _feedPhotoButton(SDBdata) {
@@ -1581,60 +1642,98 @@ class FeedCardState extends State<FeedCard> {
         });
   }
 
-  Widget _commentTextInput(SDBdata) {
+  Widget _commentTextInput(SDBdata, StateSetter setState) {
     return Row(
       children: [
-        Flexible(
-          child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: TextFormField(
-              keyboardType: TextInputType.multiline,
-              controller: _commentInputCtrl,
-              style: TextStyle(
-                  color: Theme.of(context).primaryColorLight, fontSize: 12.0),
-              decoration: InputDecoration(
-                hintText: "댓글 신고시 이용이 제한 될 수 있습니다.",
-                hintStyle: TextStyle(
-                    color: Theme.of(context).primaryColorLight, fontSize: 12.0),
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Theme.of(context).primaryColorLight, width: 0.3),
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Theme.of(context).primaryColorLight, width: 0.3),
-                  borderRadius: BorderRadius.circular(5.0),
+        _userProvider.userdata.image == ""
+            ? Icon(
+                Icons.account_circle,
+                color: Colors.grey,
+                size: 46.0,
+              )
+            : CachedNetworkImage(
+                imageUrl: _userProvider.userdata.image,
+                imageBuilder: (context, imageProivder) => Container(
+                  height: 38,
+                  width: 38,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                      image: DecorationImage(
+                        image: imageProivder,
+                        fit: BoxFit.cover,
+                      )),
                 ),
               ),
-            ),
-          ),
+        Flexible(
+          child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: FocusScope(
+                  child: Focus(
+                onFocusChange: (focus) {
+                  _focus = focus;
+                  setState(() {});
+                },
+                child: TextFormField(
+                  keyboardType: TextInputType.multiline,
+                  controller: _commentInputCtrl,
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColorLight,
+                      fontSize: 12.0),
+                  decoration: InputDecoration(
+                    hintText: " 댓글 신고시 이용이 제한 될 수 있습니다.",
+                    hintStyle: TextStyle(
+                        color: Theme.of(context).primaryColorDark,
+                        fontSize: 12.0),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 0.0),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).primaryColorLight,
+                          width: 0.3),
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).primaryColorLight,
+                          width: 0.3),
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                ),
+              ))),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4.0),
-          child: GestureDetector(
-            child: Icon(Icons.arrow_upward,
-                color: Theme.of(context).primaryColorLight),
-            onTap: () {
-              _historyProvider.addCommentAll(hisdata.Comment(
-                  history_id: SDBdata.id,
-                  reply_id: 0,
-                  writer_email: _userProvider.userdata.email,
-                  writer_nickname: _userProvider.userdata.nickname,
-                  content: _commentInputCtrl.text));
-              CommentCreate(
-                      history_id: SDBdata.id,
-                      reply_id: 0,
-                      writer_email: _userProvider.userdata.email,
-                      writer_nickname: _userProvider.userdata.nickname,
-                      content: _commentInputCtrl.text)
-                  .postComment();
-              _commentInputCtrl.clear();
-            },
-          ),
-        )
+        _focus == true
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                child: GestureDetector(
+                  child: Icon(Icons.arrow_upward,
+                      size: 32, color: Theme.of(context).primaryColor),
+                  onTap: () {
+                    _historyProvider.addCommentAll(hisdata.Comment(
+                        history_id: SDBdata.id,
+                        reply_id: 0,
+                        writer_email: _userProvider.userdata.email,
+                        writer_nickname: _userProvider.userdata.nickname,
+                        content: _commentInputCtrl.text));
+                    CommentCreate(
+                            history_id: SDBdata.id,
+                            reply_id: 0,
+                            writer_email: _userProvider.userdata.email,
+                            writer_nickname: _userProvider.userdata.nickname,
+                            content: _commentInputCtrl.text)
+                        .postComment();
+                    _commentInputCtrl.clear();
+                    setState(() {
+                      _commentScrollController.animateTo(
+                        _commentScrollController.position.maxScrollExtent,
+                        duration: Duration(seconds: 2),
+                        curve: Curves.fastOutSlowIn,
+                      );
+                    });
+                  },
+                ),
+              )
+            : Container()
       ],
     );
   }
@@ -1696,129 +1795,134 @@ class FeedCardState extends State<FeedCard> {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (BuildContext context) {
-        return GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: Container(
-              padding: EdgeInsets.all(12.0),
-              height: MediaQuery.of(context).size.height * 0.7,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                color: Theme.of(context).cardColor,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(12, 4, 12, 12),
-                    child: Container(
-                      height: 6.0,
-                      width: 80.0,
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColorDark,
-                          borderRadius: BorderRadius.all(Radius.circular(8.0))),
+        return GestureDetector(onTap: () {
+          FocusScope.of(context).unfocus();
+        }, child: StatefulBuilder(
+          builder: (BuildContext context,
+              StateSetter setState /*You can rename this!*/) {
+            return Container(
+                padding: EdgeInsets.all(12.0),
+                height: MediaQuery.of(context).size.height * 0.7,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                  color: Theme.of(context).cardColor,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(12, 4, 12, 12),
+                      child: Container(
+                        height: 6.0,
+                        width: 80.0,
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColorDark,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0))),
+                      ),
                     ),
-                  ),
-                  Expanded(
-                      child: SingleChildScrollView(
-                          child: ListView.separated(
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemBuilder: (BuildContext _context, int index) {
-                                var userLikesEmail = _userProvider
-                                    .userFriendsAll.userdatas
-                                    .where((user) =>
-                                        user.email == SDBdata.like[index])
-                                    .toList()[0];
-                                return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 5),
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              widget.openUserDetail
-                                                  ? Navigator.push(
-                                                      context,
-                                                      Transition(
-                                                          child: FriendProfile(
-                                                              user:
-                                                                  userLikesEmail),
-                                                          transitionEffect:
-                                                              TransitionEffect
-                                                                  .RIGHT_TO_LEFT))
-                                                  : null;
-                                            },
-                                            child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                userLikesEmail.image == ""
-                                                    ? Icon(
-                                                        Icons.account_circle,
-                                                        color: Colors.grey,
-                                                        size: 46.0,
-                                                      )
-                                                    : CachedNetworkImage(
-                                                        imageUrl: userLikesEmail
-                                                            .image,
-                                                        imageBuilder: (context,
-                                                                imageProivder) =>
-                                                            Container(
-                                                          height: 46,
-                                                          width: 46,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius.all(
-                                                                          Radius.circular(
-                                                                              50)),
-                                                                  image:
-                                                                      DecorationImage(
+                    Expanded(
+                        child: SingleChildScrollView(
+                            child: ListView.separated(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder:
+                                    (BuildContext _context, int index) {
+                                  var userLikesEmail = _userProvider
+                                      .userFriendsAll.userdatas
+                                      .where((user) =>
+                                          user.email == SDBdata.like[index])
+                                      .toList()[0];
+                                  return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 5),
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                widget.openUserDetail
+                                                    ? Navigator.push(
+                                                        context,
+                                                        Transition(
+                                                            child: FriendProfile(
+                                                                user:
+                                                                    userLikesEmail),
+                                                            transitionEffect:
+                                                                TransitionEffect
+                                                                    .RIGHT_TO_LEFT))
+                                                    : null;
+                                              },
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  userLikesEmail.image == ""
+                                                      ? Icon(
+                                                          Icons.account_circle,
+                                                          color: Colors.grey,
+                                                          size: 46.0,
+                                                        )
+                                                      : CachedNetworkImage(
+                                                          imageUrl:
+                                                              userLikesEmail
+                                                                  .image,
+                                                          imageBuilder: (context,
+                                                                  imageProivder) =>
+                                                              Container(
+                                                            height: 46,
+                                                            width: 46,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius.all(Radius.circular(
+                                                                            50)),
                                                                     image:
-                                                                        imageProivder,
-                                                                    fit: BoxFit
-                                                                        .cover,
-                                                                  )),
+                                                                        DecorationImage(
+                                                                      image:
+                                                                          imageProivder,
+                                                                      fit: BoxFit
+                                                                          .cover,
+                                                                    )),
+                                                          ),
                                                         ),
-                                                      ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 5.0),
-                                                  child: Text(
-                                                    userLikesEmail.nickname,
-                                                    textScaleFactor: 1.5,
-                                                    style: TextStyle(
-                                                        color: Theme.of(context)
-                                                            .primaryColorLight),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 5.0),
+                                                    child: Text(
+                                                      userLikesEmail.nickname,
+                                                      textScaleFactor: 1.5,
+                                                      style: TextStyle(
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .primaryColorLight),
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        ]));
-                              },
-                              separatorBuilder:
-                                  (BuildContext _context, int index) {
-                                return Container(
-                                  alignment: Alignment.center,
-                                  height: 0.3,
-                                  child: Container(
+                                                ],
+                                              ),
+                                            )
+                                          ]));
+                                },
+                                separatorBuilder:
+                                    (BuildContext _context, int index) {
+                                  return Container(
                                     alignment: Alignment.center,
                                     height: 0.3,
-                                    color: Theme.of(context).primaryColorDark,
-                                  ),
-                                );
-                              },
-                              itemCount: SDBdata.like.length))),
-                ],
-              )),
-        );
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      height: 0.3,
+                                      color: Theme.of(context).primaryColorDark,
+                                    ),
+                                  );
+                                },
+                                itemCount: SDBdata.like.length))),
+                  ],
+                ));
+          },
+        ));
       },
     );
   }

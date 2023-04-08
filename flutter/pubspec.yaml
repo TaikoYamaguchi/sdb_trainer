@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 
 
-version: 1.4.5+107
+version: 1.4.6+108
 
 
 
@@ -94,6 +94,7 @@ dependencies:
   stamp_image: ^0.0.2
   typicons_flutter: ^0.5.0
   google_mobile_ads: ^2.3.0
+  zoom_pinch_overlay: ^1.4.1+3
 
 
 dev_dependencies:
