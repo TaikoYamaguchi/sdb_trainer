@@ -293,6 +293,19 @@ class LoginPageState extends State<LoginPage> {
           _loginkakaoCheck();
         } catch (error) {
           print('로그인 실패 $error');
+          print('카카오계정으로 로그인');
+          OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
+
+          User user = await UserApi.instance.me();
+
+          _userEmailCtrl.text = user.kakaoAccount!.email!;
+          _userProvider.setUserKakaoEmail(user.kakaoAccount!.email!);
+          _userProvider.setUserKakaoImageUrl(user.properties?["profile_image"]);
+          _userProvider.setUserKakaoName(user.kakaoAccount?.name);
+          _userProvider.setUserKakaoGender(user.kakaoAccount?.gender);
+          _userPasswordCtrl.text = user.kakaoAccount!.email!;
+          print('로그인 성공 ${token.accessToken}');
+          _loginkakaoCheck();
         }
       }
     } else {
