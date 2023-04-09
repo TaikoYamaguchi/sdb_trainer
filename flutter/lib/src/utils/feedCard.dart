@@ -84,12 +84,12 @@ class FeedCardState extends State<FeedCard> {
 
   Map<String, String> UNIT_ID = kReleaseMode
       ? {
-          'ios': 'ca-app-pub-1921739371491657/3676809918',
-          'android': 'ca-app-pub-1921739371491657/2555299930',
+          'ios': 'ca-app-pub-1921739371491657/8545264261',
+          'android': 'ca-app-pub-1921739371491657/5405395374',
         }
       : {
-          'ios': 'ca-app-pub-3940256099942544/2934735716',
-          'android': 'ca-app-pub-3940256099942544/6300978111',
+          'ios': 'ca-app-pub-3940256099942544/2247696110',
+          'android': 'ca-app-pub-3940256099942544/2247696110',
         };
   BannerAd? banner;
 
@@ -102,9 +102,9 @@ class FeedCardState extends State<FeedCard> {
     _tapPosition = Offset(0.0, 0.0);
     _exEditCommentCtrl.text = widget.sdbdata.comment ?? "";
     super.initState();
-    /*
+
     myNative = NativeAd(
-      adUnitId: 'ca-app-pub-3940256099942544/2247696110',
+      adUnitId: UNIT_ID[Platform.isIOS ? 'ios' : 'android']!,
       factoryId: 'adFactoryExample',
       request: AdRequest(),
       listener: NativeAdListener(
@@ -133,7 +133,6 @@ class FeedCardState extends State<FeedCard> {
       ),
     );
     myNative!.load();
-    */
   }
 
   @override
@@ -175,7 +174,6 @@ class FeedCardState extends State<FeedCard> {
                   padding: const EdgeInsets.all(10.0),
                   child: Expanded(
                     child: Container(
-                      width: MediaQuery.of(context).size.width - 20,
                       height: MediaQuery.of(context).size.width - 20,
                       child: AdWidget(
                         ad: myNative!,
