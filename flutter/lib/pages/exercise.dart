@@ -67,8 +67,10 @@ class ExerciseState extends State<Exercise> {
   var keySearch = GlobalKey();
   var keySelect = GlobalKey();
   var _menuList;
-  final String iOSTestId = 'ca-app-pub-3940256099942544/2934735716';
-  final String androidTestId = 'ca-app-pub-3940256099942544/6300978111';
+
+  NativeAd? myNative;
+
+
   Map<String, String> UNIT_ID = kReleaseMode
       ? {
           'ios': 'ca-app-pub-1921739371491657/3676809918',
@@ -113,7 +115,37 @@ class ExerciseState extends State<Exercise> {
     ///FUNÇÃO QUE EXIBE O TUTORIAL.
 
     super.initState();
-
+    myNative = NativeAd(
+      adUnitId: 'ca-app-pub-3940256099942544/2247696110',
+      factoryId: 'adFactoryExample',
+      request: AdRequest(),
+      listener: NativeAdListener(
+        // Called when an ad is successfully received.
+        onAdLoaded: (Ad ad) {
+          var _add = ad as NativeAd;
+          print("**** AD ***** ${_add.responseInfo}");
+          setState(() {
+            myNative = _add;
+          });
+        },
+        // Called when an ad request failed.
+        onAdFailedToLoad: (Ad ad, LoadAdError error) {
+          // Dispose the ad here to free resources.
+          //ad.dispose();
+          print('Ad load failed (code=${error.code} message=${error.message})');
+        },
+        // Called when an ad opens an overlay that covers the screen.
+        onAdOpened: (Ad ad) => print('Ad opened.'),
+        // Called when an ad removes an overlay that covers the screen.
+        onAdClosed: (Ad ad) => print('Ad closed.'),
+        // Called when an impression occurs on the ad.
+        onAdImpression: (Ad ad) => print('Ad impression.'),
+        // Called when a click is recorded for a NativeAd.
+        onAdClicked: (Ad ad) => print('Ad clicked.'),
+      ),
+    );
+    myNative!.load();
+    /*
     banner = BannerAd(
       size: AdSize.banner,
       adUnitId: UNIT_ID[Platform.isIOS ? 'ios' : 'android']!,
@@ -123,9 +155,12 @@ class ExerciseState extends State<Exercise> {
       ),
       request: AdRequest(),
     )..load();
+    */
+
   }
 
   PreferredSizeWidget _appbarWidget() {
+
     return PreferredSize(
         preferredSize: Size.fromHeight(40.0), // here the desired height
         child: AppBar(
@@ -502,6 +537,23 @@ class ExerciseState extends State<Exercise> {
               ),
             ),
           ),
+          Container(
+            alignment: Alignment.center,
+            child: AdWidget(
+              ad: myNative!,
+            ),
+            width: 500,
+            height: 500,
+          ),
+
+          /*
+          Container(
+            color: Theme.of(context).canvasColor,
+            height: 50.0,
+            child: AdWidget(
+              ad: banner!,
+            ),
+          )*/
         ],
       ),
     );

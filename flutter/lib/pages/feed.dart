@@ -197,7 +197,7 @@ class _FeedState extends State<Feed> {
                                 controller: _pageController,
                                 itemBuilder:
                                     (BuildContext _context, int index) {
-                                  if (index < _historydata.length) {
+                                  if (index < _historydata.length+ (_historydata.length/5).floor()) {
                                     return Center(
                                         child: FeedCard(
                                             sdbdata: _historydata[index - ((index+1)/5).floor()],
@@ -207,7 +207,7 @@ class _FeedState extends State<Feed> {
                                             openUserDetail: true));
                                   } else {
                                     _final_history_id =
-                                        _historydata[index - 1].id;
+                                        _historydata[index - ((index+1)/5).floor() - 1].id;
                                     return Padding(
                                       padding:
                                           EdgeInsets.symmetric(vertical: 16),
@@ -235,7 +235,7 @@ class _FeedState extends State<Feed> {
                                     ),
                                   );
                                 },
-                                itemCount: _historydata.length+1 + (_historydata.length/5).floor() ));
+                                itemCount: _historydata.length + 1 + (_historydata.length/5).floor() ));
                   },
                   onPageChanged: (page) {
                     setState(() {

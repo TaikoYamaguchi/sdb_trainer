@@ -80,6 +80,7 @@ class FeedCardState extends State<FeedCard> {
   bool _ad = false;
   int num_ad = 0;
   int ad_index = 0;
+  NativeAd? myNative;
 
   Map<String, String> UNIT_ID = kReleaseMode
       ? {
@@ -101,6 +102,36 @@ class FeedCardState extends State<FeedCard> {
     _tapPosition = Offset(0.0, 0.0);
     _exEditCommentCtrl.text = widget.sdbdata.comment ?? "";
     super.initState();
+    myNative = NativeAd(
+      adUnitId: 'ca-app-pub-3940256099942544/2247696110',
+      factoryId: 'adFactoryExample',
+      request: AdRequest(),
+      listener: NativeAdListener(
+        // Called when an ad is successfully received.
+        onAdLoaded: (Ad ad) {
+          var _add = ad as NativeAd;
+          print("**** AD ***** ${_add.responseInfo}");
+          setState(() {
+            myNative = _add;
+          });
+        },
+        // Called when an ad request failed.
+        onAdFailedToLoad: (Ad ad, LoadAdError error) {
+          // Dispose the ad here to free resources.
+          //ad.dispose();
+          print('Ad load failed (code=${error.code} message=${error.message})');
+        },
+        // Called when an ad opens an overlay that covers the screen.
+        onAdOpened: (Ad ad) => print('Ad opened.'),
+        // Called when an ad removes an overlay that covers the screen.
+        onAdClosed: (Ad ad) => print('Ad closed.'),
+        // Called when an impression occurs on the ad.
+        onAdImpression: (Ad ad) => print('Ad impression.'),
+        // Called when a click is recorded for a NativeAd.
+        onAdClicked: (Ad ad) => print('Ad clicked.'),
+      ),
+    );
+    myNative!.load();
   }
 
   @override
@@ -129,19 +160,29 @@ class FeedCardState extends State<FeedCard> {
 
     return widget.ad
         ? Container(
-      color: Theme.of(context).canvasColor,
-      height: 50.0,
-      child: AdWidget(
-        ad: BannerAd(
-          size: AdSize.banner,
-          adUnitId: UNIT_ID[Platform.isIOS ? 'ios' : 'android']!,
-          listener: BannerAdListener(
-            onAdFailedToLoad: (Ad ad, LoadAdError error) {},
-            onAdLoaded: (_) {},
+      alignment: Alignment.center,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
+        child: Card(
+          color: Theme.of(context).cardColor,
+          elevation: 0.5,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0)),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Expanded(
+              child: Container(
+                width: MediaQuery.of(context).size.width-20,
+                height: MediaQuery.of(context).size.width-20,
+                child: AdWidget(
+                  ad: myNative!,
+                ),
+              ),
+            ),
           ),
-          request: AdRequest(),
-        )..load(),
+        ),
       ),
+
     )
         :Container(
       width: MediaQuery.of(context).size.width,
