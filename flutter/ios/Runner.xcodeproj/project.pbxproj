@@ -16,7 +16,7 @@
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		D6750E4929E2FD270023E04F /* NativeAdFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6750E4829E2FD270023E04F /* NativeAdFactory.swift */; };
-		D6750E4C29E305270023E04F /* NativeAdView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6750E4B29E305270023E04F /* NativeAdView.xib */; };
+		D6750E4E29E311900023E04F /* NativeAdView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6750E4D29E311900023E04F /* NativeAdView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -54,7 +54,7 @@
 		CB73FF4904AD49EBF2C7CEF1 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		D6750E4829E2FD270023E04F /* NativeAdFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeAdFactory.swift; sourceTree = "<group>"; };
 		D6750E4A29E300110023E04F /* GADNativeAd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GADNativeAd.h; sourceTree = "<group>"; };
-		D6750E4B29E305270023E04F /* NativeAdView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NativeAdView.xib; path = ../../../../../../Desktop/NativeAdView.xib; sourceTree = "<group>"; };
+		D6750E4D29E311900023E04F /* NativeAdView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NativeAdView.xib; sourceTree = "<group>"; };
 		FDD8284C81394754C191E617 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -125,7 +125,7 @@
 				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
 				D6750E4829E2FD270023E04F /* NativeAdFactory.swift */,
-				D6750E4B29E305270023E04F /* NativeAdView.xib */,
+				D6750E4D29E311900023E04F /* NativeAdView.xib */,
 				D6750E4A29E300110023E04F /* GADNativeAd.h */,
 			);
 			path = Runner;
@@ -206,7 +206,7 @@
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				515525BC29308A3900844EF1 /* GoogleService-Info.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
-				D6750E4C29E305270023E04F /* NativeAdView.xib in Resources */,
+				D6750E4E29E311900023E04F /* NativeAdView.xib in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
