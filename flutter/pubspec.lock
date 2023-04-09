@@ -864,6 +864,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  native_ads_flutter:
+    dependency: "direct main"
+    description:
+      name: native_ads_flutter
+      sha256: "0de9f6a25ca1e825c55ffa2d8fb24f311b9a9bf5fcee1509a6cd1f3e6ef7b5cd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.7"
   nested:
     dependency: transitive
     description:

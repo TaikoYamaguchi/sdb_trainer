@@ -414,6 +414,7 @@ Widget _feedCardList(context) {
                                       .historydataUserEmail.sdbdatas[index],
                                   index: index,
                                   feedListCtrl: 0,
+                                  ad: false,
                                   openUserDetail: false)
                               : Container());
                     } else {

@@ -244,6 +244,7 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                   feedListCtrl: 0,
                   openUserDetail: true,
                   isExEdit: true,
+                  ad: false,
                   key: globalKey),
               SizedBox(height: 8.0),
             ]),

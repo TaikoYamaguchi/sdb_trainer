@@ -1,4 +1,9 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:native_ads_flutter/native_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/feed_friend_edit.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
@@ -31,6 +36,18 @@ class _FeedState extends State<Feed> {
   final _isPageController = PageController(initialPage: 4242, keepPage: true);
 
   final binding = WidgetsFlutterBinding.ensureInitialized();
+  Map<String, String> UNIT_ID = kReleaseMode
+      ? {
+    'ios': 'ca-app-pub-1921739371491657/3676809918',
+    'android': 'ca-app-pub-1921739371491657/2555299930',
+  }
+      : {
+    'ios': 'ca-app-pub-3940256099942544/2934735716',
+    'android': 'ca-app-pub-3940256099942544/6300978111',
+  };
+  BannerAd? banner;
+  final _controller = NativeAdmobController();
+
   @override
   void initState() {
     super.initState();
@@ -43,6 +60,15 @@ class _FeedState extends State<Feed> {
         }
       });
     });
+    banner = BannerAd(
+      size: AdSize.banner,
+      adUnitId: UNIT_ID[Platform.isIOS ? 'ios' : 'android']!,
+      listener: BannerAdListener(
+        onAdFailedToLoad: (Ad ad, LoadAdError error) {},
+        onAdLoaded: (_) {},
+      ),
+      request: AdRequest(),
+    )..load();
   }
 
   Future _fetchHistoryPage(context) async {
@@ -174,9 +200,10 @@ class _FeedState extends State<Feed> {
                                   if (index < _historydata.length) {
                                     return Center(
                                         child: FeedCard(
-                                            sdbdata: _historydata[index],
-                                            index: index,
+                                            sdbdata: _historydata[index - ((index+1)/5).floor()],
+                                            index: index - ((index+1)/5).floor(),
                                             feedListCtrl: _feedListCtrl,
+                                            ad: (index+1)%5 == 0 ? true : false,
                                             openUserDetail: true));
                                   } else {
                                     _final_history_id =
@@ -208,7 +235,7 @@ class _FeedState extends State<Feed> {
                                     ),
                                   );
                                 },
-                                itemCount: _historydata.length + 1));
+                                itemCount: _historydata.length+1 + (_historydata.length/5).floor() ));
                   },
                   onPageChanged: (page) {
                     setState(() {

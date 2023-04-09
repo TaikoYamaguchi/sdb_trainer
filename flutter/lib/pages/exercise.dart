@@ -502,13 +502,6 @@ class ExerciseState extends State<Exercise> {
               ),
             ),
           ),
-          Container(
-            color: Colors.red,
-            height: 50.0,
-            child: AdWidget(
-              ad: banner!,
-            ),
-          )
         ],
       ),
     );

@@ -1,8 +1,10 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/feedEdit.dart';
 import 'package:sdb_trainer/pages/friendProfile.dart';
@@ -35,12 +37,14 @@ class FeedCard extends StatefulWidget {
   int feedListCtrl;
   bool openUserDetail;
   bool isExEdit;
+  bool ad;
   FeedCard(
       {Key? key,
       required this.sdbdata,
       required this.index,
       required this.feedListCtrl,
       required this.openUserDetail,
+      required this.ad,
       this.isExEdit = false})
       : super(key: key);
 
@@ -73,6 +77,20 @@ class FeedCardState extends State<FeedCard> {
     "feedVisible": false
   };
   bool _focus = false;
+  bool _ad = false;
+  int num_ad = 0;
+  int ad_index = 0;
+
+  Map<String, String> UNIT_ID = kReleaseMode
+      ? {
+    'ios': 'ca-app-pub-1921739371491657/3676809918',
+    'android': 'ca-app-pub-1921739371491657/2555299930',
+  }
+      : {
+    'ios': 'ca-app-pub-3940256099942544/2934735716',
+    'android': 'ca-app-pub-3940256099942544/6300978111',
+  };
+  BannerAd? banner;
 
   late var _photoInfo = {"feedList": widget.feedListCtrl, "feedVisible": true};
 
@@ -91,6 +109,9 @@ class FeedCardState extends State<FeedCard> {
   }
 
   Widget _feedCard(SDBdata, index) {
+    //(index+1)%5 == 0 ? _ad = true : _ad = false;
+    //num_ad = ((index+1)/5).floor();
+    //ad_index = index-num_ad;
     _tempImgStrage = Provider.of<TempImgStorage>(context, listen: false);
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _historyProvider = Provider.of<HistorydataProvider>(context, listen: false);
@@ -106,7 +127,23 @@ class FeedCardState extends State<FeedCard> {
         .where((user) => user.email == SDBdata.user_email)
         .toList()[0];
 
-    return Container(
+    return widget.ad
+        ? Container(
+      color: Theme.of(context).canvasColor,
+      height: 50.0,
+      child: AdWidget(
+        ad: BannerAd(
+          size: AdSize.banner,
+          adUnitId: UNIT_ID[Platform.isIOS ? 'ios' : 'android']!,
+          listener: BannerAdListener(
+            onAdFailedToLoad: (Ad ad, LoadAdError error) {},
+            onAdLoaded: (_) {},
+          ),
+          request: AdRequest(),
+        )..load(),
+      ),
+    )
+        :Container(
       width: MediaQuery.of(context).size.width,
       child: Center(
         child: Padding(

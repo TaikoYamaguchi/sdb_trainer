@@ -99,6 +99,7 @@ class _FeedEditState extends State<FeedEdit> {
                 feedListCtrl: 0,
                 openUserDetail: true,
                 isExEdit: true,
+                ad:false,
                 key: globalKey),
           ),
         )));
