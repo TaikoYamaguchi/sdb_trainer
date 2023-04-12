@@ -562,11 +562,9 @@ class LoginPageState extends State<LoginPage> {
       _loginState.change(true);
       initialProviderGet(context, storageToken);
       _userProvider.getdata(storageToken).then((value) async {
-        print(value);
         if (value == false) {
           await storage.delete(key: "sdb_email");
           await storage.delete(key: "sdb_token");
-          print("uesssse");
           _loginState.change(false);
           showToast("로그인이 만료되었어요");
         } else {
