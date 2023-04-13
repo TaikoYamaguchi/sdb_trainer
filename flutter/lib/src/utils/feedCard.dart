@@ -172,12 +172,10 @@ class FeedCardState extends State<FeedCard> {
                     borderRadius: BorderRadius.circular(15.0)),
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: Expanded(
-                    child: Container(
-                      height: MediaQuery.of(context).size.width - 20,
-                      child: AdWidget(
-                        ad: myNative!,
-                      ),
+                  child: Container(
+                    height: MediaQuery.of(context).size.width - 20,
+                    child: AdWidget(
+                      ad: myNative!,
                     ),
                   ),
                 ),
