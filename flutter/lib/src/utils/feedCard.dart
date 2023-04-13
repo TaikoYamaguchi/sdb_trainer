@@ -85,12 +85,12 @@ class FeedCardState extends State<FeedCard> {
 
   Map<String, String> UNIT_ID = kReleaseMode
       ? {
-          'ios': 'ca-app-pub-1921739371491657/8545264261',
-          'android': 'ca-app-pub-1921739371491657/5405395374',
+          'ios': 'ca-app-pub-1921739371491657/3676809918',
+          'android': 'ca-app-pub-1921739371491657/2555299930',
         }
       : {
-          'ios': 'ca-app-pub-3940256099942544/2247696110',
-          'android': 'ca-app-pub-3940256099942544/2247696110',
+          'ios': 'ca-app-pub-3940256099942544/2934735716',
+          'android': 'ca-app-pub-3940256099942544/6300978111',
         };
   BannerAd? banner;
 
@@ -103,7 +103,7 @@ class FeedCardState extends State<FeedCard> {
     _tapPosition = Offset(0.0, 0.0);
     _exEditCommentCtrl.text = widget.sdbdata.comment ?? "";
     super.initState();
-
+    /*
     myNative = NativeAd(
       adUnitId: UNIT_ID[Platform.isIOS ? 'ios' : 'android']!,
       factoryId: 'adFactoryExample',
@@ -124,16 +124,10 @@ class FeedCardState extends State<FeedCard> {
           print('Ad load failed (code=${error.code} message=${error.message})');
         },
         // Called when an ad opens an overlay that covers the screen.
-        onAdOpened: (Ad ad) => print('Ad opened.'),
-        // Called when an ad removes an overlay that covers the screen.
-        onAdClosed: (Ad ad) => print('Ad closed.'),
-        // Called when an impression occurs on the ad.
-        onAdImpression: (Ad ad) => print('Ad impression.'),
-        // Called when a click is recorded for a NativeAd.
-        onAdClicked: (Ad ad) => print('Ad clicked.'),
       ),
     );
     myNative!.load();
+    */
   }
 
   @override
@@ -177,9 +171,18 @@ class FeedCardState extends State<FeedCard> {
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Container(
-                    height: MediaQuery.of(context).size.width - 20,
+                    color: Theme.of(context).canvasColor,
+                    height: 50.0,
                     child: AdWidget(
-                      ad: myNative!,
+                      ad: BannerAd(
+                        size: AdSize.banner,
+                        adUnitId: UNIT_ID[Platform.isIOS ? 'ios' : 'android']!,
+                        listener: BannerAdListener(
+                          onAdFailedToLoad: (Ad ad, LoadAdError error) {},
+                          onAdLoaded: (_) {},
+                        ),
+                        request: AdRequest(),
+                      )..load(),
                     ),
                   ),
                 ),

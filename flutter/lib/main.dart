@@ -42,7 +42,7 @@ void main() async {
     // 특정 페이지로 가고 싶게한다면 추가 설정이 필요하다
     print(message);
   });
-  MobileAds.instance.initialize();
+  //MobileAds.instance.initialize();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
