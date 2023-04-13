@@ -16,6 +16,7 @@ async def comment_create(
     comment: CommentCreate,
     db=Depends(get_db),
 ):
+    print(comment.history_id)
     return create_comment(db, comment, request.headers["x-forwarded-for"])
 
 @r.get("/comments", response_model=t.List[CommentOut], response_model_exclude_none=True)

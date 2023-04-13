@@ -77,6 +77,7 @@ class FeedCardState extends State<FeedCard> {
     "feedVisible": false
   };
   bool _focus = false;
+  final _focusNode = FocusNode();
   bool _ad = false;
   int num_ad = 0;
   int ad_index = 0;
@@ -158,6 +159,9 @@ class FeedCardState extends State<FeedCard> {
     User user = _userProvider.userFriendsAll.userdatas
         .where((user) => user.email == SDBdata.user_email)
         .toList()[0];
+
+    print("============================");
+    print(widget.ad);
 
     return widget.ad
         ? Container(
@@ -1190,19 +1194,22 @@ class FeedCardState extends State<FeedCard> {
                     style: TextStyle(color: Colors.grey))))
         : Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Flexible(
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        Transition(
-                            child: FriendProfile(user: user),
-                            transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-                  },
-                  child: Row(
-                    children: [
-                      user.image == ""
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            Transition(
+                                child: FriendProfile(user: user),
+                                transitionEffect:
+                                    TransitionEffect.RIGHT_TO_LEFT));
+                      },
+                      child: user.image == ""
                           ? Icon(
                               Icons.account_circle,
                               color: Colors.grey,
@@ -1223,35 +1230,61 @@ class FeedCardState extends State<FeedCard> {
                                     )),
                               ),
                             ),
-                      Flexible(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 4.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(Comment.writer_nickname,
-                                  textScaleFactor: 1.0,
-                                  style: TextStyle(color: Colors.grey)),
-                              Text(Comment.content,
-                                  textScaleFactor: 1.1,
-                                  style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorLight)),
-                            ],
-                          ),
+                    ),
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 4.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(Comment.writer_nickname,
+                                textScaleFactor: 1.0,
+                                style: TextStyle(color: Colors.grey)),
+                            Text(Comment.content,
+                                textScaleFactor: 1.1,
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).primaryColorLight)),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _commentInputCtrl.clear();
+                                  _focus = false;
+                                  _focusNode.unfocus();
+                                });
+                                setState(() {
+                                  _commentInputCtrl.text =
+                                      "@" + Comment.writer_nickname + "  ";
+                                  _focus = true;
+                                  _focusNode.requestFocus();
+                                });
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 0.0, vertical: 6.0),
+                                child: Text("답글 달기",
+                                    textScaleFactor: 0.9,
+                                    style: TextStyle(color: Colors.grey)),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               widget.isExEdit
                   ? _exercise_Done_appbar_Button()
                   : GestureDetector(
-                      child: Icon(
-                        Icons.more_vert,
-                        color: Colors.grey,
-                        size: 18.0,
+                      child: Container(
+                        height: 38,
+                        width: 12,
+                        child: Icon(
+                          Icons.more_vert,
+                          color: Colors.grey,
+                          size: 18.0,
+                        ),
                       ),
                       onTapDown: _storePosition,
                       onTap: () {
@@ -1464,6 +1497,7 @@ class FeedCardState extends State<FeedCard> {
   }
 
   void _showCommentBottomSheet(SDBdata) {
+    String _selectedUser;
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -1774,6 +1808,8 @@ class FeedCardState extends State<FeedCard> {
                   setState(() {});
                 },
                 child: TextFormField(
+                  maxLines: null,
+                  focusNode: _focusNode,
                   keyboardType: TextInputType.multiline,
                   controller: _commentInputCtrl,
                   style: TextStyle(
@@ -2034,12 +2070,16 @@ class FeedCardState extends State<FeedCard> {
   @override
   void dispose() {
     print('dispose');
+    _focusNode.dispose();
+    _commentInputCtrl.dispose();
     super.dispose();
   }
 
   @override
   void deactivate() {
     print('deactivate');
+    _focusNode.dispose();
+    _commentInputCtrl.dispose();
     super.deactivate();
   }
 }

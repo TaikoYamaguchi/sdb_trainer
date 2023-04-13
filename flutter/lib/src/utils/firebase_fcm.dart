@@ -86,6 +86,8 @@ void fcmSetting() async {
         if (stored_fcm_token == firebaseToken) {
           print("fcm_token 일치");
           null;
+          UserFCMTokenEdit(fcmToken: firebaseToken).patchUserFCMToken();
+          await storage.write(key: "sdb_fcm_token", value: firebaseToken);
         } else {
           UserFCMTokenEdit(fcmToken: firebaseToken).patchUserFCMToken();
           await storage.write(key: "sdb_fcm_token", value: firebaseToken);

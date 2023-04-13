@@ -209,8 +209,6 @@ class CommentOut(CommentBase):
 
 class CommentDelete(BaseModel):
     id:int
-    class Config:
-        orm_mode = True
 
 class ManageLikeComment(BaseModel):
     comment_id:int

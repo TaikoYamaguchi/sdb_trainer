@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ProfileNickname extends StatefulWidget {
   @override
@@ -128,6 +130,9 @@ class _ProfileNicknameState extends State<ProfileNickname> {
             _isNickNameused = true;
           });
       },
+      inputFormatters: [
+        FilteringTextInputFormatter.deny(RegExp('[ ]')), // 공백 필터링
+      ],
       controller: _userNicknameCtrl,
       style: TextStyle(color: Theme.of(context).primaryColorLight),
       autofocus: true,
@@ -183,6 +188,9 @@ class _ProfileNicknameState extends State<ProfileNickname> {
   }
 
   void _editCheck() async {
+    final storage = FlutterSecureStorage();
+    String? storageEmail = await storage.read(key: "sdb_email");
+    String? storageToken = await storage.read(key: "sdb_token");
     if (_userNicknameCtrl.text != "" && _isNickNameused == false) {
       UserEdit(
               userEmail: _userProvider.userdata.email,
@@ -198,7 +206,7 @@ class _ProfileNicknameState extends State<ProfileNickname> {
           .then((data) => data["username"] != null
               ? {
                   showToast("수정 완료"),
-                  _userProvider.getdata(),
+                  _userProvider.getdata(storageToken),
                   _hisProvider.getdata(),
                   _hisProvider.getHistorydataAll(),
                   _hisProvider.getCommentAll(),

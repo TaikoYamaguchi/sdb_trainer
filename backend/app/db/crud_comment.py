@@ -8,6 +8,17 @@ from sqlalchemy.orm import Session
 import sqlalchemy
 import typing as t
 import asyncio
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import messaging
+import os 
+
+# Firebase Admin SDK 초기화
+print(os.getcwd())
+cred = credentials.Certificate("./app/core/serviceAccountKey.json")
+firebase_admin.initialize_app(cred)
+
+
 
 from . import models, schemas
 
@@ -39,13 +50,14 @@ def create_comment(db: Session, comment: schemas.CommentCreate, ip):
     db.add(db_comment)
     db.commit()
     db.refresh(db_comment)
-    if (comment.history_id != 0):
 
-        db_history = db.query(models.History).filter(models.History.id == comment.history_id).first()
-        setattr(db_history, "comment_length", db_history.comment_length+1)
-        db.add(db_history)
-        db.commit()
-        db.refresh(db_history)
+    db_history = db.query(models.History).filter(models.History.id == comment.history_id).first()
+    setattr(db_history, "comment_length", db_history.comment_length+1)
+    db.add(db_history)
+    db.commit()
+    db.refresh(db_history)
+
+    history_user = db.query(models.User).filter(models.User.email==db_history.user_email).first()
 
     if (comment.writer_email != "Anonymous"):
         db_user = get_user_by_email(db, comment.writer_email)
@@ -53,6 +65,26 @@ def create_comment(db: Session, comment: schemas.CommentCreate, ip):
         db.add(db_user)
         db.commit()
         db.refresh((db_user))
+    if (comment.writer_email != history_user.email):
+        if (history_user.fcm_token!="" and history_user.fcm_token!=None):
+            print("fcm_token이 있어요")
+
+            message = messaging.Message(
+                notification=messaging.Notification(
+                    title=comment.writer_nickname+
+                    "님이 댓글을 달았어요",
+                    body=comment.content
+                ),
+                token=history_user.fcm_token
+            )
+
+            response = messaging.send(message)
+            print(response)
+        else:
+            print("fcm_token이 없어요")
+    
+
+
     return db_comment
 
 def delete_auth_comment(db: Session, comment_id: int, user:schemas.User):

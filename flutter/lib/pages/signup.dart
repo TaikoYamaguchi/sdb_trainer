@@ -698,6 +698,9 @@ class _SignUpPageState extends State<SignUpPage> {
             _isNickNameused = true;
           });
       },
+      inputFormatters: [
+        FilteringTextInputFormatter.deny(RegExp('[ ]')), // 공백 필터링
+      ],
       controller: _userNicknameCtrl,
       style: TextStyle(
         color: Theme.of(context).primaryColorLight,
