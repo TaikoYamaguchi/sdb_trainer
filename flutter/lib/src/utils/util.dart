@@ -10,6 +10,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'dart:io';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 const USER_NICK_NAME = "USER_NICK_NAME";
 const STATUS_LOGIN = 'STATUS_LOGIN';
@@ -310,4 +311,30 @@ Map<String, dynamic> _readIosDeviceInfo(IosDeviceInfo info) {
 Future<Map<String, dynamic>> getAppInfo() async {
   PackageInfo info = await PackageInfo.fromPlatform();
   return {"Supero 버전": info.version};
+}
+
+Future<bool> requestCameraPermission(BuildContext context) async {
+  // 권한 요청
+  PermissionStatus status = await Permission.notification.request();
+  // 결과 확인
+  if (!status.isGranted) {
+    // 허용이 안된 경우
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          // 권한없음을 다이얼로그로 알림
+          return AlertDialog(
+            content: const Text("권한 설정을 확인해주세요."),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    openAppSettings(); // 앱 설정으로 이동
+                  },
+                  child: const Text('설정하기')),
+            ],
+          );
+        });
+    return false;
+  }
+  return true;
 }

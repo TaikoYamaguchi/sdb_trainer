@@ -154,9 +154,6 @@ class FeedCardState extends State<FeedCard> {
         .where((user) => user.email == SDBdata.user_email)
         .toList()[0];
 
-    print("============================");
-    print(widget.ad);
-
     return widget.ad
         ? Container(
             alignment: Alignment.center,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/interview.dart';
+import 'package:sdb_trainer/pages/userNotification.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
@@ -205,6 +206,31 @@ class _ProfileState extends State<Profile> {
                               color: Theme.of(context).primaryColorDark),
                         ]));
               })),
+          ElevatedButton(
+              onPressed: () {
+                _PopProvider.profilestackup();
+                Navigator.push(
+                    context,
+                    Transition(
+                        child: UserNotification(),
+                        transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+              },
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(Theme.of(context).cardColor)),
+              child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("알림 설정하기",
+                            textScaleFactor: 1.1,
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight)),
+                        Icon(Icons.chevron_right,
+                            color: Theme.of(context).primaryColorDark),
+                      ]))),
           ElevatedButton(
               onPressed: () {
                 _PopProvider.profilestackup();

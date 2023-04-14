@@ -12,6 +12,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import messaging
 import os 
+import re
 
 # Firebase Admin SDK 초기화
 print(os.getcwd())
@@ -83,6 +84,30 @@ def create_comment(db: Session, comment: schemas.CommentCreate, ip):
         else:
             print("fcm_token이 없어요")
     
+    regex_pattern = r"@(\w+)"
+    nickname = re.findall(regex_pattern, comment.content)
+    if(nickname!=[]):
+        print("ssssssssss")
+        print(nickname)
+        comment_reply_user = db.query(models.User).filter(models.User.nickname==nickname[0]).first()
+        # if (comment.writer_email != history_user.email):
+        if (comment_reply_user.fcm_token!="" and comment_reply_user.fcm_token!=None):
+            print("fcm_token이 있어요")
+
+            message = messaging.Message(
+                notification=messaging.Notification(
+                    title=comment.writer_nickname+
+                    "님이 답글을 달았어요",
+                    body=comment.content
+                ),
+                token=comment_reply_user.fcm_token
+            )
+
+            response = messaging.send(message)
+            print(response)
+        else:
+            print("fcm_token이 없어요")
+        print(comment_reply_user)
 
 
     return db_comment

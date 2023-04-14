@@ -70,6 +70,12 @@ void fcmSetting() async {
   // 사용자가 푸시 알림을 허용했는지 확인 (optional)
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
+  final isNotificationEnabled = await prefs.getBool('commentNotification');
+  if (isNotificationEnabled == false) {
+    FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+        alert: false, badge: false, sound: false);
+  }
+
   final isFCMEnabled = await prefs.getBool('FCM_ENABLED');
   print("this is token");
   print("fcm enabled: $isFCMEnabled");
