@@ -74,36 +74,38 @@ void fcmSetting() async {
   if (isNotificationEnabled == false) {
     FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
         alert: false, badge: false, sound: false);
-  }
+    UserFCMTokenEdit(fcmToken: "").patchUserFCMToken();
+    print("fcm token deleted");
+  } else {
+    final isFCMEnabled = await prefs.getBool('FCM_ENABLED');
+    print("this is token");
+    print("fcm enabled: $isFCMEnabled");
+    if (isFCMEnabled == null || isFCMEnabled) {
+      // firebase token 발급
+      String? firebaseToken = await FirebaseMessaging.instance.getToken();
+      final storage = new FlutterSecureStorage();
+      print("firebaseToken: $firebaseToken");
 
-  final isFCMEnabled = await prefs.getBool('FCM_ENABLED');
-  print("this is token");
-  print("fcm enabled: $isFCMEnabled");
-  if (isFCMEnabled == null || isFCMEnabled) {
-    // firebase token 발급
-    String? firebaseToken = await FirebaseMessaging.instance.getToken();
-    final storage = new FlutterSecureStorage();
-    print("firebaseToken: $firebaseToken");
-
-    if (firebaseToken != null) {
-      try {
-        String? stored_fcm_token = await storage.read(key: "sdb_fcm_token");
-        print("stored_fcm_token: $stored_fcm_token");
-        if (stored_fcm_token == firebaseToken) {
-          print("fcm_token 일치");
-          null;
-          UserFCMTokenEdit(fcmToken: firebaseToken).patchUserFCMToken();
-          await storage.write(key: "sdb_fcm_token", value: firebaseToken);
-        } else {
+      if (firebaseToken != null) {
+        try {
+          String? stored_fcm_token = await storage.read(key: "sdb_fcm_token");
+          print("stored_fcm_token: $stored_fcm_token");
+          if (stored_fcm_token == firebaseToken) {
+            print("fcm_token 일치");
+            null;
+            UserFCMTokenEdit(fcmToken: firebaseToken).patchUserFCMToken();
+            await storage.write(key: "sdb_fcm_token", value: firebaseToken);
+          } else {
+            UserFCMTokenEdit(fcmToken: firebaseToken).patchUserFCMToken();
+            await storage.write(key: "sdb_fcm_token", value: firebaseToken);
+          }
+        } catch (e) {
           UserFCMTokenEdit(fcmToken: firebaseToken).patchUserFCMToken();
           await storage.write(key: "sdb_fcm_token", value: firebaseToken);
         }
-      } catch (e) {
-        UserFCMTokenEdit(fcmToken: firebaseToken).patchUserFCMToken();
-        await storage.write(key: "sdb_fcm_token", value: firebaseToken);
-      }
 
-      // 서버로 firebase token 갱신
+        // 서버로 firebase token 갱신
+      }
     }
   }
 }

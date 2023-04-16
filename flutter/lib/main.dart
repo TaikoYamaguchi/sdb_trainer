@@ -29,10 +29,16 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   print("Handling a background message: ${message.messageId}");
+}
+
+Future<void> _firebaseMessagingBackgroundNullHandler(
+    RemoteMessage message) async {
+  return null;
 }
 
 void main() async {
@@ -44,8 +50,14 @@ void main() async {
   });
   //MobileAds.instance.initialize();
 
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  final isNotificationEnabled = await prefs.getBool('commentNotification');
+  if (isNotificationEnabled != false) {
+    print("background message enable");
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  }
+
   initLocalNotificationPlugin();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (BuildContext context) => BodyStater()),

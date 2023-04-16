@@ -1279,7 +1279,7 @@ class FeedCardState extends State<FeedCard> {
                   : GestureDetector(
                       child: Container(
                         height: 38,
-                        width: 12,
+                        width: 24,
                         child: Icon(
                           Icons.more_vert,
                           color: Colors.grey,

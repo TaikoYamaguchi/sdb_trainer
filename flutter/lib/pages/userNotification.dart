@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/src/utils/alerts.dart';
+import 'package:sdb_trainer/src/utils/firebase_fcm.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/userProfileNickname.dart';
@@ -149,6 +150,7 @@ class _UserNotificationState extends State<UserNotification> {
                                     openAppSettings();
                                   }
                                   provider.setAlarmPrefs(value);
+                                  fcmSetting();
                                 }),
                           )
                         ]));

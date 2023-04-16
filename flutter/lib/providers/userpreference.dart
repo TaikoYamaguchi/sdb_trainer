@@ -56,8 +56,6 @@ class PrefsProvider extends ChangeNotifier {
 
   getAlarmPrefs() async {
     _prefs = await SharedPreferences.getInstance();
-    print("sssssssssssss");
-    print(_prefs.getBool('commentNotification'));
     await _prefs.getBool('commentNotification') == null
         ? [
             await _prefs.setBool('commentNotification', true),
@@ -66,14 +64,10 @@ class PrefsProvider extends ChangeNotifier {
         : [
             _commentNotification = _prefs.getBool('commentNotification'),
           ];
-    print("ssssssssssssss--");
-    print(_commentNotification!);
     if (_commentNotification!) {
-      print("trueeeee");
       FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
           alert: true, badge: true, sound: true);
     } else {
-      print("false");
       FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
           alert: false, badge: false, sound: false);
     }
