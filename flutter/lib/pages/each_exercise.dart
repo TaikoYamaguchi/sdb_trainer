@@ -1723,7 +1723,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                 content: Padding(
                                                   padding: EdgeInsets.all(8.0),
                                                   child: Text(
-                                                    '맨몸 카테고리의 운동은 기본 무게가 체중으로 세팅되고,\n무게를 누르면 체중에 추가/제거가 가능해요.',
+                                                    '맨몸 카테고리의 운동은 기본 무게가 체중으로 세팅되고,\n무게를 누르면 체중에 추가/제거가 가능해요. 피드에는 몸무게를 제외한 추가 중량만 기록되요',
                                                     style: TextStyle(
                                                         color: Theme.of(context)
                                                             .primaryColorLight),
@@ -3414,13 +3414,13 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
       0: Padding(
         child: Text("중량 추가",
             textScaleFactor: 1.3,
-            style: TextStyle(color: Theme.of(context).primaryColorLight)),
+            style: TextStyle(color: Theme.of(context).buttonColor)),
         padding: const EdgeInsets.all(5.0),
       ),
       1: Padding(
           child: Text("중량 제거",
               textScaleFactor: 1.3,
-              style: TextStyle(color: Theme.of(context).primaryColorLight)),
+              style: TextStyle(color: Theme.of(context).buttonColor)),
           padding: const EdgeInsets.all(5.0)),
     };
 

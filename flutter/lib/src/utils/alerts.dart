@@ -846,13 +846,19 @@ class _setWeightAlertState extends State<setWeightAlert> {
           0: Padding(
             child: Text("중량 추가",
                 textScaleFactor: 1.3,
-                style: TextStyle(color: Theme.of(context).primaryColorLight)),
+                style: TextStyle(
+                    color: provider.ispositive
+                        ? Theme.of(context).buttonColor
+                        : Theme.of(context).primaryColorLight)),
             padding: const EdgeInsets.all(5.0),
           ),
           1: Padding(
               child: Text("중량 제거",
                   textScaleFactor: 1.3,
-                  style: TextStyle(color: Theme.of(context).primaryColorLight)),
+                  style: TextStyle(
+                      color: provider.ispositive
+                          ? Theme.of(context).primaryColorLight
+                          : Theme.of(context).buttonColor)),
               padding: const EdgeInsets.all(5.0)),
         };
         return Container(
@@ -934,8 +940,8 @@ class _setWeightAlertState extends State<setWeightAlert> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('추가/제거할 중량을 입력해주세요',
-              textScaleFactor: 1.3,
+          Text('피드는 몸무게 제외 추가 중량이 기록되요',
+              textScaleFactor: 1.2,
               textAlign: TextAlign.center,
               style: TextStyle(color: Theme.of(context).primaryColorLight)),
           SizedBox(height: 12),

@@ -4,11 +4,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:sdb_trainer/src/model/historydata.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/static_exercise.dart';
 import 'package:sdb_trainer/providers/themeMode.dart';
+import 'package:sdb_trainer/src/utils/util.dart';
 
 class FriendHistory extends StatefulWidget {
   SDBdata sdbdata;
@@ -22,11 +24,12 @@ class _FriendHistoryState extends State<FriendHistory>
     with TickerProviderStateMixin {
   var _userProvider;
   var _themeProvider;
-  late FlutterGifController controller1;
+  var _hisProvider;
+  bool _isEdited = false;
+  final _scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
-    controller1 = FlutterGifController(vsync: this);
   }
 
   PreferredSizeWidget _appbarWidget() {
@@ -52,6 +55,41 @@ class _FriendHistoryState extends State<FriendHistory>
             textScaleFactor: 2.0,
             style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
+          actions: [
+            widget.sdbdata.user_email == _userProvider.userdata.email
+                ? GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        if (_isEdited == true) {
+                          HistoryExercisesEdit(
+                                  history_id: widget.sdbdata.id,
+                                  user_email: _userProvider.userdata.email,
+                                  exercises: widget.sdbdata.exercises)
+                              .patchHistoryExercises()
+                              .then((data) => data["user_email"] != null
+                                  ? {
+                                      _hisProvider.patchHistoryExdata(
+                                          widget.sdbdata.id,
+                                          widget.sdbdata.exercises)
+                                    }
+                                  : showToast("입력을 확인해주세요"));
+                        }
+                        _isEdited = !_isEdited;
+                      });
+                    },
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            right: 12.0, left: 8.0, bottom: 4.0, top: 8.0),
+                        child: Text(_isEdited == false ? "수정" : "완료",
+                            textScaleFactor: 1.8,
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor)),
+                      ),
+                    ),
+                  )
+                : Container()
+          ],
           backgroundColor: Theme.of(context).canvasColor,
         ));
   }
@@ -60,7 +98,7 @@ class _FriendHistoryState extends State<FriendHistory>
     bool btnDisabled = false;
     return GestureDetector(
       onPanUpdate: (details) {
-        if (details.delta.dx > 0 && btnDisabled == false) {
+        if (details.delta.dx > 20 && btnDisabled == false) {
           btnDisabled = true;
           Navigator.of(context).pop();
         }
@@ -80,28 +118,117 @@ class _FriendHistoryState extends State<FriendHistory>
 
   Widget _onechartExercisesWidget(exercises) {
     print(widget.sdbdata.id);
-    return ListView.separated(
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (BuildContext _context, int index) {
-          print(index);
-          return _onechartExerciseWidget(exercises, widget.sdbdata.id,
-              _userProvider.userdata, true, index);
-        },
-        separatorBuilder: (BuildContext _context, int index) {
-          return Container(
-            alignment: Alignment.center,
-            height: 0,
-            color: Color(0xFF212121),
-            child: Container(
-              alignment: Alignment.center,
-              height: 0,
-              color: Color(0xFF717171),
-            ),
-          );
-        },
-        shrinkWrap: true,
-        itemCount: exercises.length,
-        scrollDirection: Axis.vertical);
+
+    bool dragstart = false;
+    return Column(
+      children: [
+        ReorderableListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            scrollController: _scrollController,
+            buildDefaultDragHandles: false,
+            onReorder: (int oldIndex, int newIndex) {
+              if (_isEdited) {
+                setState(() {
+                  if (oldIndex < newIndex) {
+                    newIndex -= 1;
+                  }
+                  final item = widget.sdbdata.exercises.removeAt(oldIndex);
+                  widget.sdbdata.exercises.insert(newIndex, item);
+                });
+              }
+            },
+            onReorderStart: (index) {
+              dragstart = true;
+            },
+            onReorderEnd: (index) {
+              dragstart = false;
+            },
+            itemBuilder: (BuildContext _context, int index) {
+              print(index);
+              return Row(key: Key("$index"), children: [
+                _isEdited == true
+                    ? ReorderableDragStartListener(
+                        index: index,
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(12, 4, 12, 12),
+                          child: Container(
+                            height: 100,
+                            width: 6.0,
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColorDark,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0))),
+                          ),
+                        ),
+                      )
+                    : Container(),
+                Expanded(
+                  child: _onechartExerciseWidget(exercises, widget.sdbdata.id,
+                      _userProvider.userdata, true, index),
+                )
+              ]);
+            },
+            shrinkWrap: true,
+            itemCount: exercises.length,
+            scrollDirection: Axis.vertical),
+        _isEdited
+            ? GestureDetector(
+                onTap: () {},
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Container(
+                      height: 80,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15.0)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 48,
+                                height: 48,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Theme.of(context).primaryColor),
+                                child: Icon(
+                                  Icons.add,
+                                  size: 28.0,
+                                  color: Theme.of(context).buttonColor,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0, vertical: 4.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("이곳을 눌러보세요",
+                                        textScaleFactor: 1.5,
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight,
+                                        )),
+                                    Text("운동을 추가 할 수 있어요",
+                                        textScaleFactor: 1.1,
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                        )),
+                                  ],
+                                ),
+                              )
+                            ]),
+                      ),
+                    ),
+                  ),
+                ))
+            : Container()
+      ],
+    );
   }
 
   Widget _onechartExerciseWidget(
@@ -124,6 +251,7 @@ class _FriendHistoryState extends State<FriendHistory>
       padding: const EdgeInsets.all(8.0),
       child: Container(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -159,26 +287,28 @@ class _FriendHistoryState extends State<FriendHistory>
                   ),
                 ),
                 widget.sdbdata.user_email == userdata.email
-                    ? GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              Transition(
-                                  child: StaticsExerciseDetails(
-                                      exercise: exuniq[index],
-                                      index: index,
-                                      origin_exercises: exuniq,
-                                      history_id: history_id),
-                                  transitionEffect:
-                                      TransitionEffect.RIGHT_TO_LEFT));
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.settings,
-                            color: Theme.of(context).primaryColorDark,
-                          ),
-                        ))
+                    ? _isEdited
+                        ? GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  Transition(
+                                      child: StaticsExerciseDetails(
+                                          exercise: exuniq[index],
+                                          index: index,
+                                          origin_exercises: exuniq,
+                                          history_id: history_id),
+                                      transitionEffect:
+                                          TransitionEffect.RIGHT_TO_LEFT));
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Icon(
+                                Icons.settings,
+                                color: Theme.of(context).primaryColorDark,
+                              ),
+                            ))
+                        : Container()
                     : Container()
               ],
             ),
@@ -563,6 +693,7 @@ class _FriendHistoryState extends State<FriendHistory>
   Widget build(BuildContext context) {
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
     return Scaffold(
       appBar: _appbarWidget(),
       body: _friendHistoryWidget(),

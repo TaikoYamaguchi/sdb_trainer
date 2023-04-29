@@ -411,9 +411,11 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                   onPanUpdate: (details) {
                                     if (details.delta.dx > 0 &&
                                         btnDisabled == false) {
+                                      /*
                                       btnDisabled = true;
                                       Navigator.of(context).pop();
                                       print("Dragging in +X direction");
+          */
                                     }
                                   },
                                   child: Container(
