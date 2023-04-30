@@ -26,7 +26,6 @@ class _FriendHistoryState extends State<FriendHistory>
   var _themeProvider;
   var _hisProvider;
   bool _isEdited = false;
-  final _scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
@@ -117,14 +116,12 @@ class _FriendHistoryState extends State<FriendHistory>
   }
 
   Widget _onechartExercisesWidget(exercises) {
-    print(widget.sdbdata.id);
-
     bool dragstart = false;
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         ReorderableListView.builder(
             physics: const NeverScrollableScrollPhysics(),
-            scrollController: _scrollController,
             buildDefaultDragHandles: false,
             onReorder: (int oldIndex, int newIndex) {
               if (_isEdited) {
@@ -144,7 +141,6 @@ class _FriendHistoryState extends State<FriendHistory>
               dragstart = false;
             },
             itemBuilder: (BuildContext _context, int index) {
-              print(index);
               return Row(key: Key("$index"), children: [
                 _isEdited == true
                     ? ReorderableDragStartListener(
@@ -171,6 +167,7 @@ class _FriendHistoryState extends State<FriendHistory>
             shrinkWrap: true,
             itemCount: exercises.length,
             scrollDirection: Axis.vertical),
+        /*
         _isEdited
             ? GestureDetector(
                 onTap: () {},
@@ -227,6 +224,8 @@ class _FriendHistoryState extends State<FriendHistory>
                   ),
                 ))
             : Container()
+            
+            운동추가*/
       ],
     );
   }
@@ -345,6 +344,7 @@ class _FriendHistoryState extends State<FriendHistory>
   Widget _chartExerciseSetsWidget(sets, onerm, goal, userdata) {
     return Container(
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
               padding: EdgeInsets.all(5.0),
@@ -406,101 +406,113 @@ class _FriendHistoryState extends State<FriendHistory>
                 ],
               )),
           SizedBox(
-            child: ListView.separated(
-                itemBuilder: (BuildContext _context, int index) {
-                  return Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 80,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                width: 25,
-                                child: Text(
-                                  "${index + 1}",
-                                  textScaleFactor: 1.7,
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColorLight,
+            child: MediaQuery.removePadding(
+                context: context,
+                removeTop: true,
+                removeBottom: true,
+                child: Padding(
+                    padding: EdgeInsets.zero,
+                    child: ListView.separated(
+                        itemBuilder: (BuildContext _context, int index) {
+                          return Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 4.0, vertical: 2.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 80,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        width: 25,
+                                        child: Text(
+                                          "${index + 1}",
+                                          textScaleFactor: 1.7,
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  textAlign: TextAlign.center,
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          width: 70,
-                          child: Text(
-                            sets[index].weight.toStringAsFixed(1),
-                            textScaleFactor: 1.7,
-                            style: TextStyle(
-                              color: Theme.of(context).primaryColorLight,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        Container(
-                            width: 35,
-                            child: SvgPicture.asset("assets/svg/multiply.svg",
-                                color: Colors.grey,
-                                height:
-                                    14 * _themeProvider.userFontSize / 0.8)),
-                        Container(
-                          width: 40,
-                          child: Text(
-                            sets[index].reps.toString(),
-                            textScaleFactor: 1.7,
-                            style: TextStyle(
-                              color: Theme.of(context).primaryColorLight,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        Container(
-                            width: 70,
-                            child: (sets[index].reps != 1)
-                                ? Text(
-                                    "${(sets[index].weight * (1 + sets[index].reps / 30)).toStringAsFixed(1)}",
+                                Container(
+                                  width: 70,
+                                  child: Text(
+                                    sets[index].weight.toStringAsFixed(1),
                                     textScaleFactor: 1.7,
                                     style: TextStyle(
-                                        color: Theme.of(context)
-                                            .primaryColorLight),
+                                      color:
+                                          Theme.of(context).primaryColorLight,
+                                    ),
                                     textAlign: TextAlign.center,
-                                  )
-                                : Text(
-                                    "${sets[index].weight}",
+                                  ),
+                                ),
+                                Container(
+                                    width: 35,
+                                    child: SvgPicture.asset(
+                                        "assets/svg/multiply.svg",
+                                        color: Colors.grey,
+                                        height: 14 *
+                                            _themeProvider.userFontSize /
+                                            0.8)),
+                                Container(
+                                  width: 40,
+                                  child: Text(
+                                    sets[index].reps.toString(),
                                     textScaleFactor: 1.7,
                                     style: TextStyle(
-                                        color: Theme.of(context)
-                                            .primaryColorLight),
+                                      color:
+                                          Theme.of(context).primaryColorLight,
+                                    ),
                                     textAlign: TextAlign.center,
-                                  )),
-                      ],
-                    ),
-                  );
-                },
-                separatorBuilder: (BuildContext _context, int index) {
-                  return Container(
-                    alignment: Alignment.center,
-                    height: 0,
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 0,
-                      color: Color(0xFF717171),
-                    ),
-                  );
-                },
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: sets.length),
+                                  ),
+                                ),
+                                Container(
+                                    width: 70,
+                                    child: (sets[index].reps != 1)
+                                        ? Text(
+                                            "${(sets[index].weight * (1 + sets[index].reps / 30)).toStringAsFixed(1)}",
+                                            textScaleFactor: 1.7,
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColorLight),
+                                            textAlign: TextAlign.center,
+                                          )
+                                        : Text(
+                                            "${sets[index].weight}",
+                                            textScaleFactor: 1.7,
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColorLight),
+                                            textAlign: TextAlign.center,
+                                          )),
+                              ],
+                            ),
+                          );
+                        },
+                        separatorBuilder: (BuildContext _context, int index) {
+                          return Container(
+                            alignment: Alignment.center,
+                            height: 0,
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 0,
+                              color: Color(0xFF717171),
+                            ),
+                          );
+                        },
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: sets.length))),
           ),
-          SizedBox(height: 4),
+          SizedBox(height: 8),
           Container(
             child: Row(
               //mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -513,7 +525,7 @@ class _FriendHistoryState extends State<FriendHistory>
                     "1RM: " +
                         onerm.toStringAsFixed(1) +
                         "/${goal.toStringAsFixed(1)}${userdata.weight_unit}",
-                    textScaleFactor: 1.0,
+                    textScaleFactor: 1.2,
                     style: TextStyle(color: Color(0xFF717171)))
               ],
             ),
