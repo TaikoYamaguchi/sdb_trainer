@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/feedEdit.dart';
@@ -17,6 +18,7 @@ import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/repository/comment_repository.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/src/utils/imageFullViewer.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:stamp_image/stamp_image.dart';
 import 'package:transition/transition.dart';
 import 'package:like_button/like_button.dart';
@@ -648,6 +650,29 @@ class FeedCardState extends State<FeedCard> {
                   Transition(
                       child: FriendHistory(sdbdata: SDBdata),
                       transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+            }),
+        PopupMenuItem(
+            child: ListTile(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+                leading: Icon(Icons.share_rounded,
+                    color: Theme.of(context).primaryColorLight),
+                title: Text("공유",
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight))),
+            onTap: () async {
+              List<String> _imagelist = [];
+              final _cachemanager = DefaultCacheManager();
+              for (int i = 0; i < SDBdata.image.length; i++) {
+                final _file =
+                    await _cachemanager.getSingleFile(SDBdata.image[i]);
+                _imagelist.add(_file.path);
+              }
+              _photoInfo["feedList"] == widget.feedListCtrl &&
+                      _photoInfo["feedVisible"] == true &&
+                      SDBdata.image.length != 0
+                  ? Share.shareFiles(_imagelist, text: SDBdata.comment)
+                  : Share.share(SDBdata.comment);
             }),
         PopupMenuItem(
             child: ListTile(
