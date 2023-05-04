@@ -38,13 +38,13 @@ class _FeedState extends State<Feed> {
   final binding = WidgetsFlutterBinding.ensureInitialized();
   Map<String, String> UNIT_ID = kReleaseMode
       ? {
-    'ios': 'ca-app-pub-1921739371491657/3676809918',
-    'android': 'ca-app-pub-1921739371491657/2555299930',
-  }
+          'ios': 'ca-app-pub-1921739371491657/3676809918',
+          'android': 'ca-app-pub-1921739371491657/2555299930',
+        }
       : {
-    'ios': 'ca-app-pub-3940256099942544/2934735716',
-    'android': 'ca-app-pub-3940256099942544/6300978111',
-  };
+          'ios': 'ca-app-pub-3940256099942544/2934735716',
+          'android': 'ca-app-pub-3940256099942544/6300978111',
+        };
   BannerAd? banner;
   final _controller = NativeAdmobController();
 
@@ -197,17 +197,25 @@ class _FeedState extends State<Feed> {
                                 controller: _pageController,
                                 itemBuilder:
                                     (BuildContext _context, int index) {
-                                  if (index < _historydata.length+ (_historydata.length/5).floor()) {
+                                  if (index <
+                                      _historydata.length +
+                                          (_historydata.length / 3).floor()) {
                                     return Center(
                                         child: FeedCard(
-                                            sdbdata: _historydata[index - ((index+1)/5).floor()],
-                                            index: index - ((index+1)/5).floor(),
+                                            sdbdata: _historydata[index -
+                                                ((index + 1) / 3).floor()],
+                                            index: index -
+                                                ((index + 1) / 3).floor(),
                                             feedListCtrl: _feedListCtrl,
-                                            ad: (index+1)%5 == 0 ? true : false,
+                                            ad: (index + 1) % 3 == 0
+                                                ? true
+                                                : false,
                                             openUserDetail: true));
                                   } else {
-                                    _final_history_id =
-                                        _historydata[index - ((index+1)/5).floor() - 1].id;
+                                    _final_history_id = _historydata[index -
+                                            ((index + 1) / 3).floor() -
+                                            1]
+                                        .id;
                                     return Padding(
                                       padding:
                                           EdgeInsets.symmetric(vertical: 16),
@@ -235,7 +243,9 @@ class _FeedState extends State<Feed> {
                                     ),
                                   );
                                 },
-                                itemCount: _historydata.length + 1 + (_historydata.length/5).floor() ));
+                                itemCount: _historydata.length +
+                                    1 +
+                                    (_historydata.length / 3).floor()));
                   },
                   onPageChanged: (page) {
                     setState(() {
