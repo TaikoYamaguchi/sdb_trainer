@@ -196,6 +196,29 @@ class FeedCardState extends State<FeedCard> {
                     const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
                 child: Consumer2<HistorydataProvider, UserdataProvider>(
                     builder: (builder, provider, provider2, child) {
+                  var time_diff = DateTime.now()
+                      .difference(DateTime.parse(SDBdata.date))
+                      .inMinutes;
+                  String time_calculate;
+                  if (time_diff < 1) {
+                    var time_diff = DateTime.now()
+                        .difference(DateTime.parse(SDBdata.date))
+                        .inSeconds;
+                    time_calculate = "$time_diff초 전";
+                  } else if (time_diff < 60) {
+                    time_calculate = "$time_diff분 전";
+                  } else if (time_diff < 1440) {
+                    var time_diff = DateTime.now()
+                        .difference(DateTime.parse(SDBdata.date))
+                        .inHours;
+                    time_calculate = "$time_diff시간 전";
+                  } else {
+                    time_calculate =
+                        DateTime.now().toString().substring(2, 4) ==
+                                SDBdata.date.substring(2, 4)
+                            ? SDBdata.date.substring(5, 10)
+                            : SDBdata.date.substring(2, 10);
+                  }
                   return _userProvider.userdata.dislike.contains(user.email)
                       ? Container(
                           child: Padding(
@@ -284,20 +307,7 @@ class FeedCardState extends State<FeedCard> {
                                                           const EdgeInsets.only(
                                                               right: 4.0),
                                                       child: Text(
-                                                          DateTime.now()
-                                                                      .toString()
-                                                                      .substring(
-                                                                          2,
-                                                                          4) ==
-                                                                  SDBdata.date
-                                                                      .substring(
-                                                                          2, 4)
-                                                              ? SDBdata.date
-                                                                  .substring(
-                                                                      5, 10)
-                                                              : SDBdata.date
-                                                                  .substring(
-                                                                      2, 10),
+                                                          time_calculate,
                                                           textScaleFactor: 1.1,
                                                           style: TextStyle(
                                                               color:
@@ -544,7 +554,6 @@ class FeedCardState extends State<FeedCard> {
 
   void submitExChange() {
     if (_initImage.length >= 0) {
-      print(_initImage);
       HistoryImagePut(history_id: widget.sdbdata.id, images: _initImage)
           .editHistoryListImage()
           .then((data) => {
@@ -563,8 +572,6 @@ class FeedCardState extends State<FeedCard> {
                     widget.sdbdata, _exEditCommentCtrl.text)
               });
     }
-    print("_imaaaage");
-    print(_image);
     if (_image.isEmpty == false) {
       HistoryImageEdit(history_id: widget.sdbdata.id, file: _image)
           .patchHistoryImage()
@@ -1044,7 +1051,6 @@ class FeedCardState extends State<FeedCard> {
             width: cropSize,
           );
           File(_selectedImages[i].path).writeAsBytes(img.encodeJpg(cropOne));
-          print('done1');
         }
 
         setState(() {

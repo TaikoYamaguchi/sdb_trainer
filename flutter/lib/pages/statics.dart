@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_gif/flutter_gif.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:sdb_trainer/pages/friendHistory.dart';
 import 'package:sdb_trainer/pages/static_exercise.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
@@ -899,18 +900,18 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
     });
   }
 
-  Widget _allchartExercisesWidget(exercises) {
+  Widget _allchartExercisesWidget(sdbdata) {
     return Expanded(
         child: ListView.separated(
             itemBuilder: (BuildContext context, int index) {
-              return _chartExercisesWidget(exercises[index].exercises,
-                  exercises[index].id, _userProvider.userdata, true, index);
+              return _chartExercisesWidget(sdbdata[index], sdbdata[index].id,
+                  _userProvider.userdata, true, index);
             },
             separatorBuilder: (BuildContext context, int index) {
               return Container();
             },
             shrinkWrap: true,
-            itemCount: exercises.length,
+            itemCount: sdbdata.length,
             scrollDirection: Axis.vertical));
   }
 
@@ -1218,9 +1219,10 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
   }
 
   Widget _chartExercisesWidget(
-      exuniq, historyId, userdata, bool shirink, index) {
+      sdbdata, historyId, userdata, bool shirink, index) {
     double top = 0;
     double bottom = 0;
+    var exuniq = sdbdata.exercises;
 
     return Container(
       child: Column(
@@ -1274,53 +1276,49 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
               )
             ],
           ),
-          ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              itemBuilder: (BuildContext context, int index) {
-                if (exuniq.length == 1) {
-                  top = 20;
-                  bottom = 20;
-                } else if (index == 0) {
-                  top = 20;
-                  bottom = 0;
-                } else if (index == exuniq.length - 1) {
-                  top = 0;
-                  bottom = 20;
-                } else {
-                  top = 0;
-                  bottom = 0;
-                }
-                var _exImage;
-                try {
-                  _exImage = extra_completely_new_Ex[
-                          extra_completely_new_Ex.indexWhere(
-                              (element) => element.name == exuniq[index].name)]
-                      .image;
-                  if (_exImage == null) {
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  Transition(
+                      child: FriendHistory(sdbdata: sdbdata),
+                      transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+            },
+            child: ListView.separated(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                itemBuilder: (BuildContext context, int index) {
+                  if (exuniq.length == 1) {
+                    top = 20;
+                    bottom = 20;
+                  } else if (index == 0) {
+                    top = 20;
+                    bottom = 0;
+                  } else if (index == exuniq.length - 1) {
+                    top = 0;
+                    bottom = 20;
+                  } else {
+                    top = 0;
+                    bottom = 0;
+                  }
+                  var _exImage;
+                  try {
+                    _exImage = extra_completely_new_Ex[
+                            extra_completely_new_Ex.indexWhere((element) =>
+                                element.name == exuniq[index].name)]
+                        .image;
+                    if (_exImage == null) {
+                      _exImage = "";
+                    }
+                  } catch (e) {
                     _exImage = "";
                   }
-                } catch (e) {
-                  _exImage = "";
-                }
-                double totalDistance = 0;
-                num totalTime = 0;
-                exuniq[index].sets.forEach((value) {
-                  totalDistance += value.weight;
-                  totalTime += value.reps;
-                });
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        Transition(
-                            child: StaticsExerciseDetails(
-                                exercise: exuniq[index],
-                                index: index,
-                                origin_exercises: exuniq,
-                                history_id: historyId),
-                            transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-                  },
-                  child: Container(
+                  double totalDistance = 0;
+                  num totalTime = 0;
+                  exuniq[index].sets.forEach((value) {
+                    totalDistance += value.weight;
+                    totalTime += value.reps;
+                  });
+                  return Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     decoration: BoxDecoration(
                         color: Theme.of(context).cardColor,
@@ -1379,24 +1377,24 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
                         ),
                       ],
                     ),
-                  ),
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return Container(
-                  alignment: Alignment.center,
-                  height: 0.5,
-                  child: Container(
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return Container(
                     alignment: Alignment.center,
-                    margin: const EdgeInsets.symmetric(horizontal: 10),
                     height: 0.5,
-                    color: Theme.of(context).primaryColorDark,
-                  ),
-                );
-              },
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: shirink,
-              itemCount: exuniq.length),
+                    child: Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      height: 0.5,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                  );
+                },
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: shirink,
+                itemCount: exuniq.length),
+          )
         ],
       ),
     );
