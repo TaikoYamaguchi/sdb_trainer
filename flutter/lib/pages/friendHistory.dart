@@ -149,7 +149,7 @@ class _FriendHistoryState extends State<FriendHistory>
                           padding: EdgeInsets.fromLTRB(12, 4, 12, 12),
                           child: Container(
                             height: 100,
-                            width: 6.0,
+                            width: 24.0,
                             decoration: BoxDecoration(
                                 color: Theme.of(context).primaryColorDark,
                                 borderRadius:

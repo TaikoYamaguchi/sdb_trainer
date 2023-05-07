@@ -940,7 +940,7 @@ class _setWeightAlertState extends State<setWeightAlert> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('피드는 몸무게 제외 추가 중량이 기록되요',
+          Text('피드에는 추가 중량만 기록돼요(몸무게제외)',
               textScaleFactor: 1.2,
               textAlign: TextAlign.center,
               style: TextStyle(color: Theme.of(context).primaryColorLight)),
