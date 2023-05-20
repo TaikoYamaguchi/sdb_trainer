@@ -1520,4 +1520,16 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
       );
     });
   }
+
+  @override
+  void dispose() {
+    print('dispose');
+    super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
+  }
 }

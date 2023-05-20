@@ -44,6 +44,13 @@ class _CustomMotionState extends State<CustomMotion> {
   }
 
   @override
+  void deactivate() {
+    print('deactivate');
+    controller.animation.removeListener(myListener);
+    super.deactivate();
+  }
+
+  @override
   Widget build(BuildContext context) {
     controller = Slidable.of(context);
     myListener = animationListener;

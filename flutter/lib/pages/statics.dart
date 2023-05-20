@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gif/flutter_gif.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:sdb_trainer/pages/friendHistory.dart';
-import 'package:sdb_trainer/pages/static_exercise.dart';
-import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:sdb_trainer/src/model/userdata.dart';
@@ -16,7 +14,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:transition/transition.dart';
 import '../repository/history_repository.dart';
-import 'package:sdb_trainer/repository/history_repository.dart';
 import '../src/model/historydata.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:sdb_trainer/providers/chartIndexState.dart';
@@ -24,8 +21,6 @@ import 'package:sdb_trainer/providers/staticPageState.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
-import 'package:sdb_trainer/providers/workoutdata.dart';
-import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'dart:ui' as ui;
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
@@ -237,6 +232,12 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
   void dispose() {
     _eventController.dispose();
     super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
   }
 
   Widget _staticsPages() {

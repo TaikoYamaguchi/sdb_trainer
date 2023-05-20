@@ -296,4 +296,16 @@ class _ProfileGoalState extends State<ProfileGoal> {
               }
             : showToast("입력을 확인해주세요"));
   }
+
+  @override
+  void dispose() {
+    print('dispose');
+    super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
+  }
 }

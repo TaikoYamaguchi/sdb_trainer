@@ -277,4 +277,16 @@ class _ExerciseDoneState extends State<ExerciseDone> {
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
     );
   }
+
+  @override
+  void dispose() {
+    print('dispose');
+    super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
+  }
 }

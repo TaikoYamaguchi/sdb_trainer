@@ -463,6 +463,18 @@ class _PhotoEditorState extends State<PhotoEditor> {
     _tempImgStrage = Provider.of<TempImgStorage>(context, listen: false);
     return Scaffold(appBar: _appbarWidget(), body: photoBox());
   }
+
+  @override
+  void dispose() {
+    print('dispose');
+    super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
+  }
 }
 
 class KeepAlivePage extends StatefulWidget {

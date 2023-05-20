@@ -460,4 +460,16 @@ class _RoutineBankState extends State<RoutineBank> {
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
     return famous_body();
   }
+
+  @override
+  void dispose() {
+    print('dispose');
+    super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
+  }
 }

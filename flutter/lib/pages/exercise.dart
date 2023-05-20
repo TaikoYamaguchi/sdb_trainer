@@ -743,4 +743,10 @@ class ExerciseState extends State<Exercise> {
       );
     });
   }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
+  }
 }

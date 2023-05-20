@@ -3429,4 +3429,16 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
       body: _exercisedetailPage(),
     );
   }
+
+  @override
+  void dispose() {
+    print('dispose');
+    super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
+  }
 }

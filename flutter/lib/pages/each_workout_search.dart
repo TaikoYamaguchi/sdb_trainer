@@ -1423,4 +1423,10 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
 
     super.dispose();
   }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
+  }
 }

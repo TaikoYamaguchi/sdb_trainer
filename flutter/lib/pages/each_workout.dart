@@ -782,4 +782,16 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
       return Scaffold(appBar: null, body: _createListener(mySliver()));
     });
   }
+
+  @override
+  void dispose() {
+    print('dispose');
+    super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
+  }
 }

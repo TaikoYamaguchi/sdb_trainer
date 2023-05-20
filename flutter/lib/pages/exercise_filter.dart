@@ -853,4 +853,16 @@ class _ExerciseFilterState extends State<ExerciseFilter>
       );
     });
   }
+
+  @override
+  void dispose() {
+    print('dispose');
+    super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
+  }
 }

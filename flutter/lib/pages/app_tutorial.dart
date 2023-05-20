@@ -103,4 +103,16 @@ class _app_tutorialState extends State<app_tutorial> {
   Widget build(BuildContext context) {
     return Container();
   }
+
+  @override
+  void dispose() {
+    print('dispose');
+    super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
+  }
 }

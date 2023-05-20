@@ -619,4 +619,16 @@ class _ProgramUploadState extends State<ProgramUpload> {
       body: _exerciseDoneWidget(),
     );
   }
+
+  @override
+  void dispose() {
+    print('dispose');
+    super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
+  }
 }

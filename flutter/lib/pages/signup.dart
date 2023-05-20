@@ -1316,4 +1316,16 @@ class _SignUpPageState extends State<SignUpPage> {
                     fontSize: 14.0,
                     color: Theme.of(context).primaryColorDark))));
   }
+
+  @override
+  void dispose() {
+    print('dispose');
+    super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
+  }
 }

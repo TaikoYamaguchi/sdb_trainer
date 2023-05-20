@@ -217,4 +217,16 @@ class _ProfileNicknameState extends State<ProfileNickname> {
       showToast("닉네임을 입력 및 수정해주세요");
     }
   }
+
+  @override
+  void dispose() {
+    print('dispose');
+    super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
+  }
 }

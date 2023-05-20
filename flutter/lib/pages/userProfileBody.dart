@@ -306,4 +306,16 @@ class _ProfileBodyState extends State<ProfileBody> {
       showToast("키와 몸무게를 입력해주세요");
     }
   }
+
+  @override
+  void dispose() {
+    print('dispose');
+    super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
+  }
 }

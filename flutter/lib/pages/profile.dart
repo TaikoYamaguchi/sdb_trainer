@@ -651,4 +651,16 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    print('dispose');
+    super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
+  }
 }

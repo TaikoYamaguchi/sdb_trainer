@@ -251,4 +251,16 @@ class _NameInputDialogState extends State<NameInputDialog> {
 
     return NameInput();
   }
+
+  @override
+  void dispose() {
+    print('dispose');
+    super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
+  }
 }

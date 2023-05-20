@@ -1,22 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
-import 'package:sdb_trainer/repository/user_repository.dart';
-import 'package:sdb_trainer/src/utils/alerts.dart';
 import 'package:sdb_trainer/src/utils/firebase_fcm.dart';
-import 'package:sdb_trainer/src/utils/util.dart';
-import 'package:transition/transition.dart';
-import 'package:sdb_trainer/pages/userProfileNickname.dart';
-import 'package:sdb_trainer/pages/userProfileBody.dart';
-import 'package:sdb_trainer/pages/userProfileGoal.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
+
 import 'dart:async';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -158,5 +147,17 @@ class _UserNotificationState extends State<UserNotification> {
             ),
           ]),
         ));
+  }
+
+  @override
+  void dispose() {
+    print('dispose');
+    super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
   }
 }

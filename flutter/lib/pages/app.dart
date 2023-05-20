@@ -737,6 +737,12 @@ class _ExpandableFabState extends State<ExpandableFab>
     super.dispose();
   }
 
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
+  }
+
   void _toggle() {
     setState(() {
       _open = !_open;

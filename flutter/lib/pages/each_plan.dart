@@ -1283,4 +1283,16 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
       );
     });
   }
+
+  @override
+  void dispose() {
+    print('dispose');
+    super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
+  }
 }

@@ -390,4 +390,16 @@ class _UserProfileState extends State<UserProfile> {
           ]),
         ));
   }
+
+  @override
+  void dispose() {
+    print('dispose');
+    super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    print('deactivate');
+    super.deactivate();
+  }
 }
