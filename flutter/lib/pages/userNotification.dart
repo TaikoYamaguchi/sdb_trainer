@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
-import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/src/utils/firebase_fcm.dart';
-
 import 'dart:async';
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -17,9 +15,6 @@ class UserNotification extends StatefulWidget {
 }
 
 class _UserNotificationState extends State<UserNotification> {
-  var _userProvider;
-  var _PopProvider;
-
   @override
   void initState() {
     super.initState();
@@ -27,8 +22,6 @@ class _UserNotificationState extends State<UserNotification> {
 
   @override
   Widget build(BuildContext context) {
-    _userProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _PopProvider = Provider.of<PopProvider>(context, listen: false);
     return Consumer<PopProvider>(builder: (Builder, provider, child) {
       bool _popable = provider.isprostacking;
       _popable == false
@@ -51,11 +44,11 @@ class _UserNotificationState extends State<UserNotification> {
   PreferredSizeWidget _appbarWidget() {
     var _btnDisabled = false;
     return PreferredSize(
-        preferredSize: Size.fromHeight(40.0), // here the desired height
+        preferredSize: const Size.fromHeight(40.0), // here the desired height
         child: AppBar(
           elevation: 0.0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_outlined),
+            icon: const Icon(Icons.arrow_back_ios_outlined),
             color: Theme.of(context).primaryColorLight,
             onPressed: () {
               _btnDisabled == true
@@ -82,7 +75,7 @@ class _UserNotificationState extends State<UserNotification> {
           FocusScope.of(context).unfocus();
         },
         onPanUpdate: (details) {
-          if (details.delta.dx > 0 && btnDisabled == false) {
+          if (details.delta.dx > 20 && btnDisabled == false) {
             btnDisabled = true;
             Navigator.of(context).pop();
             print("Dragging in +X direction");
@@ -117,7 +110,7 @@ class _UserNotificationState extends State<UserNotification> {
                                   true: Text("on",
                                       style: TextStyle(
                                           color: provider.commentNotification!
-                                              ? Theme.of(context).buttonColor
+                                              ? Theme.of(context).highlightColor
                                               : Theme.of(context)
                                                   .primaryColorLight)),
                                   false: Text("off",
@@ -125,7 +118,8 @@ class _UserNotificationState extends State<UserNotification> {
                                           color: provider.commentNotification!
                                               ? Theme.of(context)
                                                   .primaryColorLight
-                                              : Theme.of(context).buttonColor))
+                                              : Theme.of(context)
+                                                  .highlightColor))
                                 },
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12),

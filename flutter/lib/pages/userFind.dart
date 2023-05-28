@@ -3,17 +3,20 @@ import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 
 class UserFindPage extends StatefulWidget {
+  const UserFindPage({Key? key}) : super(key: key);
+
   @override
   _UserFindPageState createState() => _UserFindPageState();
 }
 
 class _UserFindPageState extends State<UserFindPage> {
   bool isLoading = false;
-  bool _isPhoneEmpty = false;
+  final bool _isPhoneEmpty = false;
   bool _isVerification = false;
   var user;
-  TextEditingController _userPhoneNumberCtrl = TextEditingController(text: "");
-  TextEditingController _userVerificationCodeCtrl =
+  final TextEditingController _userPhoneNumberCtrl =
+      TextEditingController(text: "");
+  final TextEditingController _userVerificationCodeCtrl =
       TextEditingController(text: "");
 
   @override
@@ -28,7 +31,7 @@ class _UserFindPageState extends State<UserFindPage> {
 
   PreferredSizeWidget _appbarWidget() {
     return PreferredSize(
-        preferredSize: Size.fromHeight(40.0), // here the desired height
+        preferredSize: const Size.fromHeight(40.0), // here the desired height
         child: AppBar(
           elevation: 0,
           title: Text(
@@ -41,38 +44,36 @@ class _UserFindPageState extends State<UserFindPage> {
   }
 
   Widget _signupProfileWidget() {
-    return Container(
-      child: Center(
-          child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Expanded(
-                      flex: 2,
-                      child: SizedBox(),
-                    ),
-                    Text("휴대폰으로 계정 찾기(현재 사용이 어렵습니다. 고객센터로 문의 부탁드립니다)",
-                        textScaleFactor: 2.1,
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorLight,
-                            fontWeight: FontWeight.w800)),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    _phoneNumberWidget(),
-                    _isVerification ? _codeWidget() : Container(),
-                    user != null ? _userWidget() : Container(),
-                    Expanded(
-                      flex: 3,
-                      child: SizedBox(),
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    _editButton(context),
-                  ]))),
-    );
+    return Center(
+        child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Expanded(
+                    flex: 2,
+                    child: SizedBox(),
+                  ),
+                  Text("휴대폰으로 계정 찾기(현재 사용이 어렵습니다. 고객센터로 문의 부탁드립니다)",
+                      textScaleFactor: 2.1,
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColorLight,
+                          fontWeight: FontWeight.w800)),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  _phoneNumberWidget(),
+                  _isVerification ? _codeWidget() : Container(),
+                  user != null ? _userWidget() : Container(),
+                  const Expanded(
+                    flex: 3,
+                    child: SizedBox(),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  _editButton(context),
+                ])));
   }
 
   Widget _userWidget() {
@@ -85,8 +86,8 @@ class _UserFindPageState extends State<UserFindPage> {
           controller: _userPhoneNumberCtrl,
           style: TextStyle(color: Theme.of(context).primaryColorLight),
           autofocus: true,
-          keyboardType:
-              TextInputType.numberWithOptions(signed: true, decimal: true),
+          keyboardType: const TextInputType.numberWithOptions(
+              signed: true, decimal: true),
           decoration: InputDecoration(
             labelText: _isPhoneEmpty == false ? "휴대폰" : "휴대폰으로 가입한 정보가 없습니다",
             labelStyle: TextStyle(
@@ -122,7 +123,7 @@ class _UserFindPageState extends State<UserFindPage> {
       style: TextStyle(color: Theme.of(context).primaryColorLight),
       autofocus: true,
       keyboardType:
-          TextInputType.numberWithOptions(signed: true, decimal: true),
+          const TextInputType.numberWithOptions(signed: true, decimal: true),
       decoration: InputDecoration(
         labelText: _isPhoneEmpty == false ? "휴대폰" : "휴대폰으로 가입한 정보가 없습니다",
         labelStyle: TextStyle(
@@ -186,13 +187,13 @@ class _UserFindPageState extends State<UserFindPage> {
         width: MediaQuery.of(context).size.width,
         child: TextButton(
             style: TextButton.styleFrom(
-              foregroundColor: Color.fromRGBO(246, 58, 64, 20),
-              backgroundColor: Color.fromRGBO(246, 58, 64, 20),
+              foregroundColor: const Color.fromRGBO(246, 58, 64, 20),
+              backgroundColor: const Color.fromRGBO(246, 58, 64, 20),
               textStyle: TextStyle(
                 color: Theme.of(context).primaryColorLight,
               ),
-              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-              padding: EdgeInsets.all(8.0),
+              disabledForegroundColor: const Color.fromRGBO(246, 58, 64, 20),
+              padding: const EdgeInsets.all(8.0),
             ),
             onPressed: () => _isVerification == false
                 ? _phoneNumberCheck()

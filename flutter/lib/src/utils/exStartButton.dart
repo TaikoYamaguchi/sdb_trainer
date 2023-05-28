@@ -1,20 +1,12 @@
-import 'dart:async';
-import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gif/flutter_gif.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:sdb_trainer/pages/exercise_done.dart';
-import 'package:sdb_trainer/pages/exercise_guide.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
-import 'package:sdb_trainer/providers/routinemenu.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
-import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:sdb_trainer/src/utils/alerts.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:provider/provider.dart';
@@ -22,16 +14,9 @@ import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
-import 'package:sdb_trainer/src/model/workoutdata.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:sdb_trainer/src/utils/customMotion.dart';
 import 'package:transition/transition.dart';
-import 'package:sdb_trainer/providers/chartIndexState.dart';
-import 'package:sdb_trainer/providers/staticPageState.dart';
-import 'package:sdb_trainer/providers/bodystate.dart';
-import 'package:sdb_trainer/providers/themeMode.dart';
 
+// ignore: must_be_immutable
 class ExStartButton extends StatefulWidget {
   int rindex;
   int pindex;
@@ -46,17 +31,10 @@ class _ExStartButtonState extends State<ExStartButton> {
   var _userProvider;
   var _hisProvider;
   var _exProvider;
-  var _themeProvider;
   var _workoutProvider;
   var _routinetimeProvider;
-  var _routinemenuProvider;
   var _prefsProvider;
-  var _exercise;
-  var _bodyStater;
   var _exercises;
-  var _chartIndex;
-  var _staticPageState;
-  var _currentExindex;
   late List<hisdata.Exercises> exerciseList = [];
 
   @override
@@ -71,16 +49,9 @@ class _ExStartButtonState extends State<ExStartButton> {
     _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
-    _routinemenuProvider =
-        Provider.of<RoutineMenuStater>(context, listen: false);
-
-    _chartIndex = Provider.of<ChartIndexProvider>(context, listen: false);
 
     _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     _exercises = _exProvider.exercisesdata.exercises;
-    _staticPageState = Provider.of<StaticPageProvider>(context, listen: false);
-    _bodyStater = Provider.of<BodyStater>(context, listen: false);
-    _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     _prefsProvider = Provider.of<PrefsProvider>(context, listen: false);
 
     return _exStartButton();
@@ -135,7 +106,7 @@ class _ExStartButtonState extends State<ExStartButton> {
     if (result == true) {
       recordExercise();
       _editHistoryCheck();
-      if (!exerciseList.isEmpty) {
+      if (exerciseList.isNotEmpty) {
         showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -150,10 +121,10 @@ class _ExStartButtonState extends State<ExStartButton> {
   }
 
   void recordExercise() {
-    var exercise_all =
+    var exerciseAll =
         _workoutProvider.workoutdata.routinedatas[widget.rindex].exercises;
-    for (int n = 0; n < exercise_all.length; n++) {
-      var recordedsets = exercise_all[n].sets.where((sets) {
+    for (int n = 0; n < exerciseAll.length; n++) {
+      var recordedsets = exerciseAll[n].sets.where((sets) {
         return (sets.ischecked as bool);
       }).toList();
       double monerm = 0;
@@ -168,10 +139,10 @@ class _ExStartButtonState extends State<ExStartButton> {
         }
       }
       var _eachex = _exercises[_exercises
-          .indexWhere((element) => element.name == exercise_all[n].name)];
+          .indexWhere((element) => element.name == exerciseAll[n].name)];
       if (!recordedsets.isEmpty) {
         exerciseList.add(hisdata.Exercises(
-            name: exercise_all[n].name,
+            name: exerciseAll[n].name,
             sets: recordedsets,
             onerm: monerm,
             goal: _eachex.goal,
@@ -180,7 +151,7 @@ class _ExStartButtonState extends State<ExStartButton> {
       }
 
       if (monerm > _eachex.onerm) {
-        modifyExercise(monerm, exercise_all[n].name);
+        modifyExercise(monerm, exerciseAll[n].name);
       }
     }
     _postExerciseCheck();
@@ -205,7 +176,7 @@ class _ExStartButtonState extends State<ExStartButton> {
   }
 
   void _editHistoryCheck() async {
-    if (!exerciseList.isEmpty) {
+    if (exerciseList.isNotEmpty) {
       HistoryPost(
               user_email: _userProvider.userdata.email,
               exercises: exerciseList,
@@ -239,18 +210,18 @@ class _ExStartButtonState extends State<ExStartButton> {
   }
 
   void _editWorkoutwoCheck() async {
-    var routinedatas_all = _workoutProvider.workoutdata.routinedatas;
+    var routinedatasAll = _workoutProvider.workoutdata.routinedatas;
     for (int n = 0;
-        n < routinedatas_all[_routinetimeProvider.nowonrindex].exercises.length;
+        n < routinedatasAll[_routinetimeProvider.nowonrindex].exercises.length;
         n++) {
       for (int i = 0;
           i <
-              routinedatas_all[_routinetimeProvider.nowonrindex]
+              routinedatasAll[_routinetimeProvider.nowonrindex]
                   .exercises[n]
                   .sets
                   .length;
           i++) {
-        routinedatas_all[_routinetimeProvider.nowonrindex]
+        routinedatasAll[_routinetimeProvider.nowonrindex]
             .exercises[n]
             .sets[i]
             .ischecked = false;
@@ -259,7 +230,7 @@ class _ExStartButtonState extends State<ExStartButton> {
     WorkoutEdit(
             id: _workoutProvider.workoutdata.id,
             user_email: _userProvider.userdata.email,
-            routinedatas: routinedatas_all)
+            routinedatas: routinedatasAll)
         .editWorkout()
         .then((data) => data["user_email"] != null
             ? showToast("완료")

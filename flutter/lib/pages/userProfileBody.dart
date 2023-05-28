@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 
 class ProfileBody extends StatefulWidget {
+  const ProfileBody({Key? key}) : super(key: key);
+
   @override
   _ProfileBodyState createState() => _ProfileBodyState();
 }
@@ -14,8 +14,6 @@ class ProfileBody extends StatefulWidget {
 class _ProfileBodyState extends State<ProfileBody> {
   bool isLoading = false;
   var _userProvider;
-  var _userWeightUnitCtrl = "lb";
-  var _userHeightUnitCtrl = "cm";
   var _userHeightCtrl;
   var _userWeightCtrl;
   DateTime _toDay = DateTime.now();
@@ -30,8 +28,6 @@ class _ProfileBodyState extends State<ProfileBody> {
   Widget build(BuildContext context) {
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     TextEditingController(text: _userProvider.userdata.nickname);
-    _userWeightUnitCtrl = _userProvider.userdata.weight_unit;
-    _userHeightUnitCtrl = _userProvider.userdata.height_unit;
 
     _userHeightCtrl =
         TextEditingController(text: _userProvider.userdata.height.toString());
@@ -69,11 +65,11 @@ class _ProfileBodyState extends State<ProfileBody> {
   PreferredSizeWidget _appbarWidget() {
     var _btnDisabled = false;
     return PreferredSize(
-        preferredSize: Size.fromHeight(40.0), // here the desired height
+        preferredSize: const Size.fromHeight(40.0), // here the desired height
         child: AppBar(
           elevation: 0.0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_outlined),
+            icon: const Icon(Icons.arrow_back_ios_outlined),
             color: Theme.of(context).primaryColorLight,
             onPressed: () {
               _btnDisabled == true
@@ -100,7 +96,7 @@ class _ProfileBodyState extends State<ProfileBody> {
           FocusScope.of(context).unfocus();
         },
         onPanUpdate: (details) {
-          if (details.delta.dx > 0 && btnDisabled == false) {
+          if (details.delta.dx > 20 && btnDisabled == false) {
             btnDisabled = true;
             Navigator.of(context).pop();
             print("Dragging in +X direction");
@@ -113,7 +109,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Expanded(
+                        const Expanded(
                           flex: 3,
                           child: SizedBox(),
                         ),
@@ -122,12 +118,12 @@ class _ProfileBodyState extends State<ProfileBody> {
                             style: TextStyle(
                                 color: Theme.of(context).primaryColorLight,
                                 fontWeight: FontWeight.w600)),
-                        Text("체형을 입력 할 수 있어요",
+                        const Text("체형을 입력 할 수 있어요",
                             textScaleFactor: 1.3,
                             style: TextStyle(
                               color: Colors.grey,
                             )),
-                        SizedBox(
+                        const SizedBox(
                           height: 24,
                         ),
                         Row(
@@ -135,13 +131,13 @@ class _ProfileBodyState extends State<ProfileBody> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Expanded(child: _heightWidget()),
-                            SizedBox(
+                            const SizedBox(
                               width: 8,
                             ),
                             Expanded(child: _heightUnitWidget())
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 8,
                         ),
                         Row(
@@ -149,13 +145,13 @@ class _ProfileBodyState extends State<ProfileBody> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Expanded(child: _weightWidget()),
-                            SizedBox(
+                            const SizedBox(
                               width: 8,
                             ),
                             Expanded(child: _weightUnitWidget())
                           ],
                         ),
-                        Expanded(
+                        const Expanded(
                           flex: 3,
                           child: SizedBox(),
                         ),
@@ -169,12 +165,12 @@ class _ProfileBodyState extends State<ProfileBody> {
       autofocus: true,
       controller: _userHeightCtrl,
       keyboardType:
-          TextInputType.numberWithOptions(signed: false, decimal: true),
+          const TextInputType.numberWithOptions(signed: false, decimal: true),
       style: TextStyle(color: Theme.of(context).primaryColorLight),
       decoration: InputDecoration(
         filled: true,
         labelText: "키",
-        labelStyle: TextStyle(color: Colors.grey),
+        labelStyle: const TextStyle(color: Colors.grey),
         focusedBorder: UnderlineInputBorder(
           borderSide:
               BorderSide(color: Theme.of(context).primaryColor, width: 3.0),
@@ -193,12 +189,12 @@ class _ProfileBodyState extends State<ProfileBody> {
     return TextFormField(
       controller: _userWeightCtrl,
       keyboardType:
-          TextInputType.numberWithOptions(signed: false, decimal: true),
+          const TextInputType.numberWithOptions(signed: false, decimal: true),
       style: TextStyle(color: Theme.of(context).primaryColorLight),
       decoration: InputDecoration(
         filled: true,
         labelText: "몸무게",
-        labelStyle: TextStyle(color: Colors.grey),
+        labelStyle: const TextStyle(color: Colors.grey),
         focusedBorder: UnderlineInputBorder(
           borderSide:
               BorderSide(color: Theme.of(context).primaryColor, width: 3.0),
@@ -227,9 +223,7 @@ class _ProfileBodyState extends State<ProfileBody> {
             borderRadius: BorderRadius.circular(12),
             color: Theme.of(context).primaryColor),
         onValueChanged: (i) {
-          setState(() {
-            _userWeightUnitCtrl = i as String;
-          });
+          setState(() {});
         });
   }
 
@@ -247,9 +241,7 @@ class _ProfileBodyState extends State<ProfileBody> {
             borderRadius: BorderRadius.circular(12),
             color: Theme.of(context).primaryColor),
         onValueChanged: (i) {
-          setState(() {
-            _userHeightUnitCtrl = i as String;
-          });
+          setState(() {});
         });
   }
 
@@ -267,7 +259,7 @@ class _ProfileBodyState extends State<ProfileBody> {
               textStyle: TextStyle(
                 color: Theme.of(context).primaryColorLight,
               ),
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
             ),
             onPressed: () {
               _userProvider.setUserWeightAdd(
@@ -279,32 +271,7 @@ class _ProfileBodyState extends State<ProfileBody> {
             },
             child: Text(isLoading ? 'loggin in.....' : "프로필 수정",
                 textScaleFactor: 1.5,
-                style: TextStyle(color: Theme.of(context).buttonColor))));
-  }
-
-  void _editCheck() async {
-    if (_userHeightCtrl.text != "" && _userWeightCtrl.text != "") {
-      UserEdit(
-              userEmail: _userProvider.userdata.email,
-              userName: _userProvider.userdata.username,
-              userNickname: _userProvider.userdata.nickname,
-              userHeight: _userHeightCtrl.text.toString(),
-              userWeight: _userWeightCtrl.text.toString(),
-              userHeightUnit: _userHeightUnitCtrl,
-              userWeightUnit: _userWeightUnitCtrl,
-              userImage: _userProvider.userdata.image,
-              userFavorExercise: _userProvider.userdata.favor_exercise)
-          .editUser()
-          .then((data) => data["username"] != null
-              ? {
-                  showToast("수정 완료"),
-                  _userProvider.getdata(),
-                  Navigator.pop(context)
-                }
-              : showToast("수정할 수 없습니다"));
-    } else {
-      showToast("키와 몸무게를 입력해주세요");
-    }
+                style: TextStyle(color: Theme.of(context).highlightColor))));
   }
 
   @override

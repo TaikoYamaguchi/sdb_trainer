@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
 
@@ -42,7 +41,7 @@ class FamousList {
     List<Famous> famouss = <Famous>[];
     famouss = parsedJson.map((i) => Famous.fromJson(i)).toList();
 
-    return new FamousList(famouss: famouss);
+    return FamousList(famouss: famouss);
   }
 }
 
@@ -74,7 +73,7 @@ class Famous {
   });
 
   factory Famous.fromJson(Map<String, dynamic> parsedJson) {
-    return new Famous(
+    return Famous(
       id: parsedJson["id"],
       type: parsedJson["type"],
       user_email: parsedJson["user_email"],
@@ -200,7 +199,6 @@ class Exercises {
   factory Exercises.fromJson(Map<String, dynamic> parsedJson) {
     var list = parsedJson["sets"] as List;
     List<Sets> setList = list.map((i) => Sets.fromJson(i)).toList();
-    var isCardioCheck;
     return Exercises(
         name: parsedJson["name"],
         sets: setList,

@@ -9,11 +9,9 @@ import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
-import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
-import 'package:dio/dio.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 
@@ -30,28 +28,27 @@ class _ExerciseFilterState extends State<ExerciseFilter>
   var _famousdataProvider;
   var _userProvider;
   var _PopProvider;
-  var _exercises;
-  TextEditingController _exSearchCtrl = TextEditingController(text: "");
-  TextEditingController _customExNameCtrl = TextEditingController(text: "");
-  var _testdata0;
-  late var _testdata = _testdata0;
+  final TextEditingController _exSearchCtrl = TextEditingController(text: "");
+  final TextEditingController _customExNameCtrl =
+      TextEditingController(text: "");
   var btnDisabled;
   var _customExUsed = false;
   var selectedItem = '기타';
   var selectedItem2 = '기타';
-  ExpandableController _menucontroller =
+  final ExpandableController _menucontroller =
       ExpandableController(initialExpanded: true);
   late FlutterGifController controller1;
 
   @override
   void initState() {
+    super.initState();
     controller1 = FlutterGifController(vsync: this);
   }
 
   PreferredSizeWidget _appbarWidget() {
     btnDisabled = false;
     return PreferredSize(
-        preferredSize: Size.fromHeight(40.0), // here the desired height
+        preferredSize: const Size.fromHeight(40.0), // here the desired height
         child: AppBar(
           elevation: 0,
           titleSpacing: 0,
@@ -68,7 +65,7 @@ class _ExerciseFilterState extends State<ExerciseFilter>
               },
             ),
           ),
-          title: Container(
+          title: SizedBox(
             width: MediaQuery.of(context).size.width,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(10, 16, 10, 16),
@@ -162,80 +159,77 @@ class _ExerciseFilterState extends State<ExerciseFilter>
   }
 
   Widget _exercises_searchWidget() {
-    return Container(
-      child:
-          Consumer<ExercisesdataProvider>(builder: (builder, provider, child) {
-        return Container(
-          width: MediaQuery.of(context).size.width,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 4.0, right: 1.0),
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                exercisesWidget(provider.testdata, true),
-                Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Container(
-                        height: 90,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            //color: Theme.of(context).cardColor,
-                            borderRadius: BorderRadius.circular(15.0)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(1.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              _displayCustomExInputDialog(provider);
-                            },
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 48,
-                                    height: 48,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Theme.of(context).primaryColor),
-                                    child: Icon(
-                                      Icons.add,
-                                      size: 28.0,
-                                      color: Theme.of(context).buttonColor,
-                                    ),
+    return Consumer<ExercisesdataProvider>(builder: (builder, provider, child) {
+      return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 4.0, right: 1.0),
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              exercisesWidget(provider.testdata, true),
+              Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Container(
+                      height: 90,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          //color: Theme.of(context).cardColor,
+                          borderRadius: BorderRadius.circular(15.0)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            _displayCustomExInputDialog(provider);
+                          },
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 48,
+                                  height: 48,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Theme.of(context).primaryColor),
+                                  child: Icon(
+                                    Icons.add,
+                                    size: 28.0,
+                                    color: Theme.of(context).highlightColor,
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("커스텀 운동을 추가 해보세요",
-                                            textScaleFactor: 1.5,
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColorLight,
-                                            )),
-                                        Text("개인 운동을 추가 할 수 있어요",
-                                            textScaleFactor: 1.1,
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                            )),
-                                      ],
-                                    ),
-                                  )
-                                ]),
-                          ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text("커스텀 운동을 추가 해보세요",
+                                          textScaleFactor: 1.5,
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
+                                          )),
+                                      const Text("개인 운동을 추가 할 수 있어요",
+                                          textScaleFactor: 1.1,
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                          )),
+                                    ],
+                                  ),
+                                )
+                              ]),
                         ),
                       ),
-                    )),
-              ],
-            ),
+                    ),
+                  )),
+            ],
           ),
-        );
-      }),
-    );
+        ),
+      );
+    });
   }
 
   Widget targetchip(items2) {
@@ -285,7 +279,7 @@ class _ExerciseFilterState extends State<ExerciseFilter>
     showModalBottomSheet<void>(
         isScrollControlled: true,
         context: context,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
         builder: (BuildContext context) {
           List<String> options = [..._exProvider.options];
@@ -296,10 +290,11 @@ class _ExerciseFilterState extends State<ExerciseFilter>
             child: StatefulBuilder(
                 builder: (BuildContext context, StateSetter mystate) {
               return Container(
-                padding: EdgeInsets.all(12.0),
+                padding: const EdgeInsets.all(12.0),
                 height: MediaQuery.of(context).size.height * 0.65,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(20)),
                   color: Theme.of(context).cardColor,
                 ),
                 child: Column(
@@ -320,11 +315,11 @@ class _ExerciseFilterState extends State<ExerciseFilter>
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Theme.of(context).primaryColorLight)),
-                          Text('외부를 터치하면 취소 할 수 있어요',
+                          const Text('외부를 터치하면 취소 할 수 있어요',
                               textScaleFactor: 1.0,
                               textAlign: TextAlign.center,
                               style: TextStyle(color: Colors.grey)),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           TextField(
                             onChanged: (value) {
                               _exProvider.exercisesdata.exercises
@@ -367,20 +362,17 @@ class _ExerciseFilterState extends State<ExerciseFilter>
                                     color:
                                         Theme.of(context).primaryColorLight)),
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              SizedBox(width: 16),
-                              Container(
-                                child: Text(
-                                  '운동부위:',
-                                  textScaleFactor: 2.0,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorLight),
-                                ),
+                              const SizedBox(width: 16),
+                              Text(
+                                '운동부위:',
+                                textScaleFactor: 2.0,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight),
                               ),
                             ],
                           ),
@@ -388,72 +380,65 @@ class _ExerciseFilterState extends State<ExerciseFilter>
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              SizedBox(width: 16),
-                              Container(
-                                child: Text(
-                                  '카테고리:',
-                                  textScaleFactor: 2.0,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorLight),
-                                ),
+                              const SizedBox(width: 16),
+                              Text(
+                                '카테고리:',
+                                textScaleFactor: 2.0,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight),
                               ),
-                              SizedBox(width: 20),
-                              Container(
-                                child: SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        2 /
-                                        5,
-                                    child: DropdownButtonFormField(
-                                      isExpanded: true,
-                                      decoration: InputDecoration(
-                                        filled: true,
-                                        enabledBorder: UnderlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          borderSide: BorderSide(
-                                              color: Theme.of(context)
-                                                  .primaryColorLight,
-                                              width: 3),
-                                        ),
-                                        focusedBorder: UnderlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          borderSide: BorderSide(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              width: 3),
-                                        ),
+                              const SizedBox(width: 20),
+                              SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 2 / 5,
+                                  child: DropdownButtonFormField(
+                                    isExpanded: true,
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        borderSide: BorderSide(
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
+                                            width: 3),
                                       ),
-                                      hint: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '기타',
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .primaryColorLight),
-                                          )),
-                                      items: options2
-                                          .map((item) => DropdownMenuItem<
-                                                  String>(
-                                              value: item.toString(),
-                                              child: Align(
-                                                  alignment: Alignment.center,
-                                                  child: Text(
-                                                    item,
-                                                    style: TextStyle(
-                                                        color: Theme.of(context)
-                                                            .primaryColorLight),
-                                                  ))))
-                                          .toList(),
-                                      onChanged: (item) => setState(
-                                          () => selectedItem2 = item as String),
-                                    )),
-                              ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        borderSide: BorderSide(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            width: 3),
+                                      ),
+                                    ),
+                                    hint: Align(
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          '기타',
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColorLight),
+                                        )),
+                                    items: options2
+                                        .map((item) => DropdownMenuItem<String>(
+                                            value: item.toString(),
+                                            child: Align(
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  item,
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .primaryColorLight),
+                                                ))))
+                                        .toList(),
+                                    onChanged: (item) => setState(
+                                        () => selectedItem2 = item as String),
+                                  )),
                             ],
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                         ],
                       ),
                     ),
@@ -487,13 +472,13 @@ class _ExerciseFilterState extends State<ExerciseFilter>
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor:
                   _customExNameCtrl.text == "" || _customExUsed == true
-                      ? Color(0xFF212121)
+                      ? const Color(0xFF212121)
                       : Theme.of(context).primaryColor,
               textStyle: TextStyle(
                 color: Theme.of(context).primaryColorLight,
               ),
-              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-              padding: EdgeInsets.all(12.0),
+              disabledForegroundColor: const Color.fromRGBO(246, 58, 64, 20),
+              padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {
               if (_customExUsed == false && _customExNameCtrl.text != "") {
@@ -527,8 +512,8 @@ class _ExerciseFilterState extends State<ExerciseFilter>
         builder: (builder, provider2, child) {
       var exuniq = provider2.testdata;
       return ListView.separated(
-          physics: NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.symmetric(horizontal: 2),
+          physics: const NeverScrollableScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 2),
           itemBuilder: (BuildContext _context, int index) {
             if (index == 0) {
               top = 20;
@@ -546,9 +531,7 @@ class _ExerciseFilterState extends State<ExerciseFilter>
                       extra_completely_new_Ex.indexWhere(
                           (element) => element.name == exuniq[index].name)]
                   .image;
-              if (_exImage == null) {
-                _exImage = "";
-              }
+              _exImage ??= "";
             } catch (e) {
               _exImage = "";
             }
@@ -566,54 +549,52 @@ class _ExerciseFilterState extends State<ExerciseFilter>
                         transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
               },
               child: Container(
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(top),
-                          bottomRight: Radius.circular(bottom),
-                          topLeft: Radius.circular(top),
-                          bottomLeft: Radius.circular(bottom))),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 4.0),
-                        child: Row(
-                          children: [
-                            _exImage != ""
-                                ? Image.asset(
-                                    _exImage,
-                                    height: 48,
-                                    width: 48,
-                                    fit: BoxFit.cover,
-                                  )
-                                : Container(
-                                    height: 48,
-                                    width: 48,
-                                    child: Icon(Icons.image_not_supported,
-                                        color:
-                                            Theme.of(context).primaryColorDark),
-                                    decoration:
-                                        BoxDecoration(shape: BoxShape.circle),
-                                  ),
-                            SizedBox(width: 8.0),
-                            Expanded(
-                              child: Text(
-                                exuniq[index].name,
-                                textScaleFactor: 1.4,
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColorLight),
-                              ),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(top),
+                        bottomRight: Radius.circular(bottom),
+                        topLeft: Radius.circular(top),
+                        bottomLeft: Radius.circular(bottom))),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12.0, horizontal: 4.0),
+                      child: Row(
+                        children: [
+                          _exImage != ""
+                              ? Image.asset(
+                                  _exImage,
+                                  height: 48,
+                                  width: 48,
+                                  fit: BoxFit.cover,
+                                )
+                              : Container(
+                                  height: 48,
+                                  width: 48,
+                                  decoration: const BoxDecoration(
+                                      shape: BoxShape.circle),
+                                  child: Icon(Icons.image_not_supported,
+                                      color:
+                                          Theme.of(context).primaryColorDark),
+                                ),
+                          const SizedBox(width: 8.0),
+                          Expanded(
+                            child: Text(
+                              exuniq[index].name,
+                              textScaleFactor: 1.4,
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             );
@@ -624,7 +605,7 @@ class _ExerciseFilterState extends State<ExerciseFilter>
               height: 0.5,
               child: Container(
                 alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(horizontal: 10),
+                margin: const EdgeInsets.symmetric(horizontal: 10),
                 height: 0.5,
                 color: Theme.of(context).primaryColorDark,
               ),
@@ -637,7 +618,7 @@ class _ExerciseFilterState extends State<ExerciseFilter>
   }
 
   Widget exp1() {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       child:
           Consumer<ExercisesdataProvider>(builder: (context, provider, child) {
@@ -679,7 +660,7 @@ class _ExerciseFilterState extends State<ExerciseFilter>
   }
 
   Widget exp2() {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       child:
           Consumer<ExercisesdataProvider>(builder: (context, provider, child) {
@@ -745,90 +726,86 @@ class _ExerciseFilterState extends State<ExerciseFilter>
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 4.0),
-              child: Container(
-                child: Consumer<ExercisesdataProvider>(
-                    builder: (context, provider, child) {
-                  return ExpandablePanel(
-                    controller: _menucontroller,
-                    theme: ExpandableThemeData(
-                        headerAlignment: ExpandablePanelHeaderAlignment.center,
-                        hasIcon: false,
-                        iconColor: Theme.of(context).primaryColorLight,
-                        tapHeaderToExpand: false),
-                    header: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            provider.setfiltmenu(1);
-                            _menucontroller.expanded = true;
-                          },
-                          child: Card(
-                            color: provider.filtmenu == 1
-                                ? Theme.of(context).primaryColor
-                                : Theme.of(context).cardColor,
-                            child: Container(
-                              width: MediaQuery.of(context).size.width / 2 - 10,
-                              height:
-                                  _appbarWidget().preferredSize.height * 2 / 3,
-                              child: Center(
-                                child: Text(
-                                  provider.tags.indexOf("All") != -1
-                                      ? "운동부위"
-                                      : '${provider.tags.toString().replaceAll('[', '').replaceAll(']', '')}',
-                                  textScaleFactor: 1.5,
-                                  style: TextStyle(
-                                      color: provider.filtmenu == 1
-                                          ? Theme.of(context).buttonColor
-                                          : Theme.of(context)
-                                              .primaryColorLight),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+              child: Consumer<ExercisesdataProvider>(
+                  builder: (context, provider, child) {
+                return ExpandablePanel(
+                  controller: _menucontroller,
+                  theme: ExpandableThemeData(
+                      headerAlignment: ExpandablePanelHeaderAlignment.center,
+                      hasIcon: false,
+                      iconColor: Theme.of(context).primaryColorLight,
+                      tapHeaderToExpand: false),
+                  header: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          provider.setfiltmenu(1);
+                          _menucontroller.expanded = true;
+                        },
+                        child: Card(
+                          color: provider.filtmenu == 1
+                              ? Theme.of(context).primaryColor
+                              : Theme.of(context).cardColor,
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width / 2 - 10,
+                            height:
+                                _appbarWidget().preferredSize.height * 2 / 3,
+                            child: Center(
+                              child: Text(
+                                provider.tags.indexOf("All") != -1
+                                    ? "운동부위"
+                                    : '${provider.tags.toString().replaceAll('[', '').replaceAll(']', '')}',
+                                textScaleFactor: 1.5,
+                                style: TextStyle(
+                                    color: provider.filtmenu == 1
+                                        ? Theme.of(context).highlightColor
+                                        : Theme.of(context).primaryColorLight),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            provider.setfiltmenu(2);
-                            _menucontroller.expanded = true;
-                          },
-                          child: Card(
-                            color: provider.filtmenu == 2
-                                ? Theme.of(context).primaryColor
-                                : Theme.of(context).cardColor,
-                            child: Container(
-                              width: MediaQuery.of(context).size.width / 2 - 10,
-                              height:
-                                  _appbarWidget().preferredSize.height * 2 / 3,
-                              child: Center(
-                                child: Text(
-                                  provider.tags2.indexOf("All") != -1
-                                      ? "운동유형"
-                                      : '${provider.tags2.toString().replaceAll('[', '').replaceAll(']', '')}',
-                                  textScaleFactor: 1.5,
-                                  style: TextStyle(
-                                      color: provider.filtmenu == 2
-                                          ? Theme.of(context).buttonColor
-                                          : Theme.of(context)
-                                              .primaryColorLight),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          provider.setfiltmenu(2);
+                          _menucontroller.expanded = true;
+                        },
+                        child: Card(
+                          color: provider.filtmenu == 2
+                              ? Theme.of(context).primaryColor
+                              : Theme.of(context).cardColor,
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width / 2 - 10,
+                            height:
+                                _appbarWidget().preferredSize.height * 2 / 3,
+                            child: Center(
+                              child: Text(
+                                provider.tags2.indexOf("All") != -1
+                                    ? "운동유형"
+                                    : '${provider.tags2.toString().replaceAll('[', '').replaceAll(']', '')}',
+                                textScaleFactor: 1.5,
+                                style: TextStyle(
+                                    color: provider.filtmenu == 2
+                                        ? Theme.of(context).highlightColor
+                                        : Theme.of(context).primaryColorLight),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                    collapsed: Container(),
-                    expanded: provider.filtmenu == 1
-                        ? exp1()
-                        : provider.filtmenu == 2
-                            ? exp2()
-                            : Container(),
-                  );
-                }),
-              ),
+                      ),
+                    ],
+                  ),
+                  collapsed: Container(),
+                  expanded: provider.filtmenu == 1
+                      ? exp1()
+                      : provider.filtmenu == 2
+                          ? exp2()
+                          : Container(),
+                );
+              }),
             ),
             Expanded(
                 child: NotificationListener<ScrollNotification>(

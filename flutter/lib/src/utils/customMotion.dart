@@ -23,13 +23,12 @@ class _CustomMotionState extends State<CustomMotion> {
   bool isClosed = true;
 
   void animationListener() {
-    if ((controller.ratio == 0.8) && widget.onClose != null && !isClosed) {
+    if ((controller.ratio == 0.8) && !isClosed) {
       isClosed = true;
       widget.onClose();
     }
 
     if ((controller.ratio == controller.startActionPaneExtentRatio) &&
-        widget.onOpen != null &&
         isClosed) {
       isClosed = false;
       widget.onOpen();

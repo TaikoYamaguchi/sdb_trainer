@@ -8,13 +8,12 @@ class ThemeProvider extends ChangeNotifier {
   get userThemeDark => _userThemeDark;
 
   Future<double> getUserFontsize() async {
-    final storage = new FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     _userFontSize = 0.8;
     try {
       var _fontsize = await storage.read(key: "sdb_fontSize");
       if (_fontsize != null && _fontsize != "") {
         _userFontSize = double.parse(_fontsize);
-        print(_fontsize);
         notifyListeners();
         return double.parse(_fontsize);
       } else {
@@ -30,9 +29,9 @@ class ThemeProvider extends ChangeNotifier {
   }
 
   setUserFontsize(double fontSize) async {
-    final storage = new FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     try {
-      var _userFontsize = await storage.write(
+      await storage.write(
           key: "sdb_fontSize", value: fontSize.toStringAsFixed(1));
       _userFontSize = fontSize;
     } catch (e) {
@@ -42,7 +41,7 @@ class ThemeProvider extends ChangeNotifier {
   }
 
   Future<String> getUserTheme() async {
-    final storage = new FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     _userThemeDark = "white";
     try {
       var _userThemeStorage = await storage.read(key: "sdb_theme");
@@ -68,11 +67,9 @@ class ThemeProvider extends ChangeNotifier {
   }
 
   setUserTheme(String theme) async {
-    final storage = new FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     try {
-      print(theme);
-      var _userThemeStorage =
-          await storage.write(key: "sdb_theme", value: theme);
+      await storage.write(key: "sdb_theme", value: theme);
       _userThemeDark = theme;
     } catch (e) {
       _userThemeDark = theme;

@@ -1,11 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/app.dart';
-import 'package:sdb_trainer/pages/login.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
@@ -23,10 +19,8 @@ import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/themeMode.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
-import 'package:sdb_trainer/src/utils/firebase_fcm.dart';
 import 'package:sdb_trainer/src/utils/notification.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -124,7 +118,7 @@ class MyApp extends StatelessWidget {
               primaryColorLight: Colors.black, //fontcolor
               primaryColorDark: Color(0xFFB5B9C2), // grey color
               indicatorColor: const Color(0xfff2f3f5), // navigation color
-              buttonColor: Colors.white, // in primary color text white
+              highlightColor: Colors.white, // in primary color text white
               textSelectionTheme: TextSelectionThemeData(
                 cursorColor: const Color(0xff7a28cb),
                 selectionColor: const Color(0xff7a28cb),
@@ -144,7 +138,7 @@ class MyApp extends StatelessWidget {
               primaryColorLight: Colors.white,
               primaryColorDark: Color(0xFF717171),
               indicatorColor: const Color(0xFF212121),
-              buttonColor: Colors.white,
+              highlightColor: Colors.white,
               textSelectionTheme: TextSelectionThemeData(
                 cursorColor: const Color(0xff7a28cb),
                 selectionColor: const Color(0xff7a28cb),

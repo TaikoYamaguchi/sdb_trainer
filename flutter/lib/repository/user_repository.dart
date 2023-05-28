@@ -12,9 +12,9 @@ class UserService {
   final String token;
   UserService({required this.token});
   Future<String> _loadUserdataFromServer() async {
-    final storage = new FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
 
-    var formData = new Map<String, dynamic>();
+    var formData = Map<String, dynamic>();
     formData["access_token"] = token;
     formData["token_type"] = "access";
     String? user_email = await storage.read(key: "sdb_email");
@@ -53,7 +53,7 @@ class UserLogin {
   final String password;
   UserLogin({required this.userEmail, required this.password});
   Future<String> _userLoginFromServer() async {
-    var formData = new Map<String, dynamic>();
+    var formData = Map<String, dynamic>();
     formData["username"] = userEmail;
     formData["passowrd"] = password;
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/token");
@@ -64,12 +64,10 @@ class UserLogin {
       String jsonString = utf8.decode(response.bodyBytes);
       final jsonResponse = json.decode(jsonString);
 
-      final storage = new FlutterSecureStorage();
+      const storage = FlutterSecureStorage();
       await storage.write(key: "sdb_email", value: userEmail);
       await storage.write(
           key: "sdb_token", value: jsonResponse["access_token"]);
-      String? user_email = await storage.read(key: "sdb_email");
-      String? user_token = await storage.read(key: "sdb_token");
 
       return utf8.decode(response.bodyBytes);
     } else {
@@ -99,12 +97,10 @@ class UserLoginKakao {
       String jsonString = utf8.decode(response.bodyBytes);
       final jsonResponse = json.decode(jsonString);
 
-      final storage = new FlutterSecureStorage();
+      const storage = FlutterSecureStorage();
       await storage.write(key: "sdb_email", value: userEmail);
       await storage.write(
           key: "sdb_token", value: jsonResponse["access_token"]);
-      String? user_email = await storage.read(key: "sdb_email");
-      String? user_token = await storage.read(key: "sdb_token");
 
       return utf8.decode(response.bodyBytes);
     } else {
@@ -150,7 +146,7 @@ class UserSignUp {
       required this.password,
       required this.bodyStats});
   Future<String> _userSignUpFromServer() async {
-    var formData = new Map<String, dynamic>();
+    var formData = Map<String, dynamic>();
     formData["username"] = userName;
 
     formData["nickname"] = userNickname;
@@ -175,12 +171,10 @@ class UserSignUp {
       String jsonString = utf8.decode(response.bodyBytes);
       final jsonResponse = json.decode(jsonString);
 
-      final storage = new FlutterSecureStorage();
+      const storage = FlutterSecureStorage();
       await storage.write(key: "sdb_email", value: userEmail);
       await storage.write(
           key: "sdb_token", value: jsonResponse["access_token"]);
-      String? user_email = await storage.read(key: "sdb_email");
-      String? user_token = await storage.read(key: "sdb_token");
 
       return utf8.decode(response.bodyBytes);
     } else if (response.statusCode == 404) {
@@ -206,7 +200,7 @@ class UserSignUp {
 
 class UserLogOut {
   static logOut() async {
-    final storage = new FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     await storage.delete(key: "sdb_email");
     await storage.delete(key: "sdb_token");
   }
@@ -233,7 +227,7 @@ class UserEdit {
       required this.userImage,
       required this.userFavorExercise});
   Future<String> _userEditFromServer() async {
-    var formData = new Map<String, dynamic>();
+    var formData = Map<String, dynamic>();
     formData["username"] = userName;
     formData["nickname"] = userNickname;
     formData["image"] = userImage;
@@ -272,8 +266,6 @@ class UserInfo {
     var response = await http.get(url);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
       return utf8.decode(response.bodyBytes);
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
@@ -304,8 +296,6 @@ class UserNickname {
     var response = await http.get(url);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
       return utf8.decode(response.bodyBytes);
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
@@ -336,8 +326,6 @@ class UserNicknameAll {
     var response = await http.get(url);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
       return utf8.decode(response.bodyBytes);
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
@@ -365,8 +353,6 @@ class UserAll {
     var response = await http.get(url);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
       return utf8.decode(response.bodyBytes);
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
@@ -399,7 +385,7 @@ class UserLike {
       required this.status,
       required this.disorlike});
   Future<String> _userLikeFromServer() async {
-    var formData = new Map<String, dynamic>();
+    var formData = Map<String, dynamic>();
     formData["liked_email"] = liked_email;
     formData["email"] = user_email;
     formData["status"] = status;
@@ -410,8 +396,6 @@ class UserLike {
     var response = await http.patch(url, body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
 
       return utf8.decode(response.bodyBytes);
     } else {
@@ -429,15 +413,13 @@ class UserLike {
 
 class UserLikeFriends {
   Future<String> _userLikeFriendsFromServer() async {
-    final storage = new FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     String? user_email = await storage.read(key: "sdb_email");
     var url =
         Uri.parse(LocalHost.getLocalHost() + "/api/friends/${user_email}");
     var response = await http.get(url);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
 
       return utf8.decode(response.bodyBytes);
     } else {
@@ -467,8 +449,6 @@ class UserPhoneCheck {
     var response = await http.get(url);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
       return utf8.decode(response.bodyBytes);
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
@@ -494,11 +474,11 @@ class UserImageEdit {
   final dynamic file;
   UserImageEdit({required this.file});
   Future<Map<String, dynamic>> _patchUserImageFromServer() async {
-    final storage = new FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     String? token = await storage.read(key: "sdb_token");
     var formData =
         FormData.fromMap({'file': await MultipartFile.fromFile(file)});
-    var dio = new Dio();
+    var dio = Dio();
     try {
       dio.options.contentType = 'multipart/form-data';
       dio.options.maxRedirects.isFinite;
@@ -517,6 +497,7 @@ class UserImageEdit {
 
   Future<User?> patchUserImage() async {
     var jsonString = await _patchUserImageFromServer();
+    // ignore: unnecessary_null_comparison
     if (jsonString == null) {
       return null;
     } else {
@@ -530,9 +511,9 @@ class UserFCMTokenEdit {
   final String fcmToken;
   UserFCMTokenEdit({required this.fcmToken});
   Future<String> _patchUserFCMTokenFromServer() async {
-    var formData = new Map<String, dynamic>();
+    var formData = Map<String, dynamic>();
     formData["fcm_token"] = fcmToken;
-    final storage = new FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     String? token = await storage.read(key: "sdb_token");
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/v1/user/fcm_token");
     var response = await http.patch(
@@ -544,8 +525,6 @@ class UserFCMTokenEdit {
     );
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
 
       return utf8.decode(response.bodyBytes);
     } else {
@@ -564,8 +543,7 @@ class UserFCMTokenEdit {
 
 class UserDelete {
   Future<String> _deleteUserFromServer() async {
-    var formData = new Map<String, dynamic>();
-    final storage = new FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     String? token = await storage.read(key: "sdb_token");
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/userDelete");
     var response = await http.delete(
@@ -576,8 +554,6 @@ class UserDelete {
     );
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
 
       return utf8.decode(response.bodyBytes);
     } else {
@@ -603,14 +579,12 @@ class UserFind {
   final String phone_number;
   UserFind({required this.phone_number});
   Future<String> _smsByPhoneFromServer() async {
-    var formData = new Map<String, dynamic>();
+    var formData = Map<String, dynamic>();
     formData["phone_number"] = phone_number;
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/userFind");
     var response = await http.patch(url, body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
       return utf8.decode(response.bodyBytes);
     } else if (response.statusCode == 401) {
       showToast("존재 하지 않는 번호입니다.");
@@ -627,6 +601,7 @@ class UserFind {
     if (jsonResponse == null) {
       return null;
     }
+    return null;
   }
 }
 
@@ -635,15 +610,13 @@ class UserFindVerification {
   final String verify_code;
   UserFindVerification({required this.phone_number, required this.verify_code});
   Future<String> _smsVerificationFromServer() async {
-    var formData = new Map<String, dynamic>();
+    var formData = Map<String, dynamic>();
     formData["phone_number"] = phone_number;
     formData["verifyCode"] = verify_code;
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/userFindVerify");
     var response = await http.patch(url, body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
       return utf8.decode(response.bodyBytes);
     } else if (response.statusCode == 401) {
       showToast("인증 번호를 확인해주세요.");
@@ -671,9 +644,9 @@ class UserBodyStatEdit {
   final List<BodyStat> bodyStat;
   UserBodyStatEdit({required this.bodyStat});
   Future<String> _patchUserBodyStatFromServer() async {
-    var formData = new Map<String, dynamic>();
+    var formData = Map<String, dynamic>();
     formData["body_stats"] = bodyStat;
-    final storage = new FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     String? token = await storage.read(key: "sdb_token");
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/v1/user/bodystat");
     var response = await http.patch(
@@ -685,8 +658,6 @@ class UserBodyStatEdit {
     );
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
 
       return utf8.decode(response.bodyBytes);
     } else {

@@ -1,13 +1,7 @@
 import 'dart:async' show Future;
-import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 import 'package:sdb_trainer/localhost.dart';
 import 'package:http/http.dart' as http;
-import 'dart:io';
-import 'package:dio/dio.dart';
-
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:sdb_trainer/src/model/historydata.dart';
 
 class VersionService {
   static Future<String> _loadVersionDataFromServer() async {

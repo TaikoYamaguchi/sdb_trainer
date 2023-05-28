@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:sdb_trainer/providers/userdata.dart';
 import 'dart:math' as math;
-
 import 'package:sdb_trainer/providers/themeMode.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
-import 'package:sdb_trainer/repository/workout_repository.dart';
-import 'package:sdb_trainer/src/utils/util.dart';
 
+// ignore: must_be_immutable
 class TimeInputField extends StatefulWidget {
   int duration;
   int rindex;
@@ -37,13 +34,11 @@ class _TimeInputFieldState extends State<TimeInputField> {
   ];
 
   var _workoutdataProvider;
-  var _userdataProvider;
   var _themeProvider;
 
   @override
   void initState() {
     String stringed = widget.duration.toString();
-    print(stringed);
     for (int i = 0; i < 6 - stringed.length; i++) {
       timectrllist[i].text = '0';
     }
@@ -53,21 +48,10 @@ class _TimeInputFieldState extends State<TimeInputField> {
     super.initState();
   }
 
-  void _editWorkoutwCheck() async {
-    WorkoutEdit(
-            id: _workoutdataProvider.workoutdata.id,
-            user_email: _userdataProvider.userdata.email,
-            routinedatas: _workoutdataProvider.workoutdata.routinedatas)
-        .editWorkout()
-        .then((data) =>
-            data["user_email"] != null ? null : showToast("입력을 확인해주세요"));
-  }
-
   @override
   Widget build(BuildContext context) {
     _workoutdataProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
-    _userdataProvider = Provider.of<UserdataProvider>(context, listen: false);
     _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
 
     void gather() {
@@ -78,7 +62,6 @@ class _TimeInputFieldState extends State<TimeInputField> {
               (timectrllist[3].text == "" ? '0' : timectrllist[3].text) +
               (timectrllist[4].text == "" ? '0' : timectrllist[4].text) +
               (timectrllist[5].text == "" ? '0' : timectrllist[5].text);
-      print(int.parse(complete));
       _workoutdataProvider.repscheck(
           widget.rindex, widget.pindex, widget.index, int.parse(complete));
     }
@@ -88,7 +71,7 @@ class _TimeInputFieldState extends State<TimeInputField> {
         Flexible(
           child: TextFormField(
             controller: timectrllist[0],
-            keyboardType: TextInputType.numberWithOptions(decimal: false),
+            keyboardType: const TextInputType.numberWithOptions(decimal: false),
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: Theme.of(context).primaryColorLight,
@@ -98,11 +81,11 @@ class _TimeInputFieldState extends State<TimeInputField> {
                 hintStyle:
                     TextStyle(color: Theme.of(context).primaryColorLight)),
             inputFormatters: [
-              new LengthLimitingTextInputFormatter(1),
+              LengthLimitingTextInputFormatter(1),
             ],
             onChanged: (text) {
               gather();
-              if (text.length > 0) {
+              if (text.isNotEmpty) {
                 FocusScope.of(context).nextFocus();
               }
             },
@@ -111,7 +94,7 @@ class _TimeInputFieldState extends State<TimeInputField> {
         Flexible(
           child: TextFormField(
             controller: timectrllist[1],
-            keyboardType: TextInputType.numberWithOptions(decimal: false),
+            keyboardType: const TextInputType.numberWithOptions(decimal: false),
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: Theme.of(context).primaryColorLight,
@@ -121,7 +104,7 @@ class _TimeInputFieldState extends State<TimeInputField> {
                 hintStyle:
                     TextStyle(color: Theme.of(context).primaryColorLight)),
             inputFormatters: [
-              new LengthLimitingTextInputFormatter(1),
+              LengthLimitingTextInputFormatter(1),
             ],
             onChanged: (text) {
               gather();
@@ -140,7 +123,7 @@ class _TimeInputFieldState extends State<TimeInputField> {
         Flexible(
           child: TextFormField(
             controller: timectrllist[2],
-            keyboardType: TextInputType.numberWithOptions(decimal: false),
+            keyboardType: const TextInputType.numberWithOptions(decimal: false),
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: Theme.of(context).primaryColorLight,
@@ -150,7 +133,7 @@ class _TimeInputFieldState extends State<TimeInputField> {
                 hintStyle:
                     TextStyle(color: Theme.of(context).primaryColorLight)),
             inputFormatters: [
-              new LengthLimitingTextInputFormatter(1),
+              LengthLimitingTextInputFormatter(1),
             ],
             onChanged: (text) {
               gather();
@@ -163,7 +146,7 @@ class _TimeInputFieldState extends State<TimeInputField> {
         Flexible(
           child: TextFormField(
             controller: timectrllist[3],
-            keyboardType: TextInputType.numberWithOptions(decimal: false),
+            keyboardType: const TextInputType.numberWithOptions(decimal: false),
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: Theme.of(context).primaryColorLight,
@@ -173,7 +156,7 @@ class _TimeInputFieldState extends State<TimeInputField> {
                 hintStyle:
                     TextStyle(color: Theme.of(context).primaryColorLight)),
             inputFormatters: [
-              new LengthLimitingTextInputFormatter(1),
+              LengthLimitingTextInputFormatter(1),
             ],
             onChanged: (text) {
               gather();
@@ -192,7 +175,7 @@ class _TimeInputFieldState extends State<TimeInputField> {
         Flexible(
           child: TextFormField(
             controller: timectrllist[4],
-            keyboardType: TextInputType.numberWithOptions(decimal: false),
+            keyboardType: const TextInputType.numberWithOptions(decimal: false),
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: Theme.of(context).primaryColorLight,
@@ -202,7 +185,7 @@ class _TimeInputFieldState extends State<TimeInputField> {
                 hintStyle:
                     TextStyle(color: Theme.of(context).primaryColorLight)),
             inputFormatters: [
-              new LengthLimitingTextInputFormatter(1),
+              LengthLimitingTextInputFormatter(1),
             ],
             onChanged: (text) {
               gather();
@@ -215,7 +198,7 @@ class _TimeInputFieldState extends State<TimeInputField> {
         Flexible(
           child: TextFormField(
             controller: timectrllist[5],
-            keyboardType: TextInputType.numberWithOptions(decimal: false),
+            keyboardType: const TextInputType.numberWithOptions(decimal: false),
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: Theme.of(context).primaryColorLight,
@@ -225,7 +208,7 @@ class _TimeInputFieldState extends State<TimeInputField> {
                 hintStyle:
                     TextStyle(color: Theme.of(context).primaryColorLight)),
             inputFormatters: [
-              new LengthLimitingTextInputFormatter(1),
+              LengthLimitingTextInputFormatter(1),
             ],
             onChanged: (text) {
               gather();
@@ -351,17 +334,5 @@ class TimeTextInputFormatter extends TextInputFormatter {
     }
 
     return oldValue;
-  }
-
-  @override
-  void dispose() {
-    print('dispose');
-    super.dispose();
-  }
-
-  @override
-  void deactivate() {
-    print('deactivate');
-    super.deactivate();
   }
 }

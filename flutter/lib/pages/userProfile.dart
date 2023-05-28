@@ -1,23 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
-import 'package:sdb_trainer/src/utils/alerts.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/userProfileNickname.dart';
 import 'package:sdb_trainer/pages/userProfileBody.dart';
-import 'package:sdb_trainer/pages/userProfileGoal.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class UserProfile extends StatefulWidget {
-  UserProfile({Key? key}) : super(key: key);
+  const UserProfile({Key? key}) : super(key: key);
 
   @override
   _UserProfileState createState() => _UserProfileState();
@@ -26,9 +21,7 @@ class UserProfile extends StatefulWidget {
 class _UserProfileState extends State<UserProfile> {
   var _userProvider;
   var _PopProvider;
-  var _selectImage;
-  File? _image;
-  final ImagePicker _picker = ImagePicker();
+
   @override
   void initState() {
     super.initState();
@@ -57,25 +50,14 @@ class _UserProfileState extends State<UserProfile> {
     });
   }
 
-  Future<void> _pickImg() async {
-    final XFile? selectImage =
-        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 10);
-    if (selectImage != null) {
-      dynamic sendData = selectImage.path;
-      UserImageEdit(file: sendData).patchUserImage().then((data) {
-        _userProvider.setUserdata(data);
-      });
-    }
-  }
-
   PreferredSizeWidget _appbarWidget() {
     var _btnDisabled = false;
     return PreferredSize(
-        preferredSize: Size.fromHeight(40.0), // here the desired height
+        preferredSize: const Size.fromHeight(40.0), // here the desired height
         child: AppBar(
           elevation: 0.0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_outlined),
+            icon: const Icon(Icons.arrow_back_ios_outlined),
             color: Theme.of(context).primaryColorLight,
             onPressed: () {
               _btnDisabled == true
@@ -93,29 +75,6 @@ class _UserProfileState extends State<UserProfile> {
           ),
           backgroundColor: Theme.of(context).canvasColor,
         ));
-  }
-
-  _showMyDialog() async {
-    var result = await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return showsimpleAlerts(
-            layer: 8,
-            eindex: -1,
-            rindex: -1,
-          );
-        });
-    if (result == true) {
-      final storage = FlutterSecureStorage();
-
-      UserDelete().deleteUser().then((data) {
-        if (data!.email != "") {
-          _displayUserLogoutAfterDeleteAlert();
-        }
-      });
-      storage.deleteAll();
-      print('storage delete ok');
-    }
   }
 
   void _displayUserDeleteAlert() {
@@ -139,7 +98,7 @@ class _UserProfileState extends State<UserProfile> {
                     textAlign: TextAlign.center,
                     style:
                         TextStyle(color: Theme.of(context).primaryColorLight)),
-                Text('데이터를 지우면 복구 할 수 없어요',
+                const Text('데이터를 지우면 복구 할 수 없어요',
                     textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.grey)),
@@ -168,7 +127,7 @@ class _UserProfileState extends State<UserProfile> {
                     textAlign: TextAlign.center,
                     style:
                         TextStyle(color: Theme.of(context).primaryColorLight)),
-                content: Column(
+                content: const Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text('더 나은 모습으로 발전할게요',
@@ -195,11 +154,11 @@ class _UserProfileState extends State<UserProfile> {
               textStyle: TextStyle(
                 color: Theme.of(context).primaryColorLight,
               ),
-              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-              padding: EdgeInsets.all(12.0),
+              disabledForegroundColor: const Color.fromRGBO(246, 58, 64, 20),
+              padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {
-              final storage = FlutterSecureStorage();
+              const storage = FlutterSecureStorage();
 
               UserDelete().deleteUser().then((data) {
                 if (data!.email != "") {
@@ -208,7 +167,6 @@ class _UserProfileState extends State<UserProfile> {
                 }
               });
               storage.deleteAll();
-              print('storage delete ok');
             },
             child: Text("탈퇴",
                 textScaleFactor: 1.7,
@@ -226,8 +184,8 @@ class _UserProfileState extends State<UserProfile> {
               textStyle: TextStyle(
                 color: Theme.of(context).primaryColorLight,
               ),
-              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-              padding: EdgeInsets.all(12.0),
+              disabledForegroundColor: const Color.fromRGBO(246, 58, 64, 20),
+              padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {
               userLogOut(context);
@@ -245,7 +203,7 @@ class _UserProfileState extends State<UserProfile> {
           FocusScope.of(context).unfocus();
         },
         onPanUpdate: (details) {
-          if (details.delta.dx > 0 && btnDisabled == false) {
+          if (details.delta.dx > 20 && btnDisabled == false) {
             btnDisabled = true;
             Navigator.of(context).pop();
             print("Dragging in +X direction");
@@ -345,7 +303,7 @@ class _UserProfileState extends State<UserProfile> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("회원탈퇴",
+                        const Text("회원탈퇴",
                             textScaleFactor: 1.1,
                             style: TextStyle(color: Colors.grey)),
                         Icon(Icons.chevron_right,
@@ -358,7 +316,7 @@ class _UserProfileState extends State<UserProfile> {
                   displayPhotoDialog(context);
                 },
                 child: _userProvider.userdata.image == ""
-                    ? Icon(
+                    ? const Icon(
                         Icons.account_circle,
                         color: Colors.grey,
                         size: 200.0,
@@ -372,7 +330,7 @@ class _UserProfileState extends State<UserProfile> {
                             width: 200,
                             decoration: BoxDecoration(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(50)),
+                                    const BorderRadius.all(Radius.circular(50)),
                                 image: DecorationImage(
                                   image: imageProivder,
                                   fit: BoxFit.cover,

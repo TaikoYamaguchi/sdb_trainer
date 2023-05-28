@@ -1,12 +1,9 @@
-import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter/foundation.dart'
-    show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
 void fcmSetting() async {
   // firebase core 기능 사용을 위한 필수 initializing
@@ -42,7 +39,7 @@ void fcmSetting() async {
           AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
 
-  await flutterLocalNotificationsPlugin.initialize(InitializationSettings(
+  await flutterLocalNotificationsPlugin.initialize(const InitializationSettings(
       android: AndroidInitializationSettings('@mipmap/ic_launcher'),
       iOS: DarwinInitializationSettings(
           onDidReceiveLocalNotification: onDidReceiveLocalNotification)));
@@ -83,7 +80,7 @@ void fcmSetting() async {
     if (isFCMEnabled == null || isFCMEnabled) {
       // firebase token 발급
       String? firebaseToken = await FirebaseMessaging.instance.getToken();
-      final storage = new FlutterSecureStorage();
+      const storage = FlutterSecureStorage();
       print("firebaseToken: $firebaseToken");
 
       if (firebaseToken != null) {

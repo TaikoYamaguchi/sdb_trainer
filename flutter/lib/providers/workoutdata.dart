@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
@@ -185,7 +183,7 @@ class WorkoutdataProvider extends ChangeNotifier {
   }
 
   dataBU(rindex) {
-    backupdata = new List.from(_workoutdata.routinedatas[rindex].exercises);
+    backupdata = List.from(_workoutdata.routinedatas[rindex].exercises);
   }
 
   changebudata(rindex) {
@@ -194,7 +192,7 @@ class WorkoutdataProvider extends ChangeNotifier {
   }
 
   setsplus(rindex, eindex, lastset) {
-    _workoutdata.routinedatas[rindex].exercises[eindex].sets.add(new Sets(
+    _workoutdata.routinedatas[rindex].exercises[eindex].sets.add(Sets(
         index: 0.0,
         weight: lastset.weight,
         reps: lastset.reps,
@@ -209,7 +207,7 @@ class WorkoutdataProvider extends ChangeNotifier {
         .plans[_workoutdata.routinedatas[rindex].exercises[0].progress]
         .exercises[eindex]
         .sets
-        .add(new Sets(index: 0.0, weight: 0.0, reps: 1, ischecked: false));
+        .add(Sets(index: 0.0, weight: 0.0, reps: 1, ischecked: false));
     notifyListeners();
   }
 }

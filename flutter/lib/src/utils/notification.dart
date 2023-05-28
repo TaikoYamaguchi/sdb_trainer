@@ -6,7 +6,7 @@ initLocalNotificationPlugin() async {
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('launch_background');
   DarwinInitializationSettings initializationSettingsiOS =
-      DarwinInitializationSettings(
+      const DarwinInitializationSettings(
           requestAlertPermission: true,
           requestBadgePermission: true,
           requestSoundPermission: true);
@@ -28,7 +28,7 @@ Future<void> showNotificationWithChronometer(DateTime _starttime) async {
           usesChronometer: true,
           ongoing: true,
           autoCancel: false);
-  var iosDetails = DarwinNotificationDetails(
+  var iosDetails = const DarwinNotificationDetails(
     presentAlert: true,
     presentBadge: true,
     presentSound: true,

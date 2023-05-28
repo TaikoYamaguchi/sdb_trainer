@@ -5,12 +5,11 @@ import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/repository/famous_repository.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
-import 'package:sdb_trainer/providers/routinetime.dart';
-import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:async';
 
+// ignore: must_be_immutable
 class ProgramUpload extends StatefulWidget {
   Routinedatas program;
   ProgramUpload({
@@ -25,12 +24,13 @@ class ProgramUpload extends StatefulWidget {
 class _ProgramUploadState extends State<ProgramUpload> {
   var _userProvider;
   var _famousdataProvider;
-  var _workoutProvider;
-  var _routinetimeProvider;
   var _btnDisabled;
-  TextEditingController _famousimageCtrl = TextEditingController(text: "");
-  TextEditingController _programtitleCtrl = TextEditingController(text: "");
-  TextEditingController _programcommentCtrl = TextEditingController(text: "");
+  final TextEditingController _famousimageCtrl =
+      TextEditingController(text: "");
+  final TextEditingController _programtitleCtrl =
+      TextEditingController(text: "");
+  final TextEditingController _programcommentCtrl =
+      TextEditingController(text: "");
   File? _image;
   final ImagePicker _picker = ImagePicker();
   var _selectImage;
@@ -65,26 +65,14 @@ class _ProgramUploadState extends State<ProgramUpload> {
     });
   }
 
-  Future<void> _pickImg() async {
-    final XFile? selectImage =
-        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 10);
-    if (selectImage != null) {
-      _image = File(selectImage.path);
-      // dynamic sendData = selectImage.path;
-      // UserImageEdit(file: sendData).patchUserImage().then((data) {
-      //    _userProvider.setUserdata(data);
-      // });
-    }
-  }
-
   PreferredSizeWidget _appbarWidget() {
     _btnDisabled = false;
     return PreferredSize(
-        preferredSize: Size.fromHeight(40.0), // here the desired height
+        preferredSize: const Size.fromHeight(40.0), // here the desired height
         child: AppBar(
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_outlined),
+            icon: const Icon(Icons.arrow_back_ios_outlined),
             color: Theme.of(context).primaryColorLight,
             onPressed: () {
               _btnDisabled == true
@@ -109,8 +97,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
   Widget _exerciseDoneWidget() {
     return Column(
       children: [
-        Container(
-            child: Expanded(
+        Expanded(
           child: SingleChildScrollView(
             child: Column(children: [
               Container(
@@ -128,13 +115,11 @@ class _ProgramUploadState extends State<ProgramUpload> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      child: Text("Program 난이도:",
-                          textScaleFactor: 2.1,
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColorLight,
-                              fontWeight: FontWeight.bold)),
-                    ),
+                    Text("Program 난이도:",
+                        textScaleFactor: 2.1,
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorLight,
+                            fontWeight: FontWeight.bold)),
                     SizedBox(
                         width: MediaQuery.of(context).size.width * 2 / 5,
                         child: DropdownButtonFormField(
@@ -184,54 +169,52 @@ class _ProgramUploadState extends State<ProgramUpload> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      child: Text("Program 목적:",
-                          textScaleFactor: 2.1,
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColorLight,
-                              fontWeight: FontWeight.bold)),
-                    ),
+                    Text("Program 목적:",
+                        textScaleFactor: 2.1,
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorLight,
+                            fontWeight: FontWeight.bold)),
                     /*
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width * 2 / 5,
-                        child: DropdownButtonFormField(
-                          isExpanded: true,
-                          decoration: InputDecoration(
-                            filled: true,
-                            enabledBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              borderSide:
-                                  BorderSide(color: Theme.of(context).primaryColorLight, width: 3),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 3),
-                            ),
-                          ),
-                          hint: Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                '목적',
-                                style: TextStyle(color: Theme.of(context).primaryColorLight),
-                              )),
-                          items: items2
-                              .map((item) => DropdownMenuItem<String>(
-                                  value: item,
-                                  child: Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        item,
-                                        style: TextStyle(color: Theme.of(context).primaryColorLight),
-                                      ))))
-                              .toList(),
-                          onChanged: (item) =>
-                              setState(() => selectedItem2 = item as String),
-                        )
-                    ),
+                SizedBox(
+                    width: MediaQuery.of(context).size.width * 2 / 5,
+                    child: DropdownButtonFormField(
+                      isExpanded: true,
+                      decoration: InputDecoration(
+                        filled: true,
+                        enabledBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide:
+                              BorderSide(color: Theme.of(context).primaryColorLight, width: 3),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).primaryColor,
+                              width: 3),
+                        ),
+                      ),
+                      hint: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            '목적',
+                            style: TextStyle(color: Theme.of(context).primaryColorLight),
+                          )),
+                      items: items2
+                          .map((item) => DropdownMenuItem<String>(
+                              value: item,
+                              child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    item,
+                                    style: TextStyle(color: Theme.of(context).primaryColorLight),
+                                  ))))
+                          .toList(),
+                      onChanged: (item) =>
+                          setState(() => selectedItem2 = item as String),
+                    )
+                ),
 
-                     */
+                 */
                   ],
                 ),
               ),
@@ -249,7 +232,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
               Container(
                 height: 10,
               ),
-              Container(
+              SizedBox(
                 height: 150,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -330,7 +313,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 200,
                 width: MediaQuery.of(context).size.width,
                 child: Padding(
@@ -355,7 +338,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
               ),
             ]),
           ),
-        )),
+        ),
         _exercise_Done_Button()
       ],
     );
@@ -395,7 +378,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
                                 textStyle: TextStyle(
                                   color: Theme.of(context).primaryColorLight,
                                 ),
-                                padding: EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(8.0),
                               ),
                               onPressed: () {
                                 _getImage(ImageSource.camera);
@@ -429,7 +412,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
                                 textStyle: TextStyle(
                                   color: Theme.of(context).primaryColorLight,
                                 ),
-                                padding: EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(8.0),
                               ),
                               onPressed: () {
                                 _getImage(ImageSource.gallery);
@@ -460,7 +443,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
   }
 
   Widget pulposechip() {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Consumer<FamousdataProvider>(builder: (context, provider, child) {
         return ChipsChoice<String>.multiple(
@@ -503,16 +486,16 @@ class _ProgramUploadState extends State<ProgramUpload> {
                 textStyle: TextStyle(
                   color: Theme.of(context).primaryColorLight,
                 ),
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
               ),
               onPressed: () {
                 ProgramPost(
                   image: _famousimageCtrl.text,
-                  routinedata: new Routinedatas(
+                  routinedata: Routinedatas(
                     name: _programtitleCtrl.text,
                     mode: widget.program.mode,
                     exercises: [
-                      new Program(
+                      Program(
                           progress: 0, plans: widget.program.exercises[0].plans)
                     ],
                     routine_time: _programcommentCtrl.text,
@@ -610,9 +593,6 @@ class _ProgramUploadState extends State<ProgramUpload> {
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _famousdataProvider =
         Provider.of<FamousdataProvider>(context, listen: false);
-    _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
-    _routinetimeProvider =
-        Provider.of<RoutineTimeProvider>(context, listen: false);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: _appbarWidget(),

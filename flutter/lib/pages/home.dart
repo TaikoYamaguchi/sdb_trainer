@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
@@ -7,20 +6,16 @@ import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/src/model/historydata.dart';
-import 'package:sdb_trainer/src/model/exercisesdata.dart' as exercisesModel;
 import 'package:sdb_trainer/src/model/userdata.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart' as workoutModel;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/staticPageState.dart';
 import 'package:sdb_trainer/providers/chartIndexState.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
-import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:transition/transition.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -54,11 +49,8 @@ class _HomeState extends State<Home> {
   var _barsGradient;
   final _historyCardcontroller =
       PageController(viewportFraction: 0.9, initialPage: 4242, keepPage: true);
-  var _prefs;
-  String _addexinput = '';
   late var _testdata = _testdata0.exercises;
   var _timer;
-  late List<BarChartGroupData> _cardCoreBarChartGroupData;
   var _isbottomTitleEx = false;
   var _mainFontColor;
 
@@ -104,13 +96,13 @@ class _HomeState extends State<Home> {
         enablePanning: true,
         maximumZoomLevel: 0.7);
 
-    Future.delayed(Duration(seconds: 30)).then((value) {
-      _timer = Timer.periodic(Duration(seconds: 30), (Timer timer) {
+    Future.delayed(const Duration(seconds: 30)).then((value) {
+      _timer = Timer.periodic(const Duration(seconds: 30), (Timer timer) {
         _historyCardIndexCtrl++;
 
         _historyCardcontroller.animateToPage(
           _historyCardIndexCtrl,
-          duration: Duration(milliseconds: 350),
+          duration: const Duration(milliseconds: 350),
           curve: Curves.easeIn,
         );
       });
@@ -131,7 +123,7 @@ class _HomeState extends State<Home> {
     _mainFontColor = Theme.of(context).primaryColorLight;
     _barsGradient = LinearGradient(
       colors: [
-        Color(0xFffc60a8),
+        const Color(0xFffc60a8),
         Theme.of(context).primaryColor,
       ],
       begin: Alignment.bottomCenter,
@@ -145,7 +137,7 @@ class _HomeState extends State<Home> {
         if (provider.exercisesdata != null) {
           return _homeWidget(provider.exercisesdata, context);
         }
-        return Center(
+        return const Center(
           child: CircularProgressIndicator(),
         );
       }),
@@ -155,7 +147,7 @@ class _HomeState extends State<Home> {
   PreferredSizeWidget _appbarWidget() {
     //if (_userProvider.userdata != null) {
     return PreferredSize(
-        preferredSize: Size.fromHeight(40.0), // here the desired height
+        preferredSize: const Size.fromHeight(40.0), // here the desired height
         child: AppBar(
           elevation: 0,
           title:
@@ -166,10 +158,9 @@ class _HomeState extends State<Home> {
                 style: TextStyle(color: _mainFontColor),
               );
             } else {
-              return PreferredSize(
+              return const PreferredSize(
                   preferredSize: Size.fromHeight(56.0),
-                  child: Container(
-                      child: Center(child: CircularProgressIndicator())));
+                  child: Center(child: CircularProgressIndicator()));
             }
           }),
           backgroundColor: Theme.of(context).canvasColor,
@@ -179,90 +170,59 @@ class _HomeState extends State<Home> {
   Widget _dateControllerWidget() {
     return SizedBox(
       width: double.infinity,
-      child: Container(
-        child: CupertinoSlidingSegmentedControl(
-            groupValue: _dateCtrl,
-            children: <int, Widget>{
-              1: Padding(
-                child: Text("1주",
+      child: CupertinoSlidingSegmentedControl(
+          groupValue: _dateCtrl,
+          children: <int, Widget>{
+            1: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Text("1주",
+                  textScaleFactor: 1.1,
+                  style: TextStyle(
+                    color: _dateCtrl == 1 ? _mainFontColor : Colors.grey,
+                  )),
+            ),
+            2: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text("1달",
                     textScaleFactor: 1.1,
                     style: TextStyle(
-                      color: _dateCtrl == 1 ? _mainFontColor : Colors.grey,
-                    )),
+                      color: _dateCtrl == 2 ? _mainFontColor : Colors.grey,
+                    ))),
+            3: Padding(
                 padding: const EdgeInsets.all(4.0),
-              ),
-              2: Padding(
-                  child: Text("1달",
-                      textScaleFactor: 1.1,
-                      style: TextStyle(
-                        color: _dateCtrl == 2 ? _mainFontColor : Colors.grey,
-                      )),
-                  padding: const EdgeInsets.all(4.0)),
-              3: Padding(
-                  child: Text("6달",
-                      textScaleFactor: 1.1,
-                      style: TextStyle(
-                        color: _dateCtrl == 3 ? _mainFontColor : Colors.grey,
-                      )),
-                  padding: const EdgeInsets.all(4.0)),
-              4: Padding(
-                  child: Text("1년",
-                      textScaleFactor: 1.1,
-                      style: TextStyle(
-                        color: _dateCtrl == 4 ? _mainFontColor : Colors.grey,
-                      )),
-                  padding: const EdgeInsets.all(4.0)),
-              5: Padding(
-                  child: Text("모두",
-                      textScaleFactor: 1.1,
-                      style: TextStyle(
-                        color: _dateCtrl == 5 ? _mainFontColor : Colors.grey,
-                      )),
-                  padding: const EdgeInsets.all(4.0))
-            },
-            padding: EdgeInsets.symmetric(horizontal: 6),
-            backgroundColor: Theme.of(context).canvasColor,
-            thumbColor: Theme.of(context).primaryColor,
-            onValueChanged: (i) {
-              setState(() {
-                _dateCtrl = i as int;
-                _dateController(_dateCtrl);
-              });
-            }),
-      ),
+                child: Text("6달",
+                    textScaleFactor: 1.1,
+                    style: TextStyle(
+                      color: _dateCtrl == 3 ? _mainFontColor : Colors.grey,
+                    ))),
+            4: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text("1년",
+                    textScaleFactor: 1.1,
+                    style: TextStyle(
+                      color: _dateCtrl == 4 ? _mainFontColor : Colors.grey,
+                    ))),
+            5: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text("모두",
+                    textScaleFactor: 1.1,
+                    style: TextStyle(
+                      color: _dateCtrl == 5 ? _mainFontColor : Colors.grey,
+                    )))
+          },
+          padding: const EdgeInsets.symmetric(horizontal: 6),
+          backgroundColor: Theme.of(context).canvasColor,
+          thumbColor: Theme.of(context).primaryColor,
+          onValueChanged: (i) {
+            setState(() {
+              _dateCtrl = i as int;
+              _dateController(_dateCtrl);
+            });
+          }),
     );
   }
 
   int _toDayKrInt() {
-    String _toDayKr = DateFormat.E('ko_KR').format(_toDay);
-    int _toDayKrInt = 0;
-    switch (_toDayKr) {
-      case "월":
-        _toDayKrInt = 0;
-        break;
-      case "화":
-        _toDayKrInt = 1;
-        break;
-      case "수":
-        _toDayKrInt = 2;
-        break;
-      case "목":
-        _toDayKrInt = 3;
-        break;
-      case "금":
-        _toDayKrInt = 4;
-        break;
-      case "토":
-        _toDayKrInt = 5;
-        break;
-      case "일":
-        _toDayKrInt = 6;
-        break;
-    }
-    return _toDayKrInt;
-  }
-
-  int _toMonthInt() {
     String _toDayKr = DateFormat.E('ko_KR').format(_toDay);
     int _toDayKrInt = 0;
     switch (_toDayKr) {
@@ -300,20 +260,14 @@ class _HomeState extends State<Home> {
   }
 
   static String _getQuarter(DateTime date) {
-    return date.year.toString().substring(2, 4) +
-        "'" +
-        ((date.month + 2) / 3).toInt().toString() +
-        "Q";
+    return "${date.year.toString().substring(2, 4)}'${(date.month + 2) ~/ 3}Q";
   }
 
   static String _getYear(DateTime date) {
-    return date.year.toString() + "년";
+    return "${date.year}년";
   }
 
   void _dateController(_dateCtrl) async {
-    DateTime _fourWeekDay = DateTime(
-        _toDay.year, _toDay.month, _toDay.day - (21 + 1 + _toDayKrInt()));
-
     if (_hisProvider.historydata != null) {
       if (_dateCtrl == 1) {
         _historydata = await _hisProvider.historydata.sdbdatas.where((sdbdata) {
@@ -365,146 +319,144 @@ class _HomeState extends State<Home> {
   }
 
   Widget _homeWidget(_exunique, context) {
-    return Container(
-      child: NotificationListener<OverscrollIndicatorNotification>(
-          onNotification: (overscroll) {
-            overscroll.disallowIndicator();
-            return true;
-          },
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                // Row(
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     crossAxisAlignment: CrossAxisAlignment.baseline,
-                //     textBaseline: TextBaseline.alphabetic,
-                //     children: <Widget>[
-                //       Text("SDB ",
-                //           style: TextStyle(
-                //               color: _mainFontColor,
-                //               fontSize: 54,
-                //               fontWeight: FontWeight.w600)),
-                //       Text(
-                //           (_exProvider
-                //                       .exercisesdata
-                //                       .exercises[(_exProvider
-                //                           .exercisesdata.exercises
-                //                           .indexWhere((exercise) {
-                //                     if (exercise.name == "바벨 스쿼트") {
-                //                       return true;
-                //                     } else {
-                //                       return false;
-                //                     }
-                //                   }))]
-                //                       .onerm +
-                //                   _exProvider
-                //                       .exercisesdata
-                //                       .exercises[(_exProvider
-                //                           .exercisesdata.exercises
-                //                           .indexWhere((exercise) {
-                //                     if (exercise.name == "바벨 데드리프트") {
-                //                       return true;
-                //                     } else {
-                //                       return false;
-                //                     }
-                //                   }))]
-                //                       .onerm +
-                //                   _exProvider
-                //                       .exercisesdata
-                //                       .exercises[(_exProvider
-                //                           .exercisesdata.exercises
-                //                           .indexWhere((exercise) {
-                //                     if (exercise.name == "벤치프레스") {
-                //                       return true;
-                //                     } else {
-                //                       return false;
-                //                     }
-                //                   }))]
-                //                       .onerm)
-                //               .floor()
-                //               .toString(),
-                //           style: TextStyle(
-                //               color: _mainFontColor,
-                //               fontSize: 46,
-                //               fontWeight: FontWeight.w800)),
-                //       Text(
-                //           "/" +
-                //               (_exProvider
-                //                           .exercisesdata
-                //                           .exercises[(_exProvider
-                //                               .exercisesdata.exercises
-                //                               .indexWhere((exercise) {
-                //                         if (exercise.name == "바벨 스쿼트") {
-                //                           return true;
-                //                         } else {
-                //                           return false;
-                //                         }
-                //                       }))]
-                //                           .goal +
-                //                       _exProvider
-                //                           .exercisesdata
-                //                           .exercises[(_exProvider
-                //                               .exercisesdata.exercises
-                //                               .indexWhere((exercise) {
-                //                         if (exercise.name == "바벨 데드리프트") {
-                //                           return true;
-                //                         } else {
-                //                           return false;
-                //                         }
-                //                       }))]
-                //                           .goal +
-                //                       _exProvider
-                //                           .exercisesdata
-                //                           .exercises[(_exProvider
-                //                               .exercisesdata.exercises
-                //                               .indexWhere((exercise) {
-                //                         if (exercise.name == "벤치프레스") {
-                //                           return true;
-                //                         } else {
-                //                           return false;
-                //                         }
-                //                       }))]
-                //                           .goal)
-                //                   .floor()
-                //                   .toString() +
-                //               "kg",
-                //           style: TextStyle(
-                //               color: _mainFontColor,
-                //               fontSize: 24,
-                //               fontWeight: FontWeight.w600)),
-                //     ]),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 4.0, vertical: 1.0),
-                  child: _lastRoutineWidget(),
+    return NotificationListener<OverscrollIndicatorNotification>(
+        onNotification: (overscroll) {
+          overscroll.disallowIndicator();
+          return true;
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              // Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     crossAxisAlignment: CrossAxisAlignment.baseline,
+              //     textBaseline: TextBaseline.alphabetic,
+              //     children: <Widget>[
+              //       Text("SDB ",
+              //           style: TextStyle(
+              //               color: _mainFontColor,
+              //               fontSize: 54,
+              //               fontWeight: FontWeight.w600)),
+              //       Text(
+              //           (_exProvider
+              //                       .exercisesdata
+              //                       .exercises[(_exProvider
+              //                           .exercisesdata.exercises
+              //                           .indexWhere((exercise) {
+              //                     if (exercise.name == "바벨 스쿼트") {
+              //                       return true;
+              //                     } else {
+              //                       return false;
+              //                     }
+              //                   }))]
+              //                       .onerm +
+              //                   _exProvider
+              //                       .exercisesdata
+              //                       .exercises[(_exProvider
+              //                           .exercisesdata.exercises
+              //                           .indexWhere((exercise) {
+              //                     if (exercise.name == "바벨 데드리프트") {
+              //                       return true;
+              //                     } else {
+              //                       return false;
+              //                     }
+              //                   }))]
+              //                       .onerm +
+              //                   _exProvider
+              //                       .exercisesdata
+              //                       .exercises[(_exProvider
+              //                           .exercisesdata.exercises
+              //                           .indexWhere((exercise) {
+              //                     if (exercise.name == "벤치프레스") {
+              //                       return true;
+              //                     } else {
+              //                       return false;
+              //                     }
+              //                   }))]
+              //                       .onerm)
+              //               .floor()
+              //               .toString(),
+              //           style: TextStyle(
+              //               color: _mainFontColor,
+              //               fontSize: 46,
+              //               fontWeight: FontWeight.w800)),
+              //       Text(
+              //           "/" +
+              //               (_exProvider
+              //                           .exercisesdata
+              //                           .exercises[(_exProvider
+              //                               .exercisesdata.exercises
+              //                               .indexWhere((exercise) {
+              //                         if (exercise.name == "바벨 스쿼트") {
+              //                           return true;
+              //                         } else {
+              //                           return false;
+              //                         }
+              //                       }))]
+              //                           .goal +
+              //                       _exProvider
+              //                           .exercisesdata
+              //                           .exercises[(_exProvider
+              //                               .exercisesdata.exercises
+              //                               .indexWhere((exercise) {
+              //                         if (exercise.name == "바벨 데드리프트") {
+              //                           return true;
+              //                         } else {
+              //                           return false;
+              //                         }
+              //                       }))]
+              //                           .goal +
+              //                       _exProvider
+              //                           .exercisesdata
+              //                           .exercises[(_exProvider
+              //                               .exercisesdata.exercises
+              //                               .indexWhere((exercise) {
+              //                         if (exercise.name == "벤치프레스") {
+              //                           return true;
+              //                         } else {
+              //                           return false;
+              //                         }
+              //                       }))]
+              //                           .goal)
+              //                   .floor()
+              //                   .toString() +
+              //               "kg",
+              //           style: TextStyle(
+              //               color: _mainFontColor,
+              //               fontSize: 24,
+              //               fontWeight: FontWeight.w600)),
+              //     ]),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.0),
+                child: _lastRoutineWidget(),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    _historyCard(context),
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 4.0, vertical: 1.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      _historyCard(context),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 10),
+              ),
+              const SizedBox(height: 10),
 
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 4.0, vertical: 1.0),
-                  child: _weightLiftingWidget(context),
-                ),
-              ],
-            ),
-          )),
-    );
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.0),
+                child: _weightLiftingWidget(context),
+              ),
+            ],
+          ),
+        ));
   }
 
   Widget _lastRoutineWidget() {
     double deviceWidth = MediaQuery.of(context).size.width;
-    return Container(
+    return SizedBox(
       width: deviceWidth,
       child: Card(
         color: Theme.of(context).cardColor,
@@ -546,25 +498,23 @@ class _HomeState extends State<Home> {
                                 _bodyStater.change(1)
                               ];
                       },
-                      child: Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                                provider.prefs.getString('lastroutine') == ''
-                                    ? '눌러서 루틴을 수행 해보세요!'
-                                    : '${provider.prefs.getString('lastroutine')}',
-                                textScaleFactor:
-                                    provider.prefs.getString('lastroutine') ==
-                                            null
-                                        ? 1.3
-                                        : 1.7,
-                                style: TextStyle(
-                                    color: Color(0xFffc60a8),
-                                    fontWeight: FontWeight.w600)),
-                          ],
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                              provider.prefs.getString('lastroutine') == ''
+                                  ? '눌러서 루틴을 수행 해보세요!'
+                                  : '${provider.prefs.getString('lastroutine')}',
+                              textScaleFactor:
+                                  provider.prefs.getString('lastroutine') ==
+                                          null
+                                      ? 1.3
+                                      : 1.7,
+                              style: const TextStyle(
+                                  color: Color(0xFffc60a8),
+                                  fontWeight: FontWeight.w600)),
+                        ],
                       ),
                     ),
                   ]),
@@ -579,7 +529,7 @@ class _HomeState extends State<Home> {
 
   Widget _weightLiftingWidget(context) {
     double deviceWidth = MediaQuery.of(context).size.width;
-    return Container(
+    return SizedBox(
       width: deviceWidth,
       child: Card(
         color: Theme.of(context).cardColor,
@@ -598,13 +548,13 @@ class _HomeState extends State<Home> {
                     onTap: () {
                       _displayBodyWeightDialog();
                     },
-                    child: Container(
+                    child: SizedBox(
                       width: deviceWidth * 0.3,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Padding(
-                            padding: EdgeInsets.all(4.0),
+                            padding: const EdgeInsets.all(4.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -617,16 +567,10 @@ class _HomeState extends State<Home> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 4.0),
                                   child: Text(
-                                      "(" +
-                                          DateFormat('MM/dd')
-                                              .format(DateTime.parse(
-                                                  _userProvider.userdata
-                                                      .bodyStats.last.date))
-                                              .toString() +
-                                          ")",
+                                      "(${DateFormat('MM/dd').format(DateTime.parse(_userProvider.userdata.bodyStats.last.date))})",
                                       textScaleFactor: 0.8,
                                       textAlign: TextAlign.center,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: Color(0xFF717171),
                                           fontWeight: FontWeight.w600)),
                                 ),
@@ -642,21 +586,18 @@ class _HomeState extends State<Home> {
                                         _userProvider.userdata.weight_unit,
                                     textScaleFactor: 2.0,
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Color(0xFffc60a8),
                                         fontWeight: FontWeight.w600)),
                               ]),
                           Padding(
                             padding: const EdgeInsets.only(top: 6.0),
                             child: Text(
-                                "목표 " +
-                                    _userProvider
-                                        .userdata.bodyStats.last.weight_goal
-                                        .toString() +
+                                "목표 ${_userProvider.userdata.bodyStats.last.weight_goal}" +
                                     _userProvider.userdata.weight_unit,
                                 textScaleFactor: 1.2,
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Color(0xFF717171),
                                     fontWeight: FontWeight.w600)),
                           ),
@@ -665,7 +606,7 @@ class _HomeState extends State<Home> {
                     ),
                   );
                 }),
-                Container(
+                SizedBox(
                   width: deviceWidth * 0.6,
                   child: Column(mainAxisSize: MainAxisSize.min, children: [
                     Row(
@@ -690,14 +631,14 @@ class _HomeState extends State<Home> {
                               setState(() {});
                               exselect(true, true, context);
                             },
-                            child: Icon(Icons.settings,
+                            child: const Icon(Icons.settings,
                                 color: Colors.grey, size: 18.0))
                       ],
                     ),
-                    SizedBox(height: 8.0),
+                    const SizedBox(height: 8.0),
                     Consumer<ExercisesdataProvider>(
                         builder: (builder, provider, child) {
-                      final storage = FlutterSecureStorage();
+                      const storage = FlutterSecureStorage();
                       return ReorderableListView.builder(
                           onReorder: (int oldIndex, int newIndex) {
                             if (oldIndex > newIndex) {
@@ -728,7 +669,8 @@ class _HomeState extends State<Home> {
                                               value: jsonEncode(
                                                   (_exProvider.homeExList)));
                                         },
-                                        backgroundColor: Color(0xFFFE4A49),
+                                        backgroundColor:
+                                            const Color(0xFFFE4A49),
                                         foregroundColor: _mainFontColor,
                                         icon: Icons.delete,
                                         padding: EdgeInsets.zero,
@@ -768,7 +710,7 @@ class _HomeState extends State<Home> {
               }),
         ),
         _dateControllerWidget(),
-        SizedBox(height: 6.0),
+        const SizedBox(height: 6.0),
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: SmoothPageIndicator(
@@ -877,7 +819,8 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
+                textScaleFactor: 1.0,
+                style: const TextStyle(color: Colors.grey));
           case 2:
             switch (value.toInt()) {
               case 0:
@@ -894,40 +837,42 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
+                textScaleFactor: 1.0,
+                style: const TextStyle(color: Colors.grey));
           case 3:
             switch (value.toInt()) {
               case 0:
                 text = _toDay.month - 5 > 0
-                    ? (_toDay.month - 5).toString() + "월"
-                    : (_toDay.month - 5 + 12).toString() + "월";
+                    ? "${_toDay.month - 5}월"
+                    : "${_toDay.month - 5 + 12}월";
                 break;
               case 1:
                 text = _toDay.month - 4 > 0
-                    ? (_toDay.month - 4).toString() + "월"
-                    : (_toDay.month - 4 + 12).toString() + "월";
+                    ? "${_toDay.month - 4}월"
+                    : "${_toDay.month - 4 + 12}월";
                 break;
               case 2:
                 text = _toDay.month - 3 > 0
-                    ? (_toDay.month - 3).toString() + "월"
-                    : (_toDay.month - 3 + 12).toString() + "월";
+                    ? "${_toDay.month - 3}월"
+                    : "${_toDay.month - 3 + 12}월";
                 break;
               case 3:
                 text = _toDay.month - 2 > 0
-                    ? (_toDay.month - 2).toString() + "월"
-                    : (_toDay.month - 2 + 12).toString() + "월";
+                    ? "${_toDay.month - 2}월"
+                    : "${_toDay.month - 2 + 12}월";
                 break;
               case 4:
                 text = _toDay.month - 1 > 0
-                    ? (_toDay.month - 1).toString() + "월"
-                    : (_toDay.month - 1 + 12).toString() + "월";
+                    ? "${_toDay.month - 1}월"
+                    : "${_toDay.month - 1 + 12}월";
                 break;
               case 5:
-                text = _toDay.month.toString() + "월";
+                text = "${_toDay.month}월";
                 break;
             }
             return Text(text,
-                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
+                textScaleFactor: 1.0,
+                style: const TextStyle(color: Colors.grey));
           case 4:
             switch (value.toInt()) {
               case 0:
@@ -948,17 +893,18 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
+                textScaleFactor: 1.0,
+                style: const TextStyle(color: Colors.grey));
           case 5:
             switch (value.toInt()) {
               case 0:
-                text = DateFormat('yyyy').format(
-                        DateTime(_toDay.year, _toDay.month, _toDay.day)) +
-                    "년";
+                text =
+                    "${DateFormat('yyyy').format(DateTime(_toDay.year, _toDay.month, _toDay.day))}년";
                 break;
             }
             return Text(text,
-                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
+                textScaleFactor: 1.0,
+                style: const TextStyle(color: Colors.grey));
 
           default:
             switch (value.toInt()) {
@@ -992,7 +938,8 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
+                textScaleFactor: 1.0,
+                style: const TextStyle(color: Colors.grey));
         }
       },
     );
@@ -1019,7 +966,8 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
+                textScaleFactor: 1.0,
+                style: const TextStyle(color: Colors.grey));
           });
     } else if (_realIndex == 6 || _realIndex == 9) {
       return SideTitles(
@@ -1041,7 +989,8 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
+                textScaleFactor: 1.0,
+                style: const TextStyle(color: Colors.grey));
           });
     } else if (_realIndex == 7 || _realIndex == 10) {
       return SideTitles(
@@ -1063,7 +1012,8 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
+                textScaleFactor: 1.0,
+                style: const TextStyle(color: Colors.grey));
           });
     } else {
       return SideTitles(
@@ -1085,7 +1035,8 @@ class _HomeState extends State<Home> {
                 break;
             }
             return Text(text,
-                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
+                textScaleFactor: 1.0,
+                style: const TextStyle(color: Colors.grey));
           });
     }
   }
@@ -1095,7 +1046,6 @@ class _HomeState extends State<Home> {
     List<double> _chartData = [];
     var _chartDataBest;
     List<BarChartGroupData> _barChartGroupData = [];
-    double deviceWidth = MediaQuery.of(context).size.width;
 
     _dateController(_dateCtrl);
     if (_historydata != null) {
@@ -1130,7 +1080,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1172,7 +1122,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1209,7 +1159,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1242,7 +1192,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1274,7 +1224,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1287,7 +1237,7 @@ class _HomeState extends State<Home> {
     return _countHistoryCardCore(
         context,
         _dateStringCase(_dateCtrl),
-        _historyDate.length.toString() + "회",
+        "${_historyDate.length}회",
         " 운동했어요!",
         2,
         40,
@@ -1301,7 +1251,6 @@ class _HomeState extends State<Home> {
     _dateController(_dateCtrl);
     List<double> _chartData = [];
     var _chartDataBest;
-    double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (var sdbdata in _historydata) {
         _historyDate.add(DuplicateHistoryDate(sdbdata));
@@ -1334,7 +1283,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1376,7 +1325,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1414,7 +1363,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1448,7 +1397,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1481,7 +1430,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1494,7 +1443,7 @@ class _HomeState extends State<Home> {
     return _countHistoryCardCore(
         context,
         _dateStringCase(_dateCtrl),
-        _historyDate.length.toString() + "일",
+        "${_historyDate.length}일",
         " 운동했어요!",
         2,
         40,
@@ -1508,10 +1457,10 @@ class _HomeState extends State<Home> {
     List<double> _chartData = [];
     var _chartDataBest;
     var _historySet = 0;
-    double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercises in sdbdata.exercises) {
+          // ignore: unused_local_variable
           for (workoutModel.Sets sets in exercises.sets) {
             _historySet++;
           }
@@ -1527,6 +1476,7 @@ class _HomeState extends State<Home> {
                 DateFormat('yyyy-MM-dd').format(
                     _toDay.subtract(Duration(days: _toDayKrInt() - i)))) {
               for (Exercises exercises in sdbdata.exercises) {
+                // ignore: unused_local_variable
                 for (workoutModel.Sets sets in exercises.sets) {
                   _historySet++;
                 }
@@ -1548,7 +1498,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1573,6 +1523,7 @@ class _HomeState extends State<Home> {
                         .inDays <=
                     0) {
               for (Exercises exercises in sdbdata.exercises) {
+                // ignore: unused_local_variable
                 for (workoutModel.Sets sets in exercises.sets) {
                   _historySet++;
                 }
@@ -1594,7 +1545,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1615,6 +1566,7 @@ class _HomeState extends State<Home> {
                         _toDay) >
                     (5 - i))) {
               for (Exercises exercises in sdbdata.exercises) {
+                // ignore: unused_local_variable
                 for (workoutModel.Sets sets in exercises.sets) {
                   _historySet++;
                 }
@@ -1636,7 +1588,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1652,6 +1604,7 @@ class _HomeState extends State<Home> {
                     _toDay.year, _toDay.month - (3) * (3 - i), _toDay.day)) ==
                 _getQuarter(DateTime.parse(sdbdata.date!.substring(0, 10)))) {
               for (Exercises exercises in sdbdata.exercises) {
+                // ignore: unused_local_variable
                 for (workoutModel.Sets sets in exercises.sets) {
                   _historySet++;
                 }
@@ -1673,7 +1626,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1688,6 +1641,7 @@ class _HomeState extends State<Home> {
             if (_getYear(DateTime(_toDay.year, _toDay.month, _toDay.day)) ==
                 _getYear(DateTime.parse(sdbdata.date!.substring(0, 10)))) {
               for (Exercises exercises in sdbdata.exercises) {
+                // ignore: unused_local_variable
                 for (workoutModel.Sets sets in exercises.sets) {
                   _historySet++;
                 }
@@ -1709,7 +1663,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1719,15 +1673,8 @@ class _HomeState extends State<Home> {
         break;
     }
 
-    return _countHistoryCardCore(
-        context,
-        _dateStringCase(_dateCtrl),
-        _historySet.toString() + "세트",
-        " 수행했어요!",
-        2,
-        40,
-        _realIndex,
-        _barChartGroupData);
+    return _countHistoryCardCore(context, _dateStringCase(_dateCtrl),
+        "$_historySet세트", " 수행했어요!", 2, 40, _realIndex, _barChartGroupData);
   }
 
   Widget _countHistoryWeightWidget(context, _realIndex) {
@@ -1736,7 +1683,6 @@ class _HomeState extends State<Home> {
     List<double> _chartData = [];
     var _chartDataBest;
     _dateController(_dateCtrl);
-    double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercise in sdbdata.exercises) {
@@ -1777,7 +1723,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1824,7 +1770,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1867,7 +1813,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1905,7 +1851,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1942,7 +1888,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1969,7 +1915,6 @@ class _HomeState extends State<Home> {
     List<double> _chartData = [];
     var _chartDataBest;
     _dateController(_dateCtrl);
-    double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         _historyTime = _historyTime + (sdbdata.workout_time / 60).toInt();
@@ -2001,7 +1946,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -2043,7 +1988,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -2081,7 +2026,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -2114,7 +2059,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -2146,7 +2091,7 @@ class _HomeState extends State<Home> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -2156,15 +2101,8 @@ class _HomeState extends State<Home> {
         break;
     }
 
-    return _countHistoryCardCore(
-        context,
-        _dateStringCase(_dateCtrl),
-        _historyTime.toString() + "분",
-        "운동했어요!",
-        2,
-        40,
-        _realIndex,
-        _barChartGroupData);
+    return _countHistoryCardCore(context, _dateStringCase(_dateCtrl),
+        "$_historyTime분", "운동했어요!", 2, 40, _realIndex, _barChartGroupData);
   }
 
   Widget _countHistoryExBestWidget(context, _realIndex) {
@@ -2180,7 +2118,6 @@ class _HomeState extends State<Home> {
     };
 
     _dateController(_dateCtrl);
-    double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercise in sdbdata.exercises) {
@@ -2219,7 +2156,7 @@ class _HomeState extends State<Home> {
                       ? 1
                       : _exerciseCountMap.values.elementAt(0).toDouble(),
                   color: Theme.of(context).cardColor),
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6)))
         ],
         showingTooltipIndicators:
@@ -2229,8 +2166,8 @@ class _HomeState extends State<Home> {
 
     return _countHistoryCardCore(
         context,
-        _dateStringCase(_dateCtrl) + " 많이 한 운동은?",
-        thekey.toString() + "!",
+        "${_dateStringCase(_dateCtrl)} 많이 한 운동은?",
+        "$thekey!",
         "",
         9999,
         0,
@@ -2251,17 +2188,18 @@ class _HomeState extends State<Home> {
     };
 
     _dateController(_dateCtrl);
-    double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercise in sdbdata.exercises) {
           if (_exerciseCountMapOdd.containsKey(exercise.name)) {
+            // ignore: unused_local_variable
             for (workoutModel.Sets sets in exercise.sets) {
               _exerciseCountMapOdd[exercise.name] =
                   _exerciseCountMapOdd[exercise.name]! + 1;
             }
           } else {
             _exerciseCountMapOdd[exercise.name] = 0;
+            // ignore: unused_local_variable
             for (workoutModel.Sets sets in exercise.sets) {
               _exerciseCountMapOdd[exercise.name] =
                   _exerciseCountMapOdd[exercise.name]! + 1;
@@ -2296,7 +2234,7 @@ class _HomeState extends State<Home> {
                       ? 1
                       : _exerciseCountMapOdd.values.elementAt(0).toDouble(),
                   color: Theme.of(context).cardColor),
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6)))
         ],
         showingTooltipIndicators:
@@ -2306,8 +2244,8 @@ class _HomeState extends State<Home> {
 
     return _countHistoryCardCore(
         context,
-        _dateStringCase(_dateCtrl) + " 많은 세트 한 운동은?",
-        thekey.toString() + "!",
+        "${_dateStringCase(_dateCtrl)} 많은 세트 한 운동은?",
+        "$thekey!",
         "",
         9999,
         0,
@@ -2328,7 +2266,6 @@ class _HomeState extends State<Home> {
     };
 
     _dateController(_dateCtrl);
-    double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercise in sdbdata.exercises) {
@@ -2376,7 +2313,7 @@ class _HomeState extends State<Home> {
                       : _exerciseCountMapThird.values.elementAt(0).toDouble(),
                   color: Theme.of(context).cardColor),
               gradient: _barsGradient,
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6)))
         ],
         showingTooltipIndicators:
@@ -2386,8 +2323,8 @@ class _HomeState extends State<Home> {
 
     return _countHistoryCardCore(
         context,
-        _dateStringCase(_dateCtrl) + " 많은 무게를 든 운동은?",
-        thekey.toString() + "!",
+        "${_dateStringCase(_dateCtrl)} 많은 무게를 든 운동은?",
+        "$thekey!",
         "",
         9999,
         0,
@@ -2403,7 +2340,6 @@ class _HomeState extends State<Home> {
     _exerciseCountMapThird = {"가슴": 0, "등": 0, "다리": 0, "어깨": 0};
 
     _dateController(_dateCtrl);
-    double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercise in sdbdata.exercises) {
@@ -2462,7 +2398,7 @@ class _HomeState extends State<Home> {
                       : _exerciseCountMapThird.values.elementAt(0).toDouble(),
                   color: Theme.of(context).cardColor),
               gradient: _barsGradient,
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6)))
         ],
         showingTooltipIndicators:
@@ -2472,8 +2408,8 @@ class _HomeState extends State<Home> {
 
     return _countHistoryCardCore(
         context,
-        _dateStringCase(_dateCtrl) + " 많은 무게를 든 부위는?",
-        thekey.toString() + "!",
+        "${_dateStringCase(_dateCtrl)} 많은 무게를 든 부위는?",
+        "$thekey!",
         "",
         9999,
         0,
@@ -2489,7 +2425,6 @@ class _HomeState extends State<Home> {
     _exerciseCountMapOdd = {"가슴": 0, "등": 0, "다리": 0, "어깨": 0};
 
     _dateController(_dateCtrl);
-    double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercise in sdbdata.exercises) {
@@ -2504,12 +2439,14 @@ class _HomeState extends State<Home> {
           })]
               .target) {
             if (_exerciseCountMapOdd.containsKey(target)) {
+              // ignore: unused_local_variable
               for (workoutModel.Sets sets in exercise.sets) {
                 _exerciseCountMapOdd[target] =
                     _exerciseCountMapOdd[target]! + 1;
               }
             } else {
               _exerciseCountMapOdd[target] = 0;
+              // ignore: unused_local_variable
               for (workoutModel.Sets sets in exercise.sets) {
                 _exerciseCountMapOdd[target] =
                     _exerciseCountMapOdd[target]! + 1;
@@ -2545,7 +2482,7 @@ class _HomeState extends State<Home> {
                       : _exerciseCountMapOdd.values.elementAt(0).toDouble(),
                   color: Theme.of(context).cardColor),
               gradient: _barsGradient,
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6)))
         ],
         showingTooltipIndicators:
@@ -2555,8 +2492,8 @@ class _HomeState extends State<Home> {
 
     return _countHistoryCardCore(
         context,
-        _dateStringCase(_dateCtrl) + " 많은 세트를 한 부위는?",
-        thekey.toString() + "!",
+        "${_dateStringCase(_dateCtrl)} 많은 세트를 한 부위는?",
+        "$thekey!",
         "",
         9999,
         0,
@@ -2572,7 +2509,6 @@ class _HomeState extends State<Home> {
     _exerciseCountMap = {"가슴": 0, "등": 0, "다리": 0, "어깨": 0};
 
     _dateController(_dateCtrl);
-    double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercise in sdbdata.exercises) {
@@ -2622,7 +2558,7 @@ class _HomeState extends State<Home> {
                       : _exerciseCountMap.values.elementAt(0).toDouble(),
                   color: Theme.of(context).cardColor),
               gradient: _barsGradient,
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6)))
         ],
         showingTooltipIndicators:
@@ -2632,8 +2568,8 @@ class _HomeState extends State<Home> {
 
     return _countHistoryCardCore(
         context,
-        _dateStringCase(_dateCtrl) + " 많은 횟수를 한 부위는?",
-        thekey.toString() + "!",
+        "${_dateStringCase(_dateCtrl)} 많은 횟수를 한 부위는?",
+        "$thekey!",
         "",
         9999,
         0,
@@ -2714,7 +2650,7 @@ class _HomeState extends State<Home> {
                     children: [
                       Text(_historyTextCore,
                           textScaleFactor: 2.0,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Color(0xFffc60a8),
                               fontWeight: FontWeight.w600)),
                       Padding(
@@ -2729,13 +2665,14 @@ class _HomeState extends State<Home> {
                   ),
                 );
               }),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
+              // ignore: unnecessary_null_comparison
               _barChartGroupData != null
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: Container(
+                          child: SizedBox(
                               height: 110,
                               child: BarChart(BarChartData(
                                 barGroups: _barChartGroupData,
@@ -2770,14 +2707,15 @@ class _HomeState extends State<Home> {
   void exselect(bool isadd, bool isex, context, [int where = 0]) {
     showModalBottomSheet<void>(
       context: context,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (BuildContext context) {
         return StatefulBuilder(builder: (context, state) {
           return Container(
             height: MediaQuery.of(context).size.height * 2,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(20)),
               color: Theme.of(context).cardColor,
             ),
             child: Center(
@@ -2842,7 +2780,7 @@ class _HomeState extends State<Home> {
     return Expanded(
       child: Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
         return ListView.separated(
-            padding: EdgeInsets.symmetric(horizontal: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 5),
             itemBuilder: (BuildContext _context, int index) {
               if (index == 0) {
                 top = 20;
@@ -2855,7 +2793,7 @@ class _HomeState extends State<Home> {
                 bottom = 0;
               }
               ;
-              final storage = FlutterSecureStorage();
+              const storage = FlutterSecureStorage();
               return GestureDetector(
                 onTap: () {
                   _exProvider.addHomeExList(exuniq[index].name);
@@ -2866,7 +2804,7 @@ class _HomeState extends State<Home> {
                 },
                 child: Container(
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     decoration: BoxDecoration(
                         color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.only(
@@ -2890,7 +2828,8 @@ class _HomeState extends State<Home> {
                             Text(
                                 "1RM: ${exuniq[index].onerm.toStringAsFixed(1)}/${exuniq[index].goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
                                 textScaleFactor: 1.1,
-                                style: TextStyle(color: Color(0xFF717171))),
+                                style:
+                                    const TextStyle(color: Color(0xFF717171))),
                           ],
                         ),
                       ],
@@ -2903,12 +2842,12 @@ class _HomeState extends State<Home> {
               return Container(
                 alignment: Alignment.center,
                 height: 1,
-                color: Color(0xFF212121),
+                color: const Color(0xFF212121),
                 child: Container(
                   alignment: Alignment.center,
-                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
                   height: 1,
-                  color: Color(0xFF717171),
+                  color: const Color(0xFF717171),
                 ),
               );
             },
@@ -2940,7 +2879,7 @@ class _HomeState extends State<Home> {
               },
               child: Row(
                 children: [
-                  Container(
+                  SizedBox(
                       width: MediaQuery.of(context).size.width / 3 - 10,
                       child: Text(_exProvider.homeExList[index],
                           textScaleFactor: 1.0,
@@ -2949,82 +2888,7 @@ class _HomeState extends State<Home> {
                               fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center)),
                   Expanded(
-                    child: Container(
-                      height: 16,
-                      child: LiquidLinearProgressIndicator(
-                        value: _exProvider
-                                .exercisesdata
-                                .exercises[(_exProvider.exercisesdata.exercises
-                                    .indexWhere((exercise) {
-                              if (exercise.name ==
-                                  _exProvider.homeExList[index]) {
-                                return true;
-                              } else {
-                                return false;
-                              }
-                            }))]
-                                .onerm /
-                            _exProvider
-                                .exercisesdata
-                                .exercises[(_exProvider.exercisesdata.exercises
-                                    .indexWhere((exercise) {
-                              if (exercise.name ==
-                                  _exProvider.homeExList[index]) {
-                                return true;
-                              } else {
-                                return false;
-                              }
-                            }))]
-                                .goal, // Defaults to 0.5.
-                        borderColor: Theme.of(context).primaryColor,
-                        valueColor: AlwaysStoppedAnimation(
-                            Theme.of(context).primaryColor),
-                        backgroundColor: Colors.grey,
-                        borderWidth: 0.0,
-                        borderRadius: 15.0,
-                        direction: Axis
-                            .horizontal, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
-                        center: Center(
-                          child: Text(
-                              _exProvider
-                                      .exercisesdata
-                                      .exercises[(_exProvider
-                                          .exercisesdata.exercises
-                                          .indexWhere((exercise) {
-                                    if (exercise.name ==
-                                        _exProvider.homeExList[index]) {
-                                      return true;
-                                    } else {
-                                      return false;
-                                    }
-                                  }))]
-                                      .onerm
-                                      .floor()
-                                      .toString() +
-                                  "/" +
-                                  _exProvider
-                                      .exercisesdata
-                                      .exercises[(_exProvider
-                                          .exercisesdata.exercises
-                                          .indexWhere((exercise) {
-                                    if (exercise.name ==
-                                        _exProvider.homeExList[index]) {
-                                      return true;
-                                    } else {
-                                      return false;
-                                    }
-                                  }))]
-                                      .goal
-                                      .floor()
-                                      .toString(),
-                              textScaleFactor: 1.0,
-                              style: TextStyle(
-                                  color: _mainFontColor,
-                                  fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center),
-                        ),
-                      ),
-                    ),
+                    child: SizedBox(height: 16, child: Container()),
                   ),
                 ],
               ),
@@ -3042,12 +2906,12 @@ class _HomeState extends State<Home> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            buttonPadding: EdgeInsets.all(12.0),
+            buttonPadding: const EdgeInsets.all(12.0),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
             backgroundColor: Theme.of(context).cardColor,
-            contentPadding: EdgeInsets.all(12.0),
+            contentPadding: const EdgeInsets.all(12.0),
             title: Text(
               '몸무게를 기록 할게요',
               textScaleFactor: 2.0,
@@ -3057,14 +2921,14 @@ class _HomeState extends State<Home> {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('몸무게와 목표치를 바꿔보세요',
+                const Text('몸무게와 목표치를 바꿔보세요',
                     textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.grey)),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 TextField(
                   controller: _userWeightController,
-                  keyboardType: TextInputType.numberWithOptions(
+                  keyboardType: const TextInputType.numberWithOptions(
                       signed: false, decimal: true),
                   style: TextStyle(
                     fontSize: 21,
@@ -3084,7 +2948,8 @@ class _HomeState extends State<Home> {
                             color: Theme.of(context).primaryColor, width: 3),
                       ),
                       labelText: "몸무게",
-                      labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
+                      labelStyle:
+                          const TextStyle(fontSize: 16.0, color: Colors.grey),
                       hintText: "몸무게",
                       hintStyle:
                           TextStyle(fontSize: 24.0, color: _mainFontColor)),
@@ -3092,7 +2957,7 @@ class _HomeState extends State<Home> {
                 ),
                 TextField(
                   controller: _userWeightGoalController,
-                  keyboardType: TextInputType.numberWithOptions(
+                  keyboardType: const TextInputType.numberWithOptions(
                       signed: false, decimal: true),
                   style: TextStyle(
                     fontSize: 21,
@@ -3112,7 +2977,8 @@ class _HomeState extends State<Home> {
                             color: Theme.of(context).primaryColor, width: 3),
                       ),
                       labelText: "목표 몸무게",
-                      labelStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
+                      labelStyle:
+                          const TextStyle(fontSize: 16.0, color: Colors.grey),
                       hintText: "목표 몸무게",
                       hintStyle:
                           TextStyle(fontSize: 24.0, color: _mainFontColor)),
@@ -3133,8 +2999,9 @@ class _HomeState extends State<Home> {
                     textStyle: TextStyle(
                       color: _mainFontColor,
                     ),
-                    disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-                    padding: EdgeInsets.all(12.0),
+                    disabledForegroundColor:
+                        const Color.fromRGBO(246, 58, 64, 20),
+                    padding: const EdgeInsets.all(12.0),
                   ),
                   child: Text('오늘 몸무게 기록하기',
                       textScaleFactor: 1.7,
@@ -3160,10 +3027,8 @@ class _HomeState extends State<Home> {
     var _weightChange = "";
     var _weightSuccess = "";
     if ((_userWeight - _userProvider.userdata.bodyStats.last.weight) > 0) {
-      _weightChange = "+" +
-          (_userWeight - _userProvider.userdata.bodyStats.last.weight)
-              .toStringAsFixed(1) +
-          "kg 증가했어요";
+      _weightChange =
+          "${"+" + (_userWeight - _userProvider.userdata.bodyStats.last.weight).toStringAsFixed(1)}kg 증가했어요";
       if (_userProvider.userdata.bodyStats.last.weight >
           _userProvider.userdata.bodyStats.last.weight_goal) {
         _weightSuccess = "감량에 분발이 필요해요";
@@ -3176,10 +3041,8 @@ class _HomeState extends State<Home> {
       }
     } else if ((_userWeight - _userProvider.userdata.bodyStats.last.weight) <
         0) {
-      _weightChange = "" +
-          (_userWeight - _userProvider.userdata.bodyStats.last.weight)
-              .toStringAsFixed(1) +
-          "kg 감소했어요";
+      _weightChange =
+          "${"" + (_userWeight - _userProvider.userdata.bodyStats.last.weight).toStringAsFixed(1)}kg 감소했어요";
       if (_userProvider.userdata.bodyStats.last.weight >
           _userProvider.userdata.bodyStats.last.weight_goal) {
         _weightSuccess = "감량에 성공중 이에요";
@@ -3208,12 +3071,12 @@ class _HomeState extends State<Home> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            buttonPadding: EdgeInsets.all(12.0),
+            buttonPadding: const EdgeInsets.all(12.0),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
             backgroundColor: Theme.of(context).cardColor,
-            contentPadding: EdgeInsets.all(12.0),
+            contentPadding: const EdgeInsets.all(12.0),
             title: Text(
               _weightChange,
               textScaleFactor: 2.0,
@@ -3226,7 +3089,7 @@ class _HomeState extends State<Home> {
                 Text(_weightSuccess,
                     textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey)),
+                    style: const TextStyle(color: Colors.grey)),
                 _chartWidget(context),
               ],
             ),
@@ -3243,8 +3106,9 @@ class _HomeState extends State<Home> {
                     textStyle: TextStyle(
                       color: _mainFontColor,
                     ),
-                    disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-                    padding: EdgeInsets.all(12.0),
+                    disabledForegroundColor:
+                        const Color.fromRGBO(246, 58, 64, 20),
+                    padding: const EdgeInsets.all(12.0),
                   ),
                   child: Text('닫기',
                       textScaleFactor: 1.7,
@@ -3261,10 +3125,10 @@ class _HomeState extends State<Home> {
 
   Widget _chartWidget(context) {
     final List<Color> color = <Color>[];
-    color.add(Color(0xFffc60a8).withOpacity(0.7));
+    color.add(const Color(0xFffc60a8).withOpacity(0.7));
     color.add(Theme.of(context).primaryColor.withOpacity(0.9));
     color.add(Theme.of(context).primaryColor.withOpacity(0.9));
-    color.add(Color(0xFffc60a8).withOpacity(0.7));
+    color.add(const Color(0xFffc60a8).withOpacity(0.7));
 
     final List<double> stops = <double>[];
     stops.add(0.0);
@@ -3274,13 +3138,8 @@ class _HomeState extends State<Home> {
 
     double deviceWidth = MediaQuery.of(context).size.width;
 
-    final LinearGradient gradientColors = LinearGradient(
-        colors: color,
-        stops: stops,
-        begin: Alignment.bottomCenter,
-        end: Alignment.topCenter);
     return (Center(
-      child: Container(
+      child: SizedBox(
           width: deviceWidth * 2 / 3,
           height: 200,
           child: SfCartesianChart(
@@ -3378,13 +3237,7 @@ class _HomeState extends State<Home> {
                                     color: _mainFontColor,
                                     fontWeight: FontWeight.bold)),
                             Text(
-                                _exunique.exercises[index].onerm
-                                        .floor()
-                                        .toString() +
-                                    "/" +
-                                    _exunique.exercises[index].goal
-                                        .floor()
-                                        .toString(),
+                                "${_exunique.exercises[index].onerm.floor()}/${_exunique.exercises[index].goal.floor()}",
                                 textScaleFactor: 1.3,
                                 style: TextStyle(
                                     color: _mainFontColor,
@@ -3407,7 +3260,6 @@ class _HomeState extends State<Home> {
     _timer?.cancel();
   }
 
-  @override
   void onDeactivate() {
     super.deactivate();
     _timer?.cancel();

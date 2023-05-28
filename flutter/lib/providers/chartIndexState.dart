@@ -4,7 +4,6 @@ class ChartIndexProvider extends ChangeNotifier {
   int _chartIndex = 0;
   int _staticIndex = 0;
   var _isPageController = PageController(initialPage: 0);
-  bool _isChartWidget = false;
   int get chartIndex => _chartIndex;
   int get staticIndex => _staticIndex;
 

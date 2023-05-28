@@ -7,11 +7,9 @@ import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:sdb_trainer/src/model/userdata.dart';
 import 'package:sdb_trainer/src/utils/alerts.dart';
-import 'package:sdb_trainer/src/utils/staticModule.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:transition/transition.dart';
 import '../repository/history_repository.dart';
 import '../src/model/historydata.dart';
@@ -24,7 +22,6 @@ import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:ui' as ui;
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
-import 'package:sdb_trainer/providers/themeMode.dart';
 
 class Calendar extends StatefulWidget {
   @override
@@ -42,19 +39,14 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
   var _chartIndex;
   late TooltipBehavior _tooltipBehavior;
   late ZoomPanBehavior _zoomPanBehavior;
-  PageController? _isPageController;
   var _tapPosition;
   var _hisProvider;
   var _exProvider;
-  var _exSearchCtrlBool = false;
   var _exCalendarSearchCtrlBool = false;
   bool _bodyWeightChartIsOpen = true;
-  bool _bodyExChartIsOpen = true;
   final TextEditingController _exSearchCtrl = TextEditingController(text: "");
   final TextEditingController _exCalendarSearchCtrl =
       TextEditingController(text: "");
-  var _themeProvider;
-
   final TextEditingController _eventController = TextEditingController();
 
   late StreamSubscription<bool> keyboardSubscription;
@@ -101,7 +93,7 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
                 textScaleFactor: 1.3,
                 style: TextStyle(
                   color:
-                      page == 0 ? Theme.of(context).buttonColor : Colors.grey,
+                      page == 0 ? Theme.of(context).highlightColor : Colors.grey,
                 )),
           ),*/
           0: Padding(
@@ -109,31 +101,30 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
               child: Text("달력",
                   textScaleFactor: 1.3,
                   style: TextStyle(
-                    color:
-                        page == 0 ? Theme.of(context).buttonColor : Colors.grey,
+                    color: page == 0
+                        ? Theme.of(context).highlightColor
+                        : Colors.grey,
                   ))),
           1: Padding(
               padding: const EdgeInsets.all(5.0),
               child: Text("몸무게",
                   textScaleFactor: 1.3,
                   style: TextStyle(
-                    color:
-                        page == 1 ? Theme.of(context).buttonColor : Colors.grey,
+                    color: page == 1
+                        ? Theme.of(context).highlightColor
+                        : Colors.grey,
                   ))),
         };
-        return Container(
-          child: Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: CupertinoSlidingSegmentedControl(
-                groupValue: page,
-                children: staticList,
-                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                thumbColor: Theme.of(context).primaryColor,
-                onValueChanged: (i) {
-                  print(i);
-                  provider.changePageController(i as int);
-                }),
-          ),
+        return Padding(
+          padding: const EdgeInsets.all(6.0),
+          child: CupertinoSlidingSegmentedControl(
+              groupValue: page,
+              children: staticList,
+              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+              thumbColor: Theme.of(context).primaryColor,
+              onValueChanged: (i) {
+                provider.changePageController(i as int);
+              }),
         );
       }),
     );
@@ -302,14 +293,6 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
     stops.add(0.6);
     stops.add(1.0);
 
-    double deviceWidth = MediaQuery.of(context).size.width;
-
-    final LinearGradient gradientColors = LinearGradient(
-        colors: color,
-        stops: stops,
-        begin: Alignment.bottomCenter,
-        end: Alignment.topCenter);
-
     return Consumer<UserdataProvider>(builder: (builder, provider, child) {
       return (Column(
         children: [
@@ -341,7 +324,7 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
                             child: Icon(
                               Icons.add,
                               size: 28.0,
-                              color: Theme.of(context).buttonColor,
+                              color: Theme.of(context).highlightColor,
                             ),
                           ),
                           Padding(
@@ -398,14 +381,14 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
                               true: Text("on",
                                   style: TextStyle(
                                       color: _bodyWeightChartIsOpen
-                                          ? Theme.of(context).buttonColor
+                                          ? Theme.of(context).highlightColor
                                           : Theme.of(context)
                                               .primaryColorLight)),
                               false: Text("off",
                                   style: TextStyle(
                                       color: _bodyWeightChartIsOpen
                                           ? Theme.of(context).primaryColorLight
-                                          : Theme.of(context).buttonColor))
+                                          : Theme.of(context).highlightColor))
                             },
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
@@ -671,11 +654,6 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
 
     double deviceWidth = MediaQuery.of(context).size.width;
 
-    final LinearGradient gradientColors = LinearGradient(
-        colors: color,
-        stops: stops,
-        begin: Alignment.bottomCenter,
-        end: Alignment.topCenter);
     return (Center(
       child: SizedBox(
           width: deviceWidth * 2 / 3,
@@ -852,7 +830,7 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
                 markerDecoration: const BoxDecoration(
                     color: Color(0xFffc60a8), shape: BoxShape.circle),
                 selectedTextStyle: TextStyle(
-                    color: Theme.of(context).buttonColor,
+                    color: Theme.of(context).highlightColor,
                     fontSize: 16,
                     fontWeight: FontWeight.bold),
                 defaultTextStyle:
@@ -916,32 +894,6 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
             scrollDirection: Axis.vertical));
   }
 
-  Widget _onechartExercisesWidget(exercises) {
-    return Expanded(
-      child: ListView.separated(
-          itemBuilder: (BuildContext context, int index) {
-            return _onechartExerciseWidget(
-                exercises[index], 0, _userProvider.userdata, true, index);
-          },
-          separatorBuilder: (BuildContext context, int index) {
-            return Container(
-              alignment: Alignment.center,
-              height: 0,
-              color: const Color(0xFF212121),
-              child: Container(
-                alignment: Alignment.center,
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                height: 0,
-                color: const Color(0xFF717171),
-              ),
-            );
-          },
-          shrinkWrap: true,
-          itemCount: exercises.length,
-          scrollDirection: Axis.vertical),
-    );
-  }
-
   Widget _bodyWeightListWidget(List<BodyStat> bodyStats) {
     double deviceWidth = MediaQuery.of(context).size.width - 8;
     double top = 20;
@@ -959,8 +911,7 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
                 bottomLeft: Radius.circular(bottom))),
         child: Column(
           children: [
-            Container(
-                child: Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 SizedBox(
@@ -1004,7 +955,7 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
                 ),
                 const SizedBox(width: 16)
               ],
-            )),
+            ),
             ListView.separated(
                 itemBuilder: (BuildContext context, int index) {
                   return _bodyWeightListItemWidget(
@@ -1040,8 +991,7 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
     double bottom = 0;
 
     double deviceWidth = MediaQuery.of(context).size.width - 8;
-    return Container(
-        child: GestureDetector(
+    return GestureDetector(
       onTap: () {},
       child: Container(
         decoration: BoxDecoration(
@@ -1055,192 +1005,40 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  SizedBox(
-                    width: deviceWidth / 3 - 20,
-                    child: Text(bodyStat.date.substring(0, 10),
-                        textScaleFactor: 1.3,
-                        style: const TextStyle(color: Colors.grey),
-                        textAlign: TextAlign.center),
-                  ),
-                  SizedBox(
-                    width: deviceWidth / 3 - 20,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                          bodyStat.weight.toStringAsFixed(1) +
-                              "${userdata.weight_unit}",
-                          textScaleFactor: 1.3,
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColorLight),
-                          textAlign: TextAlign.center),
-                    ),
-                  ),
-                  SizedBox(
-                    width: deviceWidth / 3 - 20,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                SizedBox(
+                  width: deviceWidth / 3 - 20,
+                  child: Text(bodyStat.date.substring(0, 10),
+                      textScaleFactor: 1.3,
+                      style: const TextStyle(color: Colors.grey),
+                      textAlign: TextAlign.center),
+                ),
+                SizedBox(
+                  width: deviceWidth / 3 - 20,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(
-                        bodyStat.weight_goal.toStringAsFixed(1) +
+                        bodyStat.weight.toStringAsFixed(1) +
                             "${userdata.weight_unit}",
                         textScaleFactor: 1.3,
                         style: TextStyle(
                             color: Theme.of(context).primaryColorLight),
                         textAlign: TextAlign.center),
                   ),
-                  GestureDetector(
-                    onTapDown: _storePosition,
-                    onTap: () {
-                      showMenu(
-                          context: context,
-                          position: RelativeRect.fromRect(
-                              _tapPosition & const Size(30, 30),
-                              Offset.zero & const Size(0, 0)),
-                          items: [
-                            PopupMenuItem(
-                                onTap: () {
-                                  Future<void>.delayed(
-                                      const Duration(), // OR const Duration(milliseconds: 500),
-                                      () => _showMyDialog_EditWeight(index));
-                                },
-                                padding: const EdgeInsets.all(0.0),
-                                child: ListTile(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 4.0, vertical: 0.0),
-                                    leading: Icon(Icons.edit,
-                                        color: Theme.of(context)
-                                            .primaryColorLight),
-                                    title: Text("수정",
-                                        style: TextStyle(
-                                            color: Theme.of(context)
-                                                .primaryColorLight)))),
-                            PopupMenuItem(
-                                onTap: () {
-                                  Future<void>.delayed(
-                                      const Duration(), // OR const Duration(milliseconds: 500),
-                                      () => _userProvider
-                                          .setUserWeightDelete(index));
-                                },
-                                padding: const EdgeInsets.all(0.0),
-                                child: ListTile(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 4.0, vertical: 0.0),
-                                    leading: Icon(Icons.delete,
-                                        color: Theme.of(context)
-                                            .primaryColorLight),
-                                    title: Text("삭제",
-                                        style: TextStyle(
-                                            color: Theme.of(context)
-                                                .primaryColorLight)))),
-                          ]);
-                    },
-                    child: Icon(
-                      Icons.more_vert,
-                      color: Colors.grey,
-                      size: 18.0,
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    ));
-  }
-
-  Widget _onechartExerciseWidget(
-      exuniq, historyId, userdata, bool shirink, index) {
-    double top = 20;
-    double bottom = 20;
-
-    double totalDistance = 0;
-    num totalTime = 0;
-    exuniq.sets.forEach((value) {
-      totalDistance += value.weight;
-      totalTime += value.reps;
-    });
-    return Container(
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(exuniq.date,
-                    textScaleFactor: 1.5,
-                    style:
-                        TextStyle(color: Theme.of(context).primaryColorLight)),
-              ),
-            ],
-          ),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(top),
-                      bottomRight: Radius.circular(bottom),
-                      topLeft: Radius.circular(top),
-                      bottomLeft: Radius.circular(bottom))),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  exuniq.isCardio
-                      ? _chartCardioExerciseSetsWidget(exuniq.sets)
-                      : _chartExerciseSetsWidget(exuniq.sets),
-                  Container(
-                    child: Row(
-                      //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        const Text("",
-                            textScaleFactor: 1.0,
-                            style: TextStyle(color: Color(0xFF717171))),
-                        const Expanded(child: SizedBox()),
-                        Text(
-                            exuniq.isCardio
-                                ? "Total: ${totalDistance}km/${Duration(seconds: totalTime.toInt()).toString().split('.')[0]}"
-                                : "${"1RM: " + exuniq.onerm.toStringAsFixed(1)}/${exuniq.goal.toStringAsFixed(1)}${userdata.weight_unit}",
-                            textScaleFactor: 1.0,
-                            style: const TextStyle(color: Color(0xFF717171))),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _chartExercisesWidget(
-      sdbdata, historyId, userdata, bool shirink, index) {
-    double top = 0;
-    double bottom = 0;
-    var exuniq = sdbdata.exercises;
-
-    return Container(
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("훈련 ${index + 1}",
-                    textScaleFactor: 1.5,
-                    style:
-                        TextStyle(color: Theme.of(context).primaryColorLight)),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GestureDetector(
+                ),
+                SizedBox(
+                  width: deviceWidth / 3 - 20,
+                  child: Text(
+                      bodyStat.weight_goal.toStringAsFixed(1) +
+                          "${userdata.weight_unit}",
+                      textScaleFactor: 1.3,
+                      style:
+                          TextStyle(color: Theme.of(context).primaryColorLight),
+                      textAlign: TextAlign.center),
+                ),
+                GestureDetector(
                   onTapDown: _storePosition,
                   onTap: () {
                     showMenu(
@@ -1253,7 +1051,25 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
                               onTap: () {
                                 Future<void>.delayed(
                                     const Duration(), // OR const Duration(milliseconds: 500),
-                                    () => _showMyDialog(historyId));
+                                    () => _showMyDialog_EditWeight(index));
+                              },
+                              padding: const EdgeInsets.all(0.0),
+                              child: ListTile(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 4.0, vertical: 0.0),
+                                  leading: Icon(Icons.edit,
+                                      color:
+                                          Theme.of(context).primaryColorLight),
+                                  title: Text("수정",
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight)))),
+                          PopupMenuItem(
+                              onTap: () {
+                                Future<void>.delayed(
+                                    const Duration(), // OR const Duration(milliseconds: 500),
+                                    () => _userProvider
+                                        .setUserWeightDelete(index));
                               },
                               padding: const EdgeInsets.all(0.0),
                               child: ListTile(
@@ -1268,426 +1084,192 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
                                               .primaryColorLight)))),
                         ]);
                   },
-                  child: Icon(
+                  child: const Icon(
                     Icons.more_vert,
                     color: Colors.grey,
                     size: 18.0,
                   ),
-                ),
-              )
-            ],
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  Transition(
-                      child: FriendHistory(sdbdata: sdbdata),
-                      transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-            },
-            child: ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                itemBuilder: (BuildContext context, int index) {
-                  if (exuniq.length == 1) {
-                    top = 20;
-                    bottom = 20;
-                  } else if (index == 0) {
-                    top = 20;
-                    bottom = 0;
-                  } else if (index == exuniq.length - 1) {
-                    top = 0;
-                    bottom = 20;
-                  } else {
-                    top = 0;
-                    bottom = 0;
-                  }
-                  var _exImage;
-                  try {
-                    _exImage = extra_completely_new_Ex[
-                            extra_completely_new_Ex.indexWhere((element) =>
-                                element.name == exuniq[index].name)]
-                        .image;
-                    if (_exImage == null) {
-                      _exImage = "";
-                    }
-                  } catch (e) {
-                    _exImage = "";
-                  }
-                  double totalDistance = 0;
-                  num totalTime = 0;
-                  exuniq[index].sets.forEach((value) {
-                    totalDistance += value.weight;
-                    totalTime += value.reps;
-                  });
-                  return Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).cardColor,
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(top),
-                            bottomRight: Radius.circular(bottom),
-                            topLeft: Radius.circular(top),
-                            bottomLeft: Radius.circular(bottom))),
-                    height: 52,
-                    child: Row(
-                      children: [
-                        _exImage != ""
-                            ? Image.asset(
-                                _exImage,
-                                height: 48,
-                                width: 48,
-                                fit: BoxFit.cover,
-                              )
-                            : Container(
-                                height: 48,
-                                width: 48,
-                                child: Icon(Icons.image_not_supported,
-                                    color: Theme.of(context).primaryColorDark),
-                                decoration:
-                                    BoxDecoration(shape: BoxShape.circle),
-                              ),
-                        SizedBox(width: 8.0),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                exuniq[index].name,
-                                textScaleFactor: 1.3,
-                                style: TextStyle(
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _chartExercisesWidget(
+      sdbdata, historyId, userdata, bool shirink, index) {
+    double top = 0;
+    double bottom = 0;
+    var exuniq = sdbdata.exercises;
+
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("훈련 ${index + 1}",
+                  textScaleFactor: 1.5,
+                  style: TextStyle(color: Theme.of(context).primaryColorLight)),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
+                onTapDown: _storePosition,
+                onTap: () {
+                  showMenu(
+                      context: context,
+                      position: RelativeRect.fromRect(
+                          _tapPosition & const Size(30, 30),
+                          Offset.zero & const Size(0, 0)),
+                      items: [
+                        PopupMenuItem(
+                            onTap: () {
+                              Future<void>.delayed(
+                                  const Duration(), // OR const Duration(milliseconds: 500),
+                                  () => _showMyDialog(historyId));
+                            },
+                            padding: const EdgeInsets.all(0.0),
+                            child: ListTile(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 4.0, vertical: 0.0),
+                                leading: Icon(Icons.delete,
                                     color: Theme.of(context).primaryColorLight),
-                              ),
-                              Container(
-                                child: Row(
-                                  //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    const Expanded(child: SizedBox()),
-                                    Text(
-                                        exuniq[index].isCardio
-                                            ? "Total: ${totalDistance}km/${Duration(seconds: totalTime.toInt()).toString().split('.')[0]}"
-                                            : "${"1RM: " + exuniq[index].onerm.toStringAsFixed(1)}/${exuniq[index].goal.toStringAsFixed(1)}${userdata.weight_unit}",
-                                        textScaleFactor: 1.0,
-                                        style: const TextStyle(
-                                            color: Color(0xFF717171))),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
+                                title: Text("삭제",
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .primaryColorLight)))),
+                      ]);
                 },
-                separatorBuilder: (BuildContext context, int index) {
-                  return Container(
-                    alignment: Alignment.center,
-                    height: 0.5,
-                    child: Container(
-                      alignment: Alignment.center,
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      height: 0.5,
-                      color: Theme.of(context).primaryColorDark,
-                    ),
-                  );
-                },
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: shirink,
-                itemCount: exuniq.length),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _chartExerciseSetsWidget(sets) {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-              padding: const EdgeInsets.all(5.0),
-              height: 28,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: 80,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 25,
-                          child: const Text(
-                            "Set",
-                            textScaleFactor: 1.1,
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold,
+                child: const Icon(
+                  Icons.more_vert,
+                  color: Colors.grey,
+                  size: 18.0,
+                ),
+              ),
+            )
+          ],
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context,
+                Transition(
+                    child: FriendHistory(sdbdata: sdbdata),
+                    transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+          },
+          child: ListView.separated(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              itemBuilder: (BuildContext context, int index) {
+                if (exuniq.length == 1) {
+                  top = 20;
+                  bottom = 20;
+                } else if (index == 0) {
+                  top = 20;
+                  bottom = 0;
+                } else if (index == exuniq.length - 1) {
+                  top = 0;
+                  bottom = 20;
+                } else {
+                  top = 0;
+                  bottom = 0;
+                }
+                var _exImage;
+                try {
+                  _exImage = extra_completely_new_Ex[
+                          extra_completely_new_Ex.indexWhere(
+                              (element) => element.name == exuniq[index].name)]
+                      .image;
+                  _exImage ??= "";
+                } catch (e) {
+                  _exImage = "";
+                }
+                double totalDistance = 0;
+                num totalTime = 0;
+                exuniq[index].sets.forEach((value) {
+                  totalDistance += value.weight;
+                  totalTime += value.reps;
+                });
+                return Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(top),
+                          bottomRight: Radius.circular(bottom),
+                          topLeft: Radius.circular(top),
+                          bottomLeft: Radius.circular(bottom))),
+                  height: 52,
+                  child: Row(
+                    children: [
+                      _exImage != ""
+                          ? Image.asset(
+                              _exImage,
+                              height: 48,
+                              width: 48,
+                              fit: BoxFit.cover,
+                            )
+                          : Container(
+                              height: 48,
+                              width: 48,
+                              decoration:
+                                  const BoxDecoration(shape: BoxShape.circle),
+                              child: Icon(Icons.image_not_supported,
+                                  color: Theme.of(context).primaryColorDark),
                             ),
-                            textAlign: TextAlign.center,
-                          ),
+                      const SizedBox(width: 8.0),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              exuniq[index].name,
+                              textScaleFactor: 1.3,
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight),
+                            ),
+                            Row(
+                              //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                const Expanded(child: SizedBox()),
+                                Text(
+                                    exuniq[index].isCardio
+                                        ? "Total: ${totalDistance}km/${Duration(seconds: totalTime.toInt()).toString().split('.')[0]}"
+                                        : "${"1RM: " + exuniq[index].onerm.toStringAsFixed(1)}/${exuniq[index].goal.toStringAsFixed(1)}${userdata.weight_unit}",
+                                    textScaleFactor: 1.0,
+                                    style: const TextStyle(
+                                        color: Color(0xFF717171))),
+                              ],
+                            )
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  SizedBox(
-                      width: 70,
-                      child: Text(
-                        "Weight(${_userProvider.userdata.weight_unit})",
-                        textScaleFactor: 1.1,
-                        style: const TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      )),
-                  Container(width: 35),
-                  SizedBox(
-                      width: 40,
-                      child: const Text(
-                        "Reps",
-                        textScaleFactor: 1.1,
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      )),
-                  SizedBox(
-                      width: 70,
-                      child: const Text(
-                        "1RM",
-                        textScaleFactor: 1.1,
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      )),
-                ],
-              )),
-          SizedBox(
-            child: ListView.separated(
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 80,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width: 25,
-                                child: Text(
-                                  "${index + 1}",
-                                  textScaleFactor: 1.3,
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColorLight,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: 70,
-                          child: Text(
-                            sets[index].weight.toStringAsFixed(1),
-                            textScaleFactor: 1.3,
-                            style: TextStyle(
-                              color: Theme.of(context).primaryColorLight,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        SizedBox(
-                            width: 35,
-                            child: SvgPicture.asset("assets/svg/multiply.svg",
-                                color: Theme.of(context).primaryColorLight,
-                                height:
-                                    19 * _themeProvider.userFontSize / 0.8)),
-                        SizedBox(
-                          width: 40,
-                          child: Text(
-                            sets[index].reps.toString(),
-                            textScaleFactor: 1.3,
-                            style: TextStyle(
-                              color: Theme.of(context).primaryColorLight,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        SizedBox(
-                            width: 70,
-                            child: (sets[index].reps != 1)
-                                ? Text(
-                                    "${(sets[index].weight * (1 + sets[index].reps / 30)).toStringAsFixed(1)}",
-                                    textScaleFactor: 1.3,
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .primaryColorLight),
-                                    textAlign: TextAlign.center,
-                                  )
-                                : Text(
-                                    "${sets[index].weight}",
-                                    textScaleFactor: 1.3,
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .primaryColorLight),
-                                    textAlign: TextAlign.center,
-                                  )),
-                      ],
-                    ),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return Container(
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return Container(
+                  alignment: Alignment.center,
+                  height: 0.5,
+                  child: Container(
                     alignment: Alignment.center,
-                    height: 0,
-                    child: Container(
-                      alignment: Alignment.center,
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      height: 0,
-                      color: Theme.of(context).primaryColorDark,
-                    ),
-                  );
-                },
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: sets.length),
-          ),
-        ],
-      ),
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    height: 0.5,
+                    color: Theme.of(context).primaryColorDark,
+                  ),
+                );
+              },
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: shirink,
+              itemCount: exuniq.length),
+        )
+      ],
     );
-  }
-
-  Widget _chartCardioExerciseSetsWidget(sets) {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-              padding: const EdgeInsets.all(5.0),
-              height: 28,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                      width: 80,
-                      padding: EdgeInsets.only(right: 4),
-                      child: Text(
-                        "Set",
-                        textScaleFactor: 1.1,
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColorLight,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      )),
-                  Container(
-                      width: 80,
-                      child: Text(
-                        "거리(Km)",
-                        textScaleFactor: 1.1,
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColorLight,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      )),
-                  Container(
-                      width: 140,
-                      child: Text(
-                        "시간(시:분:초)",
-                        textScaleFactor: 1.1,
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColorLight,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      )),
-                ],
-              )),
-          SizedBox(
-            child: ListView.separated(
-                itemBuilder: (BuildContext context, int index) {
-                  Duration _time = Duration(seconds: sets[index].reps);
-                  return Container(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 85,
-                          child: Text(
-                            "${index + 1}",
-                            textScaleFactor: 1.3,
-                            style: TextStyle(
-                              color: Theme.of(context).primaryColorLight,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 80,
-                          child: Text(
-                            sets[index].weight.toStringAsFixed(1),
-                            textScaleFactor: 1.3,
-                            style: TextStyle(
-                              color: Theme.of(context).primaryColorLight,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 140,
-                          child: Text(
-                            "${_time.inHours.toString().length == 1 ? "0" + _time.inHours.toString() : _time.inHours}:${_time.inMinutes.remainder(60).toString().length == 1 ? "0" + _time.inMinutes.remainder(60).toString() : _time.inMinutes.remainder(60)}:${_time.inSeconds.remainder(60).toString().length == 1 ? "0" + _time.inSeconds.remainder(60).toString() : _time.inSeconds.remainder(60)}",
-                            textScaleFactor: 1.3,
-                            style: TextStyle(
-                              color: Theme.of(context).primaryColorLight,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return Container(
-                    alignment: Alignment.center,
-                    height: 0,
-                    child: Container(
-                      alignment: Alignment.center,
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      height: 0,
-                      color: Theme.of(context).primaryColorDark,
-                    ),
-                  );
-                },
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: sets.length),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _chartWidget() {
-    return (Center(
-      child: Column(
-        children: [StaticModule()],
-      ),
-    ));
   }
 
   List<Widget> techChips() {
@@ -1700,7 +1282,7 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
               label: Text(_exProvider.exercisesdata!.exercises[i].name),
               labelStyle: TextStyle(
                   color: _chartIndex.chartIndex == i
-                      ? Theme.of(context).buttonColor
+                      ? Theme.of(context).highlightColor
                       : Theme.of(context).primaryColorLight),
               selected: _chartIndex.chartIndex == i,
               selectedColor: Theme.of(context).primaryColor,
@@ -1722,7 +1304,7 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
             label: Text(_exProvider.exercisesdata!.exercises[i].name),
             labelStyle: TextStyle(
                 color: _chartIndex.chartIndex == i
-                    ? Theme.of(context).buttonColor
+                    ? Theme.of(context).highlightColor
                     : Theme.of(context).primaryColorLight),
             selected: _chartIndex.chartIndex == i,
             selectedColor: Theme.of(context).primaryColor,
@@ -1752,7 +1334,7 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
           label: const Text("All"),
           labelStyle: TextStyle(
               color: _chartIndex.staticIndex == 0
-                  ? Theme.of(context).buttonColor
+                  ? Theme.of(context).highlightColor
                   : Theme.of(context).primaryColorLight),
           selected: _chartIndex.staticIndex == 0,
           selectedColor: Theme.of(context).primaryColor,
@@ -1775,7 +1357,7 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
             label: Text(_exProvider.exercisesdata!.exercises[i - 1].name),
             labelStyle: TextStyle(
                 color: _chartIndex.staticIndex == i
-                    ? Theme.of(context).buttonColor
+                    ? Theme.of(context).highlightColor
                     : Theme.of(context).primaryColorLight),
             selected: _chartIndex.staticIndex == i,
             selectedColor: Theme.of(context).primaryColor,
@@ -1830,7 +1412,6 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
     _chartIndex = Provider.of<ChartIndexProvider>(context, listen: false);
     _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
     _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
-    _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     _getChartSourcefromDay();
     return Scaffold(
         appBar: _appbarWidget(),

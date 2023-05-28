@@ -75,7 +75,6 @@ class PrefsProvider extends ChangeNotifier {
   }
 
   setAlarmPrefs(value) async {
-    print(value);
     await _prefs.setBool('commentNotification', value);
     _commentNotification = _prefs.getBool('commentNotification');
     if (_commentNotification!) {

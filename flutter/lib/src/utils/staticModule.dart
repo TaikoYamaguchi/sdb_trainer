@@ -12,8 +12,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:math';
 
-import 'dart:ui' as ui;
-
 class StaticModule extends StatefulWidget {
   StaticModule({Key? key}) : super(key: key);
 
@@ -61,7 +59,6 @@ class _StaticModuleState extends State<StaticModule> {
   DateTime _toDay = DateTime.now();
   var _historydata;
   var _barsGradient;
-  int _touchedIndex = -1;
   Map<String, int> _exerciseCountMap = {
     "바벨 스쿼트": 0,
     "바벨 데드리프트": 0,
@@ -95,7 +92,7 @@ class _StaticModuleState extends State<StaticModule> {
     _mainFontColor = Theme.of(context).primaryColorLight;
     _barsGradient = LinearGradient(
       colors: [
-        Color(0xFffc60a8),
+        const Color(0xFffc60a8),
         Theme.of(context).primaryColor,
       ],
       begin: Alignment.bottomCenter,
@@ -129,7 +126,7 @@ class _StaticModuleState extends State<StaticModule> {
                 }),
           ),
           _dateControllerWidget(),
-          SizedBox(height: 6.0),
+          const SizedBox(height: 6.0),
           Padding(
             padding: const EdgeInsets.all(4.0),
             child: SmoothPageIndicator(
@@ -186,53 +183,53 @@ class _StaticModuleState extends State<StaticModule> {
             groupValue: _dateCtrl,
             children: <int, Widget>{
               1: Padding(
+                padding: const EdgeInsets.all(4.0),
                 child: Text("1주",
                     textScaleFactor: 1.1,
                     style: TextStyle(
                       color: _dateCtrl == 1
-                          ? Theme.of(context).buttonColor
+                          ? Theme.of(context).highlightColor
                           : Colors.grey,
                     )),
-                padding: const EdgeInsets.all(4.0),
               ),
               2: Padding(
+                  padding: const EdgeInsets.all(4.0),
                   child: Text("1달",
                       textScaleFactor: 1.1,
                       style: TextStyle(
                         color: _dateCtrl == 2
-                            ? Theme.of(context).buttonColor
+                            ? Theme.of(context).highlightColor
                             : Colors.grey,
-                      )),
-                  padding: const EdgeInsets.all(4.0)),
+                      ))),
               3: Padding(
+                  padding: const EdgeInsets.all(4.0),
                   child: Text("6달",
                       textScaleFactor: 1.1,
                       style: TextStyle(
                         color: _dateCtrl == 3
-                            ? Theme.of(context).buttonColor
+                            ? Theme.of(context).highlightColor
                             : Colors.grey,
-                      )),
-                  padding: const EdgeInsets.all(4.0)),
+                      ))),
               4: Padding(
+                  padding: const EdgeInsets.all(4.0),
                   child: Text("1년",
                       textScaleFactor: 1.1,
                       style: TextStyle(
                         color: _dateCtrl == 4
-                            ? Theme.of(context).buttonColor
+                            ? Theme.of(context).highlightColor
                             : Colors.grey,
-                      )),
-                  padding: const EdgeInsets.all(4.0)),
+                      ))),
               5: Padding(
+                  padding: const EdgeInsets.all(4.0),
                   child: Text("모두",
                       textScaleFactor: 1.1,
                       style: TextStyle(
                         color: _dateCtrl == 5
-                            ? Theme.of(context).buttonColor
+                            ? Theme.of(context).highlightColor
                             : Colors.grey,
-                      )),
-                  padding: const EdgeInsets.all(4.0))
+                      )))
             },
-            padding: EdgeInsets.symmetric(horizontal: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 6),
             backgroundColor: Theme.of(context).canvasColor,
             thumbColor: Theme.of(context).primaryColor,
             onValueChanged: (i) {
@@ -246,9 +243,6 @@ class _StaticModuleState extends State<StaticModule> {
   }
 
   void _dateController(_dateCtrl) async {
-    DateTime _fourWeekDay = DateTime(
-        _toDay.year, _toDay.month, _toDay.day - (21 + 1 + _toDayKrInt()));
-
     if (_hisProvider.historydata != null) {
       if (_dateCtrl == 1) {
         _historydata = await _hisProvider.historydata.sdbdatas.where((sdbdata) {
@@ -446,7 +440,8 @@ class _StaticModuleState extends State<StaticModule> {
                 break;
             }
             return Text(text,
-                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
+                textScaleFactor: 1.0,
+                style: const TextStyle(color: Colors.grey));
           case 2:
             switch (value.toInt()) {
               case 0:
@@ -463,7 +458,8 @@ class _StaticModuleState extends State<StaticModule> {
                 break;
             }
             return Text(text,
-                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
+                textScaleFactor: 1.0,
+                style: const TextStyle(color: Colors.grey));
           case 3:
             switch (value.toInt()) {
               case 0:
@@ -496,7 +492,8 @@ class _StaticModuleState extends State<StaticModule> {
                 break;
             }
             return Text(text,
-                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
+                textScaleFactor: 1.0,
+                style: const TextStyle(color: Colors.grey));
           case 4:
             switch (value.toInt()) {
               case 0:
@@ -517,7 +514,8 @@ class _StaticModuleState extends State<StaticModule> {
                 break;
             }
             return Text(text,
-                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
+                textScaleFactor: 1.0,
+                style: const TextStyle(color: Colors.grey));
           case 5:
             switch (value.toInt()) {
               case 0:
@@ -527,7 +525,8 @@ class _StaticModuleState extends State<StaticModule> {
                 break;
             }
             return Text(text,
-                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
+                textScaleFactor: 1.0,
+                style: const TextStyle(color: Colors.grey));
 
           default:
             switch (value.toInt()) {
@@ -561,7 +560,8 @@ class _StaticModuleState extends State<StaticModule> {
                 break;
             }
             return Text(text,
-                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
+                textScaleFactor: 1.0,
+                style: const TextStyle(color: Colors.grey));
         }
       },
     );
@@ -588,7 +588,8 @@ class _StaticModuleState extends State<StaticModule> {
                 break;
             }
             return Text(text,
-                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
+                textScaleFactor: 1.0,
+                style: const TextStyle(color: Colors.grey));
           });
     } else if (_realIndex == 6 || _realIndex == 9) {
       return SideTitles(
@@ -610,7 +611,8 @@ class _StaticModuleState extends State<StaticModule> {
                 break;
             }
             return Text(text,
-                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
+                textScaleFactor: 1.0,
+                style: const TextStyle(color: Colors.grey));
           });
     } else if (_realIndex == 7 || _realIndex == 10) {
       return SideTitles(
@@ -632,7 +634,8 @@ class _StaticModuleState extends State<StaticModule> {
                 break;
             }
             return Text(text,
-                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
+                textScaleFactor: 1.0,
+                style: const TextStyle(color: Colors.grey));
           });
     } else {
       return SideTitles(
@@ -654,7 +657,8 @@ class _StaticModuleState extends State<StaticModule> {
                 break;
             }
             return Text(text,
-                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey));
+                textScaleFactor: 1.0,
+                style: const TextStyle(color: Colors.grey));
           });
     }
   }
@@ -664,7 +668,6 @@ class _StaticModuleState extends State<StaticModule> {
     List<double> _chartData = [];
     var _chartDataBest;
     List<BarChartGroupData> _barChartGroupData = [];
-    double deviceWidth = MediaQuery.of(context).size.width;
 
     _dateController(_dateCtrl);
     if (_historydata != null) {
@@ -699,7 +702,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -741,7 +744,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -778,7 +781,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -811,7 +814,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -843,7 +846,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -870,7 +873,6 @@ class _StaticModuleState extends State<StaticModule> {
     _dateController(_dateCtrl);
     List<double> _chartData = [];
     var _chartDataBest;
-    double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (var sdbdata in _historydata) {
         _historyDate.add(DuplicateHistoryDate(sdbdata));
@@ -903,7 +905,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -945,7 +947,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -983,7 +985,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1017,7 +1019,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1050,7 +1052,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1077,10 +1079,10 @@ class _StaticModuleState extends State<StaticModule> {
     List<double> _chartData = [];
     var _chartDataBest;
     var _historySet = 0;
-    double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercises in sdbdata.exercises) {
+          // ignore: unused_local_variable
           for (workoutModel.Sets sets in exercises.sets) {
             _historySet++;
           }
@@ -1096,6 +1098,7 @@ class _StaticModuleState extends State<StaticModule> {
                 DateFormat('yyyy-MM-dd').format(
                     _toDay.subtract(Duration(days: _toDayKrInt() - i)))) {
               for (Exercises exercises in sdbdata.exercises) {
+                // ignore: unused_local_variable
                 for (workoutModel.Sets sets in exercises.sets) {
                   _historySet++;
                 }
@@ -1117,7 +1120,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1142,6 +1145,7 @@ class _StaticModuleState extends State<StaticModule> {
                         .inDays <=
                     0) {
               for (Exercises exercises in sdbdata.exercises) {
+                // ignore: unused_local_variable
                 for (workoutModel.Sets sets in exercises.sets) {
                   _historySet++;
                 }
@@ -1163,7 +1167,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1184,6 +1188,7 @@ class _StaticModuleState extends State<StaticModule> {
                         _toDay) >
                     (5 - i))) {
               for (Exercises exercises in sdbdata.exercises) {
+                // ignore: unused_local_variable
                 for (workoutModel.Sets sets in exercises.sets) {
                   _historySet++;
                 }
@@ -1205,7 +1210,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1221,6 +1226,7 @@ class _StaticModuleState extends State<StaticModule> {
                     _toDay.year, _toDay.month - (3) * (3 - i), _toDay.day)) ==
                 _getQuarter(DateTime.parse(sdbdata.date!.substring(0, 10)))) {
               for (Exercises exercises in sdbdata.exercises) {
+                // ignore: unused_local_variable
                 for (workoutModel.Sets sets in exercises.sets) {
                   _historySet++;
                 }
@@ -1242,7 +1248,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1257,6 +1263,7 @@ class _StaticModuleState extends State<StaticModule> {
             if (_getYear(DateTime(_toDay.year, _toDay.month, _toDay.day)) ==
                 _getYear(DateTime.parse(sdbdata.date!.substring(0, 10)))) {
               for (Exercises exercises in sdbdata.exercises) {
+                // ignore: unused_local_variable
                 for (workoutModel.Sets sets in exercises.sets) {
                   _historySet++;
                 }
@@ -1278,7 +1285,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1305,7 +1312,6 @@ class _StaticModuleState extends State<StaticModule> {
     List<double> _chartData = [];
     var _chartDataBest;
     _dateController(_dateCtrl);
-    double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercise in sdbdata.exercises) {
@@ -1346,7 +1352,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1393,7 +1399,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1436,7 +1442,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1474,7 +1480,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1511,7 +1517,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1538,7 +1544,6 @@ class _StaticModuleState extends State<StaticModule> {
     List<double> _chartData = [];
     var _chartDataBest;
     _dateController(_dateCtrl);
-    double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         _historyTime = _historyTime + (sdbdata.workout_time / 60).toInt();
@@ -1570,7 +1575,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1612,7 +1617,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1650,7 +1655,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1683,7 +1688,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1715,7 +1720,7 @@ class _StaticModuleState extends State<StaticModule> {
                       show: _chartData[i] != 0 ? false : true,
                       toY: _chartDataBest == 0 ? 1 : _chartDataBest,
                       color: Theme.of(context).cardColor),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(6),
                       topRight: Radius.circular(6)))
             ],
@@ -1749,7 +1754,6 @@ class _StaticModuleState extends State<StaticModule> {
     };
 
     _dateController(_dateCtrl);
-    double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercise in sdbdata.exercises) {
@@ -1788,7 +1792,7 @@ class _StaticModuleState extends State<StaticModule> {
                       ? 1
                       : _exerciseCountMap.values.elementAt(0).toDouble(),
                   color: Theme.of(context).cardColor),
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6)))
         ],
         showingTooltipIndicators:
@@ -1820,17 +1824,18 @@ class _StaticModuleState extends State<StaticModule> {
     };
 
     _dateController(_dateCtrl);
-    double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercise in sdbdata.exercises) {
           if (_exerciseCountMapOdd.containsKey(exercise.name)) {
+            // ignore: unused_local_variable
             for (workoutModel.Sets sets in exercise.sets) {
               _exerciseCountMapOdd[exercise.name] =
                   _exerciseCountMapOdd[exercise.name]! + 1;
             }
           } else {
             _exerciseCountMapOdd[exercise.name] = 0;
+            // ignore: unused_local_variable
             for (workoutModel.Sets sets in exercise.sets) {
               _exerciseCountMapOdd[exercise.name] =
                   _exerciseCountMapOdd[exercise.name]! + 1;
@@ -1865,7 +1870,7 @@ class _StaticModuleState extends State<StaticModule> {
                       ? 1
                       : _exerciseCountMapOdd.values.elementAt(0).toDouble(),
                   color: Theme.of(context).cardColor),
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6)))
         ],
         showingTooltipIndicators:
@@ -1897,7 +1902,6 @@ class _StaticModuleState extends State<StaticModule> {
     };
 
     _dateController(_dateCtrl);
-    double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercise in sdbdata.exercises) {
@@ -1945,7 +1949,7 @@ class _StaticModuleState extends State<StaticModule> {
                       : _exerciseCountMapThird.values.elementAt(0).toDouble(),
                   color: Theme.of(context).cardColor),
               gradient: _barsGradient,
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6)))
         ],
         showingTooltipIndicators:
@@ -1972,7 +1976,6 @@ class _StaticModuleState extends State<StaticModule> {
     _exerciseCountMapThird = {"가슴": 0, "등": 0, "다리": 0, "어깨": 0};
 
     _dateController(_dateCtrl);
-    double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercise in sdbdata.exercises) {
@@ -2031,7 +2034,7 @@ class _StaticModuleState extends State<StaticModule> {
                       : _exerciseCountMapThird.values.elementAt(0).toDouble(),
                   color: Theme.of(context).cardColor),
               gradient: _barsGradient,
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6)))
         ],
         showingTooltipIndicators:
@@ -2058,7 +2061,6 @@ class _StaticModuleState extends State<StaticModule> {
     _exerciseCountMapOdd = {"가슴": 0, "등": 0, "다리": 0, "어깨": 0};
 
     _dateController(_dateCtrl);
-    double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercise in sdbdata.exercises) {
@@ -2073,12 +2075,14 @@ class _StaticModuleState extends State<StaticModule> {
           })]
               .target) {
             if (_exerciseCountMapOdd.containsKey(target)) {
+              // ignore: unused_local_variable
               for (workoutModel.Sets sets in exercise.sets) {
                 _exerciseCountMapOdd[target] =
                     _exerciseCountMapOdd[target]! + 1;
               }
             } else {
               _exerciseCountMapOdd[target] = 0;
+              // ignore: unused_local_variable
               for (workoutModel.Sets sets in exercise.sets) {
                 _exerciseCountMapOdd[target] =
                     _exerciseCountMapOdd[target]! + 1;
@@ -2114,7 +2118,7 @@ class _StaticModuleState extends State<StaticModule> {
                       : _exerciseCountMapOdd.values.elementAt(0).toDouble(),
                   color: Theme.of(context).cardColor),
               gradient: _barsGradient,
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6)))
         ],
         showingTooltipIndicators:
@@ -2151,7 +2155,6 @@ class _StaticModuleState extends State<StaticModule> {
     ];
 
     _dateController(_dateCtrl);
-    double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercise in sdbdata.exercises) {
@@ -2235,7 +2238,6 @@ class _StaticModuleState extends State<StaticModule> {
     ];
 
     _dateController(_dateCtrl);
-    double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercise in sdbdata.exercises) {
@@ -2250,12 +2252,14 @@ class _StaticModuleState extends State<StaticModule> {
           })]
               .target) {
             if (_exerciseCountMapOdd.containsKey(target)) {
+              // ignore: unused_local_variable
               for (workoutModel.Sets sets in exercise.sets) {
                 _exerciseCountMapOdd[target] =
                     _exerciseCountMapOdd[target]! + 1;
               }
             } else {
               _exerciseCountMapOdd[target] = 0;
+              // ignore: unused_local_variable
               for (workoutModel.Sets sets in exercise.sets) {
                 _exerciseCountMapOdd[target] =
                     _exerciseCountMapOdd[target]! + 1;
@@ -2316,7 +2320,6 @@ class _StaticModuleState extends State<StaticModule> {
     ];
 
     _dateController(_dateCtrl);
-    double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercise in sdbdata.exercises) {
@@ -2381,7 +2384,6 @@ class _StaticModuleState extends State<StaticModule> {
     _exerciseCountMap = {"가슴": 0, "등": 0, "다리": 0, "어깨": 0};
 
     _dateController(_dateCtrl);
-    double deviceWidth = MediaQuery.of(context).size.width;
     if (_historydata != null) {
       for (SDBdata sdbdata in _historydata) {
         for (Exercises exercise in sdbdata.exercises) {
@@ -2431,7 +2433,7 @@ class _StaticModuleState extends State<StaticModule> {
                       : _exerciseCountMap.values.elementAt(0).toDouble(),
                   color: Theme.of(context).cardColor),
               gradient: _barsGradient,
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6)))
         ],
         showingTooltipIndicators:
@@ -2479,11 +2481,8 @@ class _StaticModuleState extends State<StaticModule> {
             if (!event.isInterestedForInteractions ||
                 pieTouchResponse == null ||
                 pieTouchResponse.touchedSection == null) {
-              _touchedIndex = -1;
               return;
             }
-            _touchedIndex =
-                pieTouchResponse.touchedSection!.touchedSectionIndex;
           });
         },
       );
@@ -2538,7 +2537,7 @@ class _StaticModuleState extends State<StaticModule> {
                     children: [
                       Text(_historyTextCore,
                           textScaleFactor: 2.0,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Color(0xFffc60a8),
                               fontWeight: FontWeight.w600)),
                       Padding(
@@ -2553,7 +2552,8 @@ class _StaticModuleState extends State<StaticModule> {
                   ),
                 );
               }),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
+              // ignore: unnecessary_null_comparison
               _barChartGroupData != null
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2641,7 +2641,7 @@ class _StaticModuleState extends State<StaticModule> {
                     children: [
                       Text(_historyTextCore,
                           textScaleFactor: 2.0,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Color(0xFffc60a8),
                               fontWeight: FontWeight.w600)),
                       Padding(
@@ -2656,7 +2656,8 @@ class _StaticModuleState extends State<StaticModule> {
                   ),
                 );
               }),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
+              // ignore: unnecessary_null_comparison
               _pieDataSets != null
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2686,7 +2687,7 @@ class _StaticModuleState extends State<StaticModule> {
                                       textColor:
                                           Theme.of(context).primaryColorLight,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 4,
                                     ),
                                   ]);

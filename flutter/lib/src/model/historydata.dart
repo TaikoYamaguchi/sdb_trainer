@@ -131,15 +131,12 @@ class Exercises {
     var list = parsedJson["sets"] as List;
     List<Sets> setList = list.map((i) => Sets.fromJson(i)).toList();
     return Exercises(
-        name: namechange[parsedJson["name"]] != null
-            ? namechange[parsedJson["name"]]
-            : parsedJson["name"],
+        name: namechange[parsedJson["name"]] ?? parsedJson["name"],
         sets: setList,
         onerm: parsedJson["onerm"],
         goal: parsedJson["goal"],
         date: parsedJson["date"],
-        isCardio:
-            parsedJson["isCardio"] == null ? false : parsedJson["isCardio"]);
+        isCardio: parsedJson["isCardio"] ?? false);
   }
 }
 
@@ -154,7 +151,7 @@ class CommentList {
     List<Comment> comments = <Comment>[];
     comments = parsedJson.map((i) => Comment.fromJson(i)).toList();
 
-    return new CommentList(comments: comments);
+    return CommentList(comments: comments);
   }
 }
 
@@ -169,7 +166,7 @@ class SDBdataList {
     List<SDBdata> sdbdatas = <SDBdata>[];
     sdbdatas = parsedJson.map((i) => SDBdata.fromJson(i)).toList();
 
-    return new SDBdataList(sdbdatas: sdbdatas);
+    return SDBdataList(sdbdatas: sdbdatas);
   }
 }
 

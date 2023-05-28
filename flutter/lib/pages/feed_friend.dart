@@ -9,7 +9,7 @@ import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 
 class FeedFriend extends StatefulWidget {
-  FeedFriend({Key? key}) : super(key: key);
+  const FeedFriend({Key? key}) : super(key: key);
 
   @override
   _FeedFriendState createState() => _FeedFriendState();
@@ -35,12 +35,12 @@ class _FeedFriendState extends State<FeedFriend> {
   PreferredSizeWidget _appbarWidget() {
     bool btnDisabled = false;
     return PreferredSize(
-        preferredSize: Size.fromHeight(40.0), // here the desired height
+        preferredSize: const Size.fromHeight(40.0), // here the desired height
         child: AppBar(
           elevation: 0,
           leading: IconButton(
             color: Theme.of(context).primaryColorLight,
-            icon: Icon(Icons.arrow_back_ios_outlined),
+            icon: const Icon(Icons.arrow_back_ios_outlined),
             onPressed: () {
               btnDisabled == true
                   ? null
@@ -79,20 +79,18 @@ class _FeedFriendState extends State<FeedFriend> {
           FocusScope.of(context).unfocus();
         },
         onPanUpdate: (details) {
-          if (details.delta.dx > 0 && btnDisabled == false) {
+          if (details.delta.dx > 20 && btnDisabled == false) {
             btnDisabled = true;
             Navigator.of(context).pop();
             print("Dragging in +X direction");
           }
         },
-        child: Container(
-            child: Column(children: [
+        child: Column(children: [
           Expanded(
             child:
                 Consumer<UserdataProvider>(builder: (builder, provider, child) {
               return provider.userFriends.userdatas.isEmpty
-                  ? Container(
-                      child: Center(
+                  ? Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -105,10 +103,10 @@ class _FeedFriendState extends State<FeedFriend> {
                               style: TextStyle(
                                 color: Theme.of(context).primaryColor,
                               )),
-                          SizedBox(height: 60)
+                          const SizedBox(height: 60)
                         ],
                       ),
-                    ))
+                    )
                   : ListView.separated(
                       itemBuilder: (BuildContext _context, int index) {
                         return _friend_listWidget(
@@ -120,7 +118,7 @@ class _FeedFriendState extends State<FeedFriend> {
                           height: 0.5,
                           child: Container(
                             alignment: Alignment.center,
-                            margin: EdgeInsets.symmetric(horizontal: 10),
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
                             height: 0.5,
                             color: Theme.of(context).primaryColorDark,
                           ),
@@ -130,7 +128,7 @@ class _FeedFriendState extends State<FeedFriend> {
                     );
             }),
           )
-        ])));
+        ]));
   }
 
   Widget _friend_listWidget(provider, user) {
@@ -140,14 +138,13 @@ class _FeedFriendState extends State<FeedFriend> {
           FocusScope.of(context).unfocus();
         },
         onPanUpdate: (details) {
-          if (details.delta.dx > 0 && btnDisabled == false) {
+          if (details.delta.dx > 20 && btnDisabled == false) {
             btnDisabled = true;
             Navigator.of(context).pop();
             print("Dragging in +X direction");
           }
         },
-        child: Container(
-            child: Padding(
+        child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -164,7 +161,7 @@ class _FeedFriendState extends State<FeedFriend> {
                     Padding(
                       padding: const EdgeInsets.only(right: 12),
                       child: user.image == ""
-                          ? Icon(
+                          ? const Icon(
                               Icons.account_circle,
                               color: Colors.grey,
                               size: 28.0,
@@ -176,8 +173,8 @@ class _FeedFriendState extends State<FeedFriend> {
                                 height: 28,
                                 width: 28,
                                 decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(50)),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(50)),
                                     image: DecorationImage(
                                       image: imageProivder,
                                       fit: BoxFit.cover,
@@ -193,7 +190,7 @@ class _FeedFriendState extends State<FeedFriend> {
               _feedLikeButton(provider, user)
             ],
           ),
-        )));
+        ));
   }
 
   Widget _feedLikeButton(provider, User) {
@@ -204,8 +201,8 @@ class _FeedFriendState extends State<FeedFriend> {
         size: buttonSize,
         isLiked: onIsLikedCheck(provider, User),
         circleColor:
-            CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
-        bubblesColor: BubblesColor(
+            const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+        bubblesColor: const BubblesColor(
           dotPrimaryColor: Color(0xff33b5e5),
           dotSecondaryColor: Color(0xff0099cc),
         ),

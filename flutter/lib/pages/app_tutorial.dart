@@ -29,11 +29,11 @@ class _app_tutorialState extends State<app_tutorial> {
               style: TextStyle(
                   color: Theme.of(context).primaryColorLight, fontSize: 20),
             ),
-            SizedBox(
+            const SizedBox(
               height: 100,
             )
           ],
-          widgetNext: Text(
+          widgetNext: const Text(
             "Toque para continuar",
             style: TextStyle(
               color: Colors.purple,
@@ -53,11 +53,11 @@ class _app_tutorialState extends State<app_tutorial> {
             style: TextStyle(
                 color: Theme.of(context).primaryColorLight, fontSize: 20),
           ),
-          SizedBox(
+          const SizedBox(
             height: 100,
           )
         ],
-        widgetNext: Text(
+        widgetNext: const Text(
           "Toque para continuar",
           style: TextStyle(
             color: Colors.purple,
@@ -78,11 +78,11 @@ class _app_tutorialState extends State<app_tutorial> {
             style: TextStyle(
                 color: Theme.of(context).primaryColorLight, fontSize: 20),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           )
         ],
-        widgetNext: Text(
+        widgetNext: const Text(
           "Sair",
           style: TextStyle(
             color: Colors.purple,
@@ -93,7 +93,7 @@ class _app_tutorialState extends State<app_tutorial> {
       ),
     });
 
-    Future.delayed(Duration(microseconds: 200)).then((value) {
+    Future.delayed(const Duration(microseconds: 200)).then((value) {
       Tutorial.showTutorial(context, itens);
     });
     super.initState();

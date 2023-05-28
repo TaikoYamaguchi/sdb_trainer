@@ -7,7 +7,7 @@ import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/src/model/userdata.dart';
 
 class FeedFriendDislikeEdit extends StatefulWidget {
-  FeedFriendDislikeEdit({Key? key}) : super(key: key);
+  const FeedFriendDislikeEdit({Key? key}) : super(key: key);
 
   @override
   _FeedFriendDislikeEditState createState() => _FeedFriendDislikeEditState();
@@ -39,11 +39,11 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
   PreferredSizeWidget _appbarWidget() {
     bool btnDisabled = false;
     return PreferredSize(
-        preferredSize: Size.fromHeight(40.0), // here the desired height
+        preferredSize: const Size.fromHeight(40.0), // here the desired height
         child: AppBar(
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_outlined),
+            icon: const Icon(Icons.arrow_back_ios_outlined),
             color: Theme.of(context).primaryColorLight,
             onPressed: () {
               btnDisabled == true
@@ -70,19 +70,17 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
           FocusScope.of(context).unfocus();
         },
         onPanUpdate: (details) {
-          if (details.delta.dx > 0 && btnDisabled == false) {
+          if (details.delta.dx > 20 && btnDisabled == false) {
             btnDisabled = true;
             Navigator.of(context).pop();
             print("Dragging in +X direction");
           }
         },
-        child: Container(
-            child: Column(children: [
+        child: Column(children: [
           Consumer<UserdataProvider>(builder: (builder, provider, child) {
             return Expanded(
               child: _userProvider.userdata.dislike.isEmpty
-                  ? Container(
-                      child: Center(
+                  ? Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -97,7 +95,7 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
                               ))
                         ],
                       ),
-                    ))
+                    )
                   : ListView.separated(
                       itemBuilder: (BuildContext _context, int index) {
                         return _dislikeListWidget(
@@ -109,9 +107,9 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
                           height: 1,
                           child: Container(
                             alignment: Alignment.center,
-                            margin: EdgeInsets.symmetric(horizontal: 10),
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
                             height: 1,
-                            color: Color(0xFF717171),
+                            color: const Color(0xFF717171),
                           ),
                         );
                       },
@@ -119,15 +117,14 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
                     ),
             );
           }),
-        ])));
+        ]));
   }
 
   Widget _dislikeListWidget(email) {
     User user = _userProvider.userFriendsAll.userdatas
         .where((user) => user.email == email)
         .toList()[0];
-    return Container(
-        child: Padding(
+    return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -136,7 +133,7 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
             Padding(
               padding: const EdgeInsets.only(right: 12),
               child: user.image == ""
-                  ? Icon(
+                  ? const Icon(
                       Icons.account_circle,
                       color: Colors.grey,
                       size: 28.0,
@@ -147,7 +144,8 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
                         height: 28,
                         width: 28,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(50)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(50)),
                             image: DecorationImage(
                               image: imageProivder,
                               fit: BoxFit.cover,
@@ -162,7 +160,7 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
           _dislikeEditButton(user)
         ],
       ),
-    ));
+    );
   }
 
   Widget _dislikeEditButton(User user) {
@@ -173,8 +171,8 @@ class _FeedFriendDislikeEditState extends State<FeedFriendDislikeEdit> {
         size: buttonSize,
         isLiked: onIsLikedCheck(user),
         circleColor:
-            CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
-        bubblesColor: BubblesColor(
+            const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+        bubblesColor: const BubblesColor(
           dotPrimaryColor: Color(0xff33b5e5),
           dotSecondaryColor: Color(0xff0099cc),
         ),

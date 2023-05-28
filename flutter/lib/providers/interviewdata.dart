@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sdb_trainer/repository/interview_repository.dart';
-import 'package:sdb_trainer/repository/comment_repository.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class InterviewdataProvider extends ChangeNotifier {
   var _interviewdataAll;
@@ -12,9 +10,6 @@ class InterviewdataProvider extends ChangeNotifier {
   getInterviewdataFirst() {
     InterviewdataFirst.loadInterviewDataFirst().then((value) {
       _interviewdataAll = value;
-      print("provider");
-      print(value);
-
       notifyListeners();
     });
   }

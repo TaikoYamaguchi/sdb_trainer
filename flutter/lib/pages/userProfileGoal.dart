@@ -3,13 +3,13 @@ import 'package:provider/provider.dart';
 
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
-import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
-import 'package:sdb_trainer/src/model/exercisesdata.dart';
 
 class ProfileGoal extends StatefulWidget {
+  const ProfileGoal({Key? key}) : super(key: key);
+
   @override
   _ProfileGoalState createState() => _ProfileGoalState();
 }
@@ -18,11 +18,10 @@ class _ProfileGoalState extends State<ProfileGoal> {
   bool isLoading = false;
   var _userProvider;
   var _exProvider;
-  var _userNicknameCtrl;
   var _exerciseList;
 
-  List<TextEditingController> _onermController = [];
-  List<TextEditingController> _goalController = [];
+  final List<TextEditingController> _onermController = [];
+  final List<TextEditingController> _goalController = [];
 
   @override
   void initState() {
@@ -53,11 +52,11 @@ class _ProfileGoalState extends State<ProfileGoal> {
   PreferredSizeWidget _appbarWidget() {
     var _btnDisabled = false;
     return PreferredSize(
-        preferredSize: Size.fromHeight(40.0), // here the desired height
+        preferredSize: const Size.fromHeight(40.0), // here the desired height
         child: AppBar(
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_outlined),
+            icon: const Icon(Icons.arrow_back_ios_outlined),
             color: Theme.of(context).primaryColorLight,
             onPressed: () {
               _btnDisabled == true
@@ -84,118 +83,115 @@ class _ProfileGoalState extends State<ProfileGoal> {
           FocusScope.of(context).unfocus();
         },
         onPanUpdate: (details) {
-          if (details.delta.dx > 0 && btnDisabled == false) {
+          if (details.delta.dx > 20 && btnDisabled == false) {
             btnDisabled = true;
             Navigator.of(context).pop();
             print("Dragging in +X direction");
           }
         },
-        child: Container(
-          child: Center(
-              child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: SizedBox(),
-                        ),
-                        Text("운동 정보 수정",
-                            textScaleFactor: 2.7,
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColorLight,
-                                fontWeight: FontWeight.w600)),
-                        Text("목표치와 1rm을 설정해보세요",
-                            textScaleFactor: 1.3,
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColorLight)),
-                        SizedBox(
-                          height: 40,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                  width: 120,
-                                  child: Text(
-                                    "운동",
+        child: Center(
+            child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const Expanded(
+                        flex: 1,
+                        child: SizedBox(),
+                      ),
+                      Text("운동 정보 수정",
+                          textScaleFactor: 2.7,
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight,
+                              fontWeight: FontWeight.w600)),
+                      Text("목표치와 1rm을 설정해보세요",
+                          textScaleFactor: 1.3,
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight)),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                                width: 120,
+                                child: Text(
+                                  "운동",
+                                  textScaleFactor: 1.5,
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight,
+                                  ),
+                                )),
+                            SizedBox(
+                                width: 70,
+                                child: Text("1rm",
                                     textScaleFactor: 1.5,
                                     style: TextStyle(
                                       color:
                                           Theme.of(context).primaryColorLight,
                                     ),
-                                  )),
-                              Container(
-                                  width: 70,
-                                  child: Text("1rm",
-                                      textScaleFactor: 1.5,
-                                      style: TextStyle(
-                                        color:
-                                            Theme.of(context).primaryColorLight,
-                                      ),
-                                      textAlign: TextAlign.center)),
-                              Container(
-                                  width: 80,
-                                  child: Text("목표",
-                                      textScaleFactor: 1.5,
-                                      style: TextStyle(
-                                        color:
-                                            Theme.of(context).primaryColorLight,
-                                      ),
-                                      textAlign: TextAlign.center))
-                            ],
-                          ),
+                                    textAlign: TextAlign.center)),
+                            SizedBox(
+                                width: 80,
+                                child: Text("목표",
+                                    textScaleFactor: 1.5,
+                                    style: TextStyle(
+                                      color:
+                                          Theme.of(context).primaryColorLight,
+                                    ),
+                                    textAlign: TextAlign.center))
+                          ],
                         ),
-                        Expanded(
-                          flex: 10,
-                          child: ListView.separated(
-                              itemBuilder: (BuildContext _context, int index) {
-                                return Center(
-                                    child: _exerciseWidget(
-                                        _exerciseList[index], index));
-                              },
-                              separatorBuilder:
-                                  (BuildContext _context, int index) {
-                                return Container(
+                      ),
+                      Expanded(
+                        flex: 10,
+                        child: ListView.separated(
+                            itemBuilder: (BuildContext _context, int index) {
+                              return Center(
+                                  child: _exerciseWidget(
+                                      _exerciseList[index], index));
+                            },
+                            separatorBuilder:
+                                (BuildContext _context, int index) {
+                              return Container(
+                                alignment: Alignment.center,
+                                height: 0.5,
+                                child: Container(
                                   alignment: Alignment.center,
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 10),
                                   height: 0.5,
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    height: 0.5,
-                                    color: Theme.of(context).primaryColorDark,
-                                  ),
-                                );
-                              },
-                              itemCount: _exerciseList.length),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: SizedBox(),
-                        ),
-                        _weightSubmitButton(context),
-                      ]))),
-        ));
+                                  color: Theme.of(context).primaryColorDark,
+                                ),
+                              );
+                            },
+                            itemCount: _exerciseList.length),
+                      ),
+                      const Expanded(
+                        flex: 2,
+                        child: SizedBox(),
+                      ),
+                      _weightSubmitButton(context),
+                    ]))));
   }
 
   Widget _exerciseWidget(Exercises, index) {
-    _onermController.add(
-        new TextEditingController(text: Exercises.onerm.toStringAsFixed(1)));
-    _goalController.add(
-        new TextEditingController(text: Exercises.goal.toStringAsFixed(1)));
+    _onermController
+        .add(TextEditingController(text: Exercises.onerm.toStringAsFixed(1)));
+    _goalController
+        .add(TextEditingController(text: Exercises.goal.toStringAsFixed(1)));
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
+            SizedBox(
               width: 120,
               child: Text(
                 Exercises.name,
@@ -203,11 +199,11 @@ class _ProfileGoalState extends State<ProfileGoal> {
                 style: TextStyle(color: Theme.of(context).primaryColorLight),
               ),
             ),
-            Container(
+            SizedBox(
               width: 70,
               child: TextFormField(
                   controller: _onermController[index],
-                  keyboardType: TextInputType.numberWithOptions(
+                  keyboardType: const TextInputType.numberWithOptions(
                       signed: false, decimal: true),
                   style: TextStyle(
                       fontSize: 18, color: Theme.of(context).primaryColorLight),
@@ -230,11 +226,11 @@ class _ProfileGoalState extends State<ProfileGoal> {
                     });
                   }),
             ),
-            Container(
+            SizedBox(
               width: 80,
               child: TextFormField(
                   controller: _goalController[index],
-                  keyboardType: TextInputType.numberWithOptions(
+                  keyboardType: const TextInputType.numberWithOptions(
                       signed: false, decimal: true),
                   style: TextStyle(
                       fontSize: 18, color: Theme.of(context).primaryColorLight),
@@ -276,12 +272,12 @@ class _ProfileGoalState extends State<ProfileGoal> {
               textStyle: TextStyle(
                 color: Theme.of(context).primaryColorLight,
               ),
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
             ),
             onPressed: () => _postExerciseCheck(),
             child: Text(isLoading ? 'loggin in.....' : "운동 정보 수정",
                 textScaleFactor: 1.5,
-                style: TextStyle(color: Theme.of(context).buttonColor))));
+                style: TextStyle(color: Theme.of(context).highlightColor))));
   }
 
   void _postExerciseCheck() async {

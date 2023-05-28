@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sdb_trainer/providers/famous.dart';
-import 'package:sdb_trainer/providers/historydata.dart';
-import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/routinemenu.dart';
-import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
-import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 
+// ignore: must_be_immutable
 class NameInputDialog extends StatefulWidget {
   int rindex;
   NameInputDialog({Key? key, required this.rindex}) : super(key: key);
@@ -20,14 +16,9 @@ class NameInputDialog extends StatefulWidget {
 }
 
 class _NameInputDialogState extends State<NameInputDialog> {
-  var _hisProvider;
-  var _routinetimeProvider;
   var _userProvider;
   var _workoutProvider;
-  var _famousdataProvider;
   var backupwddata;
-  var _PopProvider;
-  var _PrefsProvider;
   TextEditingController _workoutNameCtrl = TextEditingController(text: "");
   var _customRuUsed = false;
   var _ischecked = false;
@@ -43,13 +34,13 @@ class _NameInputDialogState extends State<NameInputDialog> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor:
                   _workoutNameCtrl.text == "" || _customRuUsed == true
-                      ? Color(0xFF212121)
+                      ? const Color(0xFF212121)
                       : Theme.of(context).primaryColor,
               textStyle: TextStyle(
                 color: Theme.of(context).primaryColorLight,
               ),
-              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-              padding: EdgeInsets.all(12.0),
+              disabledForegroundColor: const Color.fromRGBO(246, 58, 64, 20),
+              padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {
               if (!_customRuUsed && _workoutNameCtrl.text != "") {
@@ -60,7 +51,7 @@ class _NameInputDialogState extends State<NameInputDialog> {
             },
             child: Text(_customRuUsed == true ? "존재하는 루틴 이름" : "루틴 이름 수정",
                 textScaleFactor: 1.7,
-                style: TextStyle(color: Theme.of(context).buttonColor))));
+                style: TextStyle(color: Theme.of(context).highlightColor))));
   }
 
   void _editWorkoutNameCheck(newname) async {
@@ -86,12 +77,12 @@ class _NameInputDialogState extends State<NameInputDialog> {
               ),
               backgroundColor:
                   _workoutNameCtrl.text == "" || _customRuUsed == true
-                      ? Color(0xFF212121)
+                      ? const Color(0xFF212121)
                       : Theme.of(context).primaryColor,
               textStyle: TextStyle(
                 color: Theme.of(context).primaryColorLight,
               ),
-              padding: EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {
               if (!_customRuUsed && _workoutNameCtrl.text != "") {
@@ -112,7 +103,7 @@ class _NameInputDialogState extends State<NameInputDialog> {
             },
             child: Text(_customRuUsed == true ? "존재하는 루틴 이름" : "새 루틴 추가",
                 textScaleFactor: 1.7,
-                style: TextStyle(color: Theme.of(context).buttonColor))));
+                style: TextStyle(color: Theme.of(context).highlightColor))));
   }
 
   void _editWorkoutCheck() async {
@@ -131,12 +122,12 @@ class _NameInputDialogState extends State<NameInputDialog> {
 
     return StatefulBuilder(builder: (context, setState) {
       return AlertDialog(
-        buttonPadding: EdgeInsets.all(12.0),
+        buttonPadding: const EdgeInsets.all(12.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
         backgroundColor: Theme.of(context).cardColor,
-        contentPadding: EdgeInsets.all(12.0),
+        contentPadding: const EdgeInsets.all(12.0),
         title: Text(
           title,
           textScaleFactor: 1.5,
@@ -148,11 +139,11 @@ class _NameInputDialogState extends State<NameInputDialog> {
               textScaleFactor: 1.3,
               textAlign: TextAlign.center,
               style: TextStyle(color: Theme.of(context).primaryColorLight)),
-          Text('외부를 터치하면 취소 할 수 있어요',
+          const Text('외부를 터치하면 취소 할 수 있어요',
               textScaleFactor: 1.0,
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.grey)),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           TextField(
             onChanged: (value) {
               _workoutProvider.workoutdata.routinedatas.indexWhere((routine) {
@@ -191,39 +182,37 @@ class _NameInputDialogState extends State<NameInputDialog> {
                     color: Theme.of(context).primaryColorLight)),
           ),
           widget.rindex == -1
-              ? Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        '플랜 모드',
-                        textScaleFactor: 1.2,
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorLight),
-                      ),
-                      Transform.scale(
-                          scale: 1,
-                          child: Consumer<RoutineMenuStater>(
-                              builder: (builder, provider, child) {
-                            return Theme(
-                                data: ThemeData(
-                                    unselectedWidgetColor:
-                                        Theme.of(context).primaryColorLight),
-                                child: Checkbox(
-                                    checkColor:
-                                        Theme.of(context).primaryColorLight,
-                                    activeColor: Theme.of(context).primaryColor,
-                                    value: _ischecked,
-                                    onChanged: (newvalue) {
-                                      setState(() {
-                                        _ischecked = !_ischecked;
-                                      });
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      '플랜 모드',
+                      textScaleFactor: 1.2,
+                      style:
+                          TextStyle(color: Theme.of(context).primaryColorLight),
+                    ),
+                    Transform.scale(
+                        scale: 1,
+                        child: Consumer<RoutineMenuStater>(
+                            builder: (builder, provider, child) {
+                          return Theme(
+                              data: ThemeData(
+                                  unselectedWidgetColor:
+                                      Theme.of(context).primaryColorLight),
+                              child: Checkbox(
+                                  checkColor:
+                                      Theme.of(context).primaryColorLight,
+                                  activeColor: Theme.of(context).primaryColor,
+                                  value: _ischecked,
+                                  onChanged: (newvalue) {
+                                    setState(() {
+                                      _ischecked = !_ischecked;
+                                    });
 
-                                      provider.modecheck();
-                                    }));
-                          })),
-                    ],
-                  ),
+                                    provider.modecheck();
+                                  }));
+                        })),
+                  ],
                 )
               : Container(),
         ]),
@@ -238,16 +227,8 @@ class _NameInputDialogState extends State<NameInputDialog> {
 
   @override
   Widget build(BuildContext context) {
-    _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _famousdataProvider =
-        Provider.of<FamousdataProvider>(context, listen: false);
     _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
-
-    _routinetimeProvider =
-        Provider.of<RoutineTimeProvider>(context, listen: false);
-    _PopProvider = Provider.of<PopProvider>(context, listen: false);
-    _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
 
     return NameInput();
   }

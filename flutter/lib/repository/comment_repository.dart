@@ -1,10 +1,8 @@
 import 'dart:async' show Future;
-import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 import 'package:sdb_trainer/localhost.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sdb_trainer/src/model/historydata.dart';
 
@@ -21,7 +19,7 @@ class CommentCreate {
       required this.writer_nickname,
       required this.content});
   Future<String> _postCommentServer() async {
-    var formData = new Map<String, dynamic>();
+    var formData = Map<String, dynamic>();
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/comments");
     formData["history_id"] = history_id;
     formData["reply_id"] = reply_id;
@@ -74,9 +72,9 @@ class CommentDelete {
   final int comment_id;
   CommentDelete({required this.comment_id});
   Future<String> _deleteCommentServer() async {
-    final storage = new FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     String? token = await storage.read(key: "sdb_token");
-    var formData = new Map<String, dynamic>();
+    var formData = Map<String, dynamic>();
     formData["id"] = comment_id;
     var url = Uri.parse(
         LocalHost.getLocalHost() + "/api/comment/" + comment_id.toString());

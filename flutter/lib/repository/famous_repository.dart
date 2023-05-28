@@ -1,18 +1,13 @@
-import 'dart:convert';
+// ignore_for_file: unnecessary_null_comparison
 
+import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sdb_trainer/localhost.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:dio/dio.dart';
 
 class FamousRepository {
-  static Future<String> _loadFamousdataFromLocation() async {
-    return await rootBundle.loadString('assets/json/workout.json');
-  }
-
   static Future<String> _loadFamousdataFromServer() async {
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/famous");
     var response = await http.get(url);
@@ -55,8 +50,6 @@ class FamousLike {
     var response = await http.patch(url, body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
 
       return utf8.decode(response.bodyBytes);
     } else {
@@ -86,8 +79,6 @@ class ProgramSubscribe {
     var response = await http.get(url);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
 
       return utf8.decode(response.bodyBytes);
     } else {
@@ -135,9 +126,6 @@ class ProgramPost {
     var response = await http.post(url, body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
-
       return utf8.decode(response.bodyBytes);
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
@@ -171,9 +159,6 @@ class FamousEdit {
     var response = await http.put(url, body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
-
       return utf8.decode(response.bodyBytes);
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
@@ -199,9 +184,6 @@ class WorkoutDelete {
     var response = await http.delete(url);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
-
       return utf8.decode(response.bodyBytes);
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.

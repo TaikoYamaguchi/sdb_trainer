@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -12,18 +9,14 @@ import 'package:sdb_trainer/pages/each_exercise.dart';
 import 'package:sdb_trainer/pages/each_plan.dart';
 import 'package:sdb_trainer/pages/each_workout.dart';
 import 'package:sdb_trainer/pages/exercise_filter.dart';
-import 'package:sdb_trainer/pages/routine_bank.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
-import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
-import 'package:sdb_trainer/src/model/userdata.dart';
-import 'package:sdb_trainer/src/model/workoutdata.dart';
 import 'package:sdb_trainer/src/utils/alerts.dart';
 import 'package:sdb_trainer/src/utils/change_name.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
@@ -41,7 +34,6 @@ class Exercise extends StatefulWidget {
 }
 
 class ExerciseState extends State<Exercise> {
-  TextEditingController _workoutNameCtrl = TextEditingController(text: "");
   final ScrollController _scroller = ScrollController();
   final _listViewKey = GlobalKey();
   var _userProvider;
@@ -58,15 +50,12 @@ class ExerciseState extends State<Exercise> {
   double top = 0;
   double bottom = 0;
   int swap = 1;
-  String _title = "Workout List";
-  var _customExUsed = false;
 
   var keyPlus = GlobalKey();
   var keyContainer = GlobalKey();
   var keyCheck = GlobalKey();
   var keySearch = GlobalKey();
   var keySelect = GlobalKey();
-  var _menuList;
 
   Map<String, String> UNIT_ID = kReleaseMode
       ? {
@@ -90,16 +79,16 @@ class ExerciseState extends State<Exercise> {
           top: 200,
           left: 50,
           children: [
-            Text(
+            const Text(
               "+버튼을 눌러 원하는 이름의 루틴을 추가하세요",
               textScaleFactor: 1.7,
               style: TextStyle(color: Colors.white),
             ),
-            SizedBox(
+            const SizedBox(
               height: 100,
             )
           ],
-          widgetNext: Text(
+          widgetNext: const Text(
             "아무곳을 눌러 진행",
             style: TextStyle(
               color: Colors.purple,
@@ -127,7 +116,7 @@ class ExerciseState extends State<Exercise> {
 
   PreferredSizeWidget _appbarWidget() {
     return PreferredSize(
-        preferredSize: Size.fromHeight(40.0), // here the desired height
+        preferredSize: const Size.fromHeight(40.0), // here the desired height
         child: AppBar(
           elevation: 0,
           title: Row(
@@ -189,7 +178,7 @@ class ExerciseState extends State<Exercise> {
           Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
             List routinelist = provider.workoutdata.routinedatas;
             return ReorderableListView.builder(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 onReorder: (int oldIndex, int newIndex) {
                   _routinetimeProvider.isstarted
@@ -209,10 +198,10 @@ class ExerciseState extends State<Exercise> {
                 onReorderEnd: (index) {
                   dragstart = false;
                 },
-                padding: EdgeInsets.symmetric(horizontal: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 4),
                 itemBuilder: (BuildContext _context, int index) {
                   final List<Color> color = <Color>[];
-                  color.add(Color(0xFffc60a8).withOpacity(1.0));
+                  color.add(const Color(0xFffc60a8).withOpacity(1.0));
                   color.add(Theme.of(context).primaryColor.withOpacity(1.0));
                   final List<double> stops = <double>[];
                   stops.add(0.3);
@@ -232,8 +221,8 @@ class ExerciseState extends State<Exercise> {
                       elevation: 0.5,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0)),
-                      margin: new EdgeInsets.symmetric(
-                          horizontal: 0, vertical: 6.0),
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 0, vertical: 6.0),
                       child: Slidable(
                         endActionPane: ActionPane(
                             extentRatio: 0.4,
@@ -249,7 +238,8 @@ class ExerciseState extends State<Exercise> {
                                   );
                                 },
                                 backgroundColor: Theme.of(context).primaryColor,
-                                foregroundColor: Theme.of(context).buttonColor,
+                                foregroundColor:
+                                    Theme.of(context).highlightColor,
                                 icon: Icons.edit,
                                 label: '수정',
                               ),
@@ -267,8 +257,9 @@ class ExerciseState extends State<Exercise> {
                                             );
                                           });
                                 },
-                                backgroundColor: Color(0xFFFE4A49),
-                                foregroundColor: Theme.of(context).buttonColor,
+                                backgroundColor: const Color(0xFFFE4A49),
+                                foregroundColor:
+                                    Theme.of(context).highlightColor,
                                 icon: Icons.delete,
                                 label: '삭제',
                               )
@@ -286,7 +277,7 @@ class ExerciseState extends State<Exercise> {
                               decoration: BoxDecoration(
                                   color: provider.isstarted
                                       ? index == provider.nowonrindex
-                                          ? Color(0xffCEEC97)
+                                          ? const Color(0xffCEEC97)
                                           : Theme.of(context).cardColor
                                       : Theme.of(context).cardColor,
                                   borderRadius: BorderRadius.circular(15.0)),
@@ -318,21 +309,24 @@ class ExerciseState extends State<Exercise> {
                                       borderRadius:
                                           BorderRadius.circular(15.0)),
                                   child: ListTile(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 15, vertical: 5.0),
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 15, vertical: 5.0),
                                       leading: Container(
                                         height: double.infinity,
-                                        padding: EdgeInsets.only(right: 15.0),
-                                        decoration: new BoxDecoration(
-                                            border: new Border(
-                                                right: new BorderSide(
+                                        padding:
+                                            const EdgeInsets.only(right: 15.0),
+                                        decoration: BoxDecoration(
+                                            border: Border(
+                                                right: BorderSide(
                                                     width: 1.0,
                                                     color: Theme.of(context)
                                                         .primaryColorDark))),
                                         child: routinelist[index].mode == 0
                                             ? Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 8),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 8),
                                                 child: SizedBox(
                                                   width: 25,
                                                   child: SvgPicture.asset(
@@ -353,10 +347,10 @@ class ExerciseState extends State<Exercise> {
                                                         .exercises[0]
                                                         .plans
                                                         .length,
-                                                center: new Text(
+                                                center: Text(
                                                   "${routinelist[index].exercises[0].progress + 1}/${routinelist[index].exercises[0].plans.length}",
                                                   textScaleFactor: 0.8,
-                                                  style: new TextStyle(
+                                                  style: TextStyle(
                                                     color: Theme.of(context)
                                                         .primaryColorLight,
                                                   ),
@@ -416,7 +410,7 @@ class ExerciseState extends State<Exercise> {
                                                   : Container()
                                               : Container(),
                                           Padding(
-                                            padding: EdgeInsets.fromLTRB(
+                                            padding: const EdgeInsets.fromLTRB(
                                                 12, 4, 0, 4),
                                             child: Container(
                                               height: 20.0,
@@ -425,7 +419,7 @@ class ExerciseState extends State<Exercise> {
                                                   color: Theme.of(context)
                                                       .primaryColorDark,
                                                   borderRadius:
-                                                      BorderRadius.all(
+                                                      const BorderRadius.all(
                                                           Radius.circular(
                                                               8.0))),
                                             ),
@@ -476,7 +470,7 @@ class ExerciseState extends State<Exercise> {
                             child: Icon(
                               Icons.add,
                               size: 28.0,
-                              color: Theme.of(context).buttonColor,
+                              color: Theme.of(context).highlightColor,
                             ),
                           ),
                           Padding(
@@ -490,7 +484,7 @@ class ExerciseState extends State<Exercise> {
                                     style: TextStyle(
                                         color: Theme.of(context)
                                             .primaryColorLight)),
-                                Text("원하는 운동 플랜을 만들 수 있어요",
+                                const Text("원하는 운동 플랜을 만들 수 있어요",
                                     textScaleFactor: 1.1,
                                     style: TextStyle(color: Colors.grey)),
                               ],
@@ -533,7 +527,7 @@ class ExerciseState extends State<Exercise> {
     return Container(
       child: GridView.builder(
         itemCount: 12,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
           childAspectRatio: 7 / 8,
           mainAxisSpacing: 10,
@@ -551,7 +545,7 @@ class ExerciseState extends State<Exercise> {
               Navigator.push(
                   context,
                   Transition(
-                      child: ExerciseFilter(),
+                      child: const ExerciseFilter(),
                       transitionEffect: TransitionEffect.BOTTOM_TO_TOP));
             },
             child: Card(
@@ -561,22 +555,22 @@ class ExerciseState extends State<Exercise> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: EdgeInsets.all(1.0),
+                      padding: const EdgeInsets.all(1.0),
                       child: ExImage().body_part_image[key_list[index]] != ''
                           ? Container(
                               height: MediaQuery.of(context).size.width / 4,
                               width: MediaQuery.of(context).size.width / 4,
                               decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(50)),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(50)),
                                   image: DecorationImage(
-                                    image: new AssetImage(ExImage()
+                                    image: AssetImage(ExImage()
                                         .body_part_image[key_list[index]]),
                                     fit: BoxFit.cover,
                                   )))
                           : Container(
                               color: Theme.of(context).primaryColorLight,
-                              child: Icon(
+                              child: const Icon(
                                 Icons.image_not_supported,
                                 size: 100,
                               )),
@@ -628,7 +622,7 @@ class ExerciseState extends State<Exercise> {
     _PrefsProvider.eachworkouttutor
         ? _PrefsProvider.stepone
             ? [
-                Future.delayed(Duration(milliseconds: 0)).then((value) {
+                Future.delayed(const Duration(milliseconds: 0)).then((value) {
                   Tutorial.showTutorial(context, itens);
                   _PrefsProvider.steponedone();
                 }),
@@ -643,10 +637,6 @@ class ExerciseState extends State<Exercise> {
           : [
               provider.exstackup(0),
               Future.delayed(Duration.zero, () async {
-                int grindex = _workoutProvider.workoutdata.routinedatas
-                    .indexWhere((routine) =>
-                        routine.name ==
-                        _PrefsProvider.prefs.getString('lastroutine'));
                 Navigator.of(context).popUntil((route) => route.isFirst);
                 if (_workoutProvider.workoutdata
                         .routinedatas[_routinetimeProvider.nowonrindex].mode ==
@@ -735,7 +725,7 @@ class ExerciseState extends State<Exercise> {
             return _createListener(_myWorkout());
           }
           return Container(
-            child: Center(
+            child: const Center(
               child: CircularProgressIndicator(),
             ),
           );

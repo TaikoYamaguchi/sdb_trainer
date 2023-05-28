@@ -1,25 +1,16 @@
 import 'dart:async' show Future;
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 import 'package:sdb_trainer/localhost.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'package:dio/dio.dart';
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sdb_trainer/src/model/historydata.dart';
-import 'package:http_parser/http_parser.dart';
 
 class ExerciseService {
-  static Future<String> _loadSDBdataFromLocation() async {
-    return await rootBundle.loadString("assets/json/history.json");
-    //API통신
-    //await Future.delayed(Duration(milliseconds: 1000));
-  }
-
   static Future<String> _loadSDBdataFromServer() async {
-    final storage = new FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     String? user_email = await storage.read(key: "sdb_email");
     var url =
         Uri.parse(LocalHost.getLocalHost() + "/api/history/" + user_email!);
@@ -112,7 +103,7 @@ class HistorydataPagination {
 
 class HistorydataFriends {
   Future<String> _loadFriendsSDBdataFromServer() async {
-    final storage = new FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     String? user_email = await storage.read(key: "sdb_email");
     var url = Uri.parse(
         LocalHost.getLocalHost() + "/api/historyFriends/${user_email}");
@@ -140,7 +131,6 @@ class HistorydataUserEmail {
     required this.user_email,
   });
   Future<String> _loadUserEmailSDBdataFromServer() async {
-    final storage = new FlutterSecureStorage();
     var url =
         Uri.parse(LocalHost.getLocalHost() + "/api/history/${user_email}");
     var response = await http.get(url);
@@ -175,7 +165,7 @@ class HistoryPost {
     required this.nickname,
   });
   Future<String> _historyPostFromServer() async {
-    var formData = new Map<String, dynamic>();
+    var formData = Map<String, dynamic>();
     formData["user_email"] = user_email;
     formData["exercises"] = jsonEncode(exercises);
     formData["new_record"] = new_record;
@@ -190,9 +180,6 @@ class HistoryPost {
     var response = await http.post(url, body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
-
       return utf8.decode(response.bodyBytes);
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
@@ -218,7 +205,7 @@ class HistoryLike {
       required this.status,
       required this.disorlike});
   Future<String> _historyLikeFromServer() async {
-    var formData = new Map<String, dynamic>();
+    var formData = Map<String, dynamic>();
     formData["history_id"] = history_id;
     formData["email"] = user_email;
     formData["status"] = status;
@@ -229,9 +216,6 @@ class HistoryLike {
     var response = await http.patch(url, body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
-
       return utf8.decode(response.bodyBytes);
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
@@ -255,7 +239,7 @@ class HistoryCommentEdit {
       required this.user_email,
       required this.comment});
   Future<String> _historyCommentFromServer() async {
-    var formData = new Map<String, dynamic>();
+    var formData = Map<String, dynamic>();
     formData["id"] = history_id;
     formData["email"] = user_email;
     formData["comment"] = comment;
@@ -264,9 +248,6 @@ class HistoryCommentEdit {
     var response = await http.patch(url, body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
-
       return utf8.decode(response.bodyBytes);
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
@@ -290,7 +271,7 @@ class HistoryExercisesEdit {
       required this.user_email,
       required this.exercises});
   Future<String> _historyExercisesEditfromServer() async {
-    var formData = new Map<String, dynamic>();
+    var formData = Map<String, dynamic>();
     formData["id"] = history_id;
     formData["email"] = user_email;
     formData["exercises"] = exercises;
@@ -300,9 +281,6 @@ class HistoryExercisesEdit {
     var response = await http.patch(url, body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
-
       return utf8.decode(response.bodyBytes);
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
@@ -325,9 +303,9 @@ class HistoryVisibleEdit {
     required this.status,
   });
   Future<String> _historyVisibleEditfromServer() async {
-    final storage = new FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     String? token = await storage.read(key: "sdb_token");
-    var formData = new Map<String, dynamic>();
+    var formData = Map<String, dynamic>();
     formData["history_id"] = history_id;
     formData["status"] = status;
 
@@ -339,9 +317,6 @@ class HistoryVisibleEdit {
         body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
-
       return utf8.decode(response.bodyBytes);
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
@@ -362,7 +337,7 @@ class HistoryDelete {
     required this.history_id,
   });
   Future<String> _historyDeletefromServer() async {
-    final storage = new FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     String? token = await storage.read(key: "sdb_token");
 
     var url = Uri.parse(
@@ -375,9 +350,6 @@ class HistoryDelete {
     );
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
-
       return utf8.decode(response.bodyBytes);
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
@@ -397,17 +369,15 @@ class HistoryImageEdit {
   final List<XFile> file;
   HistoryImageEdit({required this.history_id, required this.file});
   Future<Map<String, dynamic>> _patchHistoryImageFromServer() async {
-    print(file);
-    final List<MultipartFile> _files = await file
+    final List<MultipartFile> _files = file
         .map((img) => MultipartFile.fromFileSync(
               img.path,
             ))
         .toList();
-    print(_files);
-    final storage = new FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     String? token = await storage.read(key: "sdb_token");
     var formData = FormData.fromMap({'files': _files});
-    var dio = new Dio();
+    var dio = Dio();
     try {
       dio.options.contentType = 'multipart/form-data';
       dio.options.maxRedirects.isFinite;
@@ -426,6 +396,7 @@ class HistoryImageEdit {
 
   Future<SDBdata?> patchHistoryImage() async {
     var jsonString = await _patchHistoryImageFromServer();
+    // ignore: unnecessary_null_comparison
     if (jsonString == null) {
       return null;
     } else {
@@ -443,10 +414,10 @@ class HistoryImagePut {
     required this.images,
   });
   Future<String> _historyImageListEditfromServer() async {
-    final storage = new FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     String? token = await storage.read(key: "sdb_token");
 
-    var formData = new Map<String, dynamic>();
+    var formData = Map<String, dynamic>();
     formData["image"] = images;
     var url = Uri.parse(
         LocalHost.getLocalHost() + "/api/temp/historyimages/${history_id}");
@@ -459,9 +430,6 @@ class HistoryImagePut {
     );
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
-
       return utf8.decode(response.bodyBytes);
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
@@ -482,7 +450,7 @@ class HistoryImageDelete {
     required this.history_id,
   });
   Future<String> _historyImageDeletefromServer() async {
-    final storage = new FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     String? token = await storage.read(key: "sdb_token");
 
     var url = Uri.parse(
@@ -495,9 +463,6 @@ class HistoryImageDelete {
     );
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
-
       return utf8.decode(response.bodyBytes);
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
@@ -518,17 +483,12 @@ class HistoryEditAll {
     required this.sdbdatas,
   });
   Future<String> _historyEditFromServer() async {
-    var formData = new Map<String, dynamic>();
+    var formData = Map<String, dynamic>();
     formData["sdbdatas"] = jsonEncode(sdbdatas);
-    print(formData);
-
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/history/all");
     var response = await http.put(url, body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
-
       return utf8.decode(response.bodyBytes);
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.

@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/download_program.dart';
-import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
-import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/famous_repository.dart';
 import 'package:transition/transition.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -20,12 +18,8 @@ class RoutineBank extends StatefulWidget {
 
 class _RoutineBankState extends State<RoutineBank> {
   var _famousdataProvider;
-  var _workoutProvider;
-  var _hisProvider;
-  var _routinetimeProvider;
   var _PopProvider;
   var _userProvider;
-  var _exProvider;
   Future<void> _onRefresh() {
     _famousdataProvider.getdata();
     return Future<void>.value();
@@ -38,7 +32,7 @@ class _RoutineBankState extends State<RoutineBank> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Text(
                 '유명 운동 Programs',
                 textScaleFactor: 1.9,
@@ -50,25 +44,25 @@ class _RoutineBankState extends State<RoutineBank> {
           ],
         ),
         Consumer<FamousdataProvider>(builder: (builder, provider, child) {
-          var user_famous = provider.famousdata.famouss.where((famouss) {
+          var userFamous = provider.famousdata.famouss.where((famouss) {
             return (famouss.type == 1);
           }).toList();
-          return Container(
+          return SizedBox(
             height: MediaQuery.of(context).size.width / 2 + 80,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: user_famous.length,
+                itemCount: userFamous.length,
                 itemBuilder: (BuildContext _context, int index) {
-                  var program = user_famous[index];
+                  var program = userFamous[index];
                   return GestureDetector(
                     onTap: () {
                       _PopProvider.exstackup(1);
-                      _famousdataProvider.downloadset(user_famous[index]);
+                      _famousdataProvider.downloadset(userFamous[index]);
                       Navigator.push(
                           context,
                           Transition(
                               child: ProgramDownload(
-                                program: user_famous[index],
+                                program: userFamous[index],
                               ),
                               transitionEffect:
                                   TransitionEffect.RIGHT_TO_LEFT));
@@ -80,10 +74,10 @@ class _RoutineBankState extends State<RoutineBank> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: EdgeInsets.all(4.0),
-                              child: user_famous[index].image != ""
+                              padding: const EdgeInsets.all(4.0),
+                              child: userFamous[index].image != ""
                                   ? CachedNetworkImage(
-                                      imageUrl: user_famous[index].image,
+                                      imageUrl: userFamous[index].image,
                                       width:
                                           MediaQuery.of(context).size.width / 2,
                                       height:
@@ -91,20 +85,21 @@ class _RoutineBankState extends State<RoutineBank> {
                                       imageBuilder: (context, imageProivder) =>
                                           Container(
                                         decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(50)),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(50)),
                                             image: DecorationImage(
                                               image: imageProivder,
                                               fit: BoxFit.cover,
                                             )),
                                       ),
                                     )
-                                  : Container(
+                                  : SizedBox(
                                       width:
                                           MediaQuery.of(context).size.width / 2,
                                       height:
                                           MediaQuery.of(context).size.width / 2,
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.image_not_supported,
                                         size: 70,
                                       )),
@@ -118,7 +113,7 @@ class _RoutineBankState extends State<RoutineBank> {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          user_famous[index].routinedata.name,
+                                          userFamous[index].routinedata.name,
                                           overflow: TextOverflow.ellipsis,
                                           textScaleFactor: 1.3,
                                           style: TextStyle(
@@ -149,7 +144,7 @@ class _RoutineBankState extends State<RoutineBank> {
                                             ],
                                           ),
                                         ),
-                                        Container(
+                                        SizedBox(
                                           width: MediaQuery.of(context)
                                                       .size
                                                       .width /
@@ -164,7 +159,7 @@ class _RoutineBankState extends State<RoutineBank> {
                                                       .primaryColorLight,
                                                   size: 18),
                                               Text(
-                                                ' ${user_famous[index].subscribe.toString()}',
+                                                ' ${userFamous[index].subscribe.toString()}',
                                                 textScaleFactor: 1.1,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
@@ -201,7 +196,7 @@ class _RoutineBankState extends State<RoutineBank> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Text(
                 '유저가 만든 Programs',
                 textScaleFactor: 1.9,
@@ -213,25 +208,25 @@ class _RoutineBankState extends State<RoutineBank> {
           ],
         ),
         Consumer<FamousdataProvider>(builder: (builder, provider, child) {
-          var user_famous = provider.famousdata.famouss.where((famouss) {
+          var userFamous = provider.famousdata.famouss.where((famouss) {
             return (famouss.type == 0);
           }).toList();
-          return Container(
+          return SizedBox(
             height: MediaQuery.of(context).size.width / 2 + 80,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: user_famous.length,
+                itemCount: userFamous.length,
                 itemBuilder: (BuildContext _context, int index) {
-                  var program = user_famous[index];
+                  var program = userFamous[index];
                   return GestureDetector(
                     onTap: () {
                       _PopProvider.exstackup(1);
-                      _famousdataProvider.downloadset(user_famous[index]);
+                      _famousdataProvider.downloadset(userFamous[index]);
                       Navigator.push(
                           context,
                           Transition(
                               child: ProgramDownload(
-                                program: user_famous[index],
+                                program: userFamous[index],
                               ),
                               transitionEffect:
                                   TransitionEffect.RIGHT_TO_LEFT));
@@ -243,10 +238,10 @@ class _RoutineBankState extends State<RoutineBank> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: EdgeInsets.all(4.0),
-                              child: user_famous[index].image != ""
+                              padding: const EdgeInsets.all(4.0),
+                              child: userFamous[index].image != ""
                                   ? CachedNetworkImage(
-                                      imageUrl: user_famous[index].image,
+                                      imageUrl: userFamous[index].image,
                                       width:
                                           MediaQuery.of(context).size.width / 2,
                                       height:
@@ -254,20 +249,21 @@ class _RoutineBankState extends State<RoutineBank> {
                                       imageBuilder: (context, imageProivder) =>
                                           Container(
                                         decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(50)),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(50)),
                                             image: DecorationImage(
                                               image: imageProivder,
                                               fit: BoxFit.cover,
                                             )),
                                       ),
                                     )
-                                  : Container(
+                                  : SizedBox(
                                       width:
                                           MediaQuery.of(context).size.width / 2,
                                       height:
                                           MediaQuery.of(context).size.width / 2,
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.image_not_supported,
                                         color: Colors.grey,
                                         size: 70,
@@ -282,7 +278,7 @@ class _RoutineBankState extends State<RoutineBank> {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          user_famous[index].routinedata.name,
+                                          userFamous[index].routinedata.name,
                                           textScaleFactor: 1.3,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
@@ -313,7 +309,7 @@ class _RoutineBankState extends State<RoutineBank> {
                                             ],
                                           ),
                                         ),
-                                        Container(
+                                        SizedBox(
                                           width: MediaQuery.of(context)
                                                       .size
                                                       .width /
@@ -328,7 +324,7 @@ class _RoutineBankState extends State<RoutineBank> {
                                                       .primaryColorLight,
                                                   size: 18),
                                               Text(
-                                                ' ${user_famous[index].subscribe.toString()}',
+                                                ' ${userFamous[index].subscribe.toString()}',
                                                 textScaleFactor: 1.1,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
@@ -374,8 +370,8 @@ class _RoutineBankState extends State<RoutineBank> {
         size: buttonSize,
         isLiked: onIsLikedCheck(program),
         circleColor:
-            CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
-        bubblesColor: BubblesColor(
+            const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+        bubblesColor: const BubblesColor(
           dotPrimaryColor: Color(0xff33b5e5),
           dotSecondaryColor: Color(0xff0099cc),
         ),
@@ -455,8 +451,6 @@ class _RoutineBankState extends State<RoutineBank> {
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _famousdataProvider =
         Provider.of<FamousdataProvider>(context, listen: false);
-    _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
-    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
     return famous_body();
   }

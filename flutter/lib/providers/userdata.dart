@@ -170,13 +170,12 @@ class UserdataProvider extends ChangeNotifier {
   }
 
   Future<double> getUserFontsize() async {
-    final storage = new FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     _userFontSize = 1.0;
     try {
       var _fontsize = await storage.read(key: "sdb_fontSize");
       if (_fontsize != null && _fontsize != "") {
         _userFontSize = double.parse(_fontsize);
-        print(_fontsize);
         notifyListeners();
         return double.parse(_fontsize);
       } else {
@@ -192,9 +191,9 @@ class UserdataProvider extends ChangeNotifier {
   }
 
   setUserFontsize(double fontSize) async {
-    final storage = new FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     try {
-      var _userFontsize = await storage.write(
+      await storage.write(
           key: "sdb_fontSize", value: fontSize.toStringAsFixed(1));
       _userFontSize = fontSize;
     } catch (e) {

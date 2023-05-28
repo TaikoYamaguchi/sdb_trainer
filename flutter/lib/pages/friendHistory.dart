@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gif/flutter_gif.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
@@ -12,6 +11,7 @@ import 'package:sdb_trainer/pages/static_exercise.dart';
 import 'package:sdb_trainer/providers/themeMode.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 
+// ignore: must_be_immutable
 class FriendHistory extends StatefulWidget {
   SDBdata sdbdata;
   FriendHistory({Key? key, required this.sdbdata}) : super(key: key);
@@ -34,11 +34,11 @@ class _FriendHistoryState extends State<FriendHistory>
   PreferredSizeWidget _appbarWidget() {
     bool btnDisabled = false;
     return PreferredSize(
-        preferredSize: Size.fromHeight(40.0), // here the desired height
+        preferredSize: const Size.fromHeight(40.0), // here the desired height
         child: AppBar(
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_outlined),
+            icon: const Icon(Icons.arrow_back_ios_outlined),
             color: Theme.of(context).primaryColorLight,
             onPressed: () {
               btnDisabled == true
@@ -102,10 +102,10 @@ class _FriendHistoryState extends State<FriendHistory>
           Navigator.of(context).pop();
         }
       },
-      child: Container(
+      child: SizedBox(
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
-            child: Container(
+            child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: Consumer<HistorydataProvider>(
                     builder: (builder, provider, child) {
@@ -116,7 +116,6 @@ class _FriendHistoryState extends State<FriendHistory>
   }
 
   Widget _onechartExercisesWidget(exercises) {
-    bool dragstart = false;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -134,26 +133,22 @@ class _FriendHistoryState extends State<FriendHistory>
                 });
               }
             },
-            onReorderStart: (index) {
-              dragstart = true;
-            },
-            onReorderEnd: (index) {
-              dragstart = false;
-            },
+            onReorderStart: (index) {},
+            onReorderEnd: (index) {},
             itemBuilder: (BuildContext _context, int index) {
               return Row(key: Key("$index"), children: [
                 _isEdited == true
                     ? ReorderableDragStartListener(
                         index: index,
                         child: Padding(
-                          padding: EdgeInsets.fromLTRB(12, 4, 12, 12),
+                          padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
                           child: Container(
                             height: 100,
                             width: 24.0,
                             decoration: BoxDecoration(
                                 color: Theme.of(context).primaryColorDark,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8.0))),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(8.0))),
                           ),
                         ),
                       )
@@ -232,307 +227,296 @@ class _FriendHistoryState extends State<FriendHistory>
 
   Widget _onechartExerciseWidget(
       exuniq, history_id, userdata, bool shirink, index) {
-    double top = 0;
-    double bottom = 0;
     var _exImage;
     try {
       _exImage = extra_completely_new_Ex[extra_completely_new_Ex
               .indexWhere((element) => element.name == exuniq[index].name)]
           .image;
-      if (_exImage == null) {
-        _exImage = "";
-      }
+      _exImage ??= "";
     } catch (e) {
       _exImage = "";
     }
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      _exImage != ""
-                          ? Image.asset(
-                              _exImage,
-                              height: 48,
-                              width: 48,
-                              fit: BoxFit.cover,
-                            )
-                          : Container(
-                              height: 48,
-                              width: 48,
-                              child: Icon(Icons.image_not_supported,
-                                  color: Theme.of(context).primaryColorDark),
-                              decoration: BoxDecoration(shape: BoxShape.circle),
-                            ),
-                      SizedBox(width: 8.0),
-                      Expanded(
-                        child: Text(exuniq[index].name,
-                            textScaleFactor: 1.4,
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColorLight)),
-                      ),
-                    ],
-                  ),
-                ),
-                widget.sdbdata.user_email == userdata.email
-                    ? _isEdited
-                        ? GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  Transition(
-                                      child: StaticsExerciseDetails(
-                                          exercise: exuniq[index],
-                                          index: index,
-                                          origin_exercises: exuniq,
-                                          history_id: history_id),
-                                      transitionEffect:
-                                          TransitionEffect.RIGHT_TO_LEFT));
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Icon(
-                                Icons.settings,
-                                color: Theme.of(context).primaryColorDark,
-                              ),
-                            ))
-                        : Container()
-                    : Container()
-              ],
-            ),
-            GestureDetector(
-              onTap: () {},
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(15.0),
-                        bottomRight: Radius.circular(15.0),
-                        topLeft: Radius.circular(15.0),
-                        bottomLeft: Radius.circular(15.0))),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    widget.sdbdata.exercises[index].isCardio!
-                        ? _cardioExerciseSetsWidget(exuniq[index].sets)
-                        : _chartExerciseSetsWidget(exuniq[index].sets,
-                            exuniq[index].onerm, exuniq[index].goal, userdata),
-                    SizedBox(height: 4.0)
+                    _exImage != ""
+                        ? Image.asset(
+                            _exImage,
+                            height: 48,
+                            width: 48,
+                            fit: BoxFit.cover,
+                          )
+                        : Container(
+                            height: 48,
+                            width: 48,
+                            decoration:
+                                const BoxDecoration(shape: BoxShape.circle),
+                            child: Icon(Icons.image_not_supported,
+                                color: Theme.of(context).primaryColorDark),
+                          ),
+                    const SizedBox(width: 8.0),
+                    Expanded(
+                      child: Text(exuniq[index].name,
+                          textScaleFactor: 1.4,
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight)),
+                    ),
                   ],
                 ),
               ),
-            )
-          ],
-        ),
+              widget.sdbdata.user_email == userdata.email
+                  ? _isEdited
+                      ? GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                Transition(
+                                    child: StaticsExerciseDetails(
+                                        exercise: exuniq[index],
+                                        index: index,
+                                        origin_exercises: exuniq,
+                                        history_id: history_id),
+                                    transitionEffect:
+                                        TransitionEffect.RIGHT_TO_LEFT));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.settings,
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                          ))
+                      : Container()
+                  : Container()
+            ],
+          ),
+          GestureDetector(
+            onTap: () {},
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(15.0),
+                      bottomRight: Radius.circular(15.0),
+                      topLeft: Radius.circular(15.0),
+                      bottomLeft: Radius.circular(15.0))),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  widget.sdbdata.exercises[index].isCardio!
+                      ? _cardioExerciseSetsWidget(exuniq[index].sets)
+                      : _chartExerciseSetsWidget(exuniq[index].sets,
+                          exuniq[index].onerm, exuniq[index].goal, userdata),
+                  const SizedBox(height: 4.0)
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
 
   Widget _chartExerciseSetsWidget(sets, onerm, goal, userdata) {
-    return Container(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-              padding: EdgeInsets.all(5.0),
-              height: 28,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: 80,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: 25,
-                          child: Text(
-                            "Set",
-                            textScaleFactor: 1.0,
-                            style: TextStyle(
-                              color: Colors.grey,
-                            ),
-                            textAlign: TextAlign.center,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+            padding: const EdgeInsets.all(5.0),
+            height: 28,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(
+                  width: 80,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: 25,
+                        child: Text(
+                          "Set",
+                          textScaleFactor: 1.0,
+                          style: TextStyle(
+                            color: Colors.grey,
                           ),
+                          textAlign: TextAlign.center,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  Container(
-                      width: 70,
-                      child: Text(
-                        "Weight(${_userProvider.userdata.weight_unit})",
-                        textScaleFactor: 1.0,
-                        style: TextStyle(
-                          color: Colors.grey,
-                        ),
-                        textAlign: TextAlign.center,
-                      )),
-                  Container(width: 35),
-                  Container(
-                      width: 40,
-                      child: Text(
-                        "Reps",
-                        textScaleFactor: 1.0,
-                        style: TextStyle(
-                          color: Colors.grey,
-                        ),
-                        textAlign: TextAlign.center,
-                      )),
-                  Container(
-                      width: 70,
-                      child: Text(
-                        "1RM",
-                        textScaleFactor: 1.0,
-                        style: TextStyle(
-                          color: Colors.grey,
-                        ),
-                        textAlign: TextAlign.center,
-                      )),
-                ],
-              )),
-          SizedBox(
-            child: MediaQuery.removePadding(
-                context: context,
-                removeTop: true,
-                removeBottom: true,
-                child: Padding(
-                    padding: EdgeInsets.zero,
-                    child: ListView.separated(
-                        itemBuilder: (BuildContext _context, int index) {
-                          return Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 4.0, vertical: 2.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: 80,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        width: 25,
-                                        child: Text(
-                                          "${index + 1}",
+                ),
+                SizedBox(
+                    width: 70,
+                    child: Text(
+                      "Weight(${_userProvider.userdata.weight_unit})",
+                      textScaleFactor: 1.0,
+                      style: const TextStyle(
+                        color: Colors.grey,
+                      ),
+                      textAlign: TextAlign.center,
+                    )),
+                Container(width: 35),
+                const SizedBox(
+                    width: 40,
+                    child: Text(
+                      "Reps",
+                      textScaleFactor: 1.0,
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
+                      textAlign: TextAlign.center,
+                    )),
+                const SizedBox(
+                    width: 70,
+                    child: Text(
+                      "1RM",
+                      textScaleFactor: 1.0,
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
+                      textAlign: TextAlign.center,
+                    )),
+              ],
+            )),
+        SizedBox(
+          child: MediaQuery.removePadding(
+              context: context,
+              removeTop: true,
+              removeBottom: true,
+              child: Padding(
+                  padding: EdgeInsets.zero,
+                  child: ListView.separated(
+                      itemBuilder: (BuildContext _context, int index) {
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 4.0, vertical: 2.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: 80,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      width: 25,
+                                      child: Text(
+                                        "${index + 1}",
+                                        textScaleFactor: 1.7,
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                width: 70,
+                                child: Text(
+                                  sets[index].weight.toStringAsFixed(1),
+                                  textScaleFactor: 1.7,
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              SizedBox(
+                                  width: 35,
+                                  child: SvgPicture.asset(
+                                      "assets/svg/multiply.svg",
+                                      color: Colors.grey,
+                                      height: 14 *
+                                          _themeProvider.userFontSize /
+                                          0.8)),
+                              SizedBox(
+                                width: 40,
+                                child: Text(
+                                  sets[index].reps.toString(),
+                                  textScaleFactor: 1.7,
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              SizedBox(
+                                  width: 70,
+                                  child: (sets[index].reps != 1)
+                                      ? Text(
+                                          "${(sets[index].weight * (1 + sets[index].reps / 30)).toStringAsFixed(1)}",
                                           textScaleFactor: 1.7,
                                           style: TextStyle(
-                                            color: Theme.of(context)
-                                                .primaryColorLight,
-                                          ),
+                                              color: Theme.of(context)
+                                                  .primaryColorLight),
                                           textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  width: 70,
-                                  child: Text(
-                                    sets[index].weight.toStringAsFixed(1),
-                                    textScaleFactor: 1.7,
-                                    style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorLight,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                                Container(
-                                    width: 35,
-                                    child: SvgPicture.asset(
-                                        "assets/svg/multiply.svg",
-                                        color: Colors.grey,
-                                        height: 14 *
-                                            _themeProvider.userFontSize /
-                                            0.8)),
-                                Container(
-                                  width: 40,
-                                  child: Text(
-                                    sets[index].reps.toString(),
-                                    textScaleFactor: 1.7,
-                                    style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorLight,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                                Container(
-                                    width: 70,
-                                    child: (sets[index].reps != 1)
-                                        ? Text(
-                                            "${(sets[index].weight * (1 + sets[index].reps / 30)).toStringAsFixed(1)}",
-                                            textScaleFactor: 1.7,
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .primaryColorLight),
-                                            textAlign: TextAlign.center,
-                                          )
-                                        : Text(
-                                            "${sets[index].weight}",
-                                            textScaleFactor: 1.7,
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .primaryColorLight),
-                                            textAlign: TextAlign.center,
-                                          )),
-                              ],
-                            ),
-                          );
-                        },
-                        separatorBuilder: (BuildContext _context, int index) {
-                          return Container(
+                                        )
+                                      : Text(
+                                          "${sets[index].weight}",
+                                          textScaleFactor: 1.7,
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColorLight),
+                                          textAlign: TextAlign.center,
+                                        )),
+                            ],
+                          ),
+                        );
+                      },
+                      separatorBuilder: (BuildContext _context, int index) {
+                        return Container(
+                          alignment: Alignment.center,
+                          height: 0,
+                          child: Container(
                             alignment: Alignment.center,
                             height: 0,
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 0,
-                              color: Color(0xFF717171),
-                            ),
-                          );
-                        },
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: sets.length))),
-          ),
-          SizedBox(height: 8),
-          Container(
-            child: Row(
-              //mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text("",
-                    textScaleFactor: 1.0,
-                    style: TextStyle(color: Color(0xFF717171))),
-                Expanded(child: SizedBox()),
-                Text(
-                    "1RM: " +
-                        onerm.toStringAsFixed(1) +
-                        "/${goal.toStringAsFixed(1)}${userdata.weight_unit}",
-                    textScaleFactor: 1.2,
-                    style: TextStyle(color: Color(0xFF717171)))
-              ],
-            ),
-          ),
-          SizedBox(height: 4),
-        ],
-      ),
+                            color: const Color(0xFF717171),
+                          ),
+                        );
+                      },
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: sets.length))),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          //mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            const Text("",
+                textScaleFactor: 1.0,
+                style: TextStyle(color: Color(0xFF717171))),
+            const Expanded(child: SizedBox()),
+            Text(
+                "1RM: " +
+                    onerm.toStringAsFixed(1) +
+                    "/${goal.toStringAsFixed(1)}${userdata.weight_unit}",
+                textScaleFactor: 1.2,
+                style: const TextStyle(color: Color(0xFF717171)))
+          ],
+        ),
+        const SizedBox(height: 4),
+      ],
     );
   }
 
@@ -543,161 +527,157 @@ class _FriendHistoryState extends State<FriendHistory>
       totalDistance += value.weight;
       totalTime += value.reps;
     });
-    return Container(
-      child: Column(
-        children: [
-          Container(
-              padding: EdgeInsets.all(5.0),
-              height: 28,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: 80,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: 25,
-                          child: Text(
-                            "Set",
+    return Column(
+      children: [
+        Container(
+            padding: const EdgeInsets.all(5.0),
+            height: 28,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(
+                  width: 80,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: 25,
+                        child: Text(
+                          "Set",
+                          textScaleFactor: 1.0,
+                          style: TextStyle(
+                            color: Colors.grey,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width / 4,
+                          child: const Text(
+                            "거리(km)",
                             textScaleFactor: 1.0,
                             style: TextStyle(
                               color: Colors.grey,
                             ),
                             textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
-                    ),
+                          )),
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width / 4,
+                          child: const Text(
+                            "운동 시간(시:분:초)",
+                            textScaleFactor: 1.0,
+                            style: TextStyle(
+                              color: Colors.grey,
+                            ),
+                            textAlign: TextAlign.center,
+                          ))
+                    ],
                   ),
-                  Expanded(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Container(
-                            width: MediaQuery.of(context).size.width / 4,
-                            child: Text(
-                              "거리(km)",
-                              textScaleFactor: 1.0,
-                              style: TextStyle(
-                                color: Colors.grey,
+                ),
+              ],
+            )),
+        SizedBox(
+          child: ListView.separated(
+              itemBuilder: (BuildContext _context, int index) {
+                return Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 4.0, vertical: 2.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 80,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 25,
+                              child: Text(
+                                "${index + 1}",
+                                textScaleFactor: 1.7,
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
-                            )),
-                        Container(
-                            width: MediaQuery.of(context).size.width / 4,
-                            child: Text(
-                              "운동 시간(시:분:초)",
-                              textScaleFactor: 1.0,
-                              style: TextStyle(
-                                color: Colors.grey,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width / 4,
+                              child: Text(
+                                sets[index].weight.toStringAsFixed(1),
+                                textScaleFactor: 1.7,
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
-                            ))
-                      ],
-                    ),
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width / 4,
+                              child: Text(
+                                Duration(seconds: sets[index].reps.toInt())
+                                    .toString()
+                                    .split('.')[0],
+                                textScaleFactor: 1.7,
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              )),
-          SizedBox(
-            child: ListView.separated(
-                itemBuilder: (BuildContext _context, int index) {
-                  return Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 80,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                width: 25,
-                                child: Text(
-                                  "${index + 1}",
-                                  textScaleFactor: 1.7,
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColorLight,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width / 4,
-                                child: Text(
-                                  sets[index].weight.toStringAsFixed(1),
-                                  textScaleFactor: 1.7,
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColorLight,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width / 4,
-                                child: Text(
-                                  Duration(seconds: sets[index].reps.toInt())
-                                      .toString()
-                                      .split('.')[0],
-                                  textScaleFactor: 1.7,
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColorLight,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                separatorBuilder: (BuildContext _context, int index) {
-                  return Container(
+                );
+              },
+              separatorBuilder: (BuildContext _context, int index) {
+                return Container(
+                  alignment: Alignment.center,
+                  height: 0,
+                  child: Container(
                     alignment: Alignment.center,
                     height: 0,
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 0,
-                      color: Color(0xFF717171),
-                    ),
-                  );
-                },
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: sets.length),
-          ),
-          SizedBox(height: 4),
-          Container(
-            child: Row(
-              //mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Expanded(child: SizedBox()),
-                Text(
-                    "Total: ${totalDistance}km/${Duration(seconds: totalTime.toInt()).toString().split('.')[0]}",
-                    textScaleFactor: 1.0,
-                    style: TextStyle(color: Color(0xFF717171))),
-              ],
-            ),
-          ),
-          SizedBox(height: 4),
-        ],
-      ),
+                    color: const Color(0xFF717171),
+                  ),
+                );
+              },
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: sets.length),
+        ),
+        const SizedBox(height: 4),
+        Row(
+          //mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            const Expanded(child: SizedBox()),
+            Text(
+                "Total: ${totalDistance}km/${Duration(seconds: totalTime.toInt()).toString().split('.')[0]}",
+                textScaleFactor: 1.0,
+                style: const TextStyle(color: Color(0xFF717171))),
+          ],
+        ),
+        const SizedBox(height: 4),
+      ],
     );
   }
 

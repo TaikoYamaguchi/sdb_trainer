@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/profile.dart';
-import 'package:sdb_trainer/providers/exercisesdata.dart';
-import 'package:sdb_trainer/providers/workoutdata.dart';
 
 class TabProfileNavigatorRoutes {
   static const String root = '/';

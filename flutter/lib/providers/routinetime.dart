@@ -1,12 +1,8 @@
 import 'dart:async';
-import 'package:provider/provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:sdb_trainer/src/utils/notification.dart';
 
 class RoutineTimeProvider extends ChangeNotifier {
@@ -30,7 +26,7 @@ class RoutineTimeProvider extends ChangeNotifier {
   bool _userest = false;
   bool get userest => _userest;
   String restbutton = 'Rest Timer off';
-  Color _restbuttoncolor = Color(0xFF717171);
+  Color _restbuttoncolor = const Color(0xFF717171);
   Color get restbuttoncolor => _restbuttoncolor;
   String _routineButton = '운동 시작 하기';
   String get routineButton => _routineButton;
@@ -38,7 +34,6 @@ class RoutineTimeProvider extends ChangeNotifier {
   Color get buttoncolor => _buttoncolor;
   DateTime _starttime = DateTime(2022, 08, 06, 10, 30);
   DateTime _timerstarttime = DateTime(2022, 08, 06, 10, 30);
-  var _workoutdataProvider;
 
   var _prefs;
 
@@ -71,7 +66,7 @@ class RoutineTimeProvider extends ChangeNotifier {
             _userest = !_userest,
             setrest(),
             restbutton = 'Rest Timer off',
-            _restbuttoncolor = Color(0xFF717171)
+            _restbuttoncolor = const Color(0xFF717171)
           ]
         : [
             _userest = !_userest,
@@ -106,17 +101,15 @@ class RoutineTimeProvider extends ChangeNotifier {
   }
 
   void routinecheck(rindex) async {
-    final storage = FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     _starttime = await getstarttime();
     if (_isstarted == false) {
       await storage.write(key: "sdb_isStart", value: "true");
-      print(_starttime);
-      print(_starttime.toString());
       await storage.write(key: "sdb_startTime", value: _starttime.toString());
       await storage.write(key: "sdb_initialEx", value: "");
       await storage.write(key: "sdb_initialRindex", value: rindex.toString());
       int counter = 10001;
-      timer1 = Timer.periodic(Duration(seconds: 1), (timer) {
+      timer1 = Timer.periodic(const Duration(seconds: 1), (timer) {
         _routineTime = DateTime.now().difference(_starttime).inSeconds;
         _timeron = _timetosubstract -
             DateTime.now().difference(_timerstarttime).inSeconds;
@@ -133,7 +126,7 @@ class RoutineTimeProvider extends ChangeNotifier {
       });
       _routineNewRecord = 0;
       _routineButton = '운동 종료 하기';
-      _buttoncolor = Color(0xFffc60a8);
+      _buttoncolor = const Color(0xFffc60a8);
       _isstarted = !_isstarted;
       _nowonrindex = rindex;
       showNotificationWithChronometer(_starttime);
@@ -155,15 +148,10 @@ class RoutineTimeProvider extends ChangeNotifier {
   }
 
   void routineInitialCheck() async {
-    var _initialTime;
-    var _isInitialStart;
-    var _initialEx;
-    var _initialRindex;
-    final storage = FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     try {
       String? _isInitialStart = await storage.read(key: "sdb_isStart");
       String? _isInitialTime = await storage.read(key: "sdb_startTime");
-      String? _initialEx = await storage.read(key: "sdb_initialEx");
       String? _initialRindex = await storage.read(key: "sdb_initialRindex");
 
       if (_isInitialStart == "true") {
@@ -172,7 +160,7 @@ class RoutineTimeProvider extends ChangeNotifier {
         print(_starttime);
         int counter = 10001;
         resettimer(0);
-        timer1 = Timer.periodic(Duration(seconds: 1), (timer) {
+        timer1 = Timer.periodic(const Duration(seconds: 1), (timer) {
           _routineTime = DateTime.now().difference(_starttime).inSeconds;
           _timeron = _timetosubstract -
               DateTime.now().difference(_timerstarttime).inSeconds;
@@ -189,7 +177,7 @@ class RoutineTimeProvider extends ChangeNotifier {
         });
         showNotificationWithChronometer(_starttime);
         _routineButton = '운동 종료 하기';
-        _buttoncolor = Color(0xFffc60a8);
+        _buttoncolor = const Color(0xFffc60a8);
         _isstarted = !_isstarted;
         _nowonrindex = int.parse(_initialRindex!);
         notifyListeners();

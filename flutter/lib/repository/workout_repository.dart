@@ -1,7 +1,5 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sdb_trainer/localhost.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
@@ -13,7 +11,7 @@ class RoutineRepository {
   }
 
   static Future<String> _loadRoutinedataFromServer() async {
-    final storage = new FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     String? user_email = await storage.read(key: "sdb_email");
     var url =
         Uri.parse(LocalHost.getLocalHost() + "/api/workout/" + user_email!);
@@ -43,7 +41,7 @@ class WorkoutPost {
     required this.routinedatas,
   });
   Future<String> _workoutPostFromServer() async {
-    var formData = new Map<String, dynamic>();
+    var formData = Map<String, dynamic>();
     formData["user_email"] = user_email;
     formData["id"] = 0;
     formData["routinedatas"] = jsonEncode(routinedatas);
@@ -52,8 +50,6 @@ class WorkoutPost {
     var response = await http.post(url, body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
 
       return utf8.decode(response.bodyBytes);
     } else {
@@ -79,7 +75,7 @@ class WorkoutEdit {
     required this.routinedatas,
   });
   Future<String> _workoutEditFromServer() async {
-    var formData = new Map<String, dynamic>();
+    var formData = Map<String, dynamic>();
     formData["user_email"] = user_email;
     formData["id"] = id;
     formData["routinedatas"] = jsonEncode(routinedatas);
@@ -88,8 +84,6 @@ class WorkoutEdit {
     var response = await http.put(url, body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
 
       return utf8.decode(response.bodyBytes);
     } else {
@@ -116,9 +110,6 @@ class WorkoutDelete {
     var response = await http.delete(url);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
-      String jsonString = utf8.decode(response.bodyBytes);
-      final jsonResponse = json.decode(jsonString);
-
       return utf8.decode(response.bodyBytes);
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.

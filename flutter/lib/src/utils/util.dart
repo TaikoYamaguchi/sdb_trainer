@@ -36,7 +36,6 @@ void userLogOut(context) {
   _userProvider.getUsersFriendsAll();
   _loginState.change(false);
   UserLogOut.logOut();
-  print("loggggggout");
 }
 
 Future _getUserImage(ImageSource imageSource, context) async {
@@ -89,8 +88,8 @@ void displayPhotoDialog(context) {
                                 color: Theme.of(context).primaryColorLight,
                               ),
                               disabledForegroundColor:
-                                  Color.fromRGBO(246, 58, 64, 20),
-                              padding: EdgeInsets.all(12.0),
+                                  const Color.fromRGBO(246, 58, 64, 20),
+                              padding: const EdgeInsets.all(12.0),
                             ),
                             onPressed: () {
                               _getUserImage(ImageSource.camera, context);
@@ -100,11 +99,12 @@ void displayPhotoDialog(context) {
                               children: [
                                 Icon(Icons.camera_alt,
                                     size: 24,
-                                    color: Theme.of(context).buttonColor),
+                                    color: Theme.of(context).highlightColor),
                                 Text('촬영',
                                     style: TextStyle(
                                         fontSize: 16,
-                                        color: Theme.of(context).buttonColor)),
+                                        color:
+                                            Theme.of(context).highlightColor)),
                               ],
                             ),
                           )),
@@ -121,8 +121,8 @@ void displayPhotoDialog(context) {
                                 color: Theme.of(context).primaryColorLight,
                               ),
                               disabledForegroundColor:
-                                  Color.fromRGBO(246, 58, 64, 20),
-                              padding: EdgeInsets.all(12.0),
+                                  const Color.fromRGBO(246, 58, 64, 20),
+                              padding: const EdgeInsets.all(12.0),
                             ),
                             onPressed: () {
                               _getUserImage(ImageSource.gallery, context);
@@ -132,11 +132,12 @@ void displayPhotoDialog(context) {
                               children: [
                                 Icon(Icons.collections,
                                     size: 24,
-                                    color: Theme.of(context).buttonColor),
+                                    color: Theme.of(context).highlightColor),
                                 Text('갤러리',
                                     style: TextStyle(
                                         fontSize: 16,
-                                        color: Theme.of(context).buttonColor)),
+                                        color:
+                                            Theme.of(context).highlightColor)),
                               ],
                             ),
                           )),
@@ -193,15 +194,15 @@ Widget _DeleteConfirmButton(context) {
             textStyle: TextStyle(
               color: Theme.of(context).primaryColorLight,
             ),
-            disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-            padding: EdgeInsets.all(12.0),
+            disabledForegroundColor: const Color.fromRGBO(246, 58, 64, 20),
+            padding: const EdgeInsets.all(12.0),
           ),
           onPressed: () {
             Navigator.of(context, rootNavigator: true).pop();
           },
           child: Text("확인",
               style: TextStyle(
-                  fontSize: 20.0, color: Theme.of(context).buttonColor))));
+                  fontSize: 20.0, color: Theme.of(context).highlightColor))));
 }
 
 void displayShareAlert(context, title, message) {
@@ -249,16 +250,16 @@ Widget _shareConfirmButton(context) {
             textStyle: TextStyle(
               color: Theme.of(context).primaryColorLight,
             ),
-            disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-            padding: EdgeInsets.all(12.0),
+            disabledForegroundColor: const Color.fromRGBO(246, 58, 64, 20),
+            padding: const EdgeInsets.all(12.0),
           ),
           onPressed: () async {
 // _onShare method:
             final box = context.findRenderObject() as RenderBox?;
 
-            final _appStoreURL =
+            const _appStoreURL =
                 "https://apps.apple.com/kr/app/supero/id6444859542";
-            final _playStoreURL =
+            const _playStoreURL =
                 "https://play.google.com/store/apps/details?id=com.tk_lck.supero";
             await Share.share(
                 "Supero에서 같이 운동해요💪\n\n운동과 기록도 하고 무게도 올리고 공유 할 수 있어요😁\n\n아래 눌러서 설치해요\n\n- PlayStore : ${_playStoreURL}\n\n- AppStore : ${_appStoreURL}",
@@ -268,7 +269,7 @@ Widget _shareConfirmButton(context) {
           },
           child: Text("공유하기",
               style: TextStyle(
-                  fontSize: 20.0, color: Theme.of(context).buttonColor))));
+                  fontSize: 20.0, color: Theme.of(context).highlightColor))));
 }
 
 Future<Map<String, dynamic>> getDeviceInfo() async {

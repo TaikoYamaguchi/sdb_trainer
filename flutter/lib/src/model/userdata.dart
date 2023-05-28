@@ -97,7 +97,7 @@ class UserList {
     List<User> userdatas = <User>[];
     userdatas = parsedJson.map((i) => User.fromJson(i)).toList();
 
-    return new UserList(userdatas: userdatas);
+    return UserList(userdatas: userdatas);
   }
 }
 

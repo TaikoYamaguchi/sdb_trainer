@@ -46,11 +46,11 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
   PreferredSizeWidget _appbarWidget() {
     bool btnDisabled = false;
     return PreferredSize(
-        preferredSize: Size.fromHeight(40.0), // here the desired height
+        preferredSize: const Size.fromHeight(40.0), // here the desired height
         child: AppBar(
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_outlined),
+            icon: const Icon(Icons.arrow_back_ios_outlined),
             color: Theme.of(context).primaryColorLight,
             onPressed: () {
               btnDisabled == true
@@ -71,7 +71,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
                     Navigator.push(
                         context,
                         Transition(
-                            child: FeedFriendDislikeEdit(),
+                            child: const FeedFriendDislikeEdit(),
                             transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
                   },
                   child: Text("차단친구",
@@ -90,7 +90,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
         FocusScope.of(context).unfocus();
       },
       onPanUpdate: (details) {
-        if (details.delta.dx > 0 && btnDisabled == false) {
+        if (details.delta.dx > 20 && btnDisabled == false) {
           btnDisabled = true;
           Navigator.of(context).pop();
           print("Dragging in +X direction");
@@ -105,15 +105,16 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
                 autofocus: true,
                 style: TextStyle(color: Theme.of(context).primaryColorLight),
                 decoration: InputDecoration(
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.search,
                     color: Color(0xFF717171),
                   ),
                   hintText: "닉네임 검색",
                   hintStyle:
-                      TextStyle(fontSize: 20.0, color: Color(0xFF717171)),
+                      const TextStyle(fontSize: 20.0, color: Color(0xFF717171)),
                   enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(width: 3, color: Color(0xFF717171)),
+                    borderSide:
+                        const BorderSide(width: 3, color: Color(0xFF717171)),
                     borderRadius: BorderRadius.circular(15),
                   ),
                 ),
@@ -141,7 +142,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
                       height: 0.5,
                       child: Container(
                         alignment: Alignment.center,
-                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        margin: const EdgeInsets.symmetric(horizontal: 10),
                         height: 0.5,
                         color: Theme.of(context).primaryColorDark,
                       ),
@@ -180,7 +181,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
                 Padding(
                   padding: const EdgeInsets.only(right: 12),
                   child: user.image == ""
-                      ? Icon(
+                      ? const Icon(
                           Icons.account_circle,
                           color: Colors.grey,
                           size: 28.0,
@@ -192,7 +193,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
                             width: 28,
                             decoration: BoxDecoration(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(50)),
+                                    const BorderRadius.all(Radius.circular(50)),
                                 image: DecorationImage(
                                   image: imageProivder,
                                   fit: BoxFit.cover,
@@ -219,8 +220,8 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
         size: buttonSize,
         isLiked: onIsLikedCheck(User),
         circleColor:
-            CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
-        bubblesColor: BubblesColor(
+            const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+        bubblesColor: const BubblesColor(
           dotPrimaryColor: Color(0xff33b5e5),
           dotSecondaryColor: Color(0xff0099cc),
         ),
@@ -250,7 +251,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
 
   bool onLikeButtonTapped(bool isLiked, User) {
     if (isLiked == true) {
-      var user = UserLike(
+      UserLike(
               liked_email: User.email,
               user_email: _userProvider.userdata.email,
               status: "remove",
@@ -259,7 +260,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
       _userProvider.patchUserLikedata(User, "remove");
       return false;
     } else {
-      var user = UserLike(
+      UserLike(
               liked_email: User.email,
               user_email: _userProvider.userdata.email,
               status: "append",

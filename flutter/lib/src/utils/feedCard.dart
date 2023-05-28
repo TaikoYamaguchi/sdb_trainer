@@ -1,9 +1,5 @@
-import 'dart:math';
-import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
@@ -17,9 +13,7 @@ import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/repository/comment_repository.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
-import 'package:sdb_trainer/src/utils/imageFullViewer.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:stamp_image/stamp_image.dart';
 import 'package:transition/transition.dart';
 import 'package:like_button/like_button.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
@@ -27,12 +21,11 @@ import 'package:sdb_trainer/src/model/userdata.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:io';
 import 'package:sdb_trainer/providers/popmanage.dart';
-
-import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:zoom_pinch_overlay/zoom_pinch_overlay.dart';
 
+// ignore: must_be_immutable
 class FeedCard extends StatefulWidget {
   hisdata.SDBdata sdbdata;
   int index;
@@ -56,31 +49,26 @@ class FeedCard extends StatefulWidget {
 
 class FeedCardState extends State<FeedCard> {
   final repaintkey = GlobalKey();
-  var _historyCommentCtrl;
   var _userProvider;
   var _historyProvider;
   var _commentListbyId;
   var _tempImgStrage;
   var _tapPosition;
-  TextEditingController _exEditCommentCtrl = TextEditingController(text: "");
+  final TextEditingController _exEditCommentCtrl =
+      TextEditingController(text: "");
 
-  PageController _controller =
+  final PageController _controller =
       PageController(viewportFraction: 0.93, keepPage: true);
-  PageController _feedEditcontroller =
+  final PageController _feedEditcontroller =
       PageController(viewportFraction: 0.93, keepPage: true);
 
   List<XFile> _image = [];
-  final ImagePicker _picker = ImagePicker();
-  TextEditingController _commentInputCtrl = TextEditingController(text: "");
+  final TextEditingController _commentInputCtrl =
+      TextEditingController(text: "");
   var _popProvider;
   List<dynamic> _initImage = [];
-  late var _commentInfo = {
-    "feedList": widget.feedListCtrl,
-    "feedVisible": false
-  };
   bool _focus = false;
   final _focusNode = FocusNode();
-  bool _ad = false;
   int num_ad = 0;
   int ad_index = 0;
   NativeAd? myNative;
@@ -98,11 +86,11 @@ class FeedCardState extends State<FeedCard> {
 
   late var _photoInfo = {"feedList": widget.feedListCtrl, "feedVisible": true};
 
-  ScrollController _commentScrollController = ScrollController();
+  final ScrollController _commentScrollController = ScrollController();
 
   @override
   void initState() {
-    _tapPosition = Offset(0.0, 0.0);
+    _tapPosition = const Offset(0.0, 0.0);
     _exEditCommentCtrl.text = widget.sdbdata.comment ?? "";
     super.initState();
     /*
@@ -180,7 +168,7 @@ class FeedCardState extends State<FeedCard> {
                           onAdFailedToLoad: (Ad ad, LoadAdError error) {},
                           onAdLoaded: (_) {},
                         ),
-                        request: AdRequest(),
+                        request: const AdRequest(),
                       )..load(),
                     ),
                   ),
@@ -188,7 +176,7 @@ class FeedCardState extends State<FeedCard> {
               ),
             ),
           )
-        : Container(
+        : SizedBox(
             width: MediaQuery.of(context).size.width,
             child: Center(
               child: Padding(
@@ -220,12 +208,11 @@ class FeedCardState extends State<FeedCard> {
                             : SDBdata.date.substring(2, 10);
                   }
                   return _userProvider.userdata.dislike.contains(user.email)
-                      ? Container(
-                          child: Padding(
-                              padding: const EdgeInsets.only(left: 4.0),
-                              child: Text("차단된 사용자 입니다",
-                                  textScaleFactor: 1.0,
-                                  style: TextStyle(color: Colors.grey))))
+                      ? const Padding(
+                          padding: EdgeInsets.only(left: 4.0),
+                          child: Text("차단된 사용자 입니다",
+                              textScaleFactor: 1.0,
+                              style: TextStyle(color: Colors.grey)))
                       : Card(
                           color: Theme.of(context).cardColor,
                           elevation: 0.5,
@@ -258,7 +245,7 @@ class FeedCardState extends State<FeedCard> {
                                               CrossAxisAlignment.center,
                                           children: [
                                             user.image == ""
-                                                ? Icon(
+                                                ? const Icon(
                                                     Icons.account_circle,
                                                     color: Colors.grey,
                                                     size: 46.0,
@@ -272,7 +259,8 @@ class FeedCardState extends State<FeedCard> {
                                                       width: 46,
                                                       decoration: BoxDecoration(
                                                           borderRadius:
-                                                              BorderRadius.all(
+                                                              const BorderRadius
+                                                                      .all(
                                                                   Radius
                                                                       .circular(
                                                                           50)),
@@ -309,9 +297,10 @@ class FeedCardState extends State<FeedCard> {
                                                       child: Text(
                                                           time_calculate,
                                                           textScaleFactor: 1.1,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.grey)),
+                                                          style:
+                                                              const TextStyle(
+                                                                  color: Colors
+                                                                      .grey)),
                                                     ),
                                                   ],
                                                 ),
@@ -331,9 +320,8 @@ class FeedCardState extends State<FeedCard> {
                                                     ? _myFeedMenu(SDBdata)
                                                     : _otherFeedMenu(SDBdata);
                                               },
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
+                                              child: const Padding(
+                                                padding: EdgeInsets.all(8.0),
                                                 child: Icon(Icons.more_vert,
                                                     color: Colors.grey,
                                                     size: 20.0),
@@ -345,8 +333,8 @@ class FeedCardState extends State<FeedCard> {
                                   : SDBdata.comment != ""
                                       ? _feedTextField(SDBdata.comment)
                                       : Container(),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
+                              const Padding(
+                                padding: EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 0),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
@@ -355,16 +343,15 @@ class FeedCardState extends State<FeedCard> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
-                                      child: Container(
-                                          child: Text(
+                                      child: Text(
                                         "운동",
                                         textScaleFactor: 1.1,
                                         style: TextStyle(
                                           color: Colors.grey,
                                         ),
-                                      )),
+                                      ),
                                     ),
-                                    Container(
+                                    SizedBox(
                                         width: 50,
                                         child: Text("세트",
                                             textScaleFactor: 1.1,
@@ -372,7 +359,7 @@ class FeedCardState extends State<FeedCard> {
                                               color: Colors.grey,
                                             ),
                                             textAlign: TextAlign.center)),
-                                    Container(
+                                    SizedBox(
                                         width: 70,
                                         child: Text("1rm",
                                             textScaleFactor: 1.1,
@@ -395,7 +382,8 @@ class FeedCardState extends State<FeedCard> {
                                 },
                                 child: ListView.separated(
                                     shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     itemBuilder:
                                         (BuildContext _context, int index) {
                                       return Center(
@@ -411,7 +399,7 @@ class FeedCardState extends State<FeedCard> {
                                         child: Container(
                                           alignment: Alignment.center,
                                           height: 0,
-                                          color: Color(0xFF717171),
+                                          color: const Color(0xFF717171),
                                         ),
                                       );
                                     },
@@ -424,7 +412,7 @@ class FeedCardState extends State<FeedCard> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     SDBdata.isVisible == false
-                                        ? Text("숨겨진 피드",
+                                        ? const Text("숨겨진 피드",
                                             textScaleFactor: 1.1,
                                             style:
                                                 TextStyle(color: Colors.grey))
@@ -471,7 +459,7 @@ class FeedCardState extends State<FeedCard> {
                                                             .nickname +
                                                         "님 외 ${SDBdata.like.length - 1}명이 좋아합니다",
                                                 textScaleFactor: 1.1,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     color: Colors.grey))
                                           ],
                                         ),
@@ -489,7 +477,7 @@ class FeedCardState extends State<FeedCard> {
                                           child: Container(
                                             alignment: Alignment.center,
                                             height: 0.1,
-                                            color: Color(0xFF717171),
+                                            color: const Color(0xFF717171),
                                           ),
                                         ),
                                         _imageExEditContent(SDBdata),
@@ -509,7 +497,7 @@ class FeedCardState extends State<FeedCard> {
                                               child: Container(
                                                 alignment: Alignment.center,
                                                 height: 0.1,
-                                                color: Color(0xFF717171),
+                                                color: const Color(0xFF717171),
                                               ),
                                             ),
                                             _imageContent(SDBdata),
@@ -540,15 +528,15 @@ class FeedCardState extends State<FeedCard> {
                 textStyle: TextStyle(
                   color: Theme.of(context).primaryColorLight,
                 ),
-                disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-                padding: EdgeInsets.all(12.0),
+                disabledForegroundColor: const Color.fromRGBO(246, 58, 64, 20),
+                padding: const EdgeInsets.all(12.0),
               ),
               onPressed: () {
                 submitExChange();
               },
               child: Text("운동 제출",
                   textScaleFactor: 1.1,
-                  style: TextStyle(color: Theme.of(context).buttonColor)))),
+                  style: TextStyle(color: Theme.of(context).highlightColor)))),
     );
   }
 
@@ -561,17 +549,15 @@ class FeedCardState extends State<FeedCard> {
                 _historyProvider.getHistorydataAll()
               });
     }
-    if (_exEditCommentCtrl.text != null) {
-      HistoryCommentEdit(
-              history_id: widget.sdbdata.id,
-              user_email: _userProvider.userdata.email,
-              comment: _exEditCommentCtrl.text)
-          .patchHistoryComment()
-          .then((data) => {
-                _historyProvider.patchHistoryCommentdata(
-                    widget.sdbdata, _exEditCommentCtrl.text)
-              });
-    }
+    HistoryCommentEdit(
+            history_id: widget.sdbdata.id,
+            user_email: _userProvider.userdata.email,
+            comment: _exEditCommentCtrl.text)
+        .patchHistoryComment()
+        .then((data) => {
+              _historyProvider.patchHistoryCommentdata(
+                  widget.sdbdata, _exEditCommentCtrl.text)
+            });
     if (_image.isEmpty == false) {
       HistoryImageEdit(history_id: widget.sdbdata.id, file: _image)
           .patchHistoryImage()
@@ -583,7 +569,7 @@ class FeedCardState extends State<FeedCard> {
     _tempImgStrage.resetimg();
     Navigator.of(context).pop();
     _popProvider.gotoonlast();
-    Future.delayed(Duration(microseconds: 30000)).then((value) {
+    Future.delayed(const Duration(microseconds: 30000)).then((value) {
       _popProvider.gotooff();
     });
 
@@ -621,12 +607,12 @@ class FeedCardState extends State<FeedCard> {
     return showMenu(
       context: context,
       position: RelativeRect.fromRect(
-          _tapPosition & Size(30, 30), Offset.zero & Size(0, 0)),
+          _tapPosition & const Size(30, 30), Offset.zero & const Size(0, 0)),
       items: [
         PopupMenuItem(
             child: ListTile(
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+                    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
                 leading: Icon(Icons.no_photography,
                     color: Theme.of(context).primaryColorLight),
                 title: Text("피드수정",
@@ -643,14 +629,13 @@ class FeedCardState extends State<FeedCard> {
         PopupMenuItem(
             child: ListTile(
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+                    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
                 leading: Icon(Icons.details,
                     color: Theme.of(context).primaryColorLight),
                 title: Text("운동수정",
                     style:
                         TextStyle(color: Theme.of(context).primaryColorLight))),
             onTap: () async {
-              final navigator = Navigator.of(context);
               await Future.delayed(Duration.zero);
               Navigator.push(
                   context,
@@ -661,7 +646,7 @@ class FeedCardState extends State<FeedCard> {
         PopupMenuItem(
             child: ListTile(
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+                    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
                 leading: Icon(Icons.share_rounded,
                     color: Theme.of(context).primaryColorLight),
                 title: Text("공유",
@@ -684,7 +669,7 @@ class FeedCardState extends State<FeedCard> {
         PopupMenuItem(
             child: ListTile(
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+                    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
                 leading: SDBdata.isVisible
                     ? Icon(Icons.filter_list_off,
                         color: Theme.of(context).primaryColorLight)
@@ -716,40 +701,24 @@ class FeedCardState extends State<FeedCard> {
     return showMenu(
       context: context,
       position: RelativeRect.fromRect(
-          _tapPosition & Size(30, 30), Offset.zero & Size(0, 0)),
+          _tapPosition & const Size(30, 30), Offset.zero & const Size(0, 0)),
       items: [
         PopupMenuItem(
             child: ListTile(
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+                    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
                 leading: Icon(Icons.remove_circle_outlined,
                     color: Theme.of(context).primaryColorLight),
                 title: Text("신고",
                     style:
                         TextStyle(color: Theme.of(context).primaryColorLight))),
             onTap: () {
-              _historyCommentCtrl =
-                  TextEditingController(text: SDBdata.comment);
               Future<void>.delayed(
                   const Duration(), // OR const Duration(milliseconds: 500),
                   () => _displayDislikeAlert(SDBdata.user_email));
             }),
       ],
     );
-  }
-
-  Future<void> _pickImg(SDBdata) async {
-    final XFile? selectImage =
-        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 10);
-    if (selectImage != null) {
-      dynamic sendData = selectImage.path;
-      HistoryImageEdit(file: sendData, history_id: SDBdata.id)
-          .patchHistoryImage()
-          .then((data) {
-        _historyProvider.getdata();
-        _historyProvider.getHistorydataAll();
-      });
-    }
   }
 
   Widget _imageContent(SDBdata) {
@@ -764,7 +733,7 @@ class FeedCardState extends State<FeedCard> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
+        SizedBox(
             height: container_size,
             child: Padding(
                 padding: const EdgeInsets.all(0.0),
@@ -775,13 +744,13 @@ class FeedCardState extends State<FeedCard> {
                     itemBuilder: (BuildContext _context, int index) {
                       return Center(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 0.0, vertical: 4.0),
                           child: AspectRatio(
                             aspectRatio: 1,
                             child: Container(
                               height: MediaQuery.of(context).size.height / 2,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20)),
                               ),
@@ -790,7 +759,8 @@ class FeedCardState extends State<FeedCard> {
                                 minScale: 0.5, // optional
                                 maxScale: 3.0, // optional
                                 twoTouchOnly: true,
-                                animationDuration: Duration(milliseconds: 300),
+                                animationDuration:
+                                    const Duration(milliseconds: 300),
                                 animationCurve: Curves.fastOutSlowIn,
                                 onScaleStop: () {},
                                 child: CachedNetworkImage(
@@ -822,7 +792,7 @@ class FeedCardState extends State<FeedCard> {
             child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: 30.0,
-                child: Center(
+                child: const Center(
                     child: Icon(Icons.keyboard_control_key,
                         color: Colors.grey, size: 28.0))),
             onTap: () {
@@ -884,14 +854,14 @@ class FeedCardState extends State<FeedCard> {
         }
         return Column(
           children: [
-            Container(
+            SizedBox(
                 height: container_size,
                 child: Padding(
                     padding: const EdgeInsets.all(0.0),
                     child: PageView.builder(
                         controller: _feedEditcontroller,
                         scrollDirection: Axis.horizontal,
-                        itemCount: _initImage!.length + _image.length + 1,
+                        itemCount: _initImage.length + _image.length + 1,
                         itemBuilder: (BuildContext _context, int index) {
                           return Center(
                             child: Padding(
@@ -903,6 +873,9 @@ class FeedCardState extends State<FeedCard> {
                                       ? AspectRatio(
                                           aspectRatio: 1,
                                           child: Container(
+                                            decoration: const BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(20))),
                                             child: Center(
                                               child: Icon(
                                                   Icons.add_photo_alternate,
@@ -910,45 +883,44 @@ class FeedCardState extends State<FeedCard> {
                                                       .primaryColorLight,
                                                   size: 120),
                                             ),
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20))),
                                           ))
                                       : Stack(children: <Widget>[
                                           _initImage.length > index
                                               ? CachedNetworkImage(
                                                   imageUrl:
                                                       SDBdata.image[index],
-                                                  imageBuilder: (context,
-                                                          imageProivder) =>
-                                                      AspectRatio(
-                                                          aspectRatio: 1,
-                                                          child: Container(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                                    borderRadius:
-                                                                        BorderRadius.all(Radius.circular(
-                                                                            20)),
-                                                                    image:
-                                                                        DecorationImage(
-                                                                      image:
-                                                                          imageProivder,
-                                                                      fit: BoxFit
-                                                                          .cover,
-                                                                    )),
-                                                          )),
+                                                  imageBuilder:
+                                                      (context,
+                                                              imageProivder) =>
+                                                          AspectRatio(
+                                                              aspectRatio: 1,
+                                                              child: Container(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                        borderRadius:
+                                                                            const BorderRadius.all(Radius.circular(
+                                                                                20)),
+                                                                        image:
+                                                                            DecorationImage(
+                                                                          image:
+                                                                              imageProivder,
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                        )),
+                                                              )),
                                                 )
                                               : AspectRatio(
                                                   aspectRatio: 1,
                                                   child: Container(
                                                     decoration: BoxDecoration(
                                                         borderRadius:
-                                                            BorderRadius.all(
+                                                            const BorderRadius
+                                                                    .all(
                                                                 Radius.circular(
                                                                     20)),
                                                         image: DecorationImage(
                                                           image: FileImage(File(
-                                                              _image![index -
+                                                              _image[index -
                                                                       _initImage
                                                                           .length]
                                                                   .path)),
@@ -977,7 +949,7 @@ class FeedCardState extends State<FeedCard> {
                                                 height: 24.0,
                                                 child: Center(
                                                   child: Material(
-                                                    shape: CircleBorder(),
+                                                    shape: const CircleBorder(),
                                                     clipBehavior:
                                                         Clip.antiAlias,
                                                     elevation: 4.0,
@@ -999,7 +971,7 @@ class FeedCardState extends State<FeedCard> {
                                           )
                                         ]),
                                   onTap: () {
-                                    if (_initImage!.length + _image.length <=
+                                    if (_initImage.length + _image.length <=
                                         index) {
                                       _displayPhotoAlert(SDBdata);
                                     }
@@ -1007,12 +979,12 @@ class FeedCardState extends State<FeedCard> {
                                 )),
                           );
                         }))),
-            _initImage!.length + _image.length > 0
+            _initImage.length + _image.length > 0
                 ? Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: SmoothPageIndicator(
                       controller: _feedEditcontroller,
-                      count: _initImage!.length + _image.length + 1,
+                      count: _initImage.length + _image.length + 1,
                       effect: WormEffect(
                         dotHeight: 8,
                         dotWidth: 8,
@@ -1028,44 +1000,6 @@ class FeedCardState extends State<FeedCard> {
         );
       }),
     );
-  }
-
-  Future _getImage(ImageSource imageSource) async {
-    if (imageSource == ImageSource.gallery) {
-      final List<XFile>? _selectedImages =
-          await _picker.pickMultiImage(imageQuality: 30);
-      if (_selectedImages != null) {
-        for (int i = 0; i < _selectedImages.length; i++) {
-          var tempImg =
-              img.decodeImage(File(_selectedImages[i].path).readAsBytesSync());
-          var cropSize = min(tempImg!.width, tempImg.height);
-          int offsetX =
-              (tempImg.width - min(tempImg.width, tempImg.height)) ~/ 2;
-          int offsetY =
-              (tempImg.height - min(tempImg.width, tempImg.height)) ~/ 2;
-          img.Image cropOne = img.copyCrop(
-            tempImg,
-            x: offsetX,
-            y: offsetY,
-            height: cropSize,
-            width: cropSize,
-          );
-          File(_selectedImages[i].path).writeAsBytes(img.encodeJpg(cropOne));
-        }
-
-        setState(() {
-          _image.addAll(_selectedImages); // 가져온 이미지를 _image에 저장
-        });
-      }
-    } else if (imageSource == ImageSource.camera) {
-      final XFile? _selectedImages =
-          await _picker.pickImage(source: imageSource, imageQuality: 30);
-      if (_selectedImages != null) {
-        setState(() {
-          _image.add(_selectedImages); // 가져온 이미지를 _image에 저장
-        });
-      }
-    }
   }
 
   void _displayPhotoAlert(SDBdata) {
@@ -1103,8 +1037,8 @@ class FeedCardState extends State<FeedCard> {
                                   color: Theme.of(context).primaryColorLight,
                                 ),
                                 disabledForegroundColor:
-                                    Color.fromRGBO(246, 58, 64, 20),
-                                padding: EdgeInsets.all(12.0),
+                                    const Color.fromRGBO(246, 58, 64, 20),
+                                padding: const EdgeInsets.all(12.0),
                               ),
                               onPressed: () {
                                 Navigator.pop(context);
@@ -1121,12 +1055,12 @@ class FeedCardState extends State<FeedCard> {
                                 children: [
                                   Icon(Icons.camera_alt,
                                       size: 24,
-                                      color: Theme.of(context).buttonColor),
+                                      color: Theme.of(context).highlightColor),
                                   Text('촬영',
                                       textScaleFactor: 1.3,
                                       style: TextStyle(
-                                          color:
-                                              Theme.of(context).buttonColor)),
+                                          color: Theme.of(context)
+                                              .highlightColor)),
                                 ],
                               ),
                             )),
@@ -1143,8 +1077,8 @@ class FeedCardState extends State<FeedCard> {
                                   color: Theme.of(context).primaryColorLight,
                                 ),
                                 disabledForegroundColor:
-                                    Color.fromRGBO(246, 58, 64, 20),
-                                padding: EdgeInsets.all(12.0),
+                                    const Color.fromRGBO(246, 58, 64, 20),
+                                padding: const EdgeInsets.all(12.0),
                               ),
                               onPressed: () {
                                 //_getImage(ImageSource.gallery);
@@ -1163,12 +1097,12 @@ class FeedCardState extends State<FeedCard> {
                                 children: [
                                   Icon(Icons.collections,
                                       size: 24,
-                                      color: Theme.of(context).buttonColor),
+                                      color: Theme.of(context).highlightColor),
                                   Text('갤러리',
                                       textScaleFactor: 1.3,
                                       style: TextStyle(
-                                          color:
-                                              Theme.of(context).buttonColor)),
+                                          color: Theme.of(context)
+                                              .highlightColor)),
                                 ],
                               ),
                             )),
@@ -1192,10 +1126,10 @@ class FeedCardState extends State<FeedCard> {
     }
     return ListView.separated(
         shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext _context, int index) {
           return Padding(
-              padding: EdgeInsets.all(4.0),
+              padding: const EdgeInsets.all(4.0),
               child: _commentContentCore(_commentListbyId[index], setState));
         },
         separatorBuilder: (BuildContext _context, int index) {
@@ -1217,12 +1151,10 @@ class FeedCardState extends State<FeedCard> {
         .where((user) => user.email == Comment.writer_email)
         .toList()[0];
     return _userProvider.userdata.dislike.contains(Comment.writer_email)
-        ? Container(
-            child: Padding(
-                padding: const EdgeInsets.only(left: 4.0),
-                child: Text("차단된 사용자 입니다",
-                    textScaleFactor: 1.0,
-                    style: TextStyle(color: Colors.grey))))
+        ? const Padding(
+            padding: EdgeInsets.only(left: 4.0),
+            child: Text("차단된 사용자 입니다",
+                textScaleFactor: 1.0, style: TextStyle(color: Colors.grey)))
         : Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1241,7 +1173,7 @@ class FeedCardState extends State<FeedCard> {
                                     TransitionEffect.RIGHT_TO_LEFT));
                       },
                       child: user.image == ""
-                          ? Icon(
+                          ? const Icon(
                               Icons.account_circle,
                               color: Colors.grey,
                               size: 38.0,
@@ -1253,8 +1185,8 @@ class FeedCardState extends State<FeedCard> {
                                 height: 38,
                                 width: 38,
                                 decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(50)),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(50)),
                                     image: DecorationImage(
                                       image: imageProivder,
                                       fit: BoxFit.cover,
@@ -1270,7 +1202,7 @@ class FeedCardState extends State<FeedCard> {
                           children: [
                             Text(Comment.writer_nickname,
                                 textScaleFactor: 1.0,
-                                style: TextStyle(color: Colors.grey)),
+                                style: const TextStyle(color: Colors.grey)),
                             Text(Comment.content,
                                 textScaleFactor: 1.1,
                                 style: TextStyle(
@@ -1290,8 +1222,8 @@ class FeedCardState extends State<FeedCard> {
                                   _focusNode.requestFocus();
                                 });
                               },
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
                                     horizontal: 0.0, vertical: 6.0),
                                 child: Text("답글 달기",
                                     textScaleFactor: 0.9,
@@ -1308,23 +1240,14 @@ class FeedCardState extends State<FeedCard> {
               widget.isExEdit
                   ? _exercise_Done_appbar_Button()
                   : GestureDetector(
-                      child: Container(
-                        height: 38,
-                        width: 24,
-                        child: Icon(
-                          Icons.more_vert,
-                          color: Colors.grey,
-                          size: 18.0,
-                        ),
-                      ),
                       onTapDown: _storePosition,
                       onTap: () {
                         _userProvider.userdata.email == Comment.writer_email
                             ? showMenu(
                                 context: context,
                                 position: RelativeRect.fromRect(
-                                    _tapPosition & Size(30, 30),
-                                    Offset.zero & Size(0, 0)),
+                                    _tapPosition & const Size(30, 30),
+                                    Offset.zero & const Size(0, 0)),
                                 items: [
                                     PopupMenuItem(
                                         onTap: () {
@@ -1337,10 +1260,10 @@ class FeedCardState extends State<FeedCard> {
                                                   .deleteComment());
                                           setState(() {});
                                         },
-                                        padding: EdgeInsets.all(0.0),
+                                        padding: const EdgeInsets.all(0.0),
                                         child: ListTile(
                                             contentPadding:
-                                                EdgeInsets.symmetric(
+                                                const EdgeInsets.symmetric(
                                                     horizontal: 4.0,
                                                     vertical: 0.0),
                                             leading: Icon(Icons.delete,
@@ -1354,8 +1277,8 @@ class FeedCardState extends State<FeedCard> {
                             : showMenu(
                                 context: context,
                                 position: RelativeRect.fromRect(
-                                    _tapPosition & Size(30, 30),
-                                    Offset.zero & Size(0, 0)),
+                                    _tapPosition & const Size(30, 30),
+                                    Offset.zero & const Size(0, 0)),
                                 items: [
                                     PopupMenuItem(
                                         onTap: () {
@@ -1364,10 +1287,10 @@ class FeedCardState extends State<FeedCard> {
                                               () => _displayDislikeAlert(
                                                   Comment.writer_email));
                                         },
-                                        padding: EdgeInsets.all(0.0),
+                                        padding: const EdgeInsets.all(0.0),
                                         child: ListTile(
                                             contentPadding:
-                                                EdgeInsets.symmetric(
+                                                const EdgeInsets.symmetric(
                                                     horizontal: 4.0,
                                                     vertical: 0.0),
                                             leading: Icon(
@@ -1380,110 +1303,18 @@ class FeedCardState extends State<FeedCard> {
                                                         .primaryColorLight)))),
                                   ]);
                       },
+                      child: const SizedBox(
+                        height: 38,
+                        width: 24,
+                        child: Icon(
+                          Icons.more_vert,
+                          color: Colors.grey,
+                          size: 18.0,
+                        ),
+                      ),
                     )
             ],
           );
-  }
-
-  Future<void> _displayTextInputDialog(BuildContext context, SDBdata) async {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return StatefulBuilder(builder: (context, setState) {
-            return AlertDialog(
-              buttonPadding: EdgeInsets.all(12.0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              backgroundColor: Theme.of(context).cardColor,
-              contentPadding: EdgeInsets.all(12.0),
-              title: Text('운동에 글을 남겨 보세요',
-                  textScaleFactor: 1.3,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Theme.of(context).primaryColorLight)),
-              content: Column(mainAxisSize: MainAxisSize.min, children: [
-                Text('코멘트를 입력해 주세요',
-                    textScaleFactor: 1.0,
-                    textAlign: TextAlign.center,
-                    style:
-                        TextStyle(color: Theme.of(context).primaryColorLight)),
-                Text('외부를 터치하면 취소 할 수 있어요',
-                    textScaleFactor: 1.0,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey)),
-                SizedBox(height: 20),
-                TextField(
-                  onChanged: (value) {
-                    setState(() {
-                      null;
-                    });
-                  },
-                  style: TextStyle(
-                      fontSize: 16.0,
-                      color: Theme.of(context).primaryColorLight),
-                  textAlign: TextAlign.center,
-                  controller: _historyCommentCtrl,
-                  decoration: InputDecoration(
-                      filled: true,
-                      enabledBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor, width: 3),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor, width: 3),
-                      ),
-                      hintText: "운동 글 남기기",
-                      hintStyle: TextStyle(
-                          fontSize: 16.0,
-                          color: Theme.of(context).primaryColorLight)),
-                ),
-              ]),
-              actions: <Widget>[
-                _historyCommentSubmitButton(context, SDBdata),
-              ],
-            );
-          });
-        });
-  }
-
-  Widget _historyCommentSubmitButton(context, SDBdata) {
-    return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: TextButton(
-            style: TextButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              backgroundColor: _historyCommentCtrl.text == ""
-                  ? Color(0xFF212121)
-                  : Theme.of(context).primaryColor,
-              foregroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(
-                color: Theme.of(context).primaryColorLight,
-              ),
-              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-              padding: EdgeInsets.all(12.0),
-            ),
-            onPressed: () {
-              _historyCommentCtrl.text == ""
-                  ? null
-                  : HistoryCommentEdit(
-                          history_id: SDBdata.id,
-                          user_email: _userProvider.userdata.email,
-                          comment: _historyCommentCtrl.text)
-                      .patchHistoryComment();
-              _historyProvider.patchHistoryCommentdata(
-                  SDBdata, _historyCommentCtrl.text);
-
-              _historyCommentCtrl.clear();
-              Navigator.of(context, rootNavigator: true).pop();
-            },
-            child: Text("글 남기기",
-                textScaleFactor: 1.7,
-                style: TextStyle(color: Theme.of(context).buttonColor))));
   }
 
   Widget _feedTextField(text) {
@@ -1528,11 +1359,10 @@ class FeedCardState extends State<FeedCard> {
   }
 
   void _showCommentBottomSheet(SDBdata) {
-    String _selectedUser;
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (BuildContext context) {
         return GestureDetector(onTap: () {
@@ -1546,7 +1376,8 @@ class FeedCardState extends State<FeedCard> {
             height: MediaQuery.of(context).size.height * 0.7 +
                 MediaQuery.of(context).viewInsets.bottom,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(20)),
               color: Theme.of(context).cardColor,
             ),
             child: Column(
@@ -1556,14 +1387,14 @@ class FeedCardState extends State<FeedCard> {
                 Column(
                   children: [
                     Padding(
-                      padding: EdgeInsets.fromLTRB(12, 4, 12, 12),
+                      padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
                       child: Container(
                         height: 6.0,
                         width: 80.0,
                         decoration: BoxDecoration(
                             color: Theme.of(context).primaryColorDark,
                             borderRadius:
-                                BorderRadius.all(Radius.circular(8.0))),
+                                const BorderRadius.all(Radius.circular(8.0))),
                       ),
                     ),
                     _feedTextField(SDBdata.comment),
@@ -1662,8 +1493,8 @@ class FeedCardState extends State<FeedCard> {
         size: buttonSize,
         isLiked: onIsLikedCheck(SDBdata),
         circleColor:
-            CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
-        bubblesColor: BubblesColor(
+            const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+        bubblesColor: const BubblesColor(
           dotPrimaryColor: Color(0xff33b5e5),
           dotSecondaryColor: Color(0xff0099cc),
         ),
@@ -1751,11 +1582,11 @@ class FeedCardState extends State<FeedCard> {
               textStyle: TextStyle(
                 color: Theme.of(context).primaryColorLight,
               ),
-              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-              padding: EdgeInsets.all(12.0),
+              disabledForegroundColor: const Color.fromRGBO(246, 58, 64, 20),
+              padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {
-              var user = UserLike(
+              UserLike(
                       liked_email: email,
                       user_email: _userProvider.userdata.email,
                       status: "append",
@@ -1792,7 +1623,7 @@ class FeedCardState extends State<FeedCard> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Theme.of(context).primaryColorLight)),
-                  Text(
+                  const Text(
                     '친구 관리에서 다시 차단 해제 할 수 있어요',
                     textScaleFactor: 1.0,
                     style: TextStyle(color: Colors.grey),
@@ -1811,7 +1642,7 @@ class FeedCardState extends State<FeedCard> {
     return Row(
       children: [
         _userProvider.userdata.image == ""
-            ? Icon(
+            ? const Icon(
                 Icons.account_circle,
                 color: Colors.grey,
                 size: 46.0,
@@ -1822,7 +1653,7 @@ class FeedCardState extends State<FeedCard> {
                   height: 38,
                   width: 38,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                      borderRadius: const BorderRadius.all(Radius.circular(50)),
                       image: DecorationImage(
                         image: imageProivder,
                         fit: BoxFit.cover,
@@ -1893,7 +1724,7 @@ class FeedCardState extends State<FeedCard> {
                     setState(() {
                       _commentScrollController.animateTo(
                         _commentScrollController.position.maxScrollExtent,
-                        duration: Duration(seconds: 2),
+                        duration: const Duration(seconds: 2),
                         curve: Curves.fastOutSlowIn,
                       );
                     });
@@ -1927,7 +1758,7 @@ class FeedCardState extends State<FeedCard> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: 50,
               child: Text(
                 Exercises.sets.length.toString(),
@@ -1936,7 +1767,7 @@ class FeedCardState extends State<FeedCard> {
                 textAlign: TextAlign.center,
               ),
             ),
-            Container(
+            SizedBox(
               width: 70,
               child: Text(
                 Exercises.isCardio
@@ -1959,7 +1790,7 @@ class FeedCardState extends State<FeedCard> {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (BuildContext context) {
         return GestureDetector(onTap: () {
@@ -1968,10 +1799,11 @@ class FeedCardState extends State<FeedCard> {
           builder: (BuildContext context,
               StateSetter setState /*You can rename this!*/) {
             return Container(
-                padding: EdgeInsets.all(12.0),
+                padding: const EdgeInsets.all(12.0),
                 height: MediaQuery.of(context).size.height * 0.7,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(20)),
                   color: Theme.of(context).cardColor,
                 ),
                 child: Column(
@@ -1979,20 +1811,20 @@ class FeedCardState extends State<FeedCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: EdgeInsets.fromLTRB(12, 4, 12, 12),
+                      padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
                       child: Container(
                         height: 6.0,
                         width: 80.0,
                         decoration: BoxDecoration(
                             color: Theme.of(context).primaryColorDark,
                             borderRadius:
-                                BorderRadius.all(Radius.circular(8.0))),
+                                const BorderRadius.all(Radius.circular(8.0))),
                       ),
                     ),
                     Expanded(
                         child: SingleChildScrollView(
                             child: ListView.separated(
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemBuilder:
                                     (BuildContext _context, int index) {
@@ -2027,7 +1859,7 @@ class FeedCardState extends State<FeedCard> {
                                                     CrossAxisAlignment.center,
                                                 children: [
                                                   userLikesEmail.image == ""
-                                                      ? Icon(
+                                                      ? const Icon(
                                                           Icons.account_circle,
                                                           color: Colors.grey,
                                                           size: 46.0,
@@ -2043,8 +1875,9 @@ class FeedCardState extends State<FeedCard> {
                                                             width: 46,
                                                             decoration:
                                                                 BoxDecoration(
-                                                                    borderRadius:
-                                                                        BorderRadius.all(Radius.circular(
+                                                                    borderRadius: const BorderRadius
+                                                                            .all(
+                                                                        Radius.circular(
                                                                             50)),
                                                                     image:
                                                                         DecorationImage(

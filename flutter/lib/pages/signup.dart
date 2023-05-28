@@ -8,18 +8,14 @@ import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:sdb_trainer/src/model/userdata.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
-import 'package:sdb_trainer/pages/home.dart';
-import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/loginState.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart' as routine;
 import 'package:sdb_trainer/providers/userdata.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -48,21 +44,24 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _userEmailCtrl = TextEditingController(text: "");
   TextEditingController _userPasswordCtrl =
       TextEditingController(text: "unkown!@#");
-  TextEditingController _userNameCtrl = TextEditingController(text: "unknown");
-  TextEditingController _userNicknameCtrl = TextEditingController(text: "");
-  TextEditingController _userImageCtrl = TextEditingController(text: "");
-  TextEditingController _userHeightCtrl = TextEditingController(text: "");
-  TextEditingController _userWeightCtrl = TextEditingController(text: "");
+  final TextEditingController _userNameCtrl =
+      TextEditingController(text: "unknown");
+  final TextEditingController _userNicknameCtrl =
+      TextEditingController(text: "");
+  final TextEditingController _userImageCtrl = TextEditingController(text: "");
+  final TextEditingController _userHeightCtrl = TextEditingController(text: "");
+  final TextEditingController _userWeightCtrl = TextEditingController(text: "");
   var _userWeightUnitCtrl = "kg";
   var _userHeightUnitCtrl = "cm";
   var _userGenderCtrl = true;
   List<Exercises> exerciseList = extra_completely_new_Ex;
   List<routine.Routinedatas> routinedatas = [];
 
-  List<TextEditingController> _onermController = [];
-  List<TextEditingController> _goalController = [];
+  final List<TextEditingController> _onermController = [];
+  final List<TextEditingController> _goalController = [];
 
-  TextEditingController _userPhoneNumberCtrl = TextEditingController(text: "");
+  final TextEditingController _userPhoneNumberCtrl =
+      TextEditingController(text: "");
 
   @override
   void initState() {
@@ -85,13 +84,13 @@ class _SignUpPageState extends State<SignUpPage> {
           textScaleFactor: 2.0,
           style: TextStyle(
               color: _userHeightUnitCtrl == "cm"
-                  ? Theme.of(context).buttonColor
+                  ? Theme.of(context).highlightColor
                   : Theme.of(context).primaryColorLight)),
       "inch": Text("inch",
           textScaleFactor: 2.0,
           style: TextStyle(
               color: _userHeightUnitCtrl == "inch"
-                  ? Theme.of(context).buttonColor
+                  ? Theme.of(context).highlightColor
                   : Theme.of(context).primaryColorLight)),
     };
     _weightUnitList = <String, Widget>{
@@ -99,13 +98,13 @@ class _SignUpPageState extends State<SignUpPage> {
           textScaleFactor: 2.0,
           style: TextStyle(
               color: _userWeightUnitCtrl == "kg"
-                  ? Theme.of(context).buttonColor
+                  ? Theme.of(context).highlightColor
                   : Theme.of(context).primaryColorLight)),
       "lb": Text("lb",
           textScaleFactor: 2.0,
           style: TextStyle(
               color: _userWeightUnitCtrl == "lb"
-                  ? Theme.of(context).buttonColor
+                  ? Theme.of(context).highlightColor
                   : Theme.of(context).primaryColorLight)),
     };
 
@@ -114,13 +113,13 @@ class _SignUpPageState extends State<SignUpPage> {
           textScaleFactor: 2.5,
           style: TextStyle(
               color: _userGenderCtrl == true
-                  ? Theme.of(context).buttonColor
+                  ? Theme.of(context).highlightColor
                   : Theme.of(context).primaryColorLight)),
       false: Text("여성",
           textScaleFactor: 2.5,
           style: TextStyle(
               color: _userGenderCtrl == false
-                  ? Theme.of(context).buttonColor
+                  ? Theme.of(context).highlightColor
                   : Theme.of(context).primaryColorLight)),
     };
 
@@ -141,59 +140,56 @@ class _SignUpPageState extends State<SignUpPage> {
     }
 
     return Scaffold(
-        body: Container(
-      child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: Column(
-            children: [
-              SizedBox(height: 24),
-              KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
-                return Container(
-                  width: MediaQuery.of(context).size.width / 3,
-                  height: 40,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        StepProgressIndicator(
-                          totalSteps: 5,
-                          size: 10,
-                          onTap: (index) {
-                            if (_isSignupIndex > index && _isSignupIndex <= 2) {
-                              return () {
-                                setState(() {
-                                  _isSignupIndex = index;
-                                });
-                                print(index);
-                              };
-                            } else if (_isSignupIndex > 2) {
-                              return () {
-                                showToast("회원가입이 완료되어 추후 변경가능합니다!");
-                                print(-1);
-                              };
-                            } else {
-                              return () {
-                                showToast("버튼을 눌러 넘어 갈 수 있어요!");
-                                print(-1);
-                              };
-                            }
-                          },
-                          roundedEdges: Radius.circular(10),
-                          currentStep: _isSignupIndex + 1,
-                          selectedColor: Theme.of(context).primaryColor,
-                          unselectedColor: Theme.of(context).cardColor,
-                          customColor: (index) => index == _isSignupIndex
-                              ? Theme.of(context).primaryColor
-                              : Theme.of(context).cardColor,
-                        ),
-                      ]),
-                );
-              }),
-              Expanded(child: _signupWidget()),
-            ],
-          )),
-    ));
+        body: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: Column(
+              children: [
+                const SizedBox(height: 24),
+                KeyboardVisibilityBuilder(
+                    builder: (context, isKeyboardVisible) {
+                  return SizedBox(
+                    width: MediaQuery.of(context).size.width / 3,
+                    height: 40,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          StepProgressIndicator(
+                            totalSteps: 5,
+                            size: 10,
+                            onTap: (index) {
+                              if (_isSignupIndex > index &&
+                                  _isSignupIndex <= 2) {
+                                return () {
+                                  setState(() {
+                                    _isSignupIndex = index;
+                                  });
+                                };
+                              } else if (_isSignupIndex > 2) {
+                                return () {
+                                  showToast("회원가입이 완료되어 추후 변경가능합니다!");
+                                };
+                              } else {
+                                return () {
+                                  showToast("버튼을 눌러 넘어 갈 수 있어요!");
+                                };
+                              }
+                            },
+                            roundedEdges: const Radius.circular(10),
+                            currentStep: _isSignupIndex + 1,
+                            selectedColor: Theme.of(context).primaryColor,
+                            unselectedColor: Theme.of(context).cardColor,
+                            customColor: (index) => index == _isSignupIndex
+                                ? Theme.of(context).primaryColor
+                                : Theme.of(context).cardColor,
+                          ),
+                        ]),
+                  );
+                }),
+                Expanded(child: _signupWidget()),
+              ],
+            )));
   }
 
   Widget _signupWidget() {
@@ -213,379 +209,303 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _signupProfileWidget() {
-    return Container(
-      child: Center(
-          child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Expanded(
-                flex: 3,
-                child: SizedBox(),
-              ),
-              Text("회원가입을 진행할게요",
-                  textScaleFactor: 2.5,
-                  style: TextStyle(color: Theme.of(context).primaryColorLight)),
-              Text("어떻게 불러드릴까요?",
-                  textScaleFactor: 1.5,
-                  style: TextStyle(color: Theme.of(context).primaryColorDark)),
-              SizedBox(
-                height: 12,
-              ),
-              _nicknameWidget(),
-              SizedBox(
-                height: 12,
-              ),
-              _phoneNumberWidget(),
-              Expanded(
-                flex: 3,
-                child: SizedBox(),
-              ),
-              SizedBox(
-                height: 12,
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _signUpButton(context),
-                  _loginButton(context),
-                ],
-              ),
-            ]),
-      )),
-    );
+    return Center(
+        child: Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            const Expanded(
+              flex: 3,
+              child: SizedBox(),
+            ),
+            Text("회원가입을 진행할게요",
+                textScaleFactor: 2.5,
+                style: TextStyle(color: Theme.of(context).primaryColorLight)),
+            Text("어떻게 불러드릴까요?",
+                textScaleFactor: 1.5,
+                style: TextStyle(color: Theme.of(context).primaryColorDark)),
+            const SizedBox(
+              height: 12,
+            ),
+            _nicknameWidget(),
+            const SizedBox(
+              height: 12,
+            ),
+            _phoneNumberWidget(),
+            const Expanded(
+              flex: 3,
+              child: SizedBox(),
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _signUpButton(context),
+                _loginButton(context),
+              ],
+            ),
+          ]),
+    ));
   }
 
   Widget _signupGenderWidget() {
-    return Container(
-      child: Center(
-          child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Expanded(
-                      flex: 3,
-                      child: SizedBox(),
-                    ),
-                    Text("성별을 선택해주세요",
-                        textScaleFactor: 2.5,
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorLight)),
-                    Text("성별에 따라 추천 무게가 달라져요",
-                        textScaleFactor: 1.3,
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorDark)),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    _genderWidget(),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: SizedBox(),
-                    ),
-                    _signUpGenderButton(context),
-                    _loginButton(context),
-                  ]))),
-    );
+    return Center(
+        child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Expanded(
+                    flex: 3,
+                    child: SizedBox(),
+                  ),
+                  Text("성별을 선택해주세요",
+                      textScaleFactor: 2.5,
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColorLight)),
+                  Text("성별에 따라 추천 무게가 달라져요",
+                      textScaleFactor: 1.3,
+                      style:
+                          TextStyle(color: Theme.of(context).primaryColorDark)),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  _genderWidget(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Expanded(
+                    flex: 3,
+                    child: SizedBox(),
+                  ),
+                  _signUpGenderButton(context),
+                  _loginButton(context),
+                ])));
   }
 
   Widget _signupSettingWidget() {
-    return Container(
-      child: Center(
-          child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Expanded(
-                      flex: 3,
-                      child: SizedBox(),
-                    ),
-                    Text("키, 몸무게를 입력해주세요",
-                        textScaleFactor: 2.5,
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorLight)),
-                    Text("신체에 따라 추천 프로그램이 달라져요",
-                        textScaleFactor: 1.3,
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorDark)),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(child: _heightWidget()),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        Expanded(child: _heightUnitWidget())
-                      ],
-                    ),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(child: _weightWidget()),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        Expanded(child: _weightUnitWidget())
-                      ],
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: SizedBox(),
-                    ),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    _signUpButton(context),
-                    _loginButton(context),
-                  ]))),
-    );
+    return Center(
+        child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Expanded(
+                    flex: 3,
+                    child: SizedBox(),
+                  ),
+                  Text("키, 몸무게를 입력해주세요",
+                      textScaleFactor: 2.5,
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColorLight)),
+                  Text("신체에 따라 추천 프로그램이 달라져요",
+                      textScaleFactor: 1.3,
+                      style:
+                          TextStyle(color: Theme.of(context).primaryColorDark)),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(child: _heightWidget()),
+                      const SizedBox(
+                        width: 16,
+                      ),
+                      Expanded(child: _heightUnitWidget())
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(child: _weightWidget()),
+                      const SizedBox(
+                        width: 16,
+                      ),
+                      Expanded(child: _weightUnitWidget())
+                    ],
+                  ),
+                  const Expanded(
+                    flex: 3,
+                    child: SizedBox(),
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  _signUpButton(context),
+                  _loginButton(context),
+                ])));
   }
 
   Widget _signupImageWidget() {
-    return Container(
-      child: Center(
-          child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Expanded(
-                      flex: 3,
-                      child: SizedBox(),
-                    ),
-                    Text("사진을 설정해주세요",
-                        textScaleFactor: 2.5,
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorLight)),
-                    Text("사진을 클릭하면 변경 할 수 있어요",
-                        textScaleFactor: 1.3,
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorDark)),
-                    SizedBox(
-                      height: 34,
-                    ),
-                    Consumer<UserdataProvider>(
-                        builder: (builder, provider, child) {
-                      return provider.userdata == null
-                          ? CircularProgressIndicator()
-                          : GestureDetector(
-                              onTap: () {
-                                displayPhotoDialog(context);
-                              },
-                              child: _userProvider.userdata.image == ""
-                                  ? Icon(
-                                      Icons.account_circle,
-                                      color: Theme.of(context).primaryColorDark,
-                                      size: 200.0,
-                                    )
-                                  : CachedNetworkImage(
-                                      imageUrl: provider.userdata.image,
-                                      imageBuilder: (context, imageProivder) =>
-                                          Container(
-                                        height: 200,
-                                        width: 200,
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(50)),
-                                            image: DecorationImage(
-                                              image: imageProivder,
-                                              fit: BoxFit.cover,
-                                            )),
-                                      ),
-                                    ));
-                    }),
-                    Expanded(
-                      flex: 3,
-                      child: SizedBox(),
-                    ),
-                    _signUpButton(context),
-                    _loginButton(context),
-                  ]))),
-    );
+    return Center(
+        child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Expanded(
+                    flex: 3,
+                    child: SizedBox(),
+                  ),
+                  Text("사진을 설정해주세요",
+                      textScaleFactor: 2.5,
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColorLight)),
+                  Text("사진을 클릭하면 변경 할 수 있어요",
+                      textScaleFactor: 1.3,
+                      style:
+                          TextStyle(color: Theme.of(context).primaryColorDark)),
+                  const SizedBox(
+                    height: 34,
+                  ),
+                  Consumer<UserdataProvider>(
+                      builder: (builder, provider, child) {
+                    return provider.userdata == null
+                        ? const CircularProgressIndicator()
+                        : GestureDetector(
+                            onTap: () {
+                              displayPhotoDialog(context);
+                            },
+                            child: _userProvider.userdata.image == ""
+                                ? Icon(
+                                    Icons.account_circle,
+                                    color: Theme.of(context).primaryColorDark,
+                                    size: 200.0,
+                                  )
+                                : CachedNetworkImage(
+                                    imageUrl: provider.userdata.image,
+                                    imageBuilder: (context, imageProivder) =>
+                                        Container(
+                                      height: 200,
+                                      width: 200,
+                                      decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(50)),
+                                          image: DecorationImage(
+                                            image: imageProivder,
+                                            fit: BoxFit.cover,
+                                          )),
+                                    ),
+                                  ));
+                  }),
+                  const Expanded(
+                    flex: 3,
+                    child: SizedBox(),
+                  ),
+                  _signUpButton(context),
+                  _loginButton(context),
+                ])));
   }
 
   Widget _signupExerciseWidget() {
-    return Container(
-      child: Center(
-          child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Text("추천 목표치를 설정했어요",
-                        textScaleFactor: 2.0,
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorLight)),
-                    Text("1RM 입력은 추후 가능해요",
-                        textScaleFactor: 1.5,
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorDark)),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                              width: 120,
-                              child: Text(
-                                "운동",
+    return Center(
+        child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text("추천 목표치를 설정했어요",
+                      textScaleFactor: 2.0,
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColorLight)),
+                  Text("1RM 입력은 추후 가능해요",
+                      textScaleFactor: 1.5,
+                      style:
+                          TextStyle(color: Theme.of(context).primaryColorDark)),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                            width: 120,
+                            child: Text(
+                              "운동",
+                              textScaleFactor: 1.5,
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColorLight,
+                              ),
+                            )),
+                        SizedBox(
+                            width: 70,
+                            child: Text("1rm",
                                 textScaleFactor: 1.5,
                                 style: TextStyle(
                                   color: Theme.of(context).primaryColorLight,
                                 ),
-                              )),
-                          Container(
-                              width: 70,
-                              child: Text("1rm",
-                                  textScaleFactor: 1.5,
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColorLight,
-                                  ),
-                                  textAlign: TextAlign.center)),
-                          Container(
-                              width: 80,
-                              child: Text("목표",
-                                  textScaleFactor: 1.5,
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColorLight,
-                                  ),
-                                  textAlign: TextAlign.center))
-                        ],
-                      ),
+                                textAlign: TextAlign.center)),
+                        SizedBox(
+                            width: 80,
+                            child: Text("목표",
+                                textScaleFactor: 1.5,
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight,
+                                ),
+                                textAlign: TextAlign.center))
+                      ],
                     ),
-                    Expanded(
-                      child: Container(
-                        child: SingleChildScrollView(
-                          child: MediaQuery.removePadding(
-                              context: context,
-                              removeTop: true,
-                              child: ListView.separated(
-                                  itemBuilder:
-                                      (BuildContext _context, int index) {
-                                    return Center(
-                                        child: _exerciseWidget(
-                                            exerciseList[index], index));
-                                  },
-                                  separatorBuilder:
-                                      (BuildContext _context, int index) {
-                                    return Container(
-                                      alignment: Alignment.center,
-                                      height: 0.5,
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 10),
-                                        height: 0.5,
-                                        color:
-                                            Theme.of(context).primaryColorDark,
-                                      ),
-                                    );
-                                  },
-                                  shrinkWrap: true,
-                                  itemCount: 3)),
-                        ),
-                      ),
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: MediaQuery.removePadding(
+                          context: context,
+                          removeTop: true,
+                          child: ListView.separated(
+                              itemBuilder: (BuildContext _context, int index) {
+                                return Center(
+                                    child: _exerciseWidget(
+                                        exerciseList[index], index));
+                              },
+                              separatorBuilder:
+                                  (BuildContext _context, int index) {
+                                return Container(
+                                  alignment: Alignment.center,
+                                  height: 0.5,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    height: 0.5,
+                                    color: Theme.of(context).primaryColorDark,
+                                  ),
+                                );
+                              },
+                              shrinkWrap: true,
+                              itemCount: 3)),
                     ),
-                    _weightSubmitButton(context),
-                    SizedBox(height: 8)
-                    //_loginButton(context),
-                  ]))),
-    );
-  }
-
-  Widget _emailWidget() {
-    return TextFormField(
-      onChanged: (text) {
-        if (_userProvider.userFriendsAll.userdatas
-                .where((user) {
-                  if (user.email == text.toString()) {
-                    return true;
-                  } else {
-                    return false;
-                  }
-                })
-                .toList()
-                .length ==
-            0) {
-          setState(() {
-            _isEmailused = false;
-          });
-        } else
-          setState(() {
-            _isEmailused = true;
-          });
-      },
-      enabled: false,
-      controller: _userEmailCtrl,
-      style: TextStyle(color: Theme.of(context).primaryColorDark),
-      decoration: InputDecoration(
-        labelText: _isEmailused == false ? "이메일" : "사용 불가 이메일",
-        labelStyle: TextStyle(
-            color: _isEmailused == false
-                ? Theme.of(context).primaryColorDark
-                : Colors.red),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-              color: _isEmailused == false
-                  ? Theme.of(context).primaryColor
-                  : Colors.red,
-              width: 2.0),
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-              color: _isEmailused == false
-                  ? Theme.of(context).primaryColorDark
-                  : Colors.red,
-              width: 2.0),
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-      ),
-    );
-  }
-
-  Widget _nameWidget() {
-    return TextFormField(
-      controller: _userNameCtrl,
-      decoration: InputDecoration(
-        prefixIcon: Icon(Icons.email),
-        labelText: "이름",
-        border: OutlineInputBorder(),
-      ),
-    );
+                  ),
+                  _weightSubmitButton(context),
+                  const SizedBox(height: 8)
+                  //_loginButton(context),
+                ])));
   }
 
   Widget _exerciseWidget(Exercises, index) {
-    _onermController.add(new TextEditingController(text: ""));
-    _goalController.add(
-        new TextEditingController(text: Exercises.goal.toStringAsFixed(1)));
+    _onermController.add(TextEditingController(text: ""));
+    _goalController
+        .add(TextEditingController(text: Exercises.goal.toStringAsFixed(1)));
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
+            SizedBox(
               width: 120,
               child: Text(
                 Exercises.name,
@@ -593,11 +513,11 @@ class _SignUpPageState extends State<SignUpPage> {
                 style: TextStyle(color: Theme.of(context).primaryColorLight),
               ),
             ),
-            Container(
+            SizedBox(
               width: 70,
               child: TextFormField(
                   controller: _onermController[index],
-                  keyboardType: TextInputType.numberWithOptions(
+                  keyboardType: const TextInputType.numberWithOptions(
                       signed: false, decimal: true),
                   style: TextStyle(
                       fontSize: 18, color: Theme.of(context).primaryColorLight),
@@ -631,11 +551,11 @@ class _SignUpPageState extends State<SignUpPage> {
                     });
                   }),
             ),
-            Container(
+            SizedBox(
               width: 80,
               child: TextFormField(
                   controller: _goalController[index],
-                  keyboardType: TextInputType.numberWithOptions(
+                  keyboardType: const TextInputType.numberWithOptions(
                       signed: false, decimal: true),
                   style: TextStyle(
                       fontSize: 18, color: Theme.of(context).primaryColorLight),
@@ -739,7 +659,7 @@ class _SignUpPageState extends State<SignUpPage> {
       autofocus: true,
       controller: _userHeightCtrl,
       keyboardType:
-          TextInputType.numberWithOptions(signed: false, decimal: true),
+          const TextInputType.numberWithOptions(signed: false, decimal: true),
       style: TextStyle(
         color: Theme.of(context).primaryColorLight,
         fontSize: _themeProvider.userFontSize * 20 / 0.8,
@@ -769,7 +689,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return TextFormField(
       controller: _userWeightCtrl,
       keyboardType:
-          TextInputType.numberWithOptions(signed: false, decimal: true),
+          const TextInputType.numberWithOptions(signed: false, decimal: true),
       style: TextStyle(
         color: Theme.of(context).primaryColorLight,
         fontSize: _themeProvider.userFontSize * 20 / 0.8,
@@ -897,47 +817,6 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _imageWidget() {
-    return TextFormField(
-      controller: _userImageCtrl,
-      decoration: InputDecoration(
-        prefixIcon: Icon(Icons.email),
-        labelText: "이미지",
-        border: OutlineInputBorder(),
-      ),
-    );
-  }
-
-  Widget _passwordWidget() {
-    return TextFormField(
-      controller: _userPasswordCtrl,
-      style: TextStyle(color: Theme.of(context).primaryColorLight),
-      obscureText: true,
-      enableSuggestions: false,
-      autocorrect: false,
-      obscuringCharacter: "*",
-      decoration: InputDecoration(
-        labelText: "비밀번호",
-        labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
-        focusedBorder: OutlineInputBorder(
-          borderSide:
-              BorderSide(color: Theme.of(context).primaryColor, width: 2.0),
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        border: OutlineInputBorder(
-          borderSide: BorderSide(
-              color: Theme.of(context).primaryColorLight, width: 2.0),
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-              color: Theme.of(context).primaryColorLight, width: 2.0),
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-      ),
-    );
-  }
-
   Widget _signUpButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -952,7 +831,7 @@ class _SignUpPageState extends State<SignUpPage> {
               textStyle: TextStyle(
                 color: Theme.of(context).primaryColorLight,
               ),
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
             ),
             onPressed: () => _isSignupIndex == 0
                 ? setState(() {
@@ -994,7 +873,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             ? "다음"
                             : "회원가입 완료",
                 style: TextStyle(
-                    fontSize: 20.0, color: Theme.of(context).buttonColor))));
+                    fontSize: 20.0, color: Theme.of(context).highlightColor))));
   }
 
   Widget _weightSubmitButton(context) {
@@ -1011,14 +890,15 @@ class _SignUpPageState extends State<SignUpPage> {
               textStyle: TextStyle(
                 color: Theme.of(context).primaryColorLight,
               ),
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
             ),
             onPressed: () => _postExerciseCheck(context),
             child: Column(
               children: [
                 Text(isLoading ? 'loggin in.....' : "추천 운동 하러 가기",
                     style: TextStyle(
-                        fontSize: 20.0, color: Theme.of(context).buttonColor)),
+                        fontSize: 20.0,
+                        color: Theme.of(context).highlightColor)),
                 Text("추천 운동이 운동 탭에 생길거에요",
                     style: TextStyle(
                         color: Theme.of(context).primaryColorDark,
@@ -1041,14 +921,14 @@ class _SignUpPageState extends State<SignUpPage> {
               textStyle: TextStyle(
                 color: Theme.of(context).primaryColorLight,
               ),
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
             ),
             onPressed: () => setState(() {
                   _signUpGenderCheck() ? _isSignupIndex = 2 : null;
                 }),
             child: Text(isLoading ? 'loggin in.....' : "다음",
                 style: TextStyle(
-                    fontSize: 20.0, color: Theme.of(context).buttonColor))));
+                    fontSize: 20.0, color: Theme.of(context).highlightColor))));
   }
 
   void _signUpCheck() async {
@@ -1099,7 +979,7 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   void _postExerciseCheck(context) async {
-    final storage = FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     try {
       String? storageToken = await storage.read(key: "sdb_token");
       ExercisePost(user_email: _userEmailCtrl.text, exercises: exerciseList)
@@ -1308,7 +1188,7 @@ class _SignUpPageState extends State<SignUpPage> {
               textStyle: TextStyle(
                 color: Theme.of(context).primaryColorLight,
               ),
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
             ),
             onPressed: () => isLoading ? null : _loginState.changeSignup(false),
             child: Text(isLoading ? 'loggin in.....' : "이미 계정이 있으신가요?",

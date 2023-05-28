@@ -1,23 +1,19 @@
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:native_ads_flutter/native_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/feed_friend_edit.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
-import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/feed_friend.dart';
 import 'package:sdb_trainer/src/utils/feedCard.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class Feed extends StatefulWidget {
-  Feed({Key? key}) : super(key: key);
+  const Feed({Key? key}) : super(key: key);
 
   @override
   State<Feed> createState() => _FeedState();
@@ -25,12 +21,10 @@ class Feed extends StatefulWidget {
 
 class _FeedState extends State<Feed> {
   var _feedListCtrl = 1;
-
   var _hisProvider;
   var _historydata;
   var _userProvider;
   final _pageController = ScrollController();
-  var _final_history_id;
   var _hasMore = true;
 
   final _isPageController = PageController(initialPage: 4242, keepPage: true);
@@ -46,7 +40,6 @@ class _FeedState extends State<Feed> {
           'android': 'ca-app-pub-3940256099942544/6300978111',
         };
   BannerAd? banner;
-  final _controller = NativeAdmobController();
 
   @override
   void initState() {
@@ -67,56 +60,14 @@ class _FeedState extends State<Feed> {
         onAdFailedToLoad: (Ad ad, LoadAdError error) {},
         onAdLoaded: (_) {},
       ),
-      request: AdRequest(),
+      request: const AdRequest(),
     )..load();
   }
 
   Future _fetchHistoryPage(context) async {
     _hasMore = true;
-    try {
-      var nextPage =
-          await HistorydataPagination(final_history_id: _final_history_id)
-              .loadSDBdataPagination()
-              .then((data) => {
-                    print(data.sdbdatas),
-                    if (data.sdbdatas.isEmpty != true)
-                      {
-                        _hisProvider.addHistorydataPage(data),
-                        if (context != null)
-                          {
-                            for (var history in data.sdbdatas)
-                              {
-                                if (history.image!.isEmpty != true)
-                                  {
-                                    for (var image in history.image!)
-                                      {
-                                        precacheImage(
-                                            CachedNetworkImageProvider(image),
-                                            context)
-                                      }
-                                  }
-                              }
-                          },
-                        setState(() {
-                          print("noooo");
-                          if (_feedListCtrl == 1) {
-                            _hasMore = true;
-                          }
-                        })
-                      }
-                    else
-                      {
-                        setState(() {
-                          print("noooo");
-                          if (_feedListCtrl == 1) {
-                            _hasMore = false;
-                          }
-                        })
-                      }
-                  });
-    } catch (e) {
+    try {} catch (e) {
       setState(() {
-        print("noooo");
         if (_feedListCtrl == 1) {
           _hasMore = false;
         }
@@ -132,7 +83,7 @@ class _FeedState extends State<Feed> {
     return Scaffold(
       extendBody: true,
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(40.0), // here the desired height
+          preferredSize: const Size.fromHeight(40.0), // here the desired height
           child: AppBar(
             elevation: 0,
             title: Row(
@@ -147,7 +98,7 @@ class _FeedState extends State<Feed> {
                       Navigator.push(
                           context,
                           Transition(
-                              child: FeedFriend(),
+                              child: const FeedFriend(),
                               transitionEffect:
                                   TransitionEffect.RIGHT_TO_LEFT));
                     },
@@ -160,7 +111,7 @@ class _FeedState extends State<Feed> {
           )),
       body: _userProvider.userdata != null
           ? Center(child: _feedCardList(context))
-          : Center(child: CircularProgressIndicator()),
+          : const Center(child: CircularProgressIndicator()),
     );
   }
 
@@ -212,17 +163,13 @@ class _FeedState extends State<Feed> {
                                                 : false,
                                             openUserDetail: true));
                                   } else {
-                                    _final_history_id = _historydata[index -
-                                            ((index + 1) / 3).floor() -
-                                            1]
-                                        .id;
                                     return Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 16),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 16),
                                       child: Center(
                                           child: _hasMore == true
                                               ? _feedListCtrl == 1
-                                                  ? CircularProgressIndicator()
+                                                  ? const CircularProgressIndicator()
                                                   : Container()
                                               : Text("데이터 없음",
                                                   style: TextStyle(
@@ -239,7 +186,7 @@ class _FeedState extends State<Feed> {
                                     child: Container(
                                       alignment: Alignment.center,
                                       height: 0,
-                                      color: Color(0xFF717171),
+                                      color: const Color(0xFF717171),
                                     ),
                                   );
                                 },
@@ -263,59 +210,56 @@ class _FeedState extends State<Feed> {
   Widget _feedControllerWidget() {
     Map<int, Widget> _feedList = <int, Widget>{
       1: Padding(
+        padding: const EdgeInsets.all(5.0),
         child: Text("모두 보기",
             textScaleFactor: 1.3,
             style: TextStyle(
               color: _feedListCtrl == 1
-                  ? Theme.of(context).buttonColor
+                  ? Theme.of(context).highlightColor
                   : Theme.of(context).primaryColorDark,
             )),
-        padding: const EdgeInsets.all(5.0),
       ),
       2: Padding(
+          padding: const EdgeInsets.all(5.0),
           child: Text("친구 보기",
               textScaleFactor: 1.3,
               style: TextStyle(
                 color: _feedListCtrl == 2
-                    ? Theme.of(context).buttonColor
+                    ? Theme.of(context).highlightColor
                     : Theme.of(context).primaryColorDark,
-              )),
-          padding: const EdgeInsets.all(5.0)),
+              ))),
       3: Padding(
+          padding: const EdgeInsets.all(5.0),
           child: Text("내 피드",
               textScaleFactor: 1.3,
               style: TextStyle(
                 color: _feedListCtrl == 3
-                    ? Theme.of(context).buttonColor
+                    ? Theme.of(context).highlightColor
                     : Theme.of(context).primaryColorDark,
-              )),
-          padding: const EdgeInsets.all(5.0))
+              )))
     };
     return SizedBox(
       width: double.infinity,
-      child: Container(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: CupertinoSlidingSegmentedControl(
-              groupValue: _feedListCtrl,
-              children: _feedList,
-              padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-              thumbColor: Theme.of(context).primaryColor,
-              onValueChanged: (i) {
-                setState(() {
-                  _feedListCtrl = i as int;
-                  _isPageController.jumpToPage(4241 + i);
-                  _feedController(_feedListCtrl);
-                });
-              }),
-        ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        child: CupertinoSlidingSegmentedControl(
+            groupValue: _feedListCtrl,
+            children: _feedList,
+            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+            thumbColor: Theme.of(context).primaryColor,
+            onValueChanged: (i) {
+              setState(() {
+                _feedListCtrl = i as int;
+                _isPageController.jumpToPage(4241 + i);
+                _feedController(_feedListCtrl);
+              });
+            }),
       ),
     );
   }
 
   Widget feedEmptySearchFriend() {
-    return Container(
-        child: Center(
+    return Center(
       child: SizedBox(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -325,9 +269,9 @@ class _FeedState extends State<Feed> {
               textScaleFactor: 2.0,
               style: TextStyle(color: Theme.of(context).primaryColorLight),
             ),
-            Text("아래를 눌러 친구를 추가해보세요",
+            const Text("아래를 눌러 친구를 추가해보세요",
                 textScaleFactor: 1.3, style: TextStyle(color: Colors.grey)),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             SizedBox(
                 width: MediaQuery.of(context).size.width * 2 / 3,
                 child: TextButton(
@@ -340,7 +284,7 @@ class _FeedState extends State<Feed> {
                       textStyle: TextStyle(
                         color: Theme.of(context).primaryColorLight,
                       ),
-                      padding: EdgeInsets.all(12.0),
+                      padding: const EdgeInsets.all(12.0),
                     ),
                     onPressed: () {
                       Navigator.push(
@@ -352,27 +296,26 @@ class _FeedState extends State<Feed> {
                     },
                     child: Text("친구 찾기",
                         textScaleFactor: 1.5,
-                        style:
-                            TextStyle(color: Theme.of(context).buttonColor))))
+                        style: TextStyle(
+                            color: Theme.of(context).highlightColor))))
           ]),
         ),
       ),
-    ));
+    );
   }
 
   Widget feedEmptyMyEx() {
-    var _bodyStater = Provider.of<BodyStater>(context, listen: false);
-    return Container(
-        child: Center(
+    var bodyStater = Provider.of<BodyStater>(context, listen: false);
+    return Center(
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Text(
           "첫 운동을 시작해보세요",
           textScaleFactor: 2.0,
           style: TextStyle(color: Theme.of(context).primaryColorLight),
         ),
-        Text("아래를 눌러서 운동 할 수 있어요",
+        const Text("아래를 눌러서 운동 할 수 있어요",
             textScaleFactor: 1.3, style: TextStyle(color: Colors.grey)),
-        SizedBox(height: 24),
+        const SizedBox(height: 24),
         SizedBox(
             width: MediaQuery.of(context).size.width * 2 / 3,
             child: TextButton(
@@ -385,16 +328,16 @@ class _FeedState extends State<Feed> {
                   textStyle: TextStyle(
                     color: Theme.of(context).primaryColorLight,
                   ),
-                  padding: EdgeInsets.all(12.0),
+                  padding: const EdgeInsets.all(12.0),
                 ),
                 onPressed: () {
-                  _bodyStater.change(0);
+                  bodyStater.change(0);
                 },
                 child: Text("첫 운동 하기",
                     textScaleFactor: 1.5,
-                    style: TextStyle(color: Theme.of(context).buttonColor))))
+                    style: TextStyle(color: Theme.of(context).highlightColor))))
       ]),
-    ));
+    );
   }
 
   void _feedController(_feedListCtrl) {

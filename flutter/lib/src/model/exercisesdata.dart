@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:sdb_trainer/src/model/pre_exerciseList.dart';
 
 class ExercisesdataList {
   final List<Exercisesdata> exercisedatas;
@@ -13,7 +12,7 @@ class ExercisesdataList {
     List<Exercisesdata> exercisedatas = <Exercisesdata>[];
     exercisedatas = parsedJson.map((i) => Exercisesdata.fromJson(i)).toList();
 
-    return new ExercisesdataList(exercisedatas: exercisedatas);
+    return ExercisesdataList(exercisedatas: exercisedatas);
   }
 }
 
@@ -44,7 +43,7 @@ class Exercisesdata {
         : parsedJson['exercises'] as List;
     List<Exercises> exerciseList =
         list.map((i) => Exercises.fromJson(i)).toList();
-    return new Exercisesdata(
+    return Exercisesdata(
       id: parsedJson['id'],
       user_email: parsedJson['user_email'],
       exercises: exerciseList,

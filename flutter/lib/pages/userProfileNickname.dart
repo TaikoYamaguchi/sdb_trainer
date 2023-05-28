@@ -8,6 +8,8 @@ import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ProfileNickname extends StatefulWidget {
+  const ProfileNickname({Key? key}) : super(key: key);
+
   @override
   _ProfileNicknameState createState() => _ProfileNicknameState();
 }
@@ -17,7 +19,8 @@ class _ProfileNicknameState extends State<ProfileNickname> {
   var _userProvider;
   var _hisProvider;
   bool _isNickNameused = false;
-  TextEditingController _userNicknameCtrl = TextEditingController(text: "");
+  final TextEditingController _userNicknameCtrl =
+      TextEditingController(text: "");
 
   @override
   void initState() {
@@ -34,11 +37,11 @@ class _ProfileNicknameState extends State<ProfileNickname> {
   PreferredSizeWidget _appbarWidget() {
     var _btnDisabled = false;
     return PreferredSize(
-        preferredSize: Size.fromHeight(40.0), // here the desired height
+        preferredSize: const Size.fromHeight(40.0), // here the desired height
         child: AppBar(
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_outlined),
+            icon: const Icon(Icons.arrow_back_ios_outlined),
             color: Theme.of(context).primaryColorLight,
             onPressed: () {
               _btnDisabled == true
@@ -65,7 +68,7 @@ class _ProfileNicknameState extends State<ProfileNickname> {
           FocusScope.of(context).unfocus();
         },
         onPanUpdate: (details) {
-          if (details.delta.dx > 0 && btnDisabled == false) {
+          if (details.delta.dx > 20 && btnDisabled == false) {
             btnDisabled = true;
             Navigator.of(context).pop();
             print("Dragging in +X direction");
@@ -78,7 +81,7 @@ class _ProfileNicknameState extends State<ProfileNickname> {
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Expanded(
+                        const Expanded(
                           flex: 2,
                           child: SizedBox(),
                         ),
@@ -87,20 +90,20 @@ class _ProfileNicknameState extends State<ProfileNickname> {
                             style: TextStyle(
                                 color: Theme.of(context).primaryColorLight,
                                 fontWeight: FontWeight.w600)),
-                        Text("닉네임을 수정 할 수 있어요",
+                        const Text("닉네임을 수정 할 수 있어요",
                             textScaleFactor: 1.3,
                             style: TextStyle(
                               color: Colors.grey,
                             )),
-                        SizedBox(
+                        const SizedBox(
                           height: 24,
                         ),
                         _nicknameWidget(),
-                        Expanded(
+                        const Expanded(
                           flex: 3,
                           child: SizedBox(),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 8,
                         ),
                         _editButton(context),
@@ -179,17 +182,16 @@ class _ProfileNicknameState extends State<ProfileNickname> {
               textStyle: TextStyle(
                 color: Theme.of(context).primaryColorLight,
               ),
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
             ),
             onPressed: () => _editCheck(),
             child: Text(isLoading ? 'loggin in.....' : "닉네임 수정",
                 textScaleFactor: 1.5,
-                style: TextStyle(color: Theme.of(context).buttonColor))));
+                style: TextStyle(color: Theme.of(context).highlightColor))));
   }
 
   void _editCheck() async {
-    final storage = FlutterSecureStorage();
-    String? storageEmail = await storage.read(key: "sdb_email");
+    const storage = FlutterSecureStorage();
     String? storageToken = await storage.read(key: "sdb_token");
     if (_userNicknameCtrl.text != "" && _isNickNameused == false) {
       UserEdit(

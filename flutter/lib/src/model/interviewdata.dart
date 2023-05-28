@@ -61,6 +61,6 @@ class InterviewDataList {
     List<InterviewData> interviewDatas = <InterviewData>[];
     interviewDatas = parsedJson.map((i) => InterviewData.fromJson(i)).toList();
 
-    return new InterviewDataList(interviewDatas: interviewDatas);
+    return InterviewDataList(interviewDatas: interviewDatas);
   }
 }

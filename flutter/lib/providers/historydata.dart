@@ -39,13 +39,11 @@ class HistorydataProvider extends ChangeNotifier {
     HistorydataAll.loadSDBdataAll().then((value) {
       _historydataAll = value;
       binding.addPostFrameCallback((_) async {
-        BuildContext context = binding.renderViewElement!;
-        if (context != null) {
-          for (var history in value.sdbdatas) {
-            if (history.image!.isEmpty != true) {
-              for (var image in history.image!) {
-                precacheImage(CachedNetworkImageProvider(image), context);
-              }
+        BuildContext context = binding.rootElement!;
+        for (var history in value.sdbdatas) {
+          if (history.image!.isEmpty != true) {
+            for (var image in history.image!) {
+              precacheImage(CachedNetworkImageProvider(image), context);
             }
           }
         }

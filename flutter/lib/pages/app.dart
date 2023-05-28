@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -32,7 +31,6 @@ import 'dart:math' as math;
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/exercise_done.dart';
 import 'statics.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
@@ -44,7 +42,6 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   var _hisProvider;
   var _exProvider;
-  var _exercises;
   var _routinetimeProvider;
   var _PopProvider;
   late List<hisdata.Exercises> exerciseList = [];
@@ -54,9 +51,6 @@ class _AppState extends State<App> {
   var _userProvider;
   int updatecount = 0;
   bool _isUpdateNeeded = false;
-  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  static FirebaseAnalyticsObserver observer =
-      FirebaseAnalyticsObserver(analytics: analytics);
   final String iOSTestId = 'ca-app-pub-3940256099942544/2934735716';
   final String androidTestId = 'ca-app-pub-3940256099942544/6300978111';
 
@@ -81,14 +75,12 @@ class _AppState extends State<App> {
     final binding = WidgetsFlutterBinding.ensureInitialized();
 
     binding.addPostFrameCallback((_) async {
-      BuildContext context = binding.renderViewElement!;
-      if (context != null) {
-        for (Exercises ex in extra_completely_new_Ex) {
-          try {
-            await precacheImage(AssetImage(ex.image!), context);
-          } catch (e) {
-            null;
-          }
+      BuildContext context = binding.rootElement!;
+      for (Exercises ex in extra_completely_new_Ex) {
+        try {
+          await precacheImage(AssetImage(ex.image!), context);
+        } catch (e) {
+          null;
         }
       }
     });
@@ -129,11 +121,11 @@ class _AppState extends State<App> {
           decoration: BoxDecoration(
             color: Theme.of(context).indicatorColor.withOpacity(0.97),
             border: Border.all(width: 0.1, color: Colors.grey),
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
                 topRight: Radius.circular(30), topLeft: Radius.circular(30)),
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(30.0),
               topRight: Radius.circular(30.0),
             ),
@@ -152,7 +144,8 @@ class _AppState extends State<App> {
                     },
                     selectedFontSize: 14,
                     unselectedFontSize: 14,
-                    selectedLabelStyle: TextStyle(fontWeight: FontWeight.w500),
+                    selectedLabelStyle:
+                        const TextStyle(fontWeight: FontWeight.w500),
                     currentIndex: _bodyStater.bodystate,
                     items: [
                       _bottomNavigationBarItem("search-svgrepo-com", "찾기"),
@@ -163,7 +156,7 @@ class _AppState extends State<App> {
                     ],
                   ),
                   Center(
-                    child: Container(
+                    child: SizedBox(
                       width: _bodyStater.bodystate == 0 ||
                               _bodyStater.bodystate == 4
                           ? width
@@ -179,7 +172,7 @@ class _AppState extends State<App> {
                           height: 2,
                           decoration: BoxDecoration(
                             color: Theme.of(context).primaryColor,
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                                 topRight: Radius.circular(30),
                                 topLeft: Radius.circular(30)),
                           ),
@@ -209,7 +202,6 @@ class _AppState extends State<App> {
   }
 
   void _editWorkoutwoCheck() async {
-    print(_routinetimeProvider.nowonrindex);
     var routinedatas_all = _workoutProvider.workoutdata.routinedatas;
     for (int n = 0;
         n < routinedatas_all[_routinetimeProvider.nowonrindex].exercises.length;
@@ -237,43 +229,6 @@ class _AppState extends State<App> {
             : showToast("입력을 확인해주세요"));
   }
 
-  void _displayFinishAlert() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            buttonPadding: EdgeInsets.all(12.0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            backgroundColor: Theme.of(context).cardColor,
-            contentPadding: EdgeInsets.all(12.0),
-            title: Text(
-              '운동을 종료 할 수 있어요',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Theme.of(context).primaryColorLight, fontSize: 24),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('운동을 종료 하시겠나요?',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Theme.of(context).primaryColorLight,
-                        fontSize: 16)),
-                Text('외부를 터치하면 취소 할 수 있어요',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 12)),
-              ],
-            ),
-            actions: <Widget>[
-              _finishConfirmButton(),
-            ],
-          );
-        });
-  }
-
   _showMyDialog_finish() async {
     var result = await showDialog(
         context: context,
@@ -294,7 +249,7 @@ class _AppState extends State<App> {
         recordExercise();
         _editHistoryCheck();
       }
-      if (!exerciseList.isEmpty) {
+      if (exerciseList.isNotEmpty) {
         showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -306,39 +261,6 @@ class _AppState extends State<App> {
             });
       }
     }
-  }
-
-  Widget _finishConfirmButton() {
-    return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: TextButton(
-            style: TextButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              foregroundColor: Theme.of(context).primaryColor,
-              backgroundColor: Theme.of(context).primaryColor,
-              textStyle: TextStyle(
-                color: Theme.of(context).primaryColorLight,
-              ),
-              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-              padding: EdgeInsets.all(12.0),
-            ),
-            onPressed: () {
-              if (_workoutProvider.workoutdata
-                      .routinedatas[_routinetimeProvider.nowonrindex].mode ==
-                  1) {
-                recordExercise_plan();
-                _editHistoryCheck();
-              } else {
-                recordExercise();
-                _editHistoryCheck();
-              }
-              Navigator.of(context, rootNavigator: true).pop();
-            },
-            child: Text("운동 종료 하기",
-                style: TextStyle(
-                    fontSize: 20.0, color: Theme.of(context).buttonColor))));
   }
 
   void recordExercise_plan() {
@@ -425,7 +347,7 @@ class _AppState extends State<App> {
   }
 
   void _editHistoryCheck() async {
-    if (!exerciseList.isEmpty) {
+    if (exerciseList.isNotEmpty) {
       HistoryPost(
               user_email: _userProvider.userdata.email,
               exercises: exerciseList,
@@ -485,39 +407,8 @@ class _AppState extends State<App> {
             : showToast("입력을 확인해주세요"));
   }
 
-  Widget _AppCloseConfirmButton() {
-    return Container(
-      margin: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width / 25),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SizedBox(
-              width: MediaQuery.of(context).size.width / 4,
-              child: TextButton(
-                  onPressed: () {
-                    Navigator.of(context, rootNavigator: true).pop(false);
-                  },
-                  child: Text("Cancel",
-                      style: TextStyle(fontSize: 20.0, color: Colors.red)))),
-          SizedBox(
-              width: MediaQuery.of(context).size.width / 4,
-              child: TextButton(
-                  onPressed: () {
-                    exit(0);
-                  },
-                  child: Text("Confirm",
-                      style: TextStyle(
-                          fontSize: 20.0,
-                          color: Theme.of(context).primaryColor)))),
-        ],
-      ),
-    );
-  }
-
   Widget _initialLoginWidget() {
-    return Container(
-        child: Center(
+    return Center(
       child: Column(
         children: [
           SafeArea(
@@ -526,15 +417,15 @@ class _AppState extends State<App> {
                 onTap: () {
                   userLogOut(context);
                 },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Text("로그아웃",
                       style: TextStyle(color: Colors.grey, fontSize: 12)),
                 ),
               )
             ]),
           ),
-          Expanded(flex: 3, child: SizedBox(height: 6)),
+          const Expanded(flex: 3, child: SizedBox(height: 6)),
           Text("SUPERO",
               style: TextStyle(
                   color: Theme.of(context).primaryColorLight,
@@ -545,22 +436,22 @@ class _AppState extends State<App> {
                   color: Theme.of(context).primaryColor,
                   fontSize: 20,
                   fontWeight: FontWeight.w500)),
-          Expanded(flex: 4, child: SizedBox(height: 6)),
-          SizedBox(
+          const Expanded(flex: 4, child: SizedBox(height: 6)),
+          const SizedBox(
             height: 20,
             width: 20,
             child: CircularProgressIndicator(),
           ),
-          SizedBox(height: 12),
-          Text("전세계 운동인들과 연결중...",
+          const SizedBox(height: 12),
+          const Text("전세계 운동인들과 연결중...",
               style: TextStyle(
                   color: Colors.grey,
                   fontSize: 14,
                   fontWeight: FontWeight.w500)),
-          Expanded(flex: 1, child: SizedBox(height: 6)),
+          const Expanded(flex: 1, child: SizedBox(height: 6)),
         ],
       ),
-    ));
+    );
   }
 
   @override
@@ -605,8 +496,8 @@ class _AppState extends State<App> {
                     : IndexedStack(
                         index: _bodyStater.bodystate,
                         children: <Widget>[
-                            SearchNavigator(),
-                            TabNavigator(),
+                            const SearchNavigator(),
+                            const TabNavigator(),
                             Feed(),
                             Calendar(),
                             TabProfileNavigator()
@@ -638,8 +529,8 @@ class _AppState extends State<App> {
                                           Theme.of(context).primaryColorLight,
                                     ),
                                     disabledForegroundColor:
-                                        Color.fromRGBO(246, 58, 64, 20),
-                                    padding: EdgeInsets.all(12.0),
+                                        const Color.fromRGBO(246, 58, 64, 20),
+                                    padding: const EdgeInsets.all(12.0),
                                   ),
                                   onPressed: () {
                                     provider.restcheck();
@@ -655,7 +546,7 @@ class _AppState extends State<App> {
                                                   provider.timeron < 0)
                                               ? Colors.red
                                               : Theme.of(context)
-                                                  .buttonColor)))),
+                                                  .highlightColor)))),
                           Row(
                             children: [
                               ActionButton(
@@ -663,16 +554,16 @@ class _AppState extends State<App> {
                                   _PopProvider.gotoon();
                                   _bodyStater.change(1);
                                 },
-                                icon: Icon(Icons.play_arrow),
+                                icon: const Icon(Icons.play_arrow),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               ActionButton(
                                 onPressed: () {
                                   _showMyDialog_finish();
                                 },
-                                icon: Icon(Icons.stop),
+                                icon: const Icon(Icons.stop),
                               ),
                             ],
                           ),
@@ -792,7 +683,7 @@ class _ExpandableFabState extends State<ExpandableFab>
       height: 56.0,
       child: Center(
         child: Material(
-          shape: CircleBorder(),
+          shape: const CircleBorder(),
           clipBehavior: Clip.antiAlias,
           elevation: 4.0,
           child: InkWell(
@@ -842,7 +733,7 @@ class _ExpandableFabState extends State<ExpandableFab>
                   style: TextStyle(
                       color: (provider.userest && provider.timeron < 0)
                           ? Colors.red
-                          : Theme.of(context).buttonColor));
+                          : Theme.of(context).highlightColor));
             }),
           ),
         ),
@@ -917,7 +808,7 @@ class ActionButton extends StatelessWidget {
             iconSize: 20,
             onPressed: onPressed,
             icon: icon,
-            color: Theme.of(context).buttonColor,
+            color: Theme.of(context).highlightColor,
           ),
         ),
       ),

@@ -12,6 +12,7 @@ import 'package:sdb_trainer/src/model/workoutdata.dart' as wod;
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sdb_trainer/providers/themeMode.dart';
 
+// ignore: must_be_immutable
 class StaticsExerciseDetails extends StatefulWidget {
   hisdata.Exercises exercise;
   int index;
@@ -33,7 +34,6 @@ class StaticsExerciseDetails extends StatefulWidget {
 class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
   var _userProvider;
   var _hisProvider;
-  var _originExercise;
   double top = 0;
   double bottom = 0;
   double? weight;
@@ -44,13 +44,11 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
   Timer? timer1;
   late List<hisdata.Exercises> exerciseList = [];
   var _exampleex;
-  var _sets = wod.Setslist().setslist;
   var _themeProvider;
   Duration initialTimer = const Duration();
 
   @override
   void initState() {
-    _originExercise = widget.exercise;
     super.initState();
   }
 
@@ -68,7 +66,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
   Widget _buildContainer(Widget picker) {
     return Container(
       height: 280,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         color: CupertinoColors.white,
       ),
@@ -76,13 +74,13 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(12, 4, 12, 12),
+            padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
             child: Container(
               height: 6.0,
               width: 80.0,
               decoration: BoxDecoration(
                   color: Theme.of(context).primaryColorDark,
-                  borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  borderRadius: const BorderRadius.all(Radius.circular(8.0))),
             ),
           ),
           DefaultTextStyle(
@@ -105,11 +103,11 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
 
   PreferredSizeWidget _appbarWidget() {
     return PreferredSize(
-        preferredSize: Size.fromHeight(40.0), // here the desired height
+        preferredSize: const Size.fromHeight(40.0), // here the desired height
         child: AppBar(
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_outlined),
+            icon: const Icon(Icons.arrow_back_ios_outlined),
             color: Theme.of(context).primaryColorLight,
             onPressed: () {
               Navigator.of(context).pop();
@@ -138,30 +136,20 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
   }
 
   Widget _exercisedetailWidget() {
-    Color getColor(Set<MaterialState> states) {
-      const Set<MaterialState> interactiveStates = <MaterialState>{
-        MaterialState.pressed,
-      };
-      if (states.any(interactiveStates.contains)) {
-        return Theme.of(context).primaryColor;
-      }
-      return Theme.of(context).primaryColorLight;
-    }
-
     bool btnDisabled = false;
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
       },
       onPanUpdate: (details) {
-        if (details.delta.dx > 0 && btnDisabled == false) {
+        if (details.delta.dx > 20 && btnDisabled == false) {
           btnDisabled = true;
           Navigator.of(context).pop();
           print("Dragging in +X direction");
         }
       },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 5),
         height: MediaQuery.of(context).size.height,
         child:
             Consumer<HistorydataProvider>(builder: (builder, provider, child) {
@@ -179,7 +167,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.max,
             children: [
-              Container(
+              SizedBox(
                   height: 130,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -210,7 +198,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                       ? _cardioExerciseDetailBodyWidget()
                       : _exerciseDetailBodyWidget()),
               Container(
-                  padding: EdgeInsets.only(bottom: 10),
+                  padding: const EdgeInsets.only(bottom: 10),
                   child: Column(
                     children: [
                       Row(
@@ -226,7 +214,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
                                 _editHistoryCheck();
                               }
                             },
-                            child: Text("운동 수정 하기"),
+                            child: const Text("운동 수정 하기"),
                           )),
                         ],
                       ),
@@ -240,527 +228,518 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
   }
 
   Widget _exerciseDetailBodyWidget() {
-    return Container(
-      child: Column(mainAxisSize: MainAxisSize.max, children: [
-        Container(
-            padding: EdgeInsets.only(right: 10),
-            height: 25,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                    width: 80,
-                    padding: EdgeInsets.only(right: 4),
-                    child: Text(
-                      "Set",
-                      textScaleFactor: 1.1,
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColorLight,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.right,
-                    )),
-                Container(
-                    width: 70,
-                    child: Text(
-                      "Weight(${_userProvider.userdata.weight_unit})",
-                      textScaleFactor: 1.1,
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColorLight,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    )),
-                Container(width: 35),
-                Container(
-                    width: 40,
-                    child: Text(
-                      "Reps",
-                      textScaleFactor: 1.1,
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColorLight,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    )),
-                Container(
-                    width: 70,
-                    child: Text(
-                      "1RM",
-                      textScaleFactor: 1.1,
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColorLight,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    )),
-              ],
-            )),
-        Expanded(
-            child: Column(
-          children: [
-            Flexible(
-              child: ListView.separated(
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext _context, int index) {
-                    weightController.add(new TextEditingController());
-                    repsController.add(new TextEditingController());
-                    return Container(
-                        padding: EdgeInsets.only(right: 10),
-                        child: Slidable(
-                          endActionPane: ActionPane(
-                              extentRatio: 0.2,
-                              motion: const ScrollMotion(),
-                              children: [
-                                SlidableAction(
-                                  onPressed: (_) {
-                                    setState(() {
-                                      widget.exercise.sets.removeAt(index);
-                                    });
-                                    weightController.clear();
-                                    repsController.clear();
-                                  },
-                                  backgroundColor: Color(0xFFFE4A49),
-                                  foregroundColor:
-                                      Theme.of(context).primaryColorLight,
-                                  icon: Icons.delete,
-                                  label: 'Delete',
-                                )
-                              ]),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(mainAxisSize: MainAxisSize.max, children: [
+      Container(
+          padding: const EdgeInsets.only(right: 10),
+          height: 25,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                  width: 80,
+                  padding: const EdgeInsets.only(right: 4),
+                  child: Text(
+                    "Set",
+                    textScaleFactor: 1.1,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorLight,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.right,
+                  )),
+              SizedBox(
+                  width: 70,
+                  child: Text(
+                    "Weight(${_userProvider.userdata.weight_unit})",
+                    textScaleFactor: 1.1,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorLight,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  )),
+              Container(width: 35),
+              SizedBox(
+                  width: 40,
+                  child: Text(
+                    "Reps",
+                    textScaleFactor: 1.1,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorLight,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  )),
+              SizedBox(
+                  width: 70,
+                  child: Text(
+                    "1RM",
+                    textScaleFactor: 1.1,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorLight,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  )),
+            ],
+          )),
+      Expanded(
+          child: Column(
+        children: [
+          Flexible(
+            child: ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (BuildContext _context, int index) {
+                  weightController.add(TextEditingController());
+                  repsController.add(TextEditingController());
+                  return Container(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: Slidable(
+                        endActionPane: ActionPane(
+                            extentRatio: 0.2,
+                            motion: const ScrollMotion(),
                             children: [
-                              Container(
-                                width: 80,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Transform.scale(
-                                        scale: 1.2,
-                                        child: Checkbox(
-                                            checkColor:
-                                                Theme.of(context).buttonColor,
-                                            activeColor:
-                                                Theme.of(context).primaryColor,
-                                            value: widget
-                                                .exercise.sets[index].ischecked,
-                                            onChanged: (newvalue) {
-                                              setState(() {
-                                                widget.exercise.sets[index]
-                                                    .ischecked = newvalue;
-                                              });
-                                            })),
-                                    Container(
-                                      width: 25,
-                                      child: Text(
-                                        "${index + 1}",
+                              SlidableAction(
+                                onPressed: (_) {
+                                  setState(() {
+                                    widget.exercise.sets.removeAt(index);
+                                  });
+                                  weightController.clear();
+                                  repsController.clear();
+                                },
+                                backgroundColor: const Color(0xFFFE4A49),
+                                foregroundColor:
+                                    Theme.of(context).primaryColorLight,
+                                icon: Icons.delete,
+                                label: 'Delete',
+                              )
+                            ]),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 80,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Transform.scale(
+                                      scale: 1.2,
+                                      child: Checkbox(
+                                          checkColor:
+                                              Theme.of(context).highlightColor,
+                                          activeColor:
+                                              Theme.of(context).primaryColor,
+                                          value: widget
+                                              .exercise.sets[index].ischecked,
+                                          onChanged: (newvalue) {
+                                            setState(() {
+                                              widget.exercise.sets[index]
+                                                  .ischecked = newvalue;
+                                            });
+                                          })),
+                                  SizedBox(
+                                    width: 25,
+                                    child: Text(
+                                      "${index + 1}",
+                                      textScaleFactor: 1.7,
+                                      style: TextStyle(
+                                        color:
+                                            Theme.of(context).primaryColorLight,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              width: 70,
+                              child: TextField(
+                                controller: weightController[index],
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        signed: false, decimal: true),
+                                style: TextStyle(
+                                  fontSize:
+                                      21 * _themeProvider.userFontSize / 0.8,
+                                  color: Theme.of(context).primaryColorLight,
+                                ),
+                                textAlign: TextAlign.center,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText:
+                                      "${widget.exercise.sets[index].weight}",
+                                  hintStyle: TextStyle(
+                                    fontSize:
+                                        21 * _themeProvider.userFontSize / 0.8,
+                                    color: Theme.of(context).primaryColorLight,
+                                  ),
+                                ),
+                                onChanged: (text) {
+                                  double changeweight;
+                                  if (text == "") {
+                                    changeweight = 0.0;
+                                  } else {
+                                    changeweight = double.parse(text);
+                                  }
+                                  setState(() {
+                                    widget.exercise.sets[index].weight =
+                                        changeweight;
+                                  });
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                                width: 35,
+                                child: SvgPicture.asset(
+                                    "assets/svg/multiply.svg",
+                                    color: Theme.of(context).primaryColorLight,
+                                    height: 19 *
+                                        _themeProvider.userFontSize /
+                                        0.8)),
+                            SizedBox(
+                              width: 40,
+                              child: TextField(
+                                controller: repsController[index],
+                                keyboardType: TextInputType.number,
+                                style: TextStyle(
+                                  fontSize:
+                                      21 * _themeProvider.userFontSize / 0.8,
+                                  color: Theme.of(context).primaryColorLight,
+                                ),
+                                textAlign: TextAlign.center,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText:
+                                      "${widget.exercise.sets[index].reps}",
+                                  hintStyle: TextStyle(
+                                    fontSize:
+                                        21 * _themeProvider.userFontSize / 0.8,
+                                    color: Theme.of(context).primaryColorLight,
+                                  ),
+                                ),
+                                onChanged: (text) {
+                                  int changereps;
+                                  if (text == "") {
+                                    changereps = 1;
+                                  } else {
+                                    changereps = int.parse(text);
+                                  }
+                                  setState(() {
+                                    widget.exercise.sets[index].reps =
+                                        changereps;
+                                  });
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                                width: 70,
+                                child: (widget.exercise.sets[index].reps != 1)
+                                    ? Text(
+                                        "${(widget.exercise.sets[index].weight * (1 + widget.exercise.sets[index].reps / 30)).toStringAsFixed(1)}",
                                         textScaleFactor: 1.7,
                                         style: TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorLight,
-                                        ),
+                                            color: Theme.of(context)
+                                                .primaryColorLight),
                                         textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: 70,
-                                child: TextField(
-                                  controller: weightController[index],
-                                  keyboardType: TextInputType.numberWithOptions(
-                                      signed: false, decimal: true),
-                                  style: TextStyle(
-                                    fontSize:
-                                        21 * _themeProvider.userFontSize / 0.8,
-                                    color: Theme.of(context).primaryColorLight,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText:
+                                      )
+                                    : Text(
                                         "${widget.exercise.sets[index].weight}",
-                                    hintStyle: TextStyle(
-                                      fontSize: 21 *
-                                          _themeProvider.userFontSize /
-                                          0.8,
-                                      color:
-                                          Theme.of(context).primaryColorLight,
-                                    ),
-                                  ),
-                                  onChanged: (text) {
-                                    double changeweight;
-                                    if (text == "") {
-                                      changeweight = 0.0;
-                                    } else {
-                                      changeweight = double.parse(text);
-                                    }
-                                    setState(() {
-                                      widget.exercise.sets[index].weight =
-                                          changeweight;
-                                    });
-                                  },
-                                ),
-                              ),
-                              Container(
-                                  width: 35,
-                                  child: SvgPicture.asset(
-                                      "assets/svg/multiply.svg",
-                                      color:
-                                          Theme.of(context).primaryColorLight,
-                                      height: 19 *
-                                          _themeProvider.userFontSize /
-                                          0.8)),
-                              Container(
-                                width: 40,
-                                child: TextField(
-                                  controller: repsController[index],
-                                  keyboardType: TextInputType.number,
-                                  style: TextStyle(
-                                    fontSize:
-                                        21 * _themeProvider.userFontSize / 0.8,
-                                    color: Theme.of(context).primaryColorLight,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText:
-                                        "${widget.exercise.sets[index].reps}",
-                                    hintStyle: TextStyle(
-                                      fontSize: 21 *
-                                          _themeProvider.userFontSize /
-                                          0.8,
-                                      color:
-                                          Theme.of(context).primaryColorLight,
-                                    ),
-                                  ),
-                                  onChanged: (text) {
-                                    int changereps;
-                                    if (text == "") {
-                                      changereps = 1;
-                                    } else {
-                                      changereps = int.parse(text);
-                                    }
-                                    setState(() {
-                                      widget.exercise.sets[index].reps =
-                                          changereps;
-                                    });
-                                  },
-                                ),
-                              ),
-                              Container(
-                                  width: 70,
-                                  child: (widget.exercise.sets[index].reps != 1)
-                                      ? Text(
-                                          "${(widget.exercise.sets[index].weight * (1 + widget.exercise.sets[index].reps / 30)).toStringAsFixed(1)}",
-                                          textScaleFactor: 1.7,
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColorLight),
-                                          textAlign: TextAlign.center,
-                                        )
-                                      : Text(
-                                          "${widget.exercise.sets[index].weight}",
-                                          textScaleFactor: 1.7,
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColorLight),
-                                          textAlign: TextAlign.center,
-                                        )),
-                            ],
-                          ),
-                        ));
-                  },
-                  separatorBuilder: (BuildContext _context, int index) {
-                    return Container(
+                                        textScaleFactor: 1.7,
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorLight),
+                                        textAlign: TextAlign.center,
+                                      )),
+                          ],
+                        ),
+                      ));
+                },
+                separatorBuilder: (BuildContext _context, int index) {
+                  return Container(
+                    alignment: Alignment.center,
+                    height: 0.5,
+                    child: Container(
                       alignment: Alignment.center,
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
                       height: 0.5,
-                      child: Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.symmetric(horizontal: 10),
-                        height: 0.5,
-                        color: Theme.of(context).primaryColorDark,
-                      ),
-                    );
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                  );
+                },
+                itemCount: widget.exercise.sets.length),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      widget.exercise.sets.removeLast();
+                    });
                   },
-                  itemCount: widget.exercise.sets.length),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                    onPressed: () {
-                      setState(() {
-                        widget.exercise.sets.removeLast();
-                      });
-                    },
-                    icon: Icon(
-                      Icons.remove,
-                      color: Theme.of(context).primaryColorLight,
-                      size: 24,
-                    )),
-                IconButton(
-                    onPressed: () {
-                      setState(() {
-                        widget.exercise.sets.add(new wod.Sets(
-                            index: 0, weight: 0.0, reps: 1, ischecked: true));
-                      });
-                    },
-                    icon: Icon(
-                      Icons.add,
-                      color: Theme.of(context).primaryColorLight,
-                      size: 24,
-                    )),
-              ],
-            ),
-          ],
-        ))
-      ]),
-    );
+                  icon: Icon(
+                    Icons.remove,
+                    color: Theme.of(context).primaryColorLight,
+                    size: 24,
+                  )),
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      widget.exercise.sets.add(wod.Sets(
+                          index: 0, weight: 0.0, reps: 1, ischecked: true));
+                    });
+                  },
+                  icon: Icon(
+                    Icons.add,
+                    color: Theme.of(context).primaryColorLight,
+                    size: 24,
+                  )),
+            ],
+          ),
+        ],
+      ))
+    ]);
   }
 
   Widget _cardioExerciseDetailBodyWidget() {
-    return Container(
-      child: Column(mainAxisSize: MainAxisSize.max, children: [
-        Container(
-            padding: EdgeInsets.only(right: 10),
-            height: 25,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                    width: 85,
-                    padding: EdgeInsets.only(right: 4),
-                    child: Text(
-                      "Set",
-                      textScaleFactor: 1.1,
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColorLight,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.right,
-                    )),
-                Container(
-                    width: 80,
-                    child: Text(
-                      "거리(Km)",
-                      textScaleFactor: 1.1,
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColorLight,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    )),
-                Container(
-                    width: 140,
-                    child: Text(
-                      "시간(시:분:초)",
-                      textScaleFactor: 1.1,
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColorLight,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    )),
-              ],
-            )),
-        Expanded(
-            child: Column(
-          children: [
-            Flexible(
-              child: ListView.separated(
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext _context, int index) {
-                    weightController.add(new TextEditingController());
-                    repsController.add(new TextEditingController());
-                    Duration _time =
-                        Duration(seconds: widget.exercise.sets[index].reps);
-                    return Container(
-                        padding: EdgeInsets.only(right: 10),
-                        child: Slidable(
-                          endActionPane: ActionPane(
-                              extentRatio: 0.2,
-                              motion: const ScrollMotion(),
-                              children: [
-                                SlidableAction(
-                                  onPressed: (_) {
-                                    setState(() {
-                                      widget.exercise.sets.removeAt(index);
-                                    });
-                                    weightController.clear();
-                                    repsController.clear();
-                                  },
-                                  backgroundColor: Color(0xFFFE4A49),
-                                  foregroundColor: Theme.of(context).cardColor,
-                                  icon: Icons.delete,
-                                  label: 'Delete',
-                                )
-                              ]),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(mainAxisSize: MainAxisSize.max, children: [
+      Container(
+          padding: const EdgeInsets.only(right: 10),
+          height: 25,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                  width: 85,
+                  padding: const EdgeInsets.only(right: 4),
+                  child: Text(
+                    "Set",
+                    textScaleFactor: 1.1,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorLight,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.right,
+                  )),
+              SizedBox(
+                  width: 80,
+                  child: Text(
+                    "거리(Km)",
+                    textScaleFactor: 1.1,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorLight,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  )),
+              SizedBox(
+                  width: 140,
+                  child: Text(
+                    "시간(시:분:초)",
+                    textScaleFactor: 1.1,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorLight,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  )),
+            ],
+          )),
+      Expanded(
+          child: Column(
+        children: [
+          Flexible(
+            child: ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (BuildContext _context, int index) {
+                  weightController.add(TextEditingController());
+                  repsController.add(TextEditingController());
+                  Duration _time =
+                      Duration(seconds: widget.exercise.sets[index].reps);
+                  return Container(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: Slidable(
+                        endActionPane: ActionPane(
+                            extentRatio: 0.2,
+                            motion: const ScrollMotion(),
                             children: [
-                              Container(
-                                width: 80,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Transform.scale(
-                                        scale: 1.1,
-                                        child: Checkbox(
-                                            checkColor:
-                                                Theme.of(context).buttonColor,
-                                            activeColor:
-                                                Theme.of(context).primaryColor,
-                                            value: widget
-                                                .exercise.sets[index].ischecked,
-                                            onChanged: (newvalue) {
-                                              setState(() {
-                                                widget.exercise.sets[index]
-                                                    .ischecked = newvalue;
-                                              });
-                                            })),
-                                    Container(
-                                      width: 25,
-                                      child: Text(
-                                        "${index + 1}",
-                                        textScaleFactor: 1.7,
-                                        style: TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorLight,
-                                        ),
-                                        textAlign: TextAlign.center,
+                              SlidableAction(
+                                onPressed: (_) {
+                                  setState(() {
+                                    widget.exercise.sets.removeAt(index);
+                                  });
+                                  weightController.clear();
+                                  repsController.clear();
+                                },
+                                backgroundColor: const Color(0xFFFE4A49),
+                                foregroundColor: Theme.of(context).cardColor,
+                                icon: Icons.delete,
+                                label: 'Delete',
+                              )
+                            ]),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 80,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Transform.scale(
+                                      scale: 1.1,
+                                      child: Checkbox(
+                                          checkColor:
+                                              Theme.of(context).highlightColor,
+                                          activeColor:
+                                              Theme.of(context).primaryColor,
+                                          value: widget
+                                              .exercise.sets[index].ischecked,
+                                          onChanged: (newvalue) {
+                                            setState(() {
+                                              widget.exercise.sets[index]
+                                                  .ischecked = newvalue;
+                                            });
+                                          })),
+                                  SizedBox(
+                                    width: 25,
+                                    child: Text(
+                                      "${index + 1}",
+                                      textScaleFactor: 1.7,
+                                      style: TextStyle(
+                                        color:
+                                            Theme.of(context).primaryColorLight,
                                       ),
+                                      textAlign: TextAlign.center,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              Container(
-                                width: 80,
-                                child: TextField(
-                                  controller: weightController[index],
-                                  keyboardType: TextInputType.numberWithOptions(
-                                      signed: false, decimal: true),
-                                  style: TextStyle(
+                            ),
+                            SizedBox(
+                              width: 80,
+                              child: TextField(
+                                controller: weightController[index],
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        signed: false, decimal: true),
+                                style: TextStyle(
+                                  fontSize:
+                                      21 * _themeProvider.userFontSize / 0.8,
+                                  color: Theme.of(context).primaryColorLight,
+                                ),
+                                textAlign: TextAlign.center,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText:
+                                      "${widget.exercise.sets[index].weight}",
+                                  hintStyle: TextStyle(
                                     fontSize:
                                         21 * _themeProvider.userFontSize / 0.8,
                                     color: Theme.of(context).primaryColorLight,
                                   ),
-                                  textAlign: TextAlign.center,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText:
-                                        "${widget.exercise.sets[index].weight}",
-                                    hintStyle: TextStyle(
-                                      fontSize: 21 *
-                                          _themeProvider.userFontSize /
-                                          0.8,
-                                      color:
-                                          Theme.of(context).primaryColorLight,
-                                    ),
-                                  ),
-                                  onChanged: (text) {
-                                    double changeweight;
-                                    if (text == "") {
-                                      changeweight = 0.0;
-                                    } else {
-                                      changeweight = double.parse(text);
-                                    }
-                                    setState(() {
-                                      widget.exercise.sets[index].weight =
-                                          changeweight;
-                                    });
-                                  },
                                 ),
+                                onChanged: (text) {
+                                  double changeweight;
+                                  if (text == "") {
+                                    changeweight = 0.0;
+                                  } else {
+                                    changeweight = double.parse(text);
+                                  }
+                                  setState(() {
+                                    widget.exercise.sets[index].weight =
+                                        changeweight;
+                                  });
+                                },
                               ),
-                              Container(
-                                width: 140,
-                                child: Center(
-                                  child: InkWell(
-                                    onTap: () {
-                                      showCupertinoModalPopup<void>(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return _buildContainer(
-                                                _timerPicker(_time, index));
-                                          });
-                                    },
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          padding: const EdgeInsets.only(
-                                              top: 8, bottom: 8),
-                                          child: Text(
-                                            "${_time.inHours.toString().length == 1 ? "0" + _time.inHours.toString() : _time.inHours}:${_time.inMinutes.remainder(60).toString().length == 1 ? "0" + _time.inMinutes.remainder(60).toString() : _time.inMinutes.remainder(60)}:${_time.inSeconds.remainder(60).toString().length == 1 ? "0" + _time.inSeconds.remainder(60).toString() : _time.inSeconds.remainder(60)}",
-                                            style: TextStyle(
-                                              fontSize:
-                                                  _themeProvider.userFontSize *
-                                                      21 /
-                                                      0.8,
-                                              color: Theme.of(context)
-                                                  .primaryColorLight,
-                                            ),
+                            ),
+                            SizedBox(
+                              width: 140,
+                              child: Center(
+                                child: InkWell(
+                                  onTap: () {
+                                    showCupertinoModalPopup<void>(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return _buildContainer(
+                                              _timerPicker(_time, index));
+                                        });
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.only(
+                                            top: 8, bottom: 8),
+                                        child: Text(
+                                          "${_time.inHours.toString().length == 1 ? "0" + _time.inHours.toString() : _time.inHours}:${_time.inMinutes.remainder(60).toString().length == 1 ? "0" + _time.inMinutes.remainder(60).toString() : _time.inMinutes.remainder(60)}:${_time.inSeconds.remainder(60).toString().length == 1 ? "0" + _time.inSeconds.remainder(60).toString() : _time.inSeconds.remainder(60)}",
+                                          style: TextStyle(
+                                            fontSize:
+                                                _themeProvider.userFontSize *
+                                                    21 /
+                                                    0.8,
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
                                           ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
-                        ));
-                  },
-                  separatorBuilder: (BuildContext _context, int index) {
-                    return Container(
+                            ),
+                          ],
+                        ),
+                      ));
+                },
+                separatorBuilder: (BuildContext _context, int index) {
+                  return Container(
+                    alignment: Alignment.center,
+                    height: 0.5,
+                    child: Container(
                       alignment: Alignment.center,
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
                       height: 0.5,
-                      child: Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.symmetric(horizontal: 10),
-                        height: 0.5,
-                        color: Theme.of(context).primaryColorDark,
-                      ),
-                    );
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                  );
+                },
+                itemCount: widget.exercise.sets.length),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      widget.exercise.sets.removeLast();
+                    });
                   },
-                  itemCount: widget.exercise.sets.length),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                    onPressed: () {
-                      setState(() {
-                        widget.exercise.sets.removeLast();
-                      });
-                    },
-                    icon: Icon(
-                      Icons.remove,
-                      color: Theme.of(context).primaryColorLight,
-                      size: 24,
-                    )),
-                IconButton(
-                    onPressed: () {
-                      setState(() {
-                        widget.exercise.sets.add(new wod.Sets(
-                            index: 0, weight: 0.0, reps: 1, ischecked: true));
-                      });
-                    },
-                    icon: Icon(
-                      Icons.add,
-                      color: Theme.of(context).primaryColorLight,
-                      size: 24,
-                    )),
-              ],
-            ),
-          ],
-        ))
-      ]),
-    );
+                  icon: Icon(
+                    Icons.remove,
+                    color: Theme.of(context).primaryColorLight,
+                    size: 24,
+                  )),
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      widget.exercise.sets.add(wod.Sets(
+                          index: 0, weight: 0.0, reps: 1, ischecked: true));
+                    });
+                  },
+                  icon: Icon(
+                    Icons.add,
+                    color: Theme.of(context).primaryColorLight,
+                    size: 24,
+                  )),
+            ],
+          ),
+        ],
+      ))
+    ]);
   }
 
   Widget _timerPicker(time, index) {
@@ -792,26 +771,24 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
         monerm = recordedsets[i].weight;
       }
     }
-    if (!recordedsets.isEmpty) {
+    if (recordedsets.isNotEmpty) {
       widget.origin_exercises[widget.index] = (hisdata.Exercises(
           name: _exampleex.name,
           sets: recordedsets,
           onerm: monerm,
           goal: widget.exercise.goal,
           date: widget.exercise.date,
-          isCardio: widget.exercise.isCardio == null
-              ? false
-              : widget.exercise.isCardio));
+          isCardio: widget.exercise.isCardio ?? false));
     }
   }
 
   void _editHistoryCheck() async {
-    if (!widget.exercise.sets
+    if (widget.exercise.sets
         .where((sets) {
           return (sets.ischecked as bool && sets.weight != 0);
         })
         .toList()
-        .isEmpty) {
+        .isNotEmpty) {
       HistoryExercisesEdit(
               history_id: widget.history_id,
               user_email: _userProvider.userdata.email,
@@ -832,7 +809,7 @@ class _StaticsExerciseDetailsState extends State<StaticsExerciseDetails> {
 
   void _deleteExerciseCheck() async {
     _hisProvider.deleteExercisedata(widget.history_id, widget.index);
-    if (!widget.origin_exercises.isEmpty) {
+    if (widget.origin_exercises.isNotEmpty) {
       HistoryExercisesEdit(
               history_id: widget.history_id,
               user_email: _userProvider.userdata.email,

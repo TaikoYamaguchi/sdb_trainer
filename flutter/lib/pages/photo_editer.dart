@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:provider/provider.dart';
@@ -8,10 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:image/image.dart' as img;
 import 'package:path_provider/path_provider.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 
+// ignore: must_be_immutable
 class PhotoEditor extends StatefulWidget {
   final hisdata.SDBdata sdbdata;
   ImageSource imageSource;
@@ -25,11 +24,9 @@ class PhotoEditor extends StatefulWidget {
 
 class _PhotoEditorState extends State<PhotoEditor> {
   List<GlobalKey> repaintkey = [];
-  var _selectImage;
   List<XFile> _image = [];
   final ImagePicker _picker = ImagePicker();
   bool _iswhite = true;
-  bool _isloading = true;
   bool _isabsorb = false;
   var _tempImgStrage;
   PageController controller =
@@ -73,11 +70,11 @@ class _PhotoEditorState extends State<PhotoEditor> {
 
   PreferredSizeWidget _appbarWidget() {
     return PreferredSize(
-        preferredSize: Size.fromHeight(40.0), // here the desired height
+        preferredSize: const Size.fromHeight(40.0), // here the desired height
         child: AppBar(
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_outlined),
+            icon: const Icon(Icons.arrow_back_ios_outlined),
             color: Theme.of(context).primaryColorLight,
             onPressed: () {
               Navigator.of(context).pop();
@@ -86,7 +83,7 @@ class _PhotoEditorState extends State<PhotoEditor> {
           actions: [
             IconButton(
               iconSize: 30,
-              icon: Icon(Icons.check_rounded),
+              icon: const Icon(Icons.check_rounded),
               color: Theme.of(context).primaryColorLight,
               onPressed: () async {
                 setState(() {
@@ -95,7 +92,7 @@ class _PhotoEditorState extends State<PhotoEditor> {
                 if (_image.isNotEmpty) {
                   for (int i = 0; i < _image.length; i++) {
                     await controller.animateToPage(i,
-                        duration: Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 500),
                         curve: Curves.linear);
 
                     RenderObject? renderObject =
@@ -103,8 +100,6 @@ class _PhotoEditorState extends State<PhotoEditor> {
                     RenderRepaintBoundary boundary =
                         renderObject as RenderRepaintBoundary;
                     var imageFinal = await boundary.toImage(pixelRatio: 5.0);
-                    print(imageFinal.height);
-                    print(imageFinal.width);
                     ByteData? byteData = await imageFinal.toByteData(
                         format: ImageByteFormat.png);
                     final imageBytes = byteData?.buffer.asUint8List();
@@ -220,26 +215,24 @@ class _PhotoEditorState extends State<PhotoEditor> {
   Widget _photowidget(rpkey, index) {
     return RepaintBoundary(
         key: rpkey,
-        child: Container(
-          child: Stack(children: [
-            Container(
-              height: MediaQuery.of(context).size.width,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                image: FileImage(File(_image[index].path)),
-                fit: BoxFit.cover,
-              )),
-            ),
-            Positioned(top: 5, right: 5, child: _watermarkTitle()),
-            Positioned(bottom: 5, left: 5, child: _watermarkWorkoutTime()),
-            Positioned(bottom: 5, right: 5, child: _watermarkSet())
-          ]),
-        ));
+        child: Stack(children: [
+          Container(
+            height: MediaQuery.of(context).size.width,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+              image: FileImage(File(_image[index].path)),
+              fit: BoxFit.cover,
+            )),
+          ),
+          Positioned(top: 5, right: 5, child: _watermarkTitle()),
+          Positioned(bottom: 5, left: 5, child: _watermarkWorkoutTime()),
+          Positioned(bottom: 5, right: 5, child: _watermarkSet())
+        ]));
   }
 
   Widget photoBox() {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: AbsorbPointer(
         absorbing: _isabsorb,
@@ -287,13 +280,11 @@ class _PhotoEditorState extends State<PhotoEditor> {
                 height: MediaQuery.of(context).size.width * 0.93 - 16,
                 child: PageView.builder(
                     controller: controller,
-                    itemCount: _image.length == 0 ? 1 : _image.length,
+                    itemCount: _image.isEmpty ? 1 : _image.length,
                     itemBuilder: (context, int index) {
-                      double viewgap =
-                          MediaQuery.of(context).size.width * 0.035;
                       return Padding(
                           padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-                          child: _image.length == 0
+                          child: _image.isEmpty
                               ? GestureDetector(
                                   onTap: () {},
                                   child: Icon(Icons.add_photo_alternate,
@@ -318,19 +309,19 @@ class _PhotoEditorState extends State<PhotoEditor> {
                             Container(
                               height: 70,
                               width: 70,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 color: Colors.black,
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(5)),
                               ),
-                              child: Center(
+                              child: const Center(
                                   child: Text('Supero',
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold))),
                             ),
-                            Container(
+                            const SizedBox(
                               height: 22,
                               child: Center(
                                 child: Text('Basic',
@@ -358,106 +349,6 @@ class _PhotoEditorState extends State<PhotoEditor> {
     return file;
   }
 
-  void _displayPhotoAlert() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            backgroundColor: Theme.of(context).cardColor,
-            actions: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding:
-                          const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
-                      child: Text("사진을 올릴 방법을 고를 수 있어요",
-                          textScaleFactor: 1.3,
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColorLight)),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        SizedBox(
-                            width: MediaQuery.of(context).size.width / 4,
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                foregroundColor: Theme.of(context).primaryColor,
-                                backgroundColor: Theme.of(context).primaryColor,
-                                textStyle: TextStyle(
-                                  color: Theme.of(context).primaryColorLight,
-                                ),
-                                disabledForegroundColor:
-                                    Color.fromRGBO(246, 58, 64, 20),
-                                padding: EdgeInsets.all(12.0),
-                              ),
-                              onPressed: () {
-                                _getImage(ImageSource.camera);
-                                Navigator.pop(context);
-                              },
-                              child: Column(
-                                children: [
-                                  Icon(Icons.camera_alt,
-                                      size: 24,
-                                      color:
-                                          Theme.of(context).primaryColorLight),
-                                  Text('촬영',
-                                      textScaleFactor: 1.3,
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorLight)),
-                                ],
-                              ),
-                            )),
-                        SizedBox(
-                            width: MediaQuery.of(context).size.width / 4,
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                foregroundColor: Theme.of(context).primaryColor,
-                                backgroundColor: Theme.of(context).primaryColor,
-                                textStyle: TextStyle(
-                                  color: Theme.of(context).primaryColorLight,
-                                ),
-                                disabledForegroundColor:
-                                    Color.fromRGBO(246, 58, 64, 20),
-                                padding: EdgeInsets.all(12.0),
-                              ),
-                              onPressed: () {
-                                _getImage(ImageSource.gallery);
-                                Navigator.pop(context);
-                              },
-                              child: Column(
-                                children: [
-                                  Icon(Icons.collections,
-                                      size: 24,
-                                      color:
-                                          Theme.of(context).primaryColorLight),
-                                  Text('갤러리',
-                                      textScaleFactor: 1.3,
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorLight)),
-                                ],
-                              ),
-                            )),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          );
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     _tempImgStrage = Provider.of<TempImgStorage>(context, listen: false);
@@ -479,7 +370,7 @@ class _PhotoEditorState extends State<PhotoEditor> {
 
 class KeepAlivePage extends StatefulWidget {
   final Widget child;
-  KeepAlivePage({Key? key, required this.child}) : super(key: key);
+  const KeepAlivePage({Key? key, required this.child}) : super(key: key);
 
   @override
   _KeepAlivePageState createState() => _KeepAlivePageState();

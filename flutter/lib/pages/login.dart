@@ -23,9 +23,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:firebase_auth/firebase_auth.dart' as firebase;
-import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 
+// ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
   bool isUpdateNeeded;
   LoginPage({Key? key, required this.isUpdateNeeded}) : super(key: key);
@@ -42,7 +42,7 @@ class LoginPageState extends State<LoginPage> {
   bool _isiOS = false;
   TextEditingController _userEmailCtrl = TextEditingController(text: "");
   TextEditingController _userPasswordCtrl = TextEditingController(text: "");
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   static FirebaseAnalyticsObserver observer =
@@ -51,10 +51,8 @@ class LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     _userEmailCtrl = TextEditingController(text: "");
-    print("yes");
     _userPasswordCtrl = TextEditingController(text: "");
     Future.delayed(Duration.zero, () async {
-      print("yeeeeeeees");
       await _storageLoginCheck(context);
     });
     super.initState();
@@ -74,17 +72,17 @@ class LoginPageState extends State<LoginPage> {
     return Scaffold(
       key: _scaffoldKey,
       body: Container(
-          color: Color(0xFF101012),
+          color: const Color(0xFF101012),
           child: Center(
               child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Expanded(flex: 3, child: SizedBox(height: 6)),
+                  const Expanded(flex: 3, child: SizedBox(height: 6)),
                   Text("SUPERO",
                       style: TextStyle(
-                          color: Theme.of(context).buttonColor,
+                          color: Theme.of(context).highlightColor,
                           fontSize: 54,
                           fontWeight: FontWeight.w800)),
                   Text("우리의 운동 극복 스토리",
@@ -92,13 +90,13 @@ class LoginPageState extends State<LoginPage> {
                           color: Theme.of(context).primaryColor,
                           fontSize: 20,
                           fontWeight: FontWeight.w500)),
-                  Expanded(flex: 3, child: SizedBox(height: 6)),
+                  const Expanded(flex: 3, child: SizedBox(height: 6)),
                   _isEmailLogin ? _emailWidget() : Container(),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   _isEmailLogin ? _passwordWidget() : Container(),
-                  SizedBox(height: 14),
+                  const SizedBox(height: 14),
                   _isEmailLogin ? _signInUpButton("로그인", context) : Container(),
-                  SizedBox(height: 14),
+                  const SizedBox(height: 14),
                   //_isEmailLogin
                   //    ? _signInUpButton("회원가입", context)
                   //    : Container(),
@@ -114,7 +112,7 @@ class LoginPageState extends State<LoginPage> {
                           ? _loginSocialButton("apple", context)
                           : Container(),
                   _emailLoginButton(context),
-                  SizedBox(height: 42),
+                  const SizedBox(height: 42),
                   _isEmailLogin ? _findUser(context) : Container()
                 ]),
           ))),
@@ -162,8 +160,8 @@ class LoginPageState extends State<LoginPage> {
               textStyle: TextStyle(
                 color: Theme.of(context).primaryColorLight,
               ),
-              disabledForegroundColor: Color(0xFF101012),
-              padding: EdgeInsets.all(8.0),
+              disabledForegroundColor: const Color(0xFF101012),
+              padding: const EdgeInsets.all(8.0),
             ),
             onPressed: () => isLoading
                 ? null
@@ -173,7 +171,7 @@ class LoginPageState extends State<LoginPage> {
                         child: UserFindPage(),
                         transitionEffect: TransitionEffect.RIGHT_TO_LEFT)),
             child: Text(isLoading ? 'loading in.....' : "계정을 잊어버리셨나요?",
-                style: TextStyle(fontSize: 14.0, color: Colors.grey))));
+                style: const TextStyle(fontSize: 14.0, color: Colors.grey))));
   }
 
   Widget _emailLoginButton(context) {
@@ -182,12 +180,12 @@ class LoginPageState extends State<LoginPage> {
         child: TextButton(
             style: TextButton.styleFrom(
               foregroundColor: Colors.blueAccent,
-              backgroundColor: Color(0xFF101012),
-              textStyle: TextStyle(
+              backgroundColor: const Color(0xFF101012),
+              textStyle: const TextStyle(
                 color: Colors.grey,
               ),
-              disabledForegroundColor: Color(0xFF101012),
-              padding: EdgeInsets.all(4.0),
+              disabledForegroundColor: const Color(0xFF101012),
+              padding: const EdgeInsets.all(4.0),
             ),
             onPressed: () => isLoading
                 ? null
@@ -195,7 +193,7 @@ class LoginPageState extends State<LoginPage> {
                     _isEmailLogin = !_isEmailLogin;
                   }),
             child: Text(_isEmailLogin ? '홈으로 돌아가기' : "이메일로 로그인 하기",
-                style: TextStyle(fontSize: 14.0, color: Colors.grey))));
+                style: const TextStyle(fontSize: 14.0, color: Colors.grey))));
   }
 
   Widget _emailWidget() {
@@ -204,19 +202,19 @@ class LoginPageState extends State<LoginPage> {
       child: TextFormField(
           controller: _userEmailCtrl,
           decoration: InputDecoration(
-              prefixIcon: Icon(Icons.email, color: Colors.white),
+              prefixIcon: const Icon(Icons.email, color: Colors.white),
               labelText: "이메일",
-              labelStyle: TextStyle(color: Colors.white),
+              labelStyle: const TextStyle(color: Colors.white),
               border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white, width: 2.0),
+                borderSide: const BorderSide(color: Colors.white, width: 2.0),
                 borderRadius: BorderRadius.circular(5.0),
               ),
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white, width: 2.0),
+                borderSide: const BorderSide(color: Colors.white, width: 2.0),
                 borderRadius: BorderRadius.circular(5.0),
               ),
               fillColor: Colors.white),
-          style: TextStyle(color: Colors.white)),
+          style: const TextStyle(color: Colors.white)),
     );
   }
 
@@ -230,19 +228,20 @@ class LoginPageState extends State<LoginPage> {
           autocorrect: false,
           obscuringCharacter: "*",
           decoration: InputDecoration(
-              prefixIcon: Icon(Icons.vpn_key_rounded, color: Colors.white),
+              prefixIcon:
+                  const Icon(Icons.vpn_key_rounded, color: Colors.white),
               labelText: "비밀번호",
-              labelStyle: TextStyle(color: Colors.white),
+              labelStyle: const TextStyle(color: Colors.white),
               border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white, width: 2.0),
+                borderSide: const BorderSide(color: Colors.white, width: 2.0),
                 borderRadius: BorderRadius.circular(5.0),
               ),
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white, width: 2.0),
+                borderSide: const BorderSide(color: Colors.white, width: 2.0),
                 borderRadius: BorderRadius.circular(5.0),
               ),
               fillColor: Colors.white),
-          style: TextStyle(color: Colors.white)),
+          style: const TextStyle(color: Colors.white)),
     );
   }
 
@@ -344,7 +343,7 @@ class LoginPageState extends State<LoginPage> {
     }
   }
 
-  GoogleSignIn _googleSignIn = GoogleSignIn(
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: [
       'email',
     ],
@@ -436,7 +435,7 @@ class LoginPageState extends State<LoginPage> {
                   color: Theme.of(context).primaryColorLight,
                 ),
                 disabledForegroundColor: _loginColor[content],
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
               ),
               onPressed: () => isLoading
                   ? null
@@ -455,7 +454,7 @@ class LoginPageState extends State<LoginPage> {
   }
 
   void _loginCheck(context) async {
-    final storage = FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     try {
       String? storageEmail = await storage.read(key: "sdb_email");
       String? storageToken = await storage.read(key: "sdb_token");
@@ -500,7 +499,7 @@ class LoginPageState extends State<LoginPage> {
   }
 
   void _loginkakaoCheck() async {
-    final storage = FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     try {
       String? storageEmail = await storage.read(key: "sdb_email");
       String? storageToken = await storage.read(key: "sdb_token");
@@ -516,7 +515,7 @@ class LoginPageState extends State<LoginPage> {
         fcmSetting();
       } else {
         try {
-          var order = await UserLoginKakao(
+          await UserLoginKakao(
             userEmail: _userEmailCtrl.text,
           ).loginKakaoUser().then((token) => token["access_token"] != null
               ? {
@@ -535,7 +534,7 @@ class LoginPageState extends State<LoginPage> {
       }
     } catch (e) {
       try {
-        var order = await UserLoginKakao(
+        await UserLoginKakao(
           userEmail: _userEmailCtrl.text,
         ).loginKakaoUser().then((token) => token["access_token"] != null
             ? {
@@ -555,7 +554,7 @@ class LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _storageLoginCheck(context) async {
-    final storage = FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     String? storageEmail = await storage.read(key: "sdb_email");
     String? storageToken = await storage.read(key: "sdb_token");
     if (storageEmail != null && storageEmail != "" && storageToken != null) {
@@ -577,7 +576,7 @@ class LoginPageState extends State<LoginPage> {
   }
 
   void _storageInitialExerciseCheck(_initExercisesdataProvider) async {
-    final storage = FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     print("storage check for initial exercise");
     try {
       String? storageExerciseList = await storage.read(key: "sdb_HomeExList");
@@ -675,10 +674,8 @@ class LoginPageState extends State<LoginPage> {
 
     binding.addPostFrameCallback((_) async {
       BuildContext context = binding.renderViewElement!;
-      if (context != null) {
-        for (var user in usertestList) {
-          precacheImage(CachedNetworkImageProvider(user.image), context);
-        }
+      for (var user in usertestList) {
+        precacheImage(CachedNetworkImageProvider(user.image), context);
       }
     });
   }

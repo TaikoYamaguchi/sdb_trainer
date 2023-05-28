@@ -9,6 +9,7 @@ import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/src/utils/imageFullViewer.dart';
 import 'package:transition/transition.dart';
 
+// ignore: must_be_immutable
 class FriendProfile extends StatefulWidget {
   User user;
   FriendProfile({Key? key, required this.user}) : super(key: key);
@@ -50,11 +51,11 @@ class _FriendProfileState extends State<FriendProfile> {
   PreferredSizeWidget _appbarWidget() {
     bool btnDisabled = false;
     return PreferredSize(
-        preferredSize: Size.fromHeight(40.0), // here the desired height
+        preferredSize: const Size.fromHeight(40.0), // here the desired height
         child: AppBar(
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_outlined),
+            icon: const Icon(Icons.arrow_back_ios_outlined),
             color: Theme.of(context).primaryColorLight,
             onPressed: () {
               btnDisabled == true
@@ -79,14 +80,14 @@ class _FriendProfileState extends State<FriendProfile> {
     _hisProvider.getUserEmailHistorydata(widget.user.email);
     return GestureDetector(
         onPanUpdate: (details) {
-          if (details.delta.dx > 0 && btnDisabled == false) {
+          if (details.delta.dx > 20 && btnDisabled == false) {
             btnDisabled = true;
             Navigator.of(context).pop();
             print("Dragging in +X direction");
           }
         },
         child: SingleChildScrollView(
-          child: Container(
+          child: SizedBox(
             width: MediaQuery.of(context).size.width,
             child:
                 Consumer<UserdataProvider>(builder: (builder, provider, child) {
@@ -104,7 +105,7 @@ class _FriendProfileState extends State<FriendProfile> {
                           );
                         },
                         child: widget.user.image == ""
-                            ? Icon(
+                            ? const Icon(
                                 Icons.account_circle,
                                 color: Colors.grey,
                                 size: 160.0,
@@ -116,21 +117,21 @@ class _FriendProfileState extends State<FriendProfile> {
                                   height: 160.0,
                                   width: 160.0,
                                   decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(50)),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(50)),
                                       image: DecorationImage(
                                         image: imageProivder,
                                         fit: BoxFit.cover,
                                       )),
                                 ),
                               )),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         GestureDetector(
                           onTap: () {
-                            widget.user.liked.length > 0
+                            widget.user.liked.isNotEmpty
                                 ? _showLikeFreindBottomSheet(widget.user.liked)
                                 : null;
                           },
@@ -157,7 +158,7 @@ class _FriendProfileState extends State<FriendProfile> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            widget.user.like.length > 0
+                            widget.user.like.isNotEmpty
                                 ? _showLikeFreindBottomSheet(widget.user.like)
                                 : null;
                           },
@@ -204,7 +205,7 @@ class _FriendProfileState extends State<FriendProfile> {
                         )
                       ],
                     ),
-                    SizedBox(height: 32),
+                    const SizedBox(height: 32),
                     _feedLikeButton(provider, widget.user),
                     _feedCardList(context),
                   ]);
@@ -234,7 +235,7 @@ class _FriendProfileState extends State<FriendProfile> {
                           ? "팔로잉 중 "
                           : "팔로우 하기 ",
                   textScaleFactor: 1.3,
-                  style: TextStyle(color: Theme.of(context).buttonColor)),
+                  style: TextStyle(color: Theme.of(context).highlightColor)),
             ],
           ),
         ),
@@ -251,7 +252,7 @@ class _FriendProfileState extends State<FriendProfile> {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (BuildContext context) {
         return GestureDetector(
@@ -259,10 +260,11 @@ class _FriendProfileState extends State<FriendProfile> {
             FocusScope.of(context).unfocus();
           },
           child: Container(
-              padding: EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(12.0),
               height: MediaQuery.of(context).size.height * 0.7,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(20)),
                 color: Theme.of(context).cardColor,
               ),
               child: Column(
@@ -270,19 +272,20 @@ class _FriendProfileState extends State<FriendProfile> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
-                    padding: EdgeInsets.fromLTRB(12, 4, 12, 12),
+                    padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
                     child: Container(
                       height: 6.0,
                       width: 80.0,
                       decoration: BoxDecoration(
                           color: Theme.of(context).primaryColorDark,
-                          borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(8.0))),
                     ),
                   ),
                   Expanded(
                       child: SingleChildScrollView(
                           child: ListView.separated(
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemBuilder: (BuildContext _context, int index) {
                                 var userLikesEmail = _userProvider
@@ -312,7 +315,7 @@ class _FriendProfileState extends State<FriendProfile> {
                                                   CrossAxisAlignment.center,
                                               children: [
                                                 userLikesEmail.image == ""
-                                                    ? Icon(
+                                                    ? const Icon(
                                                         Icons.account_circle,
                                                         color: Colors.grey,
                                                         size: 46.0,
@@ -327,10 +330,10 @@ class _FriendProfileState extends State<FriendProfile> {
                                                           width: 46,
                                                           decoration:
                                                               BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius.all(
-                                                                          Radius.circular(
-                                                                              50)),
+                                                                  borderRadius: const BorderRadius
+                                                                          .all(
+                                                                      Radius.circular(
+                                                                          50)),
                                                                   image:
                                                                       DecorationImage(
                                                                     image:
@@ -431,7 +434,7 @@ Widget _feedCardList(context) {
                               : Container());
                     } else {
                       return Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
                         child: Center(
                             child: Text("운동을 시작해보고 있어요",
                                 style: TextStyle(
@@ -440,7 +443,7 @@ Widget _feedCardList(context) {
                       );
                     }
                   },
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   separatorBuilder: (BuildContext _context, int index) {
                     return Container(
                       alignment: Alignment.center,
@@ -448,21 +451,21 @@ Widget _feedCardList(context) {
                       child: Container(
                         alignment: Alignment.center,
                         height: 0,
-                        color: Color(0xFF717171),
+                        color: const Color(0xFF717171),
                       ),
                     );
                   },
                   shrinkWrap: true,
                   itemCount: provider.historydataUserEmail.sdbdatas.length + 1)
               : Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                   child: Center(
                       child: Text("운동을 시작해보고 있어요",
                           style: TextStyle(
                               color: Theme.of(context).primaryColorLight))),
                 );
         } catch (e) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         }
       }),
     ],

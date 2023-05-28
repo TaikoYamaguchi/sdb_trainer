@@ -12,15 +12,12 @@ import 'package:sdb_trainer/repository/famous_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart' as uex;
-import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/src/utils/alerts.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
-import 'dart:io';
 import 'dart:async';
 
+// ignore: must_be_immutable
 class ProgramDownload extends StatefulWidget {
   Famous program;
   ProgramDownload({
@@ -37,15 +34,11 @@ class _ProgramDownloadState extends State<ProgramDownload> {
   var _famousdataProvider;
   var _workoutProvider;
   var _exProvider;
-  var _PopProvider;
-  var _routinetimeProvider;
   var _btnDisabled;
   List<JustTheController> tooltipController = [];
-  List<TextEditingController> _onermController = [];
-  TextEditingController _famousimageCtrl = TextEditingController(text: "");
-  TextEditingController _programtitleCtrl = TextEditingController(text: "");
-  TextEditingController _programcommentCtrl = TextEditingController(text: "");
-  TextEditingController _workoutNameCtrl = TextEditingController(text: "");
+  final List<TextEditingController> _onermController = [];
+  final TextEditingController _workoutNameCtrl =
+      TextEditingController(text: "");
   Map item_map = {0: "뉴비", 1: "초급", 2: '중급', 3: '상급', 4: '엘리트'};
   Map item_map2 = {
     0: "기타",
@@ -57,7 +50,6 @@ class _ProgramDownloadState extends State<ProgramDownload> {
     6: '역도'
   };
   List<ExpandableController> Controllerlist = [];
-  var _selectImage;
   List ref_exercise = [];
   List do_exercise = [];
   List exercise_names = [];
@@ -72,11 +64,11 @@ class _ProgramDownloadState extends State<ProgramDownload> {
   PreferredSizeWidget _appbarWidget() {
     _btnDisabled = false;
     return PreferredSize(
-        preferredSize: Size.fromHeight(40.0), // here the desired height
+        preferredSize: const Size.fromHeight(40.0), // here the desired height
         child: AppBar(
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_outlined),
+            icon: const Icon(Icons.arrow_back_ios_outlined),
             color: Theme.of(context).primaryColorLight,
             onPressed: () {
               _btnDisabled == true
@@ -102,8 +94,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
     _famousdataProvider.weekchangepre(0);
     return Column(
       children: [
-        Container(
-            child: Expanded(
+        Expanded(
           child: SingleChildScrollView(
             child: Column(children: [
               Container(
@@ -144,7 +135,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                   ],
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 100,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -276,7 +267,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               Consumer<FamousdataProvider>(builder: (builder, provider, child) {
                 return Column(
                   children: [
-                    Container(
+                    SizedBox(
                         height: 40,
                         child: ListView(
                             scrollDirection: Axis.horizontal,
@@ -287,7 +278,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               }),
             ]),
           ),
-        )),
+        ),
         _Start_Program_Button()
       ],
     );
@@ -301,15 +292,15 @@ class _ProgramDownloadState extends State<ProgramDownload> {
       var inplandata = plandata.plans[plandata.progress].exercises;
       var uniqexinfo = exinfo.exercisesdata.exercises;
       for (int s = 0; s < 40; s++) {
-        tooltipController.add(new JustTheController());
+        tooltipController.add(JustTheController());
       }
       ;
       return Container(
-        padding: EdgeInsets.symmetric(horizontal: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
+            SizedBox(
               height: 36,
               child: Row(
                 children: [
@@ -317,8 +308,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                     width: 10,
                   ),
                   IconButton(
-                      padding: EdgeInsets.all(3),
-                      constraints: BoxConstraints(),
+                      padding: const EdgeInsets.all(3),
+                      constraints: const BoxConstraints(),
                       onPressed: () {
                         if (plandata.progress % 7 > 0) {
                           _famousdataProvider
@@ -333,20 +324,18 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                   Container(
                     width: 10,
                   ),
-                  Container(
-                    child: Text(
-                      'Day ${plandata.progress % 7 + 1}',
-                      textScaleFactor: 2.0,
-                      style:
-                          TextStyle(color: Theme.of(context).primaryColorLight),
-                    ),
+                  Text(
+                    'Day ${plandata.progress % 7 + 1}',
+                    textScaleFactor: 2.0,
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight),
                   ),
                   Container(
                     width: 10,
                   ),
                   IconButton(
-                      padding: EdgeInsets.all(3),
-                      constraints: BoxConstraints(),
+                      padding: const EdgeInsets.all(3),
+                      constraints: const BoxConstraints(),
                       onPressed: () {
                         if (_famousdataProvider.week + 1 != num_week) {
                           if (plandata.progress % 7 < 6) {
@@ -382,12 +371,11 @@ class _ProgramDownloadState extends State<ProgramDownload> {
             ),
             ListView(
               shrinkWrap: true,
-              physics: new NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               children: [
                 inplandata.isEmpty
                     ? Center(
-                        child: Container(
-                            child: Column(
+                        child: Column(
                         children: [
                           Container(
                             height: 30,
@@ -406,154 +394,141 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                             height: 30,
                           ),
                         ],
-                      )))
-                    : Container(
-                        child: ListView.builder(
-                          physics: new NeverScrollableScrollPhysics(),
-                          itemBuilder: (BuildContext _context, int index) {
-                            var refinfo = uniqexinfo[uniqexinfo.indexWhere(
-                                (element) =>
-                                    element.name ==
-                                    inplandata[index].ref_name)];
-                            Controllerlist.add(ExpandableController(
-                              initialExpanded: true,
-                            ));
-                            return Container(
-                              child: Column(
-                                children: [
-                                  ExpandablePanel(
-                                      controller: Controllerlist[index],
-                                      theme: ExpandableThemeData(
-                                        headerAlignment:
-                                            ExpandablePanelHeaderAlignment
-                                                .center,
-                                        hasIcon: true,
-                                        iconColor:
-                                            Theme.of(context).primaryColorLight,
-                                      ),
-                                      header: Padding(
-                                        padding: EdgeInsets.only(left: 10),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              inplandata[index].name,
-                                              textScaleFactor: 1.7,
+                      ))
+                    : ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (BuildContext _context, int index) {
+                          var refinfo = uniqexinfo[uniqexinfo.indexWhere(
+                              (element) =>
+                                  element.name == inplandata[index].ref_name)];
+                          Controllerlist.add(ExpandableController(
+                            initialExpanded: true,
+                          ));
+                          return Column(
+                            children: [
+                              ExpandablePanel(
+                                  controller: Controllerlist[index],
+                                  theme: ExpandableThemeData(
+                                    headerAlignment:
+                                        ExpandablePanelHeaderAlignment.center,
+                                    hasIcon: true,
+                                    iconColor:
+                                        Theme.of(context).primaryColorLight,
+                                  ),
+                                  header: Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          inplandata[index].name,
+                                          textScaleFactor: 1.7,
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColorLight),
+                                        ),
+                                        Container(
+                                          width: 10,
+                                        ),
+                                        Expanded(
+                                          child: Container(
+                                            child: Text(
+                                              '기준: ${inplandata[index].ref_name}',
+                                              textScaleFactor: 1.1,
+                                              overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                   color: Theme.of(context)
-                                                      .primaryColorLight),
+                                                      .primaryColorDark,
+                                                  fontWeight: FontWeight.bold),
                                             ),
-                                            Container(
-                                              width: 10,
-                                            ),
-                                            Expanded(
-                                              child: Container(
-                                                child: Text(
-                                                  '기준: ${inplandata[index].ref_name}',
-                                                  textScaleFactor: 1.1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .primaryColorDark,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                tooltipController[index]
-                                                    .showTooltip();
-                                              },
-                                              child: JustTheTooltip(
-                                                controller:
-                                                    tooltipController[index],
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(8.0),
-                                                  child: Icon(
-                                                    Icons.info_outline_rounded,
-                                                    color: Theme.of(context)
-                                                        .primaryColor,
-                                                  ),
-                                                ),
-                                                content: Padding(
-                                                  padding: EdgeInsets.all(8.0),
-                                                  child: Text(
-                                                    '각자의 기준 운동 1rm X 무게비(%)로 운동 중량이 설정됩니다. 내 ${inplandata[index].ref_name} 1rm: ${refinfo.onerm.toStringAsFixed(0)}',
-                                                    style: TextStyle(
-                                                        color: Theme.of(context)
-                                                            .primaryColorLight),
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                          ],
+                                          ),
                                         ),
-                                      ),
-                                      collapsed:
-                                          Container(), // body when the widget is Collapsed, I didnt need anything here.
-                                      expanded: Container(
-                                        child: ListView.builder(
-                                          physics:
-                                              new NeverScrollableScrollPhysics(),
-                                          itemBuilder: (BuildContext _context,
-                                              int setindex) {
-                                            return Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Container(),
-                                                Row(
-                                                  children: [
-                                                    Container(
-                                                      child: Text(
-                                                        '기준 1rm   X   ${(inplandata[index].sets[setindex].weight).toStringAsFixed(0)}%    X    ${inplandata[index].sets[setindex].reps}reps',
-                                                        textScaleFactor: 1.7,
-                                                        style: TextStyle(
-                                                          color: Theme.of(
-                                                                  context)
-                                                              .primaryColorLight,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            );
+                                        GestureDetector(
+                                          onTap: () {
+                                            tooltipController[index]
+                                                .showTooltip();
                                           },
-                                          shrinkWrap: true,
-                                          itemCount:
-                                              inplandata[index].sets.length,
-                                        ),
-                                      ) // body when the widget is Expanded
-                                      ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Container(
-                                        width: 10,
-                                      ),
-                                      Container(
-                                        width: 10,
-                                      ),
-                                      Container(
-                                        width: 10,
-                                      ),
-                                    ],
+                                          child: JustTheTooltip(
+                                            controller:
+                                                tooltipController[index],
+                                            content: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Text(
+                                                '각자의 기준 운동 1rm X 무게비(%)로 운동 중량이 설정됩니다. 내 ${inplandata[index].ref_name} 1rm: ${refinfo.onerm.toStringAsFixed(0)}',
+                                                style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .primaryColorLight),
+                                              ),
+                                            ),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Icon(
+                                                Icons.info_outline_rounded,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                  Divider(
-                                    indent: 10,
-                                    thickness: 1.3,
-                                    color: Theme.of(context).primaryColorDark,
+                                  collapsed:
+                                      Container(), // body when the widget is Collapsed, I didnt need anything here.
+                                  expanded: ListView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemBuilder:
+                                        (BuildContext _context, int setindex) {
+                                      return Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                '기준 1rm   X   ${(inplandata[index].sets[setindex].weight).toStringAsFixed(0)}%    X    ${inplandata[index].sets[setindex].reps}reps',
+                                                textScaleFactor: 1.7,
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                    shrinkWrap: true,
+                                    itemCount: inplandata[index].sets.length,
+                                  ) // body when the widget is Expanded
+                                  ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Container(
+                                    width: 10,
+                                  ),
+                                  Container(
+                                    width: 10,
+                                  ),
+                                  Container(
+                                    width: 10,
                                   ),
                                 ],
                               ),
-                            );
-                          },
-                          shrinkWrap: true,
-                          itemCount: inplandata.length,
-                        ),
+                              Divider(
+                                indent: 10,
+                                thickness: 1.3,
+                                color: Theme.of(context).primaryColorDark,
+                              ),
+                            ],
+                          );
+                        },
+                        shrinkWrap: true,
+                        itemCount: inplandata.length,
                       ),
                 Container(
                   height: 10,
@@ -597,8 +572,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
         size: buttonSize,
         isLiked: onIsLikedCheck(),
         circleColor:
-            CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
-        bubblesColor: BubblesColor(
+            const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+        bubblesColor: const BubblesColor(
           dotPrimaryColor: Color(0xff33b5e5),
           dotSecondaryColor: Color(0xff0099cc),
         ),
@@ -690,8 +665,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                 textStyle: TextStyle(
                   color: Theme.of(context).primaryColorLight,
                 ),
-                disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-                padding: EdgeInsets.all(12.0),
+                disabledForegroundColor: const Color.fromRGBO(246, 58, 64, 20),
+                padding: const EdgeInsets.all(12.0),
               ),
               onPressed: () {
                 for (int p = 0;
@@ -755,7 +730,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               },
               child: Text("시작하기",
                   textScaleFactor: 1.7,
-                  style: TextStyle(color: Theme.of(context).buttonColor)))),
+                  style: TextStyle(color: Theme.of(context).highlightColor)))),
     );
   }
 
@@ -787,14 +762,14 @@ class _ProgramDownloadState extends State<ProgramDownload> {
   void setSetting() {
     showModalBottomSheet<void>(
       context: context,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (BuildContext context) {
         return Container(
-          padding: EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(12.0),
           height: MediaQuery.of(context).size.height * 2,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
             color: Theme.of(context).cardColor,
           ),
           child: Column(
@@ -807,49 +782,41 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                   style: TextStyle(color: Theme.of(context).primaryColorLight),
                 ),
               ),
-              Container(
-                child: Text('아니라면 값을 수정 해주세요',
-                    textScaleFactor: 1.3,
-                    textAlign: TextAlign.center,
-                    style:
-                        TextStyle(color: Theme.of(context).primaryColorLight)),
-              ),
-              Container(
-                child: Text('외부를 터치하면 취소 할 수 있어요',
-                    textScaleFactor: 1.0,
-                    textAlign: TextAlign.center,
-                    style:
-                        TextStyle(color: Theme.of(context).primaryColorDark)),
-              ),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        width: MediaQuery.of(context).size.width * 2 / 4,
-                        child: Center(
-                          child: Text(
-                            "운동",
+              Text('아니라면 값을 수정 해주세요',
+                  textScaleFactor: 1.3,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Theme.of(context).primaryColorLight)),
+              Text('외부를 터치하면 취소 할 수 있어요',
+                  textScaleFactor: 1.0,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Theme.of(context).primaryColorDark)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      width: MediaQuery.of(context).size.width * 2 / 4,
+                      child: Center(
+                        child: Text(
+                          "운동",
+                          textScaleFactor: 1.5,
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      )),
+                  Container(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      width: MediaQuery.of(context).size.width * 1 / 4,
+                      child: Center(
+                        child: Text("1rm",
                             textScaleFactor: 1.5,
                             style: TextStyle(
                                 color: Theme.of(context).primaryColorLight,
                                 fontWeight: FontWeight.bold),
-                          ),
-                        )),
-                    Container(
-                        padding: EdgeInsets.symmetric(vertical: 5),
-                        width: MediaQuery.of(context).size.width * 1 / 4,
-                        child: Center(
-                          child: Text("1rm",
-                              textScaleFactor: 1.5,
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColorLight,
-                                  fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center),
-                        )),
-                  ],
-                ),
+                            textAlign: TextAlign.center),
+                      )),
+                ],
               ),
               _neededlist(),
               _1rmConfirmButton()
@@ -864,36 +831,32 @@ class _ProgramDownloadState extends State<ProgramDownload> {
     _workoutNameCtrl.text = widget.program.routinedata.name;
     showModalBottomSheet<void>(
       context: context,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (BuildContext context) {
         return StatefulBuilder(builder: (context, state) {
           return Container(
-            padding: EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(12.0),
             height: 240,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(20)),
               color: Theme.of(context).cardColor,
             ),
             child: Column(
               children: [
-                Container(
-                  child: Text(
-                    '프로그램 이름을 정해주세요',
-                    textScaleFactor: 2.0,
+                Text(
+                  '프로그램 이름을 정해주세요',
+                  textScaleFactor: 2.0,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Theme.of(context).primaryColorLight),
+                ),
+                Text('외부를 터치하면 취소 할 수 있어요',
+                    textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
                     style:
-                        TextStyle(color: Theme.of(context).primaryColorLight),
-                  ),
-                ),
-                Container(
-                  child: Text('외부를 터치하면 취소 할 수 있어요',
-                      textScaleFactor: 1.0,
-                      textAlign: TextAlign.center,
-                      style:
-                          TextStyle(color: Theme.of(context).primaryColorDark)),
-                ),
-                SizedBox(height: 20),
+                        TextStyle(color: Theme.of(context).primaryColorDark)),
+                const SizedBox(height: 20),
                 TextField(
                   onChanged: (value) {
                     _workoutProvider.workoutdata.routinedatas
@@ -933,7 +896,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                           fontSize: 24.0,
                           color: Theme.of(context).primaryColorLight)),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 _finalConfirmButton(state)
               ],
             ),
@@ -953,19 +916,19 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               ),
               backgroundColor:
                   _workoutNameCtrl.text == "" || _customRuUsed == true
-                      ? Color(0xFF212121)
+                      ? const Color(0xFF212121)
                       : Theme.of(context).primaryColor,
               foregroundColor: Theme.of(context).primaryColor,
               textStyle: TextStyle(
                 color: Theme.of(context).primaryColorLight,
               ),
-              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-              padding: EdgeInsets.all(12.0),
+              disabledForegroundColor: const Color.fromRGBO(246, 58, 64, 20),
+              padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {
               if (_customRuUsed == false || _workoutNameCtrl.text == "") {
                 _famousdataProvider.weekchange(0);
-                _workoutProvider.addroutine(new Routinedatas(
+                _workoutProvider.addroutine(Routinedatas(
                     name: _workoutNameCtrl.text,
                     mode: 3,
                     exercises: widget.program.routinedata.exercises,
@@ -981,7 +944,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
             },
             child: Text(_customRuUsed == true ? "존재하는 이름" : "이 이름으로 저장",
                 textScaleFactor: 1.7,
-                style: TextStyle(color: Theme.of(context).buttonColor))));
+                style: TextStyle(color: Theme.of(context).highlightColor))));
   }
 
   Widget _neededlist() {
@@ -1001,15 +964,15 @@ class _ProgramDownloadState extends State<ProgramDownload> {
   }
 
   Widget _exerciseWidget(Exercises, index) {
-    _onermController.add(
-        new TextEditingController(text: Exercises.onerm.toStringAsFixed(1)));
+    _onermController
+        .add(TextEditingController(text: Exercises.onerm.toStringAsFixed(1)));
     return Center(
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 2 / 4,
                 child: Center(
                   child: Text(
@@ -1020,12 +983,12 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 1 / 4,
                 child: Center(
                   child: TextFormField(
                       controller: _onermController[index],
-                      keyboardType: TextInputType.numberWithOptions(
+                      keyboardType: const TextInputType.numberWithOptions(
                           signed: false, decimal: true),
                       style: TextStyle(
                           fontSize: 18,
@@ -1070,12 +1033,12 @@ class _ProgramDownloadState extends State<ProgramDownload> {
           Container(
             alignment: Alignment.center,
             height: 1,
-            color: Color(0xFF101012),
+            color: const Color(0xFF101012),
             child: Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.symmetric(horizontal: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 10),
               height: 1,
-              color: Color(0xFF717171),
+              color: const Color(0xFF717171),
             ),
           )
         ],
@@ -1096,8 +1059,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               textStyle: TextStyle(
                 color: Theme.of(context).primaryColorLight,
               ),
-              disabledForegroundColor: Color.fromRGBO(246, 58, 64, 20),
-              padding: EdgeInsets.all(12.0),
+              disabledForegroundColor: const Color.fromRGBO(246, 58, 64, 20),
+              padding: const EdgeInsets.all(12.0),
             ),
             onPressed: () {
               List rname = [];
@@ -1114,7 +1077,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
             },
             child: Text("1rm 확인",
                 textScaleFactor: 1.7,
-                style: TextStyle(color: Theme.of(context).buttonColor))));
+                style: TextStyle(color: Theme.of(context).highlightColor))));
   }
 
   void _editWorkoutCheck() async {
@@ -1135,9 +1098,6 @@ class _ProgramDownloadState extends State<ProgramDownload> {
         Provider.of<FamousdataProvider>(context, listen: false);
     _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
     _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
-    _routinetimeProvider =
-        Provider.of<RoutineTimeProvider>(context, listen: false);
-    _PopProvider = Provider.of<PopProvider>(context, listen: false);
 
     return Consumer<PopProvider>(builder: (builder, provider, child) {
       bool _popable = provider.isstacking;
