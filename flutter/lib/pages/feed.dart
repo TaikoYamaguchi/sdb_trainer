@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -7,6 +8,7 @@ import 'package:sdb_trainer/pages/feed_friend_edit.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
+import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/feed_friend.dart';
 import 'package:sdb_trainer/src/utils/feedCard.dart';
@@ -24,6 +26,7 @@ class _FeedState extends State<Feed> {
   var _hisProvider;
   var _historydata;
   var _userProvider;
+  var _final_history_id;
   final _pageController = ScrollController();
   var _hasMore = true;
 
@@ -66,7 +69,46 @@ class _FeedState extends State<Feed> {
 
   Future _fetchHistoryPage(context) async {
     _hasMore = true;
-    try {} catch (e) {
+    try {
+      await HistorydataPagination(final_history_id: _final_history_id)
+          .loadSDBdataPagination()
+          .then((data) => {
+                if (data.sdbdatas.isEmpty != true)
+                  {
+                    _hisProvider.addHistorydataPage(data),
+                    if (context != null)
+                      {
+                        for (var history in data.sdbdatas)
+                          {
+                            if (history.image!.isEmpty != true)
+                              {
+                                for (var image in history.image!)
+                                  {
+                                    precacheImage(
+                                        CachedNetworkImageProvider(image),
+                                        context)
+                                  }
+                              }
+                          }
+                      },
+                    setState(() {
+                      print("noooo");
+                      if (_feedListCtrl == 1) {
+                        _hasMore = true;
+                      }
+                    })
+                  }
+                else
+                  {
+                    setState(() {
+                      print("noooo");
+                      if (_feedListCtrl == 1) {
+                        _hasMore = false;
+                      }
+                    })
+                  }
+              });
+    } catch (e) {
       setState(() {
         if (_feedListCtrl == 1) {
           _hasMore = false;
@@ -163,6 +205,10 @@ class _FeedState extends State<Feed> {
                                                 : false,
                                             openUserDetail: true));
                                   } else {
+                                    _final_history_id = _historydata[index -
+                                            ((index + 1) / 3).floor() -
+                                            1]
+                                        .id;
                                     return Padding(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 16),

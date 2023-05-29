@@ -878,12 +878,12 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
             },
             child: GestureDetector(
               onPanUpdate: (details) {
-                if (details.delta.dx > 20 && _isExListShow == true) {
+                if (details.delta.dx > 10 && _isExListShow == true) {
                   setState(() {
                     _isExListShow = false;
                   });
                   print("Dragging in +X direction");
-                } else if (details.delta.dx < 20 && _isExListShow == false) {
+                } else if (details.delta.dx < 10 && _isExListShow == false) {
                   setState(() {
                     _isExListShow = true;
                   });

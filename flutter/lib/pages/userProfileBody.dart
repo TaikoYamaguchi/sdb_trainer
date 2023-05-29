@@ -96,7 +96,7 @@ class _ProfileBodyState extends State<ProfileBody> {
           FocusScope.of(context).unfocus();
         },
         onPanUpdate: (details) {
-          if (details.delta.dx > 20 && btnDisabled == false) {
+          if (details.delta.dx > 10 && btnDisabled == false) {
             btnDisabled = true;
             Navigator.of(context).pop();
             print("Dragging in +X direction");

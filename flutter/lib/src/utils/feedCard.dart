@@ -93,31 +93,6 @@ class FeedCardState extends State<FeedCard> {
     _tapPosition = const Offset(0.0, 0.0);
     _exEditCommentCtrl.text = widget.sdbdata.comment ?? "";
     super.initState();
-    /*
-    myNative = NativeAd(
-      adUnitId: UNIT_ID[Platform.isIOS ? 'ios' : 'android']!,
-      factoryId: 'adFactoryExample',
-      request: AdRequest(),
-      listener: NativeAdListener(
-        // Called when an ad is successfully received.
-        onAdLoaded: (Ad ad) {
-          var _add = ad as NativeAd;
-          print("**** AD ***** ${_add.responseInfo}");
-          setState(() {
-            myNative = _add;
-          });
-        },
-        // Called when an ad request failed.
-        onAdFailedToLoad: (Ad ad, LoadAdError error) {
-          // Dispose the ad here to free resources.
-          //ad.dispose();
-          print('Ad load failed (code=${error.code} message=${error.message})');
-        },
-        // Called when an ad opens an overlay that covers the screen.
-      ),
-    );
-    myNative!.load();
-    */
   }
 
   @override
@@ -1934,8 +1909,6 @@ class FeedCardState extends State<FeedCard> {
   @override
   void dispose() {
     print('dispose');
-    _focusNode.dispose();
-    _commentInputCtrl.dispose();
     super.dispose();
   }
 

@@ -255,7 +255,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
     bool btnDisabled = false;
     return GestureDetector(
       onPanUpdate: (details) {
-        if (details.delta.dx > 20 && btnDisabled == false) {
+        if (details.delta.dx > 10 && btnDisabled == false) {
           btnDisabled = true;
           Navigator.of(context).pop();
           print("Dragging in +X direction");
@@ -402,7 +402,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                   ];
                                 },
                                 onPanUpdate: (details) {
-                                  if (details.delta.dx > 20 &&
+                                  if (details.delta.dx > 10 &&
                                       btnDisabled == false) {
                                     btnDisabled = true;
                                     Navigator.of(context).pop();

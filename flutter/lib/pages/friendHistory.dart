@@ -97,7 +97,7 @@ class _FriendHistoryState extends State<FriendHistory>
     bool btnDisabled = false;
     return GestureDetector(
       onPanUpdate: (details) {
-        if (details.delta.dx > 20 && btnDisabled == false) {
+        if (details.delta.dx > 10 && btnDisabled == false) {
           btnDisabled = true;
           Navigator.of(context).pop();
         }
