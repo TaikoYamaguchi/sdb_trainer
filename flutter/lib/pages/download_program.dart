@@ -16,6 +16,7 @@ import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/src/utils/alerts.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'dart:async';
+import 'package:sdb_trainer/src/model/exerciseList.dart';
 
 // ignore: must_be_immutable
 class ProgramDownload extends StatefulWidget {
@@ -35,6 +36,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
   var _workoutProvider;
   var _exProvider;
   var _btnDisabled;
+  bool _isTextExpanded = false;
   List<JustTheController> tooltipController = [];
   final List<TextEditingController> _onermController = [];
   final TextEditingController _workoutNameCtrl =
@@ -86,12 +88,25 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               color: Theme.of(context).primaryColorLight,
             ),
           ),
-          backgroundColor: Theme.of(context).canvasColor,
+          backgroundColor: Theme.of(context).canvasColor.withOpacity(0.9),
         ));
   }
 
   Widget _programDownloadWidget() {
     _famousdataProvider.weekchangepre(0);
+    final textSpan = TextSpan(
+      text: widget.program.routinedata.routine_time,
+      style: DefaultTextStyle.of(context).style,
+    );
+    final textPainter = TextPainter(
+      text: textSpan,
+      textDirection: TextDirection.ltr,
+      textScaleFactor: MediaQuery.of(context).textScaleFactor,
+      maxLines: 5,
+    );
+    textPainter.layout(maxWidth: MediaQuery.of(context).size.width);
+
+    final isTextOverflow = textPainter.didExceedMaxLines;
     return Column(
       children: [
         Expanded(
@@ -155,16 +170,19 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                   width: MediaQuery.of(context).size.width / 5,
                                   child: Center(
                                     child: Text("기간",
+                                        textScaleFactor: 1.3,
                                         style: TextStyle(
                                             color: Theme.of(context)
                                                 .primaryColorLight,
                                             fontWeight: FontWeight.bold)),
                                   )),
+                              const SizedBox(height: 5),
                               SizedBox(
                                 width: 100,
                                 child: Center(
                                   child: Text(
-                                      '${widget.program.routinedata.exercises[0].plans.length.toString()}days',
+                                      '${widget.program.routinedata.exercises[0].plans.length.toString()}일',
+                                      textScaleFactor: 1.2,
                                       style: TextStyle(
                                           color: Theme.of(context)
                                               .primaryColorLight)),
@@ -179,16 +197,19 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                   width: MediaQuery.of(context).size.width / 5,
                                   child: Center(
                                     child: Text("난이도",
+                                        textScaleFactor: 1.3,
                                         style: TextStyle(
                                             color: Theme.of(context)
                                                 .primaryColorLight,
                                             fontWeight: FontWeight.bold)),
                                   )),
+                              const SizedBox(height: 5),
                               SizedBox(
                                 width: MediaQuery.of(context).size.width / 5,
                                 child: Center(
                                   child: Text(
                                       '${item_map[widget.program.level]}',
+                                      textScaleFactor: 1.2,
                                       style: TextStyle(
                                           color: Theme.of(context)
                                               .primaryColorLight)),
@@ -237,29 +258,69 @@ class _ProgramDownloadState extends State<ProgramDownload> {
               Container(
                 padding: const EdgeInsets.all(12.0),
                 alignment: Alignment.centerLeft,
-                child: Text("Program 설명",
-                    textScaleFactor: 2.0,
+                child: Text("프로그램 설명",
+                    textScaleFactor: 1.6,
                     style: TextStyle(
                         color: Theme.of(context).primaryColorLight,
                         fontWeight: FontWeight.bold)),
               ),
               Container(
-                padding: const EdgeInsets.all(12.0),
+                padding: const EdgeInsets.only(
+                    left: 12.0, right: 12.0, top: 12.0, bottom: 2.0),
                 alignment: Alignment.centerLeft,
                 child: Text(widget.program.routinedata.routine_time,
-                    textScaleFactor: 1.7,
-                    style: TextStyle(
-                        color: Theme.of(context).primaryColorLight,
-                        fontWeight: FontWeight.bold)),
+                    maxLines: _isTextExpanded ? null : 5,
+                    overflow: TextOverflow.fade,
+                    textScaleFactor: 1.5,
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
               ),
-              Container(
+              if (isTextOverflow)
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      _isTextExpanded = !_isTextExpanded;
+                    });
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 0.0),
+                    child: Card(
+                      elevation: 0.0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _isTextExpanded
+                                ? Icon(Icons.arrow_upward,
+                                    size: 24,
+                                    color: Theme.of(context).primaryColor)
+                                : Icon(Icons.arrow_downward,
+                                    size: 24,
+                                    color: Theme.of(context).primaryColor),
+                            Text(
+                              _isTextExpanded ? '접기' : '더 보기',
+                              textScaleFactor: 1.4,
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              const SizedBox(
                 height: 10,
               ),
               Container(
                 padding: const EdgeInsets.all(12.0),
                 alignment: Alignment.centerLeft,
-                child: Text("세부사항",
-                    textScaleFactor: 2.0,
+                child: Text("프로그램 세부사항",
+                    textScaleFactor: 1.6,
                     style: TextStyle(
                         color: Theme.of(context).primaryColorLight,
                         fontWeight: FontWeight.bold)),
@@ -272,7 +333,10 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                         child: ListView(
                             scrollDirection: Axis.horizontal,
                             children: techChips())),
-                    _Nday_RoutineWidget(),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    _ndayRoutineWidget(),
                   ],
                 );
               }),
@@ -284,11 +348,11 @@ class _ProgramDownloadState extends State<ProgramDownload> {
     );
   }
 
-  Widget _Nday_RoutineWidget() {
+  Widget _ndayRoutineWidget() {
     return Consumer2<FamousdataProvider, ExercisesdataProvider>(
         builder: (builder, famous, exinfo, child) {
       var plandata = famous.download.routinedata.exercises[0];
-      int num_week = (plandata.plans.length / 7).ceil();
+      int numWeek = (plandata.plans.length / 7).ceil();
       var inplandata = plandata.plans[plandata.progress].exercises;
       var uniqexinfo = exinfo.exercisesdata.exercises;
       for (int s = 0; s < 40; s++) {
@@ -325,8 +389,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                     width: 10,
                   ),
                   Text(
-                    'Day ${plandata.progress % 7 + 1}',
-                    textScaleFactor: 2.0,
+                    '${plandata.progress % 7 + 1}일',
+                    textScaleFactor: 1.8,
                     style:
                         TextStyle(color: Theme.of(context).primaryColorLight),
                   ),
@@ -337,7 +401,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                       padding: const EdgeInsets.all(3),
                       constraints: const BoxConstraints(),
                       onPressed: () {
-                        if (_famousdataProvider.week + 1 != num_week) {
+                        if (_famousdataProvider.week + 1 != numWeek) {
                           if (plandata.progress % 7 < 6) {
                             _famousdataProvider
                                 .progresschange(plandata.progress + 1);
@@ -384,15 +448,10 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                             '오늘은 휴식데이!',
                             textScaleFactor: 2.0,
                             style: TextStyle(
-                                color: Theme.of(context).primaryColorLight,
-                                fontWeight: FontWeight.bold),
+                                color: Theme.of(context).primaryColorLight),
                           ),
                           Container(
-                            height: 20,
-                          ),
-                          Container(
-                            height: 30,
-                          ),
+                              height: MediaQuery.of(context).size.height - 440),
                         ],
                       ))
                     : ListView.builder(
@@ -404,6 +463,18 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                           Controllerlist.add(ExpandableController(
                             initialExpanded: true,
                           ));
+                          var _exImage;
+                          try {
+                            _exImage = extra_completely_new_Ex[
+                                    extra_completely_new_Ex.indexWhere(
+                                        (element) =>
+                                            element.name ==
+                                            inplandata[index].name)]
+                                .image;
+                            _exImage ??= "";
+                          } catch (e) {
+                            _exImage = "";
+                          }
                           return Column(
                             children: [
                               ExpandablePanel(
@@ -421,25 +492,21 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                       children: [
                                         Text(
                                           inplandata[index].name,
-                                          textScaleFactor: 1.7,
+                                          textScaleFactor: 1.6,
                                           style: TextStyle(
                                               color: Theme.of(context)
                                                   .primaryColorLight),
                                         ),
-                                        Container(
-                                          width: 10,
-                                        ),
                                         Expanded(
-                                          child: Container(
-                                            child: Text(
-                                              '기준: ${inplandata[index].ref_name}',
-                                              textScaleFactor: 1.1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .primaryColorDark,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
+                                          child: Text(
+                                            '기준: ${inplandata[index].ref_name}',
+                                            textScaleFactor: 1.1,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.right,
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColorDark,
+                                                fontWeight: FontWeight.bold),
                                           ),
                                         ),
                                         GestureDetector(
@@ -455,6 +522,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                                   const EdgeInsets.all(8.0),
                                               child: Text(
                                                 '각자의 기준 운동 1rm X 무게비(%)로 운동 중량이 설정됩니다. 내 ${inplandata[index].ref_name} 1rm: ${refinfo.onerm.toStringAsFixed(0)}',
+                                                textScaleFactor: 1.2,
                                                 style: TextStyle(
                                                     color: Theme.of(context)
                                                         .primaryColorLight),
@@ -476,33 +544,55 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                                   ),
                                   collapsed:
                                       Container(), // body when the widget is Collapsed, I didnt need anything here.
-                                  expanded: ListView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemBuilder:
-                                        (BuildContext _context, int setindex) {
-                                      return Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                '기준 1rm   X   ${(inplandata[index].sets[setindex].weight).toStringAsFixed(0)}%    X    ${inplandata[index].sets[setindex].reps}reps',
-                                                textScaleFactor: 1.7,
-                                                style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .primaryColorLight,
-                                                ),
+                                  expanded: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      _exImage != ""
+                                          ? Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Image.asset(
+                                                _exImage,
+                                                height: 80,
+                                                width: 80,
+                                                fit: BoxFit.cover,
                                               ),
-                                            ],
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                    shrinkWrap: true,
-                                    itemCount: inplandata[index].sets.length,
+                                            )
+                                          : Container(
+                                              height: 80,
+                                              width: 80,
+                                              decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle),
+                                              child: Icon(
+                                                  Icons.image_not_supported,
+                                                  color: Theme.of(context)
+                                                      .primaryColorDark),
+                                            ),
+                                      Expanded(
+                                        child: ListView.builder(
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          itemBuilder: (BuildContext _context,
+                                              int setindex) {
+                                            return Text(
+                                              '기준 1rm   X   ${(inplandata[index].sets[setindex].weight).toStringAsFixed(0)}%    X    ${inplandata[index].sets[setindex].reps}회',
+                                              textAlign: TextAlign.right,
+                                              textScaleFactor: 1.4,
+                                              style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
+                                              ),
+                                            );
+                                          },
+                                          shrinkWrap: true,
+                                          itemCount:
+                                              inplandata[index].sets.length,
+                                        ),
+                                      ),
+                                    ],
                                   ) // body when the widget is Expanded
                                   ),
                               Row(
@@ -543,14 +633,20 @@ class _ProgramDownloadState extends State<ProgramDownload> {
 
   List<Widget> techChips() {
     List<Widget> chips = [];
-    int num_week =
+    int numWeek =
         (widget.program.routinedata.exercises[0].plans.length / 7).ceil();
-    for (int i = 0; i < num_week; i++) {
+    for (int i = 0; i < numWeek; i++) {
       Widget item = Padding(
         padding: const EdgeInsets.only(left: 10, right: 5),
         child: ChoiceChip(
-          label: Text('week${i + 1}'),
-          labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
+          label: Text(
+            '${i + 1}주차',
+            textScaleFactor: 1.2,
+          ),
+          labelStyle: TextStyle(
+              color: _famousdataProvider.week == i
+                  ? Theme.of(context).highlightColor
+                  : Theme.of(context).primaryColorLight),
           selected: _famousdataProvider.week == i,
           selectedColor: Theme.of(context).primaryColor,
           backgroundColor: Theme.of(context).cardColor,
