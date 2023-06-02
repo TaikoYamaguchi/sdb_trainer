@@ -14,6 +14,7 @@ import 'package:sdb_trainer/src/model/workoutdata.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart' as uex;
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/src/utils/alerts.dart';
+import 'package:sdb_trainer/src/utils/my_flexible_space_bar.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'dart:async';
 import 'package:sdb_trainer/src/model/exerciseList.dart';
@@ -31,7 +32,10 @@ class ProgramDownload extends StatefulWidget {
 }
 
 class _ProgramDownloadState extends State<ProgramDownload> {
+  final _listViewKey = GlobalKey();
+  final ScrollController _scroller = ScrollController();
   var _userProvider;
+  bool dragstart = false;
   var _famousdataProvider;
   var _workoutProvider;
   var _exProvider;
@@ -63,33 +67,154 @@ class _ProgramDownloadState extends State<ProgramDownload> {
     super.initState();
   }
 
+  Widget _createListener(Widget child) {
+    return Listener(
+      child: child,
+      onPointerMove: (PointerMoveEvent event) {
+        if (dragstart) {
+          RenderBox render =
+              _listViewKey.currentContext?.findRenderObject() as RenderBox;
+          Offset position = render.localToGlobal(Offset.zero);
+          double topY = position.dy;
+          double bottomY = topY + render.size.height;
+          const detectedRange = 100;
+
+          const moveDistance = 3;
+          if (event.position.dy < topY + detectedRange) {
+            var to = _scroller.offset - moveDistance;
+            to = (to < 0) ? 0 : to;
+            _scroller.jumpTo(to);
+          }
+          if (event.position.dy > bottomY - detectedRange) {
+            _scroller.jumpTo(_scroller.offset + moveDistance);
+          }
+        }
+        // print("x: ${position.dy}, "
+        //     "y: ${position.dy}, "
+        //     "height: ${render.size.height}, "
+        //     "width: ${render.size.width}");
+      },
+    );
+  }
+
+  Widget _myDownloadProgramSliver() {
+    return Column(
+      children: [
+        Expanded(
+          child: CustomScrollView(slivers: [
+            SliverAppBar(
+              snap: false,
+              floating: false,
+              pinned: true,
+              backgroundColor: Theme.of(context).canvasColor.withOpacity(0.9),
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back_ios_outlined),
+                color: Theme.of(context).primaryColorLight,
+                onPressed: () {
+                  _btnDisabled == true
+                      ? null
+                      : [
+                          _btnDisabled = true,
+                          Navigator.of(context).pop(),
+                          print("gogogo")
+                        ];
+                },
+              ),
+              expandedHeight: _appbarWidget().preferredSize.height * 3,
+              collapsedHeight: _appbarWidget().preferredSize.height * 1,
+              flexibleSpace: myFlexibleSpaceBar(
+                expandedTitleScale: 1.6,
+                titlePaddingTween: EdgeInsetsTween(
+                    begin: const EdgeInsets.only(left: 12.0, bottom: 8),
+                    end: const EdgeInsets.only(
+                        left: 60.0, bottom: 8, right: 40)),
+                title: Column(
+                  children: [
+                    Expanded(child: Container()),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        widget.program.image != ""
+                            ? CircleAvatar(
+                                radius: 32,
+                                backgroundImage:
+                                    NetworkImage(widget.program.image),
+                                backgroundColor: Colors.transparent)
+                            : Icon(
+                                Icons.account_circle,
+                                color: Theme.of(context).primaryColorDark,
+                                size: 64,
+                              ),
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 4.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(widget.program.category.toString(),
+                                    textScaleFactor: 0.5,
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontWeight: FontWeight.bold)),
+                                Text(widget.program.routinedata.name,
+                                    textScaleFactor: 0.7,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color:
+                                            Theme.of(context).primaryColorLight,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SliverList(
+              delegate: SliverChildListDelegate([
+                Expanded(
+                    child:
+                        SingleChildScrollView(child: _programDownloadWidget())),
+              ]),
+            )
+          ]),
+        ),
+        _Start_Program_Button()
+      ],
+    );
+  }
+
   PreferredSizeWidget _appbarWidget() {
     _btnDisabled = false;
-    return PreferredSize(
-        preferredSize: const Size.fromHeight(40.0), // here the desired height
-        child: AppBar(
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_outlined),
-            color: Theme.of(context).primaryColorLight,
-            onPressed: () {
-              _btnDisabled == true
-                  ? null
-                  : [
-                      _btnDisabled = true,
-                      Navigator.of(context).pop(),
-                    ];
-            },
-          ),
-          title: Text(
-            "",
-            textScaleFactor: 2.7,
-            style: TextStyle(
-              color: Theme.of(context).primaryColorLight,
-            ),
-          ),
-          backgroundColor: Theme.of(context).canvasColor.withOpacity(0.9),
-        ));
+    return AppBar(
+      elevation: 0,
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back_ios_outlined),
+        color: Theme.of(context).primaryColorLight,
+        onPressed: () {
+          _btnDisabled == true
+              ? null
+              : [
+                  _btnDisabled = true,
+                  Navigator.of(context).pop(),
+                ];
+        },
+      ),
+      title: Text(
+        "",
+        textScaleFactor: 2.7,
+        style: TextStyle(
+          color: Theme.of(context).primaryColorLight,
+        ),
+      ),
+      backgroundColor: Theme.of(context).canvasColor.withOpacity(0.9),
+    );
   }
 
   Widget _programDownloadWidget() {
@@ -107,245 +232,186 @@ class _ProgramDownloadState extends State<ProgramDownload> {
     textPainter.layout(maxWidth: MediaQuery.of(context).size.width);
 
     final isTextOverflow = textPainter.didExceedMaxLines;
-    return Column(
-      children: [
-        Expanded(
-          child: SingleChildScrollView(
-            child: Column(children: [
-              Container(
-                padding: const EdgeInsets.all(12.0),
-                child: Row(
-                  children: [
-                    widget.program.image != ""
-                        ? CircleAvatar(
-                            radius: 48,
-                            backgroundImage: NetworkImage(widget.program.image),
-                            backgroundColor: Colors.transparent)
-                        : Icon(
-                            Icons.account_circle,
-                            color: Theme.of(context).primaryColorDark,
-                            size: 100.0,
-                          ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(widget.program.category.toString(),
-                                textScaleFactor: 1.2,
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontWeight: FontWeight.bold)),
-                            Text(widget.program.routinedata.name,
-                                textScaleFactor: 2.0,
+    return Column(mainAxisSize: MainAxisSize.min, children: [
+      SizedBox(
+        height: 100,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Card(
+            color: Theme.of(context).cardColor,
+            elevation: 0.0,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width / 5,
+                          child: Center(
+                            child: Text("기간",
+                                textScaleFactor: 1.3,
                                 style: TextStyle(
                                     color: Theme.of(context).primaryColorLight,
                                     fontWeight: FontWeight.bold)),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 100,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    color: Theme.of(context).cardColor,
-                    elevation: 0.0,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                  width: MediaQuery.of(context).size.width / 5,
-                                  child: Center(
-                                    child: Text("기간",
-                                        textScaleFactor: 1.3,
-                                        style: TextStyle(
-                                            color: Theme.of(context)
-                                                .primaryColorLight,
-                                            fontWeight: FontWeight.bold)),
-                                  )),
-                              const SizedBox(height: 5),
-                              SizedBox(
-                                width: 100,
-                                child: Center(
-                                  child: Text(
-                                      '${widget.program.routinedata.exercises[0].plans.length.toString()}일',
-                                      textScaleFactor: 1.2,
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorLight)),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                  width: MediaQuery.of(context).size.width / 5,
-                                  child: Center(
-                                    child: Text("난이도",
-                                        textScaleFactor: 1.3,
-                                        style: TextStyle(
-                                            color: Theme.of(context)
-                                                .primaryColorLight,
-                                            fontWeight: FontWeight.bold)),
-                                  )),
-                              const SizedBox(height: 5),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width / 5,
-                                child: Center(
-                                  child: Text(
-                                      '${item_map[widget.program.level]}',
-                                      textScaleFactor: 1.2,
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorLight)),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                              width: MediaQuery.of(context).size.width / 5,
-                              child: Center(
-                                child: GestureDetector(
-                                  onTap: () {},
-                                  child: _famousLikeButton(),
-                                ),
-                              )),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 5,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                    child: Center(
-                                  child: Icon(
-                                      Icons.supervised_user_circle_sharp,
-                                      color:
-                                          Theme.of(context).primaryColorLight,
-                                      size: 20),
-                                )),
-                                SizedBox(
-                                    child: Center(
-                                        child: Text(
-                                            " ${widget.program.subscribe.toString()}",
-                                            textScaleFactor: 1.3,
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .primaryColorLight)))),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(12.0),
-                alignment: Alignment.centerLeft,
-                child: Text("프로그램 설명",
-                    textScaleFactor: 1.6,
-                    style: TextStyle(
-                        color: Theme.of(context).primaryColorLight,
-                        fontWeight: FontWeight.bold)),
-              ),
-              Container(
-                padding: const EdgeInsets.only(
-                    left: 12.0, right: 12.0, top: 12.0, bottom: 2.0),
-                alignment: Alignment.centerLeft,
-                child: Text(widget.program.routinedata.routine_time,
-                    maxLines: _isTextExpanded ? null : 5,
-                    overflow: TextOverflow.fade,
-                    textScaleFactor: 1.5,
-                    style:
-                        TextStyle(color: Theme.of(context).primaryColorLight)),
-              ),
-              if (isTextOverflow)
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      _isTextExpanded = !_isTextExpanded;
-                    });
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 0.0),
-                    child: Card(
-                      elevation: 0.0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            _isTextExpanded
-                                ? Icon(Icons.arrow_upward,
-                                    size: 24,
-                                    color: Theme.of(context).primaryColor)
-                                : Icon(Icons.arrow_downward,
-                                    size: 24,
-                                    color: Theme.of(context).primaryColor),
-                            Text(
-                              _isTextExpanded ? '접기' : '더 보기',
-                              textScaleFactor: 1.4,
+                          )),
+                      const SizedBox(height: 5),
+                      SizedBox(
+                        width: 100,
+                        child: Center(
+                          child: Text(
+                              '${widget.program.routinedata.exercises[0].plans.length.toString()}일',
+                              textScaleFactor: 1.2,
                               style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                                  color: Theme.of(context).primaryColorLight)),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ),
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                padding: const EdgeInsets.all(12.0),
-                alignment: Alignment.centerLeft,
-                child: Text("프로그램 세부사항",
-                    textScaleFactor: 1.6,
-                    style: TextStyle(
-                        color: Theme.of(context).primaryColorLight,
-                        fontWeight: FontWeight.bold)),
-              ),
-              Consumer<FamousdataProvider>(builder: (builder, provider, child) {
-                return Column(
-                  children: [
-                    SizedBox(
-                        height: 40,
-                        child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: techChips())),
-                    const SizedBox(
-                      height: 10,
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width / 5,
+                          child: Center(
+                            child: Text("난이도",
+                                textScaleFactor: 1.3,
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight,
+                                    fontWeight: FontWeight.bold)),
+                          )),
+                      const SizedBox(height: 5),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 5,
+                        child: Center(
+                          child: Text('${item_map[widget.program.level]}',
+                              textScaleFactor: 1.2,
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                      width: MediaQuery.of(context).size.width / 5,
+                      child: Center(
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: _famousLikeButton(),
+                        ),
+                      )),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 5,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                            child: Center(
+                          child: Icon(Icons.supervised_user_circle_sharp,
+                              color: Theme.of(context).primaryColorLight,
+                              size: 20),
+                        )),
+                        SizedBox(
+                            child: Center(
+                                child: Text(
+                                    " ${widget.program.subscribe.toString()}",
+                                    textScaleFactor: 1.3,
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .primaryColorLight)))),
+                      ],
                     ),
-                    _ndayRoutineWidget(),
-                  ],
-                );
-              }),
-            ]),
+                  )
+                ],
+              ),
+            ),
           ),
         ),
-        _Start_Program_Button()
-      ],
-    );
+      ),
+      Container(
+        padding: const EdgeInsets.all(12.0),
+        alignment: Alignment.centerLeft,
+        child: Text("프로그램 설명",
+            textScaleFactor: 1.6,
+            style: TextStyle(
+                color: Theme.of(context).primaryColorLight,
+                fontWeight: FontWeight.bold)),
+      ),
+      Container(
+        padding: const EdgeInsets.only(
+            left: 12.0, right: 12.0, top: 12.0, bottom: 2.0),
+        alignment: Alignment.centerLeft,
+        child: Text(widget.program.routinedata.routine_time,
+            maxLines: _isTextExpanded ? null : 5,
+            overflow: TextOverflow.fade,
+            textScaleFactor: 1.5,
+            style: TextStyle(color: Theme.of(context).primaryColorLight)),
+      ),
+      if (isTextOverflow)
+        InkWell(
+          onTap: () {
+            setState(() {
+              _isTextExpanded = !_isTextExpanded;
+            });
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
+            child: Card(
+              elevation: 0.0,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _isTextExpanded
+                        ? Icon(Icons.arrow_upward,
+                            size: 24, color: Theme.of(context).primaryColor)
+                        : Icon(Icons.arrow_downward,
+                            size: 24, color: Theme.of(context).primaryColor),
+                    Text(
+                      _isTextExpanded ? '접기' : '더 보기',
+                      textScaleFactor: 1.4,
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      const SizedBox(
+        height: 10,
+      ),
+      Container(
+        padding: const EdgeInsets.all(12.0),
+        alignment: Alignment.centerLeft,
+        child: Text("프로그램 세부사항",
+            textScaleFactor: 1.6,
+            style: TextStyle(
+                color: Theme.of(context).primaryColorLight,
+                fontWeight: FontWeight.bold)),
+      ),
+      Consumer<FamousdataProvider>(builder: (builder, provider, child) {
+        return Column(
+          children: [
+            SizedBox(
+                height: 40,
+                child: ListView(
+                    scrollDirection: Axis.horizontal, children: techChips())),
+            const SizedBox(
+              height: 10,
+            ),
+            _ndayRoutineWidget(),
+          ],
+        );
+      })
+    ]);
   }
 
   Widget _ndayRoutineWidget() {
@@ -1208,8 +1274,8 @@ class _ProgramDownloadState extends State<ProgramDownload> {
             ];
       return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: _appbarWidget(),
-        body: _programDownloadWidget(),
+        appBar: null,
+        body: _myDownloadProgramSliver(),
       );
     });
   }

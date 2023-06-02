@@ -507,11 +507,11 @@ class LoginPageState extends State<LoginPage> {
           storageEmail != "" &&
           storageEmail == _userEmailCtrl.text &&
           storageToken != null) {
+        print("kkkkkkkkkkkkkkkao");
         initialProviderGet(context, storageToken);
         _bodyStater.change(1);
         _loginState.change(true);
         _testSetUserId(_userEmailCtrl.text);
-
         fcmSetting();
       } else {
         try {
@@ -526,13 +526,14 @@ class LoginPageState extends State<LoginPage> {
                   fcmSetting(),
                 }
               : _loginState.changeSignup(true));
+          print("elseeeeeee kakao");
         } catch (error) {
-          print(error);
           _loginState.changeSignup(true);
           showToast("회원가입 페이지로 이동할게요");
         }
       }
     } catch (e) {
+      print("this onne is default");
       try {
         await UserLoginKakao(
           userEmail: _userEmailCtrl.text,
@@ -654,7 +655,7 @@ class LoginPageState extends State<LoginPage> {
       _PrefsProvider.getAlarmPrefs(),
       _PrefsProvider.getSystemNotification(),
       _routinetimeProvider.getrest(),
-      await UserAll().getUsers().then((userlist) {
+      UserAll().getUsers().then((userlist) {
         usertestList =
             userlist!.userdatas.where((user) => user.image != "").toList();
       }),
@@ -674,8 +675,9 @@ class LoginPageState extends State<LoginPage> {
 
     binding.addPostFrameCallback((_) async {
       BuildContext context = binding.renderViewElement!;
+      await Future.delayed(Duration.zero);
       for (var user in usertestList) {
-        precacheImage(CachedNetworkImageProvider(user.image), context);
+        await precacheImage(CachedNetworkImageProvider(user.image), context);
       }
     });
   }

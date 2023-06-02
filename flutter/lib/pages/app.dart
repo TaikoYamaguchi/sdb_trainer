@@ -465,7 +465,6 @@ class _AppState extends State<App> {
         Provider.of<RoutineTimeProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
     _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
-    _userProvider.getUsersFriendsAll();
 
     return Consumer4<BodyStater, LoginPageProvider, HistorydataProvider,
             UserdataProvider>(

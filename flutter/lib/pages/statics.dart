@@ -222,11 +222,15 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
   @override
   void dispose() {
     _eventController.dispose();
+    keyboardSubscription.cancel();
     super.dispose();
   }
 
   @override
   void deactivate() {
+
+    _eventController.dispose();
+    keyboardSubscription.cancel();
     print('deactivate');
     super.deactivate();
   }

@@ -1908,6 +1908,8 @@ class FeedCardState extends State<FeedCard> {
 
   @override
   void dispose() {
+    _focusNode.dispose();
+    _commentInputCtrl.dispose();
     print('dispose');
     super.dispose();
   }
