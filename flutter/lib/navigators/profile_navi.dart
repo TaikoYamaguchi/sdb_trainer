@@ -7,7 +7,7 @@ class TabProfileNavigatorRoutes {
 }
 
 class TabProfileNavigator extends StatelessWidget {
-  TabProfileNavigator({Key? key}) : super(key: key);
+  const TabProfileNavigator({Key? key}) : super(key: key);
 
   void _push(BuildContext context) {
     var routeBuilders = _routeBuilders(context);

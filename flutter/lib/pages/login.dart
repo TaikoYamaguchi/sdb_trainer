@@ -25,10 +25,10 @@ import 'package:flutter/foundation.dart' as foundation;
 import 'package:firebase_auth/firebase_auth.dart' as firebase;
 import 'package:firebase_analytics/firebase_analytics.dart';
 
-// ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
-  bool isUpdateNeeded;
-  LoginPage({Key? key, required this.isUpdateNeeded}) : super(key: key);
+  final bool isUpdateNeeded;
+  const LoginPage({Key? key, required this.isUpdateNeeded}) : super(key: key);
+
   @override
   LoginPageState createState() => LoginPageState();
 }

@@ -24,6 +24,8 @@ import 'dart:ui' as ui;
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 
 class Calendar extends StatefulWidget {
+  const Calendar({Key? key}) : super(key: key);
+
   @override
   _CalendarState createState() => _CalendarState();
 }
@@ -228,7 +230,6 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
 
   @override
   void deactivate() {
-
     _eventController.dispose();
     keyboardSubscription.cancel();
     print('deactivate');

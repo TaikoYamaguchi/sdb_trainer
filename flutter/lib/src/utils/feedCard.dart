@@ -27,13 +27,13 @@ import 'package:zoom_pinch_overlay/zoom_pinch_overlay.dart';
 
 // ignore: must_be_immutable
 class FeedCard extends StatefulWidget {
-  hisdata.SDBdata sdbdata;
-  int index;
-  int feedListCtrl;
-  bool openUserDetail;
-  bool isExEdit;
-  bool ad;
-  FeedCard(
+  final hisdata.SDBdata sdbdata;
+  final int index;
+  final int feedListCtrl;
+  final bool openUserDetail;
+  final bool isExEdit;
+  final bool ad;
+  const FeedCard(
       {Key? key,
       required this.sdbdata,
       required this.index,
@@ -1915,8 +1915,6 @@ class FeedCardState extends State<FeedCard> {
   @override
   void deactivate() {
     print('deactivate');
-    _focusNode.dispose();
-    _commentInputCtrl.dispose();
     super.deactivate();
   }
 }

@@ -81,7 +81,7 @@ void main() async {
         create: (BuildContext context) => InterviewdataProvider()),
     ChangeNotifierProvider(create: (BuildContext context) => ThemeProvider()),
     ChangeNotifierProvider(create: (BuildContext context) => TempImgStorage()),
-  ], child: MyApp()));
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -116,13 +116,13 @@ class MyApp extends StatelessWidget {
               canvasColor: Colors.white, //backgroundcolor
               brightness: Brightness.light,
               primaryColorLight: Colors.black, //fontcolor
-              primaryColorDark: Color(0xFFB5B9C2), // grey color
+              primaryColorDark: const Color(0xFFB5B9C2), // grey color
               indicatorColor: const Color(0xfff2f3f5), // navigation color
               highlightColor: Colors.white, // in primary color text white
-              textSelectionTheme: TextSelectionThemeData(
-                cursorColor: const Color(0xff7a28cb),
-                selectionColor: const Color(0xff7a28cb),
-                selectionHandleColor: const Color(0xff7a28cb),
+              textSelectionTheme: const TextSelectionThemeData(
+                cursorColor: Color(0xff7a28cb),
+                selectionColor: Color(0xff7a28cb),
+                selectionHandleColor: Color(0xff7a28cb),
               ),
               colorScheme: ThemeData().colorScheme.copyWith(
                     primary: const Color(0xff7a28cb),
@@ -136,20 +136,20 @@ class MyApp extends StatelessWidget {
               cardColor: const Color(0xff25272c),
               canvasColor: const Color(0xFF101012),
               primaryColorLight: Colors.white,
-              primaryColorDark: Color(0xFF717171),
+              primaryColorDark: const Color(0xFF717171),
               indicatorColor: const Color(0xFF212121),
               highlightColor: Colors.white,
-              textSelectionTheme: TextSelectionThemeData(
-                cursorColor: const Color(0xff7a28cb),
-                selectionColor: const Color(0xff7a28cb),
-                selectionHandleColor: const Color(0xff7a28cb),
+              textSelectionTheme: const TextSelectionThemeData(
+                cursorColor: Color(0xff7a28cb),
+                selectionColor: Color(0xff7a28cb),
+                selectionHandleColor: Color(0xff7a28cb),
               ),
               colorScheme: ThemeData().colorScheme.copyWith(
                     primary: const Color(0xff7a28cb),
                   ),
               fontFamily: 'Noto_Sans_KR'),
           title: 'Flutter Demo',
-          home: App(),
+          home: const App(),
         );
       }),
     );

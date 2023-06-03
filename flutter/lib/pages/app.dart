@@ -104,7 +104,6 @@ class _AppState extends State<App> {
   }
 
   Widget _bottomNavigationBarwidget() {
-    var width = MediaQuery.of(context).size.width;
     return Stack(
       children: [
         ClipRect(
@@ -155,32 +154,35 @@ class _AppState extends State<App> {
                       _bottomNavigationBarItem("avatar-svgrepo-com", "프로필"),
                     ],
                   ),
-                  Center(
-                    child: SizedBox(
-                      width: _bodyStater.bodystate == 0 ||
-                              _bodyStater.bodystate == 4
-                          ? width
-                          : width * 0.6,
-                      child: Align(
-                        alignment: _bodyStater.bodystate == 0 ||
-                                _bodyStater.bodystate == 1
-                            ? Alignment.bottomLeft
-                            : _bodyStater.bodystate == 2
-                                ? Alignment.bottomCenter
-                                : Alignment.bottomRight,
-                        child: Container(
-                          height: 2,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            borderRadius: const BorderRadius.only(
-                                topRight: Radius.circular(30),
-                                topLeft: Radius.circular(30)),
+                  LayoutBuilder(builder: (context, constraints) {
+                    final width = constraints.maxWidth;
+                    return Center(
+                      child: SizedBox(
+                        width: _bodyStater.bodystate == 0 ||
+                                _bodyStater.bodystate == 4
+                            ? width
+                            : width * 0.6,
+                        child: Align(
+                          alignment: _bodyStater.bodystate == 0 ||
+                                  _bodyStater.bodystate == 1
+                              ? Alignment.bottomLeft
+                              : _bodyStater.bodystate == 2
+                                  ? Alignment.bottomCenter
+                                  : Alignment.bottomRight,
+                          child: Container(
+                            height: 2,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColor,
+                              borderRadius: const BorderRadius.only(
+                                  topRight: Radius.circular(30),
+                                  topLeft: Radius.circular(30)),
+                            ),
+                            width: width * 0.2,
                           ),
-                          width: width * 0.2,
                         ),
                       ),
-                    ),
-                  ),
+                    );
+                  }),
                 ],
               ),
             ),
@@ -494,15 +496,15 @@ class _AppState extends State<App> {
                     ? _initialLoginWidget()
                     : IndexedStack(
                         index: _bodyStater.bodystate,
-                        children: <Widget>[
-                            const SearchNavigator(),
-                            const TabNavigator(),
+                        children: const <Widget>[
+                            SearchNavigator(),
+                            TabNavigator(),
                             Feed(),
                             Calendar(),
                             TabProfileNavigator()
                           ])
                 : _loginState.isSignUp
-                    ? SignUpPage()
+                    ? const SignUpPage()
                     : LoginPage(isUpdateNeeded: _isUpdateNeeded),
             floatingActionButton: Consumer<RoutineTimeProvider>(
                 builder: (builder, provider, child) {
