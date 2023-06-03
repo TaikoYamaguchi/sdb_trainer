@@ -178,9 +178,7 @@ class _ProgramDownloadState extends State<ProgramDownload> {
             ),
             SliverList(
               delegate: SliverChildListDelegate([
-                Expanded(
-                    child:
-                        SingleChildScrollView(child: _programDownloadWidget())),
+                SingleChildScrollView(child: _programDownloadWidget()),
               ]),
             )
           ]),
