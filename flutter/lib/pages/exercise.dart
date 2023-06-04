@@ -13,7 +13,6 @@ import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
-import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
@@ -42,7 +41,6 @@ class ExerciseState extends State<Exercise> {
   var _famousdataProvider;
   var _routinetimeProvider;
   var _PopProvider;
-  var _PrefsProvider;
   bool modecheck = false;
   bool dragstart = false;
   PageController? controller;
@@ -72,33 +70,6 @@ class ExerciseState extends State<Exercise> {
 
   @override
   void initState() {
-    itens.addAll({
-      TutorialItem(
-          globalKey: keyPlus,
-          touchScreen: true,
-          top: 200,
-          left: 50,
-          children: [
-            const Text(
-              "+버튼을 눌러 원하는 이름의 루틴을 추가하세요",
-              textScaleFactor: 1.7,
-              style: TextStyle(color: Colors.white),
-            ),
-            const SizedBox(
-              height: 100,
-            )
-          ],
-          widgetNext: const Text(
-            "아무곳을 눌러 진행",
-            style: TextStyle(
-              color: Colors.purple,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          shapeFocus: ShapeFocus.oval),
-    });
-
-    ///FUNÇÃO QUE EXIBE O TUTORIAL.
 
     super.initState();
     /*
@@ -617,18 +588,6 @@ class ExerciseState extends State<Exercise> {
         Provider.of<FamousdataProvider>(context, listen: false);
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
-    _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
-
-    _PrefsProvider.eachworkouttutor
-        ? _PrefsProvider.stepone
-            ? [
-                Future.delayed(const Duration(milliseconds: 0)).then((value) {
-                  Tutorial.showTutorial(context, itens);
-                  _PrefsProvider.steponedone();
-                }),
-              ]
-            : null
-        : null;
 
     return Consumer<PopProvider>(builder: (Builder, provider, child) {
       bool _goto = provider.goto;

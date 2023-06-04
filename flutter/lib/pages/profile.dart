@@ -1,12 +1,10 @@
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/interview.dart';
 import 'package:sdb_trainer/pages/userNotification.dart';
-import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/interviewdata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/themeMode.dart';
-import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/pages/userProfile.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
@@ -28,8 +26,6 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   var _userProvider;
   var _PopProvider;
-  var _PrefsProvider;
-  var _bodyStater;
   var _themeProvider;
   var _interviewProvider;
 
@@ -37,8 +33,6 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
-    _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
-    _bodyStater = Provider.of<BodyStater>(context, listen: false);
     _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
 
     _interviewProvider =
@@ -52,23 +46,7 @@ class _ProfileState extends State<Profile> {
                 textScaleFactor: 1.7,
                 style: TextStyle(color: Theme.of(context).primaryColorLight)),
             actions: [
-              Container(
-                  alignment: Alignment.center,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        _PopProvider.tutorpopon();
-                        Future.delayed(const Duration(milliseconds: 400))
-                            .then((value) {
-                          _bodyStater.change(1);
-                        });
-                        _PrefsProvider.tutorstart();
-                      },
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              Theme.of(context).cardColor)),
-                      child: Text('튜토리얼',
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColorLight))))
+
             ],
             backgroundColor: Theme.of(context).canvasColor,
           )),

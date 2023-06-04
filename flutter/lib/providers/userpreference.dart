@@ -4,39 +4,19 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class PrefsProvider extends ChangeNotifier {
-  bool? _eachworkouttutor = false;
   bool? _commentNotification = true;
   bool? _systemNotification = true;
-  bool? get eachworkouttutor => _eachworkouttutor;
   bool? get commentNotification => _commentNotification;
   bool? get systemNotification => _systemNotification;
   String? _nowonplan = "";
   String? get nowonplan => _nowonplan;
-  bool? _stepone = false;
-  bool? get stepone => _stepone;
-  bool? _steptwo = false;
-  bool? get steptwo => _steptwo;
-  bool? _stepthree = false;
-  bool? get stepthree => _stepthree;
+
   var _prefs;
   SharedPreferences get prefs => _prefs;
 
   getprefs() async {
     _prefs = await SharedPreferences.getInstance();
-    _prefs.getBool('eachworkouttutor') == null
-        ? [
-            await _prefs.setBool('eachworkouttutor', true),
-            _eachworkouttutor = _prefs.getBool('eachworkouttutor'),
-            _stepone = _eachworkouttutor,
-            _steptwo = _eachworkouttutor,
-            _stepthree = _eachworkouttutor
-          ]
-        : [
-            _eachworkouttutor = _prefs.getBool('eachworkouttutor'),
-            _stepone = _eachworkouttutor,
-            _steptwo = _eachworkouttutor,
-            _stepthree = _eachworkouttutor
-          ];
+
     _prefs.getString('lastroutine') == null
         ? await _prefs.setString('lastroutine', '')
         : null;
@@ -105,40 +85,7 @@ class PrefsProvider extends ChangeNotifier {
     }
   }
 
-  steponedone() async {
-    _stepone = false;
 
-    notifyListeners();
-  }
-
-  steptwodone() async {
-    _steptwo = false;
-
-    notifyListeners();
-  }
-
-  stepthreedone() async {
-    _stepthree = false;
-
-    notifyListeners();
-  }
-
-  tutordone() async {
-    await _prefs.setBool('eachworkouttutor', false);
-    _eachworkouttutor = _prefs.getBool('eachworkouttutor');
-
-    notifyListeners();
-  }
-
-  tutorstart() async {
-    await _prefs.setBool('eachworkouttutor', true);
-    _eachworkouttutor = _prefs.getBool('eachworkouttutor');
-    _stepone = _eachworkouttutor;
-    _steptwo = _eachworkouttutor;
-    _stepthree = _eachworkouttutor;
-
-    notifyListeners();
-  }
 
   lastplan(value) async {
     _prefs = await SharedPreferences.getInstance();
