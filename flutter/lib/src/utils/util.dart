@@ -26,27 +26,27 @@ void showToast(String message) {
 }
 
 void userLogOut(context) {
-  var _loginState = Provider.of<LoginPageProvider>(context, listen: false);
-  var _userProvider = Provider.of<UserdataProvider>(context, listen: false);
-  _userProvider.setUserKakaoEmail(null);
-  _userProvider.setUserKakaoName(null);
-  _userProvider.setUserKakaoImageUrl(null);
-  _userProvider.setUserKakaoGender(null);
-  _loginState.changeSignup(false);
-  _userProvider.getUsersFriendsAll();
-  _loginState.change(false);
+  var loginState = Provider.of<LoginPageProvider>(context, listen: false);
+  var userProvider = Provider.of<UserdataProvider>(context, listen: false);
+  userProvider.setUserKakaoEmail(null);
+  userProvider.setUserKakaoName(null);
+  userProvider.setUserKakaoImageUrl(null);
+  userProvider.setUserKakaoGender(null);
+  loginState.changeSignup(false);
+  userProvider.getUsersFriendsAll();
+  loginState.change(false);
   UserLogOut.logOut();
 }
 
 Future _getUserImage(ImageSource imageSource, context) async {
-  final ImagePicker _picker = ImagePicker();
-  var _userProvider = Provider.of<UserdataProvider>(context, listen: false);
-  final XFile? _selectImage =
-      await _picker.pickImage(source: imageSource, imageQuality: 30);
-  if (_selectImage != null) {
-    dynamic sendData = _selectImage.path;
+  final ImagePicker picker = ImagePicker();
+  var userProvider = Provider.of<UserdataProvider>(context, listen: false);
+  final XFile? selectImage =
+      await picker.pickImage(source: imageSource, imageQuality: 30);
+  if (selectImage != null) {
+    dynamic sendData = selectImage.path;
     UserImageEdit(file: sendData).patchUserImage().then((data) {
-      _userProvider.setUserdata(data);
+      userProvider.setUserdata(data);
     });
   }
 }
@@ -175,13 +175,13 @@ void displayErrorAlert(context, title, message) {
             ],
           ),
           actions: <Widget>[
-            _DeleteConfirmButton(context),
+            _deleteConfirmButton(context),
           ],
         );
       });
 }
 
-Widget _DeleteConfirmButton(context) {
+Widget _deleteConfirmButton(context) {
   return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: TextButton(
@@ -257,12 +257,12 @@ Widget _shareConfirmButton(context) {
 // _onShare method:
             final box = context.findRenderObject() as RenderBox?;
 
-            const _appStoreURL =
+            const appStoreURL =
                 "https://apps.apple.com/kr/app/supero/id6444859542";
-            const _playStoreURL =
+            const playStoreURL =
                 "https://play.google.com/store/apps/details?id=com.tk_lck.supero";
             await Share.share(
-                "Supero에서 같이 운동해요💪\n\n운동과 기록도 하고 무게도 올리고 공유 할 수 있어요😁\n\n아래 눌러서 설치해요\n\n- PlayStore : ${_playStoreURL}\n\n- AppStore : ${_appStoreURL}",
+                "Supero에서 같이 운동해요💪\n\n운동과 기록도 하고 무게도 올리고 공유 할 수 있어요😁\n\n아래 눌러서 설치해요\n\n- PlayStore : $playStoreURL\n\n- AppStore : $appStoreURL",
                 sharePositionOrigin:
                     box!.localToGlobal(Offset.zero) & box.size);
             Navigator.of(context, rootNavigator: true).pop();
