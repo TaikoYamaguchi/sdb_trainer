@@ -474,18 +474,15 @@ class _AppState extends State<App> {
       return WillPopScope(
         onWillPop: () async {
           final shouldPop;
-          _bodyStater.bodystate == 0
-              ? shouldPop = true
-              : [
-                  shouldPop = false,
-                  _bodyStater.bodystate == 1
-                      ? _PopProvider.popon()
-                      : _bodyStater.bodystate == 4
-                          ? _PopProvider.propopon()
-                          : _bodyStater.bodystate == 0
-                              ? _PopProvider.searchpopon()
-                              : null
-                ];
+          shouldPop = false;
+          [_bodyStater.bodystate == 1
+              ? _PopProvider.popon()
+              : _bodyStater.bodystate == 4
+                  ? _PopProvider.propopon()
+                  : _bodyStater.bodystate == 0
+                      ? _PopProvider.searchpopon()
+                      : null
+          ];
 
           return shouldPop!;
         },

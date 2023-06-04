@@ -538,7 +538,7 @@ class _ExerciseFilterState extends State<ExerciseFilter>
 
             return GestureDetector(
               onTap: () {
-                _PopProvider.exstackup(2);
+                _PopProvider.searchstackup();
                 Navigator.push(
                     context,
                     Transition(
@@ -710,12 +710,12 @@ class _ExerciseFilterState extends State<ExerciseFilter>
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
 
     return Consumer<PopProvider>(builder: (builder, provider, child) {
-      bool _popable = provider.isstacking;
+      bool _popable = provider.issearchstacking;
       _popable == false
           ? null
           : [
-              provider.exstackdown(),
-              provider.popoff(),
+              provider.searchstackdown(),
+              provider.searchpopoff(),
               Future.delayed(Duration.zero, () async {
                 Navigator.of(context).pop();
               })

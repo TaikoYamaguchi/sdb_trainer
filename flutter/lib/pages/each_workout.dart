@@ -8,7 +8,6 @@ import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
-import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/exerciseList.dart';
@@ -731,20 +730,10 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
     _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
     _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
-    _PrefsProvider = Provider.of<PrefsProvider>(context, listen: false);
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
     _PopProvider.tutorpopoff();
-    _PrefsProvider.eachworkouttutor
-        ? _PrefsProvider.steptwo
-            ? [
-                Future.delayed(const Duration(milliseconds: 400)).then((value) {
-                  Tutorial.showTutorial(context, itens);
-                  _PrefsProvider.steptwodone();
-                })
-              ]
-            : null
-        : null;
+
 
     return Consumer<PopProvider>(builder: (Builder, provider, child) {
       bool _popable = provider.isstacking;
@@ -757,16 +746,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                 Navigator.of(context).pop();
               })
             ];
-      bool _tutorpop = provider.tutorpop;
-      _tutorpop == false
-          ? null
-          : [
-              provider.exstackup(0),
-              Future.delayed(Duration.zero, () async {
-                Navigator.of(context).popUntil((route) => route.isFirst);
-                _PopProvider.tutorpopoff();
-              })
-            ];
+
 
       return Scaffold(appBar: null, body: _createListener(mySliver()));
     });

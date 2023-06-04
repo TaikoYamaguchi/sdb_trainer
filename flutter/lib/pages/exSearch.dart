@@ -9,7 +9,6 @@ import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
-import 'package:tutorial/tutorial.dart';
 import 'package:sdb_trainer/providers/themeMode.dart';
 
 class ExSearch extends StatefulWidget {
@@ -38,37 +37,9 @@ class ExSearchState extends State<ExSearch> {
   var keySelect = GlobalKey();
   var _menuList;
 
-  List<TutorialItem> itens = [];
 
   @override
   void initState() {
-    itens.addAll({
-      TutorialItem(
-          globalKey: keyPlus,
-          touchScreen: true,
-          top: 200,
-          left: 50,
-          children: [
-            const Text(
-              "+버튼을 눌러 원하는 이름의 루틴을 추가하세요",
-              textScaleFactor: 1.7,
-              style: TextStyle(color: Colors.white),
-            ),
-            const SizedBox(
-              height: 100,
-            )
-          ],
-          widgetNext: const Text(
-            "아무곳을 눌러 진행",
-            style: TextStyle(
-              color: Colors.purple,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          shapeFocus: ShapeFocus.oval),
-    });
-
-    ///FUNÇÃO QUE EXIBE O TUTORIAL.
 
     super.initState();
   }

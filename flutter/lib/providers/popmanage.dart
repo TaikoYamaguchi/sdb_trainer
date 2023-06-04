@@ -63,7 +63,6 @@ class PopProvider extends ChangeNotifier {
 
   searchpopoff() {
     _issearchstacking = false;
-    notifyListeners();
   }
 
   exstackup(order) {
@@ -87,7 +86,7 @@ class PopProvider extends ChangeNotifier {
   }
 
   searchstackdown() {
-    _searchstack--;
+    _searchstack == 0 ? null : _searchstack--;
   }
 
   propopon() {

@@ -1260,12 +1260,12 @@ class _ProgramDownloadState extends State<ProgramDownload> {
     _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
 
     return Consumer<PopProvider>(builder: (builder, provider, child) {
-      bool _popable = provider.isstacking;
+      bool _popable = provider.issearchstacking;
       _popable == false
           ? null
           : [
-              provider.exstackdown(),
-              provider.popoff(),
+              provider.searchstackdown(),
+              provider.searchpopoff(),
               Future.delayed(Duration.zero, () async {
                 Navigator.of(context).pop();
               })
