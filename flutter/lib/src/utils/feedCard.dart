@@ -638,7 +638,7 @@ class FeedCardState extends State<FeedCard> {
               _photoInfo["feedList"] == widget.feedListCtrl &&
                       _photoInfo["feedVisible"] == true &&
                       SDBdata.image.length != 0
-                  ? Share.shareFiles(_imagelist, text: SDBdata.comment)
+                  ? Share.shareFiles(_imagelist)
                   : Share.share(SDBdata.comment);
             }),
         PopupMenuItem(
