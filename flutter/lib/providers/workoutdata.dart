@@ -27,6 +27,12 @@ class WorkoutdataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  boolplancheck(rindex, eindex, sindex, progress_day, newvalue) {
+    _workoutdata.routinedatas[rindex].exercises[0].plans[progress_day]
+        .exercises[eindex].sets[sindex].ischecked = newvalue;
+    notifyListeners();
+  }
+
   planboolcheck(rindex, eindex, sindex, newvalue) {
     _workoutdata
         .routinedatas[rindex]
