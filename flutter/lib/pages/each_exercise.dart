@@ -3086,11 +3086,25 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
             decoration: BoxDecoration(
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(20)),
-              color: Theme.of(context).primaryColorLight,
+              color: Colors.white10,
             ),
-            child: ExerciseGuide(
-              eindex: eindex,
-              isroutine: true,
+            child: Column(
+              children: [
+                Container(
+                  height: 20,
+                  decoration: BoxDecoration(
+                    borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(20)),
+                    color: Colors.white10,
+                  ),
+                ),
+                Expanded(
+                  child: ExerciseGuide(
+                    eindex: eindex,
+                    isroutine: true,
+                  ),
+                ),
+              ],
             ));
       },
     );
