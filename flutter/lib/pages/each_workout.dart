@@ -654,15 +654,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                       ),
                       transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
 
-              _PrefsProvider.eachworkouttutor
-                  ? [
-                      Future.delayed(const Duration(milliseconds: 100))
-                          .then((value) {
-                        Tutorial.showTutorial(context, itens);
-                      }),
-                      _PrefsProvider.tutordone()
-                    ]
-                  : null;
             },
           )
         ],
