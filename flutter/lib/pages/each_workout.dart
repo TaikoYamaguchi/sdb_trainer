@@ -345,9 +345,94 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                         (BuildContext context, ViewportOffset position) =>
                             Slidable(
                       endActionPane: ActionPane(
-                          extentRatio: 0.2,
+                          extentRatio:
+                              _routinetimeProvider.isstarted ? 0.6 : 0.4,
                           motion: const ScrollMotion(),
                           children: [
+                            SlidableAction(
+                              onPressed: (_) {
+                                if (_routinetimeProvider.isstarted) {
+                                  if (widget.rindex ==
+                                          _routinetimeProvider.nowonrindex &&
+                                      index ==
+                                          _routinetimeProvider.nowoneindex) {
+                                    _routinetimeProvider.nowoneindexupdate(0);
+                                    showToast(
+                                        "${"운동 중인" + exlist[_routinetimeProvider.nowoneindex].name} 맨 위로 올렸어요");
+                                    setState(() {
+                                      final item = exlist.removeAt(index);
+                                      exlist.insert(0, item);
+                                    });
+                                  } else {
+                                    if (widget.rindex ==
+                                            _routinetimeProvider.nowonrindex &&
+                                        index >
+                                            _routinetimeProvider.nowoneindex)
+                                      _routinetimeProvider.nowoneindexupdate(
+                                          _routinetimeProvider.nowoneindex + 1);
+                                    showToast(
+                                        exlist[index].name + "을 맨 위로 올렸어요");
+                                    setState(() {
+                                      final item = exlist.removeAt(index);
+                                      exlist.insert(0, item);
+                                    });
+                                  }
+                                } else {
+                                  showToast(exlist[index].name + "을 맨 위로 올렸어요");
+                                  setState(() {
+                                    final item = exlist.removeAt(index);
+                                    exlist.insert(0, item);
+                                  });
+                                }
+                              },
+                              backgroundColor: Theme.of(context).primaryColor,
+                              foregroundColor: Theme.of(context).highlightColor,
+                              icon: Icons.keyboard_double_arrow_up,
+                              label: '맨 위',
+                            ),
+                            _routinetimeProvider.isstarted &&
+                                    widget.rindex ==
+                                        _routinetimeProvider.nowonrindex &&
+                                    index != _routinetimeProvider.nowoneindex
+                                ? SlidableAction(
+                                    onPressed: (_) {
+                                      if (index >
+                                          _routinetimeProvider.nowoneindex) {
+                                        showToast(
+                                            "${"운동 중인" + exlist[_routinetimeProvider.nowoneindex].name} 아래로 올렸어요");
+                                        setState(() {
+                                          final item = exlist.removeAt(index);
+                                          exlist.insert(
+                                              _routinetimeProvider.nowoneindex +
+                                                  1,
+                                              item);
+                                        });
+                                      } else if (index <
+                                          _routinetimeProvider.nowoneindex) {
+                                        _routinetimeProvider.nowoneindexupdate(
+                                            _routinetimeProvider.nowoneindex -
+                                                1);
+                                        showToast(
+                                            "${"운동 중인" + exlist[_routinetimeProvider.nowoneindex].name} 아래로 내렸어요");
+                                        setState(() {
+                                          final item = exlist.removeAt(index);
+                                          exlist.insert(
+                                              _routinetimeProvider.nowoneindex +
+                                                  1,
+                                              item);
+                                        });
+                                      }
+                                    },
+                                    backgroundColor: const Color(0xFffc60a8),
+                                    foregroundColor:
+                                        Theme.of(context).highlightColor,
+                                    icon:
+                                        index > _routinetimeProvider.nowoneindex
+                                            ? Icons.keyboard_arrow_up
+                                            : Icons.keyboard_arrow_down,
+                                    label: '현 운동',
+                                  )
+                                : Container(),
                             SlidableAction(
                               onPressed: (_) {
                                 _workoutProvider.removeexAt(
@@ -357,7 +442,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                               backgroundColor: const Color(0xFFFE4A49),
                               foregroundColor: Theme.of(context).highlightColor,
                               icon: Icons.delete,
-                              label: 'Delete',
+                              label: '삭제',
                             )
                           ]),
                       child: Column(
@@ -470,7 +555,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                                                   .spaceBetween,
                                                           children: [
                                                             Text(
-                                                                "Rest: ${exlist[index].rest}",
+                                                                "휴식: ${exlist[index].rest}",
                                                                 textScaleFactor:
                                                                     1.0,
                                                                 style: const TextStyle(
@@ -734,7 +819,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
         Provider.of<RoutineTimeProvider>(context, listen: false);
     _PopProvider.tutorpopoff();
 
-
     return Consumer<PopProvider>(builder: (Builder, provider, child) {
       bool _popable = provider.isstacking;
       _popable == false
@@ -746,7 +830,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                 Navigator.of(context).pop();
               })
             ];
-
 
       return Scaffold(appBar: null, body: _createListener(mySliver()));
     });
