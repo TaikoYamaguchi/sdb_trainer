@@ -358,7 +358,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                           _routinetimeProvider.nowoneindex) {
                                     _routinetimeProvider.nowoneindexupdate(0);
                                     showToast(
-                                        "${"운동 중인" + exlist[_routinetimeProvider.nowoneindex].name} 맨 위로 올렸어요");
+                                        "${"운동 중인 " + exlist[_routinetimeProvider.nowoneindex].name} 맨 위로 올렸어요");
                                     setState(() {
                                       final item = exlist.removeAt(index);
                                       exlist.insert(0, item);
@@ -371,14 +371,14 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                       _routinetimeProvider.nowoneindexupdate(
                                           _routinetimeProvider.nowoneindex + 1);
                                     showToast(
-                                        exlist[index].name + "을 맨 위로 올렸어요");
+                                        exlist[index].name + " 맨 위로 올렸어요");
                                     setState(() {
                                       final item = exlist.removeAt(index);
                                       exlist.insert(0, item);
                                     });
                                   }
                                 } else {
-                                  showToast(exlist[index].name + "을 맨 위로 올렸어요");
+                                  showToast(exlist[index].name + " 맨 위로 올렸어요");
                                   setState(() {
                                     final item = exlist.removeAt(index);
                                     exlist.insert(0, item);
@@ -399,7 +399,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                       if (index >
                                           _routinetimeProvider.nowoneindex) {
                                         showToast(
-                                            "${"운동 중인" + exlist[_routinetimeProvider.nowoneindex].name} 아래로 올렸어요");
+                                            "${"운동 중인 " + exlist[_routinetimeProvider.nowoneindex].name} 아래로 올렸어요");
                                         setState(() {
                                           final item = exlist.removeAt(index);
                                           exlist.insert(
@@ -409,11 +409,11 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                         });
                                       } else if (index <
                                           _routinetimeProvider.nowoneindex) {
+                                        showToast(
+                                            "${"운동 중인 " + exlist[_routinetimeProvider.nowoneindex].name} 아래로 내렸어요");
                                         _routinetimeProvider.nowoneindexupdate(
                                             _routinetimeProvider.nowoneindex -
                                                 1);
-                                        showToast(
-                                            "${"운동 중인" + exlist[_routinetimeProvider.nowoneindex].name} 아래로 내렸어요");
                                         setState(() {
                                           final item = exlist.removeAt(index);
                                           exlist.insert(
@@ -739,6 +739,15 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                       ),
                       transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
 
+              _PrefsProvider.eachworkouttutor
+                  ? [
+                      Future.delayed(const Duration(milliseconds: 100))
+                          .then((value) {
+                        Tutorial.showTutorial(context, itens);
+                      }),
+                      _PrefsProvider.tutordone()
+                    ]
+                  : null;
             },
           )
         ],
