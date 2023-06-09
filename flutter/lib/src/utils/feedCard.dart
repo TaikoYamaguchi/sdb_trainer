@@ -299,16 +299,7 @@ class FeedCardState extends State<FeedCard> {
                                       ),
                                       widget.isExEdit
                                           ? _exercise_Done_appbar_Button()
-                                          : Consumer<TempImgStorage>(builder:
-                                              (builder, provider, child) {
-                                                return provider.isfeedcapture
-                                                    ? Image.asset(
-                                                  'assets/jpeg/supero_logo_horizontal.png',
-                                                  height: 30,
-                                                  //width: 40,
-                                                  fit: BoxFit.cover,
-                                                )
-                                                    : GestureDetector(
+                                          : GestureDetector(
                                                     onTapDown: _storePosition,
                                                     onTap: () {
                                                       SDBdata.user_email ==
@@ -326,8 +317,7 @@ class FeedCardState extends State<FeedCard> {
                                                           Icons.more_vert,
                                                           color: Colors.grey,
                                                           size: 20.0),
-                                                    ));
-                                            })
+                                                    ))
                                     ],
                                   )),
                               widget.isExEdit
