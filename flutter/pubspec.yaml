@@ -88,7 +88,7 @@ dependencies:
   in_app_review: ^2.0.6
   auto_size_text: ^3.0.0
   flutter_gif: ^0.0.4
-  image: ^4.0.15
+  image: ^4.0.17
   http_parser: ^4.0.2
   stamp_image: ^0.0.2
   typicons_flutter: ^0.5.0
@@ -131,6 +131,7 @@ flutter:
     - assets/json/
     - assets/png/
     - assets/gif/
+    - assets/jpeg/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
