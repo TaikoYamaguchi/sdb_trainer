@@ -1090,6 +1090,8 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                 } catch (e) {
                   _exImage = "";
                 }
+                bool _isExIncluded =
+                    exlist.any((element) => element.name == exuniq[index].name);
 
                 return GestureDetector(
                   onTap: () {
@@ -1119,7 +1121,9 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     decoration: BoxDecoration(
-                        color: Theme.of(context).cardColor,
+                        color: _isExIncluded
+                            ? Theme.of(context).primaryColorDark
+                            : Theme.of(context).cardColor,
                         borderRadius: BorderRadius.only(
                             topRight: Radius.circular(top),
                             bottomRight: Radius.circular(bottom),
@@ -1327,7 +1331,6 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
     _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     _exercises = _exProvider.exercisesdata.exercises;
 
-
     return Consumer<PopProvider>(builder: (Builder, provider, child) {
       bool _popable = provider.isstacking;
       _popable == false
@@ -1339,7 +1342,6 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                 Navigator.of(context).pop();
               })
             ];
-
 
       return Scaffold(appBar: _appbarWidget(), body: _exercises_searchWidget());
     });
