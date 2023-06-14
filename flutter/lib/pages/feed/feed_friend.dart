@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:sdb_trainer/pages/friendProfile.dart';
+import 'package:sdb_trainer/pages/feed/friendProfile.dart';
 import 'package:transition/transition.dart';
-import 'package:sdb_trainer/pages/feed_friend_edit.dart';
+import 'package:sdb_trainer/pages/feed/feed_friend_edit.dart';
 import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/userdata.dart';

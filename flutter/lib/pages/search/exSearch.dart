@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sdb_trainer/pages/exercise_filter.dart';
-import 'package:sdb_trainer/pages/routine_bank.dart';
+import 'package:sdb_trainer/pages/search/exercise_filter.dart';
+import 'package:sdb_trainer/pages/search/routine_bank.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/routinemenu.dart';
 import 'package:sdb_trainer/providers/workoutdata.dart';

@@ -1,6 +1,6 @@
 import 'package:expandable/expandable.dart';
-import 'package:sdb_trainer/pages/exercise_done.dart';
-import 'package:sdb_trainer/pages/upload_program.dart';
+import 'package:sdb_trainer/pages/exercise/exercise_done.dart';
+import 'package:sdb_trainer/pages/exercise/upload_program.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/historydata.dart';

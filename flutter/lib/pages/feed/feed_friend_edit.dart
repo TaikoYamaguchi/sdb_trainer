@@ -4,9 +4,9 @@ import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
-import 'package:sdb_trainer/pages/friendProfile.dart';
+import 'package:sdb_trainer/pages/feed/friendProfile.dart';
 import 'package:transition/transition.dart';
-import 'package:sdb_trainer/pages/feed_friend_dislike_edit.dart';
+import 'package:sdb_trainer/pages/feed/feed_friend_dislike_edit.dart';
 
 class FeedFriendEdit extends StatefulWidget {
   FeedFriendEdit({Key? key}) : super(key: key);

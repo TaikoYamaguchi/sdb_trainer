@@ -11,7 +11,7 @@ import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:sdb_trainer/src/utils/alerts.dart';
-import '../src/model/historydata.dart' as historyModel;
+import '../../src/model/historydata.dart' as historyModel;
 import 'package:sdb_trainer/src/model/workoutdata.dart' as wod;
 import 'package:sdb_trainer/src/utils/my_flexible_space_bar.dart';
 import 'package:sdb_trainer/src/utils/util.dart';

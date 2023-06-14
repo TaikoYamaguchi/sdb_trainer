@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sdb_trainer/pages/exSearch.dart';
+import 'package:sdb_trainer/pages/search/exSearch.dart';
 
 class SearchNavigatorRoutes {
   static const String root = '/';

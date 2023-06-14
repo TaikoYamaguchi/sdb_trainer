@@ -16,9 +16,9 @@ import 'package:provider/provider.dart';
 import 'package:sdb_trainer/navigators/exercise_navi.dart';
 import 'package:sdb_trainer/navigators/exSearch_navi.dart';
 import 'package:sdb_trainer/navigators/profile_navi.dart';
-import 'package:sdb_trainer/pages/login.dart';
-import 'package:sdb_trainer/pages/signup.dart';
-import 'package:sdb_trainer/pages/feed.dart';
+import 'package:sdb_trainer/pages/login/login.dart';
+import 'package:sdb_trainer/pages/login/signup.dart';
+import 'package:sdb_trainer/pages/feed/feed.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
@@ -29,8 +29,8 @@ import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'package:sdb_trainer/supero_version.dart';
 import 'dart:math' as math;
 import 'package:transition/transition.dart';
-import 'package:sdb_trainer/pages/exercise_done.dart';
-import 'statics.dart';
+import 'package:sdb_trainer/pages/exercise/exercise_done.dart';
+import 'statistics/statics.dart';
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);

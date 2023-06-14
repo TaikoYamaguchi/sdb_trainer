@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sdb_trainer/pages/exercise.dart';
+import 'package:sdb_trainer/pages/exercise/exercise.dart';
 
 class TabNavigatorRoutes {
   static const String root = '/';

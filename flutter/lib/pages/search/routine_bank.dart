@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
-import 'package:sdb_trainer/pages/download_program.dart';
+import 'package:sdb_trainer/pages/search/download_program.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/userdata.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:sdb_trainer/pages/login.dart';
+import 'package:sdb_trainer/pages/login/login.dart';
 import 'package:sdb_trainer/providers/themeMode.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
-import 'package:sdb_trainer/pages/friendProfile.dart';
+import 'package:sdb_trainer/pages/feed/friendProfile.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/interviewdata.dart';
 import 'package:sdb_trainer/providers/themeMode.dart';

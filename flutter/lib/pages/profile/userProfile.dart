@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:transition/transition.dart';
-import 'package:sdb_trainer/pages/userProfileNickname.dart';
-import 'package:sdb_trainer/pages/userProfileBody.dart';
+import 'package:sdb_trainer/pages/profile/userProfileNickname.dart';
+import 'package:sdb_trainer/pages/profile/userProfileBody.dart';
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 

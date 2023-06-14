@@ -4,13 +4,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
-import 'package:sdb_trainer/pages/feed_friend_edit.dart';
+import 'package:sdb_trainer/pages/feed/feed_friend_edit.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:transition/transition.dart';
-import 'package:sdb_trainer/pages/feed_friend.dart';
+import 'package:sdb_trainer/pages/feed/feed_friend.dart';
 import 'package:sdb_trainer/src/utils/feedCard.dart';
 import 'package:flutter/cupertino.dart';
 

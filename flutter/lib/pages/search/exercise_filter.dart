@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_gif/flutter_gif.dart';
 import 'package:provider/provider.dart';
-import 'package:sdb_trainer/pages/exercise_guide.dart';
+import 'package:sdb_trainer/pages/search/exercise_guide.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';

@@ -7,7 +7,7 @@ import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:sdb_trainer/src/model/historydata.dart';
 import 'package:transition/transition.dart';
-import 'package:sdb_trainer/pages/static_exercise.dart';
+import 'package:sdb_trainer/pages/statistics/static_exercise.dart';
 import 'package:sdb_trainer/providers/themeMode.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 

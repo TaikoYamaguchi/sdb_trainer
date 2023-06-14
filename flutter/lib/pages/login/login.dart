@@ -5,7 +5,7 @@ import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
-import 'package:sdb_trainer/pages/userFind.dart';
+import 'package:sdb_trainer/pages/login/userFind.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/userdata.dart';

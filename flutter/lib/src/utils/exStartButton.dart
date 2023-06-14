@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sdb_trainer/pages/exercise_done.dart';
+import 'package:sdb_trainer/pages/exercise/exercise_done.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
