@@ -126,6 +126,18 @@ class _FriendProfileState extends State<FriendProfile> {
                                 ),
                               )),
                     const SizedBox(height: 20),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text(widget.user.selfIntroduce,
+                            textAlign: TextAlign.left,
+                            textScaleFactor: 1.3,
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight)),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -205,7 +217,7 @@ class _FriendProfileState extends State<FriendProfile> {
                         )
                       ],
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 24),
                     _feedLikeButton(provider, widget.user),
                     _feedCardList(context),
                   ]);
@@ -217,7 +229,7 @@ class _FriendProfileState extends State<FriendProfile> {
   Widget _feedLikeButton(provider, User) {
     bool isLiked = onIsLikedCheck(provider, User);
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32.0),
+      padding: const EdgeInsets.symmetric(horizontal: 0.0),
       child: TextButton(
         child: Container(
           width: MediaQuery.of(context).size.width,

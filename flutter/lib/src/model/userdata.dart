@@ -21,6 +21,7 @@ class User {
   final List dislike;
   final List liked;
   final List disliked;
+  final String selfIntroduce;
   final List favor_exercise;
   final List<BodyStat> bodyStats;
 
@@ -45,6 +46,7 @@ class User {
     required this.image,
     required this.dislike,
     required this.disliked,
+    required this.selfIntroduce,
     required this.favor_exercise,
     required this.bodyStats,
   });
@@ -80,6 +82,7 @@ class User {
       image: parsedJson["image"],
       dislike: parsedJson["dislike"],
       disliked: parsedJson["disliked"],
+      selfIntroduce: parsedJson["selfIntroduce"],
       favor_exercise: parsedJson["favor_exercise"],
       bodyStats: bodyStats,
     );

@@ -7,19 +7,19 @@ import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class ProfileNickname extends StatefulWidget {
-  const ProfileNickname({Key? key}) : super(key: key);
+class ProfileIntroduce extends StatefulWidget {
+  const ProfileIntroduce({Key? key}) : super(key: key);
 
   @override
-  _ProfileNicknameState createState() => _ProfileNicknameState();
+  _ProfileIntroduceState createState() => _ProfileIntroduceState();
 }
 
-class _ProfileNicknameState extends State<ProfileNickname> {
+class _ProfileIntroduceState extends State<ProfileIntroduce> {
   bool isLoading = false;
   var _userProvider;
   var _hisProvider;
   bool _isNickNameused = false;
-  final TextEditingController _userNicknameCtrl =
+  final TextEditingController _userIntroduceCtrl =
       TextEditingController(text: "");
 
   @override
@@ -85,12 +85,12 @@ class _ProfileNicknameState extends State<ProfileNickname> {
                           flex: 2,
                           child: SizedBox(),
                         ),
-                        Text("닉네임 변경",
+                        Text("자기소개 편집",
                             textScaleFactor: 2.7,
                             style: TextStyle(
                                 color: Theme.of(context).primaryColorLight,
                                 fontWeight: FontWeight.w600)),
-                        const Text("닉네임을 수정 할 수 있어요",
+                        const Text("자기소개를 편집 할 수 있어요",
                             textScaleFactor: 1.3,
                             style: TextStyle(
                               color: Colors.grey,
@@ -98,7 +98,7 @@ class _ProfileNicknameState extends State<ProfileNickname> {
                         const SizedBox(
                           height: 24,
                         ),
-                        _nicknameWidget(),
+                        _introduceEditWidget(),
                         const Expanded(
                           flex: 3,
                           child: SizedBox(),
@@ -111,57 +111,27 @@ class _ProfileNicknameState extends State<ProfileNickname> {
         ));
   }
 
-  Widget _nicknameWidget() {
+  Widget _introduceEditWidget() {
     return TextFormField(
-      onChanged: (text) {
-        if (_userProvider.userFriendsAll.userdatas
-                .where((user) {
-                  if (user.nickname == text.toString()) {
-                    return true;
-                  } else {
-                    return false;
-                  }
-                })
-                .toList()
-                .length ==
-            0) {
-          setState(() {
-            _isNickNameused = false;
-          });
-        } else
-          setState(() {
-            _isNickNameused = true;
-          });
-      },
-      inputFormatters: [
-        FilteringTextInputFormatter.deny(RegExp('[ ]')), // 공백 필터링
-      ],
-      controller: _userNicknameCtrl,
+      controller: _userIntroduceCtrl,
       style: TextStyle(color: Theme.of(context).primaryColorLight),
       autofocus: true,
+      maxLines: null, // 여러 줄 입력을 가능하게 합니다
+      keyboardType: TextInputType.multiline, // 키보드 타입을 다중 행 입력으로 설정합니다
       decoration: InputDecoration(
         filled: true,
-        hintText: _userProvider.userdata.nickname,
+        hintText: _userProvider.userdata.selfIntroduce,
         hintStyle: TextStyle(color: Theme.of(context).primaryColorLight),
-        labelText: _isNickNameused == false ? "닉네임" : "사용 불가 닉네임",
-        labelStyle: TextStyle(
-            color: _isNickNameused == false
-                ? Theme.of(context).primaryColorLight
-                : Colors.red),
+        labelText: "자기소개",
+        labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
         focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-              color: _isNickNameused == false
-                  ? Theme.of(context).primaryColor
-                  : Colors.red,
-              width: 3.0),
+          borderSide:
+              BorderSide(color: Theme.of(context).primaryColor, width: 3.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
         enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-              color: _isNickNameused == false
-                  ? Theme.of(context).primaryColor
-                  : Colors.red,
-              width: 3.0),
+          borderSide:
+              BorderSide(color: Theme.of(context).primaryColor, width: 3.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
       ),
@@ -193,17 +163,17 @@ class _ProfileNicknameState extends State<ProfileNickname> {
   void _editCheck() async {
     const storage = FlutterSecureStorage();
     String? storageToken = await storage.read(key: "sdb_token");
-    if (_userNicknameCtrl.text != "" && _isNickNameused == false) {
+    if (_userIntroduceCtrl.text != "" && _isNickNameused == false) {
       UserEdit(
               userEmail: _userProvider.userdata.email,
               userName: _userProvider.userdata.username,
-              userNickname: _userNicknameCtrl.text,
+              userNickname: _userProvider.userdata.nickname,
               userHeight: _userProvider.userdata.height.toString(),
               userWeight: _userProvider.userdata.weight.toString(),
               userHeightUnit: _userProvider.userdata.height_unit,
               userWeightUnit: _userProvider.userdata.weight_unit,
               userImage: _userProvider.userdata.image,
-              selfIntroduce: _userProvider.userdata.selfIntroduce,
+              selfIntroduce: _userIntroduceCtrl.text,
               userFavorExercise: _userProvider.userdata.favor_exercise)
           .editUser()
           .then((data) => data["username"] != null

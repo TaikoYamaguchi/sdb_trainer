@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:sdb_trainer/repository/user_repository.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:transition/transition.dart';
+import 'package:sdb_trainer/pages/profile/userProfileIntroduce.dart';
 import 'package:sdb_trainer/pages/profile/userProfileNickname.dart';
 import 'package:sdb_trainer/pages/profile/userProfileBody.dart';
 import 'dart:async';
@@ -232,6 +233,35 @@ class _UserProfileState extends State<UserProfile> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(_userProvider.userdata.nickname,
+                              textScaleFactor: 1.1,
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
+                          Icon(Icons.chevron_right,
+                              color: Theme.of(context).primaryColorDark),
+                        ]));
+              }),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _PopProvider.profilestackup();
+                Navigator.push(
+                    context,
+                    Transition(
+                        child: ProfileIntroduce(),
+                        transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+              },
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(Theme.of(context).cardColor)),
+              child: Consumer<UserdataProvider>(
+                  builder: (builder, rpovider, child) {
+                return SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("자기소개",
                               textScaleFactor: 1.1,
                               style: TextStyle(
                                   color: Theme.of(context).primaryColorLight)),

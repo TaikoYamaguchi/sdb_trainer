@@ -215,6 +215,7 @@ class UserEdit {
   final String userHeightUnit;
   final String userWeightUnit;
   final String userImage;
+  final String selfIntroduce;
   final List userFavorExercise;
   UserEdit(
       {required this.userEmail,
@@ -225,6 +226,7 @@ class UserEdit {
       required this.userHeightUnit,
       required this.userWeightUnit,
       required this.userImage,
+      required this.selfIntroduce,
       required this.userFavorExercise});
   Future<String> _userEditFromServer() async {
     var formData = Map<String, dynamic>();
@@ -235,6 +237,7 @@ class UserEdit {
     formData["weight"] = userWeight;
     formData["height_unit"] = userHeightUnit;
     formData["weight_unit"] = userWeightUnit;
+    formData["selfIntroduce"] = selfIntroduce;
     formData["favor_exercise"] = userFavorExercise;
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/user/" + userEmail);

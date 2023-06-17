@@ -120,6 +120,8 @@ def edit_user(
     if not db_user:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User not found")
     update_data = user.dict(exclude_unset=True)
+    print("lllllllllllllllllllll")
+    print(user.selfIntroduce)
 
     for key, value in update_data.items():
         setattr(db_user, key, value)
