@@ -4,6 +4,11 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 import typing as t
 from sqlakeyset import get_page
+
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import messaging
+from firebase_admin import exceptions as firebase_exceptions
 import json
 
 from sqlalchemy.sql import func
@@ -37,9 +42,31 @@ def create_history(db: Session, history: schemas.HistoryCreate, ip:str):
         db.add(db_user)
         db.commit()
         db.refresh((db_user))
+
+    db_user = get_user_by_email(db, history.user_email)
+    for user in db_user.liked:
+        fcm_user=get_user_by_email(db,user)
+        print(user)
+        if (fcm_user.fcm_token!="" and fcm_user.fcm_token!=None):
+            print("fcm_token이 있어요")
+            message = messaging.Message(
+                notification=messaging.Notification(
+                    title=db_user.nickname+
+                    "님이 운동을 완료했어요",
+                    body="운동을 확인해보세요"
+                ),
+                token=fcm_user.fcm_token
+            )
+            try:
+                response = messaging.send(message)
+                print(response)
+            except firebase_exceptions.FirebaseError:
+                print("FCM 전송 중 에러 발생 - 무시됨")
+        else:
+            print("fcm_token이 없어요")
     return db_history
 
-def get_user_by_email(db: Session, email: str) -> schemas.UserBase:
+def get_user_by_email(db: Session, email: str) -> schemas.UserOut:
     user=db.query(models.User).filter(models.User.email == email).first()
     return user
 
