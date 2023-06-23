@@ -807,7 +807,12 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
             ),
             child: _setinfo(eindex, sindex));
       },
-    );
+    ).whenComplete(() {
+      _workoutProvider.plansetcheck(widget.rindex, eindex, sindex,
+          double.parse(_weightctrl.text), int.parse(_repsctrl.text));
+      _editWorkoutCheck();
+      // 모달이 닫힐 때 실행되는 코드
+    });
   }
 
   Widget _setinfo(int eindex, int sindex) {
@@ -835,8 +840,10 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
           ),
           Text(
             '기준 운동: ${uniqexinfo.name}',
-            textScaleFactor: 1.7,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            textScaleFactor: 1.5,
+            style: TextStyle(
+                color: Theme.of(context).primaryColorLight,
+                fontWeight: FontWeight.bold),
           ),
           Container(
             height: 15,
@@ -846,29 +853,31 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
             children: [
               SizedBox(
                 width: MediaQuery.of(context).size.width / 3,
-                child: const Center(
+                child: Center(
                     child: Text(
-                  '나의 1rm',
-                  textScaleFactor: 1.7,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  '기준 1rm',
+                  textScaleFactor: 1.5,
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColorDark,
+                  ),
                 )),
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width / 3,
-                child: const Center(
+                child: Center(
                     child: Text(
                   '중량비(%)',
-                  textScaleFactor: 1.7,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  textScaleFactor: 1.5,
+                  style: TextStyle(color: Theme.of(context).primaryColorDark),
                 )),
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width / 3,
-                child: const Center(
+                child: Center(
                     child: Text(
                   '횟수',
-                  textScaleFactor: 1.7,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  textScaleFactor: 1.5,
+                  style: TextStyle(color: Theme.of(context).primaryColorDark),
                 )),
               ),
             ],
@@ -885,7 +894,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                     child: Text(
                   uniqexinfo.onerm.toStringAsFixed(1),
                   textScaleFactor: 1.7,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColorLight,
+                      fontWeight: FontWeight.bold),
                 )),
               ),
               SizedBox(
@@ -893,6 +904,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                 child: Center(
                   child: TextField(
                     controller: _weightctrl,
+                    autofocus: true,
                     keyboardType: const TextInputType.numberWithOptions(
                         signed: false, decimal: true),
                     style: TextStyle(
@@ -903,8 +915,10 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                     decoration: InputDecoration(
                       contentPadding:
                           const EdgeInsets.symmetric(vertical: 10.0),
-                      enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(width: 3, color: Colors.grey)),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 3,
+                              color: Theme.of(context).primaryColorDark)),
                       hintText: "${setdata.weight}",
                       hintStyle: TextStyle(
                         fontSize: 21,
@@ -936,8 +950,10 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                     decoration: InputDecoration(
                       contentPadding:
                           const EdgeInsets.symmetric(vertical: 10.0),
-                      enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(width: 3, color: Colors.grey)),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 3,
+                              color: Theme.of(context).primaryColorDark)),
                       hintText: "${setdata.reps}",
                       hintStyle: TextStyle(
                         fontSize: 21,
@@ -959,12 +975,17 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const Text("최종 무게: ",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              Text("최종 무게: ",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).primaryColorLight,
+                  )),
               Consumer<FamousdataProvider>(builder: (builder, provider, child) {
                 return Text(
                     "${((provider.plantempweight * uniqexinfo.onerm / 100 / 2.5).floor() * 2.5).toStringAsFixed(1)}kg",
-                    style: const TextStyle(
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorLight,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.underline,
@@ -980,17 +1001,11 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                         const EdgeInsets.symmetric(horizontal: 50)),
                   ),
                   onPressed: () {
-                    workout.plansetcheck(
-                        widget.rindex,
-                        eindex,
-                        sindex,
-                        double.parse(_weightctrl.text),
-                        int.parse(_repsctrl.text));
                     Navigator.pop(context);
-                    _editWorkoutCheck();
                   },
                   child: const Text(
                     '완료',
+                    textScaleFactor: 1.3,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )),
               Container(
