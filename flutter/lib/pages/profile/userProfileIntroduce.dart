@@ -31,6 +31,7 @@ class _ProfileIntroduceState extends State<ProfileIntroduce> {
   Widget build(BuildContext context) {
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
+    _userIntroduceCtrl.text = _userProvider.userdata.selfIntroduce;
     return Scaffold(appBar: _appbarWidget(), body: _signupProfileWidget());
   }
 
@@ -180,6 +181,7 @@ class _ProfileIntroduceState extends State<ProfileIntroduce> {
               ? {
                   showToast("수정 완료"),
                   _userProvider.getdata(storageToken),
+                  _userProvider.getUsersFriendsAll(),
                   _hisProvider.getdata(),
                   _hisProvider.getHistorydataAll(),
                   _hisProvider.getCommentAll(),

@@ -261,7 +261,7 @@ class _UserProfileState extends State<UserProfile> {
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("자기소개",
+                          Text("소개글 변경하기",
                               textScaleFactor: 1.1,
                               style: TextStyle(
                                   color: Theme.of(context).primaryColorLight)),

@@ -1,4 +1,4 @@
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/profile/interview.dart';
 import 'package:sdb_trainer/pages/profile/userNotification.dart';
@@ -45,9 +45,7 @@ class _ProfileState extends State<Profile> {
             title: Text("설정",
                 textScaleFactor: 1.7,
                 style: TextStyle(color: Theme.of(context).primaryColorLight)),
-            actions: [
-
-            ],
+            actions: [],
             backgroundColor: Theme.of(context).canvasColor,
           )),
       body: _userProvider.userdata != null
@@ -134,7 +132,7 @@ class _ProfileState extends State<Profile> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("프로필",
+                        Text("프로필 편집하기",
                             textScaleFactor: 1.1,
                             style: TextStyle(
                                 color: Theme.of(context).primaryColorLight)),
@@ -303,7 +301,7 @@ class _ProfileState extends State<Profile> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("글자 크기 변경",
+                        Text("글자 변경하기",
                             textScaleFactor: 1.1,
                             style: TextStyle(
                                 color: Theme.of(context).primaryColorLight)),
@@ -370,7 +368,7 @@ class _ProfileState extends State<Profile> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("테마 변경",
+                        Text("테마 변경하기",
                             textScaleFactor: 1.1,
                             style: TextStyle(
                                 color: Theme.of(context).primaryColorLight)),

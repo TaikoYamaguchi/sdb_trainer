@@ -66,11 +66,14 @@ class _FriendProfileState extends State<FriendProfile> {
                     ];
             },
           ),
-          title: Text(
-            widget.user.nickname,
-            textScaleFactor: 1.7,
-            style: TextStyle(color: Theme.of(context).primaryColorLight),
-          ),
+          title:
+              Consumer<UserdataProvider>(builder: (builder, provider, child) {
+            return Text(
+              widget.user.nickname,
+              textScaleFactor: 1.7,
+              style: TextStyle(color: Theme.of(context).primaryColorLight),
+            );
+          }),
           backgroundColor: Theme.of(context).canvasColor,
         ));
   }

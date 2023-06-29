@@ -210,6 +210,7 @@ class _ProfileNicknameState extends State<ProfileNickname> {
               ? {
                   showToast("수정 완료"),
                   _userProvider.getdata(storageToken),
+                  _userProvider.getUsersFriendsAll(),
                   _hisProvider.getdata(),
                   _hisProvider.getHistorydataAll(),
                   _hisProvider.getCommentAll(),
