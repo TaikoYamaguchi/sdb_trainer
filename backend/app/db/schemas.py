@@ -12,7 +12,7 @@ class UserCore(BaseModel):
     weight:float
     height_unit:str
     weight_unit:str
-    selfIntroduce:str
+    selfIntroduce:t.Optional[str]
     favor_exercise:list
 
 

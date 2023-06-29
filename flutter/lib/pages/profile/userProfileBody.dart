@@ -162,6 +162,7 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   Widget _heightWidget() {
     return TextFormField(
+      readOnly: true,
       autofocus: true,
       controller: _userHeightCtrl,
       keyboardType:

@@ -163,6 +163,7 @@ class UserSignUp {
     formData["dislike"] = [];
     formData["favor_exercise"] = [];
     formData["body_stats"] = bodyStats;
+    formData["selfIntroduce"] = "";
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/usercreate");
     var response = await http.post(url, body: json.encode(formData));
