@@ -127,3 +127,13 @@ class Interview(Base):
     modified_number = Column(Integer, nullable=False)
     tags = Column(MutableList.as_mutable(ARRAY(String)), nullable=True)
     ip = Column(String, nullable=True)
+
+class Notification(Base):
+    __tablename__ = "notification"
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String, nullable=False)
+    content = Column(JSON, index=True, nullable=False)
+    images = Column(MutableList.as_mutable(ARRAY(String)))
+    ispopup = Column(Boolean, nullable=False, default=False)
+    date = Column(DateTime, nullable=False)
+

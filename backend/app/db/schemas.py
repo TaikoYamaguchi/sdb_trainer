@@ -329,3 +329,23 @@ class HistoryImage(BaseModel):
     image:list
     class Config:
         orm_mode = True
+
+class NotificationBase(BaseModel):
+    id: int
+    title: str
+    content: t.Any
+    images:list
+    ispopup:bool=False
+    class Config:
+        orm_mode = True
+
+class NotificationCreate(NotificationBase):
+    class config:
+        orm_mode = True
+
+class NotificationOut(NotificationBase):
+    id: int
+    title: str
+    ispopup:bool=False
+    class config:
+        orm_mode = True
