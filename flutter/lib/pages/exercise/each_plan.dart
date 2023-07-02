@@ -491,186 +491,199 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                     ),
                                     collapsed:
                                         Container(), // body when the widget is Collapsed, I didnt need anything here.
-                                    expanded: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        _exImage != ""
-                                            ? Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Image.asset(
-                                                  _exImage,
-                                                  height: 120,
-                                                  width: 120,
-                                                  fit: BoxFit.cover,
+                                    expanded: Column(children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          _exImage != ""
+                                              ? Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Image.asset(
+                                                    _exImage,
+                                                    height: 120,
+                                                    width: 120,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                )
+                                              : Container(
+                                                  height: 80,
+                                                  width: 80,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle),
+                                                  child: Icon(
+                                                      Icons.image_not_supported,
+                                                      color: Theme.of(context)
+                                                          .primaryColorDark),
                                                 ),
-                                              )
-                                            : Container(
-                                                height: 80,
-                                                width: 80,
-                                                decoration: const BoxDecoration(
-                                                    shape: BoxShape.circle),
-                                                child: Icon(
-                                                    Icons.image_not_supported,
-                                                    color: Theme.of(context)
-                                                        .primaryColorDark),
-                                              ),
-                                        Expanded(
-                                          child: ListView.builder(
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            itemBuilder: (BuildContext _context,
-                                                int setindex) {
-                                              var refinfo = uniqexinfo[
-                                                  uniqexinfo.indexWhere(
-                                                      (element) =>
-                                                          element.name ==
-                                                          inplandata[exIndex]
-                                                              .ref_name)];
-                                              return Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  GestureDetector(
-                                                      child: Text(
-                                                        '${((inplandata[exIndex].sets[setindex].weight * refinfo.onerm / 100 / 2.5).floor() * 2.5).toStringAsFixed(1)}kg  X  ${inplandata[exIndex].sets[setindex].reps}',
-                                                        textScaleFactor: 1.6,
-                                                        style: TextStyle(
-                                                          color: Theme.of(
-                                                                  context)
-                                                              .primaryColorLight,
+                                          Expanded(
+                                            child: ListView.builder(
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              itemBuilder:
+                                                  (BuildContext _context,
+                                                      int setindex) {
+                                                var refinfo = uniqexinfo[
+                                                    uniqexinfo.indexWhere(
+                                                        (element) =>
+                                                            element.name ==
+                                                            inplandata[exIndex]
+                                                                .ref_name)];
+                                                return Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    GestureDetector(
+                                                        child: Text(
+                                                          '${((inplandata[exIndex].sets[setindex].weight * refinfo.onerm / 100 / 2.5).floor() * 2.5).toStringAsFixed(1)}kg  X  ${inplandata[exIndex].sets[setindex].reps}',
+                                                          textScaleFactor: 1.6,
+                                                          style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColorLight,
+                                                          ),
+                                                        ),
+                                                        onTap: () {
+                                                          _FamousedataProvider
+                                                              .gettempweight(
+                                                                  inplandata[
+                                                                          exIndex]
+                                                                      .sets[
+                                                                          setindex]
+                                                                      .weight);
+                                                          setSetting(exIndex,
+                                                              setindex);
+                                                        }),
+                                                    SizedBox(
+                                                      width: 60,
+                                                      child: Transform.scale(
+                                                        scale: 1.3,
+                                                        child: Theme(
+                                                          data: ThemeData(
+                                                              unselectedWidgetColor:
+                                                                  Theme.of(
+                                                                          context)
+                                                                      .primaryColorLight),
+                                                          child: Checkbox(
+                                                              materialTapTargetSize:
+                                                                  MaterialTapTargetSize
+                                                                      .shrinkWrap,
+                                                              activeColor: Theme
+                                                                      .of(
+                                                                          context)
+                                                                  .primaryColor,
+                                                              checkColor: Theme.of(
+                                                                      context)
+                                                                  .highlightColor,
+                                                              side: BorderSide(
+                                                                  width: 1,
+                                                                  color: Theme
+                                                                          .of(
+                                                                              context)
+                                                                      .primaryColorDark),
+                                                              value: inplandata[
+                                                                      exIndex]
+                                                                  .sets[
+                                                                      setindex]
+                                                                  .ischecked,
+                                                              onChanged:
+                                                                  (newvalue) {
+                                                                _routinetimeProvider
+                                                                        .isstarted
+                                                                    ? [
+                                                                        workout.planboolcheck(
+                                                                            widget.rindex,
+                                                                            exIndex,
+                                                                            setindex,
+                                                                            newvalue)
+                                                                      ]
+                                                                    : [
+                                                                        print(
+                                                                            "ssssset"),
+                                                                        _showMyDialog(
+                                                                            exIndex,
+                                                                            setindex,
+                                                                            newvalue)
+                                                                      ];
+                                                              }),
                                                         ),
                                                       ),
-                                                      onTap: () {
-                                                        _FamousedataProvider
-                                                            .gettempweight(
-                                                                inplandata[
-                                                                        exIndex]
-                                                                    .sets[
-                                                                        setindex]
-                                                                    .weight);
-                                                        setSetting(
-                                                            exIndex, setindex);
-                                                      }),
-                                                  SizedBox(
-                                                    width: 60,
-                                                    child: Transform.scale(
-                                                      scale: 1.3,
-                                                      child: Theme(
-                                                        data: ThemeData(
-                                                            unselectedWidgetColor:
-                                                                Theme.of(
-                                                                        context)
-                                                                    .primaryColorLight),
-                                                        child: Checkbox(
-                                                            materialTapTargetSize:
-                                                                MaterialTapTargetSize
-                                                                    .shrinkWrap,
-                                                            activeColor: Theme
-                                                                    .of(context)
-                                                                .primaryColor,
-                                                            checkColor: Theme.of(
-                                                                    context)
-                                                                .highlightColor,
-                                                            side: BorderSide(
-                                                                width: 1,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .primaryColorDark),
-                                                            value: inplandata[
-                                                                    exIndex]
-                                                                .sets[setindex]
-                                                                .ischecked,
-                                                            onChanged:
-                                                                (newvalue) {
-                                                              _routinetimeProvider
-                                                                      .isstarted
-                                                                  ? [
-                                                                      workout.planboolcheck(
-                                                                          widget
-                                                                              .rindex,
-                                                                          exIndex,
-                                                                          setindex,
-                                                                          newvalue)
-                                                                    ]
-                                                                  : [
-                                                                      print(
-                                                                          "ssssset"),
-                                                                      _showMyDialog(
-                                                                          exIndex,
-                                                                          setindex,
-                                                                          newvalue)
-                                                                    ];
-                                                            }),
-                                                      ),
-                                                    ),
-                                                  )
-                                                ],
-                                              );
-                                            },
-                                            shrinkWrap: true,
-                                            itemCount:
-                                                inplandata[exIndex].sets.length,
+                                                    )
+                                                  ],
+                                                );
+                                              },
+                                              shrinkWrap: true,
+                                              itemCount: inplandata[exIndex]
+                                                  .sets
+                                                  .length,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ) // body when the widget is Expanded
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                            width: 10,
+                                          ),
+                                          Container(
+                                            width: 10,
+                                          ),
+                                          Transform.scale(
+                                            scale: 1.2,
+                                            child: IconButton(
+                                                padding:
+                                                    const EdgeInsets.all(5),
+                                                constraints:
+                                                    const BoxConstraints(),
+                                                onPressed: () {
+                                                  workout.plansetsminus(
+                                                      widget.rindex, exIndex);
+                                                  _editWorkoutCheck();
+                                                },
+                                                icon: Icon(
+                                                  Icons.remove_circle_outlined,
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight,
+                                                  size: 20,
+                                                )),
+                                          ),
+                                          Text(
+                                            ' /',
+                                            textScaleFactor: 1.7,
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColorLight),
+                                          ),
+                                          Transform.scale(
+                                            scale: 1.2,
+                                            child: IconButton(
+                                                padding:
+                                                    const EdgeInsets.all(5),
+                                                constraints:
+                                                    const BoxConstraints(),
+                                                onPressed: () {
+                                                  workout.plansetsplus(
+                                                      widget.rindex, exIndex);
+                                                  _editWorkoutCheck();
+                                                },
+                                                icon: Icon(
+                                                  Icons.add_circle_outlined,
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight,
+                                                  size: 20,
+                                                )),
+                                          ),
+                                        ],
+                                      ),
+                                    ]) // body when the widget is Expanded
                                     ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Container(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                      width: 10,
-                                    ),
-                                    Transform.scale(
-                                      scale: 1.2,
-                                      child: IconButton(
-                                          padding: const EdgeInsets.all(5),
-                                          constraints: const BoxConstraints(),
-                                          onPressed: () {
-                                            workout.plansetsminus(
-                                                widget.rindex, exIndex);
-                                            _editWorkoutCheck();
-                                          },
-                                          icon: Icon(
-                                            Icons.remove_circle_outlined,
-                                            color: Theme.of(context)
-                                                .primaryColorLight,
-                                            size: 20,
-                                          )),
-                                    ),
-                                    Text(
-                                      ' /',
-                                      textScaleFactor: 1.7,
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorLight),
-                                    ),
-                                    Transform.scale(
-                                      scale: 1.2,
-                                      child: IconButton(
-                                          padding: const EdgeInsets.all(5),
-                                          constraints: const BoxConstraints(),
-                                          onPressed: () {
-                                            workout.plansetsplus(
-                                                widget.rindex, exIndex);
-                                            _editWorkoutCheck();
-                                          },
-                                          icon: Icon(
-                                            Icons.add_circle_outlined,
-                                            color: Theme.of(context)
-                                                .primaryColorLight,
-                                            size: 20,
-                                          )),
-                                    ),
-                                  ],
-                                ),
                                 const Divider(
                                   indent: 10,
                                   thickness: 1.3,
@@ -1050,8 +1063,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
         Text(
           isex ? '운동을 선택해주세요' : '1RM 기준 운동을 선택해주세요',
           textScaleFactor: 1.7,
-          style: const TextStyle(
-              color: Color(0xFF212121), fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: Theme.of(context).primaryColorLight,
+              fontWeight: FontWeight.bold),
         ),
         Container(
           margin: const EdgeInsets.fromLTRB(10, 16, 10, 16),
