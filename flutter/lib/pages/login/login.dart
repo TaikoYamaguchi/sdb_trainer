@@ -507,7 +507,6 @@ class LoginPageState extends State<LoginPage> {
           storageEmail != "" &&
           storageEmail == _userEmailCtrl.text &&
           storageToken != null) {
-        print("kkkkkkkkkkkkkkkao");
         initialProviderGet(context, storageToken);
         _bodyStater.change(1);
         _loginState.change(true);
@@ -526,14 +525,12 @@ class LoginPageState extends State<LoginPage> {
                   fcmSetting(),
                 }
               : _loginState.changeSignup(true));
-          print("elseeeeeee kakao");
         } catch (error) {
           _loginState.changeSignup(true);
           showToast("회원가입 페이지로 이동할게요");
         }
       }
     } catch (e) {
-      print("this onne is default");
       try {
         await UserLoginKakao(
           userEmail: _userEmailCtrl.text,
@@ -568,9 +565,16 @@ class LoginPageState extends State<LoginPage> {
           _loginState.change(false);
           showToast("로그인이 만료되었어요");
         } else {
-          _bodyStater.change(1);
-          _testSetUserId(storageEmail);
-          fcmSetting();
+          if (_userProvider.userdata.is_active == true) {
+            _bodyStater.change(1);
+            _testSetUserId(storageEmail);
+            fcmSetting();
+          } else {
+            await storage.delete(key: "sdb_email");
+            await storage.delete(key: "sdb_token");
+            _loginState.change(false);
+            showToast("로그인이 제한되었습니다");
+          }
         }
       });
     }
@@ -581,9 +585,7 @@ class LoginPageState extends State<LoginPage> {
     print("storage check for initial exercise");
     try {
       String? storageExerciseList = await storage.read(key: "sdb_HomeExList");
-      print(storageExerciseList);
       if (storageExerciseList == null || storageExerciseList == "") {
-        print("storage nooooooooooooo");
         List<String> listViewerBuilderString = [
           '바벨 스쿼트',
           '바벨 데드리프트',
@@ -594,20 +596,17 @@ class LoginPageState extends State<LoginPage> {
         _initExercisesdataProvider.putHomeExList(listViewerBuilderString);
       } else {
         List homeexlist = jsonDecode(storageExerciseList);
-        print(homeexlist);
         for (int n = 0; n < homeexlist.length; n++) {
           if (namechange[homeexlist[n]] != null) {
             homeexlist[n] = namechange[homeexlist[n]];
           }
         }
         ;
-        print(homeexlist);
 
         await storage.write(
             key: 'sdb_HomeExList', value: jsonEncode(homeexlist));
         _initExercisesdataProvider.putHomeExList(homeexlist);
 
-        print("storage yessssssssss");
         //_initExercisesdataProvider.putHomeExList(jsonDecode(storageExerciseList));
       }
     } catch (e) {
@@ -639,13 +638,35 @@ class LoginPageState extends State<LoginPage> {
     final _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
 
+    const storage = FlutterSecureStorage();
+    String? storageEmail = await storage.read(key: "sdb_email");
+    String? storageToken = await storage.read(key: "sdb_token");
+
     _storageInitialExerciseCheck(_initExercisesdataProvider);
     _routinetimeProvider.routineInitialCheck();
 
     var usertestList;
     await [
       print(access_token),
-      _initUserdataProvider.getdata(access_token),
+      _initUserdataProvider.getdata(access_token).then((value) async {
+        if (value == false) {
+          await storage.delete(key: "sdb_email");
+          await storage.delete(key: "sdb_token");
+          _loginState.change(false);
+          showToast("로그인이 만료되었어요");
+        } else {
+          if (_userProvider.userdata.is_active == true) {
+            _bodyStater.change(1);
+            _testSetUserId(storageEmail);
+            fcmSetting();
+          } else {
+            await storage.delete(key: "sdb_email");
+            await storage.delete(key: "sdb_token");
+            _loginState.change(false);
+            showToast("로그인이 제한되었습니다");
+          }
+        }
+      }),
       _initUserdataProvider.getUsersFriendsAll(),
       _initHistorydataProvider.getdata(),
       _workoutdataProvider.getdata(),
