@@ -28,7 +28,7 @@ class _PhotoEditorState extends State<PhotoEditor> {
   final ImagePicker _picker = ImagePicker();
   bool _isabsorb = false;
   int curpage = 0;
-  List<Pair> _settings=[];
+  List<Pair> _settings = [];
   var _tempImgStrage;
   PageController controller =
       PageController(viewportFraction: 0.93, keepPage: true);
@@ -40,12 +40,11 @@ class _PhotoEditorState extends State<PhotoEditor> {
     _getImage(widget.imageSource);
   }
 
-  void _initList(){
+  void _initList() {
     _settings.add(Pair(true, 0));
   }
 
   Future _getImage(ImageSource imageSource) async {
-
     if (imageSource == ImageSource.gallery) {
       _selectedImages = await _picker.pickMultiImage(imageQuality: 30);
       print('done');
@@ -73,8 +72,8 @@ class _PhotoEditorState extends State<PhotoEditor> {
         });
       }
     }
-    for(int i = 0; i< _image.length-_settings.length+1; ++i){
-        _settings.add(Pair(true, 0));
+    for (int i = 0; i < _image.length - _settings.length + 1; ++i) {
+      _settings.add(Pair(true, 0));
     }
   }
 
@@ -195,7 +194,6 @@ class _PhotoEditorState extends State<PhotoEditor> {
     );
   }
 
-
   Widget _watermarkWorkoutTime(index) {
     return Padding(
       padding: const EdgeInsets.all(10),
@@ -220,8 +218,6 @@ class _PhotoEditorState extends State<PhotoEditor> {
     );
   }
 
-
-
   Widget _photowidget(rpkey, index) {
     return RepaintBoundary(
         key: rpkey,
@@ -229,6 +225,7 @@ class _PhotoEditorState extends State<PhotoEditor> {
             ? _photowidget_basic(index)
             : _photowidget_title(index));
   }
+
   Widget _photowidget_basic(index) {
     return Stack(children: [
       Container(
@@ -236,16 +233,16 @@ class _PhotoEditorState extends State<PhotoEditor> {
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
             image: DecorationImage(
-              image: FileImage(File(_image[index].path)),
-              fit: BoxFit.cover,
-            )),
+          image: FileImage(File(_image[index].path)),
+          fit: BoxFit.cover,
+        )),
       ),
-
       Positioned(top: 5, right: 5, child: _watermarkTitle(index)),
       Positioned(bottom: 5, left: 5, child: _watermarkWorkoutTime(index)),
       Positioned(bottom: 5, right: 5, child: _watermarkSet(index))
     ]);
   }
+
   Widget _photowidget_title(index) {
     return Stack(children: [
       Container(
@@ -253,11 +250,10 @@ class _PhotoEditorState extends State<PhotoEditor> {
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
             image: DecorationImage(
-              image: FileImage(File(_image[index].path)),
-              fit: BoxFit.cover,
-            )),
+          image: FileImage(File(_image[index].path)),
+          fit: BoxFit.cover,
+        )),
       ),
-
       Positioned(top: 5, right: 5, child: _watermarkTitle(index)),
     ]);
   }
@@ -284,8 +280,9 @@ class _PhotoEditorState extends State<PhotoEditor> {
                     child: Text('White',
                         style: TextStyle(
                           color: Theme.of(context).primaryColorLight,
-                          fontWeight:
-                          _settings[curpage].a ? FontWeight.bold : FontWeight.normal,
+                          fontWeight: _settings[curpage].a
+                              ? FontWeight.bold
+                              : FontWeight.normal,
                           fontSize: 16,
                         )),
                   ),
@@ -299,8 +296,9 @@ class _PhotoEditorState extends State<PhotoEditor> {
                     child: Text('Black',
                         style: TextStyle(
                           color: Theme.of(context).primaryColorLight,
-                          fontWeight:
-                          _settings[curpage].a ? FontWeight.normal : FontWeight.bold,
+                          fontWeight: _settings[curpage].a
+                              ? FontWeight.normal
+                              : FontWeight.bold,
                           fontSize: 16,
                         )),
                   ),
@@ -311,12 +309,12 @@ class _PhotoEditorState extends State<PhotoEditor> {
                 height: MediaQuery.of(context).size.width * 0.93 - 16,
                 child: PageView.builder(
                     controller: controller,
-                    onPageChanged: (int page){
+                    onPageChanged: (int page) {
                       setState(() {
                         curpage = page;
                       });
                     },
-                    itemCount: _image.length+1,
+                    itemCount: _image.length + 1,
                     itemBuilder: (context, int index) {
                       return Padding(
                           padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
@@ -342,7 +340,7 @@ class _PhotoEditorState extends State<PhotoEditor> {
                     shrinkWrap: true,
                     children: [
                       GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           setState(() {
                             _settings[curpage].b = 0;
                           });
@@ -350,9 +348,10 @@ class _PhotoEditorState extends State<PhotoEditor> {
                         child: Container(
                           padding: EdgeInsets.all(1),
                           decoration: BoxDecoration(
-                            color: _settings[curpage].b == 0 ? Theme.of(context).indicatorColor : Theme.of(context).canvasColor,
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(5)),
+                            color: _settings[curpage].b == 0
+                                ? Theme.of(context).indicatorColor
+                                : Theme.of(context).canvasColor,
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
                           ),
                           child: Card(
                             elevation: 5,
@@ -367,7 +366,8 @@ class _PhotoEditorState extends State<PhotoEditor> {
                                         BorderRadius.all(Radius.circular(5)),
                                   ),
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       const Align(
                                           alignment: Alignment.topRight,
@@ -377,23 +377,27 @@ class _PhotoEditorState extends State<PhotoEditor> {
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 12,
-                                                    fontWeight: FontWeight.bold)),
+                                                    fontWeight:
+                                                        FontWeight.bold)),
                                           )),
                                       Padding(
                                         padding: const EdgeInsets.all(3.0),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             const Text('Time',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.bold)),
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 10,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
                                             const Text('Sets',
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 10,
-                                                    fontWeight: FontWeight.bold))
+                                                    fontWeight:
+                                                        FontWeight.bold))
                                           ],
                                         ),
                                       )
@@ -404,8 +408,8 @@ class _PhotoEditorState extends State<PhotoEditor> {
                                   height: 22,
                                   child: Center(
                                     child: Text('Basic',
-                                        style:
-                                            TextStyle(fontWeight: FontWeight.bold)),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
                                   ),
                                 ),
                               ],
@@ -414,7 +418,7 @@ class _PhotoEditorState extends State<PhotoEditor> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           setState(() {
                             _settings[curpage].b = 1;
                           });
@@ -422,9 +426,10 @@ class _PhotoEditorState extends State<PhotoEditor> {
                         child: Container(
                           padding: EdgeInsets.all(1),
                           decoration: BoxDecoration(
-                            color: _settings[curpage].b == 1 ? Theme.of(context).indicatorColor : Theme.of(context).canvasColor,
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(5)),
+                            color: _settings[curpage].b == 1
+                                ? Theme.of(context).indicatorColor
+                                : Theme.of(context).canvasColor,
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
                           ),
                           child: Card(
                             elevation: 5,
@@ -436,7 +441,7 @@ class _PhotoEditorState extends State<PhotoEditor> {
                                   decoration: const BoxDecoration(
                                     color: Colors.black,
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(5)),
+                                        BorderRadius.all(Radius.circular(5)),
                                   ),
                                   child: const Center(
                                       child: Text('Supero',
@@ -449,8 +454,8 @@ class _PhotoEditorState extends State<PhotoEditor> {
                                   height: 22,
                                   child: Center(
                                     child: Text('Title',
-                                        style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
                                   ),
                                 ),
                               ],
@@ -481,7 +486,7 @@ class _PhotoEditorState extends State<PhotoEditor> {
                   children: [
                     Padding(
                       padding:
-                      const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+                          const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
                       child: Text("사진을 올릴 방법을 고를 수 있어요",
                           textScaleFactor: 1.3,
                           style: TextStyle(
@@ -503,7 +508,7 @@ class _PhotoEditorState extends State<PhotoEditor> {
                                   color: Theme.of(context).primaryColorLight,
                                 ),
                                 disabledForegroundColor:
-                                const Color.fromRGBO(246, 58, 64, 20),
+                                    const Color.fromRGBO(246, 58, 64, 20),
                                 padding: const EdgeInsets.all(12.0),
                               ),
                               onPressed: () {
@@ -536,14 +541,13 @@ class _PhotoEditorState extends State<PhotoEditor> {
                                   color: Theme.of(context).primaryColorLight,
                                 ),
                                 disabledForegroundColor:
-                                const Color.fromRGBO(246, 58, 64, 20),
+                                    const Color.fromRGBO(246, 58, 64, 20),
                                 padding: const EdgeInsets.all(12.0),
                               ),
                               onPressed: () {
                                 //_getImage(ImageSource.gallery);
                                 Navigator.pop(context);
                                 _getImage(ImageSource.gallery);
-
                               },
                               child: Column(
                                 children: [
