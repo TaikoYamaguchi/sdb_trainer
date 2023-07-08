@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/pages/profile/appNotification.dart';
 import 'package:sdb_trainer/pages/profile/interview.dart';
 import 'package:sdb_trainer/pages/profile/userNotification.dart';
 import 'package:sdb_trainer/providers/interviewdata.dart';
@@ -140,6 +141,31 @@ class _ProfileState extends State<Profile> {
                             color: Theme.of(context).primaryColorDark),
                       ]));
             })),
+        ElevatedButton(
+            onPressed: () {
+              _PopProvider.profilestackup();
+              Navigator.push(
+                  context,
+                  Transition(
+                      child: AppNotification(),
+                      transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+            },
+            style: ButtonStyle(
+                backgroundColor:
+                MaterialStateProperty.all(Theme.of(context).cardColor)),
+            child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 50,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("공지사항📢",
+                          textScaleFactor: 1.1,
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight)),
+                      Icon(Icons.chevron_right,
+                          color: Theme.of(context).primaryColorDark),
+                    ]))),
         ElevatedButton(
             onPressed: () {
               _PopProvider.profilestackup();

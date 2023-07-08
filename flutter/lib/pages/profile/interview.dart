@@ -161,11 +161,11 @@ class _InterviewState extends State<Interview> {
       height: MediaQuery.of(context).size.height,
       child:
           Consumer<InterviewdataProvider>(builder: (builder, provider, child) {
-        var _interviewDatas = _interviewProvider.interviewdataAll != null
-            ? _interviewProvider.interviewdataAll.interviewDatas
+        var _interviewDatas = provider.interviewdataAll != null
+            ? provider.interviewdataAll.interviewDatas
             : [];
         return _userProvider.userdata != null
-            ? _interviewProvider.interviewdataAll != null
+            ? provider.interviewdataAll != null
                 ? RefreshIndicator(
                     onRefresh: _onRefresh,
                     child: SingleChildScrollView(

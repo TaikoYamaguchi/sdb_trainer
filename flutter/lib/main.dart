@@ -6,6 +6,7 @@ import 'package:sdb_trainer/providers/bodystate.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/interviewdata.dart';
+import 'package:sdb_trainer/providers/notification.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/routinemenu.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
@@ -79,6 +80,8 @@ void main() async {
         create: (BuildContext context) => FamousdataProvider()),
     ChangeNotifierProvider(
         create: (BuildContext context) => InterviewdataProvider()),
+    ChangeNotifierProvider(
+        create: (BuildContext context) => NotificationdataProvider()),
     ChangeNotifierProvider(create: (BuildContext context) => ThemeProvider()),
     ChangeNotifierProvider(create: (BuildContext context) => TempImgStorage()),
   ], child: const MyApp()));
