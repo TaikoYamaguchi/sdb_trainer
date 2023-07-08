@@ -247,6 +247,42 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
     } else {}
   }
 
+  List<Widget> techChips() {
+    var plandata =
+        _workoutProvider.workoutdata.routinedatas[widget.rindex].exercises[0];
+    List<Widget> chips = [];
+    for (int i = 0; i < plandata.plans.length; i++) {
+      var inplandata = plandata.plans[i].exercises;
+      var plan_length = inplandata.length != 0
+          ? inplandata.length.toStringAsFixed(0) + " 운동"
+          : "휴식";
+      Widget item = Padding(
+        padding: const EdgeInsets.only(left: 10, right: 5),
+        child: ChoiceChip(
+            label: Text('${i + 1}일\n' + plan_length,
+                textAlign: TextAlign.center,
+                textScaleFactor: 1.4,
+                maxLines: 10,
+                softWrap: true),
+            labelStyle: TextStyle(
+                color: plandata.progress == i
+                    ? Theme.of(context).highlightColor
+                    : Theme.of(context).primaryColorLight),
+            selected: plandata.progress == i,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15.0))),
+            selectedColor: Theme.of(context).primaryColor,
+            backgroundColor: Theme.of(context).cardColor,
+            onSelected: (bool value) {
+              _workoutProvider.setplanprogress(widget.rindex, i);
+              _editWorkoutCheck();
+            }),
+      );
+      chips.add(item);
+    }
+    return chips;
+  }
+
   Widget _Nday_RoutineWidget() {
     return Consumer2<WorkoutdataProvider, ExercisesdataProvider>(
         builder: (builder, workout, exinfo, child) {
@@ -260,106 +296,59 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(
-              height: 36,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      IconButton(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 13.0, vertical: 3.0),
-                          constraints: const BoxConstraints(),
-                          onPressed: () {
-                            if (plandata.progress == 0) {
-                              _workoutProvider.setplanprogress(
-                                  widget.rindex, plandata.plans.length - 1);
-                            } else {
-                              _workoutProvider.setplanprogress(
-                                  widget.rindex, plandata.progress - 1);
-                            }
-                            _editWorkoutCheck();
-                          },
-                          icon: Icon(
-                            Icons.arrow_back_ios_outlined,
-                            color: Theme.of(context).primaryColorLight,
-                            size: 20,
-                          )),
-                      Text(
-                        '${plandata.progress + 1}/${plandata.plans.length}일',
-                        textScaleFactor: 1.8,
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorLight),
-                      ),
-                      IconButton(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 13.0, vertical: 3.0),
-                          constraints: const BoxConstraints(),
-                          onPressed: () {
-                            if (plandata.progress ==
-                                plandata.plans.length - 1) {
-                              _workoutProvider.setplanprogress(
-                                  widget.rindex, 0);
-                            } else {
-                              _workoutProvider.setplanprogress(
-                                  widget.rindex, plandata.progress + 1);
-                            }
-                            _editWorkoutCheck();
-                          },
-                          icon: Icon(
-                            Icons.arrow_forward_ios_outlined,
-                            color: Theme.of(context).primaryColorLight,
-                            size: 20,
-                          )),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Transform.scale(
-                        scale: 1.2,
-                        child: IconButton(
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(),
-                            onPressed: () {
-                              if (plandata.plans.length != 1) {
-                                _workoutProvider.removeplanAt(widget.rindex);
-                                if (plandata.progress != 0) {
-                                  _workoutProvider.setplanprogress(
-                                      widget.rindex, plandata.progress - 1);
+                  SizedBox(
+                      height: 60,
+                      child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: techChips())),
+                  SizedBox(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Transform.scale(
+                          scale: 1.2,
+                          child: IconButton(
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                              onPressed: () {
+                                if (plandata.plans.length != 1) {
+                                  _workoutProvider.removeplanAt(widget.rindex);
+                                  _editWorkoutCheck();
                                 }
+                              },
+                              icon: Icon(
+                                Icons.remove_circle_outlined,
+                                color: Theme.of(context).primaryColorLight,
+                                size: 20,
+                              )),
+                        ),
+                        Text(
+                          ' /',
+                          textScaleFactor: 1.7,
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight),
+                        ),
+                        Transform.scale(
+                          scale: 1.2,
+                          child: IconButton(
+                              padding: const EdgeInsets.all(5),
+                              constraints: const BoxConstraints(),
+                              onPressed: () {
+                                _workoutProvider.addplanAt(
+                                    widget.rindex, sample);
                                 _editWorkoutCheck();
-                              }
-                            },
-                            icon: Icon(
-                              Icons.remove_circle_outlined,
-                              color: Theme.of(context).primaryColorLight,
-                              size: 20,
-                            )),
-                      ),
-                      Text(
-                        ' /',
-                        textScaleFactor: 1.7,
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorLight),
-                      ),
-                      Transform.scale(
-                        scale: 1.2,
-                        child: IconButton(
-                            padding: const EdgeInsets.all(5),
-                            constraints: const BoxConstraints(),
-                            onPressed: () {
-                              _workoutProvider.addplanAt(widget.rindex, sample);
-                              _workoutProvider.setplanprogress(
-                                  widget.rindex, plandata.progress + 1);
-                              _editWorkoutCheck();
-                            },
-                            icon: Icon(
-                              Icons.add_circle_outlined,
-                              color: Theme.of(context).primaryColorLight,
-                              size: 20,
-                            )),
-                      ),
-                    ],
+                              },
+                              icon: Icon(
+                                Icons.add_circle_outlined,
+                                color: Theme.of(context).primaryColorLight,
+                                size: 20,
+                              )),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
