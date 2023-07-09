@@ -1,4 +1,4 @@
-from app.db.crud_notification import create_notification, get_notifications, edit_notification, delete_notification,
+from app.db.crud_notification import create_notification, get_notifications, edit_notification, delete_notification
 from fastapi import APIRouter, Request, Depends, Response, encoders
 import typing as t
 
@@ -25,7 +25,7 @@ async def notifications_list(
     response: Response,
     db=Depends(get_db),
 ):
-
+    print("problem?")
     notifications = get_notifications(db)
     print(notifications)
     # This is necessary for react-admin to work

@@ -13,7 +13,7 @@ def create_notification(db: Session, notification: schemas.NotificationCreate):
     print(notification.title)
     db_notification = models.Notification(
         title=notification.title,
-        content=notification.content
+        content=notification.content,
         images=notification.images,
         ispopup = notification.ispopup,
         date = datetime.datetime.utcnow()+datetime.timedelta(hours=9),
@@ -26,6 +26,7 @@ def create_notification(db: Session, notification: schemas.NotificationCreate):
 
 
 def get_notifications(db: Session) -> t.List[schemas.NotificationOut]:
+    print("problem?")
     notifications = db.query(models.Notification).filter(models.Notification.ispopup == True).all()
     return notifications
 
