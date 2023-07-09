@@ -13,6 +13,7 @@ import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:sdb_trainer/src/model/historydata.dart' as hisdata;
 import 'package:sdb_trainer/src/utils/change_name.dart';
+import 'package:sdb_trainer/src/utils/circleNumberPainter.dart';
 import 'package:sdb_trainer/src/utils/exStartButton.dart';
 import 'package:sdb_trainer/src/utils/my_flexible_space_bar.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
@@ -260,8 +261,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
           print("Dragging in +X direction");
         }
       },
-      child: Consumer2<WorkoutdataProvider, ExercisesdataProvider>(
-          builder: (builder, wdp, exp, child) {
+      child: Consumer3<WorkoutdataProvider, ExercisesdataProvider,
+          RoutineTimeProvider>(builder: (builder, wdp, exp, provider3, child) {
         List exunique = exp.exercisesdata.exercises;
         List exlist = wdp.workoutdata.routinedatas[widget.rindex].exercises;
         for (int i = 0; i < exlist.length; i++) {
@@ -570,8 +571,14 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                         ),
                                       ),
                                       doneex.isNotEmpty
-                                          ? Text(
-                                              doneex.length.toStringAsFixed(0))
+                                          ? SizedBox(
+                                              width: 32,
+                                              height: 32,
+                                              child: CircleNumberWidget(
+                                                  number: doneex.length,
+                                                  color: Theme.of(context)
+                                                      .primaryColorDark),
+                                            )
                                           : Container(),
                                       Padding(
                                         padding: const EdgeInsets.fromLTRB(

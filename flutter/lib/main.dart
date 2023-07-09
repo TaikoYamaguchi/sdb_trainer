@@ -117,6 +117,7 @@ class MyApp extends StatelessWidget {
               primaryColorBrightness: Brightness.light,
               cardColor: const Color(0xfff2f3f5), //cardcolor
               canvasColor: Colors.white, //backgroundcolor
+              shadowColor: Colors.black,
               brightness: Brightness.light,
               primaryColorLight: Colors.black, //fontcolor
               primaryColorDark: const Color(0xFFB5B9C2), // grey color
@@ -138,6 +139,7 @@ class MyApp extends StatelessWidget {
               primaryColor: const Color(0xff7a28cb),
               cardColor: const Color(0xff25272c),
               canvasColor: const Color(0xFF101012),
+              shadowColor: Colors.black,
               primaryColorLight: Colors.white,
               primaryColorDark: const Color(0xFF717171),
               indicatorColor: const Color(0xFF212121),
