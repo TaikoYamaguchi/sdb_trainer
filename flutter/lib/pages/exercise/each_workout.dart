@@ -311,7 +311,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                     .exercises[index].sets
                     .where((e) => e.ischecked == true)
                     .toList();
-                //print(doneex);
 
                 if (exlist.length == 1) {
                   top = 20;
@@ -571,8 +570,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                         ),
                                       ),
                                       doneex.isNotEmpty
-                                          ? const Icon(
-                                              Icons.check_circle_rounded)
+                                          ? Text(
+                                              doneex.length.toStringAsFixed(0))
                                           : Container(),
                                       Padding(
                                         padding: const EdgeInsets.fromLTRB(
