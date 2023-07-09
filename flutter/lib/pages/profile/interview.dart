@@ -149,6 +149,7 @@ class _InterviewState extends State<Interview> {
   }
 
   Future<void> _onRefresh() {
+
     setState(() {
       _interviewProvider.getInterviewdataFirst();
     });
@@ -156,6 +157,7 @@ class _InterviewState extends State<Interview> {
   }
 
   Widget _interviewCardList(context) {
+    //print("here?");
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
