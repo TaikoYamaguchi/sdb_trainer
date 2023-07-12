@@ -3185,7 +3185,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
             decoration: BoxDecoration(
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(20)),
-              color: Colors.white10,
+              color: Theme.of(context).canvasColor,
             ),
             child: Column(
               children: [
@@ -3194,7 +3194,18 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                   decoration: BoxDecoration(
                     borderRadius:
                         const BorderRadius.vertical(top: Radius.circular(20)),
-                    color: Colors.white10,
+                    color: Theme.of(context).canvasColor,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
+                  child: Container(
+                    height: 6.0,
+                    width: 80.0,
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColorDark,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(8.0))),
                   ),
                 ),
                 Expanded(

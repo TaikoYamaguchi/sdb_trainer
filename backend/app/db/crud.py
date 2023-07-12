@@ -120,8 +120,6 @@ def edit_user(
     if not db_user:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User not found")
     update_data = user.dict(exclude_unset=True)
-    print("lllllllllllllllllllll")
-    print(user.selfIntroduce)
 
     for key, value in update_data.items():
         setattr(db_user, key, value)
@@ -136,20 +134,28 @@ def manage_like_by_liked_email(db: Session,likeContent:schemas.ManageLikeUser) -
     db_friend = db.query(models.User).filter(models.User.email == likeContent.liked_email).first()
     if likeContent.disorlike == "like": 
         if likeContent.status == "append":
-            db_user.like.append(likeContent.liked_email)
-            db_friend.liked.append(likeContent.email)
-        if likeContent.status == "remove":
-            db_user.like.remove(likeContent.liked_email)
-            db_friend.liked.remove(likeContent.email)
+            if likeContent.liked_email not in db_user.like:
+                db_user.like.append(likeContent.liked_email)
+            if likeContent.email not in db_friend.liked:
+                db_friend.liked.append(likeContent.email)
+        elif likeContent.status == "remove":
+            if likeContent.liked_email in db_user.like:
+                db_user.like.remove(likeContent.liked_email)
+            if likeContent.email in db_friend.liked:
+                db_friend.liked.remove(likeContent.email)
         setattr(db_user, "like", db_user.like)
         setattr(db_friend, "liked", db_friend.liked)
     if likeContent.disorlike == "dislike": 
         if likeContent.status == "append":
-            db_user.dislike.append(likeContent.liked_email)
-            db_friend.disliked.append(likeContent.email)
+            if likeContent.liked_email not in db_user.dislike:
+                db_user.dislike.append(likeContent.liked_email)
+            if likeContent.email not in db_friend.disliked:
+                db_friend.disliked.append(likeContent.email)
         if likeContent.status == "remove":
-            db_user.dislike.remove(likeContent.liked_email)
-            db_friend.disliked.remove(likeContent.email)
+            if likeContent.liked_email in db_user.dislike:
+                db_user.dislike.remove(likeContent.liked_email)
+            if likeContent.email in db_friend.disliked:
+                db_friend.disliked.remove(likeContent.email)
         setattr(db_user, "dislike", db_user.dislike)
         setattr(db_friend, "disliked", db_friend.disliked)
     db.commit()
@@ -190,21 +196,55 @@ def edit_user_body_stat(db: Session, body_stats:schemas.UserBodyStatIn, user:sch
 def delete_user(db: Session, user:schemas.UserBase):
     db_user = db.query(models.User).filter(models.User.email == user.email).first()
     if user.is_superuser == True :
-        db.delete(db_user)
-        db.commit()
         delete_all_workouts_by_email(db,user.email)
         delete_all_exercises_by_email(db,user.email)
         delete_all_histories_by_email(db,user.email)
+        delete_all_user_like_by_email(db, user.email)
+        db.delete(db_user)
+        db.commit()
     else :
         if user.email == db_user.email:
-                db.delete(db_user)
-                db.commit()
                 delete_all_workouts_by_email(db,user.email)
                 delete_all_exercises_by_email(db,user.email)
                 delete_all_histories_by_email(db,user.email)
+                delete_all_user_like_by_email(db, user.email)
+                db.delete(db_user)
+                db.commit()
         else :
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="작성자가 아닙니다",
             )
     return db_user
+
+def delete_all_user_like_by_email(db: Session, email: str) :
+    db_user = db.query(models.User).filter(models.User.email == email).first()
+
+    for liked_email in db_user.like:
+        db_friend = db.query(models.User).filter(models.User.email == liked_email).first()
+        if db_friend:
+            db_friend.liked.remove(email)
+            db.add(db_friend)
+            db.commit()
+            db.refresh(db_friend)
+
+    for like_email in db_user.liked:
+        db_friend = db.query(models.User).filter(models.User.email == like_email).first()
+        if db_friend:
+            db_friend.like.remove(email)
+            db.add(db_friend)
+            db.commit()
+            db.refresh(db_friend)
+
+    setattr(db_user, "like", [])
+    setattr(db_user, "liked", [])
+
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    try:
+        workouts = db.query(models.Workout).filter(models.Workout.user_email == email).delete()
+        db.commit()
+    except:
+        db.rollback()
+

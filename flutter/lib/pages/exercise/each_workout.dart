@@ -656,7 +656,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                   color: Theme.of(context).primaryColor),
                               child: Icon(
                                 Icons.add,
-                                size: 28.0,
+                                size: 16.0,
                                 color: Theme.of(context).highlightColor,
                               ),
                             ),
@@ -732,6 +732,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
           IconButton(
             key: keyPlus,
             icon: SvgPicture.asset("assets/svg/add_white.svg",
+                width: 24,
+                height: 24,
                 color: Theme.of(context).primaryColorLight),
             onPressed: () {
               _workoutProvider.dataBU(widget.rindex);
