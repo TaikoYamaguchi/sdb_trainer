@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sdb_trainer/providers/famous.dart';
+import 'package:sdb_trainer/providers/notification.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
@@ -637,6 +638,8 @@ class LoginPageState extends State<LoginPage> {
 
     final _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
+    final _notificationProvider =
+    Provider.of<NotificationdataProvider>(context, listen: false);
 
     const storage = FlutterSecureStorage();
     String? storageEmail = await storage.read(key: "sdb_email");
@@ -676,6 +679,7 @@ class LoginPageState extends State<LoginPage> {
       _PrefsProvider.getAlarmPrefs(),
       _PrefsProvider.getSystemNotification(),
       _routinetimeProvider.getrest(),
+      _notificationProvider.getdata(),
       UserAll().getUsers().then((userlist) {
         usertestList =
             userlist!.userdatas.where((user) => user.image != "").toList();

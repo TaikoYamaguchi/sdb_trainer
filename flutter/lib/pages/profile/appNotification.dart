@@ -2,13 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sdb_trainer/providers/notification.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:provider/provider.dart';
-import 'package:sdb_trainer/providers/themeMode.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
-import 'package:sdb_trainer/providers/userpreference.dart';
-import 'package:sdb_trainer/src/utils/firebase_fcm.dart';
 import 'dart:async';
-import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class AppNotification extends StatefulWidget {
   AppNotification({Key? key}) : super(key: key);
@@ -18,10 +13,8 @@ class AppNotification extends StatefulWidget {
 }
 
 class _AppNotificationState extends State<AppNotification> {
-  var _themeProvider;
   var _userProvider;
   var _notificationprovider;
-  var _final_interview_id;
   final _scrollController = ScrollController();
   @override
   void initState() {
@@ -33,7 +26,6 @@ class _AppNotificationState extends State<AppNotification> {
   Widget build(BuildContext context) {
 
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     _notificationprovider = Provider.of<NotificationdataProvider>(context, listen: false);
     _onRefresh();
     return Consumer<PopProvider>(builder: (Builder, provider, child) {
@@ -148,33 +140,6 @@ class _AppNotificationState extends State<AppNotification> {
                                   crossAxisAlignment:
                                   CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(
-                                      width: 40,
-                                      child: _notificationDatas[index]
-                                          .progress ==
-                                          "open"
-                                          ? const Icon(
-                                        Icons
-                                            .radio_button_unchecked,
-                                        color: Color(0xFF26A943),
-                                        size: 28,
-                                      )
-                                          : _notificationDatas[index]
-                                          .progress ==
-                                          "closed"
-                                          ? Icon(
-                                          Icons
-                                              .radio_button_checked,
-                                          color: Theme.of(context)
-                                              .primaryColor,
-                                          size: 28)
-                                          : Icon(
-                                          Icons
-                                              .radio_button_checked,
-                                          color: Theme.of(context)
-                                              .primaryColor,
-                                          size: 28),
-                                    ),
                                     Expanded(
                                       child: GestureDetector(
                                         onTap: () {
@@ -319,57 +284,7 @@ class _AppNotificationState extends State<AppNotification> {
                                                 }
                                               }),
                                               const SizedBox(height: 4),
-                                              Container(
-                                                child: Wrap(
-                                                    children:
-                                                    _notificationDatas[
-                                                    index]
-                                                        .tags
-                                                        .map<Widget>(
-                                                          (tag) {
-                                                        bool isSelected =
-                                                        true;
 
-                                                        return GestureDetector(
-                                                          onTap: () {},
-                                                          child: Container(
-                                                              margin: const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                  4,
-                                                                  vertical:
-                                                                  2),
-                                                              child:
-                                                              Container(
-                                                                padding: const EdgeInsets
-                                                                    .symmetric(
-                                                                    vertical:
-                                                                    2,
-                                                                    horizontal:
-                                                                    8),
-                                                                decoration: BoxDecoration(
-                                                                    color: Theme.of(context).canvasColor,
-                                                                    borderRadius: BorderRadius.circular(18),
-                                                                    border: Border.all(
-                                                                        color: isSelected
-                                                                            ? Theme.of(context).primaryColor
-                                                                        // ignore: dead_code
-                                                                            : Theme.of(context).primaryColorDark,
-                                                                        width: 1.5)),
-                                                                child: Text(
-                                                                  tag,
-                                                                  style: TextStyle(
-                                                                      color: isSelected
-                                                                          ? Theme.of(context).primaryColor
-                                                                      // ignore: dead_code
-                                                                          : Theme.of(context).primaryColorDark,
-                                                                      fontSize: 12 * _themeProvider.userFontSize / 0.8),
-                                                                ),
-                                                              )),
-                                                        );
-                                                      },
-                                                    ).toList()),
-                                              ),
                                               Divider(
                                                   color: Theme.of(context)
                                                       .primaryColorDark,
@@ -408,83 +323,6 @@ class _AppNotificationState extends State<AppNotification> {
     );
   }
 
-  /*
-  Widget _AppNotificationWidget() {
-    bool btnDisabled = false;
-    return GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        onPanUpdate: (details) {
-          if (details.delta.dx > 10 && btnDisabled == false) {
-            btnDisabled = true;
-            Navigator.of(context).pop();
-            print("Dragging in +X direction");
-          }
-        },
-        child: SingleChildScrollView(
-          child: Column(children: [
-            ElevatedButton(
-              onPressed: () {},
-              style: ButtonStyle(
-                  backgroundColor:
-                  MaterialStateProperty.all(Theme.of(context).cardColor)),
-              child:
-              Consumer<PrefsProvider>(builder: (builder, provider, child) {
-                return Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    color: Theme.of(context).cardColor,
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("댓글 알람 받기",
-                              textScaleFactor: 1.1,
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColorLight)),
-                          SizedBox(
-                            width: 100,
-                            child: CustomSlidingSegmentedControl(
-                                initialValue: provider.commentNotification!,
-                                height: 24.0,
-                                children: {
-                                  true: Text("on",
-                                      style: TextStyle(
-                                          color: provider.commentNotification!
-                                              ? Theme.of(context).highlightColor
-                                              : Theme.of(context)
-                                              .primaryColorLight)),
-                                  false: Text("off",
-                                      style: TextStyle(
-                                          color: provider.commentNotification!
-                                              ? Theme.of(context)
-                                              .primaryColorLight
-                                              : Theme.of(context)
-                                              .highlightColor))
-                                },
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Theme.of(context).canvasColor),
-                                innerPadding: const EdgeInsets.all(4),
-                                thumbDecoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Theme.of(context).primaryColor),
-                                onValueChanged: (bool value) {
-                                  if (!provider.systemNotification!) {
-                                    openAppSettings();
-                                  }
-                                  provider.setAlarmPrefs(value);
-                                  fcmSetting();
-                                }),
-                          )
-                        ]));
-              }),
-            ),
-          ]),
-        ));
-  }
-
-   */
 
   @override
   void dispose() {
