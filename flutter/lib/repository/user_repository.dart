@@ -10,17 +10,17 @@ import 'package:dio/dio.dart';
 
 class UserService {
   final String token;
-  UserService({required this.token});
-  Future<String> _loadUserdataFromServer() async {
-    const storage = FlutterSecureStorage();
 
-    var formData = Map<String, dynamic>();
-    formData["access_token"] = token;
-    formData["token_type"] = "access";
+  UserService({required this.token});
+
+  Future<String> _loadUserdataFromServer() async {
+    final storage = FlutterSecureStorage();
+
     String? user_email = await storage.read(key: "sdb_email");
 
-    var url = Uri.parse(LocalHost.getLocalHost() + "/api/user/" + user_email!);
-    var response = await http.patch(
+    final url =
+        Uri.parse(LocalHost.getLocalHost() + "/api/user/" + user_email!);
+    final response = await http.patch(
       url,
       headers: {
         HttpHeaders.authorizationHeader: 'Bearer ${token}',
@@ -31,10 +31,10 @@ class UserService {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);
     } else if (response.statusCode == 401) {
-      throw Exception('unauthorized');
+      throw Exception('인증 실패');
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
-      throw Exception('Failed to load post');
+      throw Exception('데이터를 불러오는데 실패 했습니다');
     }
     //API통신
     //await Future.delayed(Duration(milliseconds: 1000));
@@ -51,11 +51,14 @@ class UserService {
 class UserLogin {
   final String userEmail;
   final String password;
+
   UserLogin({required this.userEmail, required this.password});
+
   Future<String> _userLoginFromServer() async {
     var formData = Map<String, dynamic>();
     formData["username"] = userEmail;
     formData["passowrd"] = password;
+
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/token");
     var response = await http
         .post(url, body: {'username': userEmail, 'password': password});
@@ -72,7 +75,7 @@ class UserLogin {
       return utf8.decode(response.bodyBytes);
     } else {
       // 만약 응답이 OK가 아니면, 에러를 던집니다.
-      throw Exception('Failed to load post');
+      throw Exception('로그인에 실패했습니다');
     }
     //API통신
     //await Future.delayed(Duration(milliseconds: 1000));

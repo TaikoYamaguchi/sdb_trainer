@@ -335,7 +335,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
             onPressed: () {
               Navigator.of(context, rootNavigator: true).pop(true);
             },
-            child: Text(eindex == 1 ? "운동을 업로드 하는 중..." : "운동 종료 하기",
+            child: Text(eindex == 1 ? "운동을 업로드 하는 중..." : "모든 운동 종료",
                 textScaleFactor: 1.5,
                 style: TextStyle(color: Theme.of(context).highlightColor))));
   }
@@ -434,7 +434,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
         break;
       case 5:
         title = "운동을 종료 할 수 있어요";
-        subtitle = '운동을 종료 하시겠나요?';
+        subtitle = '모든 운동을 마치셨나요?';
         comment = '외부를 터치하면 취소 할 수 있어요';
         break;
       case 6:

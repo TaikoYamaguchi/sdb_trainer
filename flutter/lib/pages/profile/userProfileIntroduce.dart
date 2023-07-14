@@ -156,7 +156,7 @@ class _ProfileIntroduceState extends State<ProfileIntroduce> {
               padding: const EdgeInsets.all(8.0),
             ),
             onPressed: () => _editCheck(),
-            child: Text(isLoading ? 'loggin in.....' : "닉네임 수정",
+            child: Text(isLoading ? 'loggin in.....' : "소개글 수정",
                 textScaleFactor: 1.5,
                 style: TextStyle(color: Theme.of(context).highlightColor))));
   }

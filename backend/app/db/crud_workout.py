@@ -32,6 +32,13 @@ def delete_all_workouts_by_email(db: Session, email: str) :
     except:
         db.rollback()
 
+def delete_all_like_by_email(db: Session, email: str) :
+    try:
+        workouts = db.query(models.Workout).filter(models.Workout.user_email == email).delete()
+        db.commit()
+    except:
+        db.rollback()
+
 
 def get_workouts_by_email_name(db: Session, email: str, input_name: str) -> schemas.WorkoutOut:
     workouts_email_name = db.query(models.Workout).filter(models.Workout.user_email == email, models.Workout.name == input_name).first()

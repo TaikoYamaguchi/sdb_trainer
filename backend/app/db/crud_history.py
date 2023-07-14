@@ -12,8 +12,39 @@ from firebase_admin import exceptions as firebase_exceptions
 import json
 
 from sqlalchemy.sql import func
+import asyncio
 
 from . import models, schemas
+
+async def send_fcm_message(fcm_user, db_user):
+    if fcm_user.fcm_token and fcm_user.fcm_token != "":
+        message = messaging.Message(
+            notification=messaging.Notification(
+                title=db_user.nickname + "님이 운동을 완료했어요",
+                body="운동을 확인해보세요"
+            ),
+            token=fcm_user.fcm_token
+        )
+        try:
+            response = await messaging.send(message)
+            print(response)
+        except firebase_exceptions.FirebaseError:
+            print("FCM 전송 중 에러 발생 - 무시됨")
+    else:
+        print("fcm_token이 없어요")
+
+
+async def send_fcm_notifications(db, db_user):
+    tasks = []
+    for user in db_user.liked:
+        fcm_user = get_user_by_email(db, user)
+        print(user)
+        tasks.append(send_fcm_message(fcm_user, db_user))
+
+    await asyncio.gather(*tasks)
+
+async def send_fcm_notifications_in_background(db, db_user):
+    asyncio.create_task(send_fcm_notifications(db, db_user))
 
 def create_history(db: Session, history: schemas.HistoryCreate, ip:str):
     db_history = models.History(
@@ -36,34 +67,18 @@ def create_history(db: Session, history: schemas.HistoryCreate, ip:str):
     db.commit()
     db.refresh(db_history)
 
-    if (history.user_email != "Anonymous"):
+    if history.user_email != "Anonymous":
         db_user = get_user_by_email(db, history.user_email)
         setattr(db_user, "history_cnt", len(db.query(models.History).filter(models.History.user_email == history.user_email).all()))
         db.add(db_user)
         db.commit()
-        db.refresh((db_user))
+        db.refresh(db_user)
 
     db_user = get_user_by_email(db, history.user_email)
-    for user in db_user.liked:
-        fcm_user=get_user_by_email(db,user)
-        print(user)
-        if (fcm_user.fcm_token!="" and fcm_user.fcm_token!=None):
-            print("fcm_token이 있어요")
-            message = messaging.Message(
-                notification=messaging.Notification(
-                    title=db_user.nickname+
-                    "님이 운동을 완료했어요",
-                    body="운동을 확인해보세요"
-                ),
-                token=fcm_user.fcm_token
-            )
-            try:
-                response = messaging.send(message)
-                print(response)
-            except firebase_exceptions.FirebaseError:
-                print("FCM 전송 중 에러 발생 - 무시됨")
-        else:
-            print("fcm_token이 없어요")
+    
+    # 비동기 작업 스케쥴링
+    asyncio.create_task(send_fcm_notifications_in_background(db, db_user))
+    
     return db_history
 
 def get_user_by_email(db: Session, email: str) -> schemas.UserOut:
