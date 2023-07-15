@@ -76,7 +76,6 @@ void main() async {
     historyDataProvider.getHistorydataAll();
     historyDataProvider.getCommentAll();
     historyDataProvider.getFriendsHistorydata();
-    bodyStateProvider.change(2);
   });
   //MobileAds.instance.initialize();
 

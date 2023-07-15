@@ -158,357 +158,353 @@ class FeedCardState extends State<FeedCard> {
             ),
           )
         : SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 4.0, vertical: 8.0),
-              child: Consumer2<HistorydataProvider, UserdataProvider>(
-                  builder: (builder, provider, provider2, child) {
-                var time_diff = DateTime.now()
-                    .difference(DateTime.parse(SDBdata.date))
-                    .inMinutes;
-                String time_calculate;
-                if (time_diff < 1) {
+            width: MediaQuery.of(context).size.width,
+            child: Center(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
+                child: Consumer2<HistorydataProvider, UserdataProvider>(
+                    builder: (builder, provider, provider2, child) {
                   var time_diff = DateTime.now()
                       .difference(DateTime.parse(SDBdata.date))
-                      .inSeconds;
-                  time_calculate = "$time_diff초 전";
-                } else if (time_diff < 60) {
-                  time_calculate = "$time_diff분 전";
-                } else if (time_diff < 1440) {
-                  var time_diff = DateTime.now()
-                      .difference(DateTime.parse(SDBdata.date))
-                      .inHours;
-                  time_calculate = "$time_diff시간 전";
-                } else {
-                  time_calculate =
-                      DateTime.now().toString().substring(2, 4) ==
-                              SDBdata.date.substring(2, 4)
-                          ? SDBdata.date.substring(5, 10)
-                          : SDBdata.date.substring(2, 10);
-                }
-                return _userProvider.userdata.dislike.contains(user.email)
-                    ? const Padding(
-                        padding: EdgeInsets.only(left: 4.0),
-                        child: Text("차단된 사용자 입니다",
-                            textScaleFactor: 1.0,
-                            style: TextStyle(color: Colors.grey)))
-                    : RepaintBoundary(
-                      key: repaintkey,
-                  child: Card(
-                          color: Theme.of(context).cardColor,
-                          elevation: 0.5,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0)),
-                          child: Column(
-                            children: [
-                              Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 5),
+                      .inMinutes;
+                  String time_calculate;
+                  if (time_diff < 1) {
+                    var time_diff = DateTime.now()
+                        .difference(DateTime.parse(SDBdata.date))
+                        .inSeconds;
+                    time_calculate = "$time_diff초 전";
+                  } else if (time_diff < 60) {
+                    time_calculate = "$time_diff분 전";
+                  } else if (time_diff < 1440) {
+                    var time_diff = DateTime.now()
+                        .difference(DateTime.parse(SDBdata.date))
+                        .inHours;
+                    time_calculate = "$time_diff시간 전";
+                  } else {
+                    time_calculate =
+                        DateTime.now().toString().substring(2, 4) ==
+                                SDBdata.date.substring(2, 4)
+                            ? SDBdata.date.substring(5, 10)
+                            : SDBdata.date.substring(2, 10);
+                  }
+                  return _userProvider.userdata.dislike.contains(user.email)
+                      ? const Padding(
+                          padding: EdgeInsets.only(left: 4.0),
+                          child: Text("차단된 사용자 입니다",
+                              textScaleFactor: 1.0,
+                              style: TextStyle(color: Colors.grey)))
+                      : RepaintBoundary(
+                          key: repaintkey,
+                          child: Card(
+                            color: Theme.of(context).cardColor,
+                            elevation: 0.5,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0)),
+                            child: Column(
+                              children: [
+                                Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 5),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            widget.openUserDetail
+                                                ? Navigator.push(
+                                                    context,
+                                                    Transition(
+                                                        child: FriendProfile(
+                                                            user: user),
+                                                        transitionEffect:
+                                                            TransitionEffect
+                                                                .RIGHT_TO_LEFT))
+                                                : null;
+                                          },
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              user.image == ""
+                                                  ? const Icon(
+                                                      Icons.account_circle,
+                                                      color: Colors.grey,
+                                                      size: 46.0,
+                                                    )
+                                                  : CachedNetworkImage(
+                                                      imageUrl: user.image,
+                                                      imageBuilder: (context,
+                                                              imageProivder) =>
+                                                          Container(
+                                                        height: 46,
+                                                        width: 46,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                borderRadius:
+                                                                    const BorderRadius
+                                                                            .all(
+                                                                        Radius.circular(
+                                                                            50)),
+                                                                image:
+                                                                    DecorationImage(
+                                                                  image:
+                                                                      imageProivder,
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                )),
+                                                      ),
+                                                    ),
+                                              Center(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 6.0),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      Text(
+                                                        SDBdata.nickname,
+                                                        textScaleFactor: 1.6,
+                                                        style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColorLight),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                right: 4.0),
+                                                        child: Text(
+                                                            time_calculate,
+                                                            textScaleFactor:
+                                                                1.1,
+                                                            style:
+                                                                const TextStyle(
+                                                                    color: Colors
+                                                                        .grey)),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        widget.isExEdit
+                                            ? _exercise_Done_appbar_Button()
+                                            : GestureDetector(
+                                                onTapDown: _storePosition,
+                                                onTap: () {
+                                                  SDBdata.user_email ==
+                                                          _userProvider
+                                                              .userdata.email
+                                                      ? _myFeedMenu(SDBdata)
+                                                      : _otherFeedMenu(SDBdata);
+                                                },
+                                                child: const Padding(
+                                                  padding: EdgeInsets.all(8.0),
+                                                  child: Icon(Icons.more_vert,
+                                                      color: Colors.grey,
+                                                      size: 20.0),
+                                                ))
+                                      ],
+                                    )),
+                                widget.isExEdit
+                                    ? _commentWidget()
+                                    : SDBdata.comment != ""
+                                        ? _feedTextField(SDBdata.comment)
+                                        : Container(),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 0),
                                   child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          widget.openUserDetail
-                                              ? Navigator.push(
-                                                  context,
-                                                  Transition(
-                                                      child: FriendProfile(
-                                                          user: user),
-                                                      transitionEffect:
-                                                          TransitionEffect
-                                                              .RIGHT_TO_LEFT))
-                                              : null;
-                                        },
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            user.image == ""
-                                                ? const Icon(
-                                                    Icons.account_circle,
-                                                    color: Colors.grey,
-                                                    size: 46.0,
-                                                  )
-                                                : CachedNetworkImage(
-                                                    imageUrl: user.image,
-                                                    imageBuilder: (context,
-                                                            imageProivder) =>
-                                                        Container(
-                                                      height: 46,
-                                                      width: 46,
-                                                      decoration:
-                                                          BoxDecoration(
-                                                              borderRadius:
-                                                                  const BorderRadius
-                                                                          .all(
-                                                                      Radius.circular(
-                                                                          50)),
-                                                              image:
-                                                                  DecorationImage(
-                                                                image:
-                                                                    imageProivder,
-                                                                fit: BoxFit
-                                                                    .cover,
-                                                              )),
-                                                    ),
-                                                  ),
-                                            Center(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.only(
-                                                        left: 6.0),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment
-                                                          .start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    Text(
-                                                      SDBdata.nickname,
-                                                      textScaleFactor: 1.6,
-                                                      style: TextStyle(
-                                                          color: Theme.of(
-                                                                  context)
-                                                              .primaryColorLight),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets
-                                                                  .only(
-                                                              right: 4.0),
-                                                      child: Text(
-                                                          time_calculate,
-                                                          textScaleFactor:
-                                                              1.1,
-                                                          style:
-                                                              const TextStyle(
-                                                                  color: Colors
-                                                                      .grey)),
-                                                    ),
-                                                  ],
-                                                ),
+                                      Expanded(
+                                        child: Text(
+                                          "운동",
+                                          textScaleFactor: 1.1,
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                          width: 50,
+                                          child: Text("세트",
+                                              textScaleFactor: 1.1,
+                                              style: TextStyle(
+                                                color: Colors.grey,
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      widget.isExEdit
-                                          ? _exercise_Done_appbar_Button()
-                                          : GestureDetector(
-                                                    onTapDown: _storePosition,
-                                                    onTap: () {
-                                                      SDBdata.user_email ==
-                                                          _userProvider
-                                                              .userdata
-                                                              .email
-                                                          ? _myFeedMenu(SDBdata)
-                                                          : _otherFeedMenu(
-                                                          SDBdata);
-                                                    },
-                                                    child: const Padding(
-                                                      padding:
-                                                      EdgeInsets.all(8.0),
-                                                      child: Icon(
-                                                          Icons.more_vert,
-                                                          color: Colors.grey,
-                                                          size: 20.0),
-                                                    ))
+                                              textAlign: TextAlign.center)),
+                                      SizedBox(
+                                          width: 70,
+                                          child: Text("1rm",
+                                              textScaleFactor: 1.1,
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                              ),
+                                              textAlign: TextAlign.center))
                                     ],
-                                  )),
-                              widget.isExEdit
-                                  ? _commentWidget()
-                                  : SDBdata.comment != ""
-                                      ? _feedTextField(SDBdata.comment)
-                                      : Container(),
-                              const Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.center,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        "운동",
-                                        textScaleFactor: 1.1,
-                                        style: TextStyle(
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                        width: 50,
-                                        child: Text("세트",
-                                            textScaleFactor: 1.1,
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                            ),
-                                            textAlign: TextAlign.center)),
-                                    SizedBox(
-                                        width: 70,
-                                        child: Text("1rm",
-                                            textScaleFactor: 1.1,
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                            ),
-                                            textAlign: TextAlign.center))
-                                  ],
+                                  ),
                                 ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      Transition(
-                                          child:
-                                              FriendHistory(sdbdata: SDBdata),
-                                          transitionEffect: TransitionEffect
-                                              .RIGHT_TO_LEFT));
-                                },
-                                child: ListView.separated(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemBuilder:
-                                        (BuildContext _context, int index) {
-                                      return Center(
-                                          child: _exerciseWidget(
-                                              SDBdata.exercises[index],
-                                              index));
-                                    },
-                                    separatorBuilder:
-                                        (BuildContext _context, int index) {
-                                      return Container(
-                                        alignment: Alignment.center,
-                                        height: 0,
-                                        color: Colors.black,
-                                        child: Container(
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        Transition(
+                                            child:
+                                                FriendHistory(sdbdata: SDBdata),
+                                            transitionEffect: TransitionEffect
+                                                .RIGHT_TO_LEFT));
+                                  },
+                                  child: ListView.separated(
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemBuilder:
+                                          (BuildContext _context, int index) {
+                                        return Center(
+                                            child: _exerciseWidget(
+                                                SDBdata.exercises[index],
+                                                index));
+                                      },
+                                      separatorBuilder:
+                                          (BuildContext _context, int index) {
+                                        return Container(
                                           alignment: Alignment.center,
                                           height: 0,
-                                          color: const Color(0xFF717171),
-                                        ),
-                                      );
-                                    },
-                                    itemCount: SDBdata.exercises.length),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 20.0, top: 15.0, bottom: 10.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    SDBdata.isVisible == false
-                                        ? const Text("숨겨진 피드",
-                                            textScaleFactor: 1.1,
-                                            style:
-                                                TextStyle(color: Colors.grey))
-                                        : Container(),
-                                    _feedPhotoButton(SDBdata),
-                                    _feedLikeButton(SDBdata),
-                                    _feedCommentButton(SDBdata)
-                                  ],
-                                ),
-                              ),
-                              SDBdata.like.length != 0
-                                  ? GestureDetector(
-                                      onTap: () {
-                                        _showLikeFreindBottomSheet(SDBdata);
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 10.0,
-                                            right: 10.0,
-                                            top: 0.0,
-                                            bottom: 10.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                                SDBdata.like.length == 1
-                                                    ? _userProvider
-                                                            .userFriendsAll
-                                                            .userdatas
-                                                            .where((user) =>
-                                                                user.email ==
-                                                                SDBdata
-                                                                    .like[0])
-                                                            .toList()[0]
-                                                            .nickname +
-                                                        "님이 좋아합니다"
-                                                    : _userProvider
-                                                            .userFriendsAll
-                                                            .userdatas
-                                                            .where((user) =>
-                                                                user.email ==
-                                                                SDBdata
-                                                                    .like[0])
-                                                            .toList()[0]
-                                                            .nickname +
-                                                        "님 외 ${SDBdata.like.length - 1}명이 좋아합니다",
-                                                textScaleFactor: 1.1,
-                                                style: const TextStyle(
-                                                    color: Colors.grey))
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  : Container(),
-                              widget.isExEdit
-                                  ? Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Container(
-                                          alignment: Alignment.center,
-                                          height: 0.1,
                                           color: Colors.black,
                                           child: Container(
                                             alignment: Alignment.center,
-                                            height: 0.1,
+                                            height: 0,
                                             color: const Color(0xFF717171),
                                           ),
+                                        );
+                                      },
+                                      itemCount: SDBdata.exercises.length),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 20.0, top: 15.0, bottom: 10.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      SDBdata.isVisible == false
+                                          ? const Text("숨겨진 피드",
+                                              textScaleFactor: 1.1,
+                                              style:
+                                                  TextStyle(color: Colors.grey))
+                                          : Container(),
+                                      _feedPhotoButton(SDBdata),
+                                      _feedLikeButton(SDBdata),
+                                      _feedCommentButton(SDBdata)
+                                    ],
+                                  ),
+                                ),
+                                SDBdata.like.length != 0
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          _showLikeFreindBottomSheet(SDBdata);
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10.0,
+                                              right: 10.0,
+                                              top: 0.0,
+                                              bottom: 10.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                  SDBdata.like.length == 1
+                                                      ? _userProvider
+                                                              .userFriendsAll
+                                                              .userdatas
+                                                              .where((user) =>
+                                                                  user.email ==
+                                                                  SDBdata
+                                                                      .like[0])
+                                                              .toList()[0]
+                                                              .nickname +
+                                                          "님이 좋아합니다"
+                                                      : _userProvider
+                                                              .userFriendsAll
+                                                              .userdatas
+                                                              .where((user) =>
+                                                                  user.email ==
+                                                                  SDBdata
+                                                                      .like[0])
+                                                              .toList()[0]
+                                                              .nickname +
+                                                          "님 외 ${SDBdata.like.length - 1}명이 좋아합니다",
+                                                  textScaleFactor: 1.1,
+                                                  style: const TextStyle(
+                                                      color: Colors.grey))
+                                            ],
+                                          ),
                                         ),
-                                        _imageExEditContent(SDBdata),
-                                      ],
-                                    )
-                                  : _photoInfo["feedList"] ==
-                                              widget.feedListCtrl &&
-                                          _photoInfo["feedVisible"] == true &&
-                                          SDBdata.image.length != 0
-                                      ? Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Container(
+                                      )
+                                    : Container(),
+                                widget.isExEdit
+                                    ? Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Container(
+                                            alignment: Alignment.center,
+                                            height: 0.1,
+                                            color: Colors.black,
+                                            child: Container(
                                               alignment: Alignment.center,
                                               height: 0.1,
-                                              color: Colors.black,
-                                              child: Container(
+                                              color: const Color(0xFF717171),
+                                            ),
+                                          ),
+                                          _imageExEditContent(SDBdata),
+                                        ],
+                                      )
+                                    : _photoInfo["feedList"] ==
+                                                widget.feedListCtrl &&
+                                            _photoInfo["feedVisible"] == true &&
+                                            SDBdata.image.length != 0
+                                        ? Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Container(
                                                 alignment: Alignment.center,
                                                 height: 0.1,
-                                                color:
-                                                    const Color(0xFF717171),
+                                                color: Colors.black,
+                                                child: Container(
+                                                  alignment: Alignment.center,
+                                                  height: 0.1,
+                                                  color:
+                                                      const Color(0xFF717171),
+                                                ),
                                               ),
-                                            ),
-                                            _imageContent(SDBdata),
-                                          ],
-                                        )
-                                      : Container(),
-                            ],
+                                              _imageContent(SDBdata),
+                                            ],
+                                          )
+                                        : Container(),
+                              ],
+                            ),
                           ),
-                        ),
-                    );
-              }),
+                        );
+                }),
+              ),
             ),
-          ),
-        );
+          );
   }
 
   Widget _exercise_Done_appbar_Button() {
@@ -617,10 +613,12 @@ class FeedCardState extends State<FeedCard> {
       data,
     );
 
-    final watermark = await getImageFileFromAssets("jpeg/supero_logo_round.png");
+    final watermark =
+        await getImageFileFromAssets("jpeg/supero_logo_round.png");
 
     ui.Image originalImage = ui.decodeImage(file.readAsBytesSync()) as ui.Image;
-    ui.Image watermarkImage = ui.decodeImage(watermark.readAsBytesSync()) as ui.Image;
+    ui.Image watermarkImage =
+        ui.decodeImage(watermark.readAsBytesSync()) as ui.Image;
     watermarkImage = ui.copyResize(watermarkImage, height: 100);
 
     // add watermark over originalImage
@@ -631,7 +629,8 @@ class FeedCardState extends State<FeedCard> {
     // give position to watermark over image
     // originalImage.width - 160 - 25 (width of originalImage - width of watermarkImage - extra margin you want to give)
     // originalImage.height - 50 - 25 (height of originalImage - height of watermarkImage - extra margin you want to give)
-    originalImage = ui.compositeImage(originalImage,watermarkImage , dstX: originalImage.width - 70 - watermarkImage.width, dstY: 40 );
+    originalImage = ui.compositeImage(originalImage, watermarkImage,
+        dstX: originalImage.width - 70 - watermarkImage.width, dstY: 40);
     final data2 = ui.encodePng(originalImage);
     final file2 = createFile(
       '$path/stamp_image_${DateTime.now().toString()}.png',
@@ -642,21 +641,18 @@ class FeedCardState extends State<FeedCard> {
     xlist.add(XFile(file2.path));
     Share.shareXFiles(xlist);
     //generate(file);
-
   }
+
   Future<File> getImageFileFromAssets(String path) async {
     final byteData = await rootBundle.load('assets/$path');
 
     final file = File('${(await getTemporaryDirectory()).path}/$path');
     await file.create(recursive: true);
-    await file.writeAsBytes(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+    await file.writeAsBytes(byteData.buffer
+        .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
 
     return file;
   }
-
-
-
-
 
   Future<dynamic> _myFeedMenu(SDBdata) {
     return showMenu(
@@ -1798,7 +1794,10 @@ class FeedCardState extends State<FeedCard> {
                             writer_email: _userProvider.userdata.email,
                             writer_nickname: _userProvider.userdata.nickname,
                             content: _commentInputCtrl.text)
-                        .postComment();
+                        .postComment()
+                        .then((data) {
+                      _historyProvider.getCommentAll();
+                    });
                     _commentInputCtrl.clear();
                     setState(() {
                       _commentScrollController.animateTo(
