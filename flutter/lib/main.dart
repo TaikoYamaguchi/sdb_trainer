@@ -42,6 +42,15 @@ void main() async {
   KakaoSdk.init(nativeAppKey: "54b807de5757a704a372c2d0539a67da");
   WidgetsFlutterBinding.ensureInitialized();
 
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  final isNotificationEnabled = await prefs.getBool('commentNotification');
+  if (isNotificationEnabled != false) {
+    print("background message enable");
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  }
+
+  initLocalNotificationPlugin();
   FirebaseMessaging.instance.getInitialMessage().then((message) {
     if (message != null) {
       historyDataProvider.getHistorydataAll();
@@ -71,15 +80,6 @@ void main() async {
   });
   //MobileAds.instance.initialize();
 
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  final isNotificationEnabled = await prefs.getBool('commentNotification');
-  if (isNotificationEnabled != false) {
-    print("background message enable");
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  }
-
-  initLocalNotificationPlugin();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (BuildContext context) => BodyStater()),
     ChangeNotifierProvider(
