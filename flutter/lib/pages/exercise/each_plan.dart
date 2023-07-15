@@ -269,7 +269,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                     ? Theme.of(context).highlightColor
                     : Theme.of(context).primaryColorLight),
             selected: plandata.progress == i,
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(15.0))),
             selectedColor: Theme.of(context).primaryColor,
             backgroundColor: Theme.of(context).cardColor,

@@ -36,12 +36,38 @@ Future<void> _firebaseMessagingBackgroundNullHandler(
   return null;
 }
 
+var historyDataProvider;
+var bodyStateProvider;
 void main() async {
   KakaoSdk.init(nativeAppKey: "54b807de5757a704a372c2d0539a67da");
   WidgetsFlutterBinding.ensureInitialized();
+
+  FirebaseMessaging.instance.getInitialMessage().then((message) {
+    if (message != null) {
+      historyDataProvider.getHistorydataAll();
+      historyDataProvider.getCommentAll();
+      historyDataProvider.getFriendsHistorydata();
+      bodyStateProvider.change(2);
+    }
+
+    print(message);
+    print("완전 종료");
+  });
   FirebaseMessaging.onMessageOpenedApp.listen((message) {
     // 특정 페이지로 가고 싶게한다면 추가 설정이 필요하다
+    historyDataProvider.getHistorydataAll();
+    historyDataProvider.getCommentAll();
+    historyDataProvider.getFriendsHistorydata();
+    bodyStateProvider.change(2);
     print(message);
+    print("백그라운드");
+  });
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    // 앱이 실행 중일 때 알림을 수신한 경우 처리
+    historyDataProvider.getHistorydataAll();
+    historyDataProvider.getCommentAll();
+    historyDataProvider.getFriendsHistorydata();
+    bodyStateProvider.change(2);
   });
   //MobileAds.instance.initialize();
 
@@ -97,6 +123,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    historyDataProvider =
+        Provider.of<HistorydataProvider>(context, listen: false);
+    bodyStateProvider = Provider.of<BodyStater>(context, listen: false);
     _themeProvider.getUserFontsize();
     _themeProvider.getUserTheme();
     return Center(
