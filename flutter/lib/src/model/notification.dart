@@ -50,7 +50,7 @@ class Notification {
     return Notification(
       id: parsedJson['id'],
       title: parsedJson['title'],
-      content: cont,
+      content: parsedJson['content'],
       images: parsedJson["images"],
       ispopup: parsedJson["ispopup"],
       date: parsedJson["date"],

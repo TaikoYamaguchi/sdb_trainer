@@ -98,6 +98,7 @@ dependencies:
   permission_handler: ^10.2.0
   flutter_cache_manager: ^3.3.0
   html: ^0.15.4
+  html_editor_enhanced: ^2.5.0
 
 dependency_overrides:
   package_info_plus: ^3.0.0
