@@ -19,10 +19,10 @@ class NotificationList {
 class Notification {
   late int? id;
   late String title;
-  late String content;
+  late Content content;
   List<dynamic>? images;
   late bool ispopup;
-  late String? date;
+  final String? date;
 
   Notification({
     this.id,
@@ -44,13 +44,14 @@ class Notification {
   };
 
   factory Notification.fromJson(Map<String, dynamic> parsedJson) {
-    var cont = parsedJson['content'].runtimeType == String
-        ? json.decode(parsedJson['exercises'])
-        : parsedJson['exercises'];
+    var hcont = parsedJson['content'].runtimeType == String
+        ? json.decode(parsedJson['content'])
+        : parsedJson['content'];
+    Content htmlcontent = Content.fromJson(hcont);
     return Notification(
       id: parsedJson['id'],
       title: parsedJson['title'],
-      content: parsedJson['content'],
+      content: htmlcontent,
       images: parsedJson["images"],
       ispopup: parsedJson["ispopup"],
       date: parsedJson["date"],
@@ -59,50 +60,24 @@ class Notification {
 }
 
 
-/*
+
 class Content {
-  late String name;
-  late double? onerm;
-  late double? goal;
-  late bool? custom;
-  late List? target;
-  late String? category;
-  late String? image;
-  late String? note;
+  late String html;
 
   Content({
-    required this.name,
-    required this.onerm,
-    required this.goal,
-    required this.custom,
-    required this.target,
-    required this.category,
-    required this.image,
-    required this.note,
+    required this.html,
+
   });
   Map toJson() => {
-    "goal": goal,
-    "name": name,
-    "onerm": onerm,
-    "custom": custom,
-    "target": target,
-    "category": category,
-    "image": image,
-    "note": note
+    "html": html,
+
   };
 
   factory Content.fromJson(Map<String, dynamic> parsedJson) {
     return Content(
-      name: parsedJson["name"],
-      onerm: parsedJson["onerm"].toDouble(),
-      goal: parsedJson["goal"].toDouble(),
-      custom: parsedJson["custom"],
-      target: parsedJson["target"],
-      category: parsedJson["category"],
-      image: parsedJson["image"],
-      note: parsedJson["note"],
+      html: parsedJson["html"],
+
     );
   }
 }
 
- */

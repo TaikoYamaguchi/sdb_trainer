@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:sdb_trainer/pages/profile/htmlEditor_Notification.dart';
 import 'package:sdb_trainer/providers/notification.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'dart:async';
+
+import 'package:transition/transition.dart';
 
 class AppNotification extends StatefulWidget {
   AppNotification({Key? key}) : super(key: key);
@@ -14,6 +17,7 @@ class AppNotification extends StatefulWidget {
 
 class _AppNotificationState extends State<AppNotification> {
   var _userProvider;
+  var _PopProvider;
   var _notificationprovider;
   final _scrollController = ScrollController();
   @override
@@ -24,7 +28,7 @@ class _AppNotificationState extends State<AppNotification> {
 
   @override
   Widget build(BuildContext context) {
-
+    _PopProvider=Provider.of<PopProvider>(context, listen: false);
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _notificationprovider = Provider.of<NotificationdataProvider>(context, listen: false);
     _onRefresh();
@@ -70,6 +74,22 @@ class _AppNotificationState extends State<AppNotification> {
             textScaleFactor: 1.5,
             style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
+          actions: [
+            GestureDetector(
+                onTap: () {
+                  _PopProvider.profilestackup();
+                  Navigator.push(
+                      context,
+                      Transition(
+                          child: NotificationHtmlEditor(),
+                          transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Icon(Icons.open_in_new,
+                      size: 28, color: Theme.of(context).primaryColor),
+                )),
+          ],
           backgroundColor: Theme.of(context).canvasColor,
         ));
   }
@@ -83,7 +103,7 @@ class _AppNotificationState extends State<AppNotification> {
   }
 
   Widget _AppNotificationWidget() {
-    print("here?");
+    print(_notificationprovider.notificationdata.notifications[0].content.html);
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
@@ -188,6 +208,7 @@ class _AppNotificationState extends State<AppNotification> {
                                                               .primaryColorLight),
                                                     ),
                                                   ),
+                                                  /*
                                                   Container(
                                                     child: Padding(
                                                       padding:
@@ -197,9 +218,7 @@ class _AppNotificationState extends State<AppNotification> {
                                                       child: Text(
                                                         _notificationDatas[
                                                         index]
-                                                            .date
-                                                            .substring(
-                                                            2, 10),
+                                                            .date,
                                                         textScaleFactor:
                                                         1.0,
                                                         style: TextStyle(
@@ -209,6 +228,8 @@ class _AppNotificationState extends State<AppNotification> {
                                                       ),
                                                     ),
                                                   ),
+
+                                                   */
                                                 ],
                                               ),
                                               const SizedBox(height: 4),
@@ -216,8 +237,7 @@ class _AppNotificationState extends State<AppNotification> {
                                                   (context, constraints) {
                                                 final span = TextSpan(
                                                     text: _notificationDatas[
-                                                    index]
-                                                        .content,
+                                                    index].content.html,
                                                     style: TextStyle(
                                                         color: Theme.of(
                                                             context)
@@ -242,7 +262,7 @@ class _AppNotificationState extends State<AppNotification> {
                                                         Text(
                                                           _notificationDatas[
                                                           index]
-                                                              .content,
+                                                              .content.html,
                                                           maxLines: 2,
                                                           overflow:
                                                           TextOverflow
@@ -271,7 +291,7 @@ class _AppNotificationState extends State<AppNotification> {
                                                 } else {
                                                   return Text(
                                                     _notificationDatas[index]
-                                                        .content,
+                                                        .content.html,
                                                     maxLines: 2,
                                                     overflow: TextOverflow
                                                         .ellipsis,

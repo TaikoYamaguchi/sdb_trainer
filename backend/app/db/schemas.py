@@ -336,6 +336,7 @@ class NotificationBase(BaseModel):
     content: t.Any
     images:list
     ispopup:bool=False
+    date: datetime
     class Config:
         orm_mode = True
 
@@ -347,5 +348,6 @@ class NotificationOut(NotificationBase):
     id: int
     title: str
     ispopup:bool=False
+    date: datetime
     class config:
         orm_mode = True
