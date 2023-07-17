@@ -296,14 +296,11 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
           ),
           wrapped: true,
           runSpacing: 10,
-          choiceStyle: const C2ChoiceStyle(
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          choiceStyle: C2ChipStyle.filled(
+            selectedStyle: C2ChipStyle(
+              backgroundColor: Color(0xff7a28cb),
+            ),
             color: Color(0xff40434e),
-            appearance: C2ChipType.elevated,
-          ),
-          choiceActiveStyle: const C2ChoiceStyle(
-            color: Color(0xff7a28cb),
-            appearance: C2ChipType.elevated,
           ),
         );
       }),
@@ -1228,16 +1225,11 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
           ),
           wrapped: true,
           runSpacing: 5,
-          choiceStyle: C2ChoiceStyle(
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            appearance: C2ChipType.elevated,
-            labelStyle: TextStyle(
-              color: Theme.of(context).primaryColorLight,
+          choiceStyle: C2ChipStyle.filled(
+            selectedStyle: C2ChipStyle(
+              backgroundColor: Theme.of(context).primaryColor,
             ),
-          ),
-          choiceActiveStyle: C2ChoiceStyle(
-            color: Theme.of(context).primaryColor,
-            appearance: C2ChipType.elevated,
+            color: Color(0xff40434e),
           ),
         );
       }),
@@ -1272,13 +1264,11 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
           ),
           wrapped: true,
           runSpacing: 5,
-          choiceStyle: const C2ChoiceStyle(
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            appearance: C2ChipType.elevated,
-          ),
-          choiceActiveStyle: C2ChoiceStyle(
-            color: Theme.of(context).primaryColor,
-            appearance: C2ChipType.elevated,
+          choiceStyle: C2ChipStyle.filled(
+            selectedStyle: C2ChipStyle(
+              backgroundColor: Color(0xff7a28cb),
+            ),
+            color: Color(0xff40434e),
           ),
         );
       }),

@@ -458,13 +458,11 @@ class _ProgramUploadState extends State<ProgramUpload> {
             tooltip: (i, v) => v,
           ),
           wrapped: true,
-          choiceStyle: const C2ChoiceStyle(
+          choiceStyle: C2ChipStyle.filled(
+            selectedStyle: C2ChipStyle(
+              backgroundColor: Theme.of(context).primaryColor,
+            ),
             color: Color(0xff40434e),
-            appearance: C2ChipType.elevated,
-          ),
-          choiceActiveStyle: const C2ChoiceStyle(
-            color: Color(0xff7a28cb),
-            appearance: C2ChipType.elevated,
           ),
         );
       }),
