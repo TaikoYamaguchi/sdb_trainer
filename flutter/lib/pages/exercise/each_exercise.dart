@@ -526,7 +526,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                         children: [
                           GestureDetector(
                             onTap: () {
-                              exguide(widget.ueindex);
+                              exguide(ueindex);
                             },
                             child: Consumer<WorkoutdataProvider>(
                                 builder: (builder, provider, child) {
@@ -623,7 +623,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                 ? Container()
                                 : GestureDetector(
                                     onTap: () {
-                                      exGoalEditAlert(context, _exercise);
+                                      exGoalEditAlert(context, info);
                                     },
                                     child: Text(
                                         "1RM/목표: ${info.onerm.toStringAsFixed(1)}/${info.goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
@@ -1451,7 +1451,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                         children: [
                           GestureDetector(
                             onTap: () {
-                              exguide(widget.ueindex);
+                              exguide(ueindex);
                             },
                             child: Consumer<WorkoutdataProvider>(
                                 builder: (builder, provider, child) {
@@ -2381,94 +2381,93 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              exguide(widget.ueindex);
-                            },
-                            child: Consumer<WorkoutdataProvider>(
-                                builder: (builder, provider, child) {
-                              var exercise = provider
-                                  .workoutdata
-                                  .routinedatas[widget.rindex]
-                                  .exercises[pindex];
-                              var exImage;
-                              try {
-                                exImage = extra_completely_new_Ex[
-                                        extra_completely_new_Ex.indexWhere(
-                                            (element) =>
-                                                element.name == exercise.name)]
-                                    .image;
+                          Consumer<WorkoutdataProvider>(
+                              builder: (builder, provider, child) {
+                            var exercise = provider.workoutdata
+                                .routinedatas[widget.rindex].exercises[pindex];
+                            var exImage;
+                            try {
+                              exImage = extra_completely_new_Ex[
+                                      extra_completely_new_Ex.indexWhere(
+                                          (element) =>
+                                              element.name == exercise.name)]
+                                  .image;
 
-                                exImage ??= "";
-                              } catch (e) {
-                                exImage = "";
-                              }
-                              return Column(children: [
-                                isKeyboardVisible
-                                    ? Container()
-                                    : exImage != ""
-                                        ? Image.asset(
-                                            exImage,
-                                            height: 160,
-                                            width: 160,
-                                            fit: BoxFit.cover,
-                                          )
-                                        : const SizedBox(height: 12),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    exercise.name.length < 10
-                                        ? Icon(
+                              exImage ??= "";
+                            } catch (e) {
+                              exImage = "";
+                            }
+                            return GestureDetector(
+                                onTap: () {
+                                  exguide(ueindex);
+                                },
+                                child: Column(children: [
+                                  isKeyboardVisible
+                                      ? Container()
+                                      : exImage != ""
+                                          ? Image.asset(
+                                              exImage,
+                                              height: 160,
+                                              width: 160,
+                                              fit: BoxFit.cover,
+                                            )
+                                          : const SizedBox(height: 12),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      exercise.name.length < 10
+                                          ? Icon(
+                                              Icons.info_outline_rounded,
+                                              color:
+                                                  Theme.of(context).canvasColor,
+                                            )
+                                          : Container(),
+                                      isKeyboardVisible
+                                          ? Text(
+                                              exercise.name,
+                                              textScaleFactor: 2.0,
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight),
+                                            )
+                                          : exercise.name.length < 8
+                                              ? Text(
+                                                  exercise.name,
+                                                  textScaleFactor: 3.2,
+                                                  style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .primaryColorLight,
+                                                  ),
+                                                )
+                                              : Flexible(
+                                                  child: Text(
+                                                    exercise.name,
+                                                    textScaleFactor: 2.4,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .primaryColorLight),
+                                                  ),
+                                                ),
+                                      Column(
+                                        children: [
+                                          Container(
+                                            height: 7,
+                                          ),
+                                          Icon(
                                             Icons.info_outline_rounded,
                                             color:
-                                                Theme.of(context).canvasColor,
-                                          )
-                                        : Container(),
-                                    isKeyboardVisible
-                                        ? Text(
-                                            exercise.name,
-                                            textScaleFactor: 2.0,
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .primaryColorLight),
-                                          )
-                                        : exercise.name.length < 8
-                                            ? Text(
-                                                exercise.name,
-                                                textScaleFactor: 3.2,
-                                                style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .primaryColorLight,
-                                                ),
-                                              )
-                                            : Flexible(
-                                                child: Text(
-                                                  exercise.name,
-                                                  textScaleFactor: 2.4,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .primaryColorLight),
-                                                ),
-                                              ),
-                                    Column(
-                                      children: [
-                                        Container(
-                                          height: 7,
-                                        ),
-                                        Icon(
-                                          Icons.info_outline_rounded,
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                )
-                              ]);
-                            }),
-                          ),
+                                                Theme.of(context).primaryColor,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                                ]));
+                          }),
                         ],
                       ),
                       const SizedBox(height: 16),
@@ -3158,8 +3157,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
     var exerciseData =
         _workoutProvider.workoutdata.routinedatas[widget.rindex].exercises;
     for (int n = 0; n < exerciseData.length; n++) {
-      final recordedSets =
-          exerciseData[n].sets.where((sets) => sets.ischecked).toList();
+      var recordedSets =
+          exerciseData[n].sets.where((sets) => sets.ischecked as bool).toList();
       double maxOnerm = 0;
       for (int i = 0; i < recordedSets.length; i++) {
         final set = recordedSets[i];
@@ -3179,12 +3178,12 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
             name: exerciseData[n].name,
             sets: recordedSets,
             onerm: maxOnerm,
-            goal: exerciseIndex.goal,
+            goal: exercise.goal,
             date: date,
             isCardio: isCardio));
       }
 
-      if (maxOnerm > exerciseIndex.onerm) {
+      if (maxOnerm > exercise.onerm) {
         modifyExercise(maxOnerm, exerciseData[n].name);
       }
     }
