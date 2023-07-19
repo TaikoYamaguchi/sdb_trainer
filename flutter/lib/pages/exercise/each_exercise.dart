@@ -1063,190 +1063,233 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                 ),
               ),
             ),
-            Container(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: Consumer2<WorkoutdataProvider, RoutineTimeProvider>(
-                    builder: (builder, provider, provider2, child) {
-                  return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        SizedBox(
-                          height: 48,
-                          width: provider2.nowonrindex == widget.rindex &&
-                                  _routinetimeProvider.isstarted
-                              ? MediaQuery.of(context).size.width / 3 + 8
-                              : MediaQuery.of(context).size.width / 2 - 16,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                elevation: 1,
-                                primary:
-                                    (provider2.nowonrindex != widget.rindex) &&
-                                            _routinetimeProvider.isstarted
-                                        ? const Color(0xFF212121)
-                                        : provider2.buttoncolor,
-                                textStyle: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold)),
-                            onPressed: () {
-                              if ((provider2.nowonrindex != widget.rindex) &&
-                                  _routinetimeProvider.isstarted) {
-                                return null;
-                              } else {
-                                if (_routinetimeProvider.isstarted) {
-                                  _showMyDialog_finish();
-                                } else {
-                                  _routinetimeProvider.resettimer(
-                                      _workoutProvider
-                                          .workoutdata
-                                          .routinedatas[widget.rindex]
-                                          .exercises[pindex]
-                                          .rest);
-                                  provider2.routinecheck(widget.rindex);
-                                }
-                              }
-                            },
-                            child: Text(
-                                (provider2.nowonrindex != widget.rindex) &&
-                                        _routinetimeProvider.isstarted
-                                    ? '다른 루틴 수행중'
-                                    : provider2.routineButton),
-                          ),
-                        ),
-                        if (provider2.nowonrindex == widget.rindex &&
-                            _routinetimeProvider.isstarted)
-                          SizedBox(
-                              width: MediaQuery.of(context).size.width / 4 - 32,
-                              height: 48,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 1,
-                                    primary: Theme.of(context).primaryColorDark,
-                                  ),
-                                  onPressed: btnDisabled
-                                      ? null
-                                      : () {
-                                          btnDisabled = true;
-                                          Navigator.of(context).pop();
-                                          _editWorkoutCheck();
-                                        },
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "목록",
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              color: Theme.of(context)
-                                                  .indicatorColor),
-                                        )
-                                      ]))),
-                        SizedBox(
-                            width: provider2.nowonrindex == widget.rindex &&
-                                    _routinetimeProvider.isstarted
-                                ? MediaQuery.of(context).size.width / 3 + 8
-                                : MediaQuery.of(context).size.width / 2 - 16,
-                            height: 48,
-                            child: pindex !=
-                                    _workoutProvider
-                                            .workoutdata
-                                            .routinedatas[widget.rindex]
-                                            .exercises
-                                            .length -
-                                        1
-                                ? ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      elevation: 1,
-                                      primary: provider2.nowonrindex ==
-                                                  widget.rindex &&
-                                              provider2.isstarted
-                                          ? const Color(0xffceec97)
-                                          : Theme.of(context).primaryColorDark,
-                                    ),
-                                    onPressed: () {
-                                      controller!.nextPage(
-                                          duration:
-                                              const Duration(milliseconds: 500),
-                                          curve: Curves.easeInOut);
-                                    },
-                                    child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 16.0),
-                                                    child: Text("다음 운동",
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style: TextStyle(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .shadowColor))),
-                                                Icon(
-                                                  Icons
-                                                      .arrow_forward_ios_outlined,
-                                                  color: Theme.of(context)
-                                                      .shadowColor,
-                                                  size: 24,
-                                                )
-                                              ]),
-                                          Text(
-                                              provider
-                                                  .workoutdata
-                                                  .routinedatas[widget.rindex]
-                                                  .exercises[pindex + 1]
-                                                  .name,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Theme.of(context)
-                                                      .shadowColor))
-                                        ]))
-                                : ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      elevation: 1,
-                                      primary:
-                                          Theme.of(context).primaryColorDark,
-                                    ),
-                                    onPressed: () {
-                                      showToast("운동을 종료해주세요");
-                                    },
-                                    child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text("운동 완료",
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Theme.of(context)
-                                                            .shadowColor))
-                                              ])
-                                        ])))
-                      ]);
-                }))
+            _exercise_bottom_block(pindex)
           ]));
     });
   }
 
-  Future<void> _showMyDialog(pindex, index, newvalue, [init_duration]) async {
+  Widget _exercise_bottom_block(pindex) {
+    return Container(
+        padding: const EdgeInsets.only(bottom: 16),
+        child: Consumer2<WorkoutdataProvider, RoutineTimeProvider>(
+            builder: (builder, provider, provider2, child) {
+          return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                SizedBox(
+                  height: 48,
+                  width: provider2.nowonrindex == widget.rindex &&
+                          _routinetimeProvider.isstarted
+                      ? MediaQuery.of(context).size.width / 3 + 8
+                      : MediaQuery.of(context).size.width / 2 - 16,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        elevation: 1,
+                        primary: (provider2.nowonrindex != widget.rindex) &&
+                                _routinetimeProvider.isstarted
+                            ? const Color(0xFF212121)
+                            : provider2.buttoncolor,
+                        textStyle: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    onPressed: () {
+                      if ((provider2.nowonrindex != widget.rindex) &&
+                          _routinetimeProvider.isstarted) {
+                        return null;
+                      } else {
+                        if (_routinetimeProvider.isstarted) {
+                          _showMyDialog_finish();
+                        } else {
+                          _routinetimeProvider.resettimer(_workoutProvider
+                              .workoutdata
+                              .routinedatas[widget.rindex]
+                              .exercises[pindex]
+                              .rest);
+                          provider2.routinecheck(widget.rindex);
+                        }
+                      }
+                    },
+                    child: Text((provider2.nowonrindex != widget.rindex) &&
+                            _routinetimeProvider.isstarted
+                        ? '다른 루틴 수행중'
+                        : provider2.routineButton),
+                  ),
+                ),
+                if (provider2.nowonrindex == widget.rindex &&
+                    _routinetimeProvider.isstarted)
+                  SizedBox(
+                      width: MediaQuery.of(context).size.width / 4 - 32,
+                      height: 48,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            elevation: 1,
+                            primary: Theme.of(context).primaryColorDark,
+                          ),
+                          onPressed: btnDisabled
+                              ? null
+                              : () {
+                                  btnDisabled = true;
+                                  Navigator.of(context).pop();
+                                  _editWorkoutCheck();
+                                },
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "목록",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).indicatorColor),
+                                )
+                              ]))),
+                if (provider2.nowonrindex != widget.rindex &&
+                    _routinetimeProvider.isstarted)
+                  SizedBox(
+                      width: MediaQuery.of(context).size.width / 2 - 16,
+                      height: 48,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            elevation: 1,
+                            primary: Theme.of(context).primaryColorDark,
+                          ),
+                          onPressed: () {
+                            provider.addexAt(
+                                provider2.nowonrindex,
+                                provider.workoutdata.routinedatas[widget.rindex]
+                                    .exercises[pindex]);
+
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                            showToast("현재 루틴에 맨 마지막에 추가했어요");
+                          },
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 16.0),
+                                          child: Text("지금 루틴에 넣기",
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Theme.of(context)
+                                                      .shadowColor))),
+                                      Icon(
+                                        Icons.arrow_forward_ios_outlined,
+                                        color: Theme.of(context).shadowColor,
+                                        size: 20,
+                                      )
+                                    ]),
+                                Text(
+                                    provider
+                                        .workoutdata
+                                        .routinedatas[provider2.nowonrindex]
+                                        .name,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Theme.of(context).shadowColor))
+                              ])))
+                else
+                  SizedBox(
+                      width: provider2.nowonrindex == widget.rindex &&
+                              _routinetimeProvider.isstarted
+                          ? MediaQuery.of(context).size.width / 3 + 8
+                          : MediaQuery.of(context).size.width / 2 - 16,
+                      height: 48,
+                      child: pindex !=
+                              _workoutProvider
+                                      .workoutdata
+                                      .routinedatas[widget.rindex]
+                                      .exercises
+                                      .length -
+                                  1
+                          ? ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                elevation: 1,
+                                primary:
+                                    provider2.nowonrindex == widget.rindex &&
+                                            provider2.isstarted
+                                        ? const Color(0xffceec97)
+                                        : Theme.of(context).primaryColorDark,
+                              ),
+                              onPressed: () {
+                                controller!.nextPage(
+                                    duration: const Duration(milliseconds: 500),
+                                    curve: Curves.easeInOut);
+                              },
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 16.0),
+                                              child: Text("다음 운동",
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Theme.of(context)
+                                                          .shadowColor))),
+                                          Icon(
+                                            Icons.arrow_forward_ios_outlined,
+                                            color:
+                                                Theme.of(context).shadowColor,
+                                            size: 24,
+                                          )
+                                        ]),
+                                    Text(
+                                        provider
+                                            .workoutdata
+                                            .routinedatas[widget.rindex]
+                                            .exercises[pindex + 1]
+                                            .name,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color:
+                                                Theme.of(context).shadowColor))
+                                  ]))
+                          : ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                elevation: 1,
+                                primary: Theme.of(context).primaryColorDark,
+                              ),
+                              onPressed: () {
+                                showToast("운동을 종료해주세요");
+                              },
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text("운동 완료",
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Theme.of(context)
+                                                      .shadowColor))
+                                        ])
+                                  ])))
+              ]);
+        }));
+  }
+
+  Future<void> _showMyDialog(pindex, index, newvalue, [initDuration]) async {
     final sets = _workoutProvider
         .workoutdata.routinedatas[widget.rindex].exercises[pindex].sets;
     final ueindex = _exProvider.exercisesdata.exercises.indexWhere((element) =>
@@ -1281,7 +1324,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                           .exercises[pindex].name)]
               .category ==
           '유산소') {
-        _countcontroller[index].restart(duration: init_duration);
+        _countcontroller[index].restart(duration: initDuration);
       }
     }
   }
@@ -2067,197 +2110,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                   ),
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: Consumer2<WorkoutdataProvider, RoutineTimeProvider>(
-                    builder: (builder, provider, provider2, child) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SizedBox(
-                        height: 48,
-                        width: provider2.nowonrindex == widget.rindex &&
-                                _routinetimeProvider.isstarted
-                            ? MediaQuery.of(context).size.width / 3 + 8
-                            : MediaQuery.of(context).size.width / 2 - 16,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              elevation: 1,
-                              primary:
-                                  (provider2.nowonrindex != widget.rindex) &&
-                                          _routinetimeProvider.isstarted
-                                      ? const Color(0xFF212121)
-                                      : provider2.buttoncolor,
-                              textStyle: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              )),
-                          onPressed: () {
-                            (provider2.nowonrindex != widget.rindex) &&
-                                    _routinetimeProvider.isstarted
-                                ? null
-                                : [
-                                    if (_routinetimeProvider.isstarted)
-                                      {_showMyDialog_finish()}
-                                    else
-                                      {
-                                        _routinetimeProvider.resettimer(
-                                            _workoutProvider
-                                                .workoutdata
-                                                .routinedatas[widget.rindex]
-                                                .exercises[pindex]
-                                                .rest),
-                                        provider2.routinecheck(widget.rindex)
-                                      }
-                                  ];
-                          },
-                          child: Text(
-                              (provider2.nowonrindex != widget.rindex) &&
-                                      _routinetimeProvider.isstarted
-                                  ? '다른 루틴 수행중'
-                                  : provider2.routineButton),
-                        ),
-                      ),
-                      provider2.nowonrindex == widget.rindex &&
-                              _routinetimeProvider.isstarted
-                          ? SizedBox(
-                              width: MediaQuery.of(context).size.width / 4 - 32,
-                              height: 48,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 1,
-                                  primary: Theme.of(context).primaryColorDark,
-                                ),
-                                onPressed: () {
-                                  btnDisabled == true
-                                      ? null
-                                      : [
-                                          btnDisabled = true,
-                                          Navigator.of(context).pop(),
-                                          _editWorkoutCheck()
-                                        ];
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "목록",
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Theme.of(context).indicatorColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ))
-                          : Container(),
-                      SizedBox(
-                        width: provider2.nowonrindex == widget.rindex &&
-                                _routinetimeProvider.isstarted
-                            ? MediaQuery.of(context).size.width / 3 + 8
-                            : MediaQuery.of(context).size.width / 2 - 16,
-                        height: 48,
-                        child: pindex !=
-                                _workoutProvider
-                                        .workoutdata
-                                        .routinedatas[widget.rindex]
-                                        .exercises
-                                        .length -
-                                    1
-                            ? ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 1,
-                                  primary:
-                                      provider2.nowonrindex == widget.rindex &&
-                                              provider2.isstarted
-                                          ? const Color(0xffceec97)
-                                          : Theme.of(context).primaryColorDark,
-                                ),
-                                onPressed: () {
-                                  controller!.nextPage(
-                                      duration:
-                                          const Duration(milliseconds: 500),
-                                      curve: Curves.easeInOut);
-                                },
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 16.0),
-                                          child: Text(
-                                            "다음 운동",
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              color:
-                                                  Theme.of(context).shadowColor,
-                                            ),
-                                          ),
-                                        ),
-                                        Icon(
-                                          Icons.arrow_forward_ios_outlined,
-                                          color: Theme.of(context).shadowColor,
-                                          size: 24,
-                                        )
-                                      ],
-                                    ),
-                                    Text(
-                                        provider
-                                            .workoutdata
-                                            .routinedatas[widget.rindex]
-                                            .exercises[pindex + 1]
-                                            .name,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Theme.of(context).shadowColor,
-                                        ))
-                                  ],
-                                ),
-                              )
-                            : ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 1,
-                                  primary: Theme.of(context).primaryColorDark,
-                                ),
-                                onPressed: () {
-                                  showToast("운동을 종료해주세요");
-                                },
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "운동 완료",
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color:
-                                                Theme.of(context).shadowColor,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                      )
-                    ],
-                  );
-                }),
-              )
+              _exercise_bottom_block(pindex)
             ],
           ),
         ),
@@ -2907,198 +2760,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                   ),
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: Consumer2<WorkoutdataProvider, RoutineTimeProvider>(
-                    builder: (builder, provider, provider2, child) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SizedBox(
-                        height: 48,
-                        width: provider2.nowonrindex == widget.rindex &&
-                                _routinetimeProvider.isstarted
-                            ? MediaQuery.of(context).size.width / 3 + 8
-                            : MediaQuery.of(context).size.width / 2 - 16,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              elevation: 1,
-                              primary:
-                                  (provider2.nowonrindex != widget.rindex) &&
-                                          _routinetimeProvider.isstarted
-                                      ? const Color(0xFF212121)
-                                      : provider2.buttoncolor,
-                              textStyle: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              )),
-                          onPressed: () {
-                            (provider2.nowonrindex != widget.rindex) &&
-                                    _routinetimeProvider.isstarted
-                                ? null
-                                : [
-                                    if (_routinetimeProvider.isstarted)
-                                      {_showMyDialog_finish()}
-                                    else
-                                      {
-                                        _routinetimeProvider.resettimer(
-                                            _workoutProvider
-                                                .workoutdata
-                                                .routinedatas[widget.rindex]
-                                                .exercises[pindex]
-                                                .rest),
-                                        provider2.routinecheck(widget.rindex)
-                                      }
-                                  ];
-                          },
-                          child: Text(
-                              (provider2.nowonrindex != widget.rindex) &&
-                                      _routinetimeProvider.isstarted
-                                  ? '다른 루틴 수행중'
-                                  : provider2.routineButton),
-                        ),
-                      ),
-                      provider2.nowonrindex == widget.rindex &&
-                              _routinetimeProvider.isstarted
-                          ? SizedBox(
-                              width: MediaQuery.of(context).size.width / 4 - 32,
-                              height: 48,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 1,
-                                  primary: Theme.of(context).primaryColorDark,
-                                ),
-                                onPressed: () {
-                                  btnDisabled == true
-                                      ? null
-                                      : [
-                                          btnDisabled = true,
-                                          Navigator.of(context).pop(),
-                                          _editWorkoutCheck()
-                                        ];
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "목록",
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Theme.of(context).indicatorColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ))
-                          : Container(),
-                      SizedBox(
-                          width: provider2.nowonrindex == widget.rindex &&
-                                  _routinetimeProvider.isstarted
-                              ? MediaQuery.of(context).size.width / 3 + 8
-                              : MediaQuery.of(context).size.width / 2 - 16,
-                          height: 48,
-                          child: pindex !=
-                                  _workoutProvider
-                                          .workoutdata
-                                          .routinedatas[widget.rindex]
-                                          .exercises
-                                          .length -
-                                      1
-                              ? ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 1,
-                                    primary: provider2.nowonrindex ==
-                                                widget.rindex &&
-                                            provider2.isstarted
-                                        ? const Color(0xffceec97)
-                                        : Theme.of(context).primaryColorDark,
-                                  ),
-                                  onPressed: () {
-                                    controller!.nextPage(
-                                        duration:
-                                            const Duration(milliseconds: 500),
-                                        curve: Curves.easeInOut);
-                                  },
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 16.0),
-                                            child: Text(
-                                              "다음 운동",
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: Theme.of(context)
-                                                    .shadowColor,
-                                              ),
-                                            ),
-                                          ),
-                                          Icon(
-                                            Icons.arrow_forward_ios_outlined,
-                                            color:
-                                                Theme.of(context).shadowColor,
-                                            size: 24,
-                                          )
-                                        ],
-                                      ),
-                                      Text(
-                                          provider
-                                              .workoutdata
-                                              .routinedatas[widget.rindex]
-                                              .exercises[pindex + 1]
-                                              .name,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color:
-                                                Theme.of(context).shadowColor,
-                                          ))
-                                    ],
-                                  ),
-                                )
-                              : ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 1,
-                                    primary: Theme.of(context).primaryColorDark,
-                                  ),
-                                  onPressed: () {
-                                    showToast("운동을 종료해주세요");
-                                  },
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "운동 완료",
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              color:
-                                                  Theme.of(context).shadowColor,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ))
-                    ],
-                  );
-                }),
-              ),
+              _exercise_bottom_block(pindex)
             ],
           ),
         ),
