@@ -85,7 +85,7 @@ class _ProgramUploadState extends State<ProgramUpload> {
           ),
           title: Text(
             "나의 Program 공유",
-            textScaleFactor: 2.5,
+            textScaleFactor: 1.5,
             style: TextStyle(
               color: Theme.of(context).primaryColorLight,
             ),
