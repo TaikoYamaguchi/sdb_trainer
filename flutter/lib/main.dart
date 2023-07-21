@@ -140,9 +140,10 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
               textTheme: Theme.of(context).textTheme.apply(
                     fontSizeFactor: _themeProvider.userFontSize,
+                bodyColor: Colors.black,
                   ),
               primaryColor: const Color(0xff7a28cb), //main color
-              primaryColorBrightness: Brightness.light,
+              //primaryColorBrightness: Brightness.light,
               cardColor: const Color(0xfff2f3f5), //cardcolor
               canvasColor: Colors.white, //backgroundcolor
               shadowColor: Colors.black,
@@ -163,6 +164,8 @@ class MyApp extends StatelessWidget {
           darkTheme: ThemeData(
               textTheme: Theme.of(context).textTheme.apply(
                     fontSizeFactor: _themeProvider.userFontSize,
+                bodyColor: Colors.white,
+
                   ),
               primaryColor: const Color(0xff7a28cb),
               cardColor: const Color(0xff25272c),
@@ -178,8 +181,8 @@ class MyApp extends StatelessWidget {
                 selectionHandleColor: Color(0xff7a28cb),
               ),
               colorScheme: ThemeData().colorScheme.copyWith(
-                    primary: const Color(0xff7a28cb),
-                  ),
+                primary: const Color(0xff7a28cb),
+              ),
               fontFamily: 'Noto_Sans_KR'),
           title: 'Flutter Demo',
           home: const App(),

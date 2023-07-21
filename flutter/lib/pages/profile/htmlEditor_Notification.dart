@@ -3,6 +3,7 @@ import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:sdb_trainer/providers/notification.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/providers/themeMode.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:async';
@@ -19,6 +20,7 @@ class NotificationHtmlEditor extends StatefulWidget {
 class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
   var _userProvider;
   var _notificationprovider;
+  var _themeProvider;
   final _scrollController = ScrollController();
   String result = '';
   HtmlEditorController htmlcontroller = HtmlEditorController();
@@ -30,7 +32,7 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
 
   @override
   Widget build(BuildContext context) {
-
+    _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _notificationprovider = Provider.of<NotificationdataProvider>(context, listen: false);
     return Consumer<PopProvider>(builder: (Builder, provider, child) {
@@ -87,14 +89,18 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
         children: <Widget>[
           HtmlEditor(
             controller: htmlcontroller,
+
             htmlEditorOptions: HtmlEditorOptions(
               hint: 'Your text here...',
+              darkMode: _themeProvider.userThemeDark == "dark" ? true : false,
               shouldEnsureVisible: true,
               //initialText: "<p>text content initial, if any</p>",
             ),
             htmlToolbarOptions: HtmlToolbarOptions(
               toolbarPosition: ToolbarPosition.aboveEditor, //by default
               toolbarType: ToolbarType.nativeScrollable, //by default
+              buttonColor: Theme.of(context).primaryColorLight,
+
               onButtonPressed:
                   (ButtonType type, bool? status, Function? updateStatus) {
 //              print(
@@ -112,6 +118,7 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
                 print(url);
                 return true;
               },
+
               mediaUploadInterceptor:
                   (PlatformFile file, InsertFileType type) async {
                 print(file.name); //filename
@@ -120,7 +127,8 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
                 return true;
               },
             ),
-            otherOptions: OtherOptions(height: 400),
+
+            otherOptions: OtherOptions(height: 400,decoration: BoxDecoration(border: Border.all(color: Theme.of(context).primaryColorDark))),
             callbacks: Callbacks(onBeforeCommand: (String? currentHtml) {
               print('html before change is $currentHtml');
             }, onChangeContent: (String? changed) {

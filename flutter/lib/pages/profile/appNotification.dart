@@ -103,7 +103,7 @@ class _AppNotificationState extends State<AppNotification> {
   }
 
   Widget _AppNotificationWidget() {
-    print(_notificationprovider.notificationdata.notifications[0].content.html);
+    //print(_notificationprovider.notificationdata.notifications[0].content.html);
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
@@ -208,7 +208,7 @@ class _AppNotificationState extends State<AppNotification> {
                                                               .primaryColorLight),
                                                     ),
                                                   ),
-                                                  /*
+
                                                   Container(
                                                     child: Padding(
                                                       padding:
@@ -218,7 +218,8 @@ class _AppNotificationState extends State<AppNotification> {
                                                       child: Text(
                                                         _notificationDatas[
                                                         index]
-                                                            .date,
+                                                            .date.substring(
+                                                            2, 10),
                                                         textScaleFactor:
                                                         1.0,
                                                         style: TextStyle(
@@ -229,7 +230,7 @@ class _AppNotificationState extends State<AppNotification> {
                                                     ),
                                                   ),
 
-                                                   */
+
                                                 ],
                                               ),
                                               const SizedBox(height: 4),
