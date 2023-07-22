@@ -200,8 +200,7 @@ class _NameInputDialogState extends State<NameInputDialog> {
                                   unselectedWidgetColor:
                                       Theme.of(context).primaryColorLight),
                               child: Checkbox(
-                                  checkColor:
-                                      Theme.of(context).primaryColorLight,
+                                  checkColor: Theme.of(context).highlightColor,
                                   activeColor: Theme.of(context).primaryColor,
                                   value: _ischecked,
                                   onChanged: (newvalue) {

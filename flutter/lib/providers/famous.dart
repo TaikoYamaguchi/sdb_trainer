@@ -12,6 +12,8 @@ class FamousdataProvider extends ChangeNotifier {
   get tags => _tags;
   var _plantempweight;
   get plantempweight => _plantempweight;
+  var _plantempreps;
+  get plantempreps => _plantempreps;
 
   weekchangepre(index) {
     _week = index;
@@ -29,6 +31,11 @@ class FamousdataProvider extends ChangeNotifier {
 
   gettempweight(weight) {
     _plantempweight = weight;
+    notifyListeners();
+  }
+
+  setTempReps(reps) {
+    _plantempreps = reps;
     notifyListeners();
   }
 

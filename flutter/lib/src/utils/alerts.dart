@@ -949,51 +949,50 @@ class _setWeightAlertState extends State<setWeightAlert> {
             child: Consumer2<RoutineMenuStater, WorkoutdataProvider>(
                 builder: (context, provider, provider2, child) {
               return TextField(
-                controller: _additionalweightctrl,
-                keyboardType: const TextInputType.numberWithOptions(
-                    signed: false, decimal: true),
-                style: TextStyle(
-                  fontSize: 21 * _themeProvider.userFontSize / 0.8,
-                  color: provider.ispositive
-                      ? Theme.of(context).primaryColorLight
-                      : Colors.red,
-                ),
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                    isDense: true,
-                    prefixIcon: Text(
-                      provider.ispositive ? "+" : "-",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 35 * _themeProvider.userFontSize / 0.8,
-                        color: provider.ispositive
-                            ? Theme.of(context).primaryColorLight
-                            : Colors.red,
+                  controller: _additionalweightctrl,
+                  keyboardType: const TextInputType.numberWithOptions(
+                      signed: false, decimal: true),
+                  style: TextStyle(
+                    fontSize: 21 * _themeProvider.userFontSize / 0.8,
+                    color: provider.ispositive
+                        ? Theme.of(context).primaryColorLight
+                        : Colors.red,
+                  ),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                      isDense: true,
+                      prefixIcon: Text(
+                        provider.ispositive ? "+" : "-",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 35 * _themeProvider.userFontSize / 0.8,
+                          color: provider.ispositive
+                              ? Theme.of(context).primaryColorLight
+                              : Colors.red,
+                        ),
                       ),
-                    ),
-                    prefixIconConstraints:
-                        const BoxConstraints(minWidth: 0, minHeight: 0),
-                    filled: true,
-                    enabledBorder: UnderlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      borderSide: BorderSide(
-                          color: Theme.of(context).primaryColor, width: 3),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      borderSide: BorderSide(
-                          color: Theme.of(context).primaryColor, width: 3),
-                    ),
-                    hintText: "입력",
-                    hintStyle: TextStyle(
-                        fontSize: 21.0 * _themeProvider.userFontSize / 0.8,
-                        color: provider.ispositive
-                            ? Theme.of(context).primaryColorLight
-                            : Colors.red)),
-                onChanged: (text) {
-                  input = double.parse(text);
-                },
-              );
+                      prefixIconConstraints:
+                          const BoxConstraints(minWidth: 0, minHeight: 0),
+                      filled: true,
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 3),
+                      ),
+                      hintText: "입력",
+                      hintStyle: TextStyle(
+                          fontSize: 21.0 * _themeProvider.userFontSize / 0.8,
+                          color: provider.ispositive
+                              ? Theme.of(context).primaryColorLight
+                              : Colors.red)),
+                  onChanged: (text) {
+                    input = double.parse(text);
+                  });
             }),
           ),
         ],
