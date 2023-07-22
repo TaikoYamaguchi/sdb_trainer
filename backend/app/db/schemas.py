@@ -331,12 +331,10 @@ class HistoryImage(BaseModel):
         orm_mode = True
 
 class NotificationBase(BaseModel):
-    id: int
     title: str
     content: t.Any
     images:list
-    ispopup:bool=False
-    date: datetime
+    ispopup:bool
     class Config:
         orm_mode = True
 
@@ -347,7 +345,7 @@ class NotificationCreate(NotificationBase):
 class NotificationOut(NotificationBase):
     id: int
     title: str
-    ispopup:bool=False
+    ispopup:bool
     date: datetime
     class config:
         orm_mode = True

@@ -8,6 +8,8 @@ import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:async';
 
+import 'package:sdb_trainer/src/model/notification.dart' as notimodel;
+
 
 
 class NotificationHtmlEditor extends StatefulWidget {
@@ -21,10 +23,12 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
   var _userProvider;
   var _notificationprovider;
   var _themeProvider;
+
   final _scrollController = ScrollController();
   String result = '';
   HtmlEditorController htmlcontroller = HtmlEditorController();
   TextEditingController _notiNameCtrl = TextEditingController(text: "");
+
   @override
   void initState() {
 
@@ -295,6 +299,11 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
                         Theme.of(context).colorScheme.secondary),
                     onPressed: () async {
                       var txt = await htmlcontroller.getText();
+
+                      notimodel.Notification noti = notimodel.Notification(title: _notiNameCtrl.text, content: notimodel.Content(html: txt), images: [], ispopup: true);
+                      _notificationprovider.postdata(noti);
+
+
                       /*
                       if (txt.contains('src=\"data:')) {
                         txt =

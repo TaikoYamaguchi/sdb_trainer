@@ -26,16 +26,26 @@ class NotificationRepository {
 }
 
 class NotificationPost {
-  final Notification notification;
+  final String title;
+  final Content content;
+  final List<dynamic>? images;
+  final bool ispopup;
   NotificationPost({
-    required this.notification,
+    required this.title,
+    required this.content,
+    required this.images,
+    required this.ispopup,
   });
   Future<String> _notificationPostFromServer() async {
     var formData = Map<String, dynamic>();
-    formData["notification"] = jsonEncode(notification);
+    formData["title"] = title;
+    formData["content"] = content;
+    formData["images"] = images;
+    formData["ispopup"] = ispopup;
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/notificationcreate");
     var response = await http.post(url, body: json.encode(formData));
+    print(json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);
@@ -45,7 +55,7 @@ class NotificationPost {
     }
   }
 
-  Future<Map<String, dynamic>> postExercise() async {
+  Future<Map<String, dynamic>> postNotification() async {
     String jsonString = await _notificationPostFromServer();
     final jsonResponse = json.decode(jsonString);
     return (jsonResponse);
