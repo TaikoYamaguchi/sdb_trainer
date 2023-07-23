@@ -35,6 +35,8 @@ class EachPlanDetails extends StatefulWidget {
 
 class _EachPlanDetailsState extends State<EachPlanDetails> {
   final TextEditingController _weightctrl = TextEditingController(text: "");
+  final TextEditingController _weightRatioctrl =
+      TextEditingController(text: "");
   final TextEditingController _repsctrl = TextEditingController(text: "");
   var _workoutProvider;
   var _FamousedataProvider;
@@ -393,6 +395,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       : ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext _context, int exIndex) {
+                            int ueindex = _exProvider.exercisesdata.exercises
+                                .indexWhere((element) =>
+                                    element.name == inplandata[exIndex].name);
                             Controllerlist.add(ExpandableController(
                               initialExpanded: true,
                             ));
@@ -517,19 +522,26 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                               itemBuilder:
                                                   (BuildContext _context,
                                                       int setindex) {
+                                                final set = inplandata[exIndex]
+                                                    .sets[setindex];
                                                 var refinfo = uniqexinfo[
                                                     uniqexinfo.indexWhere(
                                                         (element) =>
                                                             element.name ==
                                                             inplandata[exIndex]
                                                                 .ref_name)];
+                                                var each_set_weight =
+                                                    (inplandata[exIndex]
+                                                        .sets[setindex]
+                                                        .weight);
+
                                                 return Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
                                                   children: [
                                                     GestureDetector(
                                                         child: Text(
-                                                          '${((inplandata[exIndex].sets[setindex].weight * refinfo.onerm / 100 / 2.5).floor() * 2.5).toStringAsFixed(1)}kg  X  ${inplandata[exIndex].sets[setindex].reps}',
+                                                          '${(each_set_weight).toStringAsFixed(1)}kg  X  ${inplandata[exIndex].sets[setindex].reps}',
                                                           textScaleFactor: 1.6,
                                                           style: TextStyle(
                                                             color: Theme.of(
@@ -539,12 +551,12 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                         ),
                                                         onTap: () {
                                                           _FamousedataProvider
-                                                              .gettempweight(
+                                                              .setTempWeightRatio(
                                                                   inplandata[
                                                                           exIndex]
                                                                       .sets[
                                                                           setindex]
-                                                                      .weight);
+                                                                      .index);
                                                           setSetting(exIndex,
                                                               setindex);
                                                         }),
@@ -589,11 +601,12 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                                             widget.rindex,
                                                                             exIndex,
                                                                             setindex,
-                                                                            newvalue)
+                                                                            newvalue),
+                                                                        _workoutOnermCheck(
+                                                                            set,
+                                                                            ueindex)
                                                                       ]
                                                                     : [
-                                                                        print(
-                                                                            "ssssset"),
                                                                         _showMyDialog(
                                                                             exIndex,
                                                                             setindex,
@@ -810,8 +823,13 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
             child: _setinfo(eindex, sindex));
       },
     ).whenComplete(() {
-      _workoutProvider.plansetcheck(widget.rindex, eindex, sindex,
-          double.parse(_weightctrl.text), int.parse(_repsctrl.text));
+      _workoutProvider.plansetcheck(
+          widget.rindex,
+          eindex,
+          sindex,
+          _FamousedataProvider.plantempweightRatio.toDouble(),
+          _FamousedataProvider.plantempweight.toDouble(),
+          int.parse(_repsctrl.text));
       _editWorkoutCheck();
       // 모달이 닫힐 때 실행되는 코드
     });
@@ -830,11 +848,14 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
       _weightctrl.text = setdata.weight.toString();
       _weightctrl.selection = TextSelection.fromPosition(
           TextPosition(offset: _weightctrl.text.length));
+      _weightRatioctrl.text = setdata.index.toString();
+      _weightRatioctrl.selection = TextSelection.fromPosition(
+          TextPosition(offset: _weightRatioctrl.text.length));
       _repsctrl.text = setdata.reps.toString();
       _repsctrl.selection = TextSelection.fromPosition(
           TextPosition(offset: _repsctrl.text.length));
 
-      double changeweight = 0.0;
+      double changeweightRatio = 0.0;
       return Column(
         children: [
           Container(
@@ -905,7 +926,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                 width: MediaQuery.of(context).size.width / 3 - 10,
                 child: Center(
                   child: TextField(
-                    controller: _weightctrl,
+                    controller: _weightRatioctrl,
                     autofocus: true,
                     keyboardType: const TextInputType.numberWithOptions(
                         signed: false, decimal: true),
@@ -934,11 +955,25 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                     ),
                     onChanged: (text) {
                       if (text == "") {
-                        changeweight = 0.0;
+                        changeweightRatio = 0.0;
                       } else {
-                        changeweight = double.parse(text);
+                        changeweightRatio = double.parse(text);
                       }
-                      _FamousedataProvider.gettempweight(changeweight);
+                      _FamousedataProvider.setTempWeightRatio(
+                          changeweightRatio);
+                      if (_FamousedataProvider.plantempweightRatio *
+                              uniqexinfo.onerm ==
+                          0) {
+                        _FamousedataProvider.setTempWeight(20.0);
+                      } else {
+                        _FamousedataProvider.setTempWeight(
+                            (_FamousedataProvider.plantempweightRatio *
+                                        uniqexinfo.onerm /
+                                        100 /
+                                        2.5)
+                                    .floor() *
+                                2.5);
+                      }
                     },
                   ),
                 ),
@@ -999,7 +1034,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       Consumer<FamousdataProvider>(
                           builder: (builder, provider, child) {
                         return Text(
-                            "${((provider.plantempweight * uniqexinfo.onerm / 100 / 2.5).floor() * 2.5).toStringAsFixed(1)}kg",
+                            "${(provider.plantempweight).toStringAsFixed(1)}kg",
                             style: TextStyle(
                               color: Theme.of(context).primaryColorLight,
                               fontSize: 20,
@@ -1020,8 +1055,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                           builder: (builder, provider, child) {
                         return Text(
                             (int.parse(_repsctrl.text) != 1)
-                                ? "${(((provider.plantempweight * uniqexinfo.onerm / 100 / 2.5).floor() * 2.5) * (1 + int.parse(_repsctrl.text) / 30)).toStringAsFixed(1)}kg"
-                                : "${((provider.plantempweight * uniqexinfo.onerm / 100 / 2.5).floor() * 2.5).toStringAsFixed(1)}kg",
+                                ? "${(((provider.plantempweightRatio * uniqexinfo.onerm / 100 / 2.5).floor() * 2.5) * (1 + int.parse(_repsctrl.text) / 30)).toStringAsFixed(1)}kg"
+                                : "${((provider.plantempweightRatio * uniqexinfo.onerm / 100 / 2.5).floor() * 2.5).toStringAsFixed(1)}kg",
                             style: TextStyle(
                               color: Theme.of(context).primaryColorLight,
                               fontSize: 20,
@@ -1168,8 +1203,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                               sets: [
                                 Sets(
                                     index: 1,
-                                    weight: 0.0,
-                                    reps: 1,
+                                    weight: 30,
+                                    reps: 8,
                                     ischecked: false)
                               ],
                               rest: 0));

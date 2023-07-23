@@ -12,6 +12,8 @@ class FamousdataProvider extends ChangeNotifier {
   get tags => _tags;
   var _plantempweight;
   get plantempweight => _plantempweight;
+  var _plantempweightRatio;
+  get plantempweightRatio => _plantempweightRatio;
   var _plantempreps;
   get plantempreps => _plantempreps;
 
@@ -29,8 +31,13 @@ class FamousdataProvider extends ChangeNotifier {
     _tags = [];
   }
 
-  gettempweight(weight) {
+  setTempWeight(weight) {
     _plantempweight = weight;
+    notifyListeners();
+  }
+
+  setTempWeightRatio(weight_ratio) {
+    _plantempweightRatio = weight_ratio;
     notifyListeners();
   }
 
