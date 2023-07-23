@@ -2,6 +2,7 @@
 from app.db.crud_history import edit_image_by_history_id, edit_image_by_history_id_list, remove_image_by_history_id
 from app.db.crud_famous import edit_image_by_famous_id
 from app.db.crud import edit_image_by_user_email
+from app.db.crud_notification import edit_image_by_notification_id
 from app.core.auth import get_current_user
 import os
 import shutil
@@ -12,7 +13,7 @@ import uuid
 from fastapi.responses import FileResponse
 from app.core.image_resize import image_resize
 from app.db.session import get_db
-from app.db.schemas import HistoryImage, TemporaryImage, HistoryOut, User, FamousOut
+from app.db.schemas import HistoryImage, TemporaryImage, HistoryOut, User, FamousOut, NotificationOut
 images_router = r = APIRouter()
 from typing import List
 
@@ -154,3 +155,31 @@ async def create_famous_image(famous_id:int, db=Depends(get_db),
     print(db_famous)
 
     return db_famous
+
+@r.post("/temp/notificationimages/{notification_id}", response_model=NotificationOut, response_model_exclude_none=True)
+async def create_notification_image(notification_id:int, db=Depends(get_db),
+    user=Depends(get_current_user),
+    files : List[UploadFile] = File(...)):
+    for file in files:
+
+        format = file.content_type.replace("image/","")
+        if (format == "jpeg"):
+            format = "jpg"
+
+        BASE_DIR=os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+        file_uuid=str(uuid.uuid4())
+
+        file_path=os.path.join(BASE_DIR, "images",file_uuid+".png")
+        if not os.path.exists(BASE_DIR):
+            os.mkdir(BASE_DIR)
+        if not os.path.exists(BASE_DIR+"/images"):
+            os.mkdir(BASE_DIR+"/images")
+
+        with open(file_path,"wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+
+        image_resize(file_path)
+        db_image = create_temporary_image(db, file_path)
+        db_notification = edit_image_by_notification_id(db, user,notification_id,db_image.id)
+
+    return db_history

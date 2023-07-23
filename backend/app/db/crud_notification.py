@@ -54,7 +54,8 @@ def edit_notification(db: Session, notification: schemas.NotificationCreate):
 
 def edit_image_by_notification_id(db: Session,user:schemas.User,notification_id:int, image_id : int) -> schemas.NotificationOut:
     db_notification = get_notifications_by_id(db, notification_id)
-    setattr(db_notification, "image", f"http://43.200.121.48:8000/api/images/{image_id}")
+    db_notification.images.append(f"http://43.200.121.48:8000/api/images/{image_id}")
+    setattr(db_notification, "images", db_history.images)
     db.commit()
     db.refresh(db_notification)
     return db_notification

@@ -45,7 +45,7 @@ class NotificationPost {
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/notificationcreate");
     var response = await http.post(url, body: json.encode(formData));
-    print(json.encode(formData));
+    //print(json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);

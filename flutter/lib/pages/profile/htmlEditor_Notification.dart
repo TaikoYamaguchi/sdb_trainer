@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sdb_trainer/providers/notification.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,7 @@ import 'package:sdb_trainer/providers/themeMode.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:async';
+import 'package:html/parser.dart';
 
 import 'package:sdb_trainer/src/model/notification.dart' as notimodel;
 
@@ -23,6 +25,7 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
   var _userProvider;
   var _notificationprovider;
   var _themeProvider;
+  List<XFile> imglist = [];
 
   final _scrollController = ScrollController();
   String result = '';
@@ -114,6 +117,11 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
   }
 
 
+
+
+
+
+
   Widget _HtmlEditorWidget(){
     return SingleChildScrollView(
       child: Padding(
@@ -183,7 +191,8 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
 
                 mediaUploadInterceptor:
                     (PlatformFile file, InsertFileType type) async {
-                  print(file.name); //filename
+                  XFile file2 = XFile(file.path!) ;
+                  print(file2.path); //filename
                   print(file.size); //size in bytes
                   print(file.extension); //file extension (eg jpeg or mp4)
                   return true;
@@ -299,9 +308,20 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
                         Theme.of(context).colorScheme.secondary),
                     onPressed: () async {
                       var txt = await htmlcontroller.getText();
+                      var afterparse = parse(txt);
+                      for (int i=0; i < afterparse.getElementsByTagName("img").length; ++i){
+                        afterparse.getElementsByTagName("img")[i].replaceWith(parseFragment("""<img src="${i}">"""));
+
+                      }
+                      //String sa =afterparse.getElementsByTagName("img")[0].children;
+                      print(afterparse.getElementsByTagName("img")[0].attributes["src"]);
+
 
                       notimodel.Notification noti = notimodel.Notification(title: _notiNameCtrl.text, content: notimodel.Content(html: txt), images: [], ispopup: true);
                       _notificationprovider.postdata(noti);
+
+
+
 
 
                       /*
@@ -309,7 +329,6 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
                         txt =
                         '<text removed due to base-64 data, displaying the text could cause the app to crash>';
                       }
-
                        */
                       setState(() {
                         result = txt;
