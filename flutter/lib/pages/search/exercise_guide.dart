@@ -1114,6 +1114,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
             ? Container()
             : CustomScrollView(slivers: [
                 SliverAppBar(
+                  automaticallyImplyLeading: false,
                   snap: false,
                   floating: false,
                   pinned: true,

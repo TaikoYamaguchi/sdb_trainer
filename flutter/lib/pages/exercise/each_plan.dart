@@ -35,6 +35,8 @@ class EachPlanDetails extends StatefulWidget {
 
 class _EachPlanDetailsState extends State<EachPlanDetails> {
   final TextEditingController _weightctrl = TextEditingController(text: "");
+  final TextEditingController _weightRatioctrl =
+      TextEditingController(text: "");
   final TextEditingController _repsctrl = TextEditingController(text: "");
   var _workoutProvider;
   var _FamousedataProvider;
@@ -393,6 +395,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       : ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext _context, int exIndex) {
+                            int ueindex = _exProvider.exercisesdata.exercises
+                                .indexWhere((element) =>
+                                    element.name == inplandata[exIndex].name);
                             Controllerlist.add(ExpandableController(
                               initialExpanded: true,
                             ));
@@ -517,19 +522,26 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                               itemBuilder:
                                                   (BuildContext _context,
                                                       int setindex) {
+                                                final set = inplandata[exIndex]
+                                                    .sets[setindex];
                                                 var refinfo = uniqexinfo[
                                                     uniqexinfo.indexWhere(
                                                         (element) =>
                                                             element.name ==
                                                             inplandata[exIndex]
                                                                 .ref_name)];
+                                                var each_set_weight =
+                                                    (inplandata[exIndex]
+                                                        .sets[setindex]
+                                                        .weight);
+
                                                 return Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
                                                   children: [
                                                     GestureDetector(
                                                         child: Text(
-                                                          '${((inplandata[exIndex].sets[setindex].weight * refinfo.onerm / 100 / 2.5).floor() * 2.5).toStringAsFixed(1)}kg  X  ${inplandata[exIndex].sets[setindex].reps}',
+                                                          '${(each_set_weight).toStringAsFixed(1)}kg  X  ${inplandata[exIndex].sets[setindex].reps}',
                                                           textScaleFactor: 1.6,
                                                           style: TextStyle(
                                                             color: Theme.of(
@@ -539,12 +551,12 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                         ),
                                                         onTap: () {
                                                           _FamousedataProvider
-                                                              .gettempweight(
+                                                              .setTempWeightRatio(
                                                                   inplandata[
                                                                           exIndex]
                                                                       .sets[
                                                                           setindex]
-                                                                      .weight);
+                                                                      .index);
                                                           setSetting(exIndex,
                                                               setindex);
                                                         }),
@@ -589,11 +601,12 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                                             widget.rindex,
                                                                             exIndex,
                                                                             setindex,
-                                                                            newvalue)
+                                                                            newvalue),
+                                                                        _workoutOnermCheck(
+                                                                            set,
+                                                                            ueindex)
                                                                       ]
                                                                     : [
-                                                                        print(
-                                                                            "ssssset"),
                                                                         _showMyDialog(
                                                                             exIndex,
                                                                             setindex,
@@ -801,7 +814,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (BuildContext context) {
         return Container(
-            height: 210,
+            height: 240,
             decoration: BoxDecoration(
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(20)),
@@ -810,8 +823,13 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
             child: _setinfo(eindex, sindex));
       },
     ).whenComplete(() {
-      _workoutProvider.plansetcheck(widget.rindex, eindex, sindex,
-          double.parse(_weightctrl.text), int.parse(_repsctrl.text));
+      _workoutProvider.plansetcheck(
+          widget.rindex,
+          eindex,
+          sindex,
+          _FamousedataProvider.plantempweightRatio.toDouble(),
+          _FamousedataProvider.plantempweight.toDouble(),
+          int.parse(_repsctrl.text));
       _editWorkoutCheck();
       // 모달이 닫힐 때 실행되는 코드
     });
@@ -830,11 +848,14 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
       _weightctrl.text = setdata.weight.toString();
       _weightctrl.selection = TextSelection.fromPosition(
           TextPosition(offset: _weightctrl.text.length));
+      _weightRatioctrl.text = setdata.index.toString();
+      _weightRatioctrl.selection = TextSelection.fromPosition(
+          TextPosition(offset: _weightRatioctrl.text.length));
       _repsctrl.text = setdata.reps.toString();
       _repsctrl.selection = TextSelection.fromPosition(
           TextPosition(offset: _repsctrl.text.length));
 
-      double changeweight = 0.0;
+      double changeweightRatio = 0.0;
       return Column(
         children: [
           Container(
@@ -905,7 +926,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                 width: MediaQuery.of(context).size.width / 3 - 10,
                 child: Center(
                   child: TextField(
-                    controller: _weightctrl,
+                    controller: _weightRatioctrl,
                     autofocus: true,
                     keyboardType: const TextInputType.numberWithOptions(
                         signed: false, decimal: true),
@@ -917,10 +938,15 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                     decoration: InputDecoration(
                       contentPadding:
                           const EdgeInsets.symmetric(vertical: 10.0),
-                      enabledBorder: OutlineInputBorder(
+                      enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                               width: 3,
-                              color: Theme.of(context).primaryColorDark)),
+                              color: Theme.of(context).primaryColorDark),
+                          borderRadius: BorderRadius.circular(5.0)),
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 3, color: Theme.of(context).primaryColor),
+                          borderRadius: BorderRadius.circular(5.0)),
                       hintText: "${setdata.weight}",
                       hintStyle: TextStyle(
                         fontSize: 21,
@@ -929,11 +955,25 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                     ),
                     onChanged: (text) {
                       if (text == "") {
-                        changeweight = 0.0;
+                        changeweightRatio = 0.0;
                       } else {
-                        changeweight = double.parse(text);
+                        changeweightRatio = double.parse(text);
                       }
-                      _FamousedataProvider.gettempweight(changeweight);
+                      _FamousedataProvider.setTempWeightRatio(
+                          changeweightRatio);
+                      if (_FamousedataProvider.plantempweightRatio *
+                              uniqexinfo.onerm ==
+                          0) {
+                        _FamousedataProvider.setTempWeight(20.0);
+                      } else {
+                        _FamousedataProvider.setTempWeight(
+                            (_FamousedataProvider.plantempweightRatio *
+                                        uniqexinfo.onerm /
+                                        100 /
+                                        2.5)
+                                    .floor() *
+                                2.5);
+                      }
                     },
                   ),
                 ),
@@ -952,10 +992,15 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                     decoration: InputDecoration(
                       contentPadding:
                           const EdgeInsets.symmetric(vertical: 10.0),
-                      enabledBorder: OutlineInputBorder(
+                      enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                               width: 3,
-                              color: Theme.of(context).primaryColorDark)),
+                              color: Theme.of(context).primaryColorDark),
+                          borderRadius: BorderRadius.circular(5.0)),
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 3, color: Theme.of(context).primaryColor),
+                          borderRadius: BorderRadius.circular(5.0)),
                       hintText: "${setdata.reps}",
                       hintStyle: TextStyle(
                         fontSize: 21,
@@ -963,8 +1008,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       ),
                     ),
                     onChanged: (text) {
-                      if (text == "") {
-                      } else {}
+                      _FamousedataProvider.setTempReps(double.parse(text));
                     },
                   ),
                 ),
@@ -972,46 +1016,77 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
             ],
           ),
           Container(
-            height: 10,
+            height: 24,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Text("최종 무게: ",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryColorLight,
-                  )),
-              Consumer<FamousdataProvider>(builder: (builder, provider, child) {
-                return Text(
-                    "${((provider.plantempweight * uniqexinfo.onerm / 100 / 2.5).floor() * 2.5).toStringAsFixed(1)}kg",
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColorLight,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline,
-                    ));
-              }),
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text("최종 무게: ",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Theme.of(context).primaryColorDark,
+                          )),
+                      Consumer<FamousdataProvider>(
+                          builder: (builder, provider, child) {
+                        return Text(
+                            "${(provider.plantempweight).toStringAsFixed(1)}kg",
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColorLight,
+                              fontSize: 20,
+                            ));
+                      }),
+                    ],
+                  ),
+                  SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text("최종 1RM: ",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Theme.of(context).primaryColorDark,
+                          )),
+                      Consumer<FamousdataProvider>(
+                          builder: (builder, provider, child) {
+                        return Text(
+                            (int.parse(_repsctrl.text) != 1)
+                                ? "${(((provider.plantempweightRatio * uniqexinfo.onerm / 100 / 2.5).floor() * 2.5) * (1 + int.parse(_repsctrl.text) / 30)).toStringAsFixed(1)}kg"
+                                : "${((provider.plantempweightRatio * uniqexinfo.onerm / 100 / 2.5).floor() * 2.5).toStringAsFixed(1)}kg",
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColorLight,
+                              fontSize: 20,
+                            ));
+                      }),
+                    ],
+                  ),
+                ],
+              ),
               Container(
-                width: 50,
+                width: 48,
               ),
               ElevatedButton(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.grey),
+                    backgroundColor:
+                        MaterialStateProperty.all(Color(0xFffc60a8)),
                     padding: MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(horizontal: 50)),
+                        const EdgeInsets.symmetric(
+                            horizontal: 48, vertical: 16)),
                   ),
                   onPressed: () {
                     Navigator.pop(context);
                   },
                   child: const Text(
                     '완료',
-                    textScaleFactor: 1.3,
+                    textScaleFactor: 1.4,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )),
               Container(
-                width: 10,
+                width: 16,
               ),
             ],
           ),
@@ -1065,9 +1140,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                   Icons.search,
                   color: Theme.of(context).primaryColorLight,
                 ),
-                hintText: "Exercise Name",
+                hintText: "운동 찾기",
                 hintStyle: TextStyle(
-                    fontSize: 20.0, color: Theme.of(context).primaryColorLight),
+                    fontSize: 20.0, color: Theme.of(context).primaryColorDark),
               ),
               onChanged: (text) {
                 searchExercise(text.toString(), state);
@@ -1079,11 +1154,16 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
   }
 
   void searchExercise(String query, StateSetter updateState) {
-    final suggestions = _testdata0.where((exercise) {
-      final exTitle = exercise.name;
-      return (exTitle.contains(query)) as bool;
-    }).toList();
-
+    var suggestions;
+    if (query == '') {
+      suggestions = _exProvider.exercisesdata.exercises;
+    } else {
+      suggestions = _exProvider.exercisesdata.exercises.where((exercise) {
+        var exTitle = exercise.name.toLowerCase().replaceAll(' ', '');
+        return (exTitle.contains(query.toLowerCase().replaceAll(' ', '')))
+            as bool;
+      }).toList();
+    }
     updateState(() => _testdata = suggestions);
   }
 
@@ -1123,8 +1203,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                               sets: [
                                 Sets(
                                     index: 1,
-                                    weight: 0.0,
-                                    reps: 1,
+                                    weight: 30,
+                                    reps: 8,
                                     ischecked: false)
                               ],
                               rest: 0));
@@ -1154,10 +1234,10 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                           bottomRight: Radius.circular(bottom),
                           topLeft: Radius.circular(top),
                           bottomLeft: Radius.circular(bottom))),
-                  height: 52,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  height: 48,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
                         exuniq[index].name,
@@ -1165,22 +1245,10 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                         style: TextStyle(
                             color: Theme.of(context).primaryColorLight),
                       ),
-                      Container(
-                        child: Row(
-                          //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            const Text("Rest: need to set",
-                                textScaleFactor: 1.0,
-                                style: TextStyle(color: Color(0xFF717171))),
-                            const Expanded(child: SizedBox()),
-                            Text(
-                                "1RM: ${exuniq[index].onerm.toStringAsFixed(1)}/${exuniq[index].goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
-                                textScaleFactor: 1.0,
-                                style:
-                                    const TextStyle(color: Color(0xFF717171))),
-                          ],
-                        ),
-                      )
+                      Text(
+                          "1RM: ${exuniq[index].onerm.toStringAsFixed(1)}/${exuniq[index].goal.toStringAsFixed(1)}${_userProvider.userdata.weight_unit}",
+                          textScaleFactor: 1.0,
+                          style: const TextStyle(color: Color(0xFF717171)))
                     ],
                   ),
                 ),

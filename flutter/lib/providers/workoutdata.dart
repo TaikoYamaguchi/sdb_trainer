@@ -50,21 +50,28 @@ class WorkoutdataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  plansetcheck(rindex, eindex, sindex, newweight, newreps) {
+  plansetcheck(rindex, eindex, sindex, newWeightRatio, newWeight, newReps) {
     _workoutdata
         .routinedatas[rindex]
         .exercises[0]
         .plans[_workoutdata.routinedatas[rindex].exercises[0].progress]
         .exercises[eindex]
         .sets[sindex]
-        .weight = newweight;
+        .weight = newWeight;
     _workoutdata
         .routinedatas[rindex]
         .exercises[0]
         .plans[_workoutdata.routinedatas[rindex].exercises[0].progress]
         .exercises[eindex]
         .sets[sindex]
-        .reps = newreps;
+        .reps = newReps;
+    _workoutdata
+        .routinedatas[rindex]
+        .exercises[0]
+        .plans[_workoutdata.routinedatas[rindex].exercises[0].progress]
+        .exercises[eindex]
+        .sets[sindex]
+        .index = newWeightRatio;
     notifyListeners();
   }
 
@@ -213,7 +220,7 @@ class WorkoutdataProvider extends ChangeNotifier {
         .plans[_workoutdata.routinedatas[rindex].exercises[0].progress]
         .exercises[eindex]
         .sets
-        .add(Sets(index: 0.0, weight: 0.0, reps: 1, ischecked: false));
+        .add(Sets(index: 30, weight: 20, reps: 8, ischecked: false));
     notifyListeners();
   }
 }
