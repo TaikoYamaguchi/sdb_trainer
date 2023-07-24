@@ -603,7 +603,8 @@ class _SignUpPageState extends State<SignUpPage> {
       onChanged: (text) {
         if (_userProvider.userFriendsAll.userdatas
                 .where((user) {
-                  if (user.nickname == text.toString()) {
+                  if (user.nickname.toLowerCase() ==
+                      text.toString().toLowerCase()) {
                     return true;
                   } else {
                     return false;
