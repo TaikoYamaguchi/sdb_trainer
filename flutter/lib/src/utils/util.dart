@@ -339,3 +339,35 @@ Future<bool> requestCameraPermission(BuildContext context) async {
   }
   return true;
 }
+
+class CustomIconButton extends StatelessWidget {
+  final Icon icon;
+  final Color backgroundColor;
+  final VoidCallback onPressed;
+
+  CustomIconButton({
+    required this.icon,
+    required this.backgroundColor,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: Ink(
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(4.0),
+        ),
+        child: InkWell(
+          onTap: onPressed,
+          child: Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: icon,
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -13,6 +13,7 @@ import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/src/model/workoutdata.dart';
 import 'package:sdb_trainer/src/utils/alerts.dart';
 import 'package:sdb_trainer/src/utils/change_name.dart';
+import 'package:sdb_trainer/src/utils/exercise_util.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -381,48 +382,67 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                 iconColor: Theme.of(context).primaryColorLight),
                             header: Padding(
                                 padding: const EdgeInsets.only(left: 10),
-                                child: Row(children: [
-                                  GestureDetector(
-                                      child: Text(planEachExercise.name,
-                                          textScaleFactor: 1.6,
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColorLight)),
-                                      onTap: () {
-                                        exselect(false, true, index_);
-                                      }),
-                                  if (planEachExercise.sets.isEmpty)
-                                    Transform.scale(
-                                        scale: 1.2,
-                                        child: IconButton(
-                                            padding: const EdgeInsets.all(5),
-                                            constraints: const BoxConstraints(),
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          CustomIconButton(
                                             onPressed: () {
-                                              workout_provider.plansetsplus(
-                                                  widget.rindex, index_);
-                                              _editWorkoutCheck();
+                                              exselect(false, true, index_);
                                             },
-                                            icon: Icon(
-                                              Icons.add_circle_outlined,
-                                              color: Theme.of(context)
-                                                  .primaryColorLight,
-                                              size: 20,
-                                            )))
-                                  else
-                                    Expanded(
-                                        child: GestureDetector(
-                                            child: Text(
-                                              '기준: ${planEachExercise.ref_name}',
-                                              textScaleFactor: 1.1,
-                                              textAlign: TextAlign.right,
-                                              style: const TextStyle(
-                                                  color: Colors.grey,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            onTap: () {
-                                              exselect(false, false, index_);
-                                            }))
-                                ])),
+                                            backgroundColor: Theme.of(context)
+                                                .primaryColorDark,
+                                            icon: Icon(Icons.swap_horiz,
+                                                color: Colors.white, size: 16),
+                                          ),
+                                          SizedBox(width: 6),
+                                          GestureDetector(
+                                              child: Row(
+                                                children: [
+                                                  Text(planEachExercise.name,
+                                                      textScaleFactor: 1.8,
+                                                      style: TextStyle(
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .primaryColorLight)),
+                                                  SizedBox(width: 4),
+                                                  Column(
+                                                    children: [
+                                                      Icon(
+                                                        Icons
+                                                            .info_outline_rounded,
+                                                        color: Theme.of(context)
+                                                            .primaryColor,
+                                                        size: 16,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                              onTap: () {
+                                                ExerciseGuideBottomModal()
+                                                    .exguide(
+                                                        exerciseIndex, context);
+                                              }),
+                                        ],
+                                      ),
+                                      SizedBox(height: 4),
+                                      GestureDetector(
+                                          child: Text(
+                                            '기준: ${planEachExercise.ref_name}',
+                                            textScaleFactor: 1.1,
+                                            textAlign: TextAlign.right,
+                                            style: const TextStyle(
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          onTap: () {
+                                            exselect(false, false, index_);
+                                          })
+                                    ])),
                             collapsed: Container(),
                             expanded: Column(children: [
                               Row(
@@ -469,11 +489,6 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                                   context)
                                                               .primaryColorLight)),
                                                   onTap: () {
-                                                    _FamousedataProvider
-                                                        .setTempWeightRatio(
-                                                            planEachExercise
-                                                                .sets[setIndex_]
-                                                                .index);
                                                     setSetting(
                                                         index_, setIndex_);
                                                   }),
@@ -692,20 +707,11 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
             ),
             child: _setinfo(exIndex_, setIndex_));
       },
-    ).then((value) {
-      _workoutProvider.plansetcheck(
-          widget.rindex,
-          exIndex_,
-          setIndex_,
-          _FamousedataProvider.plantempweightRatio.toDouble(),
-          _FamousedataProvider.plantempweight.toDouble(),
-          int.parse(_repsctrl.text));
-      _editWorkoutCheck();
-      // 모달이 닫힐 때 실행되는 코드
-    });
+    );
   }
 
   Widget _setinfo(int exIndex_, int setIndex_) {
+    bool ctrlController = true;
     return Consumer2<WorkoutdataProvider, ExercisesdataProvider>(
         builder: (builder, workout, exinfo, child) {
       var plandata =
@@ -716,17 +722,27 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
       var eachExInfo = exinfo.exercisesdata.exercises[exinfo
           .exercisesdata.exercises
           .indexWhere((element) => element.name == planEachExercise.ref_name)];
-      _weightctrl.text = setdata.weight.toString();
-      _weightctrl.selection = TextSelection.fromPosition(
-          TextPosition(offset: _weightctrl.text.length));
-      _weightRatioctrl.text = setdata.index.toString();
-      _weightRatioctrl.selection = TextSelection.fromPosition(
-          TextPosition(offset: _weightRatioctrl.text.length));
-      _repsctrl.text = setdata.reps.toString();
-      _repsctrl.selection = TextSelection.fromPosition(
-          TextPosition(offset: _repsctrl.text.length));
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        if (ctrlController == true) {
+          _weightRatioctrl.text = setdata.index.toString();
+          _weightctrl.text = setdata.weight.toString();
+          _repsctrl.text = setdata.reps.toString();
+          ctrlController = false;
+          if (eachExInfo.onerm == 0) {
+            _workoutProvider.plansetcheck(
+                widget.rindex, exIndex_, setIndex_, 100.0, 20.0, setdata.reps);
+          } else {
+            _workoutProvider.plansetcheck(
+                widget.rindex,
+                exIndex_,
+                setIndex_,
+                setdata.index,
+                (setdata.index * eachExInfo.onerm / 100 / 2.5).floor() * 2.5,
+                setdata.reps);
+          }
+        }
+      });
 
-      double changeweightRatio = 0.0;
       return Column(children: [
         Container(height: 12),
         Padding(
@@ -809,31 +825,28 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                   width: 3,
                                   color: Theme.of(context).primaryColor),
                               borderRadius: BorderRadius.circular(5.0)),
-                          hintText: "${setdata.weight}",
+                          hintText: "${setdata.index}",
                           hintStyle: TextStyle(
                             fontSize: 21,
                             color: Theme.of(context).primaryColorLight,
                           )),
                       onChanged: (text) {
-                        if (text == "") {
-                          changeweightRatio = 0.0;
+                        if (eachExInfo.onerm == 0) {
+                          _workoutProvider.plansetcheck(widget.rindex, exIndex_,
+                              setIndex_, 100.0, 20.0, setdata.reps);
                         } else {
-                          changeweightRatio = double.parse(text);
-                        }
-                        _FamousedataProvider.setTempWeightRatio(
-                            changeweightRatio);
-                        if (_FamousedataProvider.plantempweightRatio *
-                                eachExInfo.onerm ==
-                            0) {
-                          _FamousedataProvider.setTempWeight(20.0);
-                        } else {
-                          _FamousedataProvider.setTempWeight(
-                              (_FamousedataProvider.plantempweightRatio *
+                          _workoutProvider.plansetcheck(
+                              widget.rindex,
+                              exIndex_,
+                              setIndex_,
+                              double.parse(text),
+                              (double.parse(text) *
                                           eachExInfo.onerm /
                                           100 /
                                           2.5)
                                       .floor() *
-                                  2.5);
+                                  2.5,
+                              setdata.reps);
                         }
                       }))),
           SizedBox(
@@ -867,7 +880,18 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                         ),
                       ),
                       onChanged: (text) {
-                        _FamousedataProvider.setTempReps(double.parse(text));
+                        if (text != "") {
+                          _workoutProvider.plansetcheck(
+                              widget.rindex,
+                              exIndex_,
+                              setIndex_,
+                              setdata.index,
+                              setdata.weight,
+                              int.parse(text));
+                        } else {
+                          _workoutProvider.plansetcheck(widget.rindex, exIndex_,
+                              setIndex_, setdata.index, setdata.weight, 1);
+                        }
                       })))
         ]),
         Container(height: 24),
@@ -879,8 +903,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                     fontSize: 20,
                     color: Theme.of(context).primaryColorDark,
                   )),
-              Consumer<FamousdataProvider>(builder: (builder, provider, child) {
-                return Text("${(provider.plantempweight).toStringAsFixed(1)}kg",
+              Consumer<WorkoutdataProvider>(
+                  builder: (builder, provider, child) {
+                return Text("${(setdata.weight).toStringAsFixed(1)}kg",
                     style: TextStyle(
                       color: Theme.of(context).primaryColorLight,
                       fontSize: 20,
@@ -894,11 +919,12 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                     fontSize: 20,
                     color: Theme.of(context).primaryColorDark,
                   )),
-              Consumer<FamousdataProvider>(builder: (builder, provider, child) {
+              Consumer<WorkoutdataProvider>(
+                  builder: (builder, provider, child) {
                 return Text(
-                    (int.parse(_repsctrl.text) != 1)
-                        ? "${(((provider.plantempweightRatio * eachExInfo.onerm / 100 / 2.5).floor() * 2.5) * (1 + int.parse(_repsctrl.text) / 30)).toStringAsFixed(1)}kg"
-                        : "${((provider.plantempweightRatio * eachExInfo.onerm / 100 / 2.5).floor() * 2.5).toStringAsFixed(1)}kg",
+                    (setdata.reps > 1)
+                        ? "${((setdata.weight) * (1 + setdata.reps / 30)).toStringAsFixed(1)}kg"
+                        : "${(setdata.weight).toStringAsFixed(1)}kg",
                     style: TextStyle(
                       color: Theme.of(context).primaryColorLight,
                       fontSize: 20,
@@ -914,6 +940,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                     const EdgeInsets.symmetric(horizontal: 48, vertical: 16)),
               ),
               onPressed: () {
+                _editWorkoutCheck();
                 Navigator.pop(context);
               },
               child: const Text(

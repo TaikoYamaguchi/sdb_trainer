@@ -67,20 +67,19 @@ class _ExerciseFilterState extends State<ExerciseFilter>
           ),
           title: SizedBox(
             width: MediaQuery.of(context).size.width,
+            height: 40,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(10, 16, 10, 16),
+              padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
               child: TextField(
                   controller: _exSearchCtrl,
                   style: TextStyle(color: Theme.of(context).primaryColorLight),
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(0),
-                    prefixIcon: Icon(
-                      Icons.search,
-                      color: Theme.of(context).primaryColor,
-                    ),
+                    prefixIcon: Icon(Icons.search,
+                        color: Theme.of(context).primaryColor, size: 16),
                     hintText: "운동 검색",
                     hintStyle: TextStyle(
-                        fontSize: 20.0,
+                        fontSize: 16.0,
                         color: Theme.of(context).primaryColorLight),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
