@@ -118,10 +118,6 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
 
 
 
-
-
-
-
   Widget _HtmlEditorWidget(){
     return SingleChildScrollView(
       child: Padding(
@@ -191,8 +187,8 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
 
                 mediaUploadInterceptor:
                     (PlatformFile file, InsertFileType type) async {
-                  XFile file2 = XFile(file.path!) ;
-                  print(file2.path); //filename
+                  imglist.add(XFile(file.path!)) ;
+
                   print(file.size); //size in bytes
                   print(file.extension); //file extension (eg jpeg or mp4)
                   return true;
@@ -309,26 +305,27 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
                     onPressed: () async {
                       var txt = await htmlcontroller.getText();
                       var afterparse = parse(txt);
-                      for (int i=0; i < afterparse.getElementsByTagName("img").length; ++i){
-                        afterparse.getElementsByTagName("img")[i].replaceWith(parseFragment("""<img src="${i}">"""));
 
+                      if (txt.contains('src=\"data:')) {
+                        for (int i=0; i < afterparse.getElementsByTagName("img").length; ++i){
+                          afterparse.getElementsByTagName("img")[i].replaceWith(parseFragment("""<img src="${i}">"""));
+
+                        }
+                        //String sa =afterparse.getElementsByTagName("img")[0].children;
+                        print(afterparse.getElementsByTagName("img")[0].attributes["src"]);
                       }
-                      //String sa =afterparse.getElementsByTagName("img")[0].children;
-                      print(afterparse.getElementsByTagName("img")[0].attributes["src"]);
 
 
-                      notimodel.Notification noti = notimodel.Notification(title: _notiNameCtrl.text, content: notimodel.Content(html: txt), images: [], ispopup: true);
-                      _notificationprovider.postdata(noti);
+
+                      notimodel.Notification noti = notimodel.Notification(title: _notiNameCtrl.text, content: notimodel.Content(html: afterparse.outerHtml), images: [], ispopup: true);
+                      _notificationprovider.postdata(noti, imglist);
 
 
 
 
 
                       /*
-                      if (txt.contains('src=\"data:')) {
-                        txt =
-                        '<text removed due to base-64 data, displaying the text could cause the app to crash>';
-                      }
+
                        */
                       setState(() {
                         result = txt;

@@ -14,9 +14,11 @@ class NotificationdataProvider extends ChangeNotifier {
     });
   }
 
-  postdata(noti) async {
-    NotificationPost(title: noti.title, content: noti.content, images: noti.images, ispopup: noti.ispopup).postNotification().then((value) => value["id"] != null
-        ? showToast("수정 완료")
-        : showToast("입력을 확인해주세요"));
+  postdata(noti, files) async {
+    NotificationPost(title: noti.title, content: noti.content, images: noti.images, ispopup: noti.ispopup).postNotification().then((value) {
+      value["id"] != null
+          ? NotificationImageEdit(notification_id: value["id"], file: files).patchHistoryImage()
+          : showToast("입력을 확인해주세요");
+    } );
   }
 }

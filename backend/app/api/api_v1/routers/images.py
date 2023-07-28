@@ -182,4 +182,4 @@ async def create_notification_image(notification_id:int, db=Depends(get_db),
         db_image = create_temporary_image(db, file_path)
         db_notification = edit_image_by_notification_id(db, user,notification_id,db_image.id)
 
-    return db_history
+    return db_notification

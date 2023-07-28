@@ -8,7 +8,7 @@ from app.db.schemas import NotificationCreate, NotificationOut
 
 notification_router = r = APIRouter()
 
-@r.post("/notificationcreate", response_model=NotificationCreate, response_model_exclude_none=True)
+@r.post("/notificationcreate", response_model=NotificationOut, response_model_exclude_none=True)
 async def notification_create(
     request: Request,
     notification: NotificationCreate,
