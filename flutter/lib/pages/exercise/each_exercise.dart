@@ -15,6 +15,7 @@ import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:sdb_trainer/src/utils/alerts.dart';
+import 'package:sdb_trainer/src/utils/exercise_util.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
@@ -526,7 +527,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                         children: [
                           GestureDetector(
                             onTap: () {
-                              exguide(ueindex);
+                              ExerciseGuideBottomModal()
+                                  .exguide(ueindex, context);
                             },
                             child: Consumer<WorkoutdataProvider>(
                                 builder: (builder, provider, child) {
@@ -1494,7 +1496,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                         children: [
                           GestureDetector(
                             onTap: () {
-                              exguide(ueindex);
+                              ExerciseGuideBottomModal()
+                                  .exguide(ueindex, context);
                             },
                             child: Consumer<WorkoutdataProvider>(
                                 builder: (builder, provider, child) {
@@ -2252,7 +2255,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                             }
                             return GestureDetector(
                                 onTap: () {
-                                  exguide(ueindex);
+                                  ExerciseGuideBottomModal()
+                                      .exguide(ueindex, context);
                                 },
                                 child: Column(children: [
                                   isKeyboardVisible
@@ -2766,53 +2770,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
         ),
       );
     });
-  }
-
-  void exguide(int eindex) {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-      builder: (BuildContext context) {
-        return Container(
-            height: MediaQuery.of(context).size.height * 0.75,
-            decoration: BoxDecoration(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(20)),
-              color: Theme.of(context).canvasColor,
-            ),
-            child: Column(
-              children: [
-                Container(
-                  height: 20,
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        const BorderRadius.vertical(top: Radius.circular(20)),
-                    color: Theme.of(context).canvasColor,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
-                  child: Container(
-                    height: 6.0,
-                    width: 80.0,
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColorDark,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8.0))),
-                  ),
-                ),
-                Expanded(
-                  child: ExerciseGuide(
-                    eindex: eindex,
-                    isroutine: true,
-                  ),
-                ),
-              ],
-            ));
-      },
-    );
   }
 
   void recordExercise() {

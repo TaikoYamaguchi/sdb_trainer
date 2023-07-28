@@ -159,54 +159,68 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                       ),
                     ],
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                          width: MediaQuery.of(context).size.width / 5,
-                          child: Center(
-                            child: Text("1rm",
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColorDark,
-                                    fontWeight: FontWeight.bold)),
-                          )),
-                      const SizedBox(height: 4),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width / 5,
-                        child: Center(
-                          child: Text(
-                              '${provier.exercisesdata.exercises[widget.eindex].onerm.toStringAsFixed(0)}${_userProvider.userdata.weight_unit}',
-                              textScaleFactor: 1.2,
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColorLight)),
-                        ),
+                  GestureDetector(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                              width: MediaQuery.of(context).size.width / 5,
+                              child: Center(
+                                child: Text("1rm",
+                                    style: TextStyle(
+                                        color:
+                                            Theme.of(context).primaryColorDark,
+                                        fontWeight: FontWeight.bold)),
+                              )),
+                          const SizedBox(height: 4),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width / 5,
+                            child: Center(
+                              child: Text(
+                                  '${provier.exercisesdata.exercises[widget.eindex].onerm.toStringAsFixed(0)}${_userProvider.userdata.weight_unit}',
+                                  textScaleFactor: 1.2,
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).primaryColorLight)),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                          width: MediaQuery.of(context).size.width / 5,
-                          child: Center(
-                            child: Text("Goal",
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColorDark,
-                                    fontWeight: FontWeight.bold)),
-                          )),
-                      const SizedBox(height: 4),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width / 5,
-                        child: Center(
-                          child: Text(
-                              '${provier.exercisesdata.exercises[widget.eindex].goal.toStringAsFixed(0)}${_userProvider.userdata.weight_unit}',
-                              textScaleFactor: 1.2,
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColorLight)),
-                        ),
+                      onTap: () {
+                        exGoalEditAlert(context,
+                            provier.exercisesdata.exercises[widget.eindex]);
+                      }),
+                  GestureDetector(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                              width: MediaQuery.of(context).size.width / 5,
+                              child: Center(
+                                child: Text("Goal",
+                                    style: TextStyle(
+                                        color:
+                                            Theme.of(context).primaryColorDark,
+                                        fontWeight: FontWeight.bold)),
+                              )),
+                          const SizedBox(height: 4),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width / 5,
+                            child: Center(
+                              child: Text(
+                                  '${provier.exercisesdata.exercises[widget.eindex].goal.toStringAsFixed(0)}${_userProvider.userdata.weight_unit}',
+                                  textScaleFactor: 1.2,
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).primaryColorLight)),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                      onTap: () {
+                        exGoalEditAlert(context,
+                            provier.exercisesdata.exercises[widget.eindex]);
+                      }),
                 ],
               );
             }),

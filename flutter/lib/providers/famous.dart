@@ -31,21 +31,6 @@ class FamousdataProvider extends ChangeNotifier {
     _tags = [];
   }
 
-  setTempWeight(weight) {
-    _plantempweight = weight;
-    notifyListeners();
-  }
-
-  setTempWeightRatio(weight_ratio) {
-    _plantempweightRatio = weight_ratio;
-    notifyListeners();
-  }
-
-  setTempReps(reps) {
-    _plantempreps = reps;
-    notifyListeners();
-  }
-
   weekchange(index) {
     _week = index;
     _download.routinedata.exercises[0].progress = index * 7;
