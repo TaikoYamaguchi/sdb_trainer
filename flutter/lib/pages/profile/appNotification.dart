@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:html/parser.dart';
 import 'package:sdb_trainer/pages/profile/htmlEditor_Notification.dart';
 import 'package:sdb_trainer/providers/notification.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
+import 'package:sdb_trainer/src/model/notification.dart' as mnoti;
 import 'dart:async';
 
 import 'package:transition/transition.dart';
@@ -163,11 +165,10 @@ class _AppNotificationState extends State<AppNotification> {
                                     Expanded(
                                       child: GestureDetector(
                                         onTap: () {
-                                          /*
-                                          _showInterviewDetailBottomSheet(
-                                              _notificationDatas[index]);
 
-                                           */
+                                          _showNotificationDetailBottomSheet(_notificationDatas[index]);
+
+
                                         },
                                         child: Padding(
                                           padding: const EdgeInsets.only(
@@ -341,6 +342,170 @@ class _AppNotificationState extends State<AppNotification> {
               : const Center(child: CircularProgressIndicator())
             : const Center(child: CircularProgressIndicator());
       }),
+    );
+  }
+
+  void _showNotificationDetailBottomSheet(mnoti.Notification notificationdata) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      builder: (BuildContext context) {
+        var afterparse = parse(notificationdata.content.html);
+        return GestureDetector(onTap: () {
+          FocusScope.of(context).unfocus();
+        }, child: StatefulBuilder(builder: (BuildContext context,
+            StateSetter setState /*You can rename this!*/) {
+          return Container(
+            padding: const EdgeInsets.all(12.0),
+            height: MediaQuery.of(context).size.height * 0.7,
+            decoration: BoxDecoration(
+              borderRadius:
+              const BorderRadius.vertical(top: Radius.circular(20)),
+              color: Theme.of(context).cardColor,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
+                  child: Container(
+                    height: 6.0,
+                    width: 80.0,
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColorDark,
+                        borderRadius:
+                        const BorderRadius.all(Radius.circular(8.0))),
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                /*
+                                user.image == ""
+                                    ? const Icon(
+                                  Icons.account_circle,
+                                  color: Colors.grey,
+                                  size: 46.0,
+                                )
+                                    : CachedNetworkImage(
+                                  imageUrl: user.image,
+                                  imageBuilder:
+                                      (context, imageProivder) =>
+                                      Container(
+                                        height: 46,
+                                        width: 46,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                            const BorderRadius.all(
+                                                Radius.circular(50)),
+                                            image: DecorationImage(
+                                              image: imageProivder,
+                                              fit: BoxFit.cover,
+                                            )),
+                                      ),
+                                ),
+
+                                 */
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        notificationdata.title,
+                                        textScaleFactor: 1.8,
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorLight),
+                                      ),
+                                      Text(
+                                        notificationdata.date!.substring(2, 10),
+                                        textScaleFactor: 1.0,
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorDark),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            GestureDetector(
+                                //onTapDown: _storePosition,
+                                onTap: () {
+                                  /*
+                                  interviewData.user_email ==
+                                      _userProvider.userdata.email
+                                      ? _myInterviewMenu(
+                                      true, interviewData, setState)
+                                      : _myInterviewMenu(
+                                      false, interviewData, setState);
+
+                                   */
+                                },
+                                child: const Icon(Icons.more_vert,
+                                    color: Colors.grey, size: 18.0))
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: Card(
+                              color: Theme.of(context).canvasColor,
+                              elevation: 0,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(afterparse.children[0].innerHtml,
+                                    textScaleFactor: 0.8,
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .primaryColorLight)),
+                              ),
+                            )),
+
+                        const SizedBox(height: 4.0),
+                        Column(
+                          children: [
+                            Text('의견 주심에 감사합니다🤗 소중한 의견으로 발전해볼게요!',
+                                textScaleFactor: 1.2,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColorDark)),
+                          ],
+                        ),
+                        //_commentContent(interviewData),
+                      ],
+                    ),
+                  ),
+                ),
+                /*
+                Column(
+                  children: [
+                    _isCommentInputOpen
+                        ? _commentTextInput(interviewData, setState)
+                        : Container(),
+                    _closeInterviewDetailButton()
+                  ],
+                ),
+
+                 */
+              ],
+            ),
+          );
+        }));
+      },
     );
   }
 
