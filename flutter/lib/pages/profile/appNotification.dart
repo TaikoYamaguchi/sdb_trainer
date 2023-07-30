@@ -352,7 +352,10 @@ class _AppNotificationState extends State<AppNotification> {
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (BuildContext context) {
+        int length;
         var afterparse = parse(notificationdata.content.html);
+        var body = afterparse.getElementsByTagName("body")[0];
+        length = body.getElementsByTagName("p").length;
         return GestureDetector(onTap: () {
           FocusScope.of(context).unfocus();
         }, child: StatefulBuilder(builder: (BuildContext context,
@@ -467,11 +470,18 @@ class _AppNotificationState extends State<AppNotification> {
                               elevation: 0,
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(afterparse.children[0].innerHtml,
-                                    textScaleFactor: 0.8,
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .primaryColorLight)),
+                                child: ListView.builder(
+                                    itemBuilder: (BuildContext _context, int index) {
+                                      return Text(body.getElementsByTagName("p")[index].text,
+                                          textScaleFactor: 1,
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColorLight));
+
+                                    },
+                                    shrinkWrap: true,
+                                    itemCount: length
+                                ),
                               ),
                             )),
 
