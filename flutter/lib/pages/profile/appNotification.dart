@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:sdb_trainer/pages/profile/htmlEditor_Notification.dart';
@@ -472,7 +473,24 @@ class _AppNotificationState extends State<AppNotification> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: ListView.builder(
                                     itemBuilder: (BuildContext _context, int index) {
-                                      return Text(body.getElementsByTagName("p")[index].text,
+                                      return body.getElementsByTagName("p")[index].getElementsByTagName("img").length != 0
+                                          ? CachedNetworkImage(
+                                          imageUrl: notificationdata.images![int.parse(body.getElementsByTagName("p")[index].getElementsByTagName("img")[0].attributes["src"]!)],
+                                          imageBuilder:
+                                              (context, imageProivder) =>
+                                              Container(
+                                                height: 46,
+                                                width: 46,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(50)),
+                                                    image: DecorationImage(
+                                                      image: imageProivder,
+                                                      fit: BoxFit.cover,
+                                                    )),
+                                              ))
+                                          : Text(body.getElementsByTagName("p")[index].text,
                                           textScaleFactor: 1,
                                           style: TextStyle(
                                               color: Theme.of(context)
