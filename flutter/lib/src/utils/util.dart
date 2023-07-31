@@ -11,6 +11,7 @@ import 'dart:io';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter/services.dart';
 
 const USER_NICK_NAME = "USER_NICK_NAME";
 const STATUS_LOGIN = 'STATUS_LOGIN';
@@ -368,6 +369,28 @@ class CustomIconButton extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class DecimalTextInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    if (newValue.text.isEmpty) {
+      return newValue.copyWith(text: "");
+    }
+
+    final double value = double.parse(newValue.text);
+    if (value == null) {
+      // 입력이 올바르지 않은 경우 빈 값을 반환하여 입력을 거부합니다.
+      return TextEditingValue.empty;
+    }
+
+    final String newText = value.toStringAsFixed(1);
+    return newValue.copyWith(
+      text: newText,
+      selection: TextSelection.collapsed(offset: newText.length),
     );
   }
 }

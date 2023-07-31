@@ -711,7 +711,6 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
   }
 
   Widget _setinfo(int exIndex_, int setIndex_) {
-    bool ctrlController = true;
     return Consumer2<WorkoutdataProvider, ExercisesdataProvider>(
         builder: (builder, workout, exinfo, child) {
       var plandata =
@@ -722,97 +721,179 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
       var eachExInfo = exinfo.exercisesdata.exercises[exinfo
           .exercisesdata.exercises
           .indexWhere((element) => element.name == planEachExercise.ref_name)];
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
-        if (ctrlController == true) {
-          _weightRatioctrl.text = setdata.index.toString();
-          _weightctrl.text = setdata.weight.toString();
-          _repsctrl.text = setdata.reps.toString();
-          ctrlController = false;
-          if (eachExInfo.onerm == 0) {
-            _workoutProvider.plansetcheck(
-                widget.rindex, exIndex_, setIndex_, 100.0, 20.0, setdata.reps);
-          } else {
-            _workoutProvider.plansetcheck(
-                widget.rindex,
-                exIndex_,
-                setIndex_,
-                setdata.index,
-                (setdata.index * eachExInfo.onerm / 100 / 2.5).floor() * 2.5,
-                setdata.reps);
-          }
-        }
-      });
+      if (setdata.ischecked) {
+        _weightRatioctrl.text = setdata.index.toString();
+        _weightctrl.text = setdata.weight.toString();
+        _repsctrl.text = setdata.reps.toString();
+      } else {
+        _weightRatioctrl.text = setdata.index.toString();
+        _weightctrl.text =
+            ((setdata.index * eachExInfo.onerm / 100 / 2.5).floor() * 2.5)
+                .toString();
+        _repsctrl.text = setdata.reps.toString();
+      }
 
-      return Column(children: [
-        Container(height: 12),
-        Padding(
-            padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
-            child: Container(
-              height: 6.0,
-              width: 80.0,
-              decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColorDark,
-                  borderRadius: const BorderRadius.all(Radius.circular(8.0))),
-            )),
-        Container(height: 8),
-        Text('기준 운동: ${eachExInfo.name}',
-            textScaleFactor: 1.5,
-            style: TextStyle(
-                color: Theme.of(context).primaryColorLight,
-                fontWeight: FontWeight.bold)),
-        Container(height: 15),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          SizedBox(
-              width: MediaQuery.of(context).size.width / 3,
-              child: Center(
-                  child: Text('기준 1rm',
-                      textScaleFactor: 1.5,
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColorDark,
-                      )))),
-          SizedBox(
-              width: MediaQuery.of(context).size.width / 3,
-              child: Center(
-                  child: Text(
-                '중량비(%)',
-                textScaleFactor: 1.5,
-                style: TextStyle(color: Theme.of(context).primaryColorDark),
-              ))),
-          SizedBox(
-              width: MediaQuery.of(context).size.width / 3,
-              child: Center(
-                  child: Text(
-                '횟수',
-                textScaleFactor: 1.5,
-                style: TextStyle(color: Theme.of(context).primaryColorDark),
-              )))
-        ]),
-        Container(height: 10),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          SizedBox(
-              width: MediaQuery.of(context).size.width / 3 - 10,
-              child: Center(
-                  child: Text(
-                eachExInfo.onerm.toStringAsFixed(1),
-                textScaleFactor: 1.7,
-                style: TextStyle(
+      return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+        return Column(children: [
+          Container(height: 12),
+          Padding(
+              padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
+              child: Container(
+                height: 6.0,
+                width: 80.0,
+                decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColorDark,
+                    borderRadius: const BorderRadius.all(Radius.circular(8.0))),
+              )),
+          Container(height: 8),
+          Text('기준 운동: ${eachExInfo.name}',
+              textScaleFactor: 1.5,
+              style: TextStyle(
+                  color: Theme.of(context).primaryColorLight,
+                  fontWeight: FontWeight.bold)),
+          Container(height: 15),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+            SizedBox(
+                width: MediaQuery.of(context).size.width / 4,
+                child: Center(
+                    child: Text('기준 1rm',
+                        textScaleFactor: 1.5,
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColorDark,
+                        )))),
+            SizedBox(
+                width: MediaQuery.of(context).size.width / 4,
+                child: Center(
+                    child: Text(
+                  '중량비(%)',
+                  textScaleFactor: 1.5,
+                  style: TextStyle(color: Theme.of(context).primaryColorDark),
+                ))),
+            SizedBox(
+                width: MediaQuery.of(context).size.width / 4,
+                child: Center(
+                    child: Text(
+                  '무게',
+                  textScaleFactor: 1.5,
+                  style: TextStyle(color: Theme.of(context).primaryColorDark),
+                ))),
+            SizedBox(
+                width: MediaQuery.of(context).size.width / 4,
+                child: Center(
+                    child: Text(
+                  '횟수',
+                  textScaleFactor: 1.5,
+                  style: TextStyle(color: Theme.of(context).primaryColorDark),
+                )))
+          ]),
+          Container(height: 10),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+            SizedBox(
+                width: MediaQuery.of(context).size.width / 4,
+                child: Center(
+                    child: Text(
+                  eachExInfo.onerm.toStringAsFixed(1),
+                  textScaleFactor: 1.7,
+                  style: TextStyle(
                     color: Theme.of(context).primaryColorLight,
-                    fontWeight: FontWeight.bold),
-              ))),
-          SizedBox(
-              width: MediaQuery.of(context).size.width / 3 - 10,
-              child: Center(
-                  child: TextField(
-                      controller: _weightRatioctrl,
-                      autofocus: true,
-                      keyboardType: const TextInputType.numberWithOptions(
-                          signed: false, decimal: true),
-                      style: TextStyle(
-                        fontSize: 21,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
+                  ),
+                ))),
+            SizedBox(
+                width: MediaQuery.of(context).size.width / 4,
+                child: Center(
+                    child: TextField(
+                        controller: _weightRatioctrl,
+                        autofocus: false,
+                        keyboardType: const TextInputType.numberWithOptions(
+                            signed: false, decimal: true),
+                        style: TextStyle(
+                          fontSize: 21,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                            contentPadding:
+                                const EdgeInsets.symmetric(vertical: 10.0),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 3,
+                                    color: Theme.of(context).primaryColorDark),
+                                borderRadius: BorderRadius.circular(5.0)),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 3,
+                                    color: Theme.of(context).primaryColor),
+                                borderRadius: BorderRadius.circular(5.0)),
+                            hintText: "${setdata.index}",
+                            hintStyle: TextStyle(
+                              fontSize: 21,
+                              color: Theme.of(context).primaryColorDark,
+                            )),
+                        onChanged: (text) {
+                          setState(() {
+                            if (eachExInfo.onerm == 0) {
+                              showToast("1RM이 0입니다. 무게를 설정해주세요");
+                              _weightctrl.text = "20.0";
+                            } else {
+                              _weightctrl.text =
+                                  "${(double.parse(text) * eachExInfo.onerm / 100 / 2.5).floor() * 2.5}";
+                            }
+                          });
+                        }))),
+            SizedBox(
+                width: MediaQuery.of(context).size.width / 4,
+                child: Center(
+                    child: TextField(
+                        controller: _weightctrl,
+                        autofocus: true,
+                        keyboardType: const TextInputType.numberWithOptions(
+                            signed: false, decimal: true),
+                        style: TextStyle(
+                          fontSize: 21,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                            contentPadding:
+                                const EdgeInsets.symmetric(vertical: 10.0),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 3,
+                                    color: Theme.of(context).primaryColorDark),
+                                borderRadius: BorderRadius.circular(5.0)),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 3,
+                                    color: Theme.of(context).primaryColor),
+                                borderRadius: BorderRadius.circular(5.0)),
+                            hintText: "${setdata.weight}",
+                            hintStyle: TextStyle(
+                              fontSize: 21,
+                              color: Theme.of(context).primaryColorDark,
+                            )),
+                        onChanged: (text) {
+                          setState(() {
+                            if (eachExInfo.onerm == 0) {
+                              _weightRatioctrl.text = "100.0";
+                            } else {
+                              _weightRatioctrl.text =
+                                  "${(double.parse(text) / eachExInfo.onerm * 1000).floor() / 10}";
+                            }
+                          });
+                        }))),
+            SizedBox(
+                width: MediaQuery.of(context).size.width / 4,
+                child: Center(
+                    child: TextField(
+                        controller: _repsctrl,
+                        keyboardType: TextInputType.number,
+                        style: TextStyle(
+                          fontSize: 21,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
                           contentPadding:
                               const EdgeInsets.symmetric(vertical: 10.0),
                           enabledBorder: UnderlineInputBorder(
@@ -825,132 +906,68 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                   width: 3,
                                   color: Theme.of(context).primaryColor),
                               borderRadius: BorderRadius.circular(5.0)),
-                          hintText: "${setdata.index}",
+                          hintText: "${setdata.reps}",
                           hintStyle: TextStyle(
                             fontSize: 21,
-                            color: Theme.of(context).primaryColorLight,
-                          )),
-                      onChanged: (text) {
-                        if (eachExInfo.onerm == 0) {
-                          _workoutProvider.plansetcheck(widget.rindex, exIndex_,
-                              setIndex_, 100.0, 20.0, setdata.reps);
-                        } else {
-                          _workoutProvider.plansetcheck(
-                              widget.rindex,
-                              exIndex_,
-                              setIndex_,
-                              double.parse(text),
-                              (double.parse(text) *
-                                          eachExInfo.onerm /
-                                          100 /
-                                          2.5)
-                                      .floor() *
-                                  2.5,
-                              setdata.reps);
-                        }
-                      }))),
-          SizedBox(
-              width: MediaQuery.of(context).size.width / 3 - 10,
-              child: Center(
-                  child: TextField(
-                      controller: _repsctrl,
-                      keyboardType: TextInputType.number,
-                      style: TextStyle(
-                        fontSize: 21,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        contentPadding:
-                            const EdgeInsets.symmetric(vertical: 10.0),
-                        enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                width: 3,
-                                color: Theme.of(context).primaryColorDark),
-                            borderRadius: BorderRadius.circular(5.0)),
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                width: 3,
-                                color: Theme.of(context).primaryColor),
-                            borderRadius: BorderRadius.circular(5.0)),
-                        hintText: "${setdata.reps}",
-                        hintStyle: TextStyle(
-                          fontSize: 21,
-                          color: Theme.of(context).primaryColorLight,
+                            color: Theme.of(context).primaryColorDark,
+                          ),
                         ),
-                      ),
-                      onChanged: (text) {
-                        if (text != "") {
-                          _workoutProvider.plansetcheck(
-                              widget.rindex,
-                              exIndex_,
-                              setIndex_,
-                              setdata.index,
-                              setdata.weight,
-                              int.parse(text));
-                        } else {
-                          _workoutProvider.plansetcheck(widget.rindex, exIndex_,
-                              setIndex_, setdata.index, setdata.weight, 1);
-                        }
-                      })))
-        ]),
-        Container(height: 24),
-        Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-          Column(children: [
-            Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-              Text("최종 무게: ",
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Theme.of(context).primaryColorDark,
-                  )),
-              Consumer<WorkoutdataProvider>(
-                  builder: (builder, provider, child) {
-                return Text("${(setdata.weight).toStringAsFixed(1)}kg",
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColorLight,
-                      fontSize: 20,
-                    ));
-              })
-            ]),
-            SizedBox(height: 8),
-            Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-              Text("최종 1RM: ",
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Theme.of(context).primaryColorDark,
-                  )),
-              Consumer<WorkoutdataProvider>(
-                  builder: (builder, provider, child) {
-                return Text(
-                    (setdata.reps > 1)
-                        ? "${((setdata.weight) * (1 + setdata.reps / 30)).toStringAsFixed(1)}kg"
-                        : "${(setdata.weight).toStringAsFixed(1)}kg",
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColorLight,
-                      fontSize: 20,
-                    ));
-              })
-            ])
+                        onChanged: (text) {
+                          setState(() {});
+                        })))
           ]),
-          Container(width: 48),
-          ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Color(0xFffc60a8)),
-                padding: MaterialStateProperty.all(
-                    const EdgeInsets.symmetric(horizontal: 48, vertical: 16)),
-              ),
-              onPressed: () {
-                _editWorkoutCheck();
-                Navigator.pop(context);
-              },
-              child: const Text(
-                '완료',
-                textScaleFactor: 1.4,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              )),
-          Container(width: 16)
-        ])
-      ]);
+          Container(height: 24),
+          Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+            Column(children: [
+              Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                Text("최종 1RM: ",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Theme.of(context).primaryColorDark,
+                    )),
+                Text(
+                    (_weightctrl.text != "" && _repsctrl.text != "")
+                        ? (int.parse(_repsctrl.text) > 1)
+                            ? "${(double.parse(_weightctrl.text) * (1 + int.parse(_repsctrl.text) / 30)).toStringAsFixed(1)}kg"
+                            : "${(double.parse(_weightctrl.text)).toStringAsFixed(1)}kg"
+                        : "-kg",
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorLight,
+                      fontSize: 20,
+                    ))
+              ])
+            ]),
+            Container(width: 48),
+            ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Color(0xFffc60a8)),
+                  padding: MaterialStateProperty.all(
+                      const EdgeInsets.symmetric(horizontal: 48, vertical: 16)),
+                ),
+                onPressed: () {
+                  try {
+                    _workoutProvider.plansetcheck(
+                        widget.rindex,
+                        exIndex_,
+                        setIndex_,
+                        double.parse(_weightRatioctrl.text),
+                        double.parse(_weightctrl.text),
+                        int.parse(_repsctrl.text));
+                    _editWorkoutCheck();
+                    Navigator.pop(context);
+                  } catch (e) {
+                    showToast("숫자를 확인해주세요");
+                  }
+                },
+                child: const Text(
+                  '완료',
+                  textScaleFactor: 1.4,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                )),
+            Container(width: 16)
+          ])
+        ]);
+      });
     });
   }
 
