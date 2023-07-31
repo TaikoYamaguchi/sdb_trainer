@@ -214,13 +214,21 @@ class WorkoutdataProvider extends ChangeNotifier {
   }
 
   plansetsplus(rindex, eindex) {
-    _workoutdata
+    var cur_ex_sets = _workoutdata
         .routinedatas[rindex]
         .exercises[0]
         .plans[_workoutdata.routinedatas[rindex].exercises[0].progress]
         .exercises[eindex]
-        .sets
-        .add(Sets(index: 30, weight: 20, reps: 8, ischecked: false));
+        .sets;
+    if (cur_ex_sets.isEmpty) {
+      cur_ex_sets.add(Sets(index: 30, weight: 20, reps: 8, ischecked: false));
+    } else {
+      cur_ex_sets.add(Sets(
+          index: cur_ex_sets.last.index,
+          weight: cur_ex_sets.last.weight,
+          reps: cur_ex_sets.last.reps,
+          ischecked: false));
+    }
     notifyListeners();
   }
 }
