@@ -78,20 +78,22 @@ class _AppNotificationState extends State<AppNotification> {
             style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
           actions: [
-            GestureDetector(
-                onTap: () {
-                  _PopProvider.profilestackup();
-                  Navigator.push(
-                      context,
-                      Transition(
-                          child: NotificationHtmlEditor(),
-                          transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: Icon(Icons.open_in_new,
-                      size: 28, color: Theme.of(context).primaryColor),
-                )),
+            _userProvider.userdata.is_superuser
+                ? GestureDetector(
+                    onTap: () {
+                      _PopProvider.profilestackup();
+                      Navigator.push(
+                          context,
+                          Transition(
+                              child: NotificationHtmlEditor(),
+                              transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Icon(Icons.open_in_new,
+                          size: 28, color: Theme.of(context).primaryColor),
+                    ))
+                : Container(),
           ],
           backgroundColor: Theme.of(context).canvasColor,
         ));
@@ -166,9 +168,7 @@ class _AppNotificationState extends State<AppNotification> {
                                     Expanded(
                                       child: GestureDetector(
                                         onTap: () {
-
                                           _showNotificationDetailBottomSheet(_notificationDatas[index]);
-
 
                                         },
                                         child: Padding(
@@ -236,6 +236,7 @@ class _AppNotificationState extends State<AppNotification> {
                                                 ],
                                               ),
                                               const SizedBox(height: 4),
+                                              /*
                                               LayoutBuilder(builder:
                                                   (context, constraints) {
                                                 final span = TextSpan(
@@ -306,7 +307,11 @@ class _AppNotificationState extends State<AppNotification> {
                                                   );
                                                 }
                                               }),
+
+
                                               const SizedBox(height: 4),
+
+                                               */
 
                                               Divider(
                                                   color: Theme.of(context)
@@ -466,40 +471,37 @@ class _AppNotificationState extends State<AppNotification> {
                         const SizedBox(height: 8),
                         SizedBox(
                             width: MediaQuery.of(context).size.width,
-                            child: Card(
-                              color: Theme.of(context).canvasColor,
-                              elevation: 0,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ListView.builder(
-                                    itemBuilder: (BuildContext _context, int index) {
-                                      return body.getElementsByTagName("p")[index].getElementsByTagName("img").length != 0
-                                          ? CachedNetworkImage(
-                                          imageUrl: notificationdata.images![int.parse(body.getElementsByTagName("p")[index].getElementsByTagName("img")[0].attributes["src"]!)],
-                                          imageBuilder:
-                                              (context, imageProivder) =>
-                                              Container(
-                                                height: 46,
-                                                width: 46,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(50)),
-                                                    image: DecorationImage(
-                                                      image: imageProivder,
-                                                      fit: BoxFit.cover,
-                                                    )),
-                                              ))
-                                          : Text(body.getElementsByTagName("p")[index].text,
-                                          textScaleFactor: 1,
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColorLight));
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ListView.builder(
+                                  physics: const ScrollPhysics(),
+                                  itemBuilder: (BuildContext _context, int index) {
+                                    return body.getElementsByTagName("p")[index].getElementsByTagName("img").length != 0
+                                        ? CachedNetworkImage(
+                                        imageUrl: notificationdata.images![int.parse(body.getElementsByTagName("p")[index].getElementsByTagName("img")[0].attributes["src"]!)],
+                                        imageBuilder:
+                                            (context, imageProivder) =>
+                                            Container(
+                                              height: MediaQuery.of(context).size.width-20,
+                                              width: MediaQuery.of(context).size.width-20,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(20)),
+                                                  image: DecorationImage(
+                                                    image: imageProivder,
+                                                    fit: BoxFit.cover,
+                                                  )),
+                                            ))
+                                        : Text(body.getElementsByTagName("p")[index].text,
+                                        textScaleFactor: 1.5,
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorLight));
 
-                                    },
-                                    shrinkWrap: true,
-                                    itemCount: length
-                                ),
+                                  },
+                                  shrinkWrap: true,
+                                  itemCount: length
                               ),
                             )),
 
