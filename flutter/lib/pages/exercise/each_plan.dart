@@ -793,16 +793,28 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
         ]),
         Container(height: 10),
         Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          SizedBox(
-              width: MediaQuery.of(context).size.width / 4,
-              child: Center(
-                  child: Text(
-                eachExInfo.onerm.toStringAsFixed(1),
-                textScaleFactor: 1.7,
-                style: TextStyle(
-                  color: Theme.of(context).primaryColorLight,
-                ),
-              ))),
+          GestureDetector(
+            onTap: () {
+              exGoalEditAlert(context, eachExInfo);
+            },
+            child: SizedBox(
+                width: MediaQuery.of(context).size.width / 4,
+                child: Consumer<ExercisesdataProvider>(
+                    builder: (builder, provider, child) {
+                  eachExInfo = _exProvider.exercisesdata.exercises[_exProvider
+                      .exercisesdata.exercises
+                      .indexWhere((element) =>
+                          element.name == planEachExercise.ref_name)];
+                  return Center(
+                      child: Text(
+                    eachExInfo.onerm.toStringAsFixed(1),
+                    textScaleFactor: 1.7,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorLight,
+                    ),
+                  ));
+                })),
+          ),
           SizedBox(
               width: MediaQuery.of(context).size.width / 4,
               child: Center(
