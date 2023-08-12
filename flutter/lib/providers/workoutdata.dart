@@ -221,7 +221,7 @@ class WorkoutdataProvider extends ChangeNotifier {
         .exercises[eindex]
         .sets;
     if (cur_ex_sets.isEmpty) {
-      cur_ex_sets.add(Sets(index: 30, weight: 20, reps: 8, ischecked: false));
+      cur_ex_sets.add(Sets(index: 40, weight: 5, reps: 12, ischecked: false));
     } else {
       cur_ex_sets.add(Sets(
           index: cur_ex_sets.last.index,
@@ -230,5 +230,29 @@ class WorkoutdataProvider extends ChangeNotifier {
           ischecked: false));
     }
     notifyListeners();
+  }
+
+  planSetsCheck(rIndex, eIndex, onerm) {
+    List<Sets> cur_ex_sets = _workoutdata
+        .routinedatas[rIndex]
+        .exercises[0]
+        .plans[_workoutdata.routinedatas[rIndex].exercises[0].progress]
+        .exercises[eIndex]
+        .sets;
+    for (Sets set in cur_ex_sets) {
+      if (onerm != 0) {
+        if (set.ischecked == true) {
+          set.index = (set.weight / onerm * 100 / 0.5 + 0.4).floor() * 0.5;
+        } else {
+          set.weight = (set.index * onerm / 100 / 0.5).floor() * 0.5;
+        }
+      } else {
+        if (set.ischecked == true) {
+          set.index = (set.weight / onerm * 100 / 0.5 + 0.4).floor() * 0.5;
+        } else {
+          set.weight = 5;
+        }
+      }
+    }
   }
 }

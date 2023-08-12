@@ -360,9 +360,17 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       final exerciseIndex = _exProvider.exercisesdata.exercises
                           .indexWhere((element) =>
                               element.name == planEachExercise.name);
+                      final eachExRefInfo = _exProvider.exercisesdata.exercises[
+                          _exProvider.exercisesdata.exercises.indexWhere(
+                              (element) =>
+                                  element.name == planEachExercise.ref_name)];
                       Controllerlist.add(
                           ExpandableController(initialExpanded: true));
                       var _exImage;
+                      if (!_routinetimeProvider.isstarted) {
+                        _workoutProvider.planSetsCheck(
+                            widget.rindex, exerciseIndex, eachExRefInfo.onerm);
+                      }
                       try {
                         _exImage = extra_completely_new_Ex[
                                 extra_completely_new_Ex.indexWhere((element) =>
@@ -477,6 +485,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                             planEachExercise.sets[setIndex_];
                                         final eachSetWeight = (planEachExercise
                                             .sets[setIndex_].weight);
+
                                         return Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
@@ -1093,9 +1102,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                               ref_name: exuniq[index].name,
                               sets: [
                                 Sets(
-                                    index: 1,
-                                    weight: 30,
-                                    reps: 8,
+                                    index: 40,
+                                    weight: 5,
+                                    reps: 12,
                                     ischecked: false)
                               ],
                               rest: 0));
