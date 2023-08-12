@@ -31,10 +31,10 @@ async def notifications_list(
     # This is necessary for react-admin to work
     return notifications
 
-@r.put("/notification", response_model=NotificationCreate, response_model_exclude_none=True)
+@r.put("/notification", response_model=NotificationOut, response_model_exclude_none=True)
 async def notification_edit(
     request: Request,
-    notification: NotificationCreate,
+    notification: NotificationOut,
     db=Depends(get_db),
 ):
     return edit_notification(db, notification)
