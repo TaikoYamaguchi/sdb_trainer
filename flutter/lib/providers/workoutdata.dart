@@ -248,7 +248,7 @@ class WorkoutdataProvider extends ChangeNotifier {
         }
       } else {
         if (set.ischecked == true) {
-          set.index = (set.weight / onerm * 100 / 0.5 + 0.4).floor() * 0.5;
+          set.index = 100;
         } else {
           set.weight = 5;
         }

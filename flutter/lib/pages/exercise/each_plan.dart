@@ -532,16 +532,22 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                                   .ischecked,
                                                               onChanged: (newvalue) {
                                                                 _routinetimeProvider
-                                                                        .isstarted
+                                                                            .isstarted ||
+                                                                        planEachExercise
+                                                                            .sets[
+                                                                                setIndex_]
+                                                                            .ischecked
                                                                     ? [
+                                                                        if (planEachExercise.sets[setIndex_].ischecked ==
+                                                                            true)
+                                                                          _workoutOnermCheck(
+                                                                              set,
+                                                                              exerciseIndex),
                                                                         workout_provider.planboolcheck(
                                                                             widget.rindex,
                                                                             index_,
                                                                             setIndex_,
                                                                             newvalue),
-                                                                        _workoutOnermCheck(
-                                                                            set,
-                                                                            exerciseIndex)
                                                                       ]
                                                                     : [
                                                                         _showMyDialog(
@@ -942,55 +948,96 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       })))
         ]),
         Container(height: 24),
-        Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-          Column(children: [
-            Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-              Text("최종 1RM: ",
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Theme.of(context).primaryColorDark,
-                  )),
-              Text(
-                  (_weightctrl.text != "" && _repsctrl.text != "")
-                      ? (int.parse(_repsctrl.text) > 1)
-                          ? "${(double.parse(_weightctrl.text) * (1 + int.parse(_repsctrl.text) / 30)).toStringAsFixed(1)}kg"
-                          : "${(double.parse(_weightctrl.text)).toStringAsFixed(1)}kg"
-                      : "-kg",
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColorLight,
-                    fontSize: 20,
-                  ))
-            ])
-          ]),
-          Container(width: 48),
-          ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Color(0xFffc60a8)),
-                padding: MaterialStateProperty.all(
-                    const EdgeInsets.symmetric(horizontal: 48, vertical: 16)),
-              ),
-              onPressed: () {
-                try {
-                  _workoutProvider.plansetcheck(
-                      widget.rindex,
-                      exIndex_,
-                      setIndex_,
-                      double.parse(_weightRatioctrl.text),
-                      double.parse(_weightctrl.text),
-                      int.parse(_repsctrl.text));
-                  _editWorkoutCheck();
-                  Navigator.pop(context);
-                } catch (e) {
-                  showToast("입력을 확인해주세요");
-                }
-              },
-              child: const Text(
-                '완료',
-                textScaleFactor: 1.4,
-                style: TextStyle(fontWeight: FontWeight.bold),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Text("최종 1RM: ",
+              style: TextStyle(
+                fontSize: 20,
+                color: Theme.of(context).primaryColorDark,
               )),
-          Container(width: 16)
-        ])
+          Text(
+              (_weightctrl.text != "" && _repsctrl.text != "")
+                  ? (int.parse(_repsctrl.text) > 1)
+                      ? "${(double.parse(_weightctrl.text) * (1 + int.parse(_repsctrl.text) / 30)).toStringAsFixed(1)}kg"
+                      : "${(double.parse(_weightctrl.text)).toStringAsFixed(1)}kg"
+                  : "-kg",
+              style: TextStyle(
+                color: Theme.of(context).primaryColorLight,
+                fontSize: 20,
+              ))
+        ]),
+        Container(height: 24),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                      Theme.of(context).primaryColorDark),
+                  padding: MaterialStateProperty.all(EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width / 6,
+                      vertical: 16)),
+                ),
+                onPressed: () {
+                  try {
+                    _workoutProvider.plansetcheck(
+                        widget.rindex,
+                        exIndex_,
+                        setIndex_,
+                        double.parse(_weightRatioctrl.text),
+                        double.parse(_weightctrl.text),
+                        int.parse(_repsctrl.text));
+                    _editWorkoutCheck();
+                    Navigator.pop(context);
+                  } catch (e) {
+                    showToast("입력을 확인해주세요");
+                  }
+                },
+                child: const Text(
+                  '저장',
+                  textScaleFactor: 1.4,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                )),
+            ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Color(0xFffc60a8)),
+                  padding: MaterialStateProperty.all(EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width / 6,
+                      vertical: 16)),
+                ),
+                onPressed: () {
+                  try {
+                    _workoutProvider.plansetcheck(
+                        widget.rindex,
+                        exIndex_,
+                        setIndex_,
+                        double.parse(_weightRatioctrl.text),
+                        double.parse(_weightctrl.text),
+                        int.parse(_repsctrl.text));
+
+                    _routinetimeProvider.isstarted ||
+                            planEachExercise.sets[setIndex_].ischecked
+                        ? [
+                            if (planEachExercise.sets[setIndex_].ischecked ==
+                                true)
+                              _workoutOnermCheck(
+                                  planEachExercise.sets[setIndex_], exIndex_),
+                            _workoutProvider.planboolcheck(
+                                widget.rindex, exIndex_, setIndex_, true),
+                          ]
+                        : [_showMyDialog(exIndex_, setIndex_, true)];
+                    _editWorkoutCheck();
+                    Navigator.pop(context);
+                  } catch (e) {
+                    showToast("입력을 확인해주세요");
+                  }
+                },
+                child: const Text(
+                  '세트 완료',
+                  textScaleFactor: 1.4,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                )),
+          ],
+        ),
       ]);
     });
   }
