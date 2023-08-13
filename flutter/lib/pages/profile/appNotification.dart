@@ -557,6 +557,7 @@ class _AppNotificationState extends State<AppNotification> {
                     style: TextStyle(
                         color: Theme.of(context).primaryColorLight)),
                 onTap: () async {
+                  notificationdata.ispopup = false;
                   _notificationprovider.editdata(notificationdata);
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();

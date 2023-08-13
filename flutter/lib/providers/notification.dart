@@ -31,7 +31,9 @@ class NotificationdataProvider extends ChangeNotifier {
   }}
 
   editdata(noti) async {
-    NotificationEdit(notification: noti).editNotification();
+    NotificationEdit(notification: noti).editNotification().then((value){
+      getdata();
+    });
   }
 
 }
