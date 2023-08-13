@@ -27,7 +27,7 @@ def create_notification(db: Session, notification: schemas.NotificationCreate):
 
 def get_notifications(db: Session) -> t.List[schemas.NotificationOut]:
     print("problem?")
-    notifications = db.query(models.Notification).filter(models.Notification.ispopup == True).all()
+    notifications = db.query(models.Notification).filter(models.Notification.ispopup == True).order_by(models.Notification.id.desc()).all()
     return notifications
 
 
@@ -36,7 +36,7 @@ def get_notifications_by_id(db: Session, input_id: int) -> schemas.NotificationO
     print(notification)
     return notification
 
-def edit_notification(db: Session, notification: schemas.NotificationCreate):
+def edit_notification(db: Session, notification: schemas.NotificationOut):
 
     db_notification = get_notifications_by_id(db, notification.id)
     if not db_notification:

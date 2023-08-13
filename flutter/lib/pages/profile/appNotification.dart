@@ -23,6 +23,8 @@ class _AppNotificationState extends State<AppNotification> {
   var _PopProvider;
   var _notificationprovider;
   final _scrollController = ScrollController();
+  var _tapPosition;
+  var _isCommentInputOpen = false;
   @override
   void initState() {
 
@@ -452,17 +454,12 @@ class _AppNotificationState extends State<AppNotification> {
                               ],
                             ),
                             GestureDetector(
-                                //onTapDown: _storePosition,
+                                onTapDown: _storePosition,
                                 onTap: () {
-                                  /*
-                                  interviewData.user_email ==
-                                      _userProvider.userdata.email
-                                      ? _myInterviewMenu(
-                                      true, interviewData, setState)
-                                      : _myInterviewMenu(
-                                      false, interviewData, setState);
+                                  _userProvider.userdata.is_superuser
+                                  ? _myInterviewMenu(notificationdata, setState)
+                                  : null;
 
-                                   */
                                 },
                                 child: const Icon(Icons.more_vert,
                                     color: Colors.grey, size: 18.0))
@@ -536,6 +533,37 @@ class _AppNotificationState extends State<AppNotification> {
           );
         }));
       },
+    );
+  }
+
+  void _storePosition(TapDownDetails details) {
+    _tapPosition = details.globalPosition;
+  }
+
+  Future<dynamic> _myInterviewMenu(
+      mnoti.Notification notificationdata, StateSetter setState) {
+    return showMenu(
+      context: context,
+      position: RelativeRect.fromRect(_tapPosition & const Size(30, 30),
+          Offset.zero & const Size(0, 0)),
+      items: [
+        PopupMenuItem(
+            child: ListTile(
+                contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 4.0, vertical: 0.0),
+                leading: Icon(Icons.delete,
+                    color: Theme.of(context).primaryColorLight),
+                title: Text("No-Show",
+                    style: TextStyle(
+                        color: Theme.of(context).primaryColorLight)),
+                onTap: () async {
+                  _notificationprovider.editdata(notificationdata);
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                }))
+
+
+      ],
     );
   }
 

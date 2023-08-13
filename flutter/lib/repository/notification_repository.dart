@@ -87,7 +87,7 @@ class NotificationEdit {
     }
   }
 
-  Future<Map<String, dynamic>> editExercise() async {
+  Future<Map<String, dynamic>> editNotification() async {
     String jsonString = await _notificationEditFromServer();
     final jsonResponse = json.decode(jsonString);
 
