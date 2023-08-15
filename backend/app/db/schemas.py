@@ -349,3 +349,6 @@ class NotificationOut(NotificationBase):
     date: datetime
     class config:
         orm_mode = True
+
+class NotificationIn(BaseModel):
+    notification: str

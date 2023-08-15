@@ -3,6 +3,7 @@ from pytz import timezone
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 import typing as t
+import json
 
 from sqlalchemy.sql import func
 
@@ -36,12 +37,15 @@ def get_notifications_by_id(db: Session, input_id: int) -> schemas.NotificationO
     print(notification)
     return notification
 
-def edit_notification(db: Session, notification: schemas.NotificationOut):
+def edit_notification(db: Session, notification: schemas.NotificationIn):
 
-    db_notification = get_notifications_by_id(db, notification.id)
+    update_notification = notification.dict(exclude_unset=True)['notification']
+    update_notification = json.loads(update_notification)
+    print(update_notification)
+    db_notification = get_notifications_by_id(db, update_notification['id'])
     if not db_notification:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User not found")
-    update_notification = notification.dict(exclude_unset=True)
+
 
     for key,value in update_notification.items():
         setattr(db_notification, key, value)
