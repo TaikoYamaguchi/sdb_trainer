@@ -1,4 +1,6 @@
 import 'package:expandable/expandable.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:sdb_trainer/pages/exercise/exercise_done.dart';
 import 'package:sdb_trainer/pages/exercise/upload_program.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
@@ -6,6 +8,7 @@ import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
+import 'package:sdb_trainer/providers/themeMode.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
@@ -48,6 +51,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
   var _prefsProvider;
   var _exProvider;
   var _testdata0;
+  var _themeProvider;
+
+  Duration initialTimer = const Duration();
   late var _testdata = _testdata0;
   String _addexinput = '';
   late List<hisdata.Exercises> exerciseList = [];
@@ -273,7 +279,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
           workout_provider.workoutdata.routinedatas[widget.rindex].exercises[0];
       var planExercises = plandata.plans[plandata.progress].exercises;
       return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 0),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             SizedBox(
@@ -331,7 +337,10 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                 )))
                       ]))
                 ])),
-            const Divider(indent: 10, thickness: 1.3, color: Colors.grey),
+            Divider(
+                indent: 10,
+                thickness: 0.6,
+                color: Theme.of(context).primaryColorDark),
             Expanded(
                 child: ListView(children: [
               if (planExercises.isEmpty)
@@ -538,11 +547,13 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                                                 setIndex_]
                                                                             .ischecked
                                                                     ? [
-                                                                        if (planEachExercise.sets[setIndex_].ischecked ==
+                                                                        if (newvalue ==
                                                                             true)
-                                                                          _workoutOnermCheck(
-                                                                              set,
-                                                                              exerciseIndex),
+                                                                          {
+                                                                            _routinetimeProvider.resettimer(plandata.plans[plandata.progress].exercises[0].rest),
+                                                                            _workoutOnermCheck(set,
+                                                                                exerciseIndex)
+                                                                          },
                                                                         workout_provider.planboolcheck(
                                                                             widget.rindex,
                                                                             index_,
@@ -610,10 +621,10 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                   ])
                             ]) // body when the widget is Expanded
                             ),
-                        const Divider(
+                        Divider(
                           indent: 10,
-                          thickness: 1.3,
-                          color: Colors.grey,
+                          thickness: 0.6,
+                          color: Theme.of(context).primaryColorDark,
                         )
                       ]);
                     },
@@ -666,15 +677,137 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                 style: TextStyle(color: Colors.grey),
               ))
             ])),
+            _routinetimeProvider.isstarted
+                ? Consumer<RoutineTimeProvider>(
+                    builder: (context, provider_, child) {
+                    return LinearProgressIndicator(
+                      value: _routinetimeProvider.timeron > 0 &&
+                              _routinetimeProvider.userest
+                          ? (plandata.plans[plandata.progress].exercises[0]
+                                      .rest -
+                                  _routinetimeProvider.timeron) /
+                              plandata
+                                  .plans[plandata.progress].exercises[0].rest
+                          : 1,
+                      minHeight: 1.6,
+                      backgroundColor: Theme.of(context).primaryColor,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).primaryColorDark),
+                    );
+                  })
+                : const Divider(
+                    indent: 0,
+                    thickness: 0.3,
+                    color: Colors.grey,
+                  ),
             Consumer<RoutineTimeProvider>(builder: (context, provider_, child) {
-              return Center(
-                  child: Text(
-                      '${(provider_.routineTime / 60).floor().toString()}:${((provider_.routineTime % 60) / 10).floor().toString()}${((provider_.routineTime % 60) % 10).toString()}',
-                      textScaleFactor: 2.0,
-                      style: TextStyle(
-                          color: (provider_.userest && provider_.timeron < 0)
-                              ? Colors.red
-                              : Theme.of(context).primaryColorLight)));
+              final userest = provider_.userest;
+              final timeron = provider_.timeron;
+              final routineTime = provider_.routineTime;
+              final isNegativeTimer = userest && timeron < 0;
+              return KeyboardVisibilityBuilder(
+                  builder: (context, isKeyboardVisible) {
+                return isKeyboardVisible
+                    ? Container()
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 8),
+                                    child: Text(userest ? "휴식 시간 :" : "운동 시간 :",
+                                        textScaleFactor: 1.4,
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorLight)),
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                      userest
+                                          ? isNegativeTimer
+                                              ? '-${(-timeron / 60).floor()}:${((-timeron % 60) / 10).floor()}${((-timeron % 60) % 10)}'
+                                              : '${(timeron / 60).floor()}:${((timeron % 60) / 10).floor()}${((timeron % 60) % 10)}'
+                                          : '${(routineTime / 60).floor()}:${((routineTime % 60) / 10).floor()}${((routineTime % 60) % 10)}',
+                                      textScaleFactor: 2.0,
+                                      style: TextStyle(
+                                          color: (provider_.userest &&
+                                                  provider_.timeron < 0)
+                                              ? Colors.red
+                                              : Theme.of(context)
+                                                  .primaryColorLight))
+                                ]),
+                                Consumer<WorkoutdataProvider>(
+                                    builder: (builder, provider, child) {
+                                  final plan = _workoutProvider
+                                      .workoutdata
+                                      .routinedatas[widget.rindex]
+                                      .exercises[0]
+                                      .plans[plandata.progress];
+                                  final restDuration =
+                                      Duration(seconds: plan.exercises[0].rest);
+                                  return GestureDetector(
+                                    onTap: () {
+                                      showCupertinoModalPopup<void>(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return _buildContainer(timerPicker2(
+                                              restDuration,
+                                              plandata.progress,
+                                            ));
+                                          });
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 4.0, bottom: 4.0, right: 4.0),
+                                      child: Text(
+                                        "휴식 설정 : ${plan.exercises[0].rest}초",
+                                        textScaleFactor: 1.2,
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorDark,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              _routinetimeProvider.restcheck();
+                              _routinetimeProvider.resttimecheck(plandata
+                                  .plans[plandata.progress].exercises[0].rest);
+                            },
+                            child: Consumer<RoutineTimeProvider>(
+                                builder: (builder, provider, child) {
+                              return Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 4.0),
+                                  child: Text(
+                                    provider.userest
+                                        ? 'Rest Timer on'
+                                        : 'Rest Timer off',
+                                    textScaleFactor: 1.6,
+                                    style: TextStyle(
+                                      color: provider.userest
+                                          ? Theme.of(context).primaryColorLight
+                                          : Theme.of(context).primaryColorDark,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
+                        ],
+                      );
+              });
             }),
             Consumer2<RoutineTimeProvider, PrefsProvider>(
                 builder: (builder, provider_, provider2_, child) {
@@ -693,6 +826,13 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       if (_routinetimeProvider.isstarted) {
                         _showMyDialog_finish();
                       } else {
+                        _routinetimeProvider.resettimer(_workoutProvider
+                            .workoutdata
+                            .routinedatas[widget.rindex]
+                            .exercises[0]
+                            .plans[plandata.progress]
+                            .exercises[0]
+                            .rest);
                         provider_.routinecheck(widget.rindex);
                         provider2_.setplan(_workoutProvider
                             .workoutdata.routinedatas[widget.rindex].name);
@@ -706,6 +846,90 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
             })
           ]));
     });
+  }
+
+  Widget timerPicker2(time, progress) {
+    return CupertinoTheme(
+      data: CupertinoThemeData(
+        brightness: _themeProvider.userThemeDark == "dark"
+            ? Brightness.dark
+            : Brightness.light,
+        textTheme: CupertinoTextThemeData(
+            pickerTextStyle: TextStyle(
+                fontSize: 16,
+                color: _themeProvider.userThemeDark == "dark"
+                    ? Colors.white
+                    : Colors.black)),
+      ),
+      child: CupertinoTimerPicker(
+        mode: CupertinoTimerPickerMode.ms,
+        minuteInterval: 1,
+        secondInterval: 10,
+        initialTimerDuration: time,
+        onTimerDurationChanged: (Duration changeTimer) {
+          initialTimer = changeTimer;
+          _routinetimeProvider.resttimecheck(changeTimer.inSeconds);
+
+          _workoutProvider.restPlanTime(
+              widget.rindex, progress, _routinetimeProvider.changetime);
+          _editWorkoutwCheck();
+        },
+      ),
+    );
+  }
+
+  Widget _buildContainer(Widget picker) {
+    return Container(
+      height: 305,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        color: Theme.of(context).cardColor,
+      ),
+      padding: const EdgeInsets.only(top: 6.0),
+      child: Column(
+        children: [
+          /*
+          Padding(
+            padding: EdgeInsets.fromLTRB(12, 4, 12, 12),
+            child: Container(
+              height: 6.0,
+              width: 80.0,
+              decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColorDark,
+                  borderRadius: BorderRadius.all(Radius.circular(8.0))),
+            ),
+          ),
+          */
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context, rootNavigator: true).pop();
+                      },
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Theme.of(context).cardColor)),
+                      child: Text('Done',
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight)))),
+              Container(width: 10)
+            ],
+          ),
+          GestureDetector(
+            onTap: () {},
+            child: SafeArea(
+              top: false,
+              child: SizedBox(
+                height: 215,
+                child: picker,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   void setSetting(int exIndex_, int setIndex_) {
@@ -1328,6 +1552,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
   Widget build(BuildContext context) {
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
+
+    _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     _exercises = _exProvider.exercisesdata.exercises;
     _testdata0 = _exProvider.exercisesdata.exercises;

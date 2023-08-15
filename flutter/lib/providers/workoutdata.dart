@@ -86,6 +86,12 @@ class WorkoutdataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  restPlanTime(rindex, progress, newvalue) {
+    _workoutdata.routinedatas[rindex].exercises[0].plans[progress].exercises[0]
+        .rest = newvalue;
+    notifyListeners();
+  }
+
   setsminus(rindex, eindex) {
     _workoutdata.routinedatas[rindex].exercises[eindex].sets.removeLast();
     notifyListeners();
