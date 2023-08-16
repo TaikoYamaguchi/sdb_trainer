@@ -378,7 +378,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       var _exImage;
                       if (!_routinetimeProvider.isstarted) {
                         _workoutProvider.planSetsCheck(
-                            widget.rindex, exerciseIndex, eachExRefInfo.onerm);
+                            widget.rindex, index_, eachExRefInfo.onerm);
                       }
                       try {
                         _exImage = extra_completely_new_Ex[
@@ -707,7 +707,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
               final isNegativeTimer = userest && timeron < 0;
               return KeyboardVisibilityBuilder(
                   builder: (context, isKeyboardVisible) {
-                return isKeyboardVisible
+                return isKeyboardVisible ||
+                        plandata.plans[plandata.progress].exercises.isEmpty
                     ? Container()
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
