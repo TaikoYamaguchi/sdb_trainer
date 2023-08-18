@@ -466,7 +466,12 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                       bottomRight: Radius.circular(bottom),
                                       topLeft: Radius.circular(top),
                                       bottomLeft: Radius.circular(bottom))),
-                              child: GestureDetector(
+                              child: InkWell(
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(top),
+                                      bottomRight: Radius.circular(bottom),
+                                      topLeft: Radius.circular(top),
+                                      bottomLeft: Radius.circular(bottom)),
                                 onTap: () {
                                   [
                                     _PopProvider.exstackup(2),
@@ -485,6 +490,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                                 TransitionEffect.RIGHT_TO_LEFT))
                                   ];
                                 },
+                                /*
                                 onPanUpdate: (details) {
                                   if (details.delta.dx > 10 &&
                                       btnDisabled == false) {
@@ -493,6 +499,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                     print("Dragging in +X direction");
                                   }
                                 },
+
+                                 */
                                 child: Container(
                                   padding:
                                       const EdgeInsets.symmetric(horizontal: 8),

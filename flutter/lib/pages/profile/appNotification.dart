@@ -110,7 +110,6 @@ class _AppNotificationState extends State<AppNotification> {
   }
 
   Widget _AppNotificationWidget() {
-    //print(_notificationprovider.notificationdata.notifications[0].content.html);
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
@@ -238,82 +237,6 @@ class _AppNotificationState extends State<AppNotification> {
                                                 ],
                                               ),
                                               const SizedBox(height: 4),
-                                              /*
-                                              LayoutBuilder(builder:
-                                                  (context, constraints) {
-                                                final span = TextSpan(
-                                                    text: _notificationDatas[
-                                                    index].content.html,
-                                                    style: TextStyle(
-                                                        color: Theme.of(
-                                                            context)
-                                                            .primaryColorDark));
-                                                final tp = TextPainter(
-                                                    text: span,
-                                                    maxLines: 2,
-                                                    textDirection:
-                                                    TextDirection
-                                                        .ltr);
-                                                tp.layout(
-                                                    maxWidth: constraints
-                                                        .maxWidth);
-                                                if (tp
-                                                    .didExceedMaxLines) {
-                                                  // TODO: display the prompt message
-                                                  return Column(
-                                                      crossAxisAlignment:
-                                                      CrossAxisAlignment
-                                                          .start,
-                                                      children: [
-                                                        Text(
-                                                          _notificationDatas[
-                                                          index]
-                                                              .content.html,
-                                                          maxLines: 2,
-                                                          overflow:
-                                                          TextOverflow
-                                                              .ellipsis,
-                                                          textScaleFactor:
-                                                          1.1,
-                                                          style: TextStyle(
-                                                              color: Theme.of(
-                                                                  context)
-                                                                  .primaryColorDark),
-                                                        ),
-                                                        Text(
-                                                          "더 보기",
-                                                          maxLines: 2,
-                                                          overflow:
-                                                          TextOverflow
-                                                              .ellipsis,
-                                                          textScaleFactor:
-                                                          0.9,
-                                                          style: TextStyle(
-                                                              color: Theme.of(
-                                                                  context)
-                                                                  .primaryColorDark),
-                                                        )
-                                                      ]);
-                                                } else {
-                                                  return Text(
-                                                    _notificationDatas[index]
-                                                        .content.html,
-                                                    maxLines: 2,
-                                                    overflow: TextOverflow
-                                                        .ellipsis,
-                                                    textScaleFactor: 1.1,
-                                                    style: TextStyle(
-                                                        color: Theme.of(
-                                                            context)
-                                                            .primaryColorDark),
-                                                  );
-                                                }
-                                              }),
-
-
-                                              const SizedBox(height: 4),
-
-                                               */
 
                                               Divider(
                                                   color: Theme.of(context)
@@ -402,32 +325,6 @@ class _AppNotificationState extends State<AppNotification> {
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                /*
-                                user.image == ""
-                                    ? const Icon(
-                                  Icons.account_circle,
-                                  color: Colors.grey,
-                                  size: 46.0,
-                                )
-                                    : CachedNetworkImage(
-                                  imageUrl: user.image,
-                                  imageBuilder:
-                                      (context, imageProivder) =>
-                                      Container(
-                                        height: 46,
-                                        width: 46,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                            const BorderRadius.all(
-                                                Radius.circular(50)),
-                                            image: DecorationImage(
-                                              image: imageProivder,
-                                              fit: BoxFit.cover,
-                                            )),
-                                      ),
-                                ),
-
-                                 */
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
@@ -505,7 +402,7 @@ class _AppNotificationState extends State<AppNotification> {
                         const SizedBox(height: 4.0),
                         Column(
                           children: [
-                            Text('의견 주심에 감사합니다🤗 소중한 의견으로 발전해볼게요!',
+                            Text('Supero를 사랑해 주심에 감사합니다🤗',
                                 textScaleFactor: 1.2,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -517,17 +414,7 @@ class _AppNotificationState extends State<AppNotification> {
                     ),
                   ),
                 ),
-                /*
-                Column(
-                  children: [
-                    _isCommentInputOpen
-                        ? _commentTextInput(interviewData, setState)
-                        : Container(),
-                    _closeInterviewDetailButton()
-                  ],
-                ),
 
-                 */
               ],
             ),
           );

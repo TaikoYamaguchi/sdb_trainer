@@ -72,17 +72,7 @@ class ExerciseState extends State<Exercise> {
   void initState() {
 
     super.initState();
-    /*
-    banner = BannerAd(
-      size: AdSize.banner,
-      adUnitId: UNIT_ID[Platform.isIOS ? 'ios' : 'android']!,
-      listener: BannerAdListener(
-        onAdFailedToLoad: (Ad ad, LoadAdError error) {},
-        onAdLoaded: (_) {},
-      ),
-      request: AdRequest(),
-    )..load();
-    */
+
   }
 
   PreferredSizeWidget _appbarWidget() {
