@@ -1244,10 +1244,16 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                         ? [
                             if (planEachExercise.sets[setIndex_].ischecked ==
                                 true)
-                              _workoutOnermCheck(
-                                  planEachExercise.sets[setIndex_], exIndex_),
-                            _workoutProvider.planboolcheck(
-                                widget.rindex, exIndex_, setIndex_, true),
+                              {
+                                _routinetimeProvider.resettimer(plandata
+                                    .plans[plandata.progress]
+                                    .exercises[0]
+                                    .rest),
+                                _workoutOnermCheck(
+                                    planEachExercise.sets[setIndex_], exIndex_),
+                                _workoutProvider.planboolcheck(
+                                    widget.rindex, exIndex_, setIndex_, true),
+                              }
                           ]
                         : [_showMyDialog(exIndex_, setIndex_, true)];
                     _editWorkoutCheck();
