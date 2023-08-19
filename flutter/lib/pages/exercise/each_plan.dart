@@ -308,6 +308,11 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                   if (plandata.plans.length != 1) {
                                     _workoutProvider
                                         .removeplanAt(widget.rindex);
+                                    if (plandata.progress ==
+                                        plandata.plans.length) {
+                                      _workoutProvider.setplanprogress(
+                                          widget.rindex, plandata.progress - 1);
+                                    }
                                     _editWorkoutCheck();
                                   }
                                 },
@@ -1244,10 +1249,16 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                         ? [
                             if (planEachExercise.sets[setIndex_].ischecked ==
                                 true)
-                              _workoutOnermCheck(
-                                  planEachExercise.sets[setIndex_], exIndex_),
-                            _workoutProvider.planboolcheck(
-                                widget.rindex, exIndex_, setIndex_, true),
+                              {
+                                _routinetimeProvider.resettimer(plandata
+                                    .plans[plandata.progress]
+                                    .exercises[0]
+                                    .rest),
+                                _workoutOnermCheck(
+                                    planEachExercise.sets[setIndex_], exIndex_),
+                                _workoutProvider.planboolcheck(
+                                    widget.rindex, exIndex_, setIndex_, true),
+                              }
                           ]
                         : [_showMyDialog(exIndex_, setIndex_, true)];
                     _editWorkoutCheck();
@@ -1545,7 +1556,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
             routinedatas: _workoutProvider.workoutdata.routinedatas)
         .editWorkout()
         .then((data) => data["user_email"] != null
-            ? [showToast("done!"), _workoutProvider.getdata()]
+            ? [showToast("done!")]
             : showToast("입력을 확인해주세요"));
   }
 
