@@ -70,9 +70,7 @@ class ExerciseState extends State<Exercise> {
 
   @override
   void initState() {
-
     super.initState();
-
   }
 
   PreferredSizeWidget _appbarWidget() {
@@ -304,12 +302,13 @@ class ExerciseState extends State<Exercise> {
                                                             .exercises[0]
                                                             .progress +
                                                         1) /
-                                                    routinelist[index]
-                                                        .exercises[0]
-                                                        .plans
-                                                        .length,
+                                                    (routinelist[index]
+                                                            .exercises[0]
+                                                            .plans
+                                                            .length +
+                                                        1),
                                                 center: Text(
-                                                  "${routinelist[index].exercises[0].progress + 1}/${routinelist[index].exercises[0].plans.length}",
+                                                  "${routinelist[index].exercises[0].progress + 1}/${routinelist[index].exercises[0].plans.length + 1}",
                                                   textScaleFactor: 0.8,
                                                   style: TextStyle(
                                                     color: Theme.of(context)
