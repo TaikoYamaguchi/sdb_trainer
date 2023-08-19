@@ -1,11 +1,15 @@
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:html/parser.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
+import 'package:sdb_trainer/providers/notification.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
+import 'package:sdb_trainer/repository/notification_repository.dart';
 import 'package:sdb_trainer/repository/version_repository.dart';
 import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:sdb_trainer/src/model/exercisesdata.dart';
@@ -43,6 +47,7 @@ class _AppState extends State<App> {
   var _hisProvider;
   var _exProvider;
   var _routinetimeProvider;
+  var _notificationProvider;
   var _PopProvider;
   late List<hisdata.Exercises> exerciseList = [];
   var _workoutProvider;
@@ -58,6 +63,22 @@ class _AppState extends State<App> {
 
   @override
   void initState() {
+
+
+    openAlert();
+
+
+    super.initState();
+  }
+
+  openAlert() async {
+    final order2 = await checkNoti();
+    final order = await checkVersion();
+
+    return order2;
+  }
+
+  checkVersion(){
     var appUpdateVersion = SuperoVersion.getSuperoVersion().toString();
     VersionService.loadVersionData().then((data) {
       if (data.substring(0, data.length - 1) ==
@@ -68,8 +89,159 @@ class _AppState extends State<App> {
         showUpdateVersion(data, context);
       }
     });
-    super.initState();
+    return 0;
   }
+
+  checkNoti(){
+    NotificationRepository.loadNotificationdataAll().then((value) {
+      value.notifications !=0
+          ? showDialog(
+          context: context,
+          builder: (_) => new AlertDialog(
+            insetPadding: EdgeInsets.all(10),
+            contentPadding: EdgeInsets.zero,
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            shape: RoundedRectangleBorder(
+                borderRadius:
+                BorderRadius.all(
+                    Radius.circular(10.0))),
+            content: Builder(
+              builder: (context) {
+                var notificationdata = value.notifications[0];
+                int length;
+                var afterparse = parse(notificationdata.content.html);
+                var body = afterparse.getElementsByTagName("body")[0];
+                length = body.getElementsByTagName("p").length;
+                return Container(
+                  padding: const EdgeInsets.all(12.0),
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(10),bottom: Radius.circular(10)),
+                    color: Theme.of(context).cardColor,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              notificationdata.title,
+                                              textScaleFactor: 1.8,
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight),
+                                            ),
+                                            Text(
+                                              notificationdata.date!.substring(2, 10),
+                                              textScaleFactor: 1.0,
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .primaryColorDark),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  /*
+                                  GestureDetector(
+                                      onTapDown: _storePosition,
+                                      onTap: () {
+                                        _userProvider.userdata.is_superuser
+                                            ? _myInterviewMenu(notificationdata, setState)
+                                            : null;
+
+                                      },
+                                      child: const Icon(Icons.more_vert,
+                                          color: Colors.grey, size: 18.0))
+
+                                   */
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ListView.builder(
+                                        physics: const ScrollPhysics(),
+                                        itemBuilder: (BuildContext _context, int index) {
+                                          return body.getElementsByTagName("p")[index].getElementsByTagName("img").length != 0
+                                              ? CachedNetworkImage(
+                                              imageUrl: notificationdata.images![int.parse(body.getElementsByTagName("p")[index].getElementsByTagName("img")[0].attributes["src"]!)],
+                                              imageBuilder:
+                                                  (context, imageProivder) =>
+                                                  Container(
+                                                    height: MediaQuery.of(context).size.width-20,
+                                                    width: MediaQuery.of(context).size.width-20,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                        const BorderRadius.all(
+                                                            Radius.circular(20)),
+                                                        image: DecorationImage(
+                                                          image: imageProivder,
+                                                          fit: BoxFit.cover,
+                                                        )),
+                                                  ))
+                                              : Text(body.getElementsByTagName("p")[index].text,
+                                              textScaleFactor: 1.5,
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight));
+
+                                        },
+                                        shrinkWrap: true,
+                                        itemCount: length
+                                    ),
+                                  )),
+
+                              const SizedBox(height: 4.0),
+                              Column(
+                                children: [
+                                  Text('Supero를 사랑해 주심에 감사합니다🤗',
+                                      textScaleFactor: 1.2,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Theme.of(context).primaryColorDark)),
+                                ],
+                              ),
+                              //_commentContent(interviewData),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                    ],
+                  ),
+                );
+              },
+            ),
+          )
+      )
+          : null;
+    });
+    return 0;
+  }
+
 
   void initialExImageGet(context) async {
     final binding = WidgetsFlutterBinding.ensureInitialized();
@@ -465,6 +637,8 @@ class _AppState extends State<App> {
     _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
+    _notificationProvider =
+        Provider.of<NotificationdataProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
     _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
 

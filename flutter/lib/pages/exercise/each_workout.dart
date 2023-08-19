@@ -787,11 +787,14 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
               end: const EdgeInsets.only(left: 60.0, bottom: 8, right: 40)),
           title: GestureDetector(
             onTap: () {
+              /*
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
                     return NameInputDialog(rindex: widget.rindex);
                   });
+
+               */
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

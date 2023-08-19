@@ -73,6 +73,10 @@ class ExerciseState extends State<Exercise> {
 
     super.initState();
 
+
+
+
+
   }
 
   PreferredSizeWidget _appbarWidget() {
@@ -635,35 +639,7 @@ class ExerciseState extends State<Exercise> {
           : [
               provider.exstackup(0),
               Future.delayed(Duration.zero, () async {
-                //int grindex = _workoutProvider.workoutdata.routinedatas
-                //    .indexWhere((routine) =>
-                //        routine.name ==
-                //        _PrefsProvider.prefs.getString('lastroutine'));
                 Navigator.of(context).popUntil((route) => route.isFirst);
-                /*
-                if (_workoutProvider.workoutdata.routinedatas[grindex].mode ==
-                    1) {
-                  Navigator.push(
-                      context,
-                      Transition(
-                          child: EachPlanDetails(
-                            rindex: grindex,
-                          ),
-                          transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-                  provider.gotooff();
-                  provider.exstackup(1);
-                } else {
-                  Navigator.push(
-                      context,
-                      Transition(
-                          child: EachWorkoutDetails(
-                            rindex: grindex,
-                          ),
-                          transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-                  provider.gotooff();
-                  provider.exstackup(1);
-                }
-                */
               }),
             ];
       return Scaffold(
