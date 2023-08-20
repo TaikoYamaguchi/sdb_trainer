@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:html/parser.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
@@ -93,6 +95,7 @@ class _AppState extends State<App> {
   }
 
   checkNoti(){
+    bool isChecked = false;
     NotificationRepository.loadNotificationdataAll().then((value) {
       value.notifications !=0
           ? showDialog(
@@ -105,8 +108,9 @@ class _AppState extends State<App> {
                 borderRadius:
                 BorderRadius.all(
                     Radius.circular(10.0))),
-            content: Builder(
-              builder: (context) {
+            content: StatefulBuilder(  // You need this, notice the parameters below:
+              builder: (BuildContext context, StateSetter setState) {
+
                 var notificationdata = value.notifications[0];
                 int length;
                 var afterparse = parse(notificationdata.content.html);
@@ -162,19 +166,6 @@ class _AppState extends State<App> {
                                       ),
                                     ],
                                   ),
-                                  /*
-                                  GestureDetector(
-                                      onTapDown: _storePosition,
-                                      onTap: () {
-                                        _userProvider.userdata.is_superuser
-                                            ? _myInterviewMenu(notificationdata, setState)
-                                            : null;
-
-                                      },
-                                      child: const Icon(Icons.more_vert,
-                                          color: Colors.grey, size: 18.0))
-
-                                   */
                                 ],
                               ),
                               const SizedBox(height: 8),
@@ -229,6 +220,37 @@ class _AppState extends State<App> {
                           ),
                         ),
                       ),
+                      Row(
+                        children: [
+                          Checkbox(
+                            checkColor: Theme.of(context)
+                                .highlightColor,
+                            activeColor: Theme.of(context)
+                                .primaryColor,
+                            side: BorderSide(
+                                width: 1,
+                                color: Theme.of(context)
+                                    .primaryColorDark),
+                            value: isChecked,
+                            onChanged: (newvalue) {
+                              setState(() {
+                                isChecked = !isChecked;
+                              });
+                              if(newvalue!){
+                                addnotistorage(notificationdata.id);
+                              } else {
+                                removenotistorage(notificationdata.id);
+                              }
+
+                            },
+                          ),
+                          Text('다음부터 보지 않기',
+                              textScaleFactor: 1.2,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorDark)),
+                        ],
+                      )
 
                     ],
                   ),
@@ -241,6 +263,39 @@ class _AppState extends State<App> {
     });
     return 0;
   }
+
+  addnotistorage(nid) async {
+    const storage = FlutterSecureStorage();
+    String? storageNotiBanList = await storage.read(key: "sdb_NotiBanList");
+    if (storageNotiBanList == null || storageNotiBanList == "") {
+      List<int> listViewerBuilderString = [nid];
+      await storage.write(key: 'sdb_NotiBanList', value: jsonEncode(listViewerBuilderString));
+      print(listViewerBuilderString);
+    } else {
+      List notiBanlist = jsonDecode(storageNotiBanList);
+      notiBanlist.add(nid);
+      await storage.write(key: 'sdb_NotiBanList', value: jsonEncode(notiBanlist));
+      print(notiBanlist);
+    }
+
+  }
+
+  removenotistorage(nid) async {
+    const storage = FlutterSecureStorage();
+    String? storageNotiBanList = await storage.read(key: "sdb_NotiBanList");
+    if (storageNotiBanList == null || storageNotiBanList == "") {
+      print("no list element");
+    } else {
+      List notiBanlist = jsonDecode(storageNotiBanList);
+      notiBanlist.removeWhere( (item) => item == nid );
+      await storage.write(key: 'sdb_NotiBanList', value: jsonEncode(notiBanlist));
+      print(notiBanlist);
+    }
+
+
+  }
+
+
 
 
   void initialExImageGet(context) async {
