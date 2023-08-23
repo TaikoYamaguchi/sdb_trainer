@@ -682,29 +682,26 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                 style: TextStyle(color: Colors.grey),
               ))
             ])),
-            _routinetimeProvider.isstarted
-                ? Consumer<RoutineTimeProvider>(
-                    builder: (context, provider_, child) {
-                    return LinearProgressIndicator(
+            Consumer<RoutineTimeProvider>(builder: (context, provider_, child) {
+              var exRest = plandata.plans[plandata.progress].exercises[0].rest;
+              return _routinetimeProvider.isstarted
+                  ? LinearProgressIndicator(
                       value: _routinetimeProvider.timeron > 0 &&
-                              _routinetimeProvider.userest
-                          ? (plandata.plans[plandata.progress].exercises[0]
-                                      .rest -
-                                  _routinetimeProvider.timeron) /
-                              plandata
-                                  .plans[plandata.progress].exercises[0].rest
+                              _routinetimeProvider.userest &&
+                              exRest != 0
+                          ? (exRest - _routinetimeProvider.timeron) / exRest
                           : 1,
                       minHeight: 1.6,
                       backgroundColor: Theme.of(context).primaryColor,
                       valueColor: AlwaysStoppedAnimation<Color>(
                           Theme.of(context).primaryColorDark),
+                    )
+                  : const Divider(
+                      indent: 0,
+                      thickness: 0.3,
+                      color: Colors.grey,
                     );
-                  })
-                : const Divider(
-                    indent: 0,
-                    thickness: 0.3,
-                    color: Colors.grey,
-                  ),
+            }),
             Consumer<RoutineTimeProvider>(builder: (context, provider_, child) {
               final userest = provider_.userest;
               final timeron = provider_.timeron;
@@ -785,31 +782,99 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                               ],
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              _routinetimeProvider.restcheck();
-                              _routinetimeProvider.resttimecheck(plandata
-                                  .plans[plandata.progress].exercises[0].rest);
-                            },
-                            child: Consumer<RoutineTimeProvider>(
-                                builder: (builder, provider, child) {
-                              return Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 4.0),
-                                  child: Text(
-                                    provider.userest
-                                        ? 'Rest Timer on'
-                                        : 'Rest Timer off',
-                                    textScaleFactor: 1.6,
-                                    style: TextStyle(
-                                      color: provider.userest
-                                          ? Theme.of(context).primaryColorLight
-                                          : Theme.of(context).primaryColorDark,
-                                    ),
-                                  ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    _routinetimeProvider.restcheck();
+                                    _routinetimeProvider.resttimecheck(plandata
+                                        .plans[plandata.progress]
+                                        .exercises[0]
+                                        .rest);
+                                  },
+                                  child: Consumer<RoutineTimeProvider>(
+                                      builder: (builder, provider, child) {
+                                    return Center(
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 4.0),
+                                        child: Text(
+                                          provider.userest
+                                              ? 'Rest Timer on'
+                                              : 'Rest Timer off',
+                                          textScaleFactor: 1.6,
+                                          style: TextStyle(
+                                            color: provider.userest
+                                                ? Theme.of(context)
+                                                    .primaryColorLight
+                                                : Theme.of(context)
+                                                    .primaryColorDark,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }),
                                 ),
-                              );
-                            }),
+                                SizedBox(height: 4),
+                                Row(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        _routinetimeProvider.addRestTime(-10);
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(4)),
+                                          color: Theme.of(context)
+                                              .primaryColorDark,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 12.0, vertical: 6.0),
+                                          child: Text(
+                                            "-10초",
+                                            textScaleFactor: 1.2,
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .highlightColor,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(width: 12),
+                                    GestureDetector(
+                                      onTap: () {
+                                        _routinetimeProvider.addRestTime(10);
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(4)),
+                                          color: Theme.of(context)
+                                              .primaryColorDark,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 12.0, vertical: 6.0),
+                                          child: Text(
+                                            "+10초",
+                                            textScaleFactor: 1.2,
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .highlightColor,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         ],
                       );
@@ -964,9 +1029,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
     var planEachExercise =
         plandata.plans[plandata.progress].exercises[exIndex_];
     var setdata = planEachExercise.sets[setIndex_];
-    var eachExInfo = _exProvider.exercisesdata.exercises[_exProvider
-        .exercisesdata.exercises
-        .indexWhere((element) => element.name == planEachExercise.ref_name)];
+    var eachExIndex = _exProvider.exercisesdata.exercises
+        .indexWhere((element) => element.name == planEachExercise.ref_name);
+    var eachExInfo = _exProvider.exercisesdata.exercises[eachExIndex];
     if (ctrlController == true) {
       ctrlController = false;
       if (setdata.ischecked) {
@@ -1248,14 +1313,15 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                             planEachExercise.sets[setIndex_].ischecked
                         ? [
                             if (planEachExercise.sets[setIndex_].ischecked ==
-                                true)
+                                false)
                               {
                                 _routinetimeProvider.resettimer(plandata
                                     .plans[plandata.progress]
                                     .exercises[0]
                                     .rest),
                                 _workoutOnermCheck(
-                                    planEachExercise.sets[setIndex_], exIndex_),
+                                    planEachExercise.sets[setIndex_],
+                                    eachExIndex),
                                 _workoutProvider.planboolcheck(
                                     widget.rindex, exIndex_, setIndex_, true),
                               }

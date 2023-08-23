@@ -90,6 +90,12 @@ class RoutineTimeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  addRestTime(int addedTime) {
+    _timeron = _timeron + addedTime;
+    _timerstarttime = _timerstarttime.add(Duration(seconds: addedTime));
+    notifyListeners();
+  }
+
   getstarttime() async {
     _starttime = await DateTime.now();
     return _starttime;
