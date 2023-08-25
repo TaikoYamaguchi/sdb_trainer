@@ -94,172 +94,189 @@ class _AppState extends State<App> {
     return 0;
   }
 
-  checkNoti(){
+  checkNoti() async {
     bool isChecked = false;
+    List notiBanlist;
+    const storage = FlutterSecureStorage();
+    String? storageNotiBanList = await storage.read(key: "sdb_NotiBanList");
+    if(storageNotiBanList == null || storageNotiBanList == ""){
+      notiBanlist = [];
+    } else{
+      notiBanlist = jsonDecode(storageNotiBanList) ;
+    }
     NotificationRepository.loadNotificationdataAll().then((value) {
-      value.notifications !=0
-          ? showDialog(
-          context: context,
-          builder: (_) => new AlertDialog(
-            insetPadding: EdgeInsets.all(10),
-            contentPadding: EdgeInsets.zero,
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            shape: RoundedRectangleBorder(
-                borderRadius:
-                BorderRadius.all(
-                    Radius.circular(10.0))),
-            content: StatefulBuilder(  // You need this, notice the parameters below:
-              builder: (BuildContext context, StateSetter setState) {
-
-                var notificationdata = value.notifications[0];
-                int length;
-                var afterparse = parse(notificationdata.content.html);
-                var body = afterparse.getElementsByTagName("body")[0];
-                length = body.getElementsByTagName("p").length;
-                return Container(
-                  padding: const EdgeInsets.all(12.0),
-                  height: MediaQuery.of(context).size.height * 0.7,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
+      if(value.notifications.length !=0){
+        for(int i=0 ; i < value.notifications.length; i++){
+          if ( notiBanlist.contains(value.notifications[i].id)) continue;
+          showDialog(
+              context: context,
+              builder: (_) => new AlertDialog(
+                insetPadding: EdgeInsets.all(10),
+                contentPadding: EdgeInsets.zero,
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                shape: RoundedRectangleBorder(
                     borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(10),bottom: Radius.circular(10)),
-                    color: Theme.of(context).cardColor,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Column(
+                    BorderRadius.all(
+                        Radius.circular(10.0))),
+                content: StatefulBuilder(  // You need this, notice the parameters below:
+                  builder: (BuildContext context, StateSetter setState) {
+                    var notificationdata = value.notifications[i];
+                    int length;
+                    var afterparse = parse(notificationdata.content.html);
+                    var body = afterparse.getElementsByTagName("body")[0];
+                    length = body.getElementsByTagName("p").length;
+                    return Container(
+                      padding: const EdgeInsets.all(12.0),
+                      height: MediaQuery.of(context).size.height * 0.7,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        borderRadius:
+                        const BorderRadius.vertical(top: Radius.circular(10),bottom: Radius.circular(10)),
+                        color: Theme.of(context).cardColor,
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              notificationdata.title,
-                                              textScaleFactor: 1.8,
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .primaryColorLight),
-                                            ),
-                                            Text(
-                                              notificationdata.date!.substring(2, 10),
-                                              textScaleFactor: 1.0,
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .primaryColorDark),
-                                            ),
-                                          ],
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          notificationdata.title,
+                                          textScaleFactor: 1.8,
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColorLight),
                                         ),
-                                      ),
-                                    ],
+                                        Text(
+                                          notificationdata.date!.substring(2, 10),
+                                          textScaleFactor: 1.0,
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColorDark),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 8),
-                              SizedBox(
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: ListView.builder(
-                                        physics: const ScrollPhysics(),
-                                        itemBuilder: (BuildContext _context, int index) {
-                                          return body.getElementsByTagName("p")[index].getElementsByTagName("img").length != 0
-                                              ? CachedNetworkImage(
-                                              imageUrl: notificationdata.images![int.parse(body.getElementsByTagName("p")[index].getElementsByTagName("img")[0].attributes["src"]!)],
-                                              imageBuilder:
-                                                  (context, imageProivder) =>
-                                                  Container(
-                                                    height: MediaQuery.of(context).size.width-20,
-                                                    width: MediaQuery.of(context).size.width-20,
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                        const BorderRadius.all(
-                                                            Radius.circular(20)),
-                                                        image: DecorationImage(
-                                                          image: imageProivder,
-                                                          fit: BoxFit.cover,
-                                                        )),
-                                                  ))
-                                              : Text(body.getElementsByTagName("p")[index].text,
-                                              textScaleFactor: 1.5,
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .primaryColorLight));
-
-                                        },
-                                        shrinkWrap: true,
-                                        itemCount: length
-                                    ),
-                                  )),
-
-                              const SizedBox(height: 4.0),
-                              Column(
-                                children: [
-                                  Text('Supero를 사랑해 주심에 감사합니다🤗',
-                                      textScaleFactor: 1.2,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: Theme.of(context).primaryColorDark)),
-                                ],
-                              ),
-                              //_commentContent(interviewData),
+                              IconButton(
+                                  onPressed: (){
+                                    Navigator.of(context, rootNavigator: true).pop();
+                                  },
+                                  icon: Icon(Icons.cancel_rounded, color: Theme.of(context).primaryColorDark,))
                             ],
                           ),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                            checkColor: Theme.of(context)
-                                .highlightColor,
-                            activeColor: Theme.of(context)
-                                .primaryColor,
-                            side: BorderSide(
-                                width: 1,
-                                color: Theme.of(context)
-                                    .primaryColorDark),
-                            value: isChecked,
-                            onChanged: (newvalue) {
-                              setState(() {
-                                isChecked = !isChecked;
-                              });
-                              if(newvalue!){
-                                addnotistorage(notificationdata.id);
-                              } else {
-                                removenotistorage(notificationdata.id);
-                              }
 
-                            },
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+
+                                  const SizedBox(height: 8),
+                                  SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: ListView.builder(
+                                            physics: const ScrollPhysics(),
+                                            itemBuilder: (BuildContext _context, int index) {
+                                              return body.getElementsByTagName("p")[index].getElementsByTagName("img").length != 0
+                                                  ? CachedNetworkImage(
+                                                  imageUrl: notificationdata.images![int.parse(body.getElementsByTagName("p")[index].getElementsByTagName("img")[0].attributes["src"]!)],
+                                                  imageBuilder:
+                                                      (context, imageProivder) =>
+                                                      Container(
+                                                        height: MediaQuery.of(context).size.width-20,
+                                                        width: MediaQuery.of(context).size.width-20,
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                            const BorderRadius.all(
+                                                                Radius.circular(20)),
+                                                            image: DecorationImage(
+                                                              image: imageProivder,
+                                                              fit: BoxFit.cover,
+                                                            )),
+                                                      ))
+                                                  : Text(body.getElementsByTagName("p")[index].text,
+                                                  textScaleFactor: 1.5,
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .primaryColorLight));
+
+                                            },
+                                            shrinkWrap: true,
+                                            itemCount: length
+                                        ),
+                                      )),
+
+                                  const SizedBox(height: 4.0),
+                                  Column(
+                                    children: [
+                                      Text('Supero를 사랑해 주심에 감사합니다🤗',
+                                          textScaleFactor: 1.2,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Theme.of(context).primaryColorDark)),
+                                    ],
+                                  ),
+                                  //_commentContent(interviewData),
+                                ],
+                              ),
+                            ),
                           ),
-                          Text('다음부터 보지 않기',
-                              textScaleFactor: 1.2,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColorDark)),
-                        ],
-                      )
+                          Row(
+                            children: [
+                              Checkbox(
+                                checkColor: Theme.of(context)
+                                    .highlightColor,
+                                activeColor: Theme.of(context)
+                                    .primaryColor,
+                                side: BorderSide(
+                                    width: 1,
+                                    color: Theme.of(context)
+                                        .primaryColorDark),
+                                value: isChecked,
+                                onChanged: (newvalue) {
+                                  setState(() {
+                                    isChecked = !isChecked;
+                                  });
+                                  if(newvalue!){
+                                    addnotistorage(notificationdata.id);
+                                  } else {
+                                    removenotistorage(notificationdata.id);
+                                  }
 
-                    ],
-                  ),
-                );
-              },
-            ),
-          )
-      )
-          : null;
+                                },
+                              ),
+                              Text('다음부터 보지 않기',
+                                  textScaleFactor: 1.2,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColorDark)),
+                            ],
+                          )
+
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              )
+          );
+        }
+
+      }
     });
     return 0;
   }
@@ -277,8 +294,8 @@ class _AppState extends State<App> {
       await storage.write(key: 'sdb_NotiBanList', value: jsonEncode(notiBanlist));
       print(notiBanlist);
     }
-
   }
+
 
   removenotistorage(nid) async {
     const storage = FlutterSecureStorage();
@@ -287,6 +304,7 @@ class _AppState extends State<App> {
       print("no list element");
     } else {
       List notiBanlist = jsonDecode(storageNotiBanList);
+      print(notiBanlist);
       notiBanlist.removeWhere( (item) => item == nid );
       await storage.write(key: 'sdb_NotiBanList', value: jsonEncode(notiBanlist));
       print(notiBanlist);
