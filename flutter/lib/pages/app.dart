@@ -109,6 +109,7 @@ class _AppState extends State<App> {
         for(int i=0 ; i < value.notifications.length; i++){
           if ( notiBanlist.contains(value.notifications[i].id)) continue;
           showDialog(
+              barrierDismissible: false,
               context: context,
               builder: (_) => new AlertDialog(
                 insetPadding: EdgeInsets.all(10),
@@ -192,27 +193,37 @@ class _AppState extends State<App> {
                                             physics: const ScrollPhysics(),
                                             itemBuilder: (BuildContext _context, int index) {
                                               return body.getElementsByTagName("p")[index].getElementsByTagName("img").length != 0
-                                                  ? CachedNetworkImage(
-                                                  imageUrl: notificationdata.images![int.parse(body.getElementsByTagName("p")[index].getElementsByTagName("img")[0].attributes["src"]!)],
-                                                  imageBuilder:
-                                                      (context, imageProivder) =>
-                                                      Container(
-                                                        height: MediaQuery.of(context).size.width-20,
-                                                        width: MediaQuery.of(context).size.width-20,
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                            const BorderRadius.all(
-                                                                Radius.circular(20)),
-                                                            image: DecorationImage(
-                                                              image: imageProivder,
-                                                              fit: BoxFit.cover,
-                                                            )),
-                                                      ))
-                                                  : Text(body.getElementsByTagName("p")[index].text,
-                                                  textScaleFactor: 1.5,
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .primaryColorLight));
+                                                  ? Column(
+                                                    children: [
+                                                      CachedNetworkImage(
+                                                      imageUrl: notificationdata.images![int.parse(body.getElementsByTagName("p")[index].getElementsByTagName("img")[0].attributes["src"]!)],
+                                                      imageBuilder:
+                                                          (context, imageProivder) =>
+                                                          Container(
+                                                            height: MediaQuery.of(context).size.width-20,
+                                                            width: MediaQuery.of(context).size.width-20,
+                                                            decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                const BorderRadius.all(
+                                                                    Radius.circular(20)),
+                                                                image: DecorationImage(
+                                                                  image: imageProivder,
+                                                                  fit: BoxFit.cover,
+                                                                )),
+                                                          )),
+                                                      SizedBox(height: 5)
+                                                    ],
+                                                  )
+                                                  : Column(
+                                                    children: [
+                                                      Text(body.getElementsByTagName("p")[index].text,
+                                                      textScaleFactor: 1.5,
+                                                      style: TextStyle(
+                                                          color: Theme.of(context)
+                                                              .primaryColorLight)),
+                                                      SizedBox(height: 5)
+                                                    ],
+                                                  );
 
                                             },
                                             shrinkWrap: true,
