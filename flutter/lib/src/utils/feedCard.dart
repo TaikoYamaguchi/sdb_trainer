@@ -130,7 +130,7 @@ class FeedCardState extends State<FeedCard> {
             alignment: Alignment.center,
             child: Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
+                  const EdgeInsets.symmetric(horizontal: 4.0, vertical: 3.0),
               child: Card(
                 color: Theme.of(context).cardColor,
                 elevation: 0.5,
@@ -162,7 +162,7 @@ class FeedCardState extends State<FeedCard> {
             child: Center(
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
+                    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 3.0),
                 child: Consumer2<HistorydataProvider, UserdataProvider>(
                     builder: (builder, provider, provider2, child) {
                   var time_diff = DateTime.now()
