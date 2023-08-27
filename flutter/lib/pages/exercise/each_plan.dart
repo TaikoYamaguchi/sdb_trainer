@@ -682,26 +682,31 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                 style: TextStyle(color: Colors.grey),
               ))
             ])),
-            Consumer<RoutineTimeProvider>(builder: (context, provider_, child) {
-              var exRest = plandata.plans[plandata.progress].exercises[0].rest;
-              return _routinetimeProvider.isstarted
-                  ? LinearProgressIndicator(
-                      value: _routinetimeProvider.timeron > 0 &&
-                              _routinetimeProvider.userest &&
-                              exRest != 0
-                          ? (exRest - _routinetimeProvider.timeron) / exRest
-                          : 1,
-                      minHeight: 1.6,
-                      backgroundColor: Theme.of(context).primaryColor,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                          Theme.of(context).primaryColorDark),
-                    )
-                  : const Divider(
-                      indent: 0,
-                      thickness: 0.3,
-                      color: Colors.grey,
-                    );
-            }),
+            plandata.plans[plandata.progress].exercises.isNotEmpty
+                ? Consumer<RoutineTimeProvider>(
+                    builder: (context, provider_, child) {
+                    var exRest =
+                        plandata.plans[plandata.progress].exercises[0].rest;
+                    return _routinetimeProvider.isstarted
+                        ? LinearProgressIndicator(
+                            value: _routinetimeProvider.timeron > 0 &&
+                                    _routinetimeProvider.userest &&
+                                    exRest != 0
+                                ? (exRest - _routinetimeProvider.timeron) /
+                                    exRest
+                                : 1,
+                            minHeight: 1.6,
+                            backgroundColor: Theme.of(context).primaryColor,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Theme.of(context).primaryColorDark),
+                          )
+                        : const Divider(
+                            indent: 0,
+                            thickness: 0.3,
+                            color: Colors.grey,
+                          );
+                  })
+                : Container(),
             Consumer<RoutineTimeProvider>(builder: (context, provider_, child) {
               final userest = provider_.userest;
               final timeron = provider_.timeron;
