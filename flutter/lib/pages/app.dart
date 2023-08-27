@@ -264,6 +264,7 @@ class _AppState extends State<App> {
                                   });
                                   if(newvalue!){
                                     addnotistorage(notificationdata.id);
+                                    Navigator.of(context, rootNavigator: true).pop();
                                   } else {
                                     removenotistorage(notificationdata.id);
                                   }
