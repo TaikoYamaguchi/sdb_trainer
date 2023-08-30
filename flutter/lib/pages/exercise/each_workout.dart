@@ -339,37 +339,47 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                 }
 
                 return Container(
-                  key: Key('$index'),
-                  child: Scrollable(
-                    viewportBuilder:
-                        (BuildContext context, ViewportOffset position) =>
-                            Slidable(
-                      endActionPane: ActionPane(
-                          extentRatio:
-                              _routinetimeProvider.isstarted ? 0.6 : 0.4,
-                          motion: const ScrollMotion(),
-                          children: [
-                            SlidableAction(
-                              onPressed: (_) {
-                                if (_routinetimeProvider.isstarted) {
-                                  if (widget.rindex ==
-                                          _routinetimeProvider.nowonrindex &&
-                                      index ==
-                                          _routinetimeProvider.nowoneindex) {
-                                    _routinetimeProvider.nowoneindexupdate(0);
-                                    showToast(
-                                        "${"운동 중인 " + exlist[_routinetimeProvider.nowoneindex].name} 맨 위로 올렸어요");
-                                    setState(() {
-                                      final item = exlist.removeAt(index);
-                                      exlist.insert(0, item);
-                                    });
-                                  } else {
+                    key: Key('$index'),
+                    child: Scrollable(
+                      viewportBuilder:
+                          (BuildContext context, ViewportOffset position) =>
+                              Slidable(
+                        endActionPane: ActionPane(
+                            extentRatio:
+                                _routinetimeProvider.isstarted ? 0.6 : 0.4,
+                            motion: const ScrollMotion(),
+                            children: [
+                              SlidableAction(
+                                onPressed: (_) {
+                                  if (_routinetimeProvider.isstarted) {
                                     if (widget.rindex ==
                                             _routinetimeProvider.nowonrindex &&
-                                        index >
-                                            _routinetimeProvider.nowoneindex)
-                                      _routinetimeProvider.nowoneindexupdate(
-                                          _routinetimeProvider.nowoneindex + 1);
+                                        index ==
+                                            _routinetimeProvider.nowoneindex) {
+                                      _routinetimeProvider.nowoneindexupdate(0);
+                                      showToast(
+                                          "${"운동 중인 " + exlist[_routinetimeProvider.nowoneindex].name} 맨 위로 올렸어요");
+                                      setState(() {
+                                        final item = exlist.removeAt(index);
+                                        exlist.insert(0, item);
+                                      });
+                                    } else {
+                                      if (widget.rindex ==
+                                              _routinetimeProvider
+                                                  .nowonrindex &&
+                                          index >
+                                              _routinetimeProvider.nowoneindex)
+                                        _routinetimeProvider.nowoneindexupdate(
+                                            _routinetimeProvider.nowoneindex +
+                                                1);
+                                      showToast(
+                                          exlist[index].name + " 맨 위로 올렸어요");
+                                      setState(() {
+                                        final item = exlist.removeAt(index);
+                                        exlist.insert(0, item);
+                                      });
+                                    }
+                                  } else {
                                     showToast(
                                         exlist[index].name + " 맨 위로 올렸어요");
                                     setState(() {
@@ -377,120 +387,121 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                       exlist.insert(0, item);
                                     });
                                   }
-                                } else {
-                                  showToast(exlist[index].name + " 맨 위로 올렸어요");
-                                  setState(() {
-                                    final item = exlist.removeAt(index);
-                                    exlist.insert(0, item);
-                                  });
-                                }
-                              },
-                              backgroundColor: Theme.of(context).primaryColor,
-                              foregroundColor: Theme.of(context).highlightColor,
-                              icon: Icons.keyboard_double_arrow_up,
-                              label: '맨 위',
-                            ),
-                            _routinetimeProvider.isstarted &&
-                                    widget.rindex ==
-                                        _routinetimeProvider.nowonrindex &&
-                                    index != _routinetimeProvider.nowoneindex
-                                ? SlidableAction(
-                                    onPressed: (_) {
-                                      if (index >
-                                          _routinetimeProvider.nowoneindex) {
-                                        showToast(
-                                            "${"운동 중인 " + exlist[_routinetimeProvider.nowoneindex].name} 아래로 올렸어요");
-                                        setState(() {
-                                          final item = exlist.removeAt(index);
-                                          exlist.insert(
-                                              _routinetimeProvider.nowoneindex +
-                                                  1,
-                                              item);
-                                        });
-                                      } else if (index <
-                                          _routinetimeProvider.nowoneindex) {
-                                        showToast(
-                                            "${"운동 중인 " + exlist[_routinetimeProvider.nowoneindex].name} 아래로 내렸어요");
-                                        _routinetimeProvider.nowoneindexupdate(
-                                            _routinetimeProvider.nowoneindex -
-                                                1);
-                                        setState(() {
-                                          final item = exlist.removeAt(index);
-                                          exlist.insert(
-                                              _routinetimeProvider.nowoneindex +
-                                                  1,
-                                              item);
-                                        });
-                                      }
-                                    },
-                                    backgroundColor: const Color(0xFffc60a8),
-                                    foregroundColor:
-                                        Theme.of(context).highlightColor,
-                                    icon:
-                                        index > _routinetimeProvider.nowoneindex
-                                            ? Icons.keyboard_arrow_up
-                                            : Icons.keyboard_arrow_down,
-                                    label: '현 운동',
-                                  )
-                                : Container(),
-                            SlidableAction(
-                              onPressed: (_) {
-                                _workoutProvider.removeexAt(
-                                    widget.rindex, index);
-                                _editWorkoutCheck();
-                              },
-                              backgroundColor: const Color(0xFFFE4A49),
-                              foregroundColor: Theme.of(context).highlightColor,
-                              icon: Icons.delete,
-                              label: '삭제',
-                            )
-                          ]),
-                      child: Column(
-                        children: [
-                          Material(
-                            borderRadius: BorderRadius.circular(15.0),
-                            child: Ink(
-                              decoration: BoxDecoration(
-                                  color: _routinetimeProvider.isstarted
-                                      ? (index ==
-                                                  _routinetimeProvider
-                                                      .nowoneindex &&
-                                              widget.rindex ==
-                                                  _routinetimeProvider
-                                                      .nowonrindex)
-                                          ? const Color(0xffCEEC97)
-                                          : Theme.of(context).cardColor
-                                      : Theme.of(context).cardColor,
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(top),
-                                      bottomRight: Radius.circular(bottom),
-                                      topLeft: Radius.circular(top),
-                                      bottomLeft: Radius.circular(bottom))),
-                              child: InkWell(
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(top),
-                                      bottomRight: Radius.circular(bottom),
-                                      topLeft: Radius.circular(top),
-                                      bottomLeft: Radius.circular(bottom)),
-                                onTap: () {
-                                  [
-                                    _PopProvider.exstackup(2),
-                                    Navigator.push(
-                                        context,
-                                        Transition(
-                                            child: EachExerciseDetails(
-                                              ueindex: exunique.indexWhere(
-                                                  (element) =>
-                                                      element.name ==
-                                                      exlist[index].name),
-                                              eindex: index,
-                                              rindex: widget.rindex,
-                                            ),
-                                            transitionEffect:
-                                                TransitionEffect.RIGHT_TO_LEFT))
-                                  ];
                                 },
-                                /*
+                                backgroundColor: Theme.of(context).primaryColor,
+                                foregroundColor:
+                                    Theme.of(context).highlightColor,
+                                icon: Icons.keyboard_double_arrow_up,
+                                label: '맨 위',
+                              ),
+                              _routinetimeProvider.isstarted &&
+                                      widget.rindex ==
+                                          _routinetimeProvider.nowonrindex &&
+                                      index != _routinetimeProvider.nowoneindex
+                                  ? SlidableAction(
+                                      onPressed: (_) {
+                                        if (index >
+                                            _routinetimeProvider.nowoneindex) {
+                                          showToast(
+                                              "${"운동 중인 " + exlist[_routinetimeProvider.nowoneindex].name} 아래로 올렸어요");
+                                          setState(() {
+                                            final item = exlist.removeAt(index);
+                                            exlist.insert(
+                                                _routinetimeProvider
+                                                        .nowoneindex +
+                                                    1,
+                                                item);
+                                          });
+                                        } else if (index <
+                                            _routinetimeProvider.nowoneindex) {
+                                          showToast(
+                                              "${"운동 중인 " + exlist[_routinetimeProvider.nowoneindex].name} 아래로 내렸어요");
+                                          _routinetimeProvider
+                                              .nowoneindexupdate(
+                                                  _routinetimeProvider
+                                                          .nowoneindex -
+                                                      1);
+                                          setState(() {
+                                            final item = exlist.removeAt(index);
+                                            exlist.insert(
+                                                _routinetimeProvider
+                                                        .nowoneindex +
+                                                    1,
+                                                item);
+                                          });
+                                        }
+                                      },
+                                      backgroundColor: const Color(0xFffc60a8),
+                                      foregroundColor:
+                                          Theme.of(context).highlightColor,
+                                      icon: index >
+                                              _routinetimeProvider.nowoneindex
+                                          ? Icons.keyboard_arrow_up
+                                          : Icons.keyboard_arrow_down,
+                                      label: '현 운동',
+                                    )
+                                  : Container(),
+                              SlidableAction(
+                                onPressed: (_) {
+                                  _workoutProvider.removeexAt(
+                                      widget.rindex, index);
+                                  _editWorkoutCheck();
+                                },
+                                backgroundColor: const Color(0xFFFE4A49),
+                                foregroundColor:
+                                    Theme.of(context).highlightColor,
+                                icon: Icons.delete,
+                                label: '삭제',
+                              )
+                            ]),
+                        child: Builder(
+                          builder: (context) => Column(
+                            children: [
+                              Material(
+                                borderRadius: BorderRadius.circular(15.0),
+                                child: Ink(
+                                  decoration: BoxDecoration(
+                                      color: _routinetimeProvider.isstarted
+                                          ? (index ==
+                                                      _routinetimeProvider
+                                                          .nowoneindex &&
+                                                  widget.rindex ==
+                                                      _routinetimeProvider
+                                                          .nowonrindex)
+                                              ? const Color(0xffCEEC97)
+                                              : Theme.of(context).cardColor
+                                          : Theme.of(context).cardColor,
+                                      borderRadius: BorderRadius.only(
+                                          topRight: Radius.circular(top),
+                                          bottomRight: Radius.circular(bottom),
+                                          topLeft: Radius.circular(top),
+                                          bottomLeft: Radius.circular(bottom))),
+                                  child: InkWell(
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(top),
+                                        bottomRight: Radius.circular(bottom),
+                                        topLeft: Radius.circular(top),
+                                        bottomLeft: Radius.circular(bottom)),
+                                    onTap: () {
+                                      [
+                                        _PopProvider.exstackup(2),
+                                        Navigator.push(
+                                            context,
+                                            Transition(
+                                                child: EachExerciseDetails(
+                                                  ueindex: exunique.indexWhere(
+                                                      (element) =>
+                                                          element.name ==
+                                                          exlist[index].name),
+                                                  eindex: index,
+                                                  rindex: widget.rindex,
+                                                ),
+                                                transitionEffect:
+                                                    TransitionEffect
+                                                        .RIGHT_TO_LEFT))
+                                      ];
+                                    },
+                                    /*
                                 onPanUpdate: (details) {
                                   if (details.delta.dx > 10 &&
                                       btnDisabled == false) {
@@ -501,131 +512,153 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                 },
 
                                  */
-                                child: Container(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 8),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(top),
-                                          bottomRight: Radius.circular(bottom),
-                                          topLeft: Radius.circular(top),
-                                          bottomLeft: Radius.circular(bottom))),
-                                  height: _exImageOpen ? 64 : 40,
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Expanded(
-                                        child: Row(
-                                          children: [
-                                            _exImageOpen
-                                                ? _exImage != ""
-                                                    ? Image.asset(
-                                                        _exImage,
-                                                        height: 64,
-                                                        width: 64,
-                                                        fit: BoxFit.cover,
-                                                      )
-                                                    : Container(
-                                                        height: 64,
-                                                        width: 64,
-                                                        decoration:
-                                                            const BoxDecoration(
-                                                                shape: BoxShape
-                                                                    .circle),
-                                                        child: Icon(
-                                                            Icons
-                                                                .image_not_supported,
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(top),
+                                              bottomRight:
+                                                  Radius.circular(bottom),
+                                              topLeft: Radius.circular(top),
+                                              bottomLeft:
+                                                  Radius.circular(bottom))),
+                                      height: _exImageOpen ? 64 : 40,
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            child: Row(
+                                              children: [
+                                                _exImageOpen
+                                                    ? _exImage != ""
+                                                        ? Image.asset(
+                                                            _exImage,
+                                                            height: 64,
+                                                            width: 64,
+                                                            fit: BoxFit.cover,
+                                                          )
+                                                        : Container(
+                                                            height: 64,
+                                                            width: 64,
+                                                            decoration:
+                                                                const BoxDecoration(
+                                                                    shape: BoxShape
+                                                                        .circle),
+                                                            child: Icon(
+                                                                Icons
+                                                                    .image_not_supported,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .primaryColorDark),
+                                                          )
+                                                    : Container(),
+                                                const SizedBox(width: 8),
+                                                Expanded(
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        exlist[index].name,
+                                                        textScaleFactor: 1.7,
+                                                        style: TextStyle(
                                                             color: Theme.of(
                                                                     context)
-                                                                .primaryColorDark),
-                                                      )
-                                                : Container(),
-                                            const SizedBox(width: 8),
-                                            Expanded(
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    exlist[index].name,
-                                                    textScaleFactor: 1.7,
-                                                    style: TextStyle(
-                                                        color: Theme.of(context)
-                                                            .primaryColorLight),
+                                                                .primaryColorLight),
+                                                      ),
+                                                      _exImageOpen
+                                                          ? Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Text(
+                                                                    "휴식: ${exlist[index].rest}",
+                                                                    textScaleFactor:
+                                                                        1.0,
+                                                                    style: const TextStyle(
+                                                                        color: Color(
+                                                                            0xFF717171))),
+                                                              ],
+                                                            )
+                                                          : Container()
+                                                    ],
                                                   ),
-                                                  _exImageOpen
-                                                      ? Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Text(
-                                                                "휴식: ${exlist[index].rest}",
-                                                                textScaleFactor:
-                                                                    1.0,
-                                                                style: const TextStyle(
-                                                                    color: Color(
-                                                                        0xFF717171))),
-                                                          ],
-                                                        )
-                                                      : Container()
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                          doneex.isNotEmpty
+                                              ? SizedBox(
+                                                  width: 32,
+                                                  height: 32,
+                                                  child: CircleNumberWidget(
+                                                      number: doneex.length,
+                                                      color: Theme.of(context)
+                                                          .primaryColorDark),
+                                                )
+                                              : Container(),
+                                          GestureDetector(
+                                              onTap: () {
+                                                print("kkkkkkk");
+                                                if (Slidable.of(context)!
+                                                        .actionPaneType
+                                                        .value ==
+                                                    ActionPaneType.none) {
+                                                  Slidable.of(context)
+                                                      ?.openEndActionPane();
+                                                } else {
+                                                  Slidable.of(context)?.close();
+                                                }
+                                              },
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        8, 12, 8, 12),
+                                                child: Container(
+                                                  height: 30.0,
+                                                  width: 4.0,
+                                                  decoration: BoxDecoration(
+                                                      color: Theme.of(context)
+                                                          .primaryColorDark,
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                                  .all(
+                                                              Radius.circular(
+                                                                  8.0))),
+                                                ),
+                                              ))
+                                        ],
                                       ),
-                                      doneex.isNotEmpty
-                                          ? SizedBox(
-                                              width: 32,
-                                              height: 32,
-                                              child: CircleNumberWidget(
-                                                  number: doneex.length,
-                                                  color: Theme.of(context)
-                                                      .primaryColorDark),
-                                            )
-                                          : Container(),
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            4, 12, 4, 12),
-                                        child: Container(
-                                          height: 15.0,
-                                          width: 3.0,
-                                          decoration: BoxDecoration(
-                                              color: Theme.of(context)
-                                                  .primaryColorDark,
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(8.0))),
-                                        ),
-                                      )
-                                    ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
+                              index == exlist.length - 1
+                                  ? Container()
+                                  : Container(
+                                      alignment: Alignment.center,
+                                      height: 0.5,
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        height: 0.5,
+                                        color:
+                                            Theme.of(context).primaryColorDark,
+                                      ),
+                                    )
+                            ],
                           ),
-                          index == exlist.length - 1
-                              ? Container()
-                              : Container(
-                                  alignment: Alignment.center,
-                                  height: 0.5,
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    height: 0.5,
-                                    color: Theme.of(context).primaryColorDark,
-                                  ),
-                                )
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                );
+                    ));
               },
               shrinkWrap: shirink,
               itemCount: exlist.length),
