@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:sdb_trainer/pages/exercise/exercise_done.dart';
 import 'package:sdb_trainer/pages/exercise/upload_program.dart';
+import 'package:sdb_trainer/pages/search/exercise_guide.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
@@ -53,6 +54,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
   var _testdata0;
   var _themeProvider;
 
+  bool _allExpanded = true; // 모든 패널이 확장된 상태 여부
+
   Duration initialTimer = const Duration();
   late var _testdata = _testdata0;
   String _addexinput = '';
@@ -73,6 +76,15 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
     initialExpanded: true,
   );
   List<ExpandableController> Controllerlist = [];
+
+  void _toggleAllPanels() {
+    for (var controller in Controllerlist) {
+      if (controller.expanded == true) {
+        controller.value = false;
+        _allExpanded = true; // 모든 패널이 확장된 상태 여부
+      }
+    }
+  }
 
   PreferredSizeWidget _appbarWidget() {
     bool isBtnDisabled = false;
@@ -297,12 +309,13 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       )),
                   SizedBox(
                       child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                         Transform.scale(
                             scale: 1.2,
                             child: IconButton(
-                                padding: EdgeInsets.zero,
+                                padding: const EdgeInsets.all(5),
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
                                   if (plandata.plans.length != 1) {
@@ -321,7 +334,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                   color: Theme.of(context).primaryColorLight,
                                   size: 20,
                                 ))),
-                        Text(' /',
+                        Text('/',
                             textScaleFactor: 1.7,
                             style: TextStyle(
                                 color: Theme.of(context).primaryColorLight)),
@@ -340,7 +353,16 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                   color: Theme.of(context).primaryColorLight,
                                   size: 20,
                                 )))
-                      ]))
+                      ]),
+                      Row(children: [
+                        ElevatedButton(
+                          onPressed: _toggleAllPanels,
+                          child: Text(_allExpanded ? '모두 접기' : '모두 펼치기'),
+                        ),
+                        SizedBox(width: 12)
+                      ]),
+                    ],
+                  ))
                 ])),
             Divider(
                 indent: 10,
@@ -371,6 +393,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (BuildContext context_, int index_) {
                       final planEachExercise = planExercises[index_];
+                      var checkedSets = planEachExercise.sets.where((sets) {
+                        return (sets.ischecked as bool);
+                      }).toList();
                       final exerciseIndex = _exProvider.exercisesdata.exercises
                           .indexWhere((element) =>
                               element.name == planEachExercise.name);
@@ -405,67 +430,89 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                 iconColor: Theme.of(context).primaryColorLight),
                             header: Padding(
                                 padding: const EdgeInsets.only(left: 10),
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          CustomIconButton(
-                                            onPressed: () {
-                                              exselect(false, true, index_);
-                                            },
-                                            backgroundColor: Theme.of(context)
-                                                .primaryColorDark,
-                                            icon: Icon(Icons.swap_horiz,
-                                                color: Colors.white, size: 16),
-                                          ),
-                                          SizedBox(width: 6),
-                                          GestureDetector(
-                                              child: Row(
-                                                children: [
-                                                  Text(planEachExercise.name,
-                                                      textScaleFactor: 1.8,
-                                                      style: TextStyle(
-                                                          color: Theme.of(
-                                                                  context)
-                                                              .primaryColorLight)),
-                                                  SizedBox(width: 4),
-                                                  Column(
+                                          Row(
+                                            children: [
+                                              CustomIconButton(
+                                                onPressed: () {
+                                                  exselect(false, true, index_);
+                                                },
+                                                backgroundColor:
+                                                    Theme.of(context)
+                                                        .primaryColorDark,
+                                                icon: Icon(Icons.swap_horiz,
+                                                    color: Colors.white,
+                                                    size: 16),
+                                              ),
+                                              SizedBox(width: 6),
+                                              GestureDetector(
+                                                  child: Row(
                                                     children: [
-                                                      Icon(
-                                                        Icons
-                                                            .info_outline_rounded,
-                                                        color: Theme.of(context)
-                                                            .primaryColor,
-                                                        size: 16,
+                                                      Text(
+                                                          planEachExercise.name,
+                                                          textScaleFactor: 1.8,
+                                                          style: TextStyle(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColorLight)),
+                                                      SizedBox(width: 4),
+                                                      Column(
+                                                        children: [
+                                                          Icon(
+                                                            Icons
+                                                                .info_outline_rounded,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            size: 16,
+                                                          ),
+                                                        ],
                                                       ),
                                                     ],
                                                   ),
-                                                ],
+                                                  onTap: () {
+                                                    ExerciseGuideBottomModal()
+                                                        .exguide(exerciseIndex,
+                                                            context);
+                                                  }),
+                                            ],
+                                          ),
+                                          SizedBox(height: 4),
+                                          GestureDetector(
+                                              child: Text(
+                                                '기준: ${planEachExercise.ref_name}',
+                                                textScaleFactor: 1.1,
+                                                textAlign: TextAlign.right,
+                                                style: const TextStyle(
+                                                    color: Colors.grey,
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
                                               onTap: () {
-                                                ExerciseGuideBottomModal()
-                                                    .exguide(
-                                                        exerciseIndex, context);
-                                              }),
-                                        ],
-                                      ),
-                                      SizedBox(height: 4),
-                                      GestureDetector(
-                                          child: Text(
-                                            '기준: ${planEachExercise.ref_name}',
-                                            textScaleFactor: 1.1,
-                                            textAlign: TextAlign.right,
-                                            style: const TextStyle(
-                                                color: Colors.grey,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          onTap: () {
-                                            exselect(false, false, index_);
-                                          })
-                                    ])),
+                                                exselect(false, false, index_);
+                                              })
+                                        ]),
+                                    Text(
+                                        checkedSets.length.toString() +
+                                            "/" +
+                                            planEachExercise.sets.length
+                                                .toString(),
+                                        textScaleFactor: 1.1,
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
+                                            fontWeight: FontWeight.bold))
+                                  ],
+                                )),
                             collapsed: Container(),
                             expanded: Column(children: [
                               Row(
@@ -1427,7 +1474,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
     double bottom = 0;
     return Expanded(
       //color: Colors.black,
-      child: Consumer<WorkoutdataProvider>(builder: (builder, provider, child) {
+      child: Consumer2<WorkoutdataProvider, ExercisesdataProvider>(
+          builder: (builder, provider, exProvider, child) {
+        provider.workoutdata.routinedatas[widget.rindex].exercises;
         return ListView.separated(
             padding: const EdgeInsets.symmetric(horizontal: 5),
             itemBuilder: (BuildContext _context, int index) {
@@ -1441,7 +1490,17 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                 top = 0;
                 bottom = 0;
               }
-              ;
+
+              var _exImage;
+              try {
+                _exImage = extra_completely_new_Ex[
+                        extra_completely_new_Ex.indexWhere(
+                            (element) => element.name == _testdata[index].name)]
+                    .image;
+                _exImage ??= "";
+              } catch (e) {
+                _exImage = "";
+              }
               return GestureDetector(
                 onTap: () {
                   if (isadd) {
@@ -1493,6 +1552,52 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      _exImage != ""
+                          ? GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    Transition(
+                                        child: ExerciseGuide(
+                                            eindex: _exProvider
+                                                .exercisesdata.exercises
+                                                .indexWhere((ex) =>
+                                                    ex.name ==
+                                                    _testdata[index].name)),
+                                        transitionEffect:
+                                            TransitionEffect.RIGHT_TO_LEFT));
+                              },
+                              child: Image.asset(
+                                _exImage,
+                                height: 48,
+                                width: 48,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    Transition(
+                                        child: ExerciseGuide(
+                                            eindex: _exProvider
+                                                .exercisesdata.exercises
+                                                .indexWhere((ex) =>
+                                                    ex.name ==
+                                                    _testdata[index].name)),
+                                        transitionEffect:
+                                            TransitionEffect.RIGHT_TO_LEFT));
+                              },
+                              child: Container(
+                                height: 48,
+                                width: 48,
+                                decoration:
+                                    const BoxDecoration(shape: BoxShape.circle),
+                                child: Icon(Icons.image_not_supported,
+                                    color: Theme.of(context).primaryColorDark),
+                              ),
+                            ),
+                      const SizedBox(width: 8.0),
                       Expanded(
                         child: Text(
                           exuniq[index].name,
@@ -1540,7 +1645,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
         .exercises;
     for (int n = 0; n < exerciseAll.length; n++) {
       var recordedsets = exerciseAll[n].sets.where((sets) {
-        return (sets.ischecked as bool && sets.weight != 0);
+        return (sets.ischecked as bool);
       }).toList();
       double monerm = 0;
       for (int i = 0; i < recordedsets.length; i++) {
