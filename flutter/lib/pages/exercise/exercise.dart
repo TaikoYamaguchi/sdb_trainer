@@ -406,22 +406,29 @@ class ExerciseState extends State<Exercise> {
                                                             ?.close();
                                                       }
                                                     },
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                              .fromLTRB(
-                                                          12, 8, 12, 8),
-                                                      child: Container(
-                                                        height: 30.0,
-                                                        width: 4.0,
-                                                        decoration: BoxDecoration(
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .primaryColorDark,
-                                                            borderRadius:
-                                                                const BorderRadius
-                                                                        .all(
-                                                                    Radius.circular(
-                                                                        8.0))),
+                                                    child: Container(
+                                                      color: provider.isstarted
+                                                          ? index == provider.nowonrindex
+                                                          ? const Color(0xffCEEC97)
+                                                          : Theme.of(context).cardColor
+                                                          : Theme.of(context).cardColor,
+                                                      child: Padding(
+                                                        padding: const EdgeInsets
+                                                                .fromLTRB(
+                                                            12, 8, 12, 8),
+                                                        child: Container(
+                                                          height: 30.0,
+                                                          width: 4.0,
+                                                          decoration: BoxDecoration(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColorDark,
+                                                              borderRadius:
+                                                                  const BorderRadius
+                                                                          .all(
+                                                                      Radius.circular(
+                                                                          8.0))),
+                                                        ),
                                                       ),
                                                     ),
                                                   ),

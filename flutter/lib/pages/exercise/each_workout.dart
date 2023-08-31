@@ -344,12 +344,14 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                       viewportBuilder:
                           (BuildContext context, ViewportOffset position) =>
                               Slidable(
+
                         endActionPane: ActionPane(
                             extentRatio:
                                 _routinetimeProvider.isstarted ? 0.6 : 0.4,
                             motion: const ScrollMotion(),
                             children: [
                               SlidableAction(
+
                                 onPressed: (_) {
                                   if (_routinetimeProvider.isstarted) {
                                     if (widget.rindex ==
@@ -617,21 +619,33 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                                   Slidable.of(context)?.close();
                                                 }
                                               },
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        8, 12, 8, 12),
-                                                child: Container(
-                                                  height: 30.0,
-                                                  width: 4.0,
-                                                  decoration: BoxDecoration(
-                                                      color: Theme.of(context)
-                                                          .primaryColorDark,
-                                                      borderRadius:
-                                                          const BorderRadius
-                                                                  .all(
-                                                              Radius.circular(
-                                                                  8.0))),
+                                              child: Container(
+                                                color: _routinetimeProvider.isstarted
+                                                    ? (index ==
+                                                    _routinetimeProvider
+                                                        .nowoneindex &&
+                                                    widget.rindex ==
+                                                        _routinetimeProvider
+                                                            .nowonrindex)
+                                                    ? const Color(0xffCEEC97)
+                                                    : Theme.of(context).cardColor
+                                                    : Theme.of(context).cardColor,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          8, 12, 8, 12),
+                                                  child: Container(
+                                                    height: 30.0,
+                                                    width: 4.0,
+                                                    decoration: BoxDecoration(
+                                                        color: Theme.of(context)
+                                                            .primaryColorDark,
+                                                        borderRadius:
+                                                            const BorderRadius
+                                                                    .all(
+                                                                Radius.circular(
+                                                                    8.0))),
+                                                  ),
                                                 ),
                                               ))
                                         ],
