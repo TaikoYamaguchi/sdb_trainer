@@ -434,79 +434,88 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              CustomIconButton(
-                                                onPressed: () {
-                                                  exselect(false, true, index_);
-                                                },
-                                                backgroundColor:
-                                                    Theme.of(context)
-                                                        .primaryColorDark,
-                                                icon: Icon(Icons.swap_horiz,
-                                                    color: Colors.white,
-                                                    size: 16),
-                                              ),
-                                              SizedBox(width: 6),
-                                              GestureDetector(
-                                                  child: Row(
-                                                    children: [
-                                                      Text(
-                                                          planEachExercise.name,
-                                                          textScaleFactor: 1.8,
-                                                          style: TextStyle(
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColorLight)),
-                                                      SizedBox(width: 4),
-                                                      Column(
-                                                        children: [
-                                                          Icon(
-                                                            Icons
-                                                                .info_outline_rounded,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .primaryColor,
-                                                            size: 16,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  onTap: () {
-                                                    ExerciseGuideBottomModal()
-                                                        .exguide(exerciseIndex,
-                                                            context);
-                                                  }),
-                                            ],
-                                          ),
-                                          SizedBox(height: 4),
-                                          GestureDetector(
-                                              child: Text(
-                                                '기준: ${planEachExercise.ref_name}',
-                                                textScaleFactor: 1.1,
-                                                textAlign: TextAlign.right,
-                                                style: const TextStyle(
-                                                    color: Colors.grey,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              onTap: () {
-                                                exselect(false, false, index_);
-                                              })
-                                        ]),
+                                    Expanded(
+                                      child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                CustomIconButton(
+                                                  onPressed: () {
+                                                    exselect(
+                                                        false, true, index_);
+                                                  },
+                                                  backgroundColor:
+                                                      Theme.of(context)
+                                                          .primaryColorDark,
+                                                  icon: Icon(Icons.swap_horiz,
+                                                      color: Colors.white,
+                                                      size: 16),
+                                                ),
+                                                SizedBox(width: 6),
+                                                GestureDetector(
+                                                    child: Row(
+                                                      children: [
+                                                        Icon(
+                                                          Icons
+                                                              .info_outline_rounded,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                          size: 16,
+                                                        ),
+                                                        SizedBox(width: 4),
+                                                        Text(
+                                                            planEachExercise
+                                                                .name,
+                                                            textScaleFactor:
+                                                                1.5,
+                                                            maxLines: 2,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .fade,
+                                                            style: TextStyle(
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .primaryColorLight)),
+                                                      ],
+                                                    ),
+                                                    onTap: () {
+                                                      ExerciseGuideBottomModal()
+                                                          .exguide(
+                                                              exerciseIndex,
+                                                              context);
+                                                    }),
+                                              ],
+                                            ),
+                                            SizedBox(height: 4),
+                                            GestureDetector(
+                                                child: Text(
+                                                  '기준: ${planEachExercise.ref_name}',
+                                                  textScaleFactor: 1.1,
+                                                  textAlign: TextAlign.right,
+                                                  style: const TextStyle(
+                                                      color: Colors.grey,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                onTap: () {
+                                                  exselect(
+                                                      false, false, index_);
+                                                })
+                                          ]),
+                                    ),
                                     Text(
                                         checkedSets.length.toString() +
                                             "/" +
                                             planEachExercise.sets.length
                                                 .toString(),
-                                        textScaleFactor: 1.1,
+                                        textScaleFactor: 1.0,
                                         style: TextStyle(
                                             color: Theme.of(context)
                                                 .primaryColorLight,
