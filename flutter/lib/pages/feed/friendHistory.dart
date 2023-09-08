@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/repository/history_repository.dart';
 import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:sdb_trainer/src/model/historydata.dart';
+import 'package:sdb_trainer/src/utils/exercise_util.dart';
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/statistics/static_exercise.dart';
 import 'package:sdb_trainer/providers/themeMode.dart';
@@ -25,6 +27,7 @@ class _FriendHistoryState extends State<FriendHistory>
   var _userProvider;
   var _themeProvider;
   var _hisProvider;
+  var _exProvider;
   bool _isEdited = false;
   @override
   void initState() {
@@ -228,6 +231,8 @@ class _FriendHistoryState extends State<FriendHistory>
   Widget _onechartExerciseWidget(
       exuniq, history_id, userdata, bool shirink, index) {
     var _exImage;
+    final exerciseIndex = _exProvider.exercisesdata.exercises
+        .indexWhere((element) => element.name == exuniq[index].name);
     try {
       _exImage = extra_completely_new_Ex[extra_completely_new_Ex
               .indexWhere((element) => element.name == exuniq[index].name)]
@@ -247,33 +252,42 @@ class _FriendHistoryState extends State<FriendHistory>
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _exImage != ""
-                        ? Image.asset(
-                            _exImage,
-                            height: 48,
-                            width: 48,
-                            fit: BoxFit.cover,
-                          )
-                        : Container(
-                            height: 48,
-                            width: 48,
-                            decoration:
-                                const BoxDecoration(shape: BoxShape.circle),
-                            child: Icon(Icons.image_not_supported,
-                                color: Theme.of(context).primaryColorDark),
-                          ),
-                    const SizedBox(width: 8.0),
-                    Expanded(
-                      child: Text(exuniq[index].name,
-                          textScaleFactor: 1.4,
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColorLight)),
-                    ),
-                  ],
+                child: GestureDetector(
+                  onTap: () {
+                    if (widget.sdbdata.user_email ==
+                        _userProvider.userdata.email) {
+                      ExerciseGuideBottomModal()
+                          .exguide(exerciseIndex, context);
+                    }
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      _exImage != ""
+                          ? Image.asset(
+                              _exImage,
+                              height: 48,
+                              width: 48,
+                              fit: BoxFit.cover,
+                            )
+                          : Container(
+                              height: 48,
+                              width: 48,
+                              decoration:
+                                  const BoxDecoration(shape: BoxShape.circle),
+                              child: Icon(Icons.image_not_supported,
+                                  color: Theme.of(context).primaryColorDark),
+                            ),
+                      const SizedBox(width: 8.0),
+                      Expanded(
+                        child: Text(exuniq[index].name,
+                            textScaleFactor: 1.4,
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight)),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               widget.sdbdata.user_email == userdata.email
@@ -686,6 +700,7 @@ class _FriendHistoryState extends State<FriendHistory>
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
+    _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     return Scaffold(
       appBar: _appbarWidget(),
       body: _friendHistoryWidget(),
