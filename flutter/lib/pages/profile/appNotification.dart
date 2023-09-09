@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:sdb_trainer/pages/profile/htmlEditor_Notification.dart';
@@ -10,6 +11,7 @@ import 'package:sdb_trainer/src/model/notification.dart' as mnoti;
 import 'dart:async';
 
 import 'package:transition/transition.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class AppNotification extends StatefulWidget {
   AppNotification({Key? key}) : super(key: key);
@@ -371,27 +373,48 @@ class _AppNotificationState extends State<AppNotification> {
                                   physics: const ScrollPhysics(),
                                   itemBuilder: (BuildContext _context, int index) {
                                     return body.getElementsByTagName("p")[index].getElementsByTagName("img").length != 0
-                                        ? CachedNetworkImage(
-                                        imageUrl: notificationdata.images![int.parse(body.getElementsByTagName("p")[index].getElementsByTagName("img")[0].attributes["src"]!)],
-                                        imageBuilder:
-                                            (context, imageProivder) =>
-                                            Container(
-                                              height: MediaQuery.of(context).size.width-20,
-                                              width: MediaQuery.of(context).size.width-20,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(20)),
-                                                  image: DecorationImage(
-                                                    image: imageProivder,
-                                                    fit: BoxFit.cover,
-                                                  )),
-                                            ))
-                                        : Text(body.getElementsByTagName("p")[index].text,
-                                        textScaleFactor: 1.5,
-                                        style: TextStyle(
-                                            color: Theme.of(context)
-                                                .primaryColorLight));
+                                        ? Image(
+                                      image: CachedNetworkImageProvider(
+                                        notificationdata.images![int.parse(body.getElementsByTagName("p")[index].getElementsByTagName("img")[0].attributes["src"]!)],
+                                      ),
+                                      fit: BoxFit.cover,)
+                                        : body.getElementsByTagName("p")[index].getElementsByTagName("a").length != 0
+                                        ? RichText(
+                                        text: TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                  style: TextStyle(
+                                                      color: Colors.blueAccent),
+                                                  text: body.getElementsByTagName("p")[index].text,
+                                                  recognizer: TapGestureRecognizer()..onTap =  () async{
+                                                    var url = body.getElementsByTagName("p")[index].getElementsByTagName("a")[0].attributes["href"]!;
+                                                    if (await canLaunchUrlString(url)) {
+                                                      await launchUrlString(url);
+                                                    } else {
+                                                      throw 'Could not launch $url';
+                                                    }
+                                                  }
+                                              ),
+                                              /*
+                                                              TextSpan(
+                                                                  style: linkText,
+                                                                  text: "Click here",
+
+                                                              ),
+
+                                                               */
+                                            ]
+                                        ))
+                                        : Column(
+                                      children: [
+                                        Text(body.getElementsByTagName("p")[index].text,
+                                            textScaleFactor: 1.5,
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColorLight)),
+                                        SizedBox(height: 5)
+                                      ],
+                                    );
 
                                   },
                                   shrinkWrap: true,

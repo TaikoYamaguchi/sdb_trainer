@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -36,6 +37,7 @@ import 'package:sdb_trainer/supero_version.dart';
 import 'dart:math' as math;
 import 'package:transition/transition.dart';
 import 'package:sdb_trainer/pages/exercise/exercise_done.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'statistics/statics.dart';
 
 class App extends StatefulWidget {
@@ -195,35 +197,54 @@ class _AppState extends State<App> {
                                               return body.getElementsByTagName("p")[index].getElementsByTagName("img").length != 0
                                                   ? Column(
                                                     children: [
-                                                      CachedNetworkImage(
-                                                      imageUrl: notificationdata.images![int.parse(body.getElementsByTagName("p")[index].getElementsByTagName("img")[0].attributes["src"]!)],
-                                                      imageBuilder:
-                                                          (context, imageProivder) =>
-                                                          Container(
-                                                            height: MediaQuery.of(context).size.width-20,
-                                                            width: MediaQuery.of(context).size.width-20,
-                                                            decoration: BoxDecoration(
-                                                                borderRadius:
-                                                                const BorderRadius.all(
-                                                                    Radius.circular(20)),
-                                                                image: DecorationImage(
-                                                                  image: imageProivder,
-                                                                  fit: BoxFit.cover,
-                                                                )),
-                                                          )),
+                                                      Image(
+                                                          image: CachedNetworkImageProvider(
+                                                            notificationdata.images![int.parse(body.getElementsByTagName("p")[index].getElementsByTagName("img")[0].attributes["src"]!)],
+                                                          ),
+                                                        fit: BoxFit.cover,),
                                                       SizedBox(height: 5)
                                                     ],
                                                   )
-                                                  : Column(
-                                                    children: [
-                                                      Text(body.getElementsByTagName("p")[index].text,
-                                                      textScaleFactor: 1.5,
-                                                      style: TextStyle(
-                                                          color: Theme.of(context)
-                                                              .primaryColorLight)),
-                                                      SizedBox(height: 5)
-                                                    ],
-                                                  );
+                                                  : body.getElementsByTagName("p")[index].getElementsByTagName("a").length != 0
+                                                    ? Center(
+                                                      child: RichText(
+                                                          textScaleFactor: 1.2,
+                                                          text: TextSpan(
+                                                              children: [
+                                                                TextSpan(
+                                                                    style: TextStyle(
+                                                                      color: Colors.blueAccent),
+                                                                    text: body.getElementsByTagName("p")[index].text,
+                                                                    recognizer: TapGestureRecognizer()..onTap =  () async{
+                                                                      var url = body.getElementsByTagName("p")[index].getElementsByTagName("a")[0].attributes["href"]!;
+                                                                      if (await canLaunchUrlString(url)) {
+                                                                        await launchUrlString(url);
+                                                                      } else {
+                                                                        throw 'Could not launch $url';
+                                                                      }
+                                                                    }
+                                                                ),
+                                                                /*
+                                                                TextSpan(
+                                                                    style: linkText,
+                                                                    text: "Click here",
+
+                                                                ),
+
+                                                                 */
+                                                              ]
+                                                          )),
+                                                    )
+                                                    : Column(
+                                                      children: [
+                                                        Text(body.getElementsByTagName("p")[index].text,
+                                                        textScaleFactor: 1.2,
+                                                        style: TextStyle(
+                                                            color: Theme.of(context)
+                                                                .primaryColorLight)),
+                                                        SizedBox(height: 5)
+                                                      ],
+                                                    );
 
                                             },
                                             shrinkWrap: true,
