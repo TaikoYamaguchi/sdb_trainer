@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:sdb_trainer/providers/chartIndexState.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
@@ -34,6 +35,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
   late Map<DateTime, List<historyModel.SDBdata>> selectedEvents;
   var _userProvider;
   var _exProvider;
+  var _chartIndexProvider;
   var _themeProvider;
   var _workoutProvider;
   final TextEditingController _exercisenoteCtrl =
@@ -49,6 +51,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
   List<historyModel.Exercises>? _sdbChartData = [];
   final TextEditingController _workoutNameCtrl =
       TextEditingController(text: "");
+  int _chartTooltipIndex = -1;
 
   @override
   void initState() {
@@ -794,6 +797,10 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                     topLeft: Radius.circular(20),
                     bottomLeft: Radius.circular(20))),
             child: SfCartesianChart(
+                onTooltipRender: (tooltipArgs) {
+                  _chartIndexProvider.changeStaticChartPointIndex(
+                      tooltipArgs.pointIndex!.toInt());
+                },
                 plotAreaBorderWidth: 0,
                 primaryXAxis: DateTimeAxis(
                   majorGridLines: const MajorGridLines(width: 0),
@@ -862,27 +869,39 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
   }
 
   Widget _onechartExercisesWidget(exercises) {
-    return ListView.separated(
-        itemBuilder: (BuildContext _context, int index) {
-          return _onechartExerciseWidget(
-              exercises[index], 0, _userProvider.userdata, true, index);
-        },
-        separatorBuilder: (BuildContext _context, int index) {
-          return Container(
-            alignment: Alignment.center,
-            height: 0,
-            child: Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.symmetric(horizontal: 10),
-              height: 0,
-              color: const Color(0xFF717171),
-            ),
-          );
-        },
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: exercises.length,
-        scrollDirection: Axis.vertical);
+    return Consumer<ChartIndexProvider>(
+        builder: (builder, chartProvider, child) {
+      if (chartProvider.staticChartPointIndex == -1) {
+        return ListView.separated(
+            itemBuilder: (BuildContext _context, int index) {
+              return _onechartExerciseWidget(
+                  exercises[index], 0, _userProvider.userdata, true, index);
+            },
+            separatorBuilder: (BuildContext _context, int index) {
+              return Container(
+                alignment: Alignment.center,
+                height: 0,
+                child: Container(
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  height: 0,
+                  color: const Color(0xFF717171),
+                ),
+              );
+            },
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: exercises.length,
+            scrollDirection: Axis.vertical);
+      } else {
+        return _onechartExerciseWidget(
+            exercises[chartProvider.staticChartPointIndex],
+            0,
+            _userProvider.userdata,
+            true,
+            chartProvider.staticChartPointIndex);
+      }
+    });
   }
 
   Widget _onechartExerciseWidget(
@@ -1109,6 +1128,8 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
     _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     _workoutProvider = Provider.of<WorkoutdataProvider>(context, listen: false);
     _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
+    _chartIndexProvider =
+        Provider.of<ChartIndexProvider>(context, listen: false);
     _getChartSourcefromDay();
     _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
 
@@ -1233,12 +1254,14 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
 
   @override
   void dispose() {
+    _chartIndexProvider.initStaticChartPointIndex(-1);
     print('dispose');
     super.dispose();
   }
 
   @override
   void deactivate() {
+    _chartIndexProvider.initStaticChartPointIndex(-1);
     print('deactivate');
     super.deactivate();
   }
