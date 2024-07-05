@@ -1107,10 +1107,13 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                         }
                       }
                     },
-                    child: Text((provider2.nowonrindex != widget.rindex) &&
-                            _routinetimeProvider.isstarted
-                        ? '다른 루틴 수행중'
-                        : provider2.routineButton),
+                    child: Text(
+                      (provider2.nowonrindex != widget.rindex) &&
+                              _routinetimeProvider.isstarted
+                          ? '다른 루틴 수행중'
+                          : provider2.routineButton,
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
                 if (provider2.nowonrindex == widget.rindex &&

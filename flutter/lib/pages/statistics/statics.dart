@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:sdb_trainer/pages/feed/friendHistory.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
@@ -272,7 +273,7 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
             return Row(
               children: [
                 Text("기록",
-                    textScaleFactor: 1.7,
+                    textScaleFactor: 1.5,
                     style:
                         TextStyle(color: Theme.of(context).primaryColorLight)),
               ],
@@ -1281,6 +1282,12 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
         Widget item = Padding(
             padding: const EdgeInsets.only(left: 3, right: 3),
             child: ChoiceChip(
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    color: Colors.transparent,
+                    width: 0.0,
+                  ),
+                  borderRadius: BorderRadius.circular(8.0)),
               label: Text(_exProvider.exercisesdata!.exercises[i].name),
               labelStyle: TextStyle(
                   color: _chartIndex.chartIndex == i
@@ -1303,6 +1310,9 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
         Widget item = Padding(
           padding: const EdgeInsets.only(left: 3, right: 3),
           child: ChoiceChip(
+            shape: RoundedRectangleBorder(
+                side: BorderSide(color: Colors.transparent, width: 0.0),
+                borderRadius: BorderRadius.circular(8.0)),
             label: Text(_exProvider.exercisesdata!.exercises[i].name),
             labelStyle: TextStyle(
                 color: _chartIndex.chartIndex == i
@@ -1333,6 +1343,9 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
       Padding(
         padding: const EdgeInsets.only(left: 3, right: 3),
         child: ChoiceChip(
+          shape: RoundedRectangleBorder(
+              side: BorderSide(color: Colors.transparent, width: 0.0),
+              borderRadius: BorderRadius.circular(8.0)),
           label: const Text("All"),
           labelStyle: TextStyle(
               color: _chartIndex.staticIndex == 0
@@ -1356,6 +1369,9 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
         Widget item = Padding(
           padding: const EdgeInsets.only(left: 3, right: 3),
           child: ChoiceChip(
+            shape: RoundedRectangleBorder(
+                side: BorderSide(color: Colors.transparent, width: 0.0),
+                borderRadius: BorderRadius.circular(8.0)),
             label: Text(_exProvider.exercisesdata!.exercises[i - 1].name),
             labelStyle: TextStyle(
                 color: _chartIndex.staticIndex == i
@@ -1381,6 +1397,9 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
         Widget item = Padding(
           padding: const EdgeInsets.only(left: 10, right: 5),
           child: ChoiceChip(
+            shape: RoundedRectangleBorder(
+                side: BorderSide(color: Colors.transparent, width: 0.0),
+                borderRadius: BorderRadius.circular(8.0)),
             label: Text(_exProvider.exercisesdata!.exercises[i - 1].name),
             labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
             selected: _chartIndex.staticIndex == i,

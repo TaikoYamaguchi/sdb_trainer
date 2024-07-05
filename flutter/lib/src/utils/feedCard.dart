@@ -77,7 +77,6 @@ class FeedCardState extends State<FeedCard> {
   final _focusNode = FocusNode();
   int num_ad = 0;
   int ad_index = 0;
-  NativeAd? myNative;
 
   Map<String, String> UNIT_ID = kReleaseMode
       ? {

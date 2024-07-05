@@ -1,8 +1,5 @@
 import UIKit
 import Flutter
-import KakaoSDKAuth
-import KakaoSDKCommon
-import google_mobile_ads
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -15,9 +12,9 @@ import google_mobile_ads
     }
     GeneratedPluginRegistrant.register(with: self)
     // TODO: Register ListTileNativeAdFactory
-    let exampleFactory = NativeAdFactoryExample()
-    FLTGoogleMobileAdsPlugin.registerNativeAdFactory(
-        self, factoryId: "adFactoryExample", nativeAdFactory: exampleFactory)
+    //let exampleFactory = NativeAdFactoryExample()
+    //FLTGoogleMobileAdsPlugin.registerNativeAdFactory(
+    //    self, factoryId: "adFactoryExample", nativeAdFactory: exampleFactory)
     
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }

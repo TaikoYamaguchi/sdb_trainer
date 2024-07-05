@@ -84,10 +84,13 @@ class _ExStartButtonState extends State<ExStartButton> {
                     }
                 ];
         },
-        child: Text((provider.nowonrindex != widget.rindex) &&
-                _routinetimeProvider.isstarted
-            ? '다른 루틴 수행중'
-            : provider.routineButton),
+        child: Text(
+          (provider.nowonrindex != widget.rindex) &&
+                  _routinetimeProvider.isstarted
+              ? '다른 루틴 수행중'
+              : provider.routineButton,
+          style: TextStyle(color: Colors.white),
+        ),
       );
     }));
   }

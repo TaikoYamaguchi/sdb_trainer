@@ -44,7 +44,7 @@ class _ProfileState extends State<Profile> {
           child: AppBar(
             elevation: 0,
             title: Text("설정",
-                textScaleFactor: 1.7,
+                textScaleFactor: 1.5,
                 style: TextStyle(color: Theme.of(context).primaryColorLight)),
             actions: [],
             backgroundColor: Theme.of(context).canvasColor,
@@ -112,9 +112,10 @@ class _ProfileState extends State<Profile> {
 
   Widget _profile(context) {
     return SingleChildScrollView(
-      child: Column(children: [
-        ElevatedButton(
-            onPressed: () {
+      physics: ClampingScrollPhysics(),
+      child: Column(mainAxisSize: MainAxisSize.min, children: [
+        GestureDetector(
+            onTap: () {
               _PopProvider.profilestackup();
               Navigator.push(
                   context,
@@ -122,27 +123,24 @@ class _ProfileState extends State<Profile> {
                       child: UserProfile(),
                       transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
             },
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Theme.of(context).cardColor)),
-            child:
-                Consumer<UserdataProvider>(builder: (builder, rpovider, child) {
-              return SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 50,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("프로필 편집하기",
-                            textScaleFactor: 1.1,
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColorLight)),
-                        Icon(Icons.chevron_right,
-                            color: Theme.of(context).primaryColorDark),
-                      ]));
-            })),
-        ElevatedButton(
-            onPressed: () {
+            child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 50,
+                color: Theme.of(context).cardColor,
+                child: Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 12.0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("프로필 편집하기",
+                              textScaleFactor: 1.1,
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
+                          Icon(Icons.chevron_right,
+                              color: Theme.of(context).primaryColorDark),
+                        ])))),
+        GestureDetector(
+            onTap: () {
               _PopProvider.profilestackup();
               Navigator.push(
                   context,
@@ -150,24 +148,24 @@ class _ProfileState extends State<Profile> {
                       child: AppNotification(),
                       transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
             },
-            style: ButtonStyle(
-                backgroundColor:
-                MaterialStateProperty.all(Theme.of(context).cardColor)),
-            child: SizedBox(
+            child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: 50,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("공지사항📢",
-                          textScaleFactor: 1.1,
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColorLight)),
-                      Icon(Icons.chevron_right,
-                          color: Theme.of(context).primaryColorDark),
-                    ]))),
-        ElevatedButton(
-            onPressed: () {
+                color: Theme.of(context).cardColor,
+                child: Padding(
+                    padding: const EdgeInsets.only(left: 16, right: 12.0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("공지사항📢",
+                              textScaleFactor: 1.1,
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
+                          Icon(Icons.chevron_right,
+                              color: Theme.of(context).primaryColorDark),
+                        ])))),
+        GestureDetector(
+            onTap: () {
               _PopProvider.profilestackup();
               Navigator.push(
                   context,
@@ -175,24 +173,24 @@ class _ProfileState extends State<Profile> {
                       child: UserNotification(),
                       transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
             },
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Theme.of(context).cardColor)),
-            child: SizedBox(
+            child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: 50,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("알림 설정하기",
-                          textScaleFactor: 1.1,
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColorLight)),
-                      Icon(Icons.chevron_right,
-                          color: Theme.of(context).primaryColorDark),
-                    ]))),
-        ElevatedButton(
-            onPressed: () {
+                color: Theme.of(context).cardColor,
+                child: Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 12.0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("알림 설정하기",
+                              textScaleFactor: 1.1,
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
+                          Icon(Icons.chevron_right,
+                              color: Theme.of(context).primaryColorDark),
+                        ])))),
+        GestureDetector(
+            onTap: () {
               _PopProvider.profilestackup();
               Navigator.push(
                   context,
@@ -200,44 +198,44 @@ class _ProfileState extends State<Profile> {
                       child: ProfileGoal(),
                       transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
             },
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Theme.of(context).cardColor)),
-            child: SizedBox(
+            child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: 50,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("목표 설정하기",
-                          textScaleFactor: 1.1,
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColorLight)),
-                      Icon(Icons.chevron_right,
-                          color: Theme.of(context).primaryColorDark),
-                    ]))),
-        ElevatedButton(
-            onPressed: () {
+                color: Theme.of(context).cardColor,
+                child: Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 12.0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("목표 설정하기",
+                              textScaleFactor: 1.1,
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
+                          Icon(Icons.chevron_right,
+                              color: Theme.of(context).primaryColorDark),
+                        ])))),
+        GestureDetector(
+            onTap: () {
               _sendEmail();
             },
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Theme.of(context).cardColor)),
-            child: SizedBox(
+            child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: 50,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("오류 알려주기",
-                          textScaleFactor: 1.1,
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColorLight)),
-                      Icon(Icons.chevron_right,
-                          color: Theme.of(context).primaryColorDark),
-                    ]))),
-        ElevatedButton(
-            onPressed: () {
+                color: Theme.of(context).cardColor,
+                child: Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 12.0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("오류 알려주기",
+                              textScaleFactor: 1.1,
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
+                          Icon(Icons.chevron_right,
+                              color: Theme.of(context).primaryColorDark),
+                        ])))),
+        GestureDetector(
+            onTap: () {
               const _appStoreURL =
                   "https://apps.apple.com/kr/app/supero/id6444859542";
               const _playStoreURL =
@@ -248,47 +246,48 @@ class _ProfileState extends State<Profile> {
                   "Supero에서 같이 운동해요💪\n\n운동과 기록도 하고 무게도 올리고 공유 할 수 있어요😁\n\n아래 눌러서 설치해요",
                   "- PlayStore : ${_playStoreURL} \n\n- AppStore : ${_appStoreURL}");
             },
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Theme.of(context).cardColor)),
-            child: SizedBox(
+            child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: 50,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("친구와 운동하기👍",
-                          textScaleFactor: 1.1,
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColorLight)),
-                      Icon(Icons.chevron_right,
-                          color: Theme.of(context).primaryColorDark),
-                    ]))),
-        ElevatedButton(
-            onPressed: () async {
+                color: Theme.of(context).cardColor,
+                child: Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 12.0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("친구와 운동하기👍",
+                              textScaleFactor: 1.1,
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
+                          Icon(Icons.chevron_right,
+                              color: Theme.of(context).primaryColorDark),
+                        ])))),
+        GestureDetector(
+            onTap: () async {
               final InAppReview inAppReview = InAppReview.instance;
               inAppReview.openStoreListing(
                 appStoreId: '6444859542',
               );
             },
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Theme.of(context).cardColor)),
-            child: SizedBox(
+            child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: 50,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("평점 남기기🙏",
-                          textScaleFactor: 1.1,
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColorLight)),
-                      Icon(Icons.open_in_new,
-                          color: Theme.of(context).primaryColorDark),
-                    ]))),
-        ElevatedButton(
-            onPressed: () async {
+                color: Theme.of(context).cardColor,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16.0, right: 12.0),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("평점 남기기🙏",
+                            textScaleFactor: 1.1,
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight)),
+                        Icon(Icons.open_in_new,
+                            color: Theme.of(context).primaryColorDark),
+                      ]),
+                ))),
+        GestureDetector(
+            onTap: () async {
               _PopProvider.profilestackup();
               _interviewProvider.interviewdataAll == null
                   ? _interviewProvider.getInterviewdataFirst()
@@ -299,164 +298,156 @@ class _ProfileState extends State<Profile> {
                       child: Interview(),
                       transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
             },
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Theme.of(context).cardColor)),
-            child: SizedBox(
+            child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: 50,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("기능 제안하기👏",
-                          textScaleFactor: 1.1,
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColorLight)),
-                      Icon(Icons.chevron_right,
-                          color: Theme.of(context).primaryColorDark),
-                    ]))),
-
-        Column(
-          children: [
-            Container(
                 color: Theme.of(context).cardColor,
-                width: MediaQuery.of(context).size.width,
-                height: 50,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 16.0),
+                  padding: const EdgeInsets.only(left: 16.0, right: 12.0),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("글자 변경하기",
+                        Text("기능 제안하기👏",
                             textScaleFactor: 1.1,
                             style: TextStyle(
                                 color: Theme.of(context).primaryColorLight)),
+                        Icon(Icons.chevron_right,
+                            color: Theme.of(context).primaryColorDark),
                       ]),
-                )),
-            Container(
-                color: Theme.of(context).cardColor,
-                width: MediaQuery.of(context).size.width,
-                height: 30,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                  child: Center(
-                    child: CustomSlidingSegmentedControl(
-                        height: 50.0,
-                        isStretch: true,
-                        initialValue: _themeProvider.userFontSize,
-                        children: {
-                          0.6: Text("가",
-                              style: TextStyle(
-                                  fontSize: 10.0,
-                                  color: Theme.of(context).primaryColorLight)),
-                          0.7: Text("가",
-                              style: TextStyle(
-                                  fontSize: 12.0,
-                                  color: Theme.of(context).primaryColorLight)),
-                          0.8: Text("가",
-                              style: TextStyle(
-                                  fontSize: 14.0,
-                                  color: Theme.of(context).primaryColorLight)),
-                          0.9: Text("가",
-                              style: TextStyle(
-                                  fontSize: 16.0,
-                                  color: Theme.of(context).primaryColorLight)),
-                          1.0: Text("가",
-                              style: TextStyle(
-                                  fontSize: 18.0,
-                                  color: Theme.of(context).primaryColorLight)),
-                        },
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Theme.of(context).canvasColor,
-                        ),
-                        innerPadding: const EdgeInsets.all(4),
-                        thumbDecoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Theme.of(context).cardColor),
-                        onValueChanged: (value) {
-                          setState(() {
-                            _themeProvider.setUserFontsize(value);
-                          });
-                        }),
-                  ),
-                )),
-          ],
-        ),
-        Column(
-          children: [
-            Container(
-                color: Theme.of(context).cardColor,
-                width: MediaQuery.of(context).size.width,
-                height: 50,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16.0),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("테마 변경하기",
-                            textScaleFactor: 1.1,
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColorLight)),
-                      ]),
-                )),
-            Container(
-                color: Theme.of(context).cardColor,
-                width: MediaQuery.of(context).size.width,
-                height: 30,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                  child: Center(
-                    child: CustomSlidingSegmentedControl(
-                        height: 50.0,
-                        isStretch: true,
-                        initialValue: _themeProvider.userThemeDark,
-                        children: {
-                          "white": Text("화이트",
-                              textScaleFactor: 1.1,
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColorLight)),
-                          "dark": Text("블랙",
-                              textScaleFactor: 1.1,
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColorLight)),
-                        },
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Theme.of(context).canvasColor,
-                        ),
-                        innerPadding: const EdgeInsets.all(4),
-                        thumbDecoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Theme.of(context).cardColor),
-                        onValueChanged: (value) {
-                          setState(() {
-                            _themeProvider.setUserTheme(value);
-                          });
-                        }),
-                  ),
-                )),
-          ],
-        ),
-
-        ElevatedButton(
-            onPressed: () => userLogOut(context),
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Theme.of(context).cardColor)),
-            child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 50,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("로그아웃",
+                ))),
+        Container(
+            color: Theme.of(context).cardColor,
+            width: MediaQuery.of(context).size.width,
+            height: 50,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16.0),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("글자 변경하기",
+                        textScaleFactor: 1.1,
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorLight)),
+                  ]),
+            )),
+        Container(
+            color: Theme.of(context).cardColor,
+            width: MediaQuery.of(context).size.width,
+            height: 30,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+              child: Center(
+                child: CustomSlidingSegmentedControl(
+                    height: 50.0,
+                    isStretch: true,
+                    initialValue: _themeProvider.userFontSize,
+                    children: {
+                      0.6: Text("가",
+                          style: TextStyle(
+                              fontSize: 10.0,
+                              color: Theme.of(context).primaryColorLight)),
+                      0.7: Text("가",
+                          style: TextStyle(
+                              fontSize: 12.0,
+                              color: Theme.of(context).primaryColorLight)),
+                      0.8: Text("가",
+                          style: TextStyle(
+                              fontSize: 14.0,
+                              color: Theme.of(context).primaryColorLight)),
+                      0.9: Text("가",
+                          style: TextStyle(
+                              fontSize: 16.0,
+                              color: Theme.of(context).primaryColorLight)),
+                      1.0: Text("가",
+                          style: TextStyle(
+                              fontSize: 18.0,
+                              color: Theme.of(context).primaryColorLight)),
+                    },
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Theme.of(context).canvasColor,
+                    ),
+                    innerPadding: const EdgeInsets.all(4),
+                    thumbDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Theme.of(context).cardColor),
+                    onValueChanged: (value) {
+                      setState(() {
+                        _themeProvider.setUserFontsize(value);
+                      });
+                    }),
+              ),
+            )),
+        Container(
+            color: Theme.of(context).cardColor,
+            width: MediaQuery.of(context).size.width,
+            height: 50,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16.0),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("테마 변경하기",
+                        textScaleFactor: 1.1,
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorLight)),
+                  ]),
+            )),
+        Container(
+            color: Theme.of(context).cardColor,
+            width: MediaQuery.of(context).size.width,
+            height: 30,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+              child: Center(
+                child: CustomSlidingSegmentedControl(
+                    height: 50.0,
+                    isStretch: true,
+                    initialValue: _themeProvider.userThemeDark,
+                    children: {
+                      "white": Text("화이트",
                           textScaleFactor: 1.1,
                           style: TextStyle(
                               color: Theme.of(context).primaryColorLight)),
-                      Icon(Icons.chevron_right,
-                          color: Theme.of(context).primaryColorDark),
-                    ]))),
+                      "dark": Text("블랙",
+                          textScaleFactor: 1.1,
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight)),
+                    },
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Theme.of(context).canvasColor,
+                    ),
+                    innerPadding: const EdgeInsets.all(4),
+                    thumbDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Theme.of(context).cardColor),
+                    onValueChanged: (value) {
+                      setState(() {
+                        _themeProvider.setUserTheme(value);
+                      });
+                    }),
+              ),
+            )),
+        GestureDetector(
+            onTap: () => userLogOut(context),
+            child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 50,
+                color: Theme.of(context).cardColor,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16.0, right: 12.0),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("로그아웃",
+                            textScaleFactor: 1.1,
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight)),
+                        Icon(Icons.chevron_right,
+                            color: Theme.of(context).primaryColorDark),
+                      ]),
+                ))),
         const SizedBox(height: 30),
         GestureDetector(
             onTap: () {

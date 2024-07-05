@@ -37,10 +37,8 @@ class ExSearchState extends State<ExSearch> {
   var keySelect = GlobalKey();
   var _menuList;
 
-
   @override
   void initState() {
-
     super.initState();
   }
 
@@ -53,7 +51,7 @@ class ExSearchState extends State<ExSearch> {
             children: [
               Text(
                 "운동 찾기",
-                textScaleFactor: 1.7,
+                textScaleFactor: 1.5,
                 style: TextStyle(color: Theme.of(context).primaryColorLight),
               ),
             ],
