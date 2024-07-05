@@ -244,7 +244,7 @@ class FeedCardState extends State<FeedCard> {
                                                             BoxDecoration(
                                                                 borderRadius:
                                                                     const BorderRadius
-                                                                            .all(
+                                                                        .all(
                                                                         Radius.circular(
                                                                             50)),
                                                                 image:
@@ -279,7 +279,7 @@ class FeedCardState extends State<FeedCard> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 right: 4.0),
                                                         child: Text(
                                                             time_calculate,
@@ -704,17 +704,17 @@ class FeedCardState extends State<FeedCard> {
                     style:
                         TextStyle(color: Theme.of(context).primaryColorLight))),
             onTap: () async {
-              List<String> _imagelist = [];
+              List<XFile> imageFilelist = [];
               final _cachemanager = DefaultCacheManager();
               for (int i = 0; i < SDBdata.image.length; i++) {
                 final _file =
                     await _cachemanager.getSingleFile(SDBdata.image[i]);
-                _imagelist.add(_file.path);
+                imageFilelist.add(XFile(_file.path));
               }
               _photoInfo["feedList"] == widget.feedListCtrl &&
                       _photoInfo["feedVisible"] == true &&
                       SDBdata.image.length != 0
-                  ? Share.shareFiles(_imagelist)
+                  ? Share.shareXFiles(imageFilelist)
                   : Share.share(SDBdata.comment);
             }),
         PopupMenuItem(
@@ -962,25 +962,25 @@ class FeedCardState extends State<FeedCard> {
                                               ? CachedNetworkImage(
                                                   imageUrl:
                                                       SDBdata.image[index],
-                                                  imageBuilder:
-                                                      (context,
-                                                              imageProivder) =>
-                                                          AspectRatio(
-                                                              aspectRatio: 1,
-                                                              child: Container(
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                        borderRadius:
-                                                                            const BorderRadius.all(Radius.circular(
-                                                                                20)),
-                                                                        image:
-                                                                            DecorationImage(
-                                                                          image:
-                                                                              imageProivder,
-                                                                          fit: BoxFit
-                                                                              .cover,
-                                                                        )),
-                                                              )),
+                                                  imageBuilder: (context,
+                                                          imageProivder) =>
+                                                      AspectRatio(
+                                                          aspectRatio: 1,
+                                                          child: Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                                    borderRadius: const BorderRadius
+                                                                        .all(
+                                                                        Radius.circular(
+                                                                            20)),
+                                                                    image:
+                                                                        DecorationImage(
+                                                                      image:
+                                                                          imageProivder,
+                                                                      fit: BoxFit
+                                                                          .cover,
+                                                                    )),
+                                                          )),
                                                 )
                                               : AspectRatio(
                                                   aspectRatio: 1,
@@ -988,7 +988,7 @@ class FeedCardState extends State<FeedCard> {
                                                     decoration: BoxDecoration(
                                                         borderRadius:
                                                             const BorderRadius
-                                                                    .all(
+                                                                .all(
                                                                 Radius.circular(
                                                                     20)),
                                                         image: DecorationImage(
@@ -1954,7 +1954,7 @@ class FeedCardState extends State<FeedCard> {
                                                             decoration:
                                                                 BoxDecoration(
                                                                     borderRadius: const BorderRadius
-                                                                            .all(
+                                                                        .all(
                                                                         Radius.circular(
                                                                             50)),
                                                                     image:

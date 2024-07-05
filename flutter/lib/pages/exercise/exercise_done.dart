@@ -63,7 +63,7 @@ class _ExerciseDoneState extends State<ExerciseDone> {
                     icon: const Icon(Icons.share_rounded),
                     color: Theme.of(context).primaryColorLight,
                     onPressed: () {
-                      Share.shareFiles([_image!.path],
+                      Share.shareXFiles([XFile(_image!.path)],
                           text: _exerciseCommentCtrl.text);
                     },
                   ),
