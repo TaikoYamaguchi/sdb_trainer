@@ -1,5 +1,3 @@
-
-
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -287,7 +285,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
   }
 
   Widget _Nday_RoutineWidget() {
-    return Consumer3<WorkoutdataProvider, ExercisesdataProvider, RoutineTimeProvider>(
+    return Consumer3<WorkoutdataProvider, ExercisesdataProvider,
+            RoutineTimeProvider>(
         builder: (builder, workout_provider, ex_provider, RT_provider, child) {
       var plandata =
           workout_provider.workoutdata.routinedatas[widget.rindex].exercises[0];
@@ -320,7 +319,11 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                 padding: const EdgeInsets.all(5),
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  if(RT_provider.isstarted && RT_provider.nowoneindex >= plandata.progress  && RT_provider.nowonrindex == widget.rindex) {
+                                  if (RT_provider.isstarted &&
+                                      RT_provider.nowoneindex >=
+                                          plandata.progress &&
+                                      RT_provider.nowonrindex ==
+                                          widget.rindex) {
                                     showToast('운동중인 날 이전의 운동은 제거가 불가능해요');
                                   } else {
                                     if (plandata.plans.length != 1) {
@@ -329,7 +332,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                       if (plandata.progress ==
                                           plandata.plans.length) {
                                         _workoutProvider.setplanprogress(
-                                            widget.rindex, plandata.progress - 1);
+                                            widget.rindex,
+                                            plandata.progress - 1);
                                       }
                                       _editWorkoutCheck();
                                     }
@@ -350,11 +354,17 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                 padding: const EdgeInsets.all(5),
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  if(RT_provider.isstarted && RT_provider.nowoneindex > plandata.progress  && RT_provider.nowonrindex == widget.rindex) {
+                                  if (RT_provider.isstarted &&
+                                      RT_provider.nowoneindex >
+                                          plandata.progress &&
+                                      RT_provider.nowonrindex ==
+                                          widget.rindex) {
                                     showToast('운동중인 날 전에는 일자 추가가 불가능해요');
-                                  } else {_workoutProvider.addplanAt(
-                                      widget.rindex, new Plans(exercises: []));
-                                  _editWorkoutCheck();}
+                                  } else {
+                                    _workoutProvider.addplanAt(widget.rindex,
+                                        new Plans(exercises: []));
+                                    _editWorkoutCheck();
+                                  }
                                 },
                                 icon: Icon(
                                   Icons.add_circle_outlined,
@@ -610,33 +620,31 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                                   .ischecked,
                                                               onChanged: (newvalue) {
                                                                 _routinetimeProvider
-                                                                    .isstarted ||
-                                                                    planEachExercise
-                                                                        .sets[
-                                                                    setIndex_]
-                                                                        .ischecked
+                                                                            .isstarted ||
+                                                                        planEachExercise
+                                                                            .sets[
+                                                                                setIndex_]
+                                                                            .ischecked
                                                                     ? [
-                                                                  if (newvalue ==
-                                                                      true)
-                                                                    {
-                                                                      _routinetimeProvider.resettimer(plandata.plans[plandata.progress].exercises[0].rest),
-                                                                      _workoutOnermCheck(set,
-                                                                          exerciseIndex)
-                                                                    },
-                                                                  workout_provider.planboolcheck(
-                                                                      widget.rindex,
-                                                                      index_,
-                                                                      setIndex_,
-                                                                      newvalue),
-                                                                ]
+                                                                        if (newvalue ==
+                                                                            true)
+                                                                          {
+                                                                            _routinetimeProvider.resettimer(plandata.plans[plandata.progress].exercises[0].rest),
+                                                                            _workoutOnermCheck(set,
+                                                                                exerciseIndex)
+                                                                          },
+                                                                        workout_provider.planboolcheck(
+                                                                            widget.rindex,
+                                                                            index_,
+                                                                            setIndex_,
+                                                                            newvalue),
+                                                                      ]
                                                                     : [
-                                                                  _showMyDialog(
-                                                                      index_,
-                                                                      setIndex_,
-                                                                      newvalue)
-                                                                ];
-
-
+                                                                        _showMyDialog(
+                                                                            index_,
+                                                                            setIndex_,
+                                                                            newvalue)
+                                                                      ];
                                                               }))))
                                             ]);
                                       },
@@ -955,8 +963,11 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                 builder: (builder, provider_, provider2_, child) {
               return ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: ((provider_.nowonrindex != widget.rindex &&
-                          _routinetimeProvider.isstarted) || (_routinetimeProvider.isstarted && provider_.nowoneindex != plandata.progress))
+                      backgroundColor: ((provider_.nowonrindex !=
+                                      widget.rindex &&
+                                  _routinetimeProvider.isstarted) ||
+                              (_routinetimeProvider.isstarted &&
+                                  provider_.nowoneindex != plandata.progress))
                           ? const Color(0xFF212121)
                           : provider_.buttoncolor,
                       textStyle: const TextStyle(fontSize: 20)),
@@ -967,8 +978,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                     } else {
                       if (_routinetimeProvider.isstarted) {
                         provider_.nowoneindex != plandata.progress
-                        ? showToast("${provider_.nowoneindex +1}일차 운동 탭에서 종료 가능합니다.")
-                        : _showMyDialog_finish();
+                            ? showToast(
+                                "${provider_.nowoneindex + 1}일차 운동 탭에서 종료 가능합니다.")
+                            : _showMyDialog_finish();
                       } else {
                         _routinetimeProvider.resettimer(_workoutProvider
                             .workoutdata
@@ -987,9 +999,10 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                   child: Text((provider_.nowonrindex != widget.rindex) &&
                           _routinetimeProvider.isstarted
                       ? '다른 루틴 수행중'
-                      : (provider_.nowoneindex != plandata.progress && provider_.isstarted)
-                      ? '${provider_.nowoneindex +1}일차 운동 수행중'
-                      : provider_.routineButton));
+                      : (provider_.nowoneindex != plandata.progress &&
+                              provider_.isstarted)
+                          ? '${provider_.nowoneindex + 1}일차 운동 수행중'
+                          : provider_.routineButton));
             })
           ]));
     });

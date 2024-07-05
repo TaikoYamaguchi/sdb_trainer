@@ -1,11 +1,4 @@
-import 'dart:async';
-import 'package:circular_countdown_timer/circular_countdown_timer.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gif/flutter_gif.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:just_the_tooltip/just_the_tooltip.dart';
-import 'package:sdb_trainer/pages/exercise/exercise_done.dart';
 import 'package:sdb_trainer/pages/search/exercise_guide.dart';
 
 class ExerciseGuideBottomModal {

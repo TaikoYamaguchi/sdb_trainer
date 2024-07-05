@@ -6,7 +6,6 @@ import 'package:flutter_gif/flutter_gif.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:sdb_trainer/pages/exercise/exercise_done.dart';
-import 'package:sdb_trainer/pages/search/exercise_guide.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
 import 'package:sdb_trainer/providers/userpreference.dart';
@@ -887,7 +886,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                       .controllerlist[index],
                                                   keyboardType:
                                                       const TextInputType
-                                                              .numberWithOptions(
+                                                          .numberWithOptions(
                                                           signed: false,
                                                           decimal: true),
                                                   style: TextStyle(
@@ -1087,10 +1086,11 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         elevation: 1,
-                        primary: (provider2.nowonrindex != widget.rindex) &&
-                                _routinetimeProvider.isstarted
-                            ? const Color(0xFF212121)
-                            : provider2.buttoncolor,
+                        backgroundColor:
+                            (provider2.nowonrindex != widget.rindex) &&
+                                    _routinetimeProvider.isstarted
+                                ? const Color(0xFF212121)
+                                : provider2.buttoncolor,
                         textStyle: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold)),
                     onPressed: () {
@@ -1124,7 +1124,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             elevation: 1,
-                            primary: Theme.of(context).primaryColorDark,
+                            backgroundColor: Theme.of(context).primaryColorDark,
                           ),
                           onPressed: btnDisabled
                               ? null
@@ -1153,7 +1153,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             elevation: 1,
-                            primary: Theme.of(context).primaryColorDark,
+                            backgroundColor: Theme.of(context).primaryColorDark,
                           ),
                           onPressed: () {
                             provider.addexAt(
@@ -1214,7 +1214,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                           ? ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 elevation: 1,
-                                primary:
+                                backgroundColor:
                                     provider2.nowonrindex == widget.rindex &&
                                             provider2.isstarted
                                         ? const Color(0xffceec97)
@@ -1266,7 +1266,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                           : ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 elevation: 1,
-                                primary: Theme.of(context).primaryColorDark,
+                                backgroundColor:
+                                    Theme.of(context).primaryColorDark,
                               ),
                               onPressed: () {
                                 showToast("운동을 종료해주세요");
@@ -2597,7 +2598,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                             index],
                                                     keyboardType:
                                                         const TextInputType
-                                                                .numberWithOptions(
+                                                            .numberWithOptions(
                                                             signed: false,
                                                             decimal: true),
                                                     style: TextStyle(
@@ -2662,7 +2663,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                                                             Container(
                                                               padding:
                                                                   const EdgeInsets
-                                                                          .only(
+                                                                      .only(
                                                                       top: 8,
                                                                       bottom:
                                                                           8),
