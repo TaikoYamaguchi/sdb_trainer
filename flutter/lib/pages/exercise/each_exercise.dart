@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gif/flutter_gif.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:sdb_trainer/pages/exercise/exercise_done.dart';
@@ -70,7 +69,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
   PageController? controller;
   var btnDisabled;
   final ScrollController _controller = ScrollController();
-  late FlutterGifController controller1;
 
   var runtime = 0;
   Timer? timer1;
@@ -79,7 +77,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
 
   @override
   void initState() {
-    controller1 = FlutterGifController(vsync: this);
     super.initState();
   }
 

@@ -2,7 +2,6 @@ import 'package:chips_choice/chips_choice.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_gif/flutter_gif.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/pages/search/exercise_guide.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
@@ -37,12 +36,10 @@ class _ExerciseFilterState extends State<ExerciseFilter>
   var selectedItem2 = '기타';
   final ExpandableController _menucontroller =
       ExpandableController(initialExpanded: true);
-  late FlutterGifController controller1;
 
   @override
   void initState() {
     super.initState();
-    controller1 = FlutterGifController(vsync: this);
   }
 
   PreferredSizeWidget _appbarWidget() {

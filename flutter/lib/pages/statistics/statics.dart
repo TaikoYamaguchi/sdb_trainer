@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_gif/flutter_gif.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:sdb_trainer/pages/feed/friendHistory.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
@@ -52,11 +51,9 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
   final TextEditingController _eventController = TextEditingController();
 
   late StreamSubscription<bool> keyboardSubscription;
-  late FlutterGifController controller1;
 
   @override
   void initState() {
-    controller1 = FlutterGifController(vsync: this);
     var keyboardVisibilityController = KeyboardVisibilityController();
     keyboardSubscription =
         keyboardVisibilityController.onChange.listen((bool visible) {
