@@ -47,7 +47,9 @@ class WorkoutPost {
     formData["routinedatas"] = jsonEncode(routinedatas);
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/workoutcreate");
-    var response = await http.post(url, body: json.encode(formData));
+    var response = await http.post(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
 
@@ -81,7 +83,9 @@ class WorkoutEdit {
     formData["routinedatas"] = jsonEncode(routinedatas);
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/workout");
-    var response = await http.put(url, body: json.encode(formData));
+    var response = await http.put(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
 

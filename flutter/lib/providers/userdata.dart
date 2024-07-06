@@ -85,20 +85,26 @@ class UserdataProvider extends ChangeNotifier {
         weight_goal: weightGoal,
         height: _userdata.bodyStats.last.height,
         height_goal: _userdata.bodyStats.last.height_goal));
-    UserBodyStatEdit(bodyStat: _userdata.bodyStats).patchUserBodyStat();
+    UserBodyStatEdit(bodyStat: _userdata.bodyStats)
+        .patchUserBodyStat()
+        .then((user) => {_userdata = user});
     notifyListeners();
   }
 
   setUserWeightEdit(index, weight, weightGoal) {
     _userdata.bodyStats[index].weight = weight;
     _userdata.bodyStats[index].weight_goal = weightGoal;
-    UserBodyStatEdit(bodyStat: _userdata.bodyStats).patchUserBodyStat();
+    UserBodyStatEdit(bodyStat: _userdata.bodyStats)
+        .patchUserBodyStat()
+        .then((user) => {_userdata = user});
     notifyListeners();
   }
 
   setUserWeightDelete(index) {
     _userdata.bodyStats.removeAt(index);
-    UserBodyStatEdit(bodyStat: _userdata.bodyStats).patchUserBodyStat();
+    UserBodyStatEdit(bodyStat: _userdata.bodyStats)
+        .patchUserBodyStat()
+        .then((user) => {_userdata = user});
     notifyListeners();
   }
 

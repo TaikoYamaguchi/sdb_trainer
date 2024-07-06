@@ -724,14 +724,12 @@ Future<dynamic> exGoalEditAlert(context, exercise) async {
                 decoration: InputDecoration(
                     filled: true,
                     enabledBorder: UnderlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
                       borderSide: BorderSide(
-                          color: Theme.of(context).primaryColor, width: 3),
+                          color: Theme.of(context).primaryColor, width: 1),
                     ),
                     focusedBorder: UnderlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
                       borderSide: BorderSide(
-                          color: Theme.of(context).primaryColor, width: 3),
+                          color: Theme.of(context).primaryColor, width: 1.5),
                     ),
                     labelText: "1RM (" +
                         _exProvider.exercisesdata.exercises[index].name +
@@ -758,14 +756,12 @@ Future<dynamic> exGoalEditAlert(context, exercise) async {
                 decoration: InputDecoration(
                     filled: true,
                     enabledBorder: UnderlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
                       borderSide: BorderSide(
-                          color: Theme.of(context).primaryColor, width: 3),
+                          color: Theme.of(context).primaryColor, width: 1),
                     ),
                     focusedBorder: UnderlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
                       borderSide: BorderSide(
-                          color: Theme.of(context).primaryColor, width: 3),
+                          color: Theme.of(context).primaryColor, width: 1.5),
                     ),
                     labelText: "목표 (" +
                         _exProvider.exercisesdata.exercises[index].name +
@@ -975,14 +971,12 @@ class _setWeightAlertState extends State<setWeightAlert> {
                           const BoxConstraints(minWidth: 0, minHeight: 0),
                       filled: true,
                       enabledBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
                         borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor, width: 3),
+                            color: Theme.of(context).primaryColor, width: 1),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
                         borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor, width: 3),
+                            color: Theme.of(context).primaryColor, width: 1.5),
                       ),
                       hintText: "입력",
                       hintStyle: TextStyle(
@@ -1095,14 +1089,12 @@ Future<dynamic> bodyWeightCtrlAlert(context, layer) async {
                 decoration: InputDecoration(
                     filled: true,
                     enabledBorder: UnderlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
                       borderSide: BorderSide(
-                          color: Theme.of(context).primaryColor, width: 3),
+                          color: Theme.of(context).primaryColor, width: 1),
                     ),
                     focusedBorder: UnderlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
                       borderSide: BorderSide(
-                          color: Theme.of(context).primaryColor, width: 3),
+                          color: Theme.of(context).primaryColor, width: 1.5),
                     ),
                     labelText: "몸무게",
                     labelStyle:
@@ -1126,14 +1118,12 @@ Future<dynamic> bodyWeightCtrlAlert(context, layer) async {
                 decoration: InputDecoration(
                     filled: true,
                     enabledBorder: UnderlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
                       borderSide: BorderSide(
-                          color: Theme.of(context).primaryColor, width: 3),
+                          color: Theme.of(context).primaryColor, width: 1),
                     ),
                     focusedBorder: UnderlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
                       borderSide: BorderSide(
-                          color: Theme.of(context).primaryColor, width: 3),
+                          color: Theme.of(context).primaryColor, width: 1.5),
                     ),
                     labelText: "목표 몸무게",
                     labelStyle:

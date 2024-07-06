@@ -212,8 +212,8 @@ class _UserProfileState extends State<UserProfile> {
         },
         child: SingleChildScrollView(
           child: Column(children: [
-            ElevatedButton(
-              onPressed: () {
+            GestureDetector(
+              onTap: () {
                 _PopProvider.profilestackup();
                 Navigator.push(
                     context,
@@ -221,124 +221,127 @@ class _UserProfileState extends State<UserProfile> {
                         child: ProfileNickname(),
                         transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
               },
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all(Theme.of(context).cardColor)),
               child: Consumer<UserdataProvider>(
                   builder: (builder, rpovider, child) {
-                return SizedBox(
+                return Container(
                     width: MediaQuery.of(context).size.width,
                     height: 50,
+                    color: Theme.of(context).cardColor,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16.0, right: 12.0),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(_userProvider.userdata.nickname,
+                                textScaleFactor: 1.1,
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).primaryColorLight)),
+                            Icon(Icons.chevron_right,
+                                color: Theme.of(context).primaryColorDark),
+                          ]),
+                    ));
+              }),
+            ),
+            GestureDetector(
+                onTap: () {
+                  _PopProvider.profilestackup();
+                  Navigator.push(
+                      context,
+                      Transition(
+                          child: ProfileIntroduce(),
+                          transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+                },
+                child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    color: Theme.of(context).cardColor,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16.0, right: 12.0),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("소개글 변경하기",
+                                textScaleFactor: 1.1,
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).primaryColorLight)),
+                            Icon(Icons.chevron_right,
+                                color: Theme.of(context).primaryColorDark),
+                          ]),
+                    ))),
+            GestureDetector(onTap: () {
+              _PopProvider.profilestackup();
+              Navigator.push(
+                  context,
+                  Transition(
+                      child: ProfileBody(),
+                      transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+            }, child:
+                Consumer<UserdataProvider>(builder: (builder, rpovider, child) {
+              return Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  color: Theme.of(context).cardColor,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 12.0),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(_userProvider.userdata.nickname,
+                          Text(
+                              _userProvider.userdata.height.toString() +
+                                  _userProvider.userdata.height_unit +
+                                  "/" +
+                                  _userProvider.userdata.bodyStats.last.weight
+                                      .toString() +
+                                  _userProvider.userdata.weight_unit,
                               textScaleFactor: 1.1,
                               style: TextStyle(
                                   color: Theme.of(context).primaryColorLight)),
                           Icon(Icons.chevron_right,
                               color: Theme.of(context).primaryColorDark),
-                        ]));
-              }),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _PopProvider.profilestackup();
-                Navigator.push(
-                    context,
-                    Transition(
-                        child: ProfileIntroduce(),
-                        transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-              },
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all(Theme.of(context).cardColor)),
-              child: Consumer<UserdataProvider>(
-                  builder: (builder, rpovider, child) {
-                return SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
+                        ]),
+                  ));
+            })),
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  color: Theme.of(context).cardColor,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 12.0),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("소개글 변경하기",
+                          Text(_userProvider.userdata.isMan ? "남성" : "여성",
                               textScaleFactor: 1.1,
                               style: TextStyle(
                                   color: Theme.of(context).primaryColorLight)),
-                          Icon(Icons.chevron_right,
-                              color: Theme.of(context).primaryColorDark),
-                        ]));
-              }),
+                          Container(),
+                        ]),
+                  )),
             ),
-            ElevatedButton(
-              onPressed: () {
-                _PopProvider.profilestackup();
-                Navigator.push(
-                    context,
-                    Transition(
-                        child: ProfileBody(),
-                        transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-              },
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all(Theme.of(context).cardColor)),
-              child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 50,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                            _userProvider.userdata.height.toString() +
-                                _userProvider.userdata.height_unit +
-                                "/" +
-                                _userProvider.userdata.bodyStats.last.weight
-                                    .toString() +
-                                _userProvider.userdata.weight_unit,
-                            textScaleFactor: 1.1,
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColorLight)),
-                        Icon(Icons.chevron_right,
-                            color: Theme.of(context).primaryColorDark),
-                      ])),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all(Theme.of(context).cardColor)),
-              child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 50,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(_userProvider.userdata.isMan ? "남성" : "여성",
-                            textScaleFactor: 1.1,
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColorLight)),
-                        Container(),
-                      ])),
-            ),
-            ElevatedButton(
-              onPressed: () {
+            GestureDetector(
+              onTap: () {
                 _displayUserDeleteAlert();
               },
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all(Theme.of(context).cardColor)),
-              child: SizedBox(
+              child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: 50,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text("회원탈퇴",
-                            textScaleFactor: 1.1,
-                            style: TextStyle(color: Colors.grey)),
-                        Icon(Icons.chevron_right,
-                            color: Theme.of(context).primaryColorDark),
-                      ])),
+                  color: Theme.of(context).cardColor,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 12.0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text("회원탈퇴",
+                              textScaleFactor: 1.1,
+                              style: TextStyle(color: Colors.grey)),
+                          Icon(Icons.chevron_right,
+                              color: Theme.of(context).primaryColorDark),
+                        ]),
+                  )),
             ),
             const SizedBox(height: 30),
             GestureDetector(

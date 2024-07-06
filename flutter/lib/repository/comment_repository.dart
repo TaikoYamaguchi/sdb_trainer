@@ -26,8 +26,9 @@ class CommentCreate {
     formData["writer_email"] = writer_email;
     formData["writer_nickname"] = writer_nickname;
     formData["content"] = content;
-    var response = await http.post(url, body: json.encode(formData));
-    print(json.encode(formData));
+    var response = await http.post(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);
@@ -80,6 +81,7 @@ class CommentDelete {
         LocalHost.getLocalHost() + "/api/comment/" + comment_id.toString());
     var response = await http.delete(url,
         headers: {
+          "Content-Type": "application/json",
           HttpHeaders.authorizationHeader: 'Bearer ${token}',
         },
         body: json.encode(formData));

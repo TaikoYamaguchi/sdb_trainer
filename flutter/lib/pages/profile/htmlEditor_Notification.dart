@@ -12,8 +12,6 @@ import 'package:html/parser.dart';
 
 import 'package:sdb_trainer/src/model/notification.dart' as notimodel;
 
-
-
 class NotificationHtmlEditor extends StatefulWidget {
   NotificationHtmlEditor({Key? key}) : super(key: key);
 
@@ -34,7 +32,6 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
 
   @override
   void initState() {
-
     super.initState();
   }
 
@@ -42,18 +39,19 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
   Widget build(BuildContext context) {
     _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _notificationprovider = Provider.of<NotificationdataProvider>(context, listen: false);
+    _notificationprovider =
+        Provider.of<NotificationdataProvider>(context, listen: false);
     return Consumer<PopProvider>(builder: (Builder, provider, child) {
       bool _popable = provider.isprostacking;
       _popable == false
           ? null
           : [
-        provider.profilestackdown(),
-        provider.propopoff(),
-        Future.delayed(Duration.zero, () async {
-          Navigator.of(context).pop();
-        })
-      ];
+              provider.profilestackdown(),
+              provider.propopoff(),
+              Future.delayed(Duration.zero, () async {
+                Navigator.of(context).pop();
+              })
+            ];
       return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: _appbarWidget(),
@@ -75,9 +73,9 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
               _btnDisabled == true
                   ? null
                   : [
-                Navigator.of(context).pop(),
-                _btnDisabled = true,
-              ];
+                      Navigator.of(context).pop(),
+                      _btnDisabled = true,
+                    ];
             },
           ),
           title: Text(
@@ -93,32 +91,27 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
     return MediaQuery(
       data: const MediaQueryData(textScaleFactor: 1.5),
       child: TextField(
-        onChanged: (value) {
-
-        },
-        style: TextStyle(color: Theme.of(context).primaryColorLight, ),
+        onChanged: (value) {},
+        style: TextStyle(
+          color: Theme.of(context).primaryColorLight,
+        ),
         textAlign: TextAlign.start,
         controller: _notiNameCtrl,
         decoration: InputDecoration(
-            filled: true,
-            enabledBorder: UnderlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0),
-              borderSide: BorderSide(
-                  color: Colors.white, width: 1),
-            ),
-            focusedBorder: UnderlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0),
-              borderSide: BorderSide(
-                  color: Theme.of(context).primaryColor, width: 3),
-            ),
-            ),
+          filled: true,
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white, width: 1),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide:
+                BorderSide(color: Theme.of(context).primaryColor, width: 1.5),
+          ),
+        ),
       ),
     );
   }
 
-
-
-  Widget _HtmlEditorWidget(){
+  Widget _HtmlEditorWidget() {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -145,17 +138,13 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
                   textScaleFactor: 1.5,
                   style: TextStyle(
                       color: Theme.of(context).primaryColorLight,
-                      fontWeight: FontWeight.bold)
-              ),
+                      fontWeight: FontWeight.bold)),
             ),
-
             SizedBox(
               height: 5,
             ),
-
             HtmlEditor(
               controller: htmlcontroller,
-
               htmlEditorOptions: HtmlEditorOptions(
                 hint: 'Your text here...',
                 darkMode: _themeProvider.userThemeDark == "dark" ? true : false,
@@ -179,23 +168,25 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
 //                  "dropdown '${describeEnum(type)}' changed to $changed");
                   return true;
                 },
-                mediaLinkInsertInterceptor:
-                    (String url, InsertFileType type) {
+                mediaLinkInsertInterceptor: (String url, InsertFileType type) {
                   print(url);
                   return true;
                 },
 
                 mediaUploadInterceptor:
                     (PlatformFile file, InsertFileType type) async {
-                  imglist.add(XFile(file.path!)) ;
+                  imglist.add(XFile(file.path!));
 
                   print(file.size); //size in bytes
                   print(file.extension); //file extension (eg jpeg or mp4)
                   return true;
                 },
               ),
-
-              otherOptions: OtherOptions(height: 400,decoration: BoxDecoration(border: Border.all(color: Theme.of(context).primaryColorDark))),
+              otherOptions: OtherOptions(
+                  height: 400,
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Theme.of(context).primaryColorDark))),
               callbacks: Callbacks(onBeforeCommand: (String? currentHtml) {
                 print('html before change is $currentHtml');
               }, onChangeContent: (String? changed) {
@@ -228,33 +219,33 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
                         print(file.type);
                         print(file.base64);
                       },*/
-                  onImageUploadError: (FileUpload? file, String? base64Str,
-                      UploadError error) {
+                  onImageUploadError:
+                      (FileUpload? file, String? base64Str, UploadError error) {
 //                print(describeEnum(error));
-                    print(base64Str ?? '');
-                    if (file != null) {
-                      print(file.name);
-                      print(file.size);
-                      print(file.type);
-                    }
-                  }, onKeyDown: (int? keyCode) {
-                    print('$keyCode key downed');
+                print(base64Str ?? '');
+                if (file != null) {
+                  print(file.name);
+                  print(file.size);
+                  print(file.type);
+                }
+              }, onKeyDown: (int? keyCode) {
+                print('$keyCode key downed');
 //                print(
 //                    'current character count: ${controller.characterCount}');
-                  }, onKeyUp: (int? keyCode) {
-                    print('$keyCode key released');
-                  }, onMouseDown: () {
-                    print('mouse downed');
-                  }, onMouseUp: () {
-                    print('mouse released');
-                  }, onNavigationRequestMobile: (String url) {
-                    print(url);
-                    return NavigationActionPolicy.ALLOW;
-                  }, onPaste: () {
-                    print('pasted into editor');
-                  }, onScroll: () {
-                    print('editor scrolled');
-                  }),
+              }, onKeyUp: (int? keyCode) {
+                print('$keyCode key released');
+              }, onMouseDown: () {
+                print('mouse downed');
+              }, onMouseUp: () {
+                print('mouse released');
+              }, onNavigationRequestMobile: (String url) {
+                print(url);
+                return NavigationActionPolicy.ALLOW;
+              }, onPaste: () {
+                print('pasted into editor');
+              }, onScroll: () {
+                print('editor scrolled');
+              }),
               plugins: [
                 SummernoteAtMention(
                     getSuggestionsMobile: (String value) {
@@ -275,25 +266,23 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   TextButton(
-                    style: TextButton.styleFrom(
-                        backgroundColor: Colors.blueGrey),
+                    style:
+                        TextButton.styleFrom(backgroundColor: Colors.blueGrey),
                     onPressed: () {
                       htmlcontroller.undo();
                     },
-                    child:
-                    Text('Undo', style: TextStyle(color: Colors.white)),
+                    child: Text('Undo', style: TextStyle(color: Colors.white)),
                   ),
                   SizedBox(
                     width: 16,
                   ),
                   TextButton(
-                    style: TextButton.styleFrom(
-                        backgroundColor: Colors.blueGrey),
+                    style:
+                        TextButton.styleFrom(backgroundColor: Colors.blueGrey),
                     onPressed: () {
                       htmlcontroller.clear();
                     },
-                    child:
-                    Text('Reset', style: TextStyle(color: Colors.white)),
+                    child: Text('Reset', style: TextStyle(color: Colors.white)),
                   ),
                   SizedBox(
                     width: 16,
@@ -301,28 +290,31 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
                   TextButton(
                     style: TextButton.styleFrom(
                         backgroundColor:
-                        Theme.of(context).colorScheme.secondary),
+                            Theme.of(context).colorScheme.secondary),
                     onPressed: () async {
                       var txt = await htmlcontroller.getText();
                       var afterparse = parse(txt);
 
                       if (txt.contains('src=\"data:')) {
-                        for (int i=0; i < afterparse.getElementsByTagName("img").length; ++i){
-                          afterparse.getElementsByTagName("img")[i].replaceWith(parseFragment("""<img src="${i}">"""));
-
+                        for (int i = 0;
+                            i < afterparse.getElementsByTagName("img").length;
+                            ++i) {
+                          afterparse.getElementsByTagName("img")[i].replaceWith(
+                              parseFragment("""<img src="${i}">"""));
                         }
                         //String sa =afterparse.getElementsByTagName("img")[0].children;
-                        print(afterparse.getElementsByTagName("img")[0].attributes["src"]);
+                        print(afterparse
+                            .getElementsByTagName("img")[0]
+                            .attributes["src"]);
                       }
 
-
-
-                      notimodel.Notification noti = notimodel.Notification(title: _notiNameCtrl.text, content: notimodel.Content(html: afterparse.outerHtml), images: [], ispopup: true);
+                      notimodel.Notification noti = notimodel.Notification(
+                          title: _notiNameCtrl.text,
+                          content:
+                              notimodel.Content(html: afterparse.outerHtml),
+                          images: [],
+                          ispopup: true);
                       _notificationprovider.postdata(noti, imglist);
-
-
-
-
 
                       /*
 
@@ -342,7 +334,7 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
                   TextButton(
                     style: TextButton.styleFrom(
                         backgroundColor:
-                        Theme.of(context).colorScheme.secondary),
+                            Theme.of(context).colorScheme.secondary),
                     onPressed: () {
                       htmlcontroller.redo();
                     },
@@ -366,7 +358,6 @@ class _NotificationHtmlEditorState extends State<NotificationHtmlEditor> {
       ),
     );
   }
-
 
   @override
   void dispose() {

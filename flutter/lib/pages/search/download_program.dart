@@ -1042,14 +1042,12 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                   decoration: InputDecoration(
                       filled: true,
                       enabledBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
                         borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor, width: 3),
+                            color: Theme.of(context).primaryColor, width: 1),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
                         borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor, width: 3),
+                            color: Theme.of(context).primaryColor, width: 1.5),
                       ),
                       hintText: "운동 루틴 이름",
                       hintStyle: TextStyle(
@@ -1157,16 +1155,14 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                       decoration: InputDecoration(
                           filled: true,
                           enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
                             borderSide: BorderSide(
                                 color: Theme.of(context).primaryColor,
-                                width: 3),
+                                width: 1),
                           ),
                           focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
                             borderSide: BorderSide(
                                 color: Theme.of(context).primaryColor,
-                                width: 3),
+                                width: 1.5),
                           ),
                           hintText: Exercises.onerm.toStringAsFixed(1),
                           hintStyle: TextStyle(

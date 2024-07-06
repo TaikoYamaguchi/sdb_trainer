@@ -99,7 +99,7 @@ class _UserFindPageState extends State<UserFindPage> {
                   color: _isPhoneEmpty == false
                       ? Theme.of(context).primaryColorLight
                       : Colors.red,
-                  width: 2.0),
+                  width: 1.5),
               borderRadius: BorderRadius.circular(5.0),
             ),
             enabledBorder: OutlineInputBorder(
@@ -107,7 +107,7 @@ class _UserFindPageState extends State<UserFindPage> {
                   color: _isPhoneEmpty == false
                       ? Theme.of(context).primaryColorLight
                       : Colors.red,
-                  width: 2.0),
+                  width: 1.0),
               borderRadius: BorderRadius.circular(5.0),
             ),
           ),
@@ -135,7 +135,7 @@ class _UserFindPageState extends State<UserFindPage> {
               color: _isPhoneEmpty == false
                   ? Theme.of(context).primaryColorLight
                   : Colors.red,
-              width: 2.0),
+              width: 1.5),
           borderRadius: BorderRadius.circular(5.0),
         ),
         enabledBorder: OutlineInputBorder(
@@ -143,7 +143,7 @@ class _UserFindPageState extends State<UserFindPage> {
               color: _isPhoneEmpty == false
                   ? Theme.of(context).primaryColorLight
                   : Colors.red,
-              width: 2.0),
+              width: 1.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
       ),
@@ -175,7 +175,7 @@ class _UserFindPageState extends State<UserFindPage> {
               color: _isPhoneEmpty == false
                   ? Theme.of(context).primaryColorLight
                   : Colors.red,
-              width: 2.0),
+              width: 1.0),
           borderRadius: BorderRadius.circular(5.0),
         ),
       ),

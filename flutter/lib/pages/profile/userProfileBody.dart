@@ -19,6 +19,8 @@ class _ProfileBodyState extends State<ProfileBody> {
   DateTime _toDay = DateTime.now();
   var _heightUnitList;
   var _weightUnitList;
+  var _userWeightUnitCtrl = "kg";
+  var _userHeightUnitCtrl = "cm";
   @override
   void initState() {
     super.initState();
@@ -42,18 +44,30 @@ class _ProfileBodyState extends State<ProfileBody> {
     _heightUnitList = <String, Widget>{
       "cm": Text("cm",
           textScaleFactor: 2.0,
-          style: TextStyle(color: Theme.of(context).primaryColorLight)),
+          style: TextStyle(
+              color: _userHeightUnitCtrl == "cm"
+                  ? Theme.of(context).highlightColor
+                  : Theme.of(context).primaryColorLight)),
       "inch": Text("inch",
           textScaleFactor: 2.0,
-          style: TextStyle(color: Theme.of(context).primaryColorLight)),
+          style: TextStyle(
+              color: _userHeightUnitCtrl == "inch"
+                  ? Theme.of(context).highlightColor
+                  : Theme.of(context).primaryColorLight)),
     };
     _weightUnitList = <String, Widget>{
       "kg": Text("kg",
           textScaleFactor: 2.0,
-          style: TextStyle(color: Theme.of(context).primaryColorLight)),
+          style: TextStyle(
+              color: _userWeightUnitCtrl == "kg"
+                  ? Theme.of(context).highlightColor
+                  : Theme.of(context).primaryColorLight)),
       "lb": Text("lb",
           textScaleFactor: 2.0,
-          style: TextStyle(color: Theme.of(context).primaryColorLight)),
+          style: TextStyle(
+              color: _userWeightUnitCtrl == "lb"
+                  ? Theme.of(context).highlightColor
+                  : Theme.of(context).primaryColorLight)),
     };
 
     return Scaffold(
@@ -174,13 +188,11 @@ class _ProfileBodyState extends State<ProfileBody> {
         labelStyle: const TextStyle(color: Colors.grey),
         focusedBorder: UnderlineInputBorder(
           borderSide:
-              BorderSide(color: Theme.of(context).primaryColor, width: 3.0),
-          borderRadius: BorderRadius.circular(5.0),
+              BorderSide(color: Theme.of(context).primaryColor, width: 1.5),
         ),
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-              color: Theme.of(context).primaryColorLight, width: 2.0),
-          borderRadius: BorderRadius.circular(5.0),
+              color: Theme.of(context).primaryColorLight, width: 1.0),
         ),
       ),
     );
@@ -198,13 +210,11 @@ class _ProfileBodyState extends State<ProfileBody> {
         labelStyle: const TextStyle(color: Colors.grey),
         focusedBorder: UnderlineInputBorder(
           borderSide:
-              BorderSide(color: Theme.of(context).primaryColor, width: 3.0),
-          borderRadius: BorderRadius.circular(5.0),
+              BorderSide(color: Theme.of(context).primaryColor, width: 1.5),
         ),
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-              color: Theme.of(context).primaryColorLight, width: 3.0),
-          borderRadius: BorderRadius.circular(5.0),
+              color: Theme.of(context).primaryColorLight, width: 1.0),
         ),
       ),
     );
@@ -224,7 +234,9 @@ class _ProfileBodyState extends State<ProfileBody> {
             borderRadius: BorderRadius.circular(12),
             color: Theme.of(context).primaryColor),
         onValueChanged: (i) {
-          setState(() {});
+          setState(() {
+            _userWeightUnitCtrl = i as String;
+          });
         });
   }
 
@@ -242,7 +254,9 @@ class _ProfileBodyState extends State<ProfileBody> {
             borderRadius: BorderRadius.circular(12),
             color: Theme.of(context).primaryColor),
         onValueChanged: (i) {
-          setState(() {});
+          setState(() {
+            _userHeightUnitCtrl = i as String;
+          });
         });
   }
 

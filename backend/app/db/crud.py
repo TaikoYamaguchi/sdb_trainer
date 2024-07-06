@@ -186,12 +186,14 @@ def edit_fcm_token(db: Session, fcm_token:schemas.UserFCMTokenIn, user:schemas.U
     setattr(db_user, "fcm_token", fcm_token.fcm_token)
     db.commit()
     db.refresh(db_user)
+    return db_user
 
 def edit_user_body_stat(db: Session, body_stats:schemas.UserBodyStatIn, user:schemas.UserBase):
     db_user = db.query(models.User).filter(models.User.email == user.email).first()
     setattr(db_user, "body_stats", body_stats.body_stats)
     db.commit()
     db.refresh(db_user)
+    return db_user
 
 def delete_user(db: Session, user:schemas.UserBase):
     db_user = db.query(models.User).filter(models.User.email == user.email).first()

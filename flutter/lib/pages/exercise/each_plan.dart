@@ -1231,15 +1231,15 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                           contentPadding:
                               const EdgeInsets.symmetric(vertical: 10.0),
                           enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  width: 3,
-                                  color: Theme.of(context).primaryColorDark),
-                              borderRadius: BorderRadius.circular(5.0)),
+                            borderSide: BorderSide(
+                                width: 1,
+                                color: Theme.of(context).primaryColorDark),
+                          ),
                           focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  width: 3,
-                                  color: Theme.of(context).primaryColor),
-                              borderRadius: BorderRadius.circular(5.0)),
+                            borderSide: BorderSide(
+                                width: 1.5,
+                                color: Theme.of(context).primaryColor),
+                          ),
                           hintText: "${setdata.index}",
                           hintStyle: TextStyle(
                             fontSize: 21,
@@ -1273,15 +1273,15 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                           contentPadding:
                               const EdgeInsets.symmetric(vertical: 10.0),
                           enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  width: 3,
-                                  color: Theme.of(context).primaryColorDark),
-                              borderRadius: BorderRadius.circular(5.0)),
+                            borderSide: BorderSide(
+                                width: 1,
+                                color: Theme.of(context).primaryColorDark),
+                          ),
                           focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  width: 3,
-                                  color: Theme.of(context).primaryColor),
-                              borderRadius: BorderRadius.circular(5.0)),
+                            borderSide: BorderSide(
+                                width: 1.5,
+                                color: Theme.of(context).primaryColor),
+                          ),
                           hintText: "${setdata.weight}",
                           hintStyle: TextStyle(
                             fontSize: 21,
@@ -1312,15 +1312,15 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                         contentPadding:
                             const EdgeInsets.symmetric(vertical: 10.0),
                         enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                width: 3,
-                                color: Theme.of(context).primaryColorDark),
-                            borderRadius: BorderRadius.circular(5.0)),
+                          borderSide: BorderSide(
+                              width: 1,
+                              color: Theme.of(context).primaryColorDark),
+                        ),
                         focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                width: 3,
-                                color: Theme.of(context).primaryColor),
-                            borderRadius: BorderRadius.circular(5.0)),
+                          borderSide: BorderSide(
+                              width: 1.5,
+                              color: Theme.of(context).primaryColor),
+                        ),
                         hintText: "${setdata.reps}",
                         hintStyle: TextStyle(
                           fontSize: 21,

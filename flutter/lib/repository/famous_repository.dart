@@ -47,7 +47,9 @@ class FamousLike {
 
     var url =
         Uri.parse(LocalHost.getLocalHost() + "/api/famous/likes/${famous_id}");
-    var response = await http.patch(url, body: json.encode(formData));
+    var response = await http.patch(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
 
@@ -123,7 +125,9 @@ class ProgramPost {
     formData["category"] = category;
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/famouscreate");
-    var response = await http.post(url, body: json.encode(formData));
+    var response = await http.post(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);
@@ -156,7 +160,9 @@ class FamousEdit {
     formData["famousdatas"] = jsonEncode(famousdatas);
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/workout");
-    var response = await http.put(url, body: json.encode(formData));
+    var response = await http.put(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);

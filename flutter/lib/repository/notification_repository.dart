@@ -23,7 +23,7 @@ class NotificationRepository {
     String jsonString = await _loadNotificationdataAllFromServer();
     final jsonResponse = json.decode(jsonString);
     NotificationList notificationdatalist =
-    NotificationList.fromJson(jsonResponse);
+        NotificationList.fromJson(jsonResponse);
     return (notificationdatalist);
   }
 }
@@ -47,13 +47,12 @@ class NotificationPost {
     formData["ispopup"] = ispopup;
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/notificationcreate");
-    var response = await http.post(url, body: json.encode(formData));
-    //print(json.encode(formData));
+    var response = await http.post(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
-      // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);
     } else {
-      // 만약 응답이 OK가 아니면, 에러를 던집니다.
       throw Exception('Failed to load post');
     }
   }
@@ -61,8 +60,6 @@ class NotificationPost {
   Future<Map<String, dynamic>> postNotification() async {
     String jsonString = await _notificationPostFromServer();
     final jsonResponse = json.decode(jsonString);
-    print(jsonResponse);
-    //Notification notificationdata = Notification.fromJson(jsonResponse);
     return (jsonResponse);
   }
 }
@@ -77,7 +74,9 @@ class NotificationEdit {
     formData["notification"] = jsonEncode(notification);
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/notification");
-    var response = await http.put(url, body: json.encode(formData));
+    var response = await http.put(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);
@@ -102,7 +101,7 @@ class NotificationDelete {
   });
   Future<String> _notificationDeleteFromServer() async {
     var url =
-    Uri.parse(LocalHost.getLocalHost() + "/api/workout/" + id.toString());
+        Uri.parse(LocalHost.getLocalHost() + "/api/workout/" + id.toString());
     var response = await http.delete(url);
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
@@ -127,8 +126,8 @@ class NotificationImageEdit {
   Future<Map<String, dynamic>> _patchHistoryImageFromServer() async {
     final List<MultipartFile> _files = file
         .map((img) => MultipartFile.fromFileSync(
-      img.path,
-    ))
+              img.path,
+            ))
         .toList();
     const storage = FlutterSecureStorage();
     String? token = await storage.read(key: "sdb_token");
@@ -140,7 +139,8 @@ class NotificationImageEdit {
       dio.options.headers["Authorization"] = "Bearer " + token!;
 
       var response = await dio.post(
-        LocalHost.getLocalHost() + '/api/temp/notificationimages/${notification_id}',
+        LocalHost.getLocalHost() +
+            '/api/temp/notificationimages/${notification_id}',
         data: formData,
       );
       return response.data;

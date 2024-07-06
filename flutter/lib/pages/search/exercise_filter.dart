@@ -80,12 +80,12 @@ class _ExerciseFilterState extends State<ExerciseFilter>
                         color: Theme.of(context).primaryColorLight),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                          width: 2, color: Theme.of(context).cardColor),
+                          width: 1.5, color: Theme.of(context).cardColor),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                          color: Theme.of(context).primaryColor, width: 2.0),
+                          color: Theme.of(context).primaryColor, width: 1.5),
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
@@ -339,16 +339,14 @@ class _ExerciseFilterState extends State<ExerciseFilter>
                             decoration: InputDecoration(
                                 filled: true,
                                 enabledBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
                                   borderSide: BorderSide(
                                       color: Theme.of(context).primaryColor,
-                                      width: 3),
+                                      width: 1),
                                 ),
                                 focusedBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
                                   borderSide: BorderSide(
                                       color: Theme.of(context).primaryColor,
-                                      width: 3),
+                                      width: 1.5),
                                 ),
                                 hintText: "커스텀 운동 이름",
                                 hintStyle: TextStyle(
@@ -391,20 +389,16 @@ class _ExerciseFilterState extends State<ExerciseFilter>
                                     decoration: InputDecoration(
                                       filled: true,
                                       enabledBorder: UnderlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
                                         borderSide: BorderSide(
                                             color: Theme.of(context)
                                                 .primaryColorLight,
-                                            width: 3),
+                                            width: 1),
                                       ),
                                       focusedBorder: UnderlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
                                         borderSide: BorderSide(
                                             color:
                                                 Theme.of(context).primaryColor,
-                                            width: 3),
+                                            width: 1.5),
                                       ),
                                     ),
                                     hint: Align(

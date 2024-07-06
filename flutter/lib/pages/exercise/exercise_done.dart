@@ -72,16 +72,9 @@ class _ExerciseDoneState extends State<ExerciseDone> {
   }
 
   Widget _exerciseDoneWidget() {
-    var time_hour = 0;
-    var time_min = 0;
-    var time_sec = 0;
-    if (widget.routinetime ~/ 3600 > 0) {
-      time_hour = widget.routinetime ~/ 3600;
-    } else if (widget.routinetime ~/ 60 > 0) {
-      time_min = widget.routinetime ~/ 60;
-    } else if (widget.routinetime > 0) {
-      time_sec = widget.routinetime % 60;
-    }
+    int time_hour = widget.routinetime ~/ 3600;
+    int time_min = (widget.routinetime % 3600) ~/ 60;
+    int time_sec = widget.routinetime % 60;
     return GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();

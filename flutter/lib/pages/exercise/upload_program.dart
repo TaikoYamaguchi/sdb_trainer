@@ -127,16 +127,14 @@ class _ProgramUploadState extends State<ProgramUpload> {
                           decoration: InputDecoration(
                             filled: true,
                             enabledBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
                               borderSide: BorderSide(
                                   color: Theme.of(context).primaryColorLight,
-                                  width: 3),
+                                  width: 1),
                             ),
                             focusedBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
                               borderSide: BorderSide(
                                   color: Theme.of(context).primaryColor,
-                                  width: 3),
+                                  width: 1.5),
                             ),
                           ),
                           hint: Align(
@@ -174,47 +172,6 @@ class _ProgramUploadState extends State<ProgramUpload> {
                         style: TextStyle(
                             color: Theme.of(context).primaryColorLight,
                             fontWeight: FontWeight.bold)),
-                    /*
-                SizedBox(
-                    width: MediaQuery.of(context).size.width * 2 / 5,
-                    child: DropdownButtonFormField(
-                      isExpanded: true,
-                      decoration: InputDecoration(
-                        filled: true,
-                        enabledBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          borderSide:
-                              BorderSide(color: Theme.of(context).primaryColorLight, width: 3),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).primaryColor,
-                              width: 3),
-                        ),
-                      ),
-                      hint: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            '목적',
-                            style: TextStyle(color: Theme.of(context).primaryColorLight),
-                          )),
-                      items: items2
-                          .map((item) => DropdownMenuItem<String>(
-                              value: item,
-                              child: Align(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    item,
-                                    style: TextStyle(color: Theme.of(context).primaryColorLight),
-                                  ))))
-                          .toList(),
-                      onChanged: (item) =>
-                          setState(() => selectedItem2 = item as String),
-                    )
-                ),
-
-                 */
                   ],
                 ),
               ),
@@ -545,12 +502,12 @@ class _ProgramUploadState extends State<ProgramUpload> {
               labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
               border: OutlineInputBorder(
                 borderSide: BorderSide(
-                    color: Theme.of(context).primaryColorLight, width: 2.0),
+                    color: Theme.of(context).primaryColorLight, width: 1.5),
                 borderRadius: BorderRadius.circular(5.0),
               ),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                    color: Theme.of(context).primaryColorLight, width: 2.0),
+                    color: Theme.of(context).primaryColorLight, width: 1.5),
                 borderRadius: BorderRadius.circular(5.0),
               ),
               fillColor: Theme.of(context).primaryColorLight),

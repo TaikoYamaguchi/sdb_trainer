@@ -1,5 +1,5 @@
 from datetime import datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 import typing as t
 
 from pydantic.types import Json
@@ -12,20 +12,11 @@ class UserCore(BaseModel):
     weight:float
     height_unit:str
     weight_unit:str
-    selfIntroduce:t.Optional[str]
-    favor_exercise:list
-
+    selfIntroduce:t.Optional[str] = None
+    favor_exercise:t.List[str] = []
 
 class UserBase(UserCore):
-    username:str
-    nickname : str
-    image: str = ""
-    height:float
-    weight:float
-    height_unit:str
-    weight_unit:str
     isMan:bool
-    favor_exercise:list
     body_stats:t.Any
 
 
@@ -33,10 +24,10 @@ class UserOut(UserBase):
     selfIntroduce:str
     history_cnt:int
     comment_cnt:int
-    like:list
-    dislike:list
-    liked:list
-    disliked:list
+    like:t.List[str] = []
+    dislike:t.List[str]=[]
+    liked:t.List[str]=[]
+    disliked:t.List[str]=[]
     pass
 
 

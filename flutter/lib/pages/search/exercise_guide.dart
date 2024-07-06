@@ -333,14 +333,12 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
               labelStyle: TextStyle(
                   fontSize: 16.0, color: Theme.of(context).primaryColorDark),
               enabledBorder: UnderlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0),
                 borderSide:
-                    BorderSide(color: Theme.of(context).primaryColor, width: 3),
+                    BorderSide(color: Theme.of(context).primaryColor, width: 1),
               ),
               focusedBorder: UnderlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0),
-                borderSide:
-                    BorderSide(color: Theme.of(context).primaryColor, width: 3),
+                borderSide: BorderSide(
+                    color: Theme.of(context).primaryColor, width: 1.5),
               ),
               fillColor: Theme.of(context).primaryColorLight),
           style: TextStyle(color: Theme.of(context).primaryColorLight)),
@@ -652,14 +650,13 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                     decoration: InputDecoration(
                         filled: true,
                         enabledBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
                           borderSide: BorderSide(
-                              color: Theme.of(context).primaryColor, width: 3),
+                              color: Theme.of(context).primaryColor, width: 1),
                         ),
                         focusedBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
                           borderSide: BorderSide(
-                              color: Theme.of(context).primaryColor, width: 3),
+                              color: Theme.of(context).primaryColor,
+                              width: 1.5),
                         ),
                         hintText: "운동 루틴 이름",
                         hintStyle: TextStyle(

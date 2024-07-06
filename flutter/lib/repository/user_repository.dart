@@ -94,7 +94,8 @@ class UserLoginKakao {
   Future<String> _userLoginFromServer() async {
     var url =
         Uri.parse(LocalHost.getLocalHost() + "/api/tokenkakao/" + userEmail);
-    var response = await http.post(url);
+    var response =
+        await http.post(url, headers: {"Content-Type": "application/json"});
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       String jsonString = utf8.decode(response.bodyBytes);
@@ -151,25 +152,24 @@ class UserSignUp {
   Future<String> _userSignUpFromServer() async {
     var formData = Map<String, dynamic>();
     formData["username"] = userName;
-
     formData["nickname"] = userNickname;
     formData["image"] = userImage;
     formData["height"] = userHeight;
     formData["weight"] = userWeight;
     formData["height_unit"] = userHeightUnit;
     formData["weight_unit"] = userWeightUnit;
+    formData["selfIntroduce"] = "";
+    formData["favor_exercise"] = [];
+    formData["isMan"] = userGender;
+    formData["body_stats"] = bodyStats;
     formData["password"] = password;
     formData["phone_number"] = userPhonenumber;
     formData["email"] = userEmail;
-    formData["isMan"] = userGender;
-    formData["like"] = [];
-    formData["dislike"] = [];
-    formData["favor_exercise"] = [];
-    formData["body_stats"] = bodyStats;
-    formData["selfIntroduce"] = "";
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/usercreate");
-    var response = await http.post(url, body: json.encode(formData));
+    var response = await http.post(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       String jsonString = utf8.decode(response.bodyBytes);
@@ -245,7 +245,9 @@ class UserEdit {
     formData["favor_exercise"] = userFavorExercise;
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/user/" + userEmail);
-    var response = await http.put(url, body: json.encode(formData));
+    var response = await http.put(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);
@@ -400,7 +402,9 @@ class UserLike {
 
     var url =
         Uri.parse(LocalHost.getLocalHost() + "/api/user/likes/${liked_email}");
-    var response = await http.patch(url, body: json.encode(formData));
+    var response = await http.patch(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
 
@@ -527,6 +531,7 @@ class UserFCMTokenEdit {
       url,
       body: json.encode(formData),
       headers: {
+        "Content-Type": "application/json",
         HttpHeaders.authorizationHeader: 'Bearer ${token}',
       },
     );
@@ -541,10 +546,15 @@ class UserFCMTokenEdit {
   }
 
   Future<User?> patchUserFCMToken() async {
-    String jsonString = await _patchUserFCMTokenFromServer();
+    var jsonString = await _patchUserFCMTokenFromServer();
 
     final jsonResponse = json.decode(jsonString);
-    return (jsonResponse);
+    if (jsonResponse == null) {
+      return null;
+    } else {
+      User user = User.fromJson(jsonResponse);
+      return (user);
+    }
   }
 }
 
@@ -589,7 +599,9 @@ class UserFind {
     var formData = Map<String, dynamic>();
     formData["phone_number"] = phone_number;
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/userFind");
-    var response = await http.patch(url, body: json.encode(formData));
+    var response = await http.patch(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);
@@ -621,7 +633,9 @@ class UserFindVerification {
     formData["phone_number"] = phone_number;
     formData["verifyCode"] = verify_code;
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/userFindVerify");
-    var response = await http.patch(url, body: json.encode(formData));
+    var response = await http.patch(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);
@@ -660,6 +674,7 @@ class UserBodyStatEdit {
       url,
       body: json.encode(formData),
       headers: {
+        "Content-Type": "application/json",
         HttpHeaders.authorizationHeader: 'Bearer ${token}',
       },
     );
@@ -677,6 +692,11 @@ class UserBodyStatEdit {
     String jsonString = await _patchUserBodyStatFromServer();
 
     final jsonResponse = json.decode(jsonString);
-    return (jsonResponse);
+    if (jsonResponse == null) {
+      return null;
+    } else {
+      User user = User.fromJson(jsonResponse);
+      return user;
+    }
   }
 }

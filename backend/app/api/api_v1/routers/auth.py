@@ -103,12 +103,13 @@ async def user_create(
     user: UserCreate,
     db=Depends(get_db),
 ):
+    print(user)
     return create_user(db, user)
 
 
 @r.get(
     "/create/{phone_number}",
-    response_model=User,
+    response_model=t.Optional[User],
     response_model_exclude_none=True,
 )
 async def user_phone_number(
@@ -116,9 +117,6 @@ async def user_phone_number(
     phone_number: str,
     db=Depends(get_db),
 ):
-    """
-    Get any user details
-    """
     user = get_user_by_phone_number(db, phone_number)
     return user
 

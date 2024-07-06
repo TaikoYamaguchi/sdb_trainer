@@ -149,7 +149,6 @@ class _InterviewState extends State<Interview> {
   }
 
   Future<void> _onRefresh() {
-
     setState(() {
       _interviewProvider.getInterviewdataFirst();
     });
@@ -290,7 +289,7 @@ class _InterviewState extends State<Interview> {
                                                           child: Padding(
                                                             padding:
                                                                 const EdgeInsets
-                                                                        .only(
+                                                                    .only(
                                                                     right: 4.0),
                                                             child: Text(
                                                               _interviewDatas[
@@ -397,7 +396,7 @@ class _InterviewState extends State<Interview> {
                                                             onTap: () {},
                                                             child: Container(
                                                                 margin: const EdgeInsets
-                                                                        .symmetric(
+                                                                    .symmetric(
                                                                     horizontal:
                                                                         4,
                                                                     vertical:
@@ -405,7 +404,7 @@ class _InterviewState extends State<Interview> {
                                                                 child:
                                                                     Container(
                                                                   padding: const EdgeInsets
-                                                                          .symmetric(
+                                                                      .symmetric(
                                                                       vertical:
                                                                           2,
                                                                       horizontal:
@@ -1057,20 +1056,16 @@ class _InterviewState extends State<Interview> {
                                     decoration: InputDecoration(
                                         filled: true,
                                         enabledBorder: UnderlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
                                           borderSide: BorderSide(
                                               color: Theme.of(context)
                                                   .primaryColor,
-                                              width: 3),
+                                              width: 1),
                                         ),
                                         focusedBorder: UnderlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
                                           borderSide: BorderSide(
                                               color: Theme.of(context)
                                                   .primaryColor,
-                                              width: 3),
+                                              width: 1.5),
                                         ),
                                         hintText: "제안의 제목을 작성해 보세요",
                                         hintStyle: TextStyle(
@@ -1097,20 +1092,16 @@ class _InterviewState extends State<Interview> {
                                     decoration: InputDecoration(
                                         filled: true,
                                         enabledBorder: UnderlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
                                           borderSide: BorderSide(
                                               color: Theme.of(context)
                                                   .primaryColor,
-                                              width: 3),
+                                              width: 1),
                                         ),
                                         focusedBorder: UnderlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
                                           borderSide: BorderSide(
                                               color: Theme.of(context)
                                                   .primaryColor,
-                                              width: 3),
+                                              width: 1.5),
                                         ),
                                         hintText: "자세한 내용을 작성해 보세요",
                                         hintStyle: TextStyle(

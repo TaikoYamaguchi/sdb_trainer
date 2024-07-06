@@ -67,82 +67,86 @@ void displayPhotoDialog(context) {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+                    padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 20.0),
                     child: Text("사진을 어디서 가져올까요?",
                         style: TextStyle(
                             color: Theme.of(context).primaryColorLight,
                             fontSize: 16.0)),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(
-                          width: MediaQuery.of(context).size.width / 4,
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 3 / 4,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width / 4,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                foregroundColor: Theme.of(context).primaryColor,
+                                backgroundColor: Theme.of(context).primaryColor,
+                                textStyle: TextStyle(
+                                  color: Theme.of(context).primaryColorLight,
+                                ),
+                                disabledForegroundColor:
+                                    const Color.fromRGBO(246, 58, 64, 20),
+                                padding: const EdgeInsets.all(12.0),
                               ),
-                              foregroundColor: Theme.of(context).primaryColor,
-                              backgroundColor: Theme.of(context).primaryColor,
-                              textStyle: TextStyle(
-                                color: Theme.of(context).primaryColorLight,
+                              onPressed: () {
+                                _getUserImage(ImageSource.camera, context);
+                                Navigator.pop(context);
+                              },
+                              child: Column(
+                                children: [
+                                  Icon(Icons.camera_alt,
+                                      size: 24,
+                                      color: Theme.of(context).highlightColor),
+                                  Text('촬영',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Theme.of(context)
+                                              .highlightColor)),
+                                ],
                               ),
-                              disabledForegroundColor:
-                                  const Color.fromRGBO(246, 58, 64, 20),
-                              padding: const EdgeInsets.all(12.0),
-                            ),
-                            onPressed: () {
-                              _getUserImage(ImageSource.camera, context);
-                              Navigator.pop(context);
-                            },
-                            child: Column(
-                              children: [
-                                Icon(Icons.camera_alt,
-                                    size: 24,
-                                    color: Theme.of(context).highlightColor),
-                                Text('촬영',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color:
-                                            Theme.of(context).highlightColor)),
-                              ],
-                            ),
-                          )),
-                      SizedBox(
-                          width: MediaQuery.of(context).size.width / 4,
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
+                            )),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width / 4,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                foregroundColor: Theme.of(context).primaryColor,
+                                backgroundColor: Theme.of(context).primaryColor,
+                                textStyle: TextStyle(
+                                  color: Theme.of(context).primaryColorLight,
+                                ),
+                                disabledForegroundColor:
+                                    const Color.fromRGBO(246, 58, 64, 20),
+                                padding: const EdgeInsets.all(12.0),
                               ),
-                              foregroundColor: Theme.of(context).primaryColor,
-                              backgroundColor: Theme.of(context).primaryColor,
-                              textStyle: TextStyle(
-                                color: Theme.of(context).primaryColorLight,
+                              onPressed: () {
+                                _getUserImage(ImageSource.gallery, context);
+                                Navigator.pop(context);
+                              },
+                              child: Column(
+                                children: [
+                                  Icon(Icons.collections,
+                                      size: 24,
+                                      color: Theme.of(context).highlightColor),
+                                  Text('갤러리',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Theme.of(context)
+                                              .highlightColor)),
+                                ],
                               ),
-                              disabledForegroundColor:
-                                  const Color.fromRGBO(246, 58, 64, 20),
-                              padding: const EdgeInsets.all(12.0),
-                            ),
-                            onPressed: () {
-                              _getUserImage(ImageSource.gallery, context);
-                              Navigator.pop(context);
-                            },
-                            child: Column(
-                              children: [
-                                Icon(Icons.collections,
-                                    size: 24,
-                                    color: Theme.of(context).highlightColor),
-                                Text('갤러리',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color:
-                                            Theme.of(context).highlightColor)),
-                              ],
-                            ),
-                          )),
-                    ],
+                            )),
+                      ],
+                    ),
                   ),
                 ],
               ),

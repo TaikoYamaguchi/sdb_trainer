@@ -582,14 +582,12 @@ class FeedCardState extends State<FeedCard> {
               labelStyle: TextStyle(
                   fontSize: 16.0, color: Theme.of(context).primaryColorDark),
               enabledBorder: UnderlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0),
                 borderSide:
-                    BorderSide(color: Theme.of(context).primaryColor, width: 3),
+                    BorderSide(color: Theme.of(context).primaryColor, width: 1),
               ),
               focusedBorder: UnderlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0),
-                borderSide:
-                    BorderSide(color: Theme.of(context).primaryColor, width: 3),
+                borderSide: BorderSide(
+                    color: Theme.of(context).primaryColor, width: 1.5),
               ),
               fillColor: Theme.of(context).primaryColorLight),
           style: TextStyle(color: Theme.of(context).primaryColorLight)),
@@ -1762,6 +1760,11 @@ class FeedCardState extends State<FeedCard> {
                       borderSide: BorderSide(
                           color: Theme.of(context).primaryColorLight,
                           width: 0.3),
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).primaryColor, width: 1.5),
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                     enabledBorder: OutlineInputBorder(

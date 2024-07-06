@@ -177,7 +177,9 @@ class HistoryPost {
     formData["nickname"] = nickname;
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/historycreate");
-    var response = await http.post(url, body: json.encode(formData));
+    var response = await http.post(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);
@@ -213,7 +215,9 @@ class HistoryLike {
 
     var url = Uri.parse(
         LocalHost.getLocalHost() + "/api/history/likes/${history_id}");
-    var response = await http.patch(url, body: json.encode(formData));
+    var response = await http.patch(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);
@@ -245,7 +249,9 @@ class HistoryCommentEdit {
     formData["comment"] = comment;
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/history/comment/edit");
-    var response = await http.patch(url, body: json.encode(formData));
+    var response = await http.patch(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);
@@ -278,7 +284,9 @@ class HistoryExercisesEdit {
 
     var url =
         Uri.parse(LocalHost.getLocalHost() + "/api/history/exercises/edit");
-    var response = await http.patch(url, body: json.encode(formData));
+    var response = await http.patch(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);
@@ -312,6 +320,7 @@ class HistoryVisibleEdit {
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/historyVisible");
     var response = await http.patch(url,
         headers: {
+          "Content-Type": "application/json",
           HttpHeaders.authorizationHeader: 'Bearer ${token}',
         },
         body: json.encode(formData));
@@ -425,6 +434,7 @@ class HistoryImagePut {
       url,
       body: json.encode(formData),
       headers: {
+        "Content-Type": "application/json",
         HttpHeaders.authorizationHeader: 'Bearer ${token}',
       },
     );
@@ -486,7 +496,9 @@ class HistoryEditAll {
     var formData = Map<String, dynamic>();
     formData["sdbdatas"] = jsonEncode(sdbdatas);
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/history/all");
-    var response = await http.put(url, body: json.encode(formData));
+    var response = await http.put(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);

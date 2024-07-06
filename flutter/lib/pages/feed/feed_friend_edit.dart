@@ -113,9 +113,12 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
                   hintStyle:
                       const TextStyle(fontSize: 20.0, color: Color(0xFF717171)),
                   enabledBorder: UnderlineInputBorder(
-                    borderSide:
-                        const BorderSide(width: 3, color: Color(0xFF717171)),
-                    borderRadius: BorderRadius.circular(15),
+                    borderSide: BorderSide(
+                        width: 1, color: Theme.of(context).primaryColor),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Theme.of(context).primaryColor, width: 1.5),
                   ),
                 ),
                 onChanged: (text) {

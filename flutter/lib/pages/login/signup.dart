@@ -521,26 +521,21 @@ class _SignUpPageState extends State<SignUpPage> {
                   controller: _onermController[index],
                   keyboardType: const TextInputType.numberWithOptions(
                       signed: false, decimal: true),
-                  style: TextStyle(
-                      fontSize: 18, color: Theme.of(context).primaryColorLight),
+                  style: TextStyle(fontSize: 18, color: Colors.black),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
                       filled: true,
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor, width: 1.0),
-                        borderRadius: BorderRadius.circular(8.0),
+                            color: Theme.of(context).primaryColor, width: 1.5),
                       ),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
                             color: Theme.of(context).primaryColorLight,
-                            width: 0.5),
-                        borderRadius: BorderRadius.circular(8.0),
+                            width: 1.0),
                       ),
                       hintText: Exercises.onerm.toStringAsFixed(1),
-                      hintStyle: TextStyle(
-                          fontSize: 18,
-                          color: Theme.of(context).primaryColorLight)),
+                      hintStyle: TextStyle(fontSize: 18, color: Colors.black)),
                   onChanged: (text) {
                     double changeweight;
                     if (text == "") {
@@ -559,21 +554,18 @@ class _SignUpPageState extends State<SignUpPage> {
                   controller: _goalController[index],
                   keyboardType: const TextInputType.numberWithOptions(
                       signed: false, decimal: true),
-                  style: TextStyle(
-                      fontSize: 18, color: Theme.of(context).primaryColorLight),
+                  style: TextStyle(fontSize: 18, color: Colors.black),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
                       filled: true,
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor, width: 1.0),
-                        borderRadius: BorderRadius.circular(8.0),
+                            color: Theme.of(context).primaryColor, width: 1.5),
                       ),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
                             color: Theme.of(context).primaryColorLight,
-                            width: 0.5),
-                        borderRadius: BorderRadius.circular(8.0),
+                            width: 1.0),
                       ),
                       hintText: Exercises.goal.toStringAsFixed(1),
                       hintStyle: TextStyle(
@@ -626,7 +618,7 @@ class _SignUpPageState extends State<SignUpPage> {
       ],
       controller: _userNicknameCtrl,
       style: TextStyle(
-        color: Theme.of(context).primaryColorLight,
+        color: Colors.black,
         fontSize: _themeProvider.userFontSize * 20 / 0.8,
       ),
       decoration: InputDecoration(
@@ -642,16 +634,14 @@ class _SignUpPageState extends State<SignUpPage> {
               color: _isNickNameused == false
                   ? Theme.of(context).primaryColor
                   : Colors.red,
-              width: 3.0),
-          borderRadius: BorderRadius.circular(8.0),
+              width: 1.5),
         ),
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
               color: _isNickNameused == false
                   ? Theme.of(context).primaryColorLight
                   : Colors.red,
-              width: 3.0),
-          borderRadius: BorderRadius.circular(8.0),
+              width: 1),
         ),
       ),
     );
@@ -664,7 +654,7 @@ class _SignUpPageState extends State<SignUpPage> {
       keyboardType:
           const TextInputType.numberWithOptions(signed: false, decimal: true),
       style: TextStyle(
-        color: Theme.of(context).primaryColorLight,
+        color: Colors.black,
         fontSize: _themeProvider.userFontSize * 20 / 0.8,
       ),
       decoration: InputDecoration(
@@ -676,13 +666,11 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide:
-              BorderSide(color: Theme.of(context).primaryColor, width: 3.0),
-          borderRadius: BorderRadius.circular(5.0),
+              BorderSide(color: Theme.of(context).primaryColor, width: 1.5),
         ),
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-              color: Theme.of(context).primaryColorLight, width: 2.0),
-          borderRadius: BorderRadius.circular(5.0),
+              color: Theme.of(context).primaryColorLight, width: 1.0),
         ),
       ),
     );
@@ -694,7 +682,7 @@ class _SignUpPageState extends State<SignUpPage> {
       keyboardType:
           const TextInputType.numberWithOptions(signed: false, decimal: true),
       style: TextStyle(
-        color: Theme.of(context).primaryColorLight,
+        color: Colors.black,
         fontSize: _themeProvider.userFontSize * 20 / 0.8,
       ),
       decoration: InputDecoration(
@@ -706,13 +694,11 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide:
-              BorderSide(color: Theme.of(context).primaryColor, width: 3.0),
-          borderRadius: BorderRadius.circular(5.0),
+              BorderSide(color: Theme.of(context).primaryColor, width: 1.5),
         ),
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-              color: Theme.of(context).primaryColorLight, width: 3.0),
-          borderRadius: BorderRadius.circular(5.0),
+              color: Theme.of(context).primaryColorLight, width: 1.0),
         ),
       ),
     );
@@ -789,7 +775,7 @@ class _SignUpPageState extends State<SignUpPage> {
       controller: _userPhoneNumberCtrl,
       keyboardType: TextInputType.number,
       style: TextStyle(
-        color: Theme.of(context).primaryColorLight,
+        color: Colors.black,
         fontSize: _themeProvider.userFontSize * 20 / 0.8,
       ),
       decoration: InputDecoration(
@@ -805,16 +791,14 @@ class _SignUpPageState extends State<SignUpPage> {
               color: _isPhoneNumberused == false
                   ? Theme.of(context).primaryColor
                   : Colors.red,
-              width: 3.0),
-          borderRadius: BorderRadius.circular(8.0),
+              width: 1.5),
         ),
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
               color: _isPhoneNumberused == false
                   ? Theme.of(context).primaryColorLight
                   : Colors.red,
-              width: 3.0),
-          borderRadius: BorderRadius.circular(8.0),
+              width: 1.0),
         ),
       ),
     );
@@ -1182,7 +1166,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _loginButton(context) {
     return SizedBox(
-        width: MediaQuery.of(context).size.width,
         child: TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
@@ -1191,7 +1174,7 @@ class _SignUpPageState extends State<SignUpPage> {
               textStyle: TextStyle(
                 color: Theme.of(context).primaryColorLight,
               ),
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(2.0),
             ),
             onPressed: () => isLoading ? null : _loginState.changeSignup(false),
             child: Text(isLoading ? 'loggin in.....' : "이미 계정이 있으신가요?",

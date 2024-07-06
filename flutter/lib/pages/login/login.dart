@@ -207,11 +207,11 @@ class LoginPageState extends State<LoginPage> {
               labelText: "이메일",
               labelStyle: const TextStyle(color: Colors.white),
               border: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.white, width: 2.0),
+                borderSide: const BorderSide(color: Colors.white, width: 1.5),
                 borderRadius: BorderRadius.circular(5.0),
               ),
               enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.white, width: 2.0),
+                borderSide: const BorderSide(color: Colors.white, width: 1.5),
                 borderRadius: BorderRadius.circular(5.0),
               ),
               fillColor: Colors.white),
@@ -234,11 +234,11 @@ class LoginPageState extends State<LoginPage> {
               labelText: "비밀번호",
               labelStyle: const TextStyle(color: Colors.white),
               border: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.white, width: 2.0),
+                borderSide: const BorderSide(color: Colors.white, width: 1.5),
                 borderRadius: BorderRadius.circular(5.0),
               ),
               enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.white, width: 2.0),
+                borderSide: const BorderSide(color: Colors.white, width: 1.5),
                 borderRadius: BorderRadius.circular(5.0),
               ),
               fillColor: Colors.white),
@@ -639,7 +639,7 @@ class LoginPageState extends State<LoginPage> {
     final _routinetimeProvider =
         Provider.of<RoutineTimeProvider>(context, listen: false);
     final _notificationProvider =
-    Provider.of<NotificationdataProvider>(context, listen: false);
+        Provider.of<NotificationdataProvider>(context, listen: false);
 
     const storage = FlutterSecureStorage();
     String? storageEmail = await storage.read(key: "sdb_email");

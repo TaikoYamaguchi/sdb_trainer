@@ -62,7 +62,9 @@ class ExercisePost {
     formData["modified_number"] = 0;
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/exercisecreate");
-    var response = await http.post(url, body: json.encode(formData));
+    var response = await http.post(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);
@@ -93,7 +95,9 @@ class ExerciseEdit {
     formData["modified_number"] = 0;
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/exercise");
-    var response = await http.put(url, body: json.encode(formData));
+    var response = await http.put(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);
@@ -121,7 +125,9 @@ class ExerciseEditAll {
     print(formData);
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/exercise/all");
-    var response = await http.put(url, body: json.encode(formData));
+    var response = await http.put(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);

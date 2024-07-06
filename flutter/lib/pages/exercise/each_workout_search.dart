@@ -227,13 +227,13 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                 hintStyle: TextStyle(
                     fontSize: 20.0, color: Theme.of(context).primaryColorLight),
                 enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(width: 2, color: Theme.of(context).cardColor),
+                  borderSide: BorderSide(
+                      width: 1.5, color: Theme.of(context).cardColor),
                   borderRadius: BorderRadius.circular(15),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                      color: Theme.of(context).primaryColor, width: 2.0),
+                      color: Theme.of(context).primaryColor, width: 1.5),
                   borderRadius: BorderRadius.circular(15),
                 ),
               ),
@@ -379,16 +379,14 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                             decoration: InputDecoration(
                                 filled: true,
                                 enabledBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
                                   borderSide: BorderSide(
                                       color: Theme.of(context).primaryColor,
-                                      width: 3),
+                                      width: 1.0),
                                 ),
                                 focusedBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
                                   borderSide: BorderSide(
                                       color: Theme.of(context).primaryColor,
-                                      width: 3),
+                                      width: 1.5),
                                 ),
                                 hintText: "커스텀 운동 이름",
                                 hintStyle: TextStyle(
@@ -431,20 +429,16 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                                     decoration: InputDecoration(
                                       filled: true,
                                       enabledBorder: UnderlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
                                         borderSide: BorderSide(
                                             color: Theme.of(context)
                                                 .primaryColorLight,
-                                            width: 3),
+                                            width: 1.0),
                                       ),
                                       focusedBorder: UnderlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
                                         borderSide: BorderSide(
                                             color:
                                                 Theme.of(context).primaryColor,
-                                            width: 3),
+                                            width: 1.5),
                                       ),
                                     ),
                                     hint: Align(
@@ -872,12 +866,12 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
             },
             child: GestureDetector(
               onPanUpdate: (details) {
-                if (details.delta.dx > 10 && _isExListShow == true) {
+                if (details.delta.dx > 5 && _isExListShow == true) {
                   setState(() {
                     _isExListShow = false;
                   });
                   print("Dragging in +X direction");
-                } else if (details.delta.dx < 10 && _isExListShow == false) {
+                } else if (details.delta.dx < -5 && _isExListShow == false) {
                   setState(() {
                     _isExListShow = true;
                   });
@@ -890,12 +884,19 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                   children: [
                     Column(
                       children: [
-                        Center(
-                          child: Text("현재 루틴",
-                              textScaleFactor: 1.6,
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                              )),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _isExListShow = false;
+                            });
+                          },
+                          child: Center(
+                            child: Text("현재 루틴",
+                                textScaleFactor: 1.6,
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                )),
+                          ),
                         ),
                         Expanded(
                           child: AnimatedContainer(
@@ -930,12 +931,19 @@ class _EachWorkoutSearchState extends State<EachWorkoutSearch>
                           padding: const EdgeInsets.only(top: 4.0, right: 1.0),
                           child: Column(
                             children: [
-                              Center(
-                                child: Text("운동 종목",
-                                    textScaleFactor: 1.6,
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .primaryColorLight)),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _isExListShow = true;
+                                  });
+                                },
+                                child: Center(
+                                  child: Text("운동 종목",
+                                      textScaleFactor: 1.6,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight)),
+                                ),
                               ),
                               _exercisesItemWidget(true),
                               const SizedBox(height: 4),

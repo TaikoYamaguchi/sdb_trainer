@@ -126,13 +126,11 @@ class _ProfileIntroduceState extends State<ProfileIntroduce> {
         labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
         focusedBorder: UnderlineInputBorder(
           borderSide:
-              BorderSide(color: Theme.of(context).primaryColor, width: 3.0),
-          borderRadius: BorderRadius.circular(5.0),
+              BorderSide(color: Theme.of(context).primaryColor, width: 1.5),
         ),
         enabledBorder: UnderlineInputBorder(
           borderSide:
-              BorderSide(color: Theme.of(context).primaryColor, width: 3.0),
-          borderRadius: BorderRadius.circular(5.0),
+              BorderSide(color: Theme.of(context).primaryColor, width: 1.0),
         ),
       ),
     );

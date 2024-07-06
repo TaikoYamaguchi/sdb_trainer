@@ -1119,7 +1119,7 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                 if (provider2.nowonrindex == widget.rindex &&
                     _routinetimeProvider.isstarted)
                   SizedBox(
-                      width: MediaQuery.of(context).size.width / 4 - 32,
+                      width: MediaQuery.of(context).size.width / 4 - 24,
                       height: 48,
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(

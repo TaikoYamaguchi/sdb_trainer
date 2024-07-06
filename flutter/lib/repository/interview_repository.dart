@@ -100,7 +100,9 @@ class InterviewPost {
     formData["tags"] = tags;
 
     var url = Uri.parse(LocalHost.getLocalHost() + "/api/interviewcreate");
-    var response = await http.post(url, body: json.encode(formData));
+    var response = await http.post(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);
@@ -136,7 +138,9 @@ class InterviewLike {
 
     var url = Uri.parse(
         LocalHost.getLocalHost() + "/api/interview/likes/${interview_id}");
-    var response = await http.patch(url, body: json.encode(formData));
+    var response = await http.patch(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);
@@ -169,7 +173,9 @@ class InterviewManage {
 
     var url = Uri.parse(
         LocalHost.getLocalHost() + "/api/interview/status/${interview_id}");
-    var response = await http.patch(url, body: json.encode(formData));
+    var response = await http.patch(url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(formData));
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.
       return utf8.decode(response.bodyBytes);
