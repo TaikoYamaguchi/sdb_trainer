@@ -67,10 +67,7 @@ class _AppState extends State<App> {
 
   @override
   void initState() {
-
-
     openAlert();
-
 
     super.initState();
   }
@@ -82,7 +79,7 @@ class _AppState extends State<App> {
     return order2;
   }
 
-  checkVersion(){
+  checkVersion() {
     var appUpdateVersion = SuperoVersion.getSuperoVersion().toString();
     VersionService.loadVersionData().then((data) {
       if (data.substring(0, data.length - 1) ==
@@ -101,130 +98,161 @@ class _AppState extends State<App> {
     List notiBanlist;
     const storage = FlutterSecureStorage();
     String? storageNotiBanList = await storage.read(key: "sdb_NotiBanList");
-    if(storageNotiBanList == null || storageNotiBanList == ""){
+    if (storageNotiBanList == null || storageNotiBanList == "") {
       notiBanlist = [];
-    } else{
-      notiBanlist = jsonDecode(storageNotiBanList) ;
+    } else {
+      notiBanlist = jsonDecode(storageNotiBanList);
     }
     NotificationRepository.loadNotificationdataAll().then((value) {
-      if(value.notifications.length !=0){
-        for(int i=0 ; i < value.notifications.length; i++){
-          if ( notiBanlist.contains(value.notifications[i].id)) continue;
+      if (value.notifications.isNotEmpty) {
+        for (int i = 0; i < value.notifications.length; i++) {
+          if (notiBanlist.contains(value.notifications[i].id)) continue;
           showDialog(
               barrierDismissible: false,
               context: context,
-              builder: (_) => new AlertDialog(
-                insetPadding: EdgeInsets.all(10),
-                contentPadding: EdgeInsets.zero,
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                shape: RoundedRectangleBorder(
-                    borderRadius:
-                    BorderRadius.all(
-                        Radius.circular(10.0))),
-                content: StatefulBuilder(  // You need this, notice the parameters below:
-                  builder: (BuildContext context, StateSetter setState) {
-                    var notificationdata = value.notifications[i];
-                    int length;
-                    var afterparse = parse(notificationdata.content.html);
-                    var body = afterparse.getElementsByTagName("body")[0];
-                    length = body.getElementsByTagName("p").length;
-                    return Container(
-                      padding: const EdgeInsets.all(12.0),
-                      height: MediaQuery.of(context).size.height * 0.7,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        borderRadius:
-                        const BorderRadius.vertical(top: Radius.circular(10),bottom: Radius.circular(10)),
-                        color: Theme.of(context).cardColor,
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
+              builder: (_) => AlertDialog(
+                    insetPadding: const EdgeInsets.all(10),
+                    contentPadding: EdgeInsets.zero,
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                    content: StatefulBuilder(
+                      // You need this, notice the parameters below:
+                      builder: (BuildContext context, StateSetter setState) {
+                        var notificationdata = value.notifications[i];
+                        int length;
+                        var afterparse = parse(notificationdata.content.html);
+                        var body = afterparse.getElementsByTagName("body")[0];
+                        length = body.getElementsByTagName("p").length;
+                        return Container(
+                          padding: const EdgeInsets.all(12.0),
+                          height: MediaQuery.of(context).size.height * 0.7,
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(10),
+                                bottom: Radius.circular(10)),
+                            color: Theme.of(context).cardColor,
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          notificationdata.title,
-                                          textScaleFactor: 1.8,
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColorLight),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              notificationdata.title,
+                                              textScaleFactor: 1.8,
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight),
+                                            ),
+                                            Text(
+                                              notificationdata.date!
+                                                  .substring(2, 10),
+                                              textScaleFactor: 1.0,
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .primaryColorDark),
+                                            ),
+                                          ],
                                         ),
-                                        Text(
-                                          notificationdata.date!.substring(2, 10),
-                                          textScaleFactor: 1.0,
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColorDark),
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
+                                  IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pop();
+                                      },
+                                      icon: Icon(
+                                        Icons.cancel_rounded,
+                                        color:
+                                            Theme.of(context).primaryColorDark,
+                                      ))
                                 ],
                               ),
-                              IconButton(
-                                  onPressed: (){
-                                    Navigator.of(context, rootNavigator: true).pop();
-                                  },
-                                  icon: Icon(Icons.cancel_rounded, color: Theme.of(context).primaryColorDark,))
-                            ],
-                          ),
-
-                          Expanded(
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: [
-
-                                  const SizedBox(height: 8),
-                                  SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: ListView.builder(
-                                            physics: const ScrollPhysics(),
-                                            itemBuilder: (BuildContext _context, int index) {
-                                              return body.getElementsByTagName("p")[index].getElementsByTagName("img").length != 0
-                                                  ? Column(
-                                                    children: [
-                                                      Image(
-                                                          image: CachedNetworkImageProvider(
-                                                            notificationdata.images![int.parse(body.getElementsByTagName("p")[index].getElementsByTagName("img")[0].attributes["src"]!)],
-                                                          ),
-                                                        fit: BoxFit.cover,),
-                                                      SizedBox(height: 5)
-                                                    ],
-                                                  )
-                                                  : body.getElementsByTagName("p")[index].getElementsByTagName("a").length != 0
-                                                    ? Center(
-                                                      child: RichText(
-                                                          textScaleFactor: 1.2,
-                                                          text: TextSpan(
-                                                              children: [
-                                                                TextSpan(
-                                                                    style: TextStyle(
-                                                                      color: Colors.blueAccent),
-                                                                    text: body.getElementsByTagName("p")[index].text,
-                                                                    recognizer: TapGestureRecognizer()..onTap =  () async{
-                                                                      var url = body.getElementsByTagName("p")[index].getElementsByTagName("a")[0].attributes["href"]!;
-                                                                      if (await canLaunchUrlString(url)) {
-                                                                        await launchUrlString(url);
-                                                                      } else {
-                                                                        throw 'Could not launch $url';
-                                                                      }
-                                                                    }
-                                                                ),
-                                                                /*
+                              Expanded(
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      const SizedBox(height: 8),
+                                      SizedBox(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: ListView.builder(
+                                                physics: const ScrollPhysics(),
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  return body
+                                                          .getElementsByTagName(
+                                                              "p")[index]
+                                                          .getElementsByTagName(
+                                                              "img")
+                                                          .isNotEmpty
+                                                      ? Column(
+                                                          children: [
+                                                            Image(
+                                                              image:
+                                                                  CachedNetworkImageProvider(
+                                                                notificationdata
+                                                                        .images![
+                                                                    int.parse(body
+                                                                        .getElementsByTagName("p")[
+                                                                            index]
+                                                                        .getElementsByTagName(
+                                                                            "img")[0]
+                                                                        .attributes["src"]!)],
+                                                              ),
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 5)
+                                                          ],
+                                                        )
+                                                      : body
+                                                              .getElementsByTagName(
+                                                                  "p")[index]
+                                                              .getElementsByTagName(
+                                                                  "a")
+                                                              .isNotEmpty
+                                                          ? Center(
+                                                              child: RichText(
+                                                                  textScaleFactor:
+                                                                      1.2,
+                                                                  text: TextSpan(
+                                                                      children: [
+                                                                        TextSpan(
+                                                                            style:
+                                                                                const TextStyle(color: Colors.blueAccent),
+                                                                            text: body.getElementsByTagName("p")[index].text,
+                                                                            recognizer: TapGestureRecognizer()
+                                                                              ..onTap = () async {
+                                                                                var url = body.getElementsByTagName("p")[index].getElementsByTagName("a")[0].attributes["href"]!;
+                                                                                if (await canLaunchUrlString(url)) {
+                                                                                  await launchUrlString(url);
+                                                                                } else {
+                                                                                  throw 'Could not launch $url';
+                                                                                }
+                                                                              }),
+                                                                        /*
                                                                 TextSpan(
                                                                     style: linkText,
                                                                     text: "Click here",
@@ -232,83 +260,85 @@ class _AppState extends State<App> {
                                                                 ),
 
                                                                  */
-                                                              ]
-                                                          )),
-                                                    )
-                                                    : Column(
-                                                      children: [
-                                                        Text(body.getElementsByTagName("p")[index].text,
-                                                        textScaleFactor: 1.2,
-                                                        style: TextStyle(
-                                                            color: Theme.of(context)
-                                                                .primaryColorLight)),
-                                                        SizedBox(height: 5)
-                                                      ],
-                                                    );
+                                                                      ])),
+                                                            )
+                                                          : Column(
+                                                              children: [
+                                                                Text(
+                                                                    body
+                                                                        .getElementsByTagName("p")[
+                                                                            index]
+                                                                        .text,
+                                                                    textScaleFactor:
+                                                                        1.2,
+                                                                    style: TextStyle(
+                                                                        color: Theme.of(context)
+                                                                            .primaryColorLight)),
+                                                                const SizedBox(
+                                                                    height: 5)
+                                                              ],
+                                                            );
+                                                },
+                                                shrinkWrap: true,
+                                                itemCount: length),
+                                          )),
 
-                                            },
-                                            shrinkWrap: true,
-                                            itemCount: length
-                                        ),
-                                      )),
-
-                                  const SizedBox(height: 4.0),
-                                  Column(
-                                    children: [
-                                      Text('Supero를 사랑해 주심에 감사합니다🤗',
-                                          textScaleFactor: 1.2,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: Theme.of(context).primaryColorDark)),
+                                      const SizedBox(height: 4.0),
+                                      Column(
+                                        children: [
+                                          Text('Supero를 사랑해 주심에 감사합니다🤗',
+                                              textScaleFactor: 1.2,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .primaryColorDark)),
+                                        ],
+                                      ),
+                                      //_commentContent(interviewData),
                                     ],
                                   ),
-                                  //_commentContent(interviewData),
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Checkbox(
+                                    checkColor:
+                                        Theme.of(context).highlightColor,
+                                    activeColor: Theme.of(context).primaryColor,
+                                    side: BorderSide(
+                                        width: 1,
+                                        color:
+                                            Theme.of(context).primaryColorDark),
+                                    value: isChecked,
+                                    onChanged: (newvalue) {
+                                      setState(() {
+                                        isChecked = !isChecked;
+                                      });
+                                      if (newvalue!) {
+                                        addnotistorage(notificationdata.id);
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pop();
+                                      } else {
+                                        removenotistorage(notificationdata.id);
+                                      }
+                                    },
+                                  ),
+                                  Text('다음부터 보지 않기',
+                                      textScaleFactor: 1.2,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorDark)),
                                 ],
-                              ),
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Checkbox(
-                                checkColor: Theme.of(context)
-                                    .highlightColor,
-                                activeColor: Theme.of(context)
-                                    .primaryColor,
-                                side: BorderSide(
-                                    width: 1,
-                                    color: Theme.of(context)
-                                        .primaryColorDark),
-                                value: isChecked,
-                                onChanged: (newvalue) {
-                                  setState(() {
-                                    isChecked = !isChecked;
-                                  });
-                                  if(newvalue!){
-                                    addnotistorage(notificationdata.id);
-                                    Navigator.of(context, rootNavigator: true).pop();
-                                  } else {
-                                    removenotistorage(notificationdata.id);
-                                  }
-
-                                },
-                              ),
-                              Text('다음부터 보지 않기',
-                                  textScaleFactor: 1.2,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Theme.of(context).primaryColorDark)),
+                              )
                             ],
-                          )
-
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              )
-          );
+                          ),
+                        );
+                      },
+                    ),
+                  ));
         }
-
       }
     });
     return 0;
@@ -319,35 +349,27 @@ class _AppState extends State<App> {
     String? storageNotiBanList = await storage.read(key: "sdb_NotiBanList");
     if (storageNotiBanList == null || storageNotiBanList == "") {
       List<int> listViewerBuilderString = [nid];
-      await storage.write(key: 'sdb_NotiBanList', value: jsonEncode(listViewerBuilderString));
-      print(listViewerBuilderString);
+      await storage.write(
+          key: 'sdb_NotiBanList', value: jsonEncode(listViewerBuilderString));
     } else {
       List notiBanlist = jsonDecode(storageNotiBanList);
       notiBanlist.add(nid);
-      await storage.write(key: 'sdb_NotiBanList', value: jsonEncode(notiBanlist));
-      print(notiBanlist);
+      await storage.write(
+          key: 'sdb_NotiBanList', value: jsonEncode(notiBanlist));
     }
   }
-
 
   removenotistorage(nid) async {
     const storage = FlutterSecureStorage();
     String? storageNotiBanList = await storage.read(key: "sdb_NotiBanList");
     if (storageNotiBanList == null || storageNotiBanList == "") {
-      print("no list element");
     } else {
       List notiBanlist = jsonDecode(storageNotiBanList);
-      print(notiBanlist);
-      notiBanlist.removeWhere( (item) => item == nid );
-      await storage.write(key: 'sdb_NotiBanList', value: jsonEncode(notiBanlist));
-      print(notiBanlist);
+      notiBanlist.removeWhere((item) => item == nid);
+      await storage.write(
+          key: 'sdb_NotiBanList', value: jsonEncode(notiBanlist));
     }
-
-
   }
-
-
-
 
   void initialExImageGet(context) async {
     final binding = WidgetsFlutterBinding.ensureInitialized();
@@ -369,12 +391,12 @@ class _AppState extends State<App> {
     return BottomNavigationBarItem(
       icon: Padding(
         padding: const EdgeInsets.only(bottom: 4.0),
-        child: SvgPicture.asset("assets/svg/${iconName}.svg",
+        child: SvgPicture.asset("assets/svg/$iconName.svg",
             height: 20, width: 20, color: Theme.of(context).primaryColorDark),
       ),
       activeIcon: Padding(
         padding: const EdgeInsets.only(bottom: 4.0),
-        child: SvgPicture.asset("assets/svg/${iconName}.svg",
+        child: SvgPicture.asset("assets/svg/$iconName.svg",
             height: 20, width: 20, color: Theme.of(context).primaryColorLight),
       ),
       label: label,
@@ -482,31 +504,30 @@ class _AppState extends State<App> {
   }
 
   void _editWorkoutwoCheck() async {
-    var routinedatas_all = _workoutProvider.workoutdata.routinedatas;
-    for (int n = 0;
-        n < routinedatas_all[_routinetimeProvider.nowonrindex].exercises.length;
-        n++) {
-      for (int i = 0;
-          i <
-              routinedatas_all[_routinetimeProvider.nowonrindex]
-                  .exercises[n]
-                  .sets
-                  .length;
-          i++) {
-        routinedatas_all[_routinetimeProvider.nowonrindex]
-            .exercises[n]
-            .sets[i]
-            .ischecked = false;
+    _uncheckAllSets();
+
+    WorkoutEdit(
+      id: _workoutProvider.workoutdata.id,
+      user_email: _userProvider.userdata.email,
+      routinedatas: _workoutProvider.workoutdata.routinedatas,
+    ).editWorkout().then((data) {
+      if (data["user_email"] != null) {
+        showToast("완료");
+      } else {
+        showToast("입력을 확인해주세요");
+      }
+    });
+  }
+
+  void _uncheckAllSets() {
+    var routineIndex = _routinetimeProvider.nowonrindex;
+    var routineData = _workoutProvider.workoutdata.routinedatas[routineIndex];
+
+    for (var exercise in routineData.exercises) {
+      for (var set in exercise.sets) {
+        set.ischecked = false;
       }
     }
-    WorkoutEdit(
-            id: _workoutProvider.workoutdata.id,
-            user_email: _userProvider.userdata.email,
-            routinedatas: routinedatas_all)
-        .editWorkout()
-        .then((data) => data["user_email"] != null
-            ? showToast("완료")
-            : showToast("입력을 확인해주세요"));
   }
 
   _showMyDialog_finish() async {
@@ -569,7 +590,7 @@ class _AppState extends State<App> {
           monerm = recordedsets[i].weight;
         }
       }
-      var _eachex = _exProvider.exercisesdata.exercises[_exProvider
+      var eachex = _exProvider.exercisesdata.exercises[_exProvider
           .exercisesdata.exercises
           .indexWhere((element) => element.name == exercise_all[n].name)];
       if (!recordedsets.isEmpty) {
@@ -577,11 +598,11 @@ class _AppState extends State<App> {
             name: exercise_all[n].name,
             sets: recordedsets,
             onerm: monerm,
-            goal: _eachex.goal,
+            goal: eachex.goal,
             date: DateTime.now().toString().substring(0, 10),
-            isCardio: _eachex.category == "유산소" ? true : false));
+            isCardio: eachex.category == "유산소" ? true : false));
       }
-      if (monerm > _eachex.onerm) {
+      if (monerm > eachex.onerm) {
         modifyExercise(monerm, exercise_all[n].name);
       }
     }
@@ -606,7 +627,7 @@ class _AppState extends State<App> {
           monerm = recordedsets[i].weight;
         }
       }
-      var _eachex = _exProvider.exercisesdata.exercises[_exProvider
+      var eachex = _exProvider.exercisesdata.exercises[_exProvider
           .exercisesdata.exercises
           .indexWhere((element) => element.name == exercise_all[n].name)];
       if (!recordedsets.isEmpty) {
@@ -614,12 +635,12 @@ class _AppState extends State<App> {
             name: exercise_all[n].name,
             sets: recordedsets,
             onerm: monerm,
-            goal: _eachex.goal,
+            goal: eachex.goal,
             date: DateTime.now().toString().substring(0, 10),
-            isCardio: _eachex.category == "유산소" ? true : false));
+            isCardio: eachex.category == "유산소" ? true : false));
       }
 
-      if (monerm > _eachex.onerm) {
+      if (monerm > eachex.onerm) {
         modifyExercise(monerm, exercise_all[n].name);
       }
     }

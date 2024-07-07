@@ -31,42 +31,42 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
             backgroundColor: Theme.of(context).cardColor,
             title: type == "r"
                 ? Text("긴급 점검 중 입니다",
-                    textScaleFactor: 1.5,
                     textAlign: TextAlign.center,
-                    style:
-                        TextStyle(color: Theme.of(context).primaryColorLight))
+                    style: TextStyle(
+                        fontSize: 24.0,
+                        color: Theme.of(context).primaryColorLight))
                 : Text("앱이 업데이트 되었어요",
                     textAlign: TextAlign.center,
-                    textScaleFactor: 1.5,
-                    style:
-                        TextStyle(color: Theme.of(context).primaryColorLight)),
+                    style: TextStyle(
+                        fontSize: 24.0,
+                        color: Theme.of(context).primaryColorLight)),
             content: SingleChildScrollView(
               child: type == "r"
                   ? Column(
                       children: [
                         Text("빨리 점검을 끝내겠습니다",
-                            textScaleFactor: 1.3,
                             textAlign: TextAlign.center,
                             style: TextStyle(
+                                fontSize: 14.0,
                                 color: Theme.of(context).primaryColorLight)),
                         Text("양해 부탁드립니다",
-                            textScaleFactor: 1.3,
                             textAlign: TextAlign.center,
                             style: TextStyle(
+                                fontSize: 14.0,
                                 color: Theme.of(context).primaryColorLight)),
                       ],
                     )
                   : Column(
                       children: [
                         Text("더 좋은 서비스를 제공해 드리기 위해",
-                            textScaleFactor: 1.3,
                             textAlign: TextAlign.center,
                             style: TextStyle(
+                                fontSize: 14.0,
                                 color: Theme.of(context).primaryColorLight)),
                         Text("앱을 업데이트 해주세요",
-                            textScaleFactor: 1.3,
                             textAlign: TextAlign.center,
                             style: TextStyle(
+                                fontSize: 14.0,
                                 color: Theme.of(context).primaryColorLight)),
                       ],
                     ),
@@ -92,8 +92,8 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
                                 padding: const EdgeInsets.all(12.0),
                               ),
                               child: Text("업데이트 하러가기",
-                                  textScaleFactor: 1.7,
                                   style: TextStyle(
+                                      fontSize: 16.0,
                                       color:
                                           Theme.of(context).primaryColorLight)),
                               onPressed: () {
@@ -104,11 +104,10 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
                               }))
                       : Row(
                           mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             SizedBox(
-                                width: type == "b"
-                                    ? MediaQuery.of(context).size.width
-                                    : MediaQuery.of(context).size.width / 2.3,
+                                width: MediaQuery.of(context).size.width / 2.5,
                                 child: TextButton(
                                     style: TextButton.styleFrom(
                                       shape: RoundedRectangleBorder(
@@ -125,11 +124,12 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
                                       ),
                                       disabledForegroundColor:
                                           const Color.fromRGBO(246, 58, 64, 20),
-                                      padding: const EdgeInsets.all(12.0),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 4.0, vertical: 12.0),
                                     ),
                                     child: Text("업데이트 하기",
-                                        textScaleFactor: 1.7,
                                         style: TextStyle(
+                                            fontSize: 16.0,
                                             color: Theme.of(context)
                                                 .highlightColor)),
                                     onPressed: () {
@@ -141,7 +141,7 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
                               padding: const EdgeInsets.only(left: 4.0),
                               child: SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width / 3.5,
+                                      MediaQuery.of(context).size.width / 4.2,
                                   child: TextButton(
                                       style: TextButton.styleFrom(
                                         shape: RoundedRectangleBorder(
@@ -158,11 +158,12 @@ Future<dynamic> showUpdateVersion(_appUpdateVersion, context) {
                                         ),
                                         disabledForegroundColor:
                                             const Color(0xFF101012),
-                                        padding: const EdgeInsets.all(12.0),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 4.0, vertical: 12.0),
                                       ),
                                       child: Text("다음에",
-                                          textScaleFactor: 1.7,
                                           style: TextStyle(
+                                              fontSize: 16.0,
                                               color: Theme.of(context)
                                                   .highlightColor)),
                                       onPressed: () {

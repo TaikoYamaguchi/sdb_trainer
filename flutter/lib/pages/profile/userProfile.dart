@@ -52,7 +52,7 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   PreferredSizeWidget _appbarWidget() {
-    var _btnDisabled = false;
+    var btnDisabled = false;
     return PreferredSize(
         preferredSize: const Size.fromHeight(40.0), // here the desired height
         child: AppBar(
@@ -61,17 +61,17 @@ class _UserProfileState extends State<UserProfile> {
             icon: const Icon(Icons.arrow_back_ios_outlined),
             color: Theme.of(context).primaryColorLight,
             onPressed: () {
-              _btnDisabled == true
+              btnDisabled == true
                   ? null
                   : [
                       Navigator.of(context).pop(),
-                      _btnDisabled = true,
+                      btnDisabled = true,
                     ];
             },
           ),
           title: Text(
             "",
-            textScaleFactor: 2.5,
+            textScaler: const TextScaler.linear(2.5),
             style: TextStyle(color: Theme.of(context).primaryColorLight),
           ),
           backgroundColor: Theme.of(context).canvasColor,
@@ -88,21 +88,21 @@ class _UserProfileState extends State<UserProfile> {
             ),
             backgroundColor: Theme.of(context).cardColor,
             title: Text('정말 탈퇴 하시나요?',
-                textScaleFactor: 2.0,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Theme.of(context).primaryColorLight)),
+                style: TextStyle(
+                    fontSize: 24.0,
+                    color: Theme.of(context).primaryColorLight)),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('더 많은 기능을 준비 중 이에요',
-                    textScaleFactor: 1.3,
                     textAlign: TextAlign.center,
-                    style:
-                        TextStyle(color: Theme.of(context).primaryColorLight)),
+                    style: TextStyle(
+                        fontSize: 16.0,
+                        color: Theme.of(context).primaryColorLight)),
                 const Text('데이터를 지우면 복구 할 수 없어요',
-                    textScaleFactor: 1.0,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey)),
+                    style: TextStyle(fontSize: 14.0, color: Colors.grey)),
               ],
             ),
             actions: <Widget>[
@@ -124,17 +124,16 @@ class _UserProfileState extends State<UserProfile> {
                 ),
                 backgroundColor: Theme.of(context).cardColor,
                 title: Text('탈퇴가 완료되었어요',
-                    textScaleFactor: 2.0,
                     textAlign: TextAlign.center,
-                    style:
-                        TextStyle(color: Theme.of(context).primaryColorLight)),
+                    style: TextStyle(
+                        fontSize: 24.0,
+                        color: Theme.of(context).primaryColorLight)),
                 content: const Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text('더 나은 모습으로 발전할게요',
-                        textScaleFactor: 1.0,
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.grey)),
+                        style: TextStyle(fontSize: 14.0, color: Colors.grey)),
                   ],
                 ),
                 actions: <Widget>[

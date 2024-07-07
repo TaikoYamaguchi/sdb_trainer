@@ -445,7 +445,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             )),
                         SizedBox(
                             width: 70,
-                            child: Text("1rm",
+                            child: Text("1RM",
                                 textScaleFactor: 1.5,
                                 style: TextStyle(
                                   color: Theme.of(context).primaryColorLight,
@@ -535,7 +535,9 @@ class _SignUpPageState extends State<SignUpPage> {
                             width: 1.0),
                       ),
                       hintText: Exercises.onerm.toStringAsFixed(1),
-                      hintStyle: TextStyle(fontSize: 18, color: Colors.black)),
+                      hintStyle: TextStyle(
+                          fontSize: 18,
+                          color: Theme.of(context).primaryColorDark)),
                   onChanged: (text) {
                     double changeweight;
                     if (text == "") {
@@ -881,6 +883,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             onPressed: () => _postExerciseCheck(context),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(isLoading ? 'loggin in.....' : "추천 운동 하러 가기",
                     style: TextStyle(
@@ -954,7 +957,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       ? {
                           _userProvider.getdata(token["access_token"]),
                           _postWorkoutCheck(),
-                          print(_userProvider.userdata),
                           setState(() {
                             _isSignupIndex = 3;
                           }),
@@ -986,7 +988,7 @@ class _SignUpPageState extends State<SignUpPage> {
   void _postWorkoutCheck() async {
     routinedatas = [
       routine.Routinedatas(
-          name: "운동A",
+          name: "추천 운동",
           mode: 0,
           exercises: [
             routine.Exercises(

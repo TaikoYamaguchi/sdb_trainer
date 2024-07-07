@@ -121,12 +121,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    var themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     historyDataProvider =
         Provider.of<HistorydataProvider>(context, listen: false);
     bodyStateProvider = Provider.of<BodyStater>(context, listen: false);
-    _themeProvider.getUserFontsize();
-    _themeProvider.getUserTheme();
+    themeProvider.getUserFontsize();
+    themeProvider.getUserTheme();
     return Center(
       child: Consumer<ThemeProvider>(builder: (context, provider, child) {
         return MaterialApp(
@@ -134,12 +134,12 @@ class MyApp extends StatelessWidget {
           navigatorObservers: [
             FirebaseAnalyticsObserver(analytics: analytics),
           ],
-          themeMode: _themeProvider.userThemeDark == "dark"
+          themeMode: themeProvider.userThemeDark == "dark"
               ? ThemeMode.dark
               : ThemeMode.light,
           theme: ThemeData(
               textTheme: Theme.of(context).textTheme.apply(
-                    fontSizeFactor: _themeProvider.userFontSize,
+                    fontSizeFactor: themeProvider.userFontSize,
                     bodyColor: Colors.black,
                   ),
               scaffoldBackgroundColor: Colors.white,
@@ -161,10 +161,11 @@ class MyApp extends StatelessWidget {
               colorScheme: ThemeData().colorScheme.copyWith(
                     primary: const Color(0xff7a28cb),
                   ),
+              splashColor: Colors.transparent,
               fontFamily: 'Noto_Sans_KR'),
           darkTheme: ThemeData(
               textTheme: Theme.of(context).textTheme.apply(
-                    fontSizeFactor: _themeProvider.userFontSize,
+                    fontSizeFactor: themeProvider.userFontSize,
                     bodyColor: Colors.white,
                   ),
               scaffoldBackgroundColor: Colors.black,
@@ -184,6 +185,7 @@ class MyApp extends StatelessWidget {
               colorScheme: ThemeData().colorScheme.copyWith(
                     primary: const Color(0xff7a28cb),
                   ),
+              splashColor: Colors.transparent,
               fontFamily: 'Noto_Sans_KR'),
           title: 'Flutter Demo',
           home: const App(),
