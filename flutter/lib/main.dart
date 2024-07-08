@@ -131,9 +131,7 @@ class MyApp extends StatelessWidget {
       child: Consumer<ThemeProvider>(builder: (context, provider, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          navigatorObservers: [
-            FirebaseAnalyticsObserver(analytics: analytics),
-          ],
+          navigatorObservers: <NavigatorObserver>[observer],
           themeMode: themeProvider.userThemeDark == "dark"
               ? ThemeMode.dark
               : ThemeMode.light,
@@ -145,6 +143,8 @@ class MyApp extends StatelessWidget {
               scaffoldBackgroundColor: Colors.white,
               primaryColor: const Color(0xff7a28cb), //main color
               //primaryColorBrightness: Brightness.light,
+              inputDecorationTheme:
+                  const InputDecorationTheme(fillColor: Colors.black12),
               cardColor: const Color(0xfff2f3f5), //cardcolor
               canvasColor: Colors.white, //backgroundcolor
               shadowColor: Colors.black,
@@ -168,6 +168,8 @@ class MyApp extends StatelessWidget {
                     fontSizeFactor: themeProvider.userFontSize,
                     bodyColor: Colors.white,
                   ),
+              inputDecorationTheme:
+                  const InputDecorationTheme(fillColor: Colors.white12),
               scaffoldBackgroundColor: Colors.black,
               primaryColor: const Color(0xff7a28cb),
               cardColor: const Color(0xff25272c),

@@ -114,25 +114,11 @@ class _ProfileNicknameState extends State<ProfileNickname> {
   Widget _nicknameWidget() {
     return TextFormField(
       onChanged: (text) {
-        if (_userProvider.userFriendsAll.userdatas
-                .where((user) {
-                  if (user.nickname.toLowerCase() ==
-                      text.toString().toLowerCase()) {
-                    return true;
-                  } else {
-                    return false;
-                  }
-                })
-                .toList()
-                .length ==
-            0) {
-          setState(() {
-            _isNickNameused = false;
-          });
-        } else
-          setState(() {
-            _isNickNameused = true;
-          });
+        bool isUsed = _userProvider.userFriendsAll.userdatas
+            .any((user) => user.nickname.toLowerCase() == text.toLowerCase());
+        setState(() {
+          _isNickNameused = isUsed;
+        });
       },
       inputFormatters: [
         FilteringTextInputFormatter.deny(RegExp('[ ]')), // 공백 필터링

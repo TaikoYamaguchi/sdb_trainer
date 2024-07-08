@@ -67,4 +67,5 @@ class DefaultFirebaseOptions {
     iosClientId: '508959158364-a98jdhmhtp38qqvvisf20hn773cr9gsd.apps.googleusercontent.com',
     iosBundleId: 'com.tklck.sdbTrainer',
   );
+
 }

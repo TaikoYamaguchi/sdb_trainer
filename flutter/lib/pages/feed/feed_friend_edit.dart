@@ -105,6 +105,7 @@ class _FeedFriendEditState extends State<FeedFriendEdit> {
                 autofocus: true,
                 style: TextStyle(color: Theme.of(context).primaryColorLight),
                 decoration: InputDecoration(
+                  filled: true,
                   prefixIcon: const Icon(
                     Icons.search,
                     color: Color(0xFF717171),

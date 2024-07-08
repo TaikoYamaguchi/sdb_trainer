@@ -14,6 +14,7 @@ import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/model/exerciseList.dart';
 import 'package:sdb_trainer/src/utils/alerts.dart';
 import 'package:sdb_trainer/src/utils/exercise_util.dart';
+import 'package:sdb_trainer/src/utils/firebaseAnalyticsService.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
@@ -1104,6 +1105,8 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                               .exercises[pindex]
                               .rest);
                           provider2.routinecheck(widget.rindex);
+                          FirebaseAnalyticsService.logCustomEvent(
+                              "Workout Start");
                         }
                       }
                     },

@@ -171,7 +171,6 @@ class ExerciseState extends State<Exercise> {
                       stops: stops,
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter);
-
                   return Scrollable(
                     key: Key('$index'),
                     viewportBuilder:
@@ -225,10 +224,11 @@ class ExerciseState extends State<Exercise> {
                             ]),
                         child: Consumer<RoutineTimeProvider>(
                             builder: (builder, provider, child) {
+                          bool curWorkout = index == provider.nowonrindex;
                           return Builder(
                               builder: (context) => Material(
                                     elevation: provider.isstarted
-                                        ? index == provider.nowonrindex
+                                        ? curWorkout
                                             ? 5
                                             : 0
                                         : 0,
@@ -236,7 +236,7 @@ class ExerciseState extends State<Exercise> {
                                     child: Ink(
                                       decoration: BoxDecoration(
                                           color: provider.isstarted
-                                              ? index == provider.nowonrindex
+                                              ? curWorkout
                                                   ? const Color(0xffCEEC97)
                                                   : Theme.of(context).cardColor
                                               : Theme.of(context).cardColor,
@@ -293,7 +293,7 @@ class ExerciseState extends State<Exercise> {
                                                     ? Container(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .symmetric(
+                                                                .symmetric(
                                                                 horizontal: 8),
                                                         child: SizedBox(
                                                           width: 25,
@@ -340,36 +340,28 @@ class ExerciseState extends State<Exercise> {
                                                 routinelist[index].name,
                                                 textScaleFactor: 1.5,
                                                 style: TextStyle(
-                                                    color: Theme.of(context)
-                                                        .primaryColorLight,
+                                                    color: curWorkout
+                                                        ? Colors.black
+                                                        : Theme.of(context)
+                                                            .primaryColorLight,
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),
-                                              subtitle: Row(
-                                                children: [
+                                              subtitle: Text(
                                                   routinelist[index].mode == 0
-                                                      ? Text(
-                                                          "리스트 모드 - ${routinelist[index].exercises.length}개 운동",
-                                                          textScaleFactor: 1.0,
-                                                          style: TextStyle(
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColorLight))
-                                                      : Text("플랜 모드",
-                                                          textScaleFactor: 1.0,
-                                                          style: TextStyle(
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColorLight)),
-                                                ],
-                                              ),
+                                                      ? "리스트 모드 - ${routinelist[index].exercises.length}개 운동"
+                                                      : "플랜 모드",
+                                                  textScaleFactor: 1.0,
+                                                  style: TextStyle(
+                                                      color: curWorkout
+                                                          ? Colors.black
+                                                          : Theme.of(context)
+                                                              .primaryColorLight)),
                                               trailing: Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
                                                   provider.isstarted
-                                                      ? index ==
-                                                              provider
-                                                                  .nowonrindex
+                                                      ? curWorkout
                                                           ? Text(
                                                               provider.userest
                                                                   ? provider.timeron <
@@ -388,9 +380,8 @@ class ExerciseState extends State<Exercise> {
                                                                               0)
                                                                       ? Colors
                                                                           .red
-                                                                      : Theme.of(
-                                                                              context)
-                                                                          .primaryColorLight))
+                                                                      : Colors
+                                                                          .black))
                                                           : Container()
                                                       : Container(),
                                                   GestureDetector(
@@ -408,14 +399,21 @@ class ExerciseState extends State<Exercise> {
                                                     },
                                                     child: Container(
                                                       color: provider.isstarted
-                                                          ? index == provider.nowonrindex
-                                                          ? const Color(0xffCEEC97)
-                                                          : Theme.of(context).cardColor
-                                                          : Theme.of(context).cardColor,
+                                                          ? index ==
+                                                                  provider
+                                                                      .nowonrindex
+                                                              ? const Color(
+                                                                  0xffCEEC97)
+                                                              : Theme.of(
+                                                                      context)
+                                                                  .cardColor
+                                                          : Theme.of(context)
+                                                              .cardColor,
                                                       child: Padding(
-                                                        padding: const EdgeInsets
+                                                        padding:
+                                                            const EdgeInsets
                                                                 .fromLTRB(
-                                                            12, 8, 12, 8),
+                                                                12, 8, 12, 8),
                                                         child: Container(
                                                           height: 30.0,
                                                           width: 4.0,
@@ -425,7 +423,7 @@ class ExerciseState extends State<Exercise> {
                                                                   .primaryColorDark,
                                                               borderRadius:
                                                                   const BorderRadius
-                                                                          .all(
+                                                                      .all(
                                                                       Radius.circular(
                                                                           8.0))),
                                                         ),

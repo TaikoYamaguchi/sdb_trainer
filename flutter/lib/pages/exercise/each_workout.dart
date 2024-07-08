@@ -258,7 +258,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
         if (details.delta.dx > 10 && btnDisabled == false) {
           btnDisabled = true;
           Navigator.of(context).pop();
-          print("Dragging in +X direction");
         }
       },
       child: Consumer3<WorkoutdataProvider, ExercisesdataProvider,
@@ -312,6 +311,8 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                     .exercises[index].sets
                     .where((e) => e.ischecked == true)
                     .toList();
+                bool curItem = index == _routinetimeProvider.nowoneindex &&
+                    widget.rindex == _routinetimeProvider.nowonrindex;
 
                 if (exlist.length == 1) {
                   top = 20;
@@ -344,14 +345,12 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                       viewportBuilder:
                           (BuildContext context, ViewportOffset position) =>
                               Slidable(
-
                         endActionPane: ActionPane(
                             extentRatio:
                                 _routinetimeProvider.isstarted ? 0.6 : 0.4,
                             motion: const ScrollMotion(),
                             children: [
                               SlidableAction(
-
                                 onPressed: (_) {
                                   if (_routinetimeProvider.isstarted) {
                                     if (widget.rindex ==
@@ -464,12 +463,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                 child: Ink(
                                   decoration: BoxDecoration(
                                       color: _routinetimeProvider.isstarted
-                                          ? (index ==
-                                                      _routinetimeProvider
-                                                          .nowoneindex &&
-                                                  widget.rindex ==
-                                                      _routinetimeProvider
-                                                          .nowonrindex)
+                                          ? curItem
                                               ? const Color(0xffCEEC97)
                                               : Theme.of(context).cardColor
                                           : Theme.of(context).cardColor,
@@ -503,17 +497,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                                         .RIGHT_TO_LEFT))
                                       ];
                                     },
-                                    /*
-                                onPanUpdate: (details) {
-                                  if (details.delta.dx > 10 &&
-                                      btnDisabled == false) {
-                                    btnDisabled = true;
-                                    Navigator.of(context).pop();
-                                    print("Dragging in +X direction");
-                                  }
-                                },
-
-                                 */
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8),
@@ -570,9 +553,11 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                                         exlist[index].name,
                                                         textScaleFactor: 1.7,
                                                         style: TextStyle(
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .primaryColorLight),
+                                                            color: curItem
+                                                                ? Colors.black
+                                                                : Theme.of(
+                                                                        context)
+                                                                    .primaryColorLight),
                                                       ),
                                                       _exImageOpen
                                                           ? Row(
@@ -608,7 +593,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                               : Container(),
                                           GestureDetector(
                                               onTap: () {
-                                                print("kkkkkkk");
                                                 if (Slidable.of(context)!
                                                         .actionPaneType
                                                         .value ==
@@ -620,16 +604,15 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                                 }
                                               },
                                               child: Container(
-                                                color: _routinetimeProvider.isstarted
-                                                    ? (index ==
-                                                    _routinetimeProvider
-                                                        .nowoneindex &&
-                                                    widget.rindex ==
-                                                        _routinetimeProvider
-                                                            .nowonrindex)
-                                                    ? const Color(0xffCEEC97)
-                                                    : Theme.of(context).cardColor
-                                                    : Theme.of(context).cardColor,
+                                                color: _routinetimeProvider
+                                                        .isstarted
+                                                    ? curItem
+                                                        ? const Color(
+                                                            0xffCEEC97)
+                                                        : Theme.of(context)
+                                                            .cardColor
+                                                    : Theme.of(context)
+                                                        .cardColor,
                                                 child: Padding(
                                                   padding:
                                                       const EdgeInsets.fromLTRB(
@@ -642,7 +625,7 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                                                             .primaryColorDark,
                                                         borderRadius:
                                                             const BorderRadius
-                                                                    .all(
+                                                                .all(
                                                                 Radius.circular(
                                                                     8.0))),
                                                   ),

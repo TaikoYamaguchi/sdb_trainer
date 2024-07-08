@@ -230,7 +230,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
                 style: TextStyle(color: Theme.of(context).highlightColor))));
   }
 
-  Widget _DeleteConfirmButton_r(rindex, context) {
+  Widget _deleteConfirmButton_r(rindex, context) {
     var _workoutProvider =
         Provider.of<WorkoutdataProvider>(context, listen: false);
     var _userProvider = Provider.of<UserdataProvider>(context, listen: false);
@@ -270,7 +270,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
                 style: TextStyle(color: Theme.of(context).highlightColor))));
   }
 
-  Widget exSearchOutButton(context) {
+  Widget _exSearchOutButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: TextButton(
@@ -293,7 +293,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
                 style: TextStyle(color: Theme.of(context).highlightColor))));
   }
 
-  Widget _StartConfirmButton(context) {
+  Widget _startConfirmButton(context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: TextButton(
@@ -317,7 +317,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
                 style: TextStyle(color: Theme.of(context).highlightColor))));
   }
 
-  Widget _FinishConfirmButton(eindex, context) {
+  Widget _finishConfirmButton(eindex, context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: TextButton(
@@ -365,7 +365,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
                 style: TextStyle(color: Theme.of(context).highlightColor))));
   }
 
-  Widget _deleteConfirmButton_History() {
+  Widget _deleteConfirmButtonHistory() {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: TextButton(
@@ -388,7 +388,7 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
                 style: TextStyle(color: Theme.of(context).highlightColor))));
   }
 
-  Widget _deleteConfirmButton_User() {
+  Widget _deleteConfirmButtonUser() {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: TextButton(
@@ -408,6 +408,27 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
             child: Text("탈퇴",
                 textScaleFactor: 1.5,
                 style: TextStyle(color: Theme.of(context).primaryColorLight))));
+  }
+
+  Widget _buildActionButton(BuildContext context) {
+    switch (widget.layer) {
+      case 1:
+        return _deleteConfirmButton_r(widget.rindex, context);
+      case 2:
+        return _exSearchOutButton(context);
+      case 3:
+        return _startConfirmButton(context);
+      case 4:
+        return _moveToExButton(context);
+      case 5:
+        return _finishConfirmButton(widget.eindex, context);
+      case 6:
+        return _customDeleteButton();
+      case 7:
+        return _deleteConfirmButtonHistory();
+      default:
+        return _deleteConfirmButtonUser();
+    }
   }
 
   @override
@@ -459,7 +480,6 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
         comment = '';
         break;
     }
-    ;
 
     return AlertDialog(
       shape: RoundedRectangleBorder(
@@ -467,39 +487,22 @@ class _showsimpleAlertsState extends State<showsimpleAlerts> {
       ),
       backgroundColor: Theme.of(context).cardColor,
       title: Text(title,
-          textScaleFactor: 1.5,
           textAlign: TextAlign.center,
-          style: TextStyle(color: Theme.of(context).primaryColorLight)),
+          style: TextStyle(
+              fontSize: 24.0, color: Theme.of(context).primaryColorLight)),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(subtitle,
-              textScaleFactor: 1.3,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Theme.of(context).primaryColorLight)),
+              style: TextStyle(
+                  fontSize: 16.0, color: Theme.of(context).primaryColorLight)),
           Text(comment,
-              textScaleFactor: 1.0,
               textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.grey)),
+              style: const TextStyle(fontSize: 14.0, color: Colors.grey)),
         ],
       ),
-      actions: <Widget>[
-        widget.layer == 1
-            ? _DeleteConfirmButton_r(widget.rindex, context)
-            : widget.layer == 2
-                ? exSearchOutButton(context)
-                : widget.layer == 3
-                    ? _StartConfirmButton(context)
-                    : widget.layer == 4
-                        ? _moveToExButton(context)
-                        : widget.layer == 5
-                            ? _FinishConfirmButton(widget.eindex, context)
-                            : widget.layer == 6
-                                ? _customDeleteButton()
-                                : widget.layer == 7
-                                    ? _deleteConfirmButton_History()
-                                    : _deleteConfirmButton_User(),
-      ],
+      actions: <Widget>[_buildActionButton(context)],
     );
   }
 }

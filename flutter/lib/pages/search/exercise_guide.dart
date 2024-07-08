@@ -329,6 +329,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
           //expands: true,
           maxLines: null,
           decoration: InputDecoration(
+              filled: true,
               labelText: '운동에 관해 적을 수 있어요',
               labelStyle: TextStyle(
                   fontSize: 16.0, color: Theme.of(context).primaryColorDark),

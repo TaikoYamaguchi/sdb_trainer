@@ -7,6 +7,7 @@ import 'package:sdb_trainer/providers/workoutdata.dart';
 import 'package:sdb_trainer/repository/exercises_repository.dart';
 import 'package:sdb_trainer/repository/workout_repository.dart';
 import 'package:sdb_trainer/src/utils/alerts.dart';
+import 'package:sdb_trainer/src/utils/firebaseAnalyticsService.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:provider/provider.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
@@ -75,6 +76,7 @@ class _ExStartButtonState extends State<ExStartButton> {
                     {_showMyDialog_finish()}
                   else
                     {
+                      FirebaseAnalyticsService.logCustomEvent("Workout Start"),
                       _routinetimeProvider.resettimer(_workoutProvider
                           .workoutdata
                           .routinedatas[widget.rindex]

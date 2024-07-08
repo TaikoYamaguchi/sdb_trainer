@@ -1,3 +1,9 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'com.google.gms.google-services'
+}
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -21,20 +27,13 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.4'
 }
 
-
-
 task prepareKotlinBuildScriptModel {
 
 }
 
-apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion flutter.compileSdkVersion
     compileSdkVersion 34
 
     compileOptions {
@@ -59,8 +58,8 @@ android {
         versionName flutterVersionName
     }
 
-    signingConfigs{
-        debug{
+    signingConfigs {
+        debug {
             keyAlias 'androiddebugkey'
             keyPassword 'cksdnr0809!'
             storeFile file('mykey.jks')
@@ -94,5 +93,4 @@ dependencies {
     implementation 'androidx.window:window:1.0.0'
     implementation 'androidx.window:window-java:1.0.0'
     implementation 'com.google.android.gms:play-services-ads:22.0.0'
-
 }

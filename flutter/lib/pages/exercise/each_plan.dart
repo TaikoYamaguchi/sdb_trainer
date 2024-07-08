@@ -18,6 +18,7 @@ import 'package:sdb_trainer/src/model/workoutdata.dart';
 import 'package:sdb_trainer/src/utils/alerts.dart';
 import 'package:sdb_trainer/src/utils/change_name.dart';
 import 'package:sdb_trainer/src/utils/exercise_util.dart';
+import 'package:sdb_trainer/src/utils/firebaseAnalyticsService.dart';
 import 'package:sdb_trainer/src/utils/util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -993,6 +994,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                         provider2_.setplan(_workoutProvider
                             .workoutdata.routinedatas[widget.rindex].name);
                         provider_.nowoneindexupdate(plandata.progress);
+                        FirebaseAnalyticsService.logCustomEvent(
+                            "Workout Start");
                       }
                     }
                   },
@@ -1228,6 +1231,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       ),
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
+                          filled: true,
                           contentPadding:
                               const EdgeInsets.symmetric(vertical: 10.0),
                           enabledBorder: UnderlineInputBorder(
@@ -1270,6 +1274,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       ),
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
+                          filled: true,
                           contentPadding:
                               const EdgeInsets.symmetric(vertical: 10.0),
                           enabledBorder: UnderlineInputBorder(
@@ -1309,6 +1314,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       ),
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
+                        filled: true,
                         contentPadding:
                             const EdgeInsets.symmetric(vertical: 10.0),
                         enabledBorder: UnderlineInputBorder(
@@ -1510,7 +1516,6 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
     double top = 0;
     double bottom = 0;
     return Expanded(
-      //color: Colors.black,
       child: Consumer2<WorkoutdataProvider, ExercisesdataProvider>(
           builder: (builder, provider, exProvider, child) {
         provider.workoutdata.routinedatas[widget.rindex].exercises;

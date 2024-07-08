@@ -15,9 +15,9 @@ class RoutineTimeProvider extends ChangeNotifier {
   int get changetime => _changetime;
   int _timeron = 0;
   int get timeron => _timeron;
-  int _nowonrindex = 0;
+  int _nowonrindex = -1;
   int get nowonrindex => _nowonrindex;
-  int _nowoneindex = 0;
+  int _nowoneindex = -1;
   int get nowoneindex => _nowoneindex;
 
   Timer? timer1;
@@ -131,6 +131,7 @@ class RoutineTimeProvider extends ChangeNotifier {
         }
       });
       _routineNewRecord = 0;
+      _nowoneindex = 0;
       _routineButton = '운동 종료 하기';
       _buttoncolor = const Color(0xFffc60a8);
       _isstarted = !_isstarted;
@@ -146,6 +147,8 @@ class RoutineTimeProvider extends ChangeNotifier {
       _routineTime = 0;
       _timeron = 0;
       _routineButton = '운동 시작 하기';
+      _nowoneindex = -1;
+      _nowonrindex = -1;
       _buttoncolor = const Color(0xff7a28cb);
       _isstarted = !_isstarted;
       cancelNotificationWithChronometer();
@@ -194,6 +197,8 @@ class RoutineTimeProvider extends ChangeNotifier {
       await storage.write(key: "sdb_initialEx", value: "");
       await storage.write(key: "sdb_initialRindex", value: "");
 
+      _nowoneindex = 0;
+      _nowonrindex = 0;
       cancelNotificationWithChronometer();
       null;
     }

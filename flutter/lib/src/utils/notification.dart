@@ -1,4 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter/material.dart';
 
 final notifications = FlutterLocalNotificationsPlugin();
 
@@ -27,7 +28,9 @@ Future<void> showNotificationWithChronometer(DateTime _starttime) async {
           when: _starttime.millisecondsSinceEpoch,
           usesChronometer: true,
           ongoing: true,
-          autoCancel: false);
+          autoCancel: false,
+          icon: 'ic_stat_supero',
+          color: Colors.black);
   var iosDetails = const DarwinNotificationDetails(
     presentAlert: true,
     presentBadge: true,

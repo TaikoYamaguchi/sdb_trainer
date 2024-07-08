@@ -595,32 +595,19 @@ class _SignUpPageState extends State<SignUpPage> {
     return TextFormField(
       autofocus: true,
       onChanged: (text) {
-        if (_userProvider.userFriendsAll.userdatas
-                .where((user) {
-                  if (user.nickname.toLowerCase() ==
-                      text.toString().toLowerCase()) {
-                    return true;
-                  } else {
-                    return false;
-                  }
-                })
-                .toList()
-                .length ==
-            0) {
-          setState(() {
-            _isNickNameused = false;
-          });
-        } else
-          setState(() {
-            _isNickNameused = true;
-          });
+        bool isNickNameUsed = _userProvider.userFriendsAll.userdatas
+            .any((user) => user.nickname.toLowerCase() == text.toLowerCase());
+
+        setState(() {
+          _isNickNameused = isNickNameUsed;
+        });
       },
       inputFormatters: [
         FilteringTextInputFormatter.deny(RegExp('[ ]')), // 공백 필터링
       ],
       controller: _userNicknameCtrl,
       style: TextStyle(
-        color: Colors.black,
+        color: Theme.of(context).primaryColorLight,
         fontSize: _themeProvider.userFontSize * 20 / 0.8,
       ),
       decoration: InputDecoration(
@@ -684,7 +671,7 @@ class _SignUpPageState extends State<SignUpPage> {
       keyboardType:
           const TextInputType.numberWithOptions(signed: false, decimal: true),
       style: TextStyle(
-        color: Colors.black,
+        color: Theme.of(context).primaryColorLight,
         fontSize: _themeProvider.userFontSize * 20 / 0.8,
       ),
       decoration: InputDecoration(
@@ -777,7 +764,7 @@ class _SignUpPageState extends State<SignUpPage> {
       controller: _userPhoneNumberCtrl,
       keyboardType: TextInputType.number,
       style: TextStyle(
-        color: Colors.black,
+        color: Theme.of(context).primaryColorLight,
         fontSize: _themeProvider.userFontSize * 20 / 0.8,
       ),
       decoration: InputDecoration(

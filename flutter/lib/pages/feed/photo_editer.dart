@@ -346,12 +346,13 @@ class _PhotoEditorState extends State<PhotoEditor> {
                           });
                         },
                         child: Container(
-                          padding: EdgeInsets.all(1),
+                          padding: const EdgeInsets.all(1),
                           decoration: BoxDecoration(
                             color: _settings[curpage].b == 0
                                 ? Theme.of(context).indicatorColor
                                 : Theme.of(context).canvasColor,
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
                           ),
                           child: Card(
                             elevation: 5,
@@ -365,11 +366,11 @@ class _PhotoEditorState extends State<PhotoEditor> {
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(5)),
                                   ),
-                                  child: Column(
+                                  child: const Column(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Align(
+                                      Align(
                                           alignment: Alignment.topRight,
                                           child: Padding(
                                             padding: EdgeInsets.all(3.0),
@@ -381,18 +382,18 @@ class _PhotoEditorState extends State<PhotoEditor> {
                                                         FontWeight.bold)),
                                           )),
                                       Padding(
-                                        padding: const EdgeInsets.all(3.0),
+                                        padding: EdgeInsets.all(3.0),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            const Text('Time',
+                                            Text('Time',
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 10,
                                                     fontWeight:
                                                         FontWeight.bold)),
-                                            const Text('Sets',
+                                            Text('Sets',
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 10,
@@ -424,12 +425,13 @@ class _PhotoEditorState extends State<PhotoEditor> {
                           });
                         },
                         child: Container(
-                          padding: EdgeInsets.all(1),
+                          padding: const EdgeInsets.all(1),
                           decoration: BoxDecoration(
                             color: _settings[curpage].b == 1
                                 ? Theme.of(context).indicatorColor
                                 : Theme.of(context).canvasColor,
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
                           ),
                           child: Card(
                             elevation: 5,

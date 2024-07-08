@@ -1019,19 +1019,10 @@ class _ProgramDownloadState extends State<ProgramDownload> {
                 const SizedBox(height: 20),
                 TextField(
                   onChanged: (value) {
-                    _workoutProvider.workoutdata.routinedatas
-                        .indexWhere((routine) {
-                      if (routine.name == _workoutNameCtrl.text) {
-                        state(() {
-                          _customRuUsed = true;
-                        });
-                        return true;
-                      } else {
-                        state(() {
-                          _customRuUsed = false;
-                        });
-                        return false;
-                      }
+                    bool isUsed = _workoutProvider.workoutdata.routinedatas.any(
+                        (routine) => routine.name == _workoutNameCtrl.text);
+                    state(() {
+                      _customRuUsed = isUsed;
                     });
                   },
                   style: TextStyle(

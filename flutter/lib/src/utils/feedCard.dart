@@ -578,6 +578,7 @@ class FeedCardState extends State<FeedCard> {
           //expands: true,
           maxLines: null,
           decoration: InputDecoration(
+              filled: true,
               labelText: '운동에 관해 기록해보세요',
               labelStyle: TextStyle(
                   fontSize: 16.0, color: Theme.of(context).primaryColorDark),
