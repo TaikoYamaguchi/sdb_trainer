@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:html/parser.dart';
+import 'package:sdb_trainer/pages/mystat/my_stat.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/notification.dart';
@@ -451,6 +452,7 @@ class _AppState extends State<App> {
                       _bottomNavigationBarItem("dumbbell-svgrepo-com-3", "운동"),
                       _bottomNavigationBarItem("heart-svgrepo-com", "피드"),
                       _bottomNavigationBarItem("calendar-svgrepo-com", "기록"),
+                      _bottomNavigationBarItem("calendar-svgrepo-com", "stat"),
                       _bottomNavigationBarItem("avatar-svgrepo-com", "프로필"),
                     ],
                   ),
@@ -459,16 +461,16 @@ class _AppState extends State<App> {
                     return Center(
                       child: SizedBox(
                         width: _bodyStater.bodystate == 0 ||
-                                _bodyStater.bodystate == 4
+                                _bodyStater.bodystate == 5
                             ? width
-                            : width * 0.6,
+                            : _bodyStater.bodystate == 1 ||
+                            _bodyStater.bodystate == 4
+                              ? width * 4/6
+                              : width * 2/6,
                         child: Align(
-                          alignment: _bodyStater.bodystate == 0 ||
-                                  _bodyStater.bodystate == 1
+                          alignment: _bodyStater.bodystate < 3
                               ? Alignment.bottomLeft
-                              : _bodyStater.bodystate == 2
-                                  ? Alignment.bottomCenter
-                                  : Alignment.bottomRight,
+                              : Alignment.bottomRight,
                           child: Container(
                             height: 2,
                             decoration: BoxDecoration(
@@ -477,7 +479,7 @@ class _AppState extends State<App> {
                                   topRight: Radius.circular(30),
                                   topLeft: Radius.circular(30)),
                             ),
-                            width: width * 0.2,
+                            width: width /6,
                           ),
                         ),
                       ),
@@ -800,6 +802,7 @@ class _AppState extends State<App> {
                             TabNavigator(),
                             Feed(),
                             Calendar(),
+                            MyStat(),
                             TabProfileNavigator()
                           ])
                 : _loginState.isSignUp
