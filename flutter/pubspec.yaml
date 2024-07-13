@@ -88,6 +88,7 @@ dependencies:
   html_editor_enhanced: ^2.6.0
   html: ^0.15.4
   url_launcher: ^6.3.0
+  flutter_flip_card: ^0.0.6
 
 dev_dependencies:
   flutter_test:
