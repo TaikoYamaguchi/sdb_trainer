@@ -341,7 +341,7 @@ class _ExerciseGuideState extends State<ExerciseGuide> {
                 borderSide: BorderSide(
                     color: Theme.of(context).primaryColor, width: 1.5),
               ),
-              fillColor: Theme.of(context).primaryColorLight),
+              fillColor: Colors.transparent),
           style: TextStyle(color: Theme.of(context).primaryColorLight)),
     );
   }
