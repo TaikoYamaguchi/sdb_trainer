@@ -29,27 +29,27 @@ class _AppNotificationState extends State<AppNotification> {
   var _isCommentInputOpen = false;
   @override
   void initState() {
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    _PopProvider=Provider.of<PopProvider>(context, listen: false);
+    _PopProvider = Provider.of<PopProvider>(context, listen: false);
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
-    _notificationprovider = Provider.of<NotificationdataProvider>(context, listen: false);
+    _notificationprovider =
+        Provider.of<NotificationdataProvider>(context, listen: false);
     _onRefresh();
     return Consumer<PopProvider>(builder: (Builder, provider, child) {
       bool _popable = provider.isprostacking;
       _popable == false
           ? null
           : [
-        provider.profilestackdown(),
-        provider.propopoff(),
-        Future.delayed(Duration.zero, () async {
-          Navigator.of(context).pop();
-        })
-      ];
+              provider.profilestackdown(),
+              provider.propopoff(),
+              Future.delayed(Duration.zero, () async {
+                Navigator.of(context).pop();
+              })
+            ];
       return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: _appbarWidget(),
@@ -71,9 +71,9 @@ class _AppNotificationState extends State<AppNotification> {
               _btnDisabled == true
                   ? null
                   : [
-                Navigator.of(context).pop(),
-                _btnDisabled = true,
-              ];
+                      Navigator.of(context).pop(),
+                      _btnDisabled = true,
+                    ];
             },
           ),
           title: Text(
@@ -90,7 +90,8 @@ class _AppNotificationState extends State<AppNotification> {
                           context,
                           Transition(
                               child: NotificationHtmlEditor(),
-                              transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
+                              transitionEffect:
+                                  TransitionEffect.RIGHT_TO_LEFT));
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(right: 8.0),
@@ -115,164 +116,155 @@ class _AppNotificationState extends State<AppNotification> {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
-      child:
-      Consumer<NotificationdataProvider>(builder: (builder, provider, child) {
+      child: Consumer<NotificationdataProvider>(
+          builder: (builder, provider, child) {
         var _notificationDatas = provider.notificationdata != null
             ? provider.notificationdata.notifications
             : [];
         return _userProvider.userdata != null
             ? provider.notificationdata != null
-              ? RefreshIndicator(
-              onRefresh: _onRefresh,
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '''공지를 참고해주세요''',
-                                  textScaleFactor: 1.4,
-                                  style: TextStyle(
-                                      height: 1.5,
-                                      color: Theme.of(context)
-                                          .primaryColorLight),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    ListView.separated(
-                        controller: _scrollController,
-                        itemBuilder: (BuildContext _context, int index) {
-                          if (index < _notificationDatas.length) {
-                            return SizedBox(
+                ? RefreshIndicator(
+                    onRefresh: _onRefresh,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
                               width: MediaQuery.of(context).size.width,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8.0),
-                                child: Row(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          _showNotificationDetailBottomSheet(_notificationDatas[index]);
-
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            children: [
-                                              const SizedBox(height: 4),
-                                              Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceBetween,
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment
-                                                    .start,
-                                                children: [
-                                                  Expanded(
-                                                    child: Text(
-                                                      _notificationDatas[
-                                                      index]
-                                                          .title,
-                                                      textAlign:
-                                                      TextAlign.start,
-                                                      textScaleFactor:
-                                                      1.5,
-                                                      overflow:
-                                                      TextOverflow
-                                                          .fade,
-                                                      maxLines: 1,
-                                                      softWrap: false,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                          FontWeight
-                                                              .w500,
-                                                          color: Theme.of(
-                                                              context)
-                                                              .primaryColorLight),
-                                                    ),
-                                                  ),
-
-                                                  Container(
-                                                    child: Padding(
-                                                      padding:
-                                                      const EdgeInsets
-                                                          .only(
-                                                          right: 4.0),
-                                                      child: Text(
-                                                        _notificationDatas[
-                                                        index]
-                                                            .date.substring(
-                                                            2, 10),
-                                                        textScaleFactor:
-                                                        1.0,
-                                                        style: TextStyle(
-                                                            color: Theme.of(
-                                                                context)
-                                                                .primaryColorDark),
-                                                      ),
-                                                    ),
-                                                  ),
-
-
-                                                ],
-                                              ),
-                                              const SizedBox(height: 4),
-
-                                              Divider(
-                                                  color: Theme.of(context)
-                                                      .primaryColorDark,
-                                                  thickness: 0.3)
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                              child: Card(
+                                color: Theme.of(context).cardColor,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Text(
+                                    '''공지를 참고해주세요''',
+                                    textScaleFactor: 1.4,
+                                    style: TextStyle(
+                                        height: 1.5,
+                                        color: Theme.of(context)
+                                            .primaryColorLight),
+                                  ),
                                 ),
                               ),
-                            );
-                          }
-                        },
-                        separatorBuilder:
-                            (BuildContext _context, int index) {
-                          return Container(
-                            alignment: Alignment.center,
-                            height: 0,
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 0,
-                              color: Theme.of(context).primaryColorDark,
                             ),
-                          );
-                        },
-                        shrinkWrap: true,
-                        itemCount: _notificationDatas.length+1),
-                  ],
-                ),
-              ))
-              : const Center(child: CircularProgressIndicator())
+                          ),
+                          ListView.separated(
+                              controller: _scrollController,
+                              itemBuilder: (BuildContext _context, int index) {
+                                if (index < _notificationDatas.length) {
+                                  return SizedBox(
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                _showNotificationDetailBottomSheet(
+                                                    _notificationDatas[index]);
+                                              },
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8.0),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    const SizedBox(height: 4),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Expanded(
+                                                          child: Text(
+                                                            _notificationDatas[
+                                                                    index]
+                                                                .title,
+                                                            textAlign:
+                                                                TextAlign.start,
+                                                            textScaleFactor:
+                                                                1.5,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .fade,
+                                                            maxLines: 1,
+                                                            softWrap: false,
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .primaryColorLight),
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                                    right: 4.0),
+                                                            child: Text(
+                                                              _notificationDatas[
+                                                                      index]
+                                                                  .date
+                                                                  .substring(
+                                                                      2, 10),
+                                                              textScaleFactor:
+                                                                  1.0,
+                                                              style: TextStyle(
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .primaryColorDark),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    const SizedBox(height: 4),
+                                                    Divider(
+                                                        color: Theme.of(context)
+                                                            .primaryColorDark,
+                                                        thickness: 0.3)
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                              separatorBuilder:
+                                  (BuildContext _context, int index) {
+                                return Container(
+                                  alignment: Alignment.center,
+                                  height: 0,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: 0,
+                                    color: Theme.of(context).primaryColorDark,
+                                  ),
+                                );
+                              },
+                              shrinkWrap: true,
+                              itemCount: _notificationDatas.length + 1),
+                        ],
+                      ),
+                    ))
+                : const Center(child: CircularProgressIndicator())
             : const Center(child: CircularProgressIndicator());
       }),
     );
@@ -298,7 +290,7 @@ class _AppNotificationState extends State<AppNotification> {
             height: MediaQuery.of(context).size.height * 0.7,
             decoration: BoxDecoration(
               borderRadius:
-              const BorderRadius.vertical(top: Radius.circular(20)),
+                  const BorderRadius.vertical(top: Radius.circular(20)),
               color: Theme.of(context).cardColor,
             ),
             child: Column(
@@ -313,7 +305,7 @@ class _AppNotificationState extends State<AppNotification> {
                     decoration: BoxDecoration(
                         color: Theme.of(context).primaryColorDark,
                         borderRadius:
-                        const BorderRadius.all(Radius.circular(8.0))),
+                            const BorderRadius.all(Radius.circular(8.0))),
                   ),
                 ),
                 Expanded(
@@ -331,7 +323,7 @@ class _AppNotificationState extends State<AppNotification> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         notificationdata.title,
@@ -356,9 +348,9 @@ class _AppNotificationState extends State<AppNotification> {
                                 onTapDown: _storePosition,
                                 onTap: () {
                                   _userProvider.userdata.is_superuser
-                                  ? _myInterviewMenu(notificationdata, setState)
-                                  : null;
-
+                                      ? _myInterviewMenu(
+                                          notificationdata, setState)
+                                      : null;
                                 },
                                 child: const Icon(Icons.more_vert,
                                     color: Colors.grey, size: 18.0))
@@ -371,31 +363,60 @@ class _AppNotificationState extends State<AppNotification> {
                               padding: const EdgeInsets.all(8.0),
                               child: ListView.builder(
                                   physics: const ScrollPhysics(),
-                                  itemBuilder: (BuildContext _context, int index) {
-                                    return body.getElementsByTagName("p")[index].getElementsByTagName("img").length != 0
+                                  itemBuilder:
+                                      (BuildContext _context, int index) {
+                                    return body
+                                                .getElementsByTagName(
+                                                    "p")[index]
+                                                .getElementsByTagName("img")
+                                                .length !=
+                                            0
                                         ? Image(
-                                      image: CachedNetworkImageProvider(
-                                        notificationdata.images![int.parse(body.getElementsByTagName("p")[index].getElementsByTagName("img")[0].attributes["src"]!)],
-                                      ),
-                                      fit: BoxFit.cover,)
-                                        : body.getElementsByTagName("p")[index].getElementsByTagName("a").length != 0
-                                        ? RichText(
-                                        text: TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                  style: TextStyle(
-                                                      color: Colors.blueAccent),
-                                                  text: body.getElementsByTagName("p")[index].text,
-                                                  recognizer: TapGestureRecognizer()..onTap =  () async{
-                                                    var url = body.getElementsByTagName("p")[index].getElementsByTagName("a")[0].attributes["href"]!;
-                                                    if (await canLaunchUrlString(url)) {
-                                                      await launchUrlString(url);
-                                                    } else {
-                                                      throw 'Could not launch $url';
-                                                    }
-                                                  }
-                                              ),
-                                              /*
+                                            image: CachedNetworkImageProvider(
+                                              notificationdata.images![
+                                                  int.parse(body
+                                                      .getElementsByTagName(
+                                                          "p")[index]
+                                                      .getElementsByTagName(
+                                                          "img")[0]
+                                                      .attributes["src"]!)],
+                                            ),
+                                            fit: BoxFit.cover,
+                                          )
+                                        : body
+                                                    .getElementsByTagName(
+                                                        "p")[index]
+                                                    .getElementsByTagName("a")
+                                                    .length !=
+                                                0
+                                            ? RichText(
+                                                text: TextSpan(children: [
+                                                TextSpan(
+                                                    style: TextStyle(
+                                                        color:
+                                                            Colors.blueAccent),
+                                                    text: body
+                                                        .getElementsByTagName(
+                                                            "p")[index]
+                                                        .text,
+                                                    recognizer:
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () async {
+                                                            var url = body
+                                                                .getElementsByTagName(
+                                                                    "p")[index]
+                                                                .getElementsByTagName(
+                                                                    "a")[0]
+                                                                .attributes["href"]!;
+                                                            if (await canLaunchUrlString(
+                                                                url)) {
+                                                              await launchUrlString(
+                                                                  url);
+                                                            } else {
+                                                              throw 'Could not launch $url';
+                                                            }
+                                                          }),
+                                                /*
                                                               TextSpan(
                                                                   style: linkText,
                                                                   text: "Click here",
@@ -403,23 +424,25 @@ class _AppNotificationState extends State<AppNotification> {
                                                               ),
 
                                                                */
-                                            ]
-                                        ))
-                                        : Column(
-                                      children: [
-                                        Text(body.getElementsByTagName("p")[index].text,
-                                            textScaleFactor: 1.5,
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .primaryColorLight)),
-                                        SizedBox(height: 5)
-                                      ],
-                                    );
-
+                                              ]))
+                                            : Column(
+                                                children: [
+                                                  Text(
+                                                      body
+                                                          .getElementsByTagName(
+                                                              "p")[index]
+                                                          .text,
+                                                      textScaleFactor: 1.5,
+                                                      style: TextStyle(
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .primaryColorLight)),
+                                                  SizedBox(height: 5)
+                                                ],
+                                              );
                                   },
                                   shrinkWrap: true,
-                                  itemCount: length
-                              ),
+                                  itemCount: length),
                             )),
 
                         const SizedBox(height: 4.0),
@@ -437,7 +460,6 @@ class _AppNotificationState extends State<AppNotification> {
                     ),
                   ),
                 ),
-
               ],
             ),
           );
@@ -454,30 +476,27 @@ class _AppNotificationState extends State<AppNotification> {
       mnoti.Notification notificationdata, StateSetter setState) {
     return showMenu(
       context: context,
-      position: RelativeRect.fromRect(_tapPosition & const Size(30, 30),
-          Offset.zero & const Size(0, 0)),
+      position: RelativeRect.fromRect(
+          _tapPosition & const Size(30, 30), Offset.zero & const Size(0, 0)),
       items: [
         PopupMenuItem(
             child: ListTile(
-                contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 4.0, vertical: 0.0),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
                 leading: Icon(Icons.delete,
                     color: Theme.of(context).primaryColorLight),
                 title: Text("No-Show",
-                    style: TextStyle(
-                        color: Theme.of(context).primaryColorLight)),
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
                 onTap: () async {
                   notificationdata.ispopup = false;
                   _notificationprovider.editdata(notificationdata);
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                 }))
-
-
       ],
     );
   }
-
 
   @override
   void dispose() {

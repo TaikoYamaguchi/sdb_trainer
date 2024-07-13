@@ -179,6 +179,7 @@ class _InterviewState extends State<Interview> {
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width,
                               child: Card(
+                                color: Theme.of(context).cardColor,
                                 child: Padding(
                                   padding: const EdgeInsets.all(12.0),
                                   child: Column(

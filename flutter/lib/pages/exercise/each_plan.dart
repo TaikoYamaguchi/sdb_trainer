@@ -999,13 +999,16 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       }
                     }
                   },
-                  child: Text((provider_.nowonrindex != widget.rindex) &&
-                          _routinetimeProvider.isstarted
-                      ? '다른 루틴 수행중'
-                      : (provider_.nowoneindex != plandata.progress &&
-                              provider_.isstarted)
-                          ? '${provider_.nowoneindex + 1}일차 운동 수행중'
-                          : provider_.routineButton));
+                  child: Text(
+                    (provider_.nowonrindex != widget.rindex) &&
+                            _routinetimeProvider.isstarted
+                        ? '다른 루틴 수행중'
+                        : (provider_.nowoneindex != plandata.progress &&
+                                provider_.isstarted)
+                            ? '${provider_.nowoneindex + 1}일차 운동 수행중'
+                            : provider_.routineButton,
+                    style: TextStyle(color: Colors.white),
+                  ));
             })
           ]));
     });
@@ -1102,7 +1105,6 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (BuildContext context) {
         return Container(
-            height: 300,
             decoration: BoxDecoration(
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(20)),
@@ -1141,7 +1143,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
 
     return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
-      return Column(children: [
+      return Column(mainAxisSize: MainAxisSize.min, children: [
         Container(height: 12),
         Padding(
             padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
@@ -1578,7 +1580,6 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                     Navigator.pop(context);
                     _editWorkoutCheck();
                   }
-                  ;
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -1660,12 +1661,12 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
             separatorBuilder: (BuildContext _context, int index) {
               return Container(
                 alignment: Alignment.center,
-                height: 1,
+                height: 0.3,
                 color: const Color(0xFF212121),
                 child: Container(
                   alignment: Alignment.center,
                   margin: const EdgeInsets.symmetric(horizontal: 10),
-                  height: 1,
+                  height: 0.3,
                   color: const Color(0xFF717171),
                 ),
               );
