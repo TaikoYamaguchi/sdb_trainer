@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_flip_card/flipcard/flip_card.dart';
+import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:sdb_trainer/pages/feed/friendHistory.dart';
 import 'package:sdb_trainer/providers/userdata.dart';
@@ -32,6 +34,7 @@ class MyStat extends StatefulWidget {
 
 class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
 
+  final flip_ctrl = GestureFlipCardController();
 
   @override
   void initState() {
@@ -80,7 +83,45 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
         appBar: _appbarWidget(),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4.0),
-          child: Container(),
-        ));
+          child: Container(
+            child: GestureFlipCard(
+              animationDuration: const Duration(milliseconds: 300),
+                axis: FlipAxis.vertical,
+                controller: flip_ctrl,
+                enableController: false,
+                frontWidget: Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    child: Card(
+                      color: Colors.blueAccent,
+                      child: Column(
+                        children: [
+                          Text("운동 밸런스:"),
+                          Text("전신 피로도:"),
+                          Text("최근 7일간 운동 빈도"),
+                          Text("내가 모은 카드 수: 4/30"),
+                          Text("나의 3대 무제: "),
+                          Text("나의 최애 운동: "),
+                          Text("나의 3대 추세(M/Q/Y): "),
+                          Text("나이"),
+                          Text("체중"),
+                          Text("평균 수행 볼륨"),
+                          Text("오늘의 운동조언"),
+
+                        ],
+                      ),
+                    )
+                ),
+                backWidget: Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    child: Card(
+                      color: Colors.redAccent,
+                    )
+                  ),
+                )
+            )
+          ),
+        );
   }
 }
