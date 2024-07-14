@@ -398,3 +398,69 @@ class DecimalTextInputFormatter extends TextInputFormatter {
     );
   }
 }
+
+class ExpandableCustomIcon extends StatefulWidget {
+  final bool isExpanded;
+  final Duration duration;
+  final IconData icon;
+  final Color color;
+
+  const ExpandableCustomIcon({
+    Key? key,
+    required this.isExpanded,
+    required this.icon,
+    required this.color,
+    this.duration = const Duration(milliseconds: 300),
+  }) : super(key: key);
+
+  @override
+  _ExpandableIconState createState() => _ExpandableIconState();
+}
+
+class _ExpandableIconState extends State<ExpandableCustomIcon>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: widget.duration,
+      vsync: this,
+    );
+
+    _animation = Tween<double>(
+      begin: 0,
+      end: 0.5,
+    ).animate(_controller);
+
+    if (widget.isExpanded) {
+      _controller.forward();
+    }
+  }
+
+  @override
+  void didUpdateWidget(ExpandableCustomIcon oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isExpanded) {
+      _controller.forward();
+    } else {
+      _controller.reverse();
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return RotationTransition(
+      turns: _animation,
+      child: Icon(Icons.expand_more, color: widget.color),
+    );
+  }
+}

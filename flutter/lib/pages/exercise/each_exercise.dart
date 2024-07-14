@@ -172,15 +172,14 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
 
   Widget _buildContainer(Widget picker) {
     return Container(
-      height: 305,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
         color: Theme.of(context).cardColor,
       ),
-      padding: const EdgeInsets.only(top: 6.0),
+      padding: const EdgeInsets.symmetric(vertical: 12.0),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          /*
           Padding(
             padding: EdgeInsets.fromLTRB(12, 4, 12, 12),
             child: Container(
@@ -191,7 +190,6 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                   borderRadius: BorderRadius.all(Radius.circular(8.0))),
             ),
           ),
-          */
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -202,23 +200,22 @@ class _EachExerciseDetailsState extends State<EachExerciseDetails>
                       },
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
-                              Theme.of(context).cardColor)),
-                      child: Text('Done',
+                              Theme.of(context).primaryColor)),
+                      child: Text('완료',
+                          textScaleFactor: 1.2,
                           style: TextStyle(
+                              fontWeight: FontWeight.bold,
                               color: Theme.of(context).primaryColorLight)))),
               Container(width: 10)
             ],
           ),
-          GestureDetector(
-            onTap: () {},
-            child: SafeArea(
-              top: false,
-              child: SizedBox(
-                height: 215,
-                child: picker,
-              ),
+          SafeArea(
+            top: false,
+            child: SizedBox(
+              height: 215,
+              child: picker,
             ),
-          ),
+          )
         ],
       ),
     );

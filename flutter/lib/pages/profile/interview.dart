@@ -43,6 +43,7 @@ class _InterviewState extends State<Interview> {
 
   var _isCommentInputOpen = false;
 
+  bool _focus = false;
   final TextEditingController _titleCtrl = TextEditingController(text: "");
   final TextEditingController _contentCtrl = TextEditingController(text: "");
 
@@ -1365,185 +1366,208 @@ class _InterviewState extends State<Interview> {
                 child: Text("차단된 사용자 입니다",
                     textScaleFactor: 1.0,
                     style: TextStyle(color: Colors.grey))))
-        : Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Flexible(
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      Transition(
-                          child: FriendProfile(user: user),
-                          transitionEffect: TransitionEffect.RIGHT_TO_LEFT));
-                },
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    user.image == ""
-                        ? const Icon(
-                            Icons.account_circle,
-                            color: Colors.grey,
-                            size: 38.0,
-                          )
-                        : CachedNetworkImage(
-                            imageUrl: user.image,
-                            imageBuilder: (context, imageProivder) => Container(
-                              height: 38,
-                              width: 38,
-                              decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(50)),
-                                  image: DecorationImage(
-                                    image: imageProivder,
-                                    fit: BoxFit.cover,
-                                  )),
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+                Flexible(
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          Transition(
+                              child: FriendProfile(user: user),
+                              transitionEffect:
+                                  TransitionEffect.RIGHT_TO_LEFT));
+                    },
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        user.image == ""
+                            ? const Icon(
+                                Icons.account_circle,
+                                color: Colors.grey,
+                                size: 38.0,
+                              )
+                            : CachedNetworkImage(
+                                imageUrl: user.image,
+                                imageBuilder: (context, imageProivder) =>
+                                    Container(
+                                  height: 38,
+                                  width: 38,
+                                  decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(50)),
+                                      image: DecorationImage(
+                                        image: imageProivder,
+                                        fit: BoxFit.cover,
+                                      )),
+                                ),
+                              ),
+                        Flexible(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 4.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(Comment.writer_nickname,
+                                    textScaleFactor: 1.0,
+                                    style: const TextStyle(color: Colors.grey)),
+                                Text(Comment.content,
+                                    textScaleFactor: 1.1,
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .primaryColorLight)),
+                              ],
                             ),
                           ),
-                    Flexible(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 4.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(Comment.writer_nickname,
-                                textScaleFactor: 1.0,
-                                style: const TextStyle(color: Colors.grey)),
-                            Text(Comment.content,
-                                textScaleFactor: 1.1,
-                                style: TextStyle(
-                                    color:
-                                        Theme.of(context).primaryColorLight)),
-                          ],
                         ),
-                      ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            GestureDetector(
-              onTapDown: _storePosition,
-              onTap: () {
-                _userProvider.userdata.email == Comment.writer_email
-                    ? showMenu(
-                        context: context,
-                        position: RelativeRect.fromRect(
-                            _tapPosition & const Size(30, 30),
-                            Offset.zero & const Size(0, 0)),
-                        items: [
-                            PopupMenuItem(
-                                onTap: () {
-                                  _historyProvider.deleteCommentAll(Comment);
-                                  Future<void>.delayed(
-                                      const Duration(), // OR const Duration(milliseconds: 500),
-                                      () =>
-                                          CommentDelete(comment_id: Comment.id)
+                GestureDetector(
+                  onTapDown: _storePosition,
+                  onTap: () {
+                    _userProvider.userdata.email == Comment.writer_email
+                        ? showMenu(
+                            context: context,
+                            position: RelativeRect.fromRect(
+                                _tapPosition & const Size(30, 30),
+                                Offset.zero & const Size(0, 0)),
+                            items: [
+                                PopupMenuItem(
+                                    onTap: () {
+                                      _historyProvider
+                                          .deleteCommentAll(Comment);
+                                      Future<void>.delayed(
+                                          const Duration(), // OR const Duration(milliseconds: 500),
+                                          () => CommentDelete(
+                                                  comment_id: Comment.id)
                                               .deleteComment());
-                                },
-                                padding: const EdgeInsets.all(0.0),
-                                child: ListTile(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 4.0, vertical: 0.0),
-                                    leading: Icon(Icons.delete,
-                                        color: Theme.of(context)
-                                            .primaryColorLight),
-                                    title: Text("삭제",
-                                        style: TextStyle(
+                                    },
+                                    padding: const EdgeInsets.all(0.0),
+                                    child: ListTile(
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 4.0, vertical: 0.0),
+                                        leading: Icon(Icons.delete,
                                             color: Theme.of(context)
-                                                .primaryColorLight)))),
-                          ])
-                    : showMenu(
-                        context: context,
-                        position: RelativeRect.fromRect(
-                            _tapPosition & const Size(30, 30),
-                            Offset.zero & const Size(0, 0)),
-                        items: [
-                            PopupMenuItem(
-                                onTap: () {
-                                  Future<void>.delayed(
-                                      const Duration(), // OR const Duration(milliseconds: 500),
-                                      () => _displayDislikeAlert(
-                                          Comment.writer_email));
-                                },
-                                padding: const EdgeInsets.all(0.0),
-                                child: ListTile(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 4.0, vertical: 0.0),
-                                    leading: Icon(Icons.remove_circle_outlined,
-                                        color: Theme.of(context)
-                                            .primaryColorLight),
-                                    title: Text("신고",
-                                        style: TextStyle(
+                                                .primaryColorLight),
+                                        title: Text("삭제",
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColorLight)))),
+                              ])
+                        : showMenu(
+                            context: context,
+                            position: RelativeRect.fromRect(
+                                _tapPosition & const Size(30, 30),
+                                Offset.zero & const Size(0, 0)),
+                            items: [
+                                PopupMenuItem(
+                                    onTap: () {
+                                      Future<void>.delayed(
+                                          const Duration(), // OR const Duration(milliseconds: 500),
+                                          () => _displayDislikeAlert(
+                                              Comment.writer_email));
+                                    },
+                                    padding: const EdgeInsets.all(0.0),
+                                    child: ListTile(
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 4.0, vertical: 0.0),
+                                        leading: Icon(
+                                            Icons.remove_circle_outlined,
                                             color: Theme.of(context)
-                                                .primaryColorLight)))),
-                          ]);
-              },
-              child: const Icon(
-                Icons.more_vert,
-                color: Colors.grey,
-                size: 18.0,
-              ),
-            )
-          ]);
+                                                .primaryColorLight),
+                                        title: Text("신고",
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColorLight)))),
+                              ]);
+                  },
+                  child: const Icon(
+                    Icons.more_vert,
+                    color: Colors.grey,
+                    size: 18.0,
+                  ),
+                )
+              ]);
   }
 
   Widget _commentTextInput(Interview, StateSetter setState) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Flexible(
-          child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: TextFormField(
-              maxLines: null,
-              keyboardType: TextInputType.multiline,
-              controller: _commentInputCtrl,
-              style: TextStyle(
-                  color: Theme.of(context).primaryColorLight, fontSize: 12.0),
-              decoration: InputDecoration(
-                hintText: "댓글 신고시 이용이 제한 될 수 있습니다.",
-                hintStyle: TextStyle(
-                    color: Theme.of(context).primaryColorLight, fontSize: 12.0),
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Theme.of(context).primaryColorLight, width: 0.3),
-                  borderRadius: BorderRadius.circular(5.0),
+            child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: FocusScope(
+                  child: Focus(
+                    onFocusChange: (focus) {
+                      _focus = focus;
+                      setState(() {});
+                    },
+                    child: TextFormField(
+                      maxLines: null,
+                      keyboardType: TextInputType.multiline,
+                      controller: _commentInputCtrl,
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColorLight,
+                          fontSize: 12.0),
+                      decoration: InputDecoration(
+                        hintText: "댓글 신고시 이용이 제한 될 수 있습니다.",
+                        hintStyle: TextStyle(
+                            color: Theme.of(context).primaryColorDark,
+                            fontSize: 12.0),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 0.0),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Theme.of(context).primaryColorLight,
+                              width: 0.3),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Theme.of(context).primaryColorLight,
+                              width: 0.3),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                ))),
+        _focus == true
+            ? Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 16.0),
+                child: GestureDetector(
+                  child: Icon(Icons.arrow_upward,
+                      color: Theme.of(context).primaryColor),
+                  onTap: () {
+                    _historyProvider.addCommentAll(Comment(
+                        history_id: 0,
+                        reply_id: Interview.id,
+                        writer_email: _userProvider.userdata.email,
+                        writer_nickname: _userProvider.userdata.nickname,
+                        content: _commentInputCtrl.text));
+                    CommentCreate(
+                            history_id: 0,
+                            reply_id: Interview.id,
+                            writer_email: _userProvider.userdata.email,
+                            writer_nickname: _userProvider.userdata.nickname,
+                            content: _commentInputCtrl.text)
+                        .postComment();
+                    _commentInputCtrl.clear();
+                    setState(() {
+                      _isCommentInputOpen = false;
+                    });
+                  },
                 ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Theme.of(context).primaryColorLight, width: 0.3),
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4.0),
-          child: GestureDetector(
-            child: Icon(Icons.arrow_upward,
-                color: Theme.of(context).primaryColorLight),
-            onTap: () {
-              _historyProvider.addCommentAll(Comment(
-                  history_id: 0,
-                  reply_id: Interview.id,
-                  writer_email: _userProvider.userdata.email,
-                  writer_nickname: _userProvider.userdata.nickname,
-                  content: _commentInputCtrl.text));
-              CommentCreate(
-                      history_id: 0,
-                      reply_id: Interview.id,
-                      writer_email: _userProvider.userdata.email,
-                      writer_nickname: _userProvider.userdata.nickname,
-                      content: _commentInputCtrl.text)
-                  .postComment();
-              _commentInputCtrl.clear();
-              setState(() {
-                _isCommentInputOpen = false;
-              });
-            },
-          ),
-        )
+              )
+            : Container()
       ],
     );
   }
