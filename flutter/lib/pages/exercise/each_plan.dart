@@ -1210,7 +1210,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                   width: MediaQuery.of(context).size.width / 4,
                   child: Center(
                       child: Text(
-                    '중량비(%)',
+                    '강도(%)',
                     textScaleFactor: 1.5,
                     style: TextStyle(color: Theme.of(context).primaryColorDark),
                   ))),
@@ -1294,8 +1294,15 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                 showToast("1RM이 0입니다. 무게를 설정해주세요");
                                 _weightctrl.text = "20.0";
                               } else {
-                                _weightctrl.text =
-                                    "${(double.parse(text) * eachExInfo.onerm / 100 / 0.5).floor() * 0.5}";
+                                if (text != "") {
+                                  if (int.parse(_repsctrl.text) == 1) {
+                                    _weightctrl.text =
+                                        eachExInfo.onerm.toStringAsFixed(1);
+                                  } else if (int.parse(_repsctrl.text) > 1) {
+                                    _weightctrl.text =
+                                        "${(eachExInfo.onerm / (1 + double.parse(_repsctrl.text) / 30) * double.parse(text) / 100 / 0.5).floor() * 0.5}";
+                                  }
+                                }
                               }
                             });
                           }))),
@@ -1337,8 +1344,24 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                               if (eachExInfo.onerm == 0) {
                                 _weightRatioctrl.text = "100.0";
                               } else {
-                                _weightRatioctrl.text =
-                                    "${(double.parse(text) / eachExInfo.onerm * 1000).floor() / 10}";
+                                if (text != "") {
+                                  if (int.parse(_repsctrl.text) == 1) {
+                                    _weightRatioctrl.text =
+                                        ((double.parse(_weightctrl.text)) /
+                                                eachExInfo.onerm *
+                                                100)
+                                            .toStringAsFixed(1);
+                                  } else if (int.parse(_repsctrl.text) > 1) {
+                                    _weightRatioctrl.text = ((double.parse(
+                                                    _weightctrl.text) *
+                                                (1 +
+                                                    int.parse(_repsctrl.text) /
+                                                        30)) /
+                                            eachExInfo.onerm *
+                                            100)
+                                        .toStringAsFixed(1);
+                                  }
+                                }
                               }
                             });
                           }))),
@@ -1375,7 +1398,24 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                             ),
                           ),
                           onChanged: (text) {
-                            setState(() {});
+                            setState(() {
+                              if (text != "") {
+                                if (int.parse(text) == 1) {
+                                  _weightRatioctrl.text =
+                                      ((double.parse(_weightctrl.text)) /
+                                              eachExInfo.onerm *
+                                              100)
+                                          .toStringAsFixed(1);
+                                } else if (int.parse(_repsctrl.text) > 1) {
+                                  _weightRatioctrl.text =
+                                      ((double.parse(_weightctrl.text) *
+                                                  (1 + int.parse(text) / 30)) /
+                                              eachExInfo.onerm *
+                                              100)
+                                          .toStringAsFixed(1);
+                                }
+                              }
+                            });
                           })))
             ]),
             Container(height: 24),
