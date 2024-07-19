@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_flip_card/flipcard/flip_card.dart';
@@ -35,6 +36,7 @@ class MyStat extends StatefulWidget {
 class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
 
   final flip_ctrl = GestureFlipCardController();
+  List<Widget> statSliders = [];
 
   @override
   void initState() {
@@ -78,48 +80,143 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> statSliders = [
+      GestureFlipCard(
+        animationDuration: const Duration(milliseconds: 300),
+        axis: FlipAxis.vertical,
+        controller: flip_ctrl,
+        enableController: false,
+        frontWidget: Center(
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(25)),
+            child: BackdropFilter(
+              filter: ui.ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.95,
+                height: MediaQuery.of(context).size.width*1.585*0.95,
+                decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.1),
+                    borderRadius:
+                    const BorderRadius.all(Radius.circular(25))),
+              ),
+            ),
+          ),
+        ),
+        backWidget: Center(
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(25)),
+            child: BackdropFilter(
+              filter: ui.ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.95,
+                height: MediaQuery.of(context).size.width*1.585*0.95,
+                decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.1),
+                    borderRadius:
+                    const BorderRadius.all(Radius.circular(25))),
+                child: Column(
+                  children: [
+                    Text("나의 몸 상태")
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      GestureFlipCard(
+        animationDuration: const Duration(milliseconds: 300),
+        axis: FlipAxis.vertical,
+        controller: flip_ctrl,
+        enableController: false,
+        frontWidget: Center(
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(25)),
+            child: BackdropFilter(
+              filter: ui.ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.95,
+                height: MediaQuery.of(context).size.width*1.585*0.95,
+                decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.1),
+                    borderRadius:
+                    const BorderRadius.all(Radius.circular(25))),
+              ),
+            ),
+          ),
+        ),
+        backWidget: Center(
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(25)),
+            child: BackdropFilter(
+              filter: ui.ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.95,
+                height: MediaQuery.of(context).size.width*1.585*0.95,
+                decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.1),
+                    borderRadius:
+                    const BorderRadius.all(Radius.circular(25))),
+                child: Column(
+                  children: [
+                    Text("달력")
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ];
 
     return Scaffold(
         appBar: _appbarWidget(),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4.0),
           child: Container(
-            child: GestureFlipCard(
-              animationDuration: const Duration(milliseconds: 300),
-                axis: FlipAxis.vertical,
-                controller: flip_ctrl,
-                enableController: false,
-                frontWidget: Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    child: Card(
-                      color: Colors.blueAccent,
-                      child: Column(
-                        children: [
-                          Text("운동 밸런스:"),
-                          Text("전신 피로도:"),
-                          Text("최근 7일간 운동 빈도"),
-                          Text("내가 모은 카드 수: 4/30"),
-                          Text("나의 3대 무제: "),
-                          Text("나의 최애 운동: "),
-                          Text("나의 3대 추세(M/Q/Y): "),
-                          Text("나이"),
-                          Text("체중"),
-                          Text("평균 수행 볼륨"),
-                          Text("오늘의 운동조언"),
-
-                        ],
+            child: Stack(
+              children: [
+                Positioned(
+                    top: MediaQuery.of(context).size.width * 0.1,
+                    left: 220,
+                    child: Container(
+                      width: 300,
+                      height: 300,
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(colors: [
+                            Color(0xff7a28cb),
+                            Color(0xff8369de),
+                            Color(0xff8da0cb)
+                          ])),
+                    )),
+                Positioned(
+                    bottom: MediaQuery.of(context).size.width * 0.1,
+                    right: 150,
+                    child: Transform.rotate(
+                      angle: 8,
+                      child: Container(
+                        width: 180,
+                        height: 180,
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: LinearGradient(colors: [
+                              Color(0xff7a28cb),
+                              Color(0xff7369de),
+                              Color(0xff7da0cb)
+                            ])),
                       ),
-                    )
-                ),
-                backWidget: Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    child: Card(
-                      color: Colors.redAccent,
-                    )
+                    )),
+                CarouselSlider(
+                  options: CarouselOptions(
+                    autoPlay: true,
+                    aspectRatio: 1/1.585,
+                    enlargeCenterPage: true,
                   ),
-                )
+                  items: statSliders,
+                ),
+              ],
+            )
             )
           ),
         );

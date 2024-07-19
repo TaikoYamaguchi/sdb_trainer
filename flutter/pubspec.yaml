@@ -89,6 +89,7 @@ dependencies:
   html: ^0.15.4
   url_launcher: ^6.3.0
   flutter_flip_card: ^0.0.6
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:
