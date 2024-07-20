@@ -70,6 +70,7 @@ class _RoutineBankState extends State<RoutineBank> {
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width / 2,
                       child: Card(
+                        color: Theme.of(context).cardColor,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -234,6 +235,7 @@ class _RoutineBankState extends State<RoutineBank> {
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width / 2,
                       child: Card(
+                        color: Theme.of(context).cardColor,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

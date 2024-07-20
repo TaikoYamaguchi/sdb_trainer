@@ -1158,17 +1158,9 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
     var eachExInfo = _exProvider.exercisesdata.exercises[eachExIndex];
     if (ctrlController == true) {
       ctrlController = false;
-      if (setdata.ischecked) {
-        _weightRatioctrl.text = setdata.index.toString();
-        _weightctrl.text = setdata.weight.toString();
-        _repsctrl.text = setdata.reps.toString();
-      } else {
-        _weightRatioctrl.text = setdata.index.toString();
-        _weightctrl.text =
-            ((setdata.index * eachExInfo.onerm / 100 / 0.5 + 0.4).floor() * 0.5)
-                .toString();
-        _repsctrl.text = setdata.reps.toString();
-      }
+      _weightRatioctrl.text = setdata.index.toString();
+      _weightctrl.text = setdata.weight.toString();
+      _repsctrl.text = setdata.reps.toString();
     }
 
     return StatefulBuilder(
@@ -1292,7 +1284,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                             setState(() {
                               if (eachExInfo.onerm == 0) {
                                 showToast("1RM이 0입니다. 무게를 설정해주세요");
-                                _weightctrl.text = "20.0";
+                                _weightctrl.text = setdata.weight.toString();
                               } else {
                                 if (text != "") {
                                   if (int.parse(_repsctrl.text) == 1) {
@@ -1300,7 +1292,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                         eachExInfo.onerm.toStringAsFixed(1);
                                   } else if (int.parse(_repsctrl.text) > 1) {
                                     _weightctrl.text =
-                                        "${(eachExInfo.onerm / (1 + double.parse(_repsctrl.text) / 30) * double.parse(text) / 100 / 0.5).floor() * 0.5}";
+                                        "${(eachExInfo.onerm / (1 + int.parse(_repsctrl.text) / 30) * double.parse(text) / 100 / 0.5).floor() * 0.5}";
                                   }
                                 }
                               }
@@ -1399,20 +1391,25 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                           ),
                           onChanged: (text) {
                             setState(() {
-                              if (text != "") {
-                                if (int.parse(text) == 1) {
-                                  _weightRatioctrl.text =
-                                      ((double.parse(_weightctrl.text)) /
-                                              eachExInfo.onerm *
-                                              100)
-                                          .toStringAsFixed(1);
-                                } else if (int.parse(_repsctrl.text) > 1) {
-                                  _weightRatioctrl.text =
-                                      ((double.parse(_weightctrl.text) *
-                                                  (1 + int.parse(text) / 30)) /
-                                              eachExInfo.onerm *
-                                              100)
-                                          .toStringAsFixed(1);
+                              if (eachExInfo.onerm == 0) {
+                                _weightRatioctrl.text = "100.0";
+                              } else {
+                                if (text != "") {
+                                  if (int.parse(text) == 1) {
+                                    _weightRatioctrl.text =
+                                        ((double.parse(_weightctrl.text)) /
+                                                eachExInfo.onerm *
+                                                100)
+                                            .toStringAsFixed(1);
+                                  } else if (int.parse(_repsctrl.text) > 1) {
+                                    _weightRatioctrl.text =
+                                        ((double.parse(_weightctrl.text) *
+                                                    (1 +
+                                                        int.parse(text) / 30)) /
+                                                eachExInfo.onerm *
+                                                100)
+                                            .toStringAsFixed(1);
+                                  }
                                 }
                               }
                             });
