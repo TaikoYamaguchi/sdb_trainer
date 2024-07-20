@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -177,68 +179,76 @@ class ExSearchState extends State<ExSearch> {
                       child: const ExerciseFilter(),
                       transitionEffect: TransitionEffect.BOTTOM_TO_TOP));
             },
-            child: Card(
-              elevation: 0,
-              color: Theme.of(context).canvasColor,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _themeProvider.userThemeDark == "dark"
-                      ? Padding(
-                          padding: const EdgeInsets.all(1.0),
-                          child: ExImage().body_part_image[keyList[index]] != ''
-                              ? Container(
-                                  height: MediaQuery.of(context).size.width / 4,
-                                  width: MediaQuery.of(context).size.width / 4,
-                                  decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(50)),
-                                      image: DecorationImage(
-                                        image: AssetImage(ExImage()
-                                            .body_part_image[keyList[index]]),
-                                        fit: BoxFit.cover,
-                                      )))
-                              : Container(
-                                  color: Theme.of(context).primaryColorLight,
-                                  child: const Icon(
-                                    Icons.image_not_supported,
-                                    size: 100,
-                                  )),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.all(1.0),
-                          child: ExImageLight()
-                                      .body_part_image[keyList[index]] !=
-                                  ''
-                              ? Container(
-                                  height: MediaQuery.of(context).size.width / 4,
-                                  width: MediaQuery.of(context).size.width / 4,
-                                  decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(50)),
-                                      image: DecorationImage(
-                                        image: AssetImage(ExImageLight()
-                                            .body_part_image[keyList[index]]),
-                                        fit: BoxFit.cover,
-                                      )))
-                              : Container(
-                                  color: Theme.of(context).primaryColorLight,
-                                  child: const Icon(
-                                    Icons.image_not_supported,
-                                    size: 100,
-                                  )),
+            child: Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(15)),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+                  child: Container(
+                    color: Colors.black.withOpacity(0.1),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _themeProvider.userThemeDark == "dark"
+                            ? Padding(
+                                padding: const EdgeInsets.all(1.0),
+                                child: ExImage().body_part_image[keyList[index]] != ''
+                                    ? Container(
+                                        height: MediaQuery.of(context).size.width / 4,
+                                        width: MediaQuery.of(context).size.width / 4,
+                                        decoration: BoxDecoration(
+                                            borderRadius: const BorderRadius.all(
+                                                Radius.circular(50)),
+                                            image: DecorationImage(
+                                              image: AssetImage(ExImage()
+                                                  .body_part_image[keyList[index]]),
+                                              fit: BoxFit.cover,
+                                            )))
+                                    : Container(
+                                        color: Theme.of(context).primaryColorLight,
+                                        child: const Icon(
+                                          Icons.image_not_supported,
+                                          size: 100,
+                                        )),
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.all(1.0),
+                                child: ExImageLight()
+                                            .body_part_image[keyList[index]] !=
+                                        ''
+                                    ? Container(
+                                        height: MediaQuery.of(context).size.width / 4,
+                                        width: MediaQuery.of(context).size.width / 4,
+                                        decoration: BoxDecoration(
+                                            borderRadius: const BorderRadius.all(
+                                                Radius.circular(50)),
+                                            image: DecorationImage(
+                                              image: AssetImage(ExImageLight()
+                                                  .body_part_image[keyList[index]]),
+                                              fit: BoxFit.cover,
+                                            )))
+                                    : Container(
+                                        color: Theme.of(context).primaryColorLight,
+                                        child: const Icon(
+                                          Icons.image_not_supported,
+                                          size: 100,
+                                        )),
+                              ),
+                        Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            '${keyList[index]}',
+                            textScaleFactor: 1.3,
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorLight,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
-                  Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      '${keyList[index]}',
-                      textScaleFactor: 1.3,
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColorLight,
-                          fontWeight: FontWeight.bold),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
             ),
           );
@@ -258,15 +268,50 @@ class ExSearchState extends State<ExSearch> {
     _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     return Scaffold(
       appBar: _appbarWidget(),
-      body: Consumer2<ExercisesdataProvider, WorkoutdataProvider>(
-          builder: (context, provider1, provider2, widget) {
-        if (provider2.workoutdata != null) {
-          return _workoutWidget();
-        }
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      }),
+      body: Stack(
+        children: [
+          Positioned(
+              top: MediaQuery.of(context).size.width * 0.1,
+              left: 220,
+              child: Container(
+                width: 300,
+                height: 300,
+                decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(colors: [
+                      Color(0xff7a28cb),
+                      Color(0xff8369de),
+                      Color(0xff8da0cb)
+                    ])),
+              )),
+          Positioned(
+              bottom: MediaQuery.of(context).size.width * 0.1,
+              right: 150,
+              child: Transform.rotate(
+                angle: 8,
+                child: Container(
+                  width: 180,
+                  height: 180,
+                  decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(colors: [
+                        Color(0xff7a28cb),
+                        Color(0xff7369de),
+                        Color(0xff7da0cb)
+                      ])),
+                ),
+              )),
+          Consumer2<ExercisesdataProvider, WorkoutdataProvider>(
+              builder: (context, provider1, provider2, widget) {
+            if (provider2.workoutdata != null) {
+              return _workoutWidget();
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }),
+        ],
+      ),
     );
   }
 
