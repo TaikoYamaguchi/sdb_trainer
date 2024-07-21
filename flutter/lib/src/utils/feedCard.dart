@@ -654,6 +654,7 @@ class FeedCardState extends State<FeedCard> {
 
   Future<dynamic> _myFeedMenu(SDBdata) {
     return showMenu(
+      color: Theme.of(context).cardColor,
       context: context,
       position: RelativeRect.fromRect(
           _tapPosition & const Size(30, 30), Offset.zero & const Size(0, 0)),
@@ -767,11 +768,13 @@ class FeedCardState extends State<FeedCard> {
 
   Future<dynamic> _otherFeedMenu(SDBdata) {
     return showMenu(
+      color: Theme.of(context).cardColor,
       context: context,
       position: RelativeRect.fromRect(
           _tapPosition & const Size(30, 30), Offset.zero & const Size(0, 0)),
       items: [
         PopupMenuItem(
+            padding: const EdgeInsets.all(0.0),
             child: ListTile(
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
@@ -1315,6 +1318,7 @@ class FeedCardState extends State<FeedCard> {
                       onTap: () {
                         _userProvider.userdata.email == Comment.writer_email
                             ? showMenu(
+                                color: Theme.of(context).cardColor,
                                 context: context,
                                 position: RelativeRect.fromRect(
                                     _tapPosition & const Size(30, 30),
@@ -1347,6 +1351,7 @@ class FeedCardState extends State<FeedCard> {
                                                         .primaryColorLight)))),
                                   ])
                             : showMenu(
+                                color: Theme.of(context).cardColor,
                                 context: context,
                                 position: RelativeRect.fromRect(
                                     _tapPosition & const Size(30, 30),

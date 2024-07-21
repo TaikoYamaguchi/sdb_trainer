@@ -162,6 +162,7 @@ class WorkoutdataProvider extends ChangeNotifier {
 
   setplanprogress(rindex, progress) {
     _workoutdata.routinedatas[rindex].exercises[0].progress = progress;
+    print(progress);
     notifyListeners();
   }
 

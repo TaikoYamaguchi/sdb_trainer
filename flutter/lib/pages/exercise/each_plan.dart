@@ -5,7 +5,6 @@ import 'package:sdb_trainer/pages/exercise/exercise_done.dart';
 import 'package:sdb_trainer/pages/exercise/upload_program.dart';
 import 'package:sdb_trainer/pages/search/exercise_guide.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
-import 'package:sdb_trainer/providers/famous.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/popmanage.dart';
 import 'package:sdb_trainer/providers/routinetime.dart';
@@ -45,7 +44,6 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
       TextEditingController(text: "");
   final TextEditingController _repsctrl = TextEditingController(text: "");
   var _workoutProvider;
-  var _FamousedataProvider;
   var _hisProvider;
   var _routinetimeProvider;
   var _PopProvider;
@@ -309,7 +307,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
             backgroundColor: Theme.of(context).cardColor,
             onSelected: (bool value) {
               _workoutProvider.setplanprogress(widget.rindex, i);
-              _editWorkoutCheck();
+              //_editWorkoutCheck();
             }),
       );
       chips.add(item);
@@ -993,53 +991,56 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       );
               });
             }),
-            Consumer2<RoutineTimeProvider, PrefsProvider>(
-                builder: (builder, provider_, provider2_, child) {
+            Consumer2<RoutineTimeProvider, PrefsProvider>(builder:
+                (builder, routine_time_provider, pref_provider, child) {
               return ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: ((provider_.nowonrindex !=
+                      backgroundColor: ((routine_time_provider.nowonrindex !=
                                       widget.rindex &&
                                   _routinetimeProvider.isstarted) ||
                               (_routinetimeProvider.isstarted &&
-                                  provider_.nowoneindex != plandata.progress))
+                                  routine_time_provider.nowoneindex !=
+                                      plandata.progress))
                           ? const Color(0xFF212121)
-                          : provider_.buttoncolor,
+                          : routine_time_provider.buttoncolor,
                       textStyle: const TextStyle(fontSize: 20)),
-                  onPressed: () {
-                    if (provider_.nowonrindex != widget.rindex &&
+                  onPressed: () async {
+                    if (routine_time_provider.nowonrindex != widget.rindex &&
                         _routinetimeProvider.isstarted) {
                       return null;
                     } else {
                       if (_routinetimeProvider.isstarted) {
-                        provider_.nowoneindex != plandata.progress
+                        routine_time_provider.nowoneindex != plandata.progress
                             ? showToast(
-                                "${provider_.nowoneindex + 1}일차 운동 탭에서 종료 가능합니다.")
+                                "${routine_time_provider.nowoneindex + 1}일차 운동 탭에서 종료 가능합니다.")
                             : _showMyDialog_finish();
                       } else {
-                        _routinetimeProvider.resettimer(_workoutProvider
+                        routine_time_provider.resettimer(_workoutProvider
                             .workoutdata
                             .routinedatas[widget.rindex]
                             .exercises[0]
                             .plans[plandata.progress]
                             .exercises[0]
                             .rest);
-                        provider_.routinecheck(widget.rindex);
-                        provider2_.setplan(_workoutProvider
+                        await routine_time_provider.routinecheck(widget.rindex);
+                        pref_provider.setplan(_workoutProvider
                             .workoutdata.routinedatas[widget.rindex].name);
-                        provider_.nowoneindexupdate(plandata.progress);
+                        routine_time_provider
+                            .nowoneindexupdate(plandata.progress);
                         FirebaseAnalyticsService.logCustomEvent(
                             "Workout Start");
                       }
                     }
                   },
                   child: Text(
-                    (provider_.nowonrindex != widget.rindex) &&
+                    (routine_time_provider.nowonrindex != widget.rindex) &&
                             _routinetimeProvider.isstarted
                         ? '다른 루틴 수행중'
-                        : (provider_.nowoneindex != plandata.progress &&
-                                provider_.isstarted)
-                            ? '${provider_.nowoneindex + 1}일차 운동 수행중'
-                            : provider_.routineButton,
+                        : (routine_time_provider.nowoneindex !=
+                                    plandata.progress &&
+                                routine_time_provider.isstarted)
+                            ? '${routine_time_provider.nowoneindex + 1}일차 운동 수행중'
+                            : routine_time_provider.routineButton,
                     style: TextStyle(color: Colors.white),
                   ));
             })
@@ -1902,8 +1903,6 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
         Provider.of<RoutineTimeProvider>(context, listen: false);
     _PopProvider = Provider.of<PopProvider>(context, listen: false);
     _PopProvider.tutorpopoff();
-    _FamousedataProvider =
-        Provider.of<FamousdataProvider>(context, listen: false);
 
     return Consumer<PopProvider>(builder: (Builder, provider, child) {
       bool _popable = provider.isstacking;
