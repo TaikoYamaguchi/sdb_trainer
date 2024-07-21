@@ -151,9 +151,44 @@ class _FeedState extends State<Feed> {
             ),
             backgroundColor: Theme.of(context).canvasColor,
           )),
-      body: _userProvider.userdata != null
-          ? Center(child: _feedCardList(context))
-          : const Center(child: CircularProgressIndicator()),
+      body: Stack(
+        children: [
+          Positioned(
+              top: MediaQuery.of(context).size.width * 0.1,
+              left: 220,
+              child: Container(
+                width: 300,
+                height: 300,
+                decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(colors: [
+                      Color(0xff7a28cb),
+                      Color(0xff8369de),
+                      Color(0xff8da0cb)
+                    ])),
+              )),
+          Positioned(
+              bottom: MediaQuery.of(context).size.width * 0.1,
+              right: 150,
+              child: Transform.rotate(
+                angle: 8,
+                child: Container(
+                  width: 180,
+                  height: 180,
+                  decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(colors: [
+                        Color(0xff7a28cb),
+                        Color(0xff7369de),
+                        Color(0xff7da0cb)
+                      ])),
+                ),
+              )),
+          _userProvider.userdata != null
+              ? Center(child: _feedCardList(context))
+              : const Center(child: CircularProgressIndicator()),
+        ],
+      ),
     );
   }
 

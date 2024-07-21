@@ -177,8 +177,9 @@ class ExerciseState extends State<Exercise> {
                     key: Key('$index'),
                     viewportBuilder:
                         (BuildContext context, ViewportOffset position) => Card(
-                          color: Colors.black.withOpacity(0.0),
-                      elevation: 0.5,
+                          shadowColor: Colors.white,
+                          color: Colors.white.withOpacity(0.0),
+                      elevation: 0.0,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0)),
                       margin:
@@ -231,24 +232,18 @@ class ExerciseState extends State<Exercise> {
                                 child: BackdropFilter(
                                   filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
                                   child: Material(
-                                    color: Colors.grey.withOpacity(0.0),
-                                        elevation: provider.isstarted
-                                            ? curWorkout
-                                                ? 5
-                                                : 0
-                                            : 0,
+                                    color: Colors.grey.withOpacity(0.1),
                                         borderRadius: BorderRadius.circular(15.0),
                                         child: Ink(
                                           decoration: BoxDecoration(
                                               color: provider.isstarted
                                                   ? curWorkout
-                                                      ? Color(0xffCEEC97).withOpacity(0.5)
-                                                      : Colors.grey.withOpacity(0.1)
-                                                  : Colors.grey.withOpacity(0.1),
+                                                      ? Color(0xffCEEC97).withOpacity(1)
+                                                      : Colors.black.withOpacity(0.0)
+                                                  : Colors.white.withOpacity(0.0),
                                               borderRadius:
                                                   BorderRadius.circular(15.0)),
                                           child: InkWell(
-                                            //hoverColor: Colors.grey,
                                             borderRadius:
                                                 BorderRadius.circular(15.0),
                                             onTap: () {
