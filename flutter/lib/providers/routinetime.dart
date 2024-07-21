@@ -39,10 +39,12 @@ class RoutineTimeProvider extends ChangeNotifier {
 
   nowoneindexupdate(value) {
     _nowoneindex = value;
+    notifyListeners();
   }
 
   newRoutineUpdate() {
     _routineNewRecord = _routineNewRecord + 1;
+    notifyListeners();
   }
 
   getinfo() {
@@ -106,7 +108,7 @@ class RoutineTimeProvider extends ChangeNotifier {
     await _prefs.setString('lastroutine', value);
   }
 
-  void routinecheck(rindex) async {
+  Future<void> routinecheck(rindex) async {
     const storage = FlutterSecureStorage();
     _starttime = await getstarttime();
     if (_isstarted == false) {

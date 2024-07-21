@@ -162,6 +162,7 @@ class WorkoutdataProvider extends ChangeNotifier {
 
   setplanprogress(rindex, progress) {
     _workoutdata.routinedatas[rindex].exercises[0].progress = progress;
+    print(progress);
     notifyListeners();
   }
 
@@ -247,15 +248,13 @@ class WorkoutdataProvider extends ChangeNotifier {
         .sets;
     for (Sets set in cur_ex_sets) {
       if (onerm != 0) {
-        if (set.ischecked == true) {
-          set.index = (set.weight / onerm * 100 / 0.5 + 0.4).floor() * 0.5;
-        } else {
-          set.weight = (set.index * onerm / 100 / 0.5).floor() * 0.5;
+        if (set.ischecked == false) {
+          set.weight =
+              (onerm / (1 + set.reps / 30) * set.index / 100 / 0.5).floor() *
+                  0.5;
         }
       } else {
-        if (set.ischecked == true) {
-          set.index = 100;
-        } else {
+        if (set.ischecked == false) {
           set.weight = 5;
         }
       }

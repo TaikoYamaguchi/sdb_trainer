@@ -47,8 +47,6 @@ class _PhotoEditorState extends State<PhotoEditor> {
   Future _getImage(ImageSource imageSource) async {
     if (imageSource == ImageSource.gallery) {
       _selectedImages = await _picker.pickMultiImage(imageQuality: 30);
-      print('done');
-
       if (_selectedImages.isNotEmpty) {
         setState(() {
           _image.addAll(_selectedImages);
