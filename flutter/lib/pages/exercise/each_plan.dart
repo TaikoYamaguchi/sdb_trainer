@@ -440,7 +440,17 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                       Container(height: 30),
                     ])
               else
-                ListView.builder(
+                ReorderableListView.builder(
+                    buildDefaultDragHandles: false,
+                    onReorder: (int oldIndex, int newIndex) {
+                      setState(() {
+                        if (oldIndex < newIndex) {
+                          newIndex -= 1;
+                        }
+                        final item = planExercises.removeAt(oldIndex);
+                        planExercises.insert(newIndex, item);
+                      });
+                    },
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (BuildContext context_, int index_) {
                       final planEachExercise = planExercises[index_];
@@ -454,21 +464,21 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                           _exProvider.exercisesdata.exercises.indexWhere(
                               (element) =>
                                   element.name == planEachExercise.ref_name)];
-                      var _exImage;
+                      var exImage;
                       if (!_routinetimeProvider.isstarted) {
                         _workoutProvider.planSetsCheck(
                             widget.rindex, index_, eachExRefInfo.onerm);
                       }
                       try {
-                        _exImage = extra_completely_new_Ex[
+                        exImage = extra_completely_new_Ex[
                                 extra_completely_new_Ex.indexWhere((element) =>
                                     element.name == planEachExercise.name)]
                             .image;
-                        _exImage ??= "";
+                        exImage ??= "";
                       } catch (e) {
-                        _exImage = "";
+                        exImage = "";
                       }
-                      return Column(children: [
+                      return Column(key: Key('$index_'), children: [
                         ExpandablePanel(
                             key: UniqueKey(),
                             controller: _controllerList[index_],
@@ -519,19 +529,22 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                                           size: 16,
                                                         ),
                                                         SizedBox(width: 4),
-                                                        Text(
-                                                            planEachExercise
-                                                                .name,
-                                                            textScaleFactor:
-                                                                1.5,
-                                                            maxLines: 2,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .fade,
-                                                            style: TextStyle(
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .primaryColorLight)),
+                                                        ReorderableDragStartListener(
+                                                          index: index_,
+                                                          child: Text(
+                                                              planEachExercise
+                                                                  .name,
+                                                              textScaleFactor:
+                                                                  1.5,
+                                                              maxLines: 2,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .fade,
+                                                              style: TextStyle(
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .primaryColorLight)),
+                                                        ),
                                                       ],
                                                     ),
                                                     onTap: () {
@@ -578,10 +591,10 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                       MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    _exImage != ""
+                                    exImage != ""
                                         ? Padding(
                                             padding: const EdgeInsets.all(8.0),
-                                            child: Image.asset(_exImage,
+                                            child: Image.asset(exImage,
                                                 height: 120,
                                                 width: 120,
                                                 fit: BoxFit.cover))

@@ -82,7 +82,7 @@ class ExerciseState extends State<Exercise> {
             children: [
               Text(
                 "운동",
-                textScaleFactor: 1.7,
+                textScaleFactor: 1.5,
                 style: TextStyle(color: Theme.of(context).primaryColorLight),
               ),
             ],

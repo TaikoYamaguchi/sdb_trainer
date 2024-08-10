@@ -43,9 +43,15 @@ class _ProfileState extends State<Profile> {
           preferredSize: const Size.fromHeight(40.0), // here the desired height
           child: AppBar(
             elevation: 0,
-            title: Text("설정",
-                textScaleFactor: 1.5,
-                style: TextStyle(color: Theme.of(context).primaryColorLight)),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text("설정",
+                    textScaleFactor: 1.5,
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight)),
+              ],
+            ),
             actions: [],
             backgroundColor: Theme.of(context).canvasColor,
           )),
