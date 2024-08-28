@@ -451,8 +451,7 @@ class _AppState extends State<App> {
                       _bottomNavigationBarItem("search-svgrepo-com", "찾기"),
                       _bottomNavigationBarItem("dumbbell-svgrepo-com-3", "운동"),
                       _bottomNavigationBarItem("heart-svgrepo-com", "피드"),
-                      _bottomNavigationBarItem("calendar-svgrepo-com", "기록"),
-                      _bottomNavigationBarItem("calendar-svgrepo-com", "stat"),
+                      _bottomNavigationBarItem("calendar-svgrepo-com", "스탯"),
                       _bottomNavigationBarItem("avatar-svgrepo-com", "프로필"),
                     ],
                   ),
@@ -461,15 +460,15 @@ class _AppState extends State<App> {
                     return Center(
                       child: SizedBox(
                         width: _bodyStater.bodystate == 0 ||
-                                _bodyStater.bodystate == 5
-                            ? width
-                            : _bodyStater.bodystate == 1 ||
                             _bodyStater.bodystate == 4
-                              ? width * 4/6
-                              : width * 2/6,
+                            ? width
+                            : width * 0.6,
                         child: Align(
-                          alignment: _bodyStater.bodystate < 3
+                          alignment: _bodyStater.bodystate == 0 ||
+                              _bodyStater.bodystate == 1
                               ? Alignment.bottomLeft
+                              : _bodyStater.bodystate == 2
+                              ? Alignment.bottomCenter
                               : Alignment.bottomRight,
                           child: Container(
                             height: 2,
@@ -479,7 +478,7 @@ class _AppState extends State<App> {
                                   topRight: Radius.circular(30),
                                   topLeft: Radius.circular(30)),
                             ),
-                            width: width /6,
+                            width: width * 0.2,
                           ),
                         ),
                       ),
@@ -834,7 +833,6 @@ class _AppState extends State<App> {
                                 SearchNavigator(),
                                 TabNavigator(),
                                 Feed(),
-                                Calendar(),
                                 MyStat(),
                                 TabProfileNavigator()
                               ])

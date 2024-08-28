@@ -126,7 +126,7 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
                   Text("나의 체중",textScaler: TextScaler.linear(2),),
                   SizedBox(width: 15,),
                   Icon(Icons.open_in_new,
-                    color: Colors.white.withOpacity(0.7),
+                    color: Theme.of(context).primaryColorLight,
                   )
                 ],
               ),
