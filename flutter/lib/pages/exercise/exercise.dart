@@ -677,53 +677,19 @@ class ExerciseState extends State<Exercise> {
               }),
             ];
       return Scaffold(
+        backgroundColor: Colors.transparent,
         appBar: _appbarWidget(),
-        body: Stack(
-          children: [
-            Positioned(
-                top: MediaQuery.of(context).size.width * 0.1,
-                left: 220,
-                child: Container(
-                  width: 300,
-                  height: 300,
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: LinearGradient(colors: [
-                        Color(0xff7a28cb),
-                        Color(0xff8369de),
-                        Color(0xff8da0cb)
-                      ])),
-                )),
-            Positioned(
-                bottom: MediaQuery.of(context).size.width * 0.1,
-                right: 150,
-                child: Transform.rotate(
-                  angle: 8,
-                  child: Container(
-                    width: 180,
-                    height: 180,
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(colors: [
-                          Color(0xff7a28cb),
-                          Color(0xff7369de),
-                          Color(0xff7da0cb)
-                        ])),
-                  ),
-                )),
-            Consumer2<ExercisesdataProvider, WorkoutdataProvider>(
-                builder: (context, provider1, provider2, widget) {
-              if (provider2.workoutdata != null) {
-                return _createListener(_myWorkout());
-              }
-              return Container(
-                child: const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            }),
-          ],
-        ),
+        body: Consumer2<ExercisesdataProvider, WorkoutdataProvider>(
+            builder: (context, provider1, provider2, widget) {
+          if (provider2.workoutdata != null) {
+            return _createListener(_myWorkout());
+          }
+          return Container(
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }),
       );
     });
   }
