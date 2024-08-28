@@ -145,7 +145,7 @@ class MyApp extends StatelessWidget {
               //primaryColorBrightness: Brightness.light,
               inputDecorationTheme:
                   const InputDecorationTheme(fillColor: Colors.black12),
-              cardColor: const Color(0xfff2f3f5), //cardcolor
+              cardColor: Colors.white.withOpacity(0.5), //cardcolor
               canvasColor: Colors.white, //backgroundcolor
               shadowColor: Colors.black,
               brightness: Brightness.light,
@@ -172,7 +172,7 @@ class MyApp extends StatelessWidget {
                   const InputDecorationTheme(fillColor: Colors.white12),
               scaffoldBackgroundColor: Colors.black,
               primaryColor: const Color(0xff7a28cb),
-              cardColor: const Color(0xff25272c),
+              cardColor: Colors.black45.withOpacity(0.3),
               canvasColor: const Color(0xFF101012),
               shadowColor: Colors.black,
               primaryColorLight: Colors.white,

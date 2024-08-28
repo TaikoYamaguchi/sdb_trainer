@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:html/parser.dart';
+import 'package:sdb_trainer/pages/mystat/my_stat.dart';
 import 'package:sdb_trainer/providers/exercisesdata.dart';
 import 'package:sdb_trainer/providers/historydata.dart';
 import 'package:sdb_trainer/providers/notification.dart';
@@ -450,7 +451,7 @@ class _AppState extends State<App> {
                       _bottomNavigationBarItem("search-svgrepo-com", "찾기"),
                       _bottomNavigationBarItem("dumbbell-svgrepo-com-3", "운동"),
                       _bottomNavigationBarItem("heart-svgrepo-com", "피드"),
-                      _bottomNavigationBarItem("calendar-svgrepo-com", "기록"),
+                      _bottomNavigationBarItem("calendar-svgrepo-com", "스탯"),
                       _bottomNavigationBarItem("avatar-svgrepo-com", "프로필"),
                     ],
                   ),
@@ -459,16 +460,16 @@ class _AppState extends State<App> {
                     return Center(
                       child: SizedBox(
                         width: _bodyStater.bodystate == 0 ||
-                                _bodyStater.bodystate == 4
+                            _bodyStater.bodystate == 4
                             ? width
                             : width * 0.6,
                         child: Align(
                           alignment: _bodyStater.bodystate == 0 ||
-                                  _bodyStater.bodystate == 1
+                              _bodyStater.bodystate == 1
                               ? Alignment.bottomLeft
                               : _bodyStater.bodystate == 2
-                                  ? Alignment.bottomCenter
-                                  : Alignment.bottomRight,
+                              ? Alignment.bottomCenter
+                              : Alignment.bottomRight,
                           child: Container(
                             height: 2,
                             decoration: BoxDecoration(
@@ -789,22 +790,57 @@ class _AppState extends State<App> {
           return shouldPop!;
         },
         child: Scaffold(
-            body: _loginState.isLogin
-                ? _userProvider.userdata == null ||
-                        _hisProvider.historydataAll == null
-                    ? _initialLoginWidget()
-                    : IndexedStack(
-                        index: _bodyStater.bodystate,
-                        children: const <Widget>[
-                            SearchNavigator(),
-                            TabNavigator(),
-                            Feed(),
-                            Calendar(),
-                            TabProfileNavigator()
-                          ])
-                : _loginState.isSignUp
-                    ? const SignUpPage()
-                    : LoginPage(isUpdateNeeded: _isUpdateNeeded),
+            body: Stack(
+              children: [
+                Positioned(
+                    top: MediaQuery.of(context).size.width * 0.3,
+                    left: 220,
+                    child: Container(
+                      width: 300,
+                      height: 300,
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(colors: [
+                            Color(0xff7a28cb),
+                            Color(0xff8369de),
+                            Color(0xff8da0cb)
+                          ])),
+                    )),
+                Positioned(
+                    bottom: MediaQuery.of(context).size.width * 0.1,
+                    right: 150,
+                    child: Transform.rotate(
+                      angle: 8,
+                      child: Container(
+                        width: 180,
+                        height: 180,
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: LinearGradient(colors: [
+                              Color(0xff7a28cb),
+                              Color(0xff7369de),
+                              Color(0xff7da0cb)
+                            ])),
+                      ),
+                    )),
+                _loginState.isLogin
+                    ? _userProvider.userdata == null ||
+                            _hisProvider.historydataAll == null
+                        ? _initialLoginWidget()
+                        : IndexedStack(
+                            index: _bodyStater.bodystate,
+                            children: const <Widget>[
+                                SearchNavigator(),
+                                TabNavigator(),
+                                Feed(),
+                                MyStat(),
+                                TabProfileNavigator()
+                              ])
+                    : _loginState.isSignUp
+                        ? const SignUpPage()
+                        : LoginPage(isUpdateNeeded: _isUpdateNeeded),
+              ],
+            ),
             floatingActionButton: Consumer<RoutineTimeProvider>(
                 builder: (builder, provider, child) {
               return Container(

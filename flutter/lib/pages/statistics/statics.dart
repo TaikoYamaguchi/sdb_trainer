@@ -39,8 +39,8 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
   var _userProvider;
   var _chartIndex;
-  late TooltipBehavior _tooltipBehavior;
-  late ZoomPanBehavior _zoomPanBehavior;
+  TooltipBehavior? _tooltipBehavior;
+  ZoomPanBehavior? _zoomPanBehavior;
   var _tapPosition;
   var _hisProvider;
   var _exProvider;
@@ -1430,11 +1430,13 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
     initializeDateFormatting('pt_BR', null);
+    initializeDateFormatting('pt_BR', null);
     _chartIndex = Provider.of<ChartIndexProvider>(context, listen: false);
     _hisProvider = Provider.of<HistorydataProvider>(context, listen: false);
     _exProvider = Provider.of<ExercisesdataProvider>(context, listen: false);
     _getChartSourcefromDay();
     return Scaffold(
+      backgroundColor: Colors.transparent,
         appBar: _appbarWidget(),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4.0),

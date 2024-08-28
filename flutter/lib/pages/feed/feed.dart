@@ -123,6 +123,7 @@ class _FeedState extends State<Feed> {
     _userProvider = Provider.of<UserdataProvider>(context, listen: false);
 
     return Scaffold(
+      backgroundColor: Colors.transparent,
       extendBody: true,
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(40.0), // here the desired height

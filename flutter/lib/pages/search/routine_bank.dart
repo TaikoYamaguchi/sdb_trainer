@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
@@ -69,105 +71,114 @@ class _RoutineBankState extends State<RoutineBank> {
                     },
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width / 2,
-                      child: Card(
-                        color: Theme.of(context).cardColor,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: userFamous[index].image != ""
-                                  ? CachedNetworkImage(
-                                      imageUrl: userFamous[index].image,
-                                      width:
-                                          MediaQuery.of(context).size.width / 2,
-                                      height:
-                                          MediaQuery.of(context).size.width / 2,
-                                      imageBuilder: (context, imageProivder) =>
-                                          Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(50)),
-                                            image: DecorationImage(
-                                              image: imageProivder,
-                                              fit: BoxFit.cover,
-                                            )),
-                                      ),
-                                    )
-                                  : SizedBox(
-                                      width:
-                                          MediaQuery.of(context).size.width / 2,
-                                      height:
-                                          MediaQuery.of(context).size.width / 2,
-                                      child: const Icon(
-                                        Icons.image_not_supported,
-                                        size: 70,
-                                      )),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                      child: Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.all(Radius.circular(15)),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+                            child: Container(
+                              color: Colors.grey.withOpacity(0.1),
                               child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          userFamous[index].routinedata.name,
-                                          overflow: TextOverflow.ellipsis,
-                                          textScaleFactor: 1.3,
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColorLight,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ],
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: userFamous[index].image != ""
+                                        ? CachedNetworkImage(
+                                            imageUrl: userFamous[index].image,
+                                            width:
+                                                MediaQuery.of(context).size.width / 2,
+                                            height:
+                                                MediaQuery.of(context).size.width / 2,
+                                            imageBuilder: (context, imageProivder) =>
+                                                Container(
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                          Radius.circular(50)),
+                                                  image: DecorationImage(
+                                                    image: imageProivder,
+                                                    fit: BoxFit.cover,
+                                                  )),
+                                            ),
+                                          )
+                                        : SizedBox(
+                                            width:
+                                                MediaQuery.of(context).size.width / 2,
+                                            height:
+                                                MediaQuery.of(context).size.width / 2,
+                                            child: const Icon(
+                                              Icons.image_not_supported,
+                                              size: 70,
+                                            )),
                                   ),
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                                    child: Column(
                                       children: [
-                                        Container(
-                                          alignment: Alignment.centerLeft,
-                                          width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  4 -
-                                              20,
-                                          child: Row(
-                                            children: [
-                                              _famousLikeButton(program),
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  4 -
-                                              20,
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                  Icons
-                                                      .supervised_user_circle_sharp,
-                                                  color: Theme.of(context)
-                                                      .primaryColorLight,
-                                                  size: 18),
-                                              Text(
-                                                ' ${userFamous[index].subscribe.toString()}',
-                                                textScaleFactor: 1.1,
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                userFamous[index].routinedata.name,
                                                 overflow: TextOverflow.ellipsis,
+                                                textScaleFactor: 1.3,
                                                 style: TextStyle(
                                                     color: Theme.of(context)
                                                         .primaryColorLight,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                    fontWeight: FontWeight.bold),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.symmetric(vertical: 0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                alignment: Alignment.centerLeft,
+                                                width: MediaQuery.of(context)
+                                                            .size
+                                                            .width /
+                                                        4 -
+                                                    20,
+                                                child: Row(
+                                                  children: [
+                                                    _famousLikeButton(program),
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                            .size
+                                                            .width /
+                                                        4 -
+                                                    20,
+                                                child: Row(
+                                                  children: [
+                                                    Icon(
+                                                        Icons
+                                                            .supervised_user_circle_sharp,
+                                                        color: Theme.of(context)
+                                                            .primaryColorLight,
+                                                        size: 18),
+                                                    Text(
+                                                      ' ${userFamous[index].subscribe.toString()}',
+                                                      textScaleFactor: 1.1,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                          color: Theme.of(context)
+                                                              .primaryColorLight,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -178,7 +189,7 @@ class _RoutineBankState extends State<RoutineBank> {
                                 ],
                               ),
                             ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
@@ -234,106 +245,115 @@ class _RoutineBankState extends State<RoutineBank> {
                     },
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width / 2,
-                      child: Card(
-                        color: Theme.of(context).cardColor,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: userFamous[index].image != ""
-                                  ? CachedNetworkImage(
-                                      imageUrl: userFamous[index].image,
-                                      width:
-                                          MediaQuery.of(context).size.width / 2,
-                                      height:
-                                          MediaQuery.of(context).size.width / 2,
-                                      imageBuilder: (context, imageProivder) =>
-                                          Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(50)),
-                                            image: DecorationImage(
-                                              image: imageProivder,
-                                              fit: BoxFit.cover,
-                                            )),
-                                      ),
-                                    )
-                                  : SizedBox(
-                                      width:
-                                          MediaQuery.of(context).size.width / 2,
-                                      height:
-                                          MediaQuery.of(context).size.width / 2,
-                                      child: const Icon(
-                                        Icons.image_not_supported,
-                                        color: Colors.grey,
-                                        size: 70,
-                                      )),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                      child: Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.all(Radius.circular(15)),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+                            child: Container(
+                              color: Colors.grey.withOpacity(0.1),
                               child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          userFamous[index].routinedata.name,
-                                          textScaleFactor: 1.3,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColorLight,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ],
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: userFamous[index].image != ""
+                                        ? CachedNetworkImage(
+                                            imageUrl: userFamous[index].image,
+                                            width:
+                                                MediaQuery.of(context).size.width / 2,
+                                            height:
+                                                MediaQuery.of(context).size.width / 2,
+                                            imageBuilder: (context, imageProivder) =>
+                                                Container(
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                          Radius.circular(50)),
+                                                  image: DecorationImage(
+                                                    image: imageProivder,
+                                                    fit: BoxFit.cover,
+                                                  )),
+                                            ),
+                                          )
+                                        : SizedBox(
+                                            width:
+                                                MediaQuery.of(context).size.width / 2,
+                                            height:
+                                                MediaQuery.of(context).size.width / 2,
+                                            child: const Icon(
+                                              Icons.image_not_supported,
+                                              color: Colors.grey,
+                                              size: 70,
+                                            )),
                                   ),
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                                    child: Column(
                                       children: [
-                                        Container(
-                                          alignment: Alignment.centerLeft,
-                                          width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  4 -
-                                              20,
-                                          child: Row(
-                                            children: [
-                                              _famousLikeButton(program),
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  4 -
-                                              20,
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                  Icons
-                                                      .supervised_user_circle_sharp,
-                                                  color: Theme.of(context)
-                                                      .primaryColorLight,
-                                                  size: 18),
-                                              Text(
-                                                ' ${userFamous[index].subscribe.toString()}',
-                                                textScaleFactor: 1.1,
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                userFamous[index].routinedata.name,
+                                                textScaleFactor: 1.3,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                     color: Theme.of(context)
                                                         .primaryColorLight,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                    fontWeight: FontWeight.bold),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.symmetric(vertical: 0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                alignment: Alignment.centerLeft,
+                                                width: MediaQuery.of(context)
+                                                            .size
+                                                            .width /
+                                                        4 -
+                                                    20,
+                                                child: Row(
+                                                  children: [
+                                                    _famousLikeButton(program),
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                            .size
+                                                            .width /
+                                                        4 -
+                                                    20,
+                                                child: Row(
+                                                  children: [
+                                                    Icon(
+                                                        Icons
+                                                            .supervised_user_circle_sharp,
+                                                        color: Theme.of(context)
+                                                            .primaryColorLight,
+                                                        size: 18),
+                                                    Text(
+                                                      ' ${userFamous[index].subscribe.toString()}',
+                                                      textScaleFactor: 1.1,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                          color: Theme.of(context)
+                                                              .primaryColorLight,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -344,7 +364,7 @@ class _RoutineBankState extends State<RoutineBank> {
                                 ],
                               ),
                             ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
