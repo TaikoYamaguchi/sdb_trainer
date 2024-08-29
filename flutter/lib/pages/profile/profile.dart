@@ -371,12 +371,12 @@ class _ProfileState extends State<Profile> {
                     },
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      color: Theme.of(context).canvasColor,
+                      color: Theme.of(context).indicatorColor,
                     ),
                     innerPadding: const EdgeInsets.all(4),
                     thumbDecoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
-                        color: Theme.of(context).cardColor),
+                        color: Theme.of(context).primaryColor),
                     onValueChanged: (value) {
                       setState(() {
                         _themeProvider.setUserFontsize(value);
@@ -422,12 +422,12 @@ class _ProfileState extends State<Profile> {
                     },
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      color: Theme.of(context).canvasColor,
+                      color: Theme.of(context).indicatorColor,
                     ),
                     innerPadding: const EdgeInsets.all(4),
                     thumbDecoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
-                        color: Theme.of(context).cardColor),
+                        color: Theme.of(context).primaryColor),
                     onValueChanged: (value) {
                       setState(() {
                         _themeProvider.setUserTheme(value);

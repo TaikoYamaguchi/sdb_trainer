@@ -35,7 +35,6 @@ class MyStat extends StatefulWidget {
 }
 
 class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
-
   final flip_ctrl = FlipCardController();
   List<Widget> statSliders = [];
   TooltipBehavior? _tooltipBehavior;
@@ -44,11 +43,9 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
   var _tapPosition;
   bool _bodyWeightChartIsOpen = true;
 
-
   late Map<DateTime, List<SDBdata>> selectedEvents;
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
   final TextEditingController _exSearchCtrl = TextEditingController(text: "");
-
 
   late StreamSubscription<bool> keyboardSubscription;
 
@@ -57,10 +54,10 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
     var keyboardVisibilityController = KeyboardVisibilityController();
     keyboardSubscription =
         keyboardVisibilityController.onChange.listen((bool visible) {
-          if (visible == false) {
-            FocusScope.of(context).unfocus();
-          }
-        });
+      if (visible == false) {
+        FocusScope.of(context).unfocus();
+      }
+    });
     _tapPosition = const Offset(0.0, 0.0);
     _tooltipBehavior = TooltipBehavior(enable: true);
     _zoomPanBehavior = ZoomPanBehavior(
@@ -74,7 +71,6 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
         maximumZoomLevel: 0.7);
     super.initState();
   }
-
 
   @override
   void dispose() {
@@ -96,7 +92,7 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
               builder: (builder, provider1, provider2, child) {
             return Row(
               children: [
-                Text("Stat",
+                Text("분석",
                     textScaleFactor: 1.5,
                     style:
                         TextStyle(color: Theme.of(context).primaryColorLight)),
@@ -113,7 +109,6 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
 
     List<Widget> statSliders = [
       CalendarCard(),
-
       Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Container(
@@ -122,34 +117,39 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(width: 10,),
-                  Text("나의 체중",textScaler: TextScaler.linear(2),),
-                  SizedBox(width: 15,),
-                  Icon(Icons.open_in_new,
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "나의 체중",
+                    textScaler: TextScaler.linear(2),
+                  ),
+                  SizedBox(
+                    width: 15,
+                  ),
+                  Icon(
+                    Icons.open_in_new,
                     color: Theme.of(context).primaryColorLight,
                   )
                 ],
               ),
               Center(
                 child: ClipRRect(
-
                   borderRadius: const BorderRadius.all(Radius.circular(15)),
                   child: BackdropFilter(
                     filter: ui.ImageFilter.blur(sigmaX: 30, sigmaY: 30),
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.87,
-                      height: MediaQuery.of(context).size.height* 0.87 * 0.78,
+                      height: MediaQuery.of(context).size.height * 0.87 * 0.78,
                       decoration: BoxDecoration(
                           color: Colors.grey.withOpacity(0.1),
                           borderRadius:
-                          const BorderRadius.all(Radius.circular(15))),
+                              const BorderRadius.all(Radius.circular(15))),
                       child: _weightWidget(),
                     ),
                   ),
                 ),
               ),
-
-
             ],
           ),
         ),
@@ -158,23 +158,21 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
 
     return Scaffold(
       backgroundColor: Colors.transparent,
-        appBar: _appbarWidget(),
-        body: Container(
+      appBar: _appbarWidget(),
+      body: Container(
           child: CarouselSlider(
-            options: CarouselOptions(
-              viewportFraction: 0.87,
-              height: MediaQuery.of(context).size.height,
-              enlargeFactor: 0.25,
-              autoPlay: false,
-              aspectRatio: 1,
-              enlargeCenterPage: true,
-            ),
-            items: statSliders,
-          )
-          ),
-        );
+        options: CarouselOptions(
+          viewportFraction: 0.87,
+          height: MediaQuery.of(context).size.height,
+          enlargeFactor: 0.25,
+          autoPlay: false,
+          aspectRatio: 1,
+          enlargeCenterPage: true,
+        ),
+        items: statSliders,
+      )),
+    );
   }
-
 
   Widget _weightWidget() {
     final List<Color> color = <Color>[];
@@ -200,7 +198,7 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
                 height: 80,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  //color: Theme.of(context).cardColor,
+                    //color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(15.0)),
                 child: Padding(
                   padding: const EdgeInsets.all(1.0),
@@ -279,7 +277,7 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
                                       color: _bodyWeightChartIsOpen
                                           ? Theme.of(context).highlightColor
                                           : Theme.of(context)
-                                          .primaryColorLight)),
+                                              .primaryColorLight)),
                               false: Text("off",
                                   style: TextStyle(
                                       color: _bodyWeightChartIsOpen
@@ -303,87 +301,87 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
                   ),
                   _bodyWeightChartIsOpen
                       ? Container(
-                      width: double.infinity,
-                      height: 250,
-                      decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(20),
-                              bottomRight: Radius.circular(20),
-                              topLeft: Radius.circular(20),
-                              bottomLeft: Radius.circular(20))),
-                      child: SfCartesianChart(
-                          plotAreaBorderWidth: 0,
-                          primaryXAxis: DateTimeAxis(
-                            majorGridLines: const MajorGridLines(width: 0),
-                            majorTickLines: const MajorTickLines(size: 0),
-                            axisLine: const AxisLine(width: 0),
-                          ),
-                          primaryYAxis: NumericAxis(
-                              axisLine: const AxisLine(width: 0),
-                              majorTickLines: const MajorTickLines(size: 0),
-                              majorGridLines:
-                              const MajorGridLines(width: 0),
-                              minimum: _userProvider
-                                  .userdata.bodyStats!.length ==
-                                  0
-                                  ? 0
-                                  : _userProvider.userdata.bodyStats!.length >
-                                  1
-                                  ? _userProvider.userdata.bodyStats!
-                                  .reduce((BodyStat curr,
-                                  BodyStat next) =>
-                              curr.weight! < next.weight!
-                                  ? curr
-                                  : next)
-                                  .weight
-                                  : _userProvider
-                                  .userdata.bodyStats![0].weight),
-                          tooltipBehavior: _tooltipBehavior,
-                          zoomPanBehavior: _zoomPanBehavior,
-                          legend: Legend(
-                              isVisible: true,
-                              position: LegendPosition.bottom,
-                              textStyle: TextStyle(
-                                  color: Theme.of(context).primaryColorLight)),
-                          series: [
-                            LineSeries<BodyStat, DateTime>(
-                              isVisibleInLegend: true,
-                              color: Theme.of(context).primaryColorLight,
-                              name: "목표",
-                              dataSource: _userProvider.userdata.bodyStats!,
-                              xValueMapper: (BodyStat sales, _) =>
-                                  DateTime.parse(sales.date!),
-                              yValueMapper: (BodyStat sales, _) =>
-                              sales.weight_goal!,
-                            ),
-                            // Renders line chart
-                            LineSeries<BodyStat, DateTime>(
-                              isVisibleInLegend: true,
-                              onCreateShader: (ShaderDetails details) {
-                                return ui.Gradient.linear(
-                                    details.rect.topRight,
-                                    details.rect.bottomLeft,
-                                    color,
-                                    stops);
-                              },
-                              markerSettings: MarkerSettings(
+                          width: double.infinity,
+                          height: 250,
+                          decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                  topRight: Radius.circular(20),
+                                  bottomRight: Radius.circular(20),
+                                  topLeft: Radius.circular(20),
+                                  bottomLeft: Radius.circular(20))),
+                          child: SfCartesianChart(
+                              plotAreaBorderWidth: 0,
+                              primaryXAxis: DateTimeAxis(
+                                majorGridLines: const MajorGridLines(width: 0),
+                                majorTickLines: const MajorTickLines(size: 0),
+                                axisLine: const AxisLine(width: 0),
+                              ),
+                              primaryYAxis: NumericAxis(
+                                  axisLine: const AxisLine(width: 0),
+                                  majorTickLines: const MajorTickLines(size: 0),
+                                  majorGridLines:
+                                      const MajorGridLines(width: 0),
+                                  minimum: _userProvider
+                                              .userdata.bodyStats!.length ==
+                                          0
+                                      ? 0
+                                      : _userProvider.userdata.bodyStats!.length >
+                                              1
+                                          ? _userProvider.userdata.bodyStats!
+                                              .reduce((BodyStat curr,
+                                                      BodyStat next) =>
+                                                  curr.weight! < next.weight!
+                                                      ? curr
+                                                      : next)
+                                              .weight
+                                          : _userProvider
+                                              .userdata.bodyStats![0].weight),
+                              tooltipBehavior: _tooltipBehavior,
+                              zoomPanBehavior: _zoomPanBehavior,
+                              legend: Legend(
                                   isVisible: true,
-                                  height: 6,
-                                  width: 6,
-                                  borderWidth: 3,
+                                  position: LegendPosition.bottom,
+                                  textStyle: TextStyle(
+                                      color: Theme.of(context).primaryColorLight)),
+                              series: [
+                                LineSeries<BodyStat, DateTime>(
+                                  isVisibleInLegend: true,
+                                  color: Theme.of(context).primaryColorLight,
+                                  name: "목표",
+                                  dataSource: _userProvider.userdata.bodyStats!,
+                                  xValueMapper: (BodyStat sales, _) =>
+                                      DateTime.parse(sales.date!),
+                                  yValueMapper: (BodyStat sales, _) =>
+                                      sales.weight_goal!,
+                                ),
+                                // Renders line chart
+                                LineSeries<BodyStat, DateTime>(
+                                  isVisibleInLegend: true,
+                                  onCreateShader: (ShaderDetails details) {
+                                    return ui.Gradient.linear(
+                                        details.rect.topRight,
+                                        details.rect.bottomLeft,
+                                        color,
+                                        stops);
+                                  },
+                                  markerSettings: MarkerSettings(
+                                      isVisible: true,
+                                      height: 6,
+                                      width: 6,
+                                      borderWidth: 3,
+                                      color: Theme.of(context).primaryColor,
+                                      borderColor:
+                                          Theme.of(context).primaryColor),
+                                  name: "몸무게",
                                   color: Theme.of(context).primaryColor,
-                                  borderColor:
-                                  Theme.of(context).primaryColor),
-                              name: "몸무게",
-                              color: Theme.of(context).primaryColor,
-                              width: 5,
-                              dataSource: _userProvider.userdata.bodyStats!,
-                              xValueMapper: (BodyStat sales, _) =>
-                                  DateTime.parse(sales.date!),
-                              yValueMapper: (BodyStat sales, _) =>
-                              sales.weight!,
-                            ),
-                          ]))
+                                  width: 5,
+                                  dataSource: _userProvider.userdata.bodyStats!,
+                                  xValueMapper: (BodyStat sales, _) =>
+                                      DateTime.parse(sales.date!),
+                                  yValueMapper: (BodyStat sales, _) =>
+                                      sales.weight!,
+                                ),
+                              ]))
                       : Container(),
                 ],
               )),
@@ -405,95 +403,94 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
     }
   }
 
-
   Widget _bodyWeightListWidget(List<BodyStat> bodyStats) {
-    double deviceWidth = (MediaQuery.of(context).size.width - 8)*0.87;
+    double deviceWidth = (MediaQuery.of(context).size.width - 8) * 0.87;
     double top = 20;
     double bottom = 20;
     return Expanded(
       child: SingleChildScrollView(
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(top),
-                    bottomRight: Radius.circular(bottom),
-                    topLeft: Radius.circular(top),
-                    bottomLeft: Radius.circular(bottom))),
-            child: Column(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        decoration: BoxDecoration(
+            color: Theme.of(context).cardColor,
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(top),
+                bottomRight: Radius.circular(bottom),
+                topLeft: Radius.circular(top),
+                bottomLeft: Radius.circular(bottom))),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    SizedBox(
-                      width: deviceWidth / 3 - 20,
-                      child: const Text(
-                        "날짜",
-                        textScaleFactor: 1.1,
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
+                SizedBox(
+                  width: deviceWidth / 3 - 20,
+                  child: const Text(
+                    "날짜",
+                    textScaleFactor: 1.1,
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
                     ),
-                    SizedBox(
-                      width: deviceWidth / 3 - 20,
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                          "몸무게",
-                          textScaleFactor: 1.1,
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: deviceWidth / 3 - 20,
-                      child: const Text(
-                        "목표",
-                        textScaleFactor: 1.1,
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    const SizedBox(width: 16)
-                  ],
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-                ListView.separated(
-                    itemBuilder: (BuildContext context, int index) {
-                      return _bodyWeightListItemWidget(
-                          List.from(bodyStats.reversed)[index],
-                          _userProvider.userdata,
-                          true,
-                          bodyStats.length - index - 1);
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return Container(
-                        alignment: Alignment.center,
-                        height: 0.5,
-                        child: Container(
-                          alignment: Alignment.center,
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          height: 0.5,
-                        ),
-                      );
-                    },
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: bodyStats.length,
-                    scrollDirection: Axis.vertical),
+                SizedBox(
+                  width: deviceWidth / 3 - 20,
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      "몸무게",
+                      textScaleFactor: 1.1,
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: deviceWidth / 3 - 20,
+                  child: const Text(
+                    "목표",
+                    textScaleFactor: 1.1,
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(width: 16)
               ],
             ),
-          )),
+            ListView.separated(
+                itemBuilder: (BuildContext context, int index) {
+                  return _bodyWeightListItemWidget(
+                      List.from(bodyStats.reversed)[index],
+                      _userProvider.userdata,
+                      true,
+                      bodyStats.length - index - 1);
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return Container(
+                    alignment: Alignment.center,
+                    height: 0.5,
+                    child: Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      height: 0.5,
+                    ),
+                  );
+                },
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: bodyStats.length,
+                scrollDirection: Axis.vertical),
+          ],
+        ),
+      )),
     );
   }
 
@@ -501,7 +498,7 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
     double top = 0;
     double bottom = 0;
 
-    double deviceWidth = (MediaQuery.of(context).size.width - 8)*0.87;
+    double deviceWidth = (MediaQuery.of(context).size.width - 8) * 0.87;
     return GestureDetector(
       onTap: () {},
       child: Container(
@@ -545,7 +542,7 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
                           "${userdata.weight_unit}",
                       textScaleFactor: 1.3,
                       style:
-                      TextStyle(color: Theme.of(context).primaryColorLight),
+                          TextStyle(color: Theme.of(context).primaryColorLight),
                       textAlign: TextAlign.center),
                 ),
                 GestureDetector(
@@ -561,7 +558,7 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
                               onTap: () {
                                 Future<void>.delayed(
                                     const Duration(), // OR const Duration(milliseconds: 500),
-                                        () => _showMyDialog_EditWeight(index));
+                                    () => _showMyDialog_EditWeight(index));
                               },
                               padding: const EdgeInsets.all(0.0),
                               child: ListTile(
@@ -569,7 +566,7 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
                                       horizontal: 4.0, vertical: 0.0),
                                   leading: Icon(Icons.edit,
                                       color:
-                                      Theme.of(context).primaryColorLight),
+                                          Theme.of(context).primaryColorLight),
                                   title: Text("수정",
                                       style: TextStyle(
                                           color: Theme.of(context)
@@ -578,7 +575,7 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
                               onTap: () {
                                 Future<void>.delayed(
                                     const Duration(), // OR const Duration(milliseconds: 500),
-                                        () => _userProvider
+                                    () => _userProvider
                                         .setUserWeightDelete(index));
                               },
                               padding: const EdgeInsets.all(0.0),
@@ -587,7 +584,7 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
                                       horizontal: 4.0, vertical: 0.0),
                                   leading: Icon(Icons.delete,
                                       color:
-                                      Theme.of(context).primaryColorLight),
+                                          Theme.of(context).primaryColorLight),
                                   title: Text("삭제",
                                       style: TextStyle(
                                           color: Theme.of(context)
@@ -619,8 +616,6 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
   void _storePosition(TapDownDetails details) {
     _tapPosition = details.globalPosition;
   }
-
-
 
   void _displayBodyWeightPushDialog(userWeight, userGoal) {
     var weightChange = "";
@@ -671,20 +666,13 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
     }
   }
 
-
-
-
   initialHistorydataGet() async {
     final initHistorydataProvider =
-    Provider.of<HistorydataProvider>(context, listen: false);
+        Provider.of<HistorydataProvider>(context, listen: false);
     final initExercisesdataProvider =
-    Provider.of<ExercisesdataProvider>(context, listen: false);
+        Provider.of<ExercisesdataProvider>(context, listen: false);
 
     initExercisesdataProvider.getdata();
     await initHistorydataProvider.getdata();
   }
-
-
-
-
 }

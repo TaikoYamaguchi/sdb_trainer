@@ -83,17 +83,13 @@ class _UserNotificationState extends State<UserNotification> {
         },
         child: SingleChildScrollView(
           child: Column(children: [
-            ElevatedButton(
-              onPressed: () {},
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all(Theme.of(context).cardColor)),
-              child:
-                  Consumer<PrefsProvider>(builder: (builder, provider, child) {
-                return Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    color: Theme.of(context).cardColor,
+            Consumer<PrefsProvider>(builder: (builder, provider, child) {
+              return Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  color: Theme.of(context).cardColor,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 12.0),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -123,7 +119,7 @@ class _UserNotificationState extends State<UserNotification> {
                                 },
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12),
-                                    color: Theme.of(context).canvasColor),
+                                    color: Theme.of(context).indicatorColor),
                                 innerPadding: const EdgeInsets.all(4),
                                 thumbDecoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12),
@@ -136,9 +132,9 @@ class _UserNotificationState extends State<UserNotification> {
                                   fcmSetting();
                                 }),
                           )
-                        ]));
-              }),
-            ),
+                        ]),
+                  ));
+            }),
           ]),
         ));
   }
