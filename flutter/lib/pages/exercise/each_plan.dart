@@ -403,8 +403,12 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
                                   size: 20,
                                 )))
                       ]),
-                      GestureDetector(
+                      InkWell(
                           onTap: _toggleAllPanels,
+                          splashFactory: NoSplash.splashFactory,
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          borderRadius: BorderRadius.circular(8.0),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ExpandableCustomIcon(
@@ -1555,7 +1559,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
             decoration: BoxDecoration(
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(20)),
-              color: Theme.of(context).cardColor,
+              color: Theme.of(context).indicatorColor,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,

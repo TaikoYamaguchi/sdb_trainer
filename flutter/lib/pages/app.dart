@@ -419,7 +419,7 @@ class _AppState extends State<App> {
                     color: Colors.black.withOpacity(0)))),
         Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).indicatorColor.withOpacity(0.97),
+            color: Theme.of(context).indicatorColor.withOpacity(0.618),
             border: Border.all(width: 0.1, color: Colors.grey),
             borderRadius: const BorderRadius.only(
                 topRight: Radius.circular(30), topLeft: Radius.circular(30)),
@@ -433,27 +433,34 @@ class _AppState extends State<App> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  BottomNavigationBar(
-                    backgroundColor: Colors.transparent,
-                    type: BottomNavigationBarType.fixed,
-                    selectedItemColor: Theme.of(context).primaryColorLight,
-                    unselectedItemColor: Theme.of(context).primaryColorDark,
-                    elevation: 0.0,
-                    onTap: (int index) {
-                      _bodyStater.change(index);
-                    },
-                    selectedFontSize: 14,
-                    unselectedFontSize: 14,
-                    selectedLabelStyle:
-                        const TextStyle(fontWeight: FontWeight.w500),
-                    currentIndex: _bodyStater.bodystate,
-                    items: [
-                      _bottomNavigationBarItem("search-svgrepo-com", "찾기"),
-                      _bottomNavigationBarItem("dumbbell-svgrepo-com-3", "운동"),
-                      _bottomNavigationBarItem("heart-svgrepo-com", "피드"),
-                      _bottomNavigationBarItem("calendar-svgrepo-com", "분석"),
-                      _bottomNavigationBarItem("avatar-svgrepo-com", "프로필"),
-                    ],
+                  Theme(
+                    data: Theme.of(context).copyWith(
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent),
+                    child: BottomNavigationBar(
+                      backgroundColor: Colors.transparent,
+                      type: BottomNavigationBarType.fixed,
+                      selectedItemColor: Theme.of(context).primaryColorLight,
+                      unselectedItemColor: Theme.of(context).primaryColorDark,
+                      elevation: 0.0,
+                      onTap: (int index) {
+                        _bodyStater.change(index);
+                      },
+                      selectedFontSize: 14,
+                      unselectedFontSize: 14,
+                      enableFeedback: false,
+                      selectedLabelStyle:
+                          const TextStyle(fontWeight: FontWeight.w500),
+                      currentIndex: _bodyStater.bodystate,
+                      items: [
+                        _bottomNavigationBarItem("search-svgrepo-com", "찾기"),
+                        _bottomNavigationBarItem(
+                            "dumbbell-svgrepo-com-3", "운동"),
+                        _bottomNavigationBarItem("heart-svgrepo-com", "피드"),
+                        _bottomNavigationBarItem("calendar-svgrepo-com", "분석"),
+                        _bottomNavigationBarItem("avatar-svgrepo-com", "프로필"),
+                      ],
+                    ),
                   ),
                   LayoutBuilder(builder: (context, constraints) {
                     final width = constraints.maxWidth;
@@ -793,8 +800,8 @@ class _AppState extends State<App> {
             body: Stack(
               children: [
                 Positioned(
-                    top: MediaQuery.of(context).size.width * 0.3,
-                    left: 220,
+                    bottom: MediaQuery.of(context).size.height * 0.618 - 150,
+                    left: MediaQuery.of(context).size.width * 0.618,
                     child: Container(
                       width: 300,
                       height: 300,
@@ -807,8 +814,8 @@ class _AppState extends State<App> {
                           ])),
                     )),
                 Positioned(
-                    bottom: MediaQuery.of(context).size.width * 0.1,
-                    right: 150,
+                    top: MediaQuery.of(context).size.height * 0.618,
+                    right: MediaQuery.of(context).size.width * 0.618 - 90,
                     child: Transform.rotate(
                       angle: 8,
                       child: Container(
