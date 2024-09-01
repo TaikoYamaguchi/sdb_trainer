@@ -221,7 +221,7 @@ class _CalendarCardState extends State<CalendarCard> {
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   width: 1.5,
-                                  color: Theme.of(context).cardColor),
+                                  color: Theme.of(context).hintColor),
                               borderRadius: BorderRadius.circular(15),
                             ),
                             focusedBorder: OutlineInputBorder(
@@ -312,7 +312,7 @@ class _CalendarCardState extends State<CalendarCard> {
                 const TextStyle(color: Color.fromRGBO(113, 113, 113, 100)),
                 todayDecoration: BoxDecoration(
                   shape: BoxShape.rectangle,
-                  color: Theme.of(context).cardColor,
+                  color: Theme.of(context).hintColor,
                   borderRadius: BorderRadius.circular(5.0),
                 ),
                 todayTextStyle:
@@ -329,7 +329,7 @@ class _CalendarCardState extends State<CalendarCard> {
               headerStyle: HeaderStyle(
                   formatButtonVisible: false,
                   titleTextStyle:
-                  TextStyle(color: Theme.of(context).primaryColorLight),
+                  TextStyle(color: Theme.of(context).primaryColorLight, fontWeight: FontWeight.bold ),
                   titleCentered: true,
                   leftChevronIcon: Icon(Icons.arrow_left,
                       color: Theme.of(context).primaryColorLight),
@@ -481,7 +481,7 @@ class _CalendarCardState extends State<CalendarCard> {
                 return Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
+                      color: Theme.of(context).hintColor,
                       borderRadius: BorderRadius.only(
                           topRight: Radius.circular(top),
                           bottomRight: Radius.circular(bottom),
@@ -577,7 +577,7 @@ class _CalendarCardState extends State<CalendarCard> {
                       : Theme.of(context).primaryColorLight),
               selected: _chartIndex.chartIndex == i,
               selectedColor: Theme.of(context).primaryColor,
-              backgroundColor: Theme.of(context).cardColor,
+              backgroundColor: Theme.of(context).hintColor,
               onSelected: (bool value) {
                 _chartIndex.change(i);
                 _getChartSourcefromDay();
@@ -602,7 +602,7 @@ class _CalendarCardState extends State<CalendarCard> {
                     : Theme.of(context).primaryColorLight),
             selected: _chartIndex.chartIndex == i,
             selectedColor: Theme.of(context).primaryColor,
-            backgroundColor: Theme.of(context).cardColor,
+            backgroundColor: Theme.of(context).hintColor,
             onSelected: (bool value) {
               _chartIndex.change(i);
               _getChartSourcefromDay();
@@ -635,7 +635,7 @@ class _CalendarCardState extends State<CalendarCard> {
                   : Theme.of(context).primaryColorLight),
           selected: _chartIndex.staticIndex == 0,
           selectedColor: Theme.of(context).primaryColor,
-          backgroundColor: Theme.of(context).cardColor,
+          backgroundColor: Theme.of(context).hintColor,
           onSelected: (bool value) {
             _chartIndex.changeStaticIndex(0);
             _getChartSourcefromDay();
@@ -661,7 +661,7 @@ class _CalendarCardState extends State<CalendarCard> {
                     : Theme.of(context).primaryColorLight),
             selected: _chartIndex.staticIndex == i,
             selectedColor: Theme.of(context).primaryColor,
-            backgroundColor: Theme.of(context).cardColor,
+            backgroundColor: Theme.of(context).hintColor,
             onSelected: (bool value) {
               _chartIndex.changeStaticIndex(i);
               _getChartSourcefromDay();
@@ -686,7 +686,7 @@ class _CalendarCardState extends State<CalendarCard> {
             labelStyle: TextStyle(color: Theme.of(context).primaryColorLight),
             selected: _chartIndex.staticIndex == i,
             selectedColor: Theme.of(context).primaryColor,
-            backgroundColor: Theme.of(context).cardColor,
+            backgroundColor: Theme.of(context).hintColor,
             onSelected: (bool value) {
               _chartIndex.changeStaticIndex(i);
               _getChartSourcefromDay();

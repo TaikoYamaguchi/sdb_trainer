@@ -136,16 +136,18 @@ class MyApp extends StatelessWidget {
               ? ThemeMode.dark
               : ThemeMode.light,
           theme: ThemeData(
+
               textTheme: Theme.of(context).textTheme.apply(
                     fontSizeFactor: themeProvider.userFontSize,
                     bodyColor: Colors.black,
                   ),
               scaffoldBackgroundColor: Colors.white,
+              hintColor: Colors.white.withOpacity(0.5),
               primaryColor: const Color(0xff7a28cb), //main color
               //primaryColorBrightness: Brightness.light,
               inputDecorationTheme:
                   const InputDecorationTheme(fillColor: Colors.black12),
-              cardColor: Colors.white.withOpacity(0.5), //cardcolor
+              cardColor: const Color(0xfff2f3f5), //cardcolor
               canvasColor: Colors.white, //backgroundcolor
               shadowColor: Colors.black,
               brightness: Brightness.light,
@@ -171,8 +173,9 @@ class MyApp extends StatelessWidget {
               inputDecorationTheme:
                   const InputDecorationTheme(fillColor: Colors.white12),
               scaffoldBackgroundColor: Colors.black,
+              hintColor: Colors.black45.withOpacity(0.3),
               primaryColor: const Color(0xff7a28cb),
-              cardColor: Colors.black45.withOpacity(0.3),
+              cardColor: const Color(0xff25272c),
               canvasColor: const Color(0xFF101012),
               shadowColor: Colors.black,
               primaryColorLight: Colors.white,
