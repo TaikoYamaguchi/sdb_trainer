@@ -198,7 +198,6 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
                 height: 80,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                    //color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(15.0)),
                 child: Padding(
                   padding: const EdgeInsets.all(1.0),
@@ -247,7 +246,7 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
           Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
+                  color: Theme.of(context).hintColor,
                   borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(20),
                       bottomRight: Radius.circular(20),
@@ -412,7 +411,7 @@ class _MyStatState extends State<MyStat> with TickerProviderStateMixin {
           child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
+            color: Theme.of(context).hintColor,
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(top),
                 bottomRight: Radius.circular(bottom),
