@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -235,8 +237,8 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
         });
 
     if (result == true) {
-      _routinetimeProvider.resettimer(plan_each_ex.rest);
-      _routinetimeProvider.routinecheck(widget.rindex);
+      _eachPlanExerciseStart();
+
       _workoutProvider.boolplancheck(
           widget.rindex, pindex, index, plandata.progress, newvalue);
       _editWorkoutwCheck();
@@ -315,10 +317,731 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
     return chips;
   }
 
-  Widget _Nday_RoutineWidget() {
+  Widget _bodyChipWidget(WorkoutdataProvider workout_provider,
+      RoutineTimeProvider routine_time_provider) {
+    var plandata =
+        workout_provider.workoutdata.routinedatas[widget.rindex].exercises[0];
+    return SizedBox(
+        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+      SizedBox(
+          height: 60,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: techChips().length,
+            itemBuilder: (context, index) {
+              return techChips()[index];
+            },
+          )),
+      SizedBox(
+          child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+            Transform.scale(
+                scale: 1.2,
+                child: IconButton(
+                    padding: const EdgeInsets.all(5),
+                    constraints: const BoxConstraints(),
+                    onPressed: () {
+                      if (routine_time_provider.isstarted &&
+                          routine_time_provider.nowoneindex >=
+                              plandata.progress &&
+                          routine_time_provider.nowonrindex == widget.rindex) {
+                        showToast('운동중인 날 이전의 운동은 제거가 불가능해요');
+                      } else {
+                        if (plandata.plans.length != 1) {
+                          _workoutProvider.removeplanAt(widget.rindex);
+                          if (plandata.progress == plandata.plans.length) {
+                            _workoutProvider.setplanprogress(
+                                widget.rindex, plandata.progress - 1);
+                          }
+                          _editWorkoutCheck();
+                        }
+                      }
+                    },
+                    icon: Icon(
+                      Icons.remove_circle_outlined,
+                      color: Theme.of(context).primaryColorLight,
+                      size: 20,
+                    ))),
+            Text('/',
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight)),
+            Transform.scale(
+                scale: 1.2,
+                child: IconButton(
+                    padding: const EdgeInsets.all(5),
+                    constraints: const BoxConstraints(),
+                    onPressed: () {
+                      if (routine_time_provider.isstarted &&
+                          routine_time_provider.nowoneindex >
+                              plandata.progress &&
+                          routine_time_provider.nowonrindex == widget.rindex) {
+                        showToast('운동중인 날 전에는 일자 추가가 불가능해요');
+                      } else {
+                        _workoutProvider.addplanAt(
+                            widget.rindex, new Plans(exercises: []));
+                        _editWorkoutCheck();
+                      }
+                    },
+                    icon: Icon(
+                      Icons.add_circle_outlined,
+                      color: Theme.of(context).primaryColorLight,
+                      size: 20,
+                    )))
+          ]),
+          InkWell(
+              onTap: _toggleAllPanels,
+              splashFactory: NoSplash.splashFactory,
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              borderRadius: BorderRadius.circular(8.0),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ExpandableCustomIcon(
+                    isExpanded: _allExpanded,
+                    icon: Icons.expand_more,
+                    color: Theme.of(context).primaryColorLight),
+              )),
+        ],
+      ))
+    ]));
+  }
+
+  Widget _bodyRoutineWidget(WorkoutdataProvider workout_provider,
+      ExercisesdataProvider exercise_provider) {
+    var plandata =
+        workout_provider.workoutdata.routinedatas[widget.rindex].exercises[0];
+    var planExercises = plandata.plans[plandata.progress].exercises;
+    return Expanded(
+        child: ListView(children: [
+      if (planExercises.isEmpty)
+        Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+          Container(height: 30),
+          Text('오늘은 휴식데이!',
+              textScaleFactor: 2.0,
+              style: TextStyle(
+                  color: Theme.of(context).primaryColorLight,
+                  fontWeight: FontWeight.bold)),
+          Container(height: 20),
+          Text('운동을 추가 하지 않으면 휴식일입니다.',
+              textScaleFactor: 1.2,
+              style: TextStyle(
+                  color: Theme.of(context).primaryColorLight,
+                  fontWeight: FontWeight.bold)),
+          Container(height: 30),
+        ])
+      else
+        ReorderableListView.builder(
+            buildDefaultDragHandles: false,
+            onReorder: (int oldIndex, int newIndex) {
+              setState(() {
+                if (oldIndex < newIndex) {
+                  newIndex -= 1;
+                }
+                final item = planExercises.removeAt(oldIndex);
+                planExercises.insert(newIndex, item);
+              });
+            },
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (BuildContext context_, int index_) {
+              final planEachExercise = planExercises[index_];
+              var checkedSets = planEachExercise.sets.where((sets) {
+                return (sets.ischecked as bool);
+              }).toList();
+              final exerciseIndex = _exProvider.exercisesdata.exercises
+                  .indexWhere(
+                      (element) => element.name == planEachExercise.name);
+              final eachExRefInfo = _exProvider.exercisesdata.exercises[
+                  _exProvider.exercisesdata.exercises.indexWhere(
+                      (element) => element.name == planEachExercise.ref_name)];
+              var exImage;
+              if (!_routinetimeProvider.isstarted) {
+                _workoutProvider.planSetsCheck(
+                    widget.rindex, index_, eachExRefInfo.onerm);
+              }
+              try {
+                exImage = extra_completely_new_Ex[
+                        extra_completely_new_Ex.indexWhere(
+                            (element) => element.name == planEachExercise.name)]
+                    .image;
+                exImage ??= "";
+              } catch (e) {
+                exImage = "";
+              }
+              return Column(key: Key('$index_'), children: [
+                ExpandablePanel(
+                    key: UniqueKey(),
+                    controller: _controllerList[index_],
+                    theme: ExpandableThemeData(
+                        headerAlignment: ExpandablePanelHeaderAlignment.center,
+                        hasIcon: true,
+                        iconColor: Theme.of(context).primaryColorLight),
+                    header: Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        CustomIconButton(
+                                          onPressed: () {
+                                            exselect(false, true, index_);
+                                          },
+                                          backgroundColor: Theme.of(context)
+                                              .primaryColorDark,
+                                          icon: Icon(Icons.swap_horiz,
+                                              color: Colors.white, size: 16),
+                                        ),
+                                        SizedBox(width: 6),
+                                        GestureDetector(
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.info_outline_rounded,
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                  size: 16,
+                                                ),
+                                                SizedBox(width: 4),
+                                                ReorderableDragStartListener(
+                                                  index: index_,
+                                                  child: Text(
+                                                      planEachExercise.name,
+                                                      textScaleFactor: 1.5,
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.fade,
+                                                      style: TextStyle(
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .primaryColorLight)),
+                                                ),
+                                              ],
+                                            ),
+                                            onTap: () {
+                                              ExerciseGuideBottomModal()
+                                                  .exguide(
+                                                      exerciseIndex, context);
+                                            }),
+                                      ],
+                                    ),
+                                    SizedBox(height: 4),
+                                    GestureDetector(
+                                        child: Text(
+                                          '기준: ${planEachExercise.ref_name}',
+                                          textScaleFactor: 1.1,
+                                          textAlign: TextAlign.right,
+                                          style: const TextStyle(
+                                              color: Colors.grey,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        onTap: () {
+                                          exselect(false, false, index_);
+                                        })
+                                  ]),
+                            ),
+                            Text(
+                                checkedSets.length.toString() +
+                                    "/" +
+                                    planEachExercise.sets.length.toString(),
+                                textScaleFactor: 1.0,
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColorLight,
+                                    fontWeight: FontWeight.bold))
+                          ],
+                        )),
+                    collapsed: Container(),
+                    expanded: Column(children: [
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            exImage != ""
+                                ? Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Image.asset(exImage,
+                                        height: 120,
+                                        width: 120,
+                                        fit: BoxFit.cover))
+                                : Container(
+                                    height: 80,
+                                    width: 80,
+                                    decoration: const BoxDecoration(
+                                        shape: BoxShape.circle),
+                                    child: Icon(Icons.image_not_supported,
+                                        color: Theme.of(context)
+                                            .primaryColorDark)),
+                            Expanded(
+                                child: ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder:
+                                  (BuildContext context_, int setIndex_) {
+                                final set = planEachExercise.sets[setIndex_];
+                                final eachSetWeight =
+                                    (planEachExercise.sets[setIndex_].weight);
+
+                                return Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      GestureDetector(
+                                          child: Text(
+                                              '${(eachSetWeight).toStringAsFixed(1)}kg  X  ${planEachExercise.sets[setIndex_].reps}',
+                                              textScaleFactor: 1.6,
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight)),
+                                          onTap: () {
+                                            setSetting(index_, setIndex_);
+                                          }),
+                                      SizedBox(
+                                          width: 60,
+                                          child: Transform.scale(
+                                              scale: 1.3,
+                                              child: Theme(
+                                                  data: ThemeData(
+                                                      unselectedWidgetColor:
+                                                          Theme.of(context)
+                                                              .primaryColorLight),
+                                                  child: Checkbox(
+                                                      materialTapTargetSize:
+                                                          MaterialTapTargetSize
+                                                              .shrinkWrap,
+                                                      activeColor:
+                                                          Theme.of(context)
+                                                              .primaryColor,
+                                                      checkColor:
+                                                          Theme.of(context)
+                                                              .highlightColor,
+                                                      side: BorderSide(
+                                                          width: 1,
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .primaryColorDark),
+                                                      value: planEachExercise
+                                                          .sets[setIndex_]
+                                                          .ischecked,
+                                                      onChanged: (newvalue) {
+                                                        _routinetimeProvider
+                                                                    .isstarted ||
+                                                                planEachExercise
+                                                                    .sets[
+                                                                        setIndex_]
+                                                                    .ischecked
+                                                            ? [
+                                                                if (newvalue ==
+                                                                    true)
+                                                                  {
+                                                                    _routinetimeProvider.resettimer(plandata
+                                                                        .plans[plandata
+                                                                            .progress]
+                                                                        .exercises[
+                                                                            0]
+                                                                        .rest),
+                                                                    _workoutOnermCheck(
+                                                                        set,
+                                                                        exerciseIndex)
+                                                                  },
+                                                                workout_provider
+                                                                    .planboolcheck(
+                                                                        widget
+                                                                            .rindex,
+                                                                        index_,
+                                                                        setIndex_,
+                                                                        newvalue),
+                                                              ]
+                                                            : [
+                                                                _showMyDialog(
+                                                                    index_,
+                                                                    setIndex_,
+                                                                    newvalue)
+                                                              ];
+                                                      }))))
+                                    ]);
+                              },
+                              shrinkWrap: true,
+                              itemCount: planEachExercise.sets.length,
+                            ))
+                          ]),
+                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                        Container(width: 10),
+                        Container(width: 10),
+                        Transform.scale(
+                          scale: 1.2,
+                          child: IconButton(
+                              padding: const EdgeInsets.all(5),
+                              constraints: const BoxConstraints(),
+                              onPressed: () {
+                                workout_provider.plansetsminus(
+                                    widget.rindex, index_);
+                                _editWorkoutCheck();
+                              },
+                              icon: Icon(
+                                Icons.remove_circle_outlined,
+                                color: Theme.of(context).primaryColorLight,
+                                size: 20,
+                              )),
+                        ),
+                        Text(
+                          ' /',
+                          textScaleFactor: 1.7,
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorLight),
+                        ),
+                        Transform.scale(
+                            scale: 1.2,
+                            child: IconButton(
+                                padding: const EdgeInsets.all(5),
+                                constraints: const BoxConstraints(),
+                                onPressed: () {
+                                  workout_provider.plansetsplus(
+                                      widget.rindex, index_);
+                                  _editWorkoutCheck();
+                                },
+                                icon: Icon(
+                                  Icons.add_circle_outlined,
+                                  color: Theme.of(context).primaryColorLight,
+                                  size: 20,
+                                )))
+                      ])
+                    ]) // body when the widget is Expanded
+                    ),
+                Divider(
+                  indent: 10,
+                  thickness: 0.6,
+                  color: Theme.of(context).primaryColorDark,
+                )
+              ]);
+            },
+            shrinkWrap: true,
+            itemCount: planExercises.length),
+      Container(height: 10),
+      SizedBox(
+          height: 30,
+          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Transform.scale(
+              scale: 1.2,
+              child: IconButton(
+                  padding: const EdgeInsets.all(5),
+                  constraints: const BoxConstraints(),
+                  onPressed: () {
+                    workout_provider.planremoveexAt(widget.rindex);
+                    _controllerList.removeLast();
+                    _editWorkoutCheck();
+                  },
+                  icon: Icon(Icons.remove_circle_outlined,
+                      color: Theme.of(context).primaryColorLight, size: 20)),
+            ),
+            Container(width: 10),
+            Text('/',
+                textScaleFactor: 1.7,
+                style: TextStyle(color: Theme.of(context).primaryColorLight)),
+            Container(width: 10),
+            Transform.scale(
+                scale: 1.2,
+                child: IconButton(
+                    padding: const EdgeInsets.all(5),
+                    constraints: const BoxConstraints(),
+                    onPressed: () {
+                      exselect(true, false);
+                      exselect(true, true);
+                    },
+                    icon: Icon(
+                      Icons.add_circle_outlined,
+                      color: Theme.of(context).primaryColorLight,
+                      size: 20,
+                    )))
+          ])),
+      const Center(
+          child: Text(
+        '운동 제거/추가',
+        textScaleFactor: 1.2,
+        style: TextStyle(color: Colors.grey),
+      ))
+    ]));
+  }
+
+  Widget _bodyTimerWidget(WorkoutdataProvider workout_provider) {
+    var plandata =
+        workout_provider.workoutdata.routinedatas[widget.rindex].exercises[0];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        plandata.plans[plandata.progress].exercises.isNotEmpty
+            ? Consumer<RoutineTimeProvider>(
+                builder: (context, provider_, child) {
+                var exRest =
+                    plandata.plans[plandata.progress].exercises[0].rest;
+                return _routinetimeProvider.isstarted
+                    ? LinearProgressIndicator(
+                        value: _routinetimeProvider.timeron > 0 &&
+                                _routinetimeProvider.userest &&
+                                exRest != 0
+                            ? (exRest - _routinetimeProvider.timeron) / exRest
+                            : 1,
+                        minHeight: 1.6,
+                        backgroundColor: Theme.of(context).primaryColor,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            Theme.of(context).primaryColorDark),
+                      )
+                    : const Divider(
+                        indent: 0,
+                        thickness: 0.3,
+                        color: Colors.grey,
+                      );
+              })
+            : Container(),
+        Consumer<RoutineTimeProvider>(builder: (context, provider_, child) {
+          final userest = provider_.userest;
+          final timeron = provider_.timeron;
+          final routineTime = provider_.routineTime;
+          final isNegativeTimer = userest && timeron < 0;
+          return KeyboardVisibilityBuilder(
+              builder: (context, isKeyboardVisible) {
+            return isKeyboardVisible ||
+                    plandata.plans[plandata.progress].exercises.isEmpty
+                ? Container()
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8),
+                                child: Text(userest ? "휴식 시간 :" : "운동 시간 :",
+                                    textScaleFactor: 1.4,
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .primaryColorLight)),
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                  userest
+                                      ? isNegativeTimer
+                                          ? '-${(-timeron / 60).floor()}:${((-timeron % 60) / 10).floor()}${((-timeron % 60) % 10)}'
+                                          : '${(timeron / 60).floor()}:${((timeron % 60) / 10).floor()}${((timeron % 60) % 10)}'
+                                      : '${(routineTime / 60).floor()}:${((routineTime % 60) / 10).floor()}${((routineTime % 60) % 10)}',
+                                  textScaleFactor: 2.0,
+                                  style: TextStyle(
+                                      color: (provider_.userest &&
+                                              provider_.timeron < 0)
+                                          ? Colors.red
+                                          : Theme.of(context)
+                                              .primaryColorLight))
+                            ]),
+                            Consumer<WorkoutdataProvider>(
+                                builder: (builder, provider, child) {
+                              final plan = _workoutProvider
+                                  .workoutdata
+                                  .routinedatas[widget.rindex]
+                                  .exercises[0]
+                                  .plans[plandata.progress];
+                              final restDuration =
+                                  Duration(seconds: plan.exercises[0].rest);
+                              return GestureDetector(
+                                onTap: () {
+                                  showCupertinoModalPopup<void>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return _buildContainer(timerPicker2(
+                                          restDuration,
+                                          plandata.progress,
+                                        ));
+                                      });
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 4.0, bottom: 4.0, right: 4.0),
+                                  child: Text(
+                                    "휴식 설정 : ${plan.exercises[0].rest}초",
+                                    textScaleFactor: 1.2,
+                                    style: TextStyle(
+                                      color: Theme.of(context).primaryColorDark,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                _routinetimeProvider.restcheck();
+                                _routinetimeProvider.resttimecheck(plandata
+                                    .plans[plandata.progress]
+                                    .exercises[0]
+                                    .rest);
+                              },
+                              child: Consumer<RoutineTimeProvider>(
+                                  builder: (builder, provider, child) {
+                                return Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 4.0),
+                                    child: Text(
+                                      provider.userest
+                                          ? 'Rest Timer on'
+                                          : 'Rest Timer off',
+                                      textScaleFactor: 1.6,
+                                      style: TextStyle(
+                                        color: provider.userest
+                                            ? Theme.of(context)
+                                                .primaryColorLight
+                                            : Theme.of(context)
+                                                .primaryColorDark,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                            ),
+                            SizedBox(height: 4),
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    _routinetimeProvider.addRestTime(-10);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(4)),
+                                      color: Theme.of(context).primaryColorDark,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12.0, vertical: 6.0),
+                                      child: Text(
+                                        "-10초",
+                                        textScaleFactor: 1.2,
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .highlightColor,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 12),
+                                GestureDetector(
+                                  onTap: () {
+                                    _routinetimeProvider.addRestTime(10);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(4)),
+                                      color: Theme.of(context).primaryColorDark,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12.0, vertical: 6.0),
+                                      child: Text(
+                                        "+10초",
+                                        textScaleFactor: 1.2,
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .highlightColor,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+          });
+        }),
+      ],
+    );
+  }
+
+  Widget _bodyExButton(WorkoutdataProvider workout_provider,
+      RoutineTimeProvider routine_time_provider) {
+    var plandata =
+        workout_provider.workoutdata.routinedatas[widget.rindex].exercises[0];
+    return Consumer<PrefsProvider>(builder: (builder, pref_provider, child) {
+      return ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              backgroundColor:
+                  ((routine_time_provider.nowonrindex != widget.rindex &&
+                              _routinetimeProvider.isstarted) ||
+                          (_routinetimeProvider.isstarted &&
+                              routine_time_provider.nowoneindex !=
+                                  plandata.progress))
+                      ? const Color(0xFF212121)
+                      : routine_time_provider.buttoncolor,
+              textStyle: const TextStyle(fontSize: 20)),
+          onPressed: () async {
+            if (routine_time_provider.nowonrindex != widget.rindex &&
+                _routinetimeProvider.isstarted) {
+              return null;
+            } else {
+              if (_routinetimeProvider.isstarted) {
+                routine_time_provider.nowoneindex != plandata.progress
+                    ? showToast(
+                        "${routine_time_provider.nowoneindex + 1}일차 운동 탭에서 종료 가능합니다.")
+                    : _showMyDialog_finish();
+              } else {
+                _eachPlanExerciseStart();
+              }
+            }
+          },
+          child: Text(
+            (routine_time_provider.nowonrindex != widget.rindex) &&
+                    _routinetimeProvider.isstarted
+                ? '다른 루틴 수행중'
+                : (routine_time_provider.nowoneindex != plandata.progress &&
+                        routine_time_provider.isstarted)
+                    ? '${routine_time_provider.nowoneindex + 1}일차 운동 수행중'
+                    : routine_time_provider.routineButton,
+            style: TextStyle(color: Colors.white),
+          ));
+    });
+  }
+
+  _eachPlanExerciseStart() async {
+    var plandata =
+        _workoutProvider.workoutdata.routinedatas[widget.rindex].exercises[0];
+    _routinetimeProvider.resettimer(_workoutProvider
+        .workoutdata
+        .routinedatas[widget.rindex]
+        .exercises[0]
+        .plans[plandata.progress]
+        .exercises[0]
+        .rest);
+    await _routinetimeProvider.routinecheck(widget.rindex);
+    _prefsProvider
+        .setplan(_workoutProvider.workoutdata.routinedatas[widget.rindex].name);
+    _routinetimeProvider.nowoneindexupdate(plandata.progress);
+    FirebaseAnalyticsService.logCustomEvent("Workout Start");
+  }
+
+  Widget _eachDayRoutineBodyWidget() {
     return Consumer3<WorkoutdataProvider, ExercisesdataProvider,
             RoutineTimeProvider>(
-        builder: (builder, workout_provider, ex_provider, RT_provider, child) {
+        builder: (builder, workout_provider, exercise_provider,
+            routine_time_provider, child) {
       var plandata =
           workout_provider.workoutdata.routinedatas[widget.rindex].exercises[0];
       var planExercises = plandata.plans[plandata.progress].exercises;
@@ -326,741 +1049,14 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
           padding: const EdgeInsets.symmetric(horizontal: 0),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            SizedBox(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                  SizedBox(
-                      height: 60,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: techChips().length,
-                        itemBuilder: (context, index) {
-                          return techChips()[index];
-                        },
-                      )),
-                  SizedBox(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                        Transform.scale(
-                            scale: 1.2,
-                            child: IconButton(
-                                padding: const EdgeInsets.all(5),
-                                constraints: const BoxConstraints(),
-                                onPressed: () {
-                                  if (RT_provider.isstarted &&
-                                      RT_provider.nowoneindex >=
-                                          plandata.progress &&
-                                      RT_provider.nowonrindex ==
-                                          widget.rindex) {
-                                    showToast('운동중인 날 이전의 운동은 제거가 불가능해요');
-                                  } else {
-                                    if (plandata.plans.length != 1) {
-                                      _workoutProvider
-                                          .removeplanAt(widget.rindex);
-                                      if (plandata.progress ==
-                                          plandata.plans.length) {
-                                        _workoutProvider.setplanprogress(
-                                            widget.rindex,
-                                            plandata.progress - 1);
-                                      }
-                                      _editWorkoutCheck();
-                                    }
-                                  }
-                                },
-                                icon: Icon(
-                                  Icons.remove_circle_outlined,
-                                  color: Theme.of(context).primaryColorLight,
-                                  size: 20,
-                                ))),
-                        Text('/',
-                            textScaleFactor: 1.7,
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColorLight)),
-                        Transform.scale(
-                            scale: 1.2,
-                            child: IconButton(
-                                padding: const EdgeInsets.all(5),
-                                constraints: const BoxConstraints(),
-                                onPressed: () {
-                                  if (RT_provider.isstarted &&
-                                      RT_provider.nowoneindex >
-                                          plandata.progress &&
-                                      RT_provider.nowonrindex ==
-                                          widget.rindex) {
-                                    showToast('운동중인 날 전에는 일자 추가가 불가능해요');
-                                  } else {
-                                    _workoutProvider.addplanAt(widget.rindex,
-                                        new Plans(exercises: []));
-                                    _editWorkoutCheck();
-                                  }
-                                },
-                                icon: Icon(
-                                  Icons.add_circle_outlined,
-                                  color: Theme.of(context).primaryColorLight,
-                                  size: 20,
-                                )))
-                      ]),
-                      InkWell(
-                          onTap: _toggleAllPanels,
-                          splashFactory: NoSplash.splashFactory,
-                          splashColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ExpandableCustomIcon(
-                                isExpanded: _allExpanded,
-                                icon: Icons.expand_more,
-                                color: Theme.of(context).primaryColorLight),
-                          )),
-                    ],
-                  ))
-                ])),
+            _bodyChipWidget(workout_provider, routine_time_provider),
             Divider(
                 indent: 10,
                 thickness: 0.6,
                 color: Theme.of(context).primaryColorDark),
-            Expanded(
-                child: ListView(children: [
-              if (planExercises.isEmpty)
-                Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(height: 30),
-                      Text('오늘은 휴식데이!',
-                          textScaleFactor: 2.0,
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColorLight,
-                              fontWeight: FontWeight.bold)),
-                      Container(height: 20),
-                      Text('운동을 추가 하지 않으면 휴식일입니다.',
-                          textScaleFactor: 1.2,
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColorLight,
-                              fontWeight: FontWeight.bold)),
-                      Container(height: 30),
-                    ])
-              else
-                ReorderableListView.builder(
-                    buildDefaultDragHandles: false,
-                    onReorder: (int oldIndex, int newIndex) {
-                      setState(() {
-                        if (oldIndex < newIndex) {
-                          newIndex -= 1;
-                        }
-                        final item = planExercises.removeAt(oldIndex);
-                        planExercises.insert(newIndex, item);
-                      });
-                    },
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext context_, int index_) {
-                      final planEachExercise = planExercises[index_];
-                      var checkedSets = planEachExercise.sets.where((sets) {
-                        return (sets.ischecked as bool);
-                      }).toList();
-                      final exerciseIndex = _exProvider.exercisesdata.exercises
-                          .indexWhere((element) =>
-                              element.name == planEachExercise.name);
-                      final eachExRefInfo = _exProvider.exercisesdata.exercises[
-                          _exProvider.exercisesdata.exercises.indexWhere(
-                              (element) =>
-                                  element.name == planEachExercise.ref_name)];
-                      var exImage;
-                      if (!_routinetimeProvider.isstarted) {
-                        _workoutProvider.planSetsCheck(
-                            widget.rindex, index_, eachExRefInfo.onerm);
-                      }
-                      try {
-                        exImage = extra_completely_new_Ex[
-                                extra_completely_new_Ex.indexWhere((element) =>
-                                    element.name == planEachExercise.name)]
-                            .image;
-                        exImage ??= "";
-                      } catch (e) {
-                        exImage = "";
-                      }
-                      return Column(key: Key('$index_'), children: [
-                        ExpandablePanel(
-                            key: UniqueKey(),
-                            controller: _controllerList[index_],
-                            theme: ExpandableThemeData(
-                                headerAlignment:
-                                    ExpandablePanelHeaderAlignment.center,
-                                hasIcon: true,
-                                iconColor: Theme.of(context).primaryColorLight),
-                            header: Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                CustomIconButton(
-                                                  onPressed: () {
-                                                    exselect(
-                                                        false, true, index_);
-                                                  },
-                                                  backgroundColor:
-                                                      Theme.of(context)
-                                                          .primaryColorDark,
-                                                  icon: Icon(Icons.swap_horiz,
-                                                      color: Colors.white,
-                                                      size: 16),
-                                                ),
-                                                SizedBox(width: 6),
-                                                GestureDetector(
-                                                    child: Row(
-                                                      children: [
-                                                        Icon(
-                                                          Icons
-                                                              .info_outline_rounded,
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .primaryColor,
-                                                          size: 16,
-                                                        ),
-                                                        SizedBox(width: 4),
-                                                        ReorderableDragStartListener(
-                                                          index: index_,
-                                                          child: Text(
-                                                              planEachExercise
-                                                                  .name,
-                                                              textScaleFactor:
-                                                                  1.5,
-                                                              maxLines: 2,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .fade,
-                                                              style: TextStyle(
-                                                                  color: Theme.of(
-                                                                          context)
-                                                                      .primaryColorLight)),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    onTap: () {
-                                                      ExerciseGuideBottomModal()
-                                                          .exguide(
-                                                              exerciseIndex,
-                                                              context);
-                                                    }),
-                                              ],
-                                            ),
-                                            SizedBox(height: 4),
-                                            GestureDetector(
-                                                child: Text(
-                                                  '기준: ${planEachExercise.ref_name}',
-                                                  textScaleFactor: 1.1,
-                                                  textAlign: TextAlign.right,
-                                                  style: const TextStyle(
-                                                      color: Colors.grey,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                onTap: () {
-                                                  exselect(
-                                                      false, false, index_);
-                                                })
-                                          ]),
-                                    ),
-                                    Text(
-                                        checkedSets.length.toString() +
-                                            "/" +
-                                            planEachExercise.sets.length
-                                                .toString(),
-                                        textScaleFactor: 1.0,
-                                        style: TextStyle(
-                                            color: Theme.of(context)
-                                                .primaryColorLight,
-                                            fontWeight: FontWeight.bold))
-                                  ],
-                                )),
-                            collapsed: Container(),
-                            expanded: Column(children: [
-                              Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    exImage != ""
-                                        ? Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Image.asset(exImage,
-                                                height: 120,
-                                                width: 120,
-                                                fit: BoxFit.cover))
-                                        : Container(
-                                            height: 80,
-                                            width: 80,
-                                            decoration: const BoxDecoration(
-                                                shape: BoxShape.circle),
-                                            child: Icon(
-                                                Icons.image_not_supported,
-                                                color: Theme.of(context)
-                                                    .primaryColorDark)),
-                                    Expanded(
-                                        child: ListView.builder(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      itemBuilder: (BuildContext context_,
-                                          int setIndex_) {
-                                        final set =
-                                            planEachExercise.sets[setIndex_];
-                                        final eachSetWeight = (planEachExercise
-                                            .sets[setIndex_].weight);
-
-                                        return Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              GestureDetector(
-                                                  child: Text(
-                                                      '${(eachSetWeight).toStringAsFixed(1)}kg  X  ${planEachExercise.sets[setIndex_].reps}',
-                                                      textScaleFactor: 1.6,
-                                                      style: TextStyle(
-                                                          color: Theme.of(
-                                                                  context)
-                                                              .primaryColorLight)),
-                                                  onTap: () {
-                                                    setSetting(
-                                                        index_, setIndex_);
-                                                  }),
-                                              SizedBox(
-                                                  width: 60,
-                                                  child: Transform.scale(
-                                                      scale: 1.3,
-                                                      child: Theme(
-                                                          data: ThemeData(
-                                                              unselectedWidgetColor:
-                                                                  Theme.of(context)
-                                                                      .primaryColorLight),
-                                                          child: Checkbox(
-                                                              materialTapTargetSize:
-                                                                  MaterialTapTargetSize
-                                                                      .shrinkWrap,
-                                                              activeColor:
-                                                                  Theme.of(context)
-                                                                      .primaryColor,
-                                                              checkColor:
-                                                                  Theme.of(context)
-                                                                      .highlightColor,
-                                                              side: BorderSide(
-                                                                  width: 1,
-                                                                  color: Theme.of(
-                                                                          context)
-                                                                      .primaryColorDark),
-                                                              value: planEachExercise
-                                                                  .sets[
-                                                                      setIndex_]
-                                                                  .ischecked,
-                                                              onChanged: (newvalue) {
-                                                                _routinetimeProvider
-                                                                            .isstarted ||
-                                                                        planEachExercise
-                                                                            .sets[
-                                                                                setIndex_]
-                                                                            .ischecked
-                                                                    ? [
-                                                                        if (newvalue ==
-                                                                            true)
-                                                                          {
-                                                                            _routinetimeProvider.resettimer(plandata.plans[plandata.progress].exercises[0].rest),
-                                                                            _workoutOnermCheck(set,
-                                                                                exerciseIndex)
-                                                                          },
-                                                                        workout_provider.planboolcheck(
-                                                                            widget.rindex,
-                                                                            index_,
-                                                                            setIndex_,
-                                                                            newvalue),
-                                                                      ]
-                                                                    : [
-                                                                        _showMyDialog(
-                                                                            index_,
-                                                                            setIndex_,
-                                                                            newvalue)
-                                                                      ];
-                                                              }))))
-                                            ]);
-                                      },
-                                      shrinkWrap: true,
-                                      itemCount: planEachExercise.sets.length,
-                                    ))
-                                  ]),
-                              Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Container(width: 10),
-                                    Container(width: 10),
-                                    Transform.scale(
-                                      scale: 1.2,
-                                      child: IconButton(
-                                          padding: const EdgeInsets.all(5),
-                                          constraints: const BoxConstraints(),
-                                          onPressed: () {
-                                            workout_provider.plansetsminus(
-                                                widget.rindex, index_);
-                                            _editWorkoutCheck();
-                                          },
-                                          icon: Icon(
-                                            Icons.remove_circle_outlined,
-                                            color: Theme.of(context)
-                                                .primaryColorLight,
-                                            size: 20,
-                                          )),
-                                    ),
-                                    Text(
-                                      ' /',
-                                      textScaleFactor: 1.7,
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorLight),
-                                    ),
-                                    Transform.scale(
-                                        scale: 1.2,
-                                        child: IconButton(
-                                            padding: const EdgeInsets.all(5),
-                                            constraints: const BoxConstraints(),
-                                            onPressed: () {
-                                              workout_provider.plansetsplus(
-                                                  widget.rindex, index_);
-                                              _editWorkoutCheck();
-                                            },
-                                            icon: Icon(
-                                              Icons.add_circle_outlined,
-                                              color: Theme.of(context)
-                                                  .primaryColorLight,
-                                              size: 20,
-                                            )))
-                                  ])
-                            ]) // body when the widget is Expanded
-                            ),
-                        Divider(
-                          indent: 10,
-                          thickness: 0.6,
-                          color: Theme.of(context).primaryColorDark,
-                        )
-                      ]);
-                    },
-                    shrinkWrap: true,
-                    itemCount: planExercises.length),
-              Container(height: 10),
-              SizedBox(
-                  height: 30,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Transform.scale(
-                          scale: 1.2,
-                          child: IconButton(
-                              padding: const EdgeInsets.all(5),
-                              constraints: const BoxConstraints(),
-                              onPressed: () {
-                                workout_provider.planremoveexAt(widget.rindex);
-                                _controllerList.removeLast();
-                                _editWorkoutCheck();
-                              },
-                              icon: Icon(Icons.remove_circle_outlined,
-                                  color: Theme.of(context).primaryColorLight,
-                                  size: 20)),
-                        ),
-                        Container(width: 10),
-                        Text('/',
-                            textScaleFactor: 1.7,
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColorLight)),
-                        Container(width: 10),
-                        Transform.scale(
-                            scale: 1.2,
-                            child: IconButton(
-                                padding: const EdgeInsets.all(5),
-                                constraints: const BoxConstraints(),
-                                onPressed: () {
-                                  exselect(true, false);
-                                  exselect(true, true);
-                                },
-                                icon: Icon(
-                                  Icons.add_circle_outlined,
-                                  color: Theme.of(context).primaryColorLight,
-                                  size: 20,
-                                )))
-                      ])),
-              const Center(
-                  child: Text(
-                '운동 제거/추가',
-                textScaleFactor: 1.2,
-                style: TextStyle(color: Colors.grey),
-              ))
-            ])),
-            plandata.plans[plandata.progress].exercises.isNotEmpty
-                ? Consumer<RoutineTimeProvider>(
-                    builder: (context, provider_, child) {
-                    var exRest =
-                        plandata.plans[plandata.progress].exercises[0].rest;
-                    return _routinetimeProvider.isstarted
-                        ? LinearProgressIndicator(
-                            value: _routinetimeProvider.timeron > 0 &&
-                                    _routinetimeProvider.userest &&
-                                    exRest != 0
-                                ? (exRest - _routinetimeProvider.timeron) /
-                                    exRest
-                                : 1,
-                            minHeight: 1.6,
-                            backgroundColor: Theme.of(context).primaryColor,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                                Theme.of(context).primaryColorDark),
-                          )
-                        : const Divider(
-                            indent: 0,
-                            thickness: 0.3,
-                            color: Colors.grey,
-                          );
-                  })
-                : Container(),
-            Consumer<RoutineTimeProvider>(builder: (context, provider_, child) {
-              final userest = provider_.userest;
-              final timeron = provider_.timeron;
-              final routineTime = provider_.routineTime;
-              final isNegativeTimer = userest && timeron < 0;
-              return KeyboardVisibilityBuilder(
-                  builder: (context, isKeyboardVisible) {
-                return isKeyboardVisible ||
-                        plandata.plans[plandata.progress].exercises.isEmpty
-                    ? Container()
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 8),
-                                    child: Text(userest ? "휴식 시간 :" : "운동 시간 :",
-                                        textScaleFactor: 1.4,
-                                        style: TextStyle(
-                                            color: Theme.of(context)
-                                                .primaryColorLight)),
-                                  ),
-                                  const SizedBox(width: 6),
-                                  Text(
-                                      userest
-                                          ? isNegativeTimer
-                                              ? '-${(-timeron / 60).floor()}:${((-timeron % 60) / 10).floor()}${((-timeron % 60) % 10)}'
-                                              : '${(timeron / 60).floor()}:${((timeron % 60) / 10).floor()}${((timeron % 60) % 10)}'
-                                          : '${(routineTime / 60).floor()}:${((routineTime % 60) / 10).floor()}${((routineTime % 60) % 10)}',
-                                      textScaleFactor: 2.0,
-                                      style: TextStyle(
-                                          color: (provider_.userest &&
-                                                  provider_.timeron < 0)
-                                              ? Colors.red
-                                              : Theme.of(context)
-                                                  .primaryColorLight))
-                                ]),
-                                Consumer<WorkoutdataProvider>(
-                                    builder: (builder, provider, child) {
-                                  final plan = _workoutProvider
-                                      .workoutdata
-                                      .routinedatas[widget.rindex]
-                                      .exercises[0]
-                                      .plans[plandata.progress];
-                                  final restDuration =
-                                      Duration(seconds: plan.exercises[0].rest);
-                                  return GestureDetector(
-                                    onTap: () {
-                                      showCupertinoModalPopup<void>(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return _buildContainer(timerPicker2(
-                                              restDuration,
-                                              plandata.progress,
-                                            ));
-                                          });
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 4.0, bottom: 4.0, right: 4.0),
-                                      child: Text(
-                                        "휴식 설정 : ${plan.exercises[0].rest}초",
-                                        textScaleFactor: 1.2,
-                                        style: TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorDark,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                }),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    _routinetimeProvider.restcheck();
-                                    _routinetimeProvider.resttimecheck(plandata
-                                        .plans[plandata.progress]
-                                        .exercises[0]
-                                        .rest);
-                                  },
-                                  child: Consumer<RoutineTimeProvider>(
-                                      builder: (builder, provider, child) {
-                                    return Center(
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 4.0),
-                                        child: Text(
-                                          provider.userest
-                                              ? 'Rest Timer on'
-                                              : 'Rest Timer off',
-                                          textScaleFactor: 1.6,
-                                          style: TextStyle(
-                                            color: provider.userest
-                                                ? Theme.of(context)
-                                                    .primaryColorLight
-                                                : Theme.of(context)
-                                                    .primaryColorDark,
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                                ),
-                                SizedBox(height: 4),
-                                Row(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        _routinetimeProvider.addRestTime(-10);
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(4)),
-                                          color: Theme.of(context)
-                                              .primaryColorDark,
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 12.0, vertical: 6.0),
-                                          child: Text(
-                                            "-10초",
-                                            textScaleFactor: 1.2,
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .highlightColor,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(width: 12),
-                                    GestureDetector(
-                                      onTap: () {
-                                        _routinetimeProvider.addRestTime(10);
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(4)),
-                                          color: Theme.of(context)
-                                              .primaryColorDark,
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 12.0, vertical: 6.0),
-                                          child: Text(
-                                            "+10초",
-                                            textScaleFactor: 1.2,
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .highlightColor,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
-                      );
-              });
-            }),
-            Consumer2<RoutineTimeProvider, PrefsProvider>(builder:
-                (builder, routine_time_provider, pref_provider, child) {
-              return ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: ((routine_time_provider.nowonrindex !=
-                                      widget.rindex &&
-                                  _routinetimeProvider.isstarted) ||
-                              (_routinetimeProvider.isstarted &&
-                                  routine_time_provider.nowoneindex !=
-                                      plandata.progress))
-                          ? const Color(0xFF212121)
-                          : routine_time_provider.buttoncolor,
-                      textStyle: const TextStyle(fontSize: 20)),
-                  onPressed: () async {
-                    if (routine_time_provider.nowonrindex != widget.rindex &&
-                        _routinetimeProvider.isstarted) {
-                      return null;
-                    } else {
-                      if (_routinetimeProvider.isstarted) {
-                        routine_time_provider.nowoneindex != plandata.progress
-                            ? showToast(
-                                "${routine_time_provider.nowoneindex + 1}일차 운동 탭에서 종료 가능합니다.")
-                            : _showMyDialog_finish();
-                      } else {
-                        routine_time_provider.resettimer(_workoutProvider
-                            .workoutdata
-                            .routinedatas[widget.rindex]
-                            .exercises[0]
-                            .plans[plandata.progress]
-                            .exercises[0]
-                            .rest);
-                        await routine_time_provider.routinecheck(widget.rindex);
-                        pref_provider.setplan(_workoutProvider
-                            .workoutdata.routinedatas[widget.rindex].name);
-                        routine_time_provider
-                            .nowoneindexupdate(plandata.progress);
-                        FirebaseAnalyticsService.logCustomEvent(
-                            "Workout Start");
-                      }
-                    }
-                  },
-                  child: Text(
-                    (routine_time_provider.nowonrindex != widget.rindex) &&
-                            _routinetimeProvider.isstarted
-                        ? '다른 루틴 수행중'
-                        : (routine_time_provider.nowoneindex !=
-                                    plandata.progress &&
-                                routine_time_provider.isstarted)
-                            ? '${routine_time_provider.nowoneindex + 1}일차 운동 수행중'
-                            : routine_time_provider.routineButton,
-                    style: TextStyle(color: Colors.white),
-                  ));
-            })
+            _bodyRoutineWidget(workout_provider, exercise_provider),
+            _bodyTimerWidget(workout_provider),
+            _bodyExButton(workout_provider, routine_time_provider)
           ]));
     });
   }
@@ -1945,7 +1941,7 @@ class _EachPlanDetailsState extends State<EachPlanDetails> {
 
       return Scaffold(
         appBar: _appbarWidget(),
-        body: _Nday_RoutineWidget(),
+        body: _eachDayRoutineBodyWidget(),
       );
     });
   }
