@@ -66,8 +66,8 @@ class _CalendarCardState extends State<CalendarCard> {
                 SizedBox(width: 10,),
                 Text("나의 운동 기록",textScaler: TextScaler.linear(2),),
                 SizedBox(width: 15,),
-                Icon(Icons.open_in_new,
-                  color: Colors.white.withOpacity(0.7),)
+                //Icon(Icons.open_in_new,
+                //  color: Colors.white.withOpacity(0.7),)
               ],
             ),
             Center(
@@ -406,6 +406,7 @@ class _CalendarCardState extends State<CalendarCard> {
                 onTapDown: _storePosition,
                 onTap: () {
                   showMenu(
+                      color: Theme.of(context).cardColor,
                       context: context,
                       position: RelativeRect.fromRect(
                           _tapPosition & const Size(30, 30),
