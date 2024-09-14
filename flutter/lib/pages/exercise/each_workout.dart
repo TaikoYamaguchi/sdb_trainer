@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -456,202 +458,200 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                               )
                             ]),
                         child: Builder(
-                          builder: (context) => Column(
-                            children: [
-                              Material(
-                                borderRadius: BorderRadius.circular(15.0),
-                                child: Ink(
-                                  decoration: BoxDecoration(
-                                      color: _routinetimeProvider.isstarted
-                                          ? curItem
-                                              ? const Color(0xffCEEC97)
-                                              : Theme.of(context).cardColor
-                                          : Theme.of(context).cardColor,
+                          builder: (context) => ClipRRect(
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(top),
+                                bottomRight: Radius.circular(bottom),
+                                topLeft: Radius.circular(top),
+                                bottomLeft: Radius.circular(bottom)),
+                            child: Column(
+                              children: [
+                                Material(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  child: Ink(
+                                    decoration: BoxDecoration(
+                                        color: _routinetimeProvider.isstarted
+                                            ? curItem
+                                                ? Color(0xffCEEC97).withOpacity(1)
+                                                : Colors.black.withOpacity(0.0)
+                                            : Colors.white.withOpacity(0.0),
+                                        borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(top),
+                                            bottomRight: Radius.circular(bottom),
+                                            topLeft: Radius.circular(top),
+                                            bottomLeft: Radius.circular(bottom))),
+                                    child: InkWell(
                                       borderRadius: BorderRadius.only(
                                           topRight: Radius.circular(top),
                                           bottomRight: Radius.circular(bottom),
                                           topLeft: Radius.circular(top),
-                                          bottomLeft: Radius.circular(bottom))),
-                                  child: InkWell(
-                                    borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(top),
-                                        bottomRight: Radius.circular(bottom),
-                                        topLeft: Radius.circular(top),
-                                        bottomLeft: Radius.circular(bottom)),
-                                    onTap: () {
-                                      [
-                                        _PopProvider.exstackup(2),
-                                        Navigator.push(
-                                            context,
-                                            Transition(
-                                                child: EachExerciseDetails(
-                                                  ueindex: exunique.indexWhere(
-                                                      (element) =>
-                                                          element.name ==
-                                                          exlist[index].name),
-                                                  eindex: index,
-                                                  rindex: widget.rindex,
-                                                ),
-                                                transitionEffect:
-                                                    TransitionEffect
-                                                        .RIGHT_TO_LEFT))
-                                      ];
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8),
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                              topRight: Radius.circular(top),
-                                              bottomRight:
-                                                  Radius.circular(bottom),
-                                              topLeft: Radius.circular(top),
-                                              bottomLeft:
-                                                  Radius.circular(bottom))),
-                                      height: _exImageOpen ? 64 : 40,
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Expanded(
-                                            child: Row(
-                                              children: [
-                                                _exImageOpen
-                                                    ? _exImage != ""
-                                                        ? Image.asset(
-                                                            _exImage,
-                                                            height: 64,
-                                                            width: 64,
-                                                            fit: BoxFit.cover,
-                                                          )
-                                                        : Container(
-                                                            height: 64,
-                                                            width: 64,
-                                                            decoration:
-                                                                const BoxDecoration(
-                                                                    shape: BoxShape
-                                                                        .circle),
-                                                            child: Icon(
-                                                                Icons
-                                                                    .image_not_supported,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .primaryColorDark),
-                                                          )
-                                                    : Container(),
-                                                const SizedBox(width: 8),
-                                                Expanded(
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        exlist[index].name,
-                                                        textScaleFactor: 1.7,
-                                                        style: TextStyle(
-                                                            color: curItem
-                                                                ? Colors.black
-                                                                : Theme.of(
-                                                                        context)
-                                                                    .primaryColorLight),
-                                                      ),
-                                                      _exImageOpen
-                                                          ? Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: [
-                                                                Text(
-                                                                    "휴식: ${exlist[index].rest}",
-                                                                    textScaleFactor:
-                                                                        1.0,
-                                                                    style: const TextStyle(
-                                                                        color: Color(
-                                                                            0xFF717171))),
-                                                              ],
+                                          bottomLeft: Radius.circular(bottom)),
+                                      onTap: () {
+                                        [
+                                          _PopProvider.exstackup(2),
+                                          Navigator.push(
+                                              context,
+                                              Transition(
+                                                  child: EachExerciseDetails(
+                                                    ueindex: exunique.indexWhere(
+                                                        (element) =>
+                                                            element.name ==
+                                                            exlist[index].name),
+                                                    eindex: index,
+                                                    rindex: widget.rindex,
+                                                  ),
+                                                  transitionEffect:
+                                                      TransitionEffect
+                                                          .RIGHT_TO_LEFT))
+                                        ];
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8),
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                                topRight: Radius.circular(top),
+                                                bottomRight:
+                                                    Radius.circular(bottom),
+                                                topLeft: Radius.circular(top),
+                                                bottomLeft:
+                                                    Radius.circular(bottom))),
+                                        height: _exImageOpen ? 64 : 40,
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Expanded(
+                                              child: Row(
+                                                children: [
+                                                  _exImageOpen
+                                                      ? _exImage != ""
+                                                          ? Image.asset(
+                                                              _exImage,
+                                                              height: 64,
+                                                              width: 64,
+                                                              fit: BoxFit.cover,
                                                             )
-                                                          : Container()
-                                                    ],
+                                                          : Container(
+                                                              height: 64,
+                                                              width: 64,
+                                                              decoration:
+                                                                  const BoxDecoration(
+                                                                      shape: BoxShape
+                                                                          .circle),
+                                                              child: Icon(
+                                                                  Icons
+                                                                      .image_not_supported,
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .primaryColorDark),
+                                                            )
+                                                      : Container(),
+                                                  const SizedBox(width: 8),
+                                                  Expanded(
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          exlist[index].name,
+                                                          textScaleFactor: 1.7,
+                                                          style: TextStyle(
+                                                              color: curItem
+                                                                  ? Colors.black
+                                                                  : Theme.of(
+                                                                          context)
+                                                                      .primaryColorLight),
+                                                        ),
+                                                        _exImageOpen
+                                                            ? Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Text(
+                                                                      "휴식: ${exlist[index].rest}",
+                                                                      textScaleFactor:
+                                                                          1.0,
+                                                                      style: const TextStyle(
+                                                                          color: Color(
+                                                                              0xFF717171))),
+                                                                ],
+                                                              )
+                                                            : Container()
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          doneex.isNotEmpty
-                                              ? SizedBox(
-                                                  width: 32,
-                                                  height: 32,
-                                                  child: CircleNumberWidget(
-                                                      number: doneex.length,
-                                                      color: Theme.of(context)
-                                                          .primaryColorDark),
-                                                )
-                                              : Container(),
-                                          GestureDetector(
-                                              onTap: () {
-                                                if (Slidable.of(context)!
-                                                        .actionPaneType
-                                                        .value ==
-                                                    ActionPaneType.none) {
-                                                  Slidable.of(context)
-                                                      ?.openEndActionPane();
-                                                } else {
-                                                  Slidable.of(context)?.close();
-                                                }
-                                              },
-                                              child: Container(
-                                                color: _routinetimeProvider
-                                                        .isstarted
-                                                    ? curItem
-                                                        ? const Color(
-                                                            0xffCEEC97)
-                                                        : Theme.of(context)
-                                                            .cardColor
-                                                    : Theme.of(context)
-                                                        .cardColor,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          8, 12, 8, 12),
-                                                  child: Container(
-                                                    height: 30.0,
-                                                    width: 4.0,
-                                                    decoration: BoxDecoration(
+                                            doneex.isNotEmpty
+                                                ? SizedBox(
+                                                    width: 32,
+                                                    height: 32,
+                                                    child: CircleNumberWidget(
+                                                        number: doneex.length,
                                                         color: Theme.of(context)
-                                                            .primaryColorDark,
-                                                        borderRadius:
-                                                            const BorderRadius
-                                                                .all(
-                                                                Radius.circular(
-                                                                    8.0))),
+                                                            .primaryColorDark),
+                                                  )
+                                                : Container(),
+                                            GestureDetector(
+                                                onTap: () {
+                                                  if (Slidable.of(context)!
+                                                          .actionPaneType
+                                                          .value ==
+                                                      ActionPaneType.none) {
+                                                    Slidable.of(context)
+                                                        ?.openEndActionPane();
+                                                  } else {
+                                                    Slidable.of(context)?.close();
+                                                  }
+                                                },
+                                                child: Container(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.fromLTRB(
+                                                            8, 12, 8, 12),
+                                                    child: Container(
+                                                      height: 30.0,
+                                                      width: 4.0,
+                                                      decoration: BoxDecoration(
+                                                          color: Theme.of(context)
+                                                              .primaryColorDark,
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                  .all(
+                                                                  Radius.circular(
+                                                                      8.0))),
+                                                    ),
                                                   ),
-                                                ),
-                                              ))
-                                        ],
+                                                ))
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              index == exlist.length - 1
-                                  ? Container()
-                                  : Container(
-                                      alignment: Alignment.center,
-                                      height: 0.5,
-                                      child: Container(
+                                index == exlist.length - 1
+                                    ? Container()
+                                    : Container(
                                         alignment: Alignment.center,
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 10),
                                         height: 0.5,
-                                        color:
-                                            Theme.of(context).primaryColorDark,
-                                      ),
-                                    )
-                            ],
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          height: 0.5,
+                                          color:
+                                              Theme.of(context).primaryColorDark,
+                                        ),
+                                      )
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -850,7 +850,9 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
       SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, _index) {
-            return Container(child: _exercisesWidget(true, true));
+            return Padding(
+              padding: EdgeInsets.symmetric(vertical: 8),
+                child: _exercisesWidget(true, true));
           },
           childCount: 1,
         ),
