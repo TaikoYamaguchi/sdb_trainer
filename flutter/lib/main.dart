@@ -166,6 +166,7 @@ class MyApp extends StatelessWidget {
               splashColor: Colors.transparent,
               fontFamily: 'Noto_Sans_KR'),
           darkTheme: ThemeData(
+
               textTheme: Theme.of(context).textTheme.apply(
                     fontSizeFactor: themeProvider.userFontSize,
                     bodyColor: Colors.white,

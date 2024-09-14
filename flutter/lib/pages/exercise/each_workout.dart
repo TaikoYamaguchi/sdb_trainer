@@ -467,7 +467,6 @@ class _EachWorkoutDetailsState extends State<EachWorkoutDetails>
                             child: Column(
                               children: [
                                 Material(
-                                  color: Colors.grey.withOpacity(0.1),
                                   child: Ink(
                                     decoration: BoxDecoration(
                                         color: _routinetimeProvider.isstarted
