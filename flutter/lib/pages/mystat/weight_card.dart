@@ -483,7 +483,8 @@ class _WeightCardState extends State<WeightCard> {
                   onTapDown: _storePosition,
                   onTap: () {
                     showMenu(
-                        context: context,
+                    color: Theme.of(context).cardColor,
+                    context: context,
                         position: RelativeRect.fromRect(
                             _tapPosition & const Size(30, 30),
                             Offset.zero & const Size(0, 0)),
