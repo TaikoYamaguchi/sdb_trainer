@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  nginx:
+    ports:
+      - "28000:80"
+      - "28443:443"
+
+  redis:
+    ports:
+      - "16379:6379"
+
+  postgres:
+    ports:
+      - "15432:5432"
+
+  backend:
+    ports:
+      - "18888:8888"
+    volumes:
+      - ./backend:/app/:cached
+      - ./.docker/.ipython:/root/.ipython:cached
+
+  worker:
+    volumes:
+      - ./backend:/app/:cached
+      - ./.docker/.ipython:/root/.ipython:cached
+
+  pgadmin:
+    ports:
+      - "18088:80"
+
+  elasticsearch:
+    ports:
+      - "19200:9200"
+
+  kibana:
+    ports:
+      - "15601:5601"
