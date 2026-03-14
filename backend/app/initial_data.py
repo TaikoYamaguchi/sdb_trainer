@@ -28,6 +28,7 @@ def init() -> None:
             height_unit="cm",
             weight_unit="kg",
             password="1234",
+            isMan=True,
             is_active=True,
             is_superuser=True,
             created_at=datetime.now(),
@@ -110,7 +111,8 @@ def init() -> None:
             }
         ],
         new_record= 1,
-        workout_time= 60.0
+        workout_time= 60.0,
+        like=[], dislike=[], image=[], comment="", nickname="3대500"
         ))
 
 
@@ -160,7 +162,8 @@ def init() -> None:
             }
         ],
         new_record= 1,
-        workout_time= 60
+        workout_time= 60,
+        like=[], dislike=[], image=[], comment="", nickname="3대500"
         ))
 
     create_history(
@@ -209,7 +212,8 @@ def init() -> None:
             }
         ],
         new_record= 1,
-        workout_time= 60.0
+        workout_time= 60.0,
+        like=[], dislike=[], image=[], comment="", nickname="3대500"
 
 
 ))
@@ -217,109 +221,49 @@ def init() -> None:
         db,
         WorkoutCreate(
             user_email="cksdnr1@gmail.com",
-            name="타격감운동",
-            exercises=[
+            id=0,
+            routinedatas=[
                 {
-                    "name": "벤치프레스",
-                    "sets": [
+                    "name": "타격감운동",
+                    "exercises": [
                         {
-                            "index": 1,
-                            "weight": 105.3,
-                            "reps": 1,
-                            "ischecked": False,
+                            "name": "벤치프레스",
+                            "sets": [
+                                {"index": 1, "weight": 105.3, "reps": 1, "ischecked": False},
+                                {"index": 2, "weight": 110.3, "reps": 1, "ischecked": False},
+                                {"index": 3, "weight": 85.3, "reps": 10, "ischecked": False},
+                            ],
+                            "onerm": 115.3,
+                            "rest": 180,
                         },
                         {
-                            "index": 2,
-                            "weight": 110.3,
-                            "reps": 1,
-                            "ischecked": False,
+                            "name": "스쿼트",
+                            "sets": [
+                                {"index": 1, "weight": 120.3, "reps": 1, "ischecked": False},
+                                {"index": 2, "weight": 130.3, "reps": 1, "ischecked": False},
+                                {"index": 3, "weight": 100.3, "reps": 6, "ischecked": False},
+                                {"index": 4, "weight": 80.3, "reps": 10, "ischecked": False},
+                            ],
+                            "onerm": 140.3,
+                            "rest": 240,
                         },
                         {
-                            "index": 3,
-                            "weight": 85.3,
-                            "reps": 10,
-                            "ischecked": False,
+                            "name": "데드리프트",
+                            "sets": [
+                                {"index": 1, "weight": 80.3, "reps": 1, "ischecked": False},
+                                {"index": 2, "weight": 100.3, "reps": 1, "ischecked": False},
+                                {"index": 3, "weight": 120.3, "reps": 1, "ischecked": False},
+                                {"index": 4, "weight": 140.3, "reps": 1, "ischecked": False},
+                                {"index": 5, "weight": 160.3, "reps": 1, "ischecked": False},
+                                {"index": 6, "weight": 130.3, "reps": 10, "ischecked": False},
+                            ],
+                            "onerm": 180.3,
+                            "rest": 240,
                         },
                     ],
-                    "onerm": 115.3,
-                    "rest": 180,
-                },
-                {
-                    "name": "스쿼트",
-                    "sets": [
-                        {
-                            "index": 1,
-                            "weight": 120.3,
-                            "reps": 1,
-                            "ischecked": False,
-                        },
-                        {
-                            "index": 2,
-                            "weight": 130.3,
-                            "reps": 1,
-                            "ischecked": False,
-                        },
-                        {
-                            "index": 3,
-                            "weight": 100.3,
-                            "reps": 6,
-                            "ischecked": False,
-                        },
-                        {
-                            "index": 4,
-                            "weight": 80.3,
-                            "reps": 10,
-                            "ischecked": False,
-                        },
-                    ],
-                    "onerm": 140.3,
-                    "rest": 240,
-                },
-                {
-                    "name": "데드리프트",
-                    "sets": [
-                        {
-                            "index": 1,
-                            "weight": 80.3,
-                            "reps": 1,
-                            "ischecked": False,
-                        },
-                        {
-                            "index": 2,
-                            "weight": 100.3,
-                            "reps": 1,
-                            "ischecked": False,
-                        },
-                        {
-                            "index": 3,
-                            "weight": 120.3,
-                            "reps": 1,
-                            "ischecked": False,
-                        },
-                        {
-                            "index": 4,
-                            "weight": 140.3,
-                            "reps": 1,
-                            "ischecked": False,
-                        },
-                        {
-                            "index": 5,
-                            "weight": 160.3,
-                            "reps": 1,
-                            "ischecked": False,
-                        },
-                        {
-                            "index": 6,
-                            "weight": 130.3,
-                            "reps": 10,
-                            "ischecked": False,
-                        },
-                    ],
-                    "onerm": 180.3,
-                    "rest": 240,
-                },
+                    "routine_time": 60,
+                }
             ],
-            routine_time=60,
         ),
     )
 
