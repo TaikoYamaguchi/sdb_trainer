@@ -1,15 +1,25 @@
 #!/bin/bash
 
-# Build and run containers
-docker-compose up -d
+# Usage:
+#   dev:  ./scripts/build.sh dev
+#   prod: ./scripts/build.sh prod (default)
 
-# Hack to wait for postgres container to be up before running alembic migrations
-sleep 5;
+ENV=${1:-prod}
+
+if [ "$ENV" = "dev" ]; then
+  COMPOSE_CMD="docker compose -p supero-dev -f docker-compose.yml -f docker-compose.dev.yml"
+else
+  COMPOSE_CMD="docker compose -p supero-prod -f docker-compose.yml -f docker-compose.prod.yml"
+fi
+
+# Build and run containers
+$COMPOSE_CMD up -d --build
+
+# Wait for postgres to be ready
+sleep 5
 
 # Run migrations
-docker-compose run --rm backend alembic upgrade head
+$COMPOSE_CMD run --rm backend alembic upgrade head
 
 # Create initial data
-docker-compose run --rm backend python3 app/initial_data.py
-
-#docker-compose run --rm backend pip install firebase_admin
+$COMPOSE_CMD run --rm backend python3 app/initial_data.py
